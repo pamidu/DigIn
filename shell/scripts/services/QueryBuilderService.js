@@ -173,16 +173,30 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         }
     };
     
-    var D3SUNBURST = function(){
-
+    var D3SUNBURST = function() {
         this.sync = function(q, cl, widObj, cb) {
-            cl.getHierarchicalSummary(q, function(data, status) {
-                if (status){
-                    widObj.widData.children = data.children;
-                    }
-                widObj.syncState = true;                    
-                cb(widObj);
-            });
+            var fieldArray = [];
+            var table = widObj.commonSrc.src.tbl;
+            var hObj= {};
+            angular.forEach(widObj.commonSrc.att,function(attribute){
+                fieldArray.push("'"+ attribute.filedName +"'");
+            })
+            cl.getHighestLevel(table,fieldArray.toString(),function(data,status){
+                if(status) {
+                    var measure = widObj.commonSrc.mea[0].filedName;
+                    var agg = widObj.commonSrc.mea[0].condition;
+                    data.forEach(function(entry) {
+                        hObj[entry.value] = entry.level;
+                    });
+                    cl.getHierarchicalSummary(hObj,measure,agg,table, function(data, status) {
+                        if (status) {
+                            widObj.widData.data = data.children;
+                            }
+                        widObj.syncState = true;                    
+                        cb(widObj);
+                    });                    
+                }
+            })
         }
     }; 
 
@@ -191,7 +205,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         this.sync = function(q, cl, widObj, cb) {
             cl.getHierarchicalSummary(q, function(data, status) {
                 if (status){
-                    widObj.widData.children = data.children;
+                    widObj.widData.data = data.children;
                     }
                 widObj.syncState = true;
                 cb(widObj);

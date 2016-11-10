@@ -96,7 +96,8 @@ routerApp.directive('linearChart', function() {
 
                     nodeEnter.append("circle")
                         .attr("r", function(d) {
-                            return Math.sqrt(d.size) / 5 || 4.5;
+                            // return Math.sqrt(d.size) / 5 || 4.5;
+                            return 4.5;
                         });
 
                     nodeEnter.append("text")

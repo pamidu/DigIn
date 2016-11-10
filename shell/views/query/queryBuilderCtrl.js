@@ -1026,9 +1026,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         chartTypeTrue = false;
                         break;
                     case 'sunburst':
+                        this.hideVisualizationType();
                         chartTypeTrue = false;
                         break;
                     case 'hierarchy':
+                        this.hideVisualizationType();
                         chartTypeTrue = false;
                         break;
                     case 'pie':
@@ -3030,6 +3032,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             return;
         }
         $scope.eventHndler.isLoadingChart = true;
+        $scope.isPendingRequest = true;
         var fieldArray = [];
         for (var i = 0; i < $scope.executeQryData.executeColumns.length; i++) {
             fieldArray.push("'" + $scope.executeQryData.executeColumns[i].filedName + "'");
@@ -3043,18 +3046,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 data.forEach(function(entry) {
                     hObj[entry.value] = entry.level;
                 });
-                var database = $scope.sourceData.src;
                 var tbl = $scope.sourceData.tbl;
                 var measure = $scope.executeQryData.executeMeasures[0].filedName;
                 var aggData = $scope.executeQryData.executeMeasures[0].condition;
-                if (database == "BigQuery") { 
-                    var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
-                    $diginurls.getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database;
-                } else {
-                    var query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
-                    tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;
-                }
-                $scope.client.getHierarchicalSummary(query, function(data, status) {
+                $scope.client.getHierarchicalSummary(hObj,measure,aggData,tbl, function(data, status) {
                     $scope.TochartData = angular.copy(data);
                     if (status) {
                         if ($scope.selectedChart.chartType == "d3hierarchy"){
@@ -3069,13 +3064,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             dec: $scope.selectedChart.initObj.dec
                         };
                         $scope.hierarData = res;
+                        $scope.isPendingRequest = false;
                         $scope.eventHndler.isLoadingChart = false;
                     } else {
+                        $scope.isPendingRequest = false;
                         $scope.eventHndler.isLoadingChart = false;
                     }
                 });
-                $scope.dataToBeBind.receivedQuery = query;
             } else {
+                $scope.isPendingRequest = false;
                 $scope.eventHndler.isLoadingChart = false;
             }
         });
@@ -3089,7 +3086,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         selectCondition: function() {
             $scope.isPendingRequest = false;
             if($scope.executeQryData.executeMeasures.length>1) {
-                privateFun.fireMessage('0','Please Select only one aggregate measure to generate hierarchy chart ');
+                privateFun.fireMessage('0','Please Select only one aggregate measure to generate chart ');
+                return;
+            }
+            if($scope.executeQryData.executeColumns.length == 1) {
+                $scope.generateHierarchy();
             }
         },
         selectAttribute : function(fieldName) {
@@ -3102,14 +3103,36 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
-            }            
+            }
+            if($scope.executeQryData.executeMeasures.length == 1) {
+                $scope.generateHierarchy();
+            }
         },
         removeMea: function(l) {
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length<1) {
+                privateFun.fireMessage('0','Please Select atleast one aggregate measure to generate chart ');
+                return;
+            }
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                $scope.generateHierarchy();
+            }
         },
         removeCat: function() {
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                $scope.generateHierarchy();
+            } else {
+                privateFun.fireMessage('0','Please Select atleast one aggregate measure and category to generate chart ');
+                return;
+            }
         },
         changeType: function() {
-
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                $scope.generateHierarchy();
+            } else {
+                privateFun.fireMessage('0','Please Select only one aggregate measure and one or more categories to generate chart ');
+            }
         },
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbData.html";
@@ -3131,7 +3154,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         selectCondition: function() {
             $scope.isPendingRequest = false;
             if($scope.executeQryData.executeMeasures.length>1) {
-                privateFun.fireMessage('0','Please Select only one aggregate measure to generate hierarchy chart ');
+                privateFun.fireMessage('0','Please Select only one aggregate measure to generate chart ');
+                return;
+            }
+            if($scope.executeQryData.executeColumns.length == 1) {
+                $scope.generateHierarchy();
             }
         },
         selectAttribute : function(fieldName) {
@@ -3144,13 +3171,36 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
-            }            
+            }
+            if($scope.executeQryData.executeMeasures.length == 1) {
+                $scope.generateHierarchy();
+            }
         },
         removeMea: function(l) {
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length<1) {
+                privateFun.fireMessage('0','Please Select atleast one aggregate measure to generate chart ');
+                return;
+            }
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                $scope.generateHierarchy();
+            }
         },
         removeCat: function() {
-        },  
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                $scope.generateHierarchy();
+            } else {
+                privateFun.fireMessage('0','Please Select atleast one aggregate measure and category to generate chart ');
+                return;
+            }
+        },
         changeType: function() {
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                $scope.generateHierarchy();
+            } else {
+                privateFun.fireMessage('0','Please Select only one aggregate measure and one or more categories to generate chart ');
+            }
         },
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/ViewHnbMonth.html";

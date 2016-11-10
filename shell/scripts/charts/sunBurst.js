@@ -99,8 +99,8 @@ routerApp.directive('sunburstChart', function() {
 
                         })
                         .on("mousemove", function(d) {
-                            div.style("top", (d3.event.pageY-10)+"px")
-                                .style("left", (d3.event.pageX+10)+"px");
+                            div.style("top", (d3.event.pageY)+"px")
+                                .style("left", (d3.event.pageX)+"px");
                         })
                         .on("mouseout", function(d) {
                             div.transition()

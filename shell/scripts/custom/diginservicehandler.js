@@ -126,10 +126,18 @@
                     });
                 },
 
-                getHierarchicalSummary: function(query, cb) {
-                        $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
-                        }, query);
+                getHierarchicalSummary: function(hObj,measure,aggData,tbl,cb) {
+                    var query = "";
+                    if (database == "BigQuery") {
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
+                        getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database;
+                    } else {
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
+                        tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;
+                    }
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, query);
                 },
 
                 generateboxplot: function(query, cb) {

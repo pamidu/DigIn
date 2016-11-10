@@ -794,7 +794,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             svg.setAttribute("viewBox", "0 0  600 600")
             svg.children[0].setAttribute("transform", "translate(300,300) rotate(-90 0 0)");
             var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            newElement.setAttribute('x',200);
+            newElement.setAttribute('x',20);
             newElement.setAttribute('y',20);
             newElement.setAttribute('fill','#000000');
             newElement.setAttribute('font-size',20);
@@ -806,41 +806,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
             svg.appendChild(newElement);
 
-            svgAsDataUri(svg, {}, function(svg_uri) {
-                var image = document.createElement('img');
-
-                image.src = svg_uri;
-                image.style.background = "#FFFFFF";
-                image.style.backgroundColor = "#FFFFFF";
-
-                image.onload = function() {
-                    var canvas = document.getElementById("canvas");
-                    var context = canvas.getContext('2d');
-                    context.clearRect(0, 0, 600, 600);
-                    context.setFillColor = "#FFFFFF";
-                    context.fillRect(0, 0, 600, 600);
-                    var doc = new jsPDF('portrait', 'pt');
-                    var dataUrl;
-
-                    canvas.width = image.width;
-                    canvas.height = image.height;
-                    context.drawImage(image, 0, 0, image.width, image.height);
-                    dataUrl = canvas.toDataURL('image/png');
-                    doc.addImage(dataUrl, 'png', 0, 0, image.width, image.height);
-                    doc.setFillColor = "#FFFFFF";
-
-                    var x = doc.output('dataurlstring');
-                    var link = document.createElement('a');
-                    link.addEventListener('click', function(ev) {
-                        link.href = doc.output('dataurlstring');
-                        link.download = "download";
-                        document.body.removeChild(link);
-
-                    }, false);
-
-                    document.body.appendChild(link);
-                    link.click();
-                }
+             $scope.svg_to_pdf_fun(svg, function (pdf) {
+                $scope.download_pdf('SVG.pdf', pdf.output('dataurlstring'));
             });
 
 
@@ -848,6 +815,43 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
 
         }
+
+        //--------------------------
+        $scope.svg_to_pdf_fun = function (svg, callback) {
+          svgAsDataUri(svg, {}, function(svg_uri) {
+            var image = document.createElement('img');
+
+            image.src = svg_uri;
+            image.onload = function() {
+              var canvas = document.createElement('canvas');
+              var context = canvas.getContext('2d');
+              var doc = new jsPDF('portrait', 'pt');
+              var dataUrl;
+
+              canvas.width = image.width;
+              canvas.height = image.height;
+              context.drawImage(image, 0, 0, image.width, image.height);
+              dataUrl = canvas.toDataURL('image/png');
+              doc.addImage(dataUrl, 'PNG', 0, 0, image.width, image.height);
+
+              callback(doc);
+            }
+          });
+        }
+
+
+        $scope.download_pdf = function (name, dataUriString) {
+          var link = document.createElement('a');
+          link.addEventListener('click', function(ev) {
+            link.href = dataUriString;
+            link.download = name;
+            document.body.removeChild(link);
+          }, false);
+          document.body.appendChild(link);
+          link.click();
+        }
+
+        //--------------------------
 
         $scope.printD3Chart = function(widget) {
 
@@ -864,8 +868,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 name = widget.widgetData.widName;
 
             var chartName = '<text fill="#000000" font-size="15" font-family="Verdana" x="250" y="0">'+name+'</text>';
-            svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -40  600 600" width="100%"> '+chartName+' + '+printContents+' +</svg>';
+            svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -20  600 800" width="100%"> '+chartName+' + '+printContents+' +</svg>';
 
+            console.log(svgString);
+            
             //----------------------------------------------------
 
 

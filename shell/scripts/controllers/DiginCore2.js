@@ -116,14 +116,12 @@ routerApp.controller('widgetSettingsDataCtrl', ['$scope', '$http', '$mdDialog', 
 
                     if (typeof data[i].children == "object") {
 
-                        if ($rootScope.widget.widgetData.commonSrc.src.fAttArr.length > 2) {
-                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
-                            var childtwo = $rootScope.widget.widgetData.commonSrc.src.fAttArr[2].name;
-                            var childthree = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
-                            if ($rootScope.widget.widgetData.commonSrc.src.fMeaArr.length > 0)
-                                $scope.fieldData = [childone, childtwo, childthree, parent];
-                            else
-                                $scope.fieldData = [childone, childtwo, childthree, "value"];
+                        if ($rootScope.widget.widgetData.commonSrc.att.length > 2) {
+                            var childone = $rootScope.widget.widgetData.commonSrc.att[0].filedName;
+                            var childtwo = $rootScope.widget.widgetData.commonSrc.att[2].filedName;
+                            var childthree = $rootScope.widget.widgetData.commonSrc.att[1].filedName;
+                           
+                            $scope.fieldData = [childone, childtwo, childthree, "value"];
 
                             for (var x = 0; x < data[i].children.length; x++) {
                                 for (var y = 0; y < data[i].children[x].children.length; y++) {
@@ -142,9 +140,9 @@ routerApp.controller('widgetSettingsDataCtrl', ['$scope', '$http', '$mdDialog', 
 
                                 }
                             }
-                        } else if ($rootScope.widget.widgetData.commonSrc.src.fAttArr.length === 2) {
-                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
-                            var childtwo = $rootScope.widget.widgetData.commonSrc.src.fAttArr[1].name;
+                        } else if ($rootScope.widget.widgetData.commonSrc.att.length === 2) {
+                            var childone = $rootScope.widget.widgetData.commonSrc.att[0].filedName;
+                            var childtwo = $rootScope.widget.widgetData.commonSrc.att[1].filedName;
                             //$scope.fieldData=[childone,childtwo,parent];
                             $scope.fieldData = [childone, childtwo, "value"];
                             for (var x = 0; x < data[i].children.length; x++) {
@@ -159,8 +157,8 @@ routerApp.controller('widgetSettingsDataCtrl', ['$scope', '$http', '$mdDialog', 
                                 newTableData.push(newObject);
                                 //}
                             }
-                        } else if ($rootScope.widget.widgetData.commonSrc.src.fAttArr.length === 1) {
-                            var childone = $rootScope.widget.widgetData.commonSrc.src.fAttArr[0].name;
+                        } else if ($rootScope.widget.widgetData.commonSrc.att.length === 1) {
+                            var childone = $rootScope.widget.widgetData.commonSrc.att[0].filedName;
                             $scope.fieldData = [childone, "value"];
                             //for (var x = 0; x < data[i].children.length; x++) {
                             var newObject = {};

@@ -481,7 +481,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                     //if dashboard name type refreshinterval should be assigned to proceed
                     ngToast.create({
                         className: 'info',
-                        content: 'Saving Dashboard...',
+                        content: 'Saving dashboard...',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true

@@ -147,7 +147,7 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
                      notifications.toast(0, response.Custom_Message);
                 }
                 else{
-                    notifications.toast(0, response.Custom_Message);
+                    notifications.toast(1, response.Custom_Message);
                 }
 
               })

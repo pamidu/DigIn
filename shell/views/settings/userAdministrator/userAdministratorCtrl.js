@@ -470,8 +470,11 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 			//vm.group.users = [];
 			if(!vm.group.groupId)
 			{
-				vm.group.groupId = "-999";
-				vm.group.parentId = "";
+				notifications.toast(0, "User group already exist.");
+				vm.submitted = false;
+				return;
+				//vm.group.groupId = "-999";
+				//vm.group.parentId = "";
 			}
 	
 	

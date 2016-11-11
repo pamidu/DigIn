@@ -15,6 +15,12 @@
 
     INTS();
 
+    if(!isset($_COOKIE["securityToken"])){
+        //var_dump($mainDomain);
+        header("Location: http://".$mainDomain."/entry");
+        exit(); 
+    }
+
 ?>
 
 <html ng-app="DuoDiginRt" ng-controller="LoginCtrl">

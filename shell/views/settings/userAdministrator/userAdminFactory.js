@@ -274,7 +274,8 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				var baseUrl = "http://" + window.location.hostname;
 			   //$http.get('http://chamila103.prod.digin.io/auth/tenant/Autherized/chamila103.prod.digin.io',{
                //$http.get(baseUrl+'/auth/tenant/Autherized/' + JSON.parse(decodeURIComponent(getCookie('tenantData')))[0].TenantID, {
-				$http.get('/auth/tenant/Autherized/' + $rootScope.TenantID, {
+				//$http.get('/auth/tenant/Autherized/' + $rootScope.TenantID, {
+				$http.get('/auth/tenant/Autherized/' +  window.location.hostname, {	
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})
 			   .then(function(result) {

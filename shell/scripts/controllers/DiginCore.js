@@ -3,6 +3,7 @@
  | Controllers listed below are here                        |
  ------------------------------------------------------------
  |      showWidgetCtrl                                      |
+
  |      DashboardCtrl                                       |
  |      ReportCtrl                                          |
  |      analyticsCtrl                                       |
@@ -1185,7 +1186,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                     ngToast.create({
                         className: 'success',
-                        content: 'page removal succussful',
+                        content: 'Page removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true
@@ -1248,7 +1249,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
-                        content: 'widget removed successfully',
+                        content: 'Widget removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true

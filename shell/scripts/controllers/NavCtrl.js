@@ -645,6 +645,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
                 .success(function (response) {
+                    var db = $rootScope.db;
                     db.get($rootScope.page_id, function (err, doc) {
                         if (err) {
                         }
@@ -776,7 +777,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //alert("Success...!");
                     ngToast.create({
                                 className: 'success',
-                                content: "you have successfully set up a default dashboard",
+                                content: "You have successfully set up a default dashboard",
                                 horizontalPosition: 'center',
                                 verticalPosition: 'top',
                                 dismissOnClick: true
@@ -879,60 +880,63 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 })
                     .success(function (data) {
 
-                        if (data.Is_Success) {
+                        if (data.Is_Success ) {
 
-                            console.log("$scope.dashboardObject", $scope.dashboardObject);
-                            $rootScope.dashboard = data.Result;
-                            //deletions attribute is missing from dashboard
-                            //so adding that attribute with all arrays inside empty
-                            $rootScope.dashboard["deletions"] = {
-                                "componentIDs": [],
-                                "pageIDs": [],
-                                "widgetIDs": []
-                            };
-                            $rootScope.selectedPageIndx = 0;
-                            $rootScope.selectedPage = 1;
+                            if(data.Result != null ){
+                                console.log("$scope.dashboardObject", $scope.dashboardObject);
+                                    $rootScope.dashboard = data.Result;
+                                    //deletions attribute is missing from dashboard
+                                    //so adding that attribute with all arrays inside empty
+                                    $rootScope.dashboard["deletions"] = {
+                                        "componentIDs": [],
+                                        "pageIDs": [],
+                                        "widgetIDs": []
+                                    };
+                                    $rootScope.selectedPageIndx = 0;
+                                    $rootScope.selectedPage = 1;
 
 
-                            //set deletioins
-                            data.Result["deletions"] = {
-                                "componentIDs": [],
-                                "pageIDs": [],
-                                "widgetIDs": []
-                            };
-                            //insert the new dashboard in to pouch DB
-                            pouchDbServices.insertPouchDB(data.Result,null); 
+                                    //set deletioins
+                                    data.Result["deletions"] = {
+                                        "componentIDs": [],
+                                        "pageIDs": [],
+                                        "widgetIDs": []
+                                    };
+                                    //insert the new dashboard in to pouch DB
+                                    pouchDbServices.insertPouchDB(data.Result,null); 
 
-                            var index = 0;
-                            for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
-                                $rootScope.dashboard.pages[index]["isSeen"] = true;
-                                var widget = $rootScope.dashboard.pages[index].widgets[i];
-                                console.log('syncing...');
-                                if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                                    widget.widgetData.syncState = false;
-                                    //Clear the filter indication when the chart is re-set
-                                    widget.widgetData.filteredState = false;
-                                    filterService.clearFilters(widget);                                    
-                                    if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
-                                        $qbuilder.sync(widget.widgetData, function (data) {
-                                            widget.widgetData.syncState = true;
-                                        });
+                                    var index = 0;
+                                    for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
+                                        $rootScope.dashboard.pages[index]["isSeen"] = true;
+                                        var widget = $rootScope.dashboard.pages[index].widgets[i];
+                                        console.log('syncing...');
+                                        if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                            widget.widgetData.syncState = false;
+                                            //Clear the filter indication when the chart is re-set
+                                            widget.widgetData.filteredState = false;
+                                            filterService.clearFilters(widget);                                    
+                                            if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+                                                $qbuilder.sync(widget.widgetData, function (data) {
+                                                    widget.widgetData.syncState = true;
+                                                });
+                                            }
+                                        }
                                     }
-                                }
-                            }
-                            if ($rootScope.dashboard.refreshInterval == '0') {
-                                $interval.cancel($rootScope.interval);
-                                $rootScope.interval = undefined;
-                                $rootScope.refreshInterval == undefined;
+                                    if ($rootScope.dashboard.refreshInterval == '0') {
+                                        $interval.cancel($rootScope.interval);
+                                        $rootScope.interval = undefined;
+                                        $rootScope.refreshInterval == undefined;
 
-                            } else {
-                                $interval.cancel($rootScope.interval);
-                                $rootScope.interval = undefined;
-                                $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
-                                $rootScope.refreshDashboard();                            
+                                    } else {
+                                        $interval.cancel($rootScope.interval);
+                                        $rootScope.interval = undefined;
+                                        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                                        $rootScope.refreshDashboard();                            
+                                    }
+                                    $state.go('home.Dashboards');
+                                    $rootScope.currentView = dashboard.dashboardName; 
                             }
-                            $state.go('home.Dashboards');
-                            //$rootScope.currentView = dashboard.dashboardName;
+                           
                         }
                         else {
 
@@ -1084,7 +1088,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                             ngToast.create({
                                 className: 'success',
-                                content: 'Retrieved Dashboard Details from localStorage!',
+                                content: 'Retrieved dashboard details from localStorage!',
                                 horizontalPosition: 'center',
                                 verticalPosition: 'top',
                                 dismissOnClick: true
@@ -1314,7 +1318,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var widgetLimit = ProfileService.widget_limit;
             var selectedPage = $rootScope.selectedPage;
             var pageCount = $rootScope.dashboard.pages.length;
-            var pageWidgetCount = $rootScope.dashboard.pages[selectedPage - 1].widgets.length;
+            
             switch (routeName) {
                 case "home":
                     $scope.goHomeDialog(ev);
@@ -1345,7 +1349,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $state.go('home.' + routeName);
                     break;
                 case "Data Source":
-                    if (pageWidgetCount < widgetLimit) {
                         $rootScope.currentView = "CommonData";
                         //open sidepanel if it is closed
                         if (!$mdSidenav('right').isOpen()) {
@@ -1353,17 +1356,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 $log.debug("toggle right is done");
                             });
                         }
-                    }
-                    else {//give message maximum widget limit exceeded
-                        ngToast.dismiss();
-                        ngToast.create({
-                            className: 'danger',
-                            content: 'maximum widget limit exceeded',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
-                    }
                     break;
                 case "Sales Forecast && Prediction":
                     $scope.showSalesForecastPrediction(ev);
@@ -1467,7 +1459,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ngToast.dismiss();
                         ngToast.create({
                             className: 'danger',
-                            content: 'Please open the Dashboards you wish to share..!',
+                            content: 'Please open the dashboards you wish to share..!',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true

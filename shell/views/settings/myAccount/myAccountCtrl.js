@@ -763,7 +763,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     }
     
     
-
+    $rootScope.isActive=true;
+    
     vm.deactivateAccount = function(ev) {
         if($rootScope.userLevel=='user'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
@@ -790,8 +791,41 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             
     };
 
+    vm.activateAccount = function(ev) {
+        if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for administrator'); 
+        }else{
+            var confirm = $mdDialog.confirm()
+                .title('Account Activation')
+                .textContent('Are you sure you want to activate this account?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('No');
+
+            $mdDialog.show(confirm).then(function() {
+                //Yes
+                if ($rootScope.custStatus == true) {
+                    paymentGatewaySvc.reactiveSubscription();
+                } else {
+                    displayError("This customer is already activated or have not been subscribed to any package.");
+                }
+            }, function() {
+                //No
+            });
+        }
+            
+    };
+    
 
     vm.addCard = function(ev) {
+        //#for free users, adding new cards are not allow 
+        if ($rootScope.custStatus == false){
+            displayError("As you are a free user, you are not allow to add cards.");
+            return;
+        }
+        
+        
         displayProgress("Request to add new card...")
         
         $timeout(function () {
@@ -802,7 +836,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
             title: 'DigIn',
             description: "Beyond BI",
-            logo: '/boarding/img/small-logo',
+            logo: '/boarding/img/small-logo.png',
             label: 'New Card'
         };
 
@@ -904,8 +938,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     vm.deleteCard = function(ev, cardId) {
         var confirm = $mdDialog.confirm()
-            .title('Deletion Confirmation')
-            .textContent('Do you cant delete this card?')
+            .title('Delete Confirmation')
+            .textContent('Do you want to delete this card?')
             .ariaLabel('Lucky day')
             .targetEvent(ev)
             .ok('Yes')
@@ -1044,7 +1078,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
              obj.push(objData[0]);
           }
           if(doc_package.additionalstorage>0){
-             var objStorage= [{"tag":"sorage","feature": "Additional storage","amount": $scope.storageRate*doc_package.additionalstorage,"quantity":doc_package.additionalstorage,"action":"add"}];  
+             var objStorage= [{"tag":"storage","feature": "Additional storage","amount": $scope.storageRate*doc_package.additionalstorage,"quantity":doc_package.additionalstorage,"action":"add"}];  
              obj.push(objStorage[0]);
           }
          
@@ -3283,6 +3317,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
                 if (response.data.status == true) {
                     //Success
                     notifications.toast("1", "You account is deactivated.");
+                    $rootScope.isActive=false;
                 } else {
                     //fail
                     notifications.toast("0", "Account deactivation is failed.");
@@ -3338,6 +3373,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
                 if (response.data.status == true) {
                     //Success
                     notifications.toast("1", "You account is reactivated.");
+                    $rootScope.isActive=true;
                 } else {
                     //fail
                     notifications.toast("0", "Account reactivation is failed.");

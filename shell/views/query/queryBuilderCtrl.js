@@ -2300,6 +2300,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         $scope.widget.widgetData.highchartsNG = {
             title: {
                 text: ''
+            },
+            credits: {
+                enabled: false
             }
         };
         $scope.eventHndler.isLoadingChart = true;

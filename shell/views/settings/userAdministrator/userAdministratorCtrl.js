@@ -1,18 +1,17 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','pouchDB', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,pouchDB){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state){
 	var vm = this;
 	
 	
 	userAdminFactory.getUserLevel();
+	$rootScope.totUsers=$rootScope.defaultUsers+$rootScope.extraUsers
 	
 	// fetch packagedetail
-	var db = new PouchDB('packaging');
-	db.get('packgedetail').then(function (doc_package) {
+	/*var db = new PouchDB('packaging');
+	/*db.get('packgedetail').then(function (doc_package) {
 	  	  $rootScope.totUsers=doc_package.packageuser+doc_package.additionaluser;
-	});
+	});*/
 	
 
-	 
-	
 	
 	//#Remove user- start------------------------
     //#common pre loader
@@ -470,8 +469,11 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 			//vm.group.users = [];
 			if(!vm.group.groupId)
 			{
-				vm.group.groupId = "-999";
-				vm.group.parentId = "";
+				notifications.toast(0, "User group already exist.");
+				vm.submitted = false;
+				return;
+				//vm.group.groupId = "-999";
+				//vm.group.parentId = "";
 			}
 	
 	

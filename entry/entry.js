@@ -5,7 +5,7 @@
 //     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
 
 var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
-    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','pouchdb',]);
+    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','pouchdb','ngCookies']);
 
 
 routerApp
@@ -66,8 +66,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','pouchDB',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','pouchDB','$cookies',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB,$cookies) {
 
             var db = new PouchDB('login');
                 
@@ -91,11 +91,25 @@ routerApp
                 isLoading: false
             };
 
+
             //-----activated user - Signin-----------
             var activated = ($location.search()).activated;
             //var activatedemail= ($location.search()).id;
             //var activatedemail= Base64.decode(($location.search()).ox);
             
+            var activatedemail= decodeURIComponent($cookies.get('userName'));
+            //document.cookie = "userName=" + '' + "; path=/";
+            
+            if(activatedemail=="undefined"){
+                activatedemail="";
+                $scope.activatedemail="";
+            }
+            else{
+                 $scope.signindetails.Username=activatedemail;
+                 //$scope.activatedemail=activatedemail;
+            }
+
+          
             $scope.activated=false;
             if(activated==undefined){
                 $scope.activated=false;
@@ -103,6 +117,8 @@ routerApp
             else{
                 $scope.activated=true;
             }
+            
+            //document.cookie = "userName=" + '' + "; path=/";
             
            /* $scope.activatedemail="";
             if(activatedemail==undefined){

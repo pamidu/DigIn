@@ -126,7 +126,7 @@ routerApp.directive('sunburstChart', function() {
                             if (angle < 0.1){
                                 return "none";
                             }else {
-                                return "white";
+                                return "#008080";
                             }
                         });
 
@@ -171,7 +171,7 @@ routerApp.directive('sunburstChart', function() {
                                                 if (angle < 0.06){
                                                     return "none";
                                                 }else {
-                                                    return "white";
+                                                    return "#008080";
                                                 }                                                
                                             });
                                     }

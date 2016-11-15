@@ -402,7 +402,7 @@ p {
                                     </div>
                                     <div flex style="padding-left: 5px;">
                                         <label>Company </label>
-                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-trim="false">
+                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-trim="false" readonly>
 <!--                                         <div ng-messages="frmProfile.txtCompany.$error" role="alert">
                                             <div ng-message="required" style="color:red">
                                                 Company name is required.
@@ -604,13 +604,15 @@ p {
                                                         <span class="align-left"> {{defaultStorage}} GB Storage</span>
                                                         <span class="align-left"> {{defaultData}} GB of Data</span>
                                                         <div layout="row" layout-align="end end" style="margin-top: 10px;">
-                                                            <md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)"><span style="text-transform:none">Deactivate Account</span></md-button>
+                                                            <md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)" ng-show="isActive"><span style="text-transform:none">Deactivate Account</span></md-button>
+                                                            <md-button class="md-raised smallMdButton" ng-click="vm.activateAccount($event)" ng-show="!isActive"><tspan style="text-transform:none">Activate Account</span></md-button>
                                                             <md-button class="md-raised smallMdButton" ng-click="vm.updatePackage($event)"><span style="text-transform:none">Customize</span></md-button>
                                                         </div>
                                                     </div>
                                                 </center>
                                             </md-card>
 
+                                            
                                             <md-card class="product_card" style="width:460px;height:205px;background:#02b5e2;padding:0px;" layout="column">
                                                 <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;width:460px">Extra Added Feature</center>
                                                 <!--md-content style="background:transparent" layout="row" layout-align="center center"-->

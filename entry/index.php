@@ -75,6 +75,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
 <script src="https://cdn.jsdelivr.net/angular.pouchdb/4.3.0/angular-pouchdb.min.js"></script>
 
+<script src="bower_components/angular/angular-cookies.min.js"></script>
 
 <!-- #js -->
 <!-- <script type="text/javascript" src="assets/js/config.js"></script>

@@ -6,7 +6,6 @@ routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_En
 
         var svgTag = "";
         var date = new Date().getTime();
-        alert(date);
         var fileNamepng= widget.widgetName + date +".png";
         var fileName = widget.widgetName + date +".svg";
         var widgetName = "";

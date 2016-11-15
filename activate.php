@@ -11,6 +11,11 @@ $status=curl_exec ($curl);
 curl_close ($curl);
 	
 	if($status==true){
+
+			unset($_COOKIE["userName"]);
+			setcookie("userName",$email, time() + 3600, "/");
+		
+
 			echo '{"success":true,"message":"Account ativated successfully."}';
 			//header("Location:http://".$mainDomain."/entry/#/signin?activated=true&id=".$email);
 			header("Location:http://".$mainDomain."/entry/#/signin?activated=true");

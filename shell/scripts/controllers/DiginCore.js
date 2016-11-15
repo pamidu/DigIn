@@ -526,7 +526,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             //map the selected filter fields
             filterArray = filterService.generateFilterParameters($scope.widgetFilters);
 
-            if (filterArray.length > 0){
+            if (filterArray.length > 0) {
                 var filterStr = filterArray.join( ' And ');
             } else { // validation if no fields are selected and tried to filter
                 notifications.toast('0', 'Please select fields to apply filters!');
@@ -534,7 +534,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
 
             //if chart is configured for drilled down, get the highest level to apply filters
-            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled){
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                 var chart = widget.widgetData.highchartsNG.getHighcharts();
                 if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
                     requestArray[0] = chart.options.customVar;                    
@@ -542,8 +542,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     notifications.toast('0', 'Please go to level 1 to apply filters!');
                     return;
                 }
-            } else{
-                requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;                
+            } else {
+                requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;
             }
             widget.widgetData.syncState = false;
             $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
@@ -658,7 +658,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
          */
         $scope.syncWidget = function(widget) {
 
-            console.log('syncing...');
             if (typeof widget.widgetData.widConfig != 'undefined') {
                 DynamicVisualization.syncWidget(widget, function(data) {
                     widget.widgetData.syncState = true;
@@ -666,19 +665,20 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 });
             } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
                 // if chart is configured for drilled down, get the highest level to apply filters
-                if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled){
+                if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                     var chart = widget.widgetData.highchartsNG.getHighcharts();
                     if ( chart.options.customVar != widget.widgetData.widData.drillConf.highestLvl ) {
-                        notifications.toast('0', 'Please go to the highest level to sync the chart!');
+                        widget.widgetData.syncState = false;
+                        $qbuilder.syncDrilledChart(widget.widgetData,$scope);
                         return;
                     }
                 }
-                widget.widgetData.syncState = false;
-
                 // If the chart is configured for filters, it should sync accordinly
                 if (widget.widgetData.filteredState) {
+                    widget.widgetData.syncState = false;
                     $scope.buildChart(widget);
                 } else {
+                    widget.widgetData.syncState = false;
                     widget.widgetData.filteredState = false;
                     $qbuilder.sync(widget.widgetData, function(data) {
                         filterService.clearFilters(widget);
@@ -974,10 +974,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 serName = "",
                                 tempArrStr = "",
                                 conStr = "";
-                            var limit;
-                            var level;
-                            var tempArray = [];
-                            var isDate;
+                                var limit;
+                                var level;
+                                var tempArray = [];
+                                var isDate;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
@@ -998,12 +998,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     filterStr = filterArray.join( ' And ');
                                 }
                             }
-                            for(var c = 0; c<level;c++){
+                            for(var c = 0; c<level;c++) {
                                 tempArrStr = "";
                                 isDate = false;
-                                angular.forEach(widget.widgetData.commonSrc.src.fAttArr,function(key){
-                                    if (key.name == drillOrdArr[c].name){
-                                        if (key.dataType !== undefined){
+                                angular.forEach(widget.widgetData.commonSrc.src.fAttArr,function(key) {
+                                    if (key.name == drillOrdArr[c].name) {
+                                        if (key.dataType !== undefined) {
                                             if (key.dataType == 'DATE' || key.dataType == 'Date'){
                                                 isDate = true;
                                             }
@@ -1042,18 +1042,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         serName = series.name;
                                     }
                                 });
-                                widget.widgetData.widData.drillConf.currentLevel++;
-                                switch (widget.widgetData.widData.drillConf.currentLevel) {
-                                    case 2:
-                                        widget.widgetData.widData.drillConf.level2Query = query;
-                                        break;
-                                    case 3:
-                                        widget.widgetData.widData.drillConf.level3Query = query;
-                                        break;
-                                }
-                                widget.widgetData.widData.drillConf.previousQuery = widget.widgetData.widData.drillConf.currentQuery;
+                                drillConf["level"+(level+1)+"Query"] = query;
                                 widget.widgetData.widData.drillConf.currentQuery = query;
-
                                 if (status) {
                                     for (var key in res[0]) {
                                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
@@ -1102,8 +1092,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         }
                     },
                     drillup: function(e) {
-                        console.log(e);
                         var chart = this;
+                        console.log(chart);
                         console.log(chart.options.customVar);
                         drillConf.drillOrdArr.forEach(function(key) {
                         if (key.nextLevel && key.nextLevel == chart.options.customVar) {

@@ -802,7 +802,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
             title: 'DigIn',
             description: "Beyond BI",
-            logo: '/boarding/img/small-logo',
+            logo: '/boarding/img/small-logo.png',
             label: 'New Card'
         };
 
@@ -904,8 +904,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
     vm.deleteCard = function(ev, cardId) {
         var confirm = $mdDialog.confirm()
-            .title('Deletion Confirmation')
-            .textContent('Do you cant delete this card?')
+            .title('Delete Confirmation')
+            .textContent('Do you want to delete this card?')
             .ariaLabel('Lucky day')
             .targetEvent(ev)
             .ok('Yes')
@@ -1044,7 +1044,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
              obj.push(objData[0]);
           }
           if(doc_package.additionalstorage>0){
-             var objStorage= [{"tag":"sorage","feature": "Additional storage","amount": $scope.storageRate*doc_package.additionalstorage,"quantity":doc_package.additionalstorage,"action":"add"}];  
+             var objStorage= [{"tag":"storage","feature": "Additional storage","amount": $scope.storageRate*doc_package.additionalstorage,"quantity":doc_package.additionalstorage,"action":"add"}];  
              obj.push(objStorage[0]);
           }
          

@@ -124,7 +124,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                       }
                                       
                                   } else {
-                                      console.log("Document created Successfully");
+                                      console.log("Document created successfully");
                                       if (flag){
                                         $rootScope.privateFun.getAllDashboards();
                                       }
@@ -154,7 +154,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                     if (flag){
                                       $rootScope.privateFun.getAllDashboards();
                                     }
-                                  console.log("Document updated Successfully");
+                                  console.log("Document updated successfully");
                                    if(typeof cb != "undefined"){
                                         cb();
                                       }

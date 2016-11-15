@@ -69,8 +69,8 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashbo
         }
         else if(provider=="Yahoo"){
 
-             emailBody = 'Hi,%0D%0ACheck Out '+$scope.DashboardName+' : '+$scope.widgetName+' shared by '+sender
-    +'.%0D%0APowered by DigIn.io.%0D%0A(URL of the widget '+URL+')%0D%0ARegards,%0D%0ADigIn Team.';
+    //          emailBody = 'Hi,%0D%0ACheck Out '+$scope.DashboardName+' : '+$scope.widgetName+' shared by '+sender
+    // +'.%0D%0APowered by DigIn.io.%0D%0A(URL of the widget '+URL+')%0D%0ARegards,%0D%0ADigIn Team.';
   
             window.open('http://compose.mail.yahoo.com/?to=&subject='+emailSubject+'&body='+emailBody+'','_blank');
 

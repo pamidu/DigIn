@@ -100,7 +100,7 @@ routerApp
             var activatedemail= decodeURIComponent($cookies.get('userName'));
             //document.cookie = "userName=" + '' + "; path=/";
             
-            if(activatedemail==undefined){
+            if(activatedemail=="undefined"){
                 activatedemail="";
                 $scope.activatedemail="";
             }

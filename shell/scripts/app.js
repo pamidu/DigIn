@@ -84,12 +84,20 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: false
             }
         })
-        .state("signup", {
+        /*.state("signup", {
             url: "/signup",
             controller: "signUpCtrl",
             templateUrl: "views/signup.html",
             data: {
                 requireLogin: false
+            }
+        })*/
+        .state("signup", {
+            url: "/home",
+            controller: "NavCtrl",
+            templateUrl: "views/partial-home.html",
+            data: {
+                requireLogin: true
             }
         })
         .state("welcome", {

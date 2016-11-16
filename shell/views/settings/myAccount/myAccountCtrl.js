@@ -1,5 +1,5 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
-    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB) {
+    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window) {
 
 
     var vm = this;
@@ -7,7 +7,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     $scope.$parent.currentView = "Settings";
     vm.selectedPage = $stateParams.pageNo;
     console.log(vm.selectedPage);
-
     
     var db = new PouchDB('packaging');
 
@@ -53,7 +52,8 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     console.log(response)
                     $rootScope.custStatus = response.data.status;
                     $rootScope.custActive=response.data.data[0].active;
-
+                    $rootScope.isActive=response.data.status;
+                    
                     var doc={
                             "_id":"cusstatus",
                             "name":"cusstatus",
@@ -66,6 +66,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                 } else {
                     $rootScope.custStatus = response.data.response;
                     $rootScope.custActive=0;
+                    $rootScope.isActive=false;
                 }
             }
         }, function(response) {
@@ -754,6 +755,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         if($rootScope.userLevel=='user'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
         }
+        else if($rootScope.isActive==false){
+           displayError('This account has been deactivated.'); 
+        }
         else if ($rootScope.packageName=="Free"){
             displayError('You have subscribed only for Free package.'); 
         }
@@ -761,10 +765,9 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             location.href = '#/home/addaLaCarte';
         }   
     }
-    
-    
-    $rootScope.isActive=true;
-    
+
+   
+   
     vm.deactivateAccount = function(ev) {
         if($rootScope.userLevel=='user'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
@@ -780,7 +783,46 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $mdDialog.show(confirm).then(function() {
                 //Yes
                 if ($rootScope.custStatus == true) {
-                    paymentGatewaySvc.stopSubscriptionImmediate();
+                    //paymentGatewaySvc.stopSubscriptionImmediate();
+                        $rootScope.isActive=false;
+                        $http({
+                        //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+                        url: "/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                        }).then(function(response) {
+                            //console.log(response)
+                            if (response.statusText == "OK") {
+                                if (response.data.status == true) {
+                                    //Success
+                                    //notifications.toast("1", response.data.response);
+                                    
+                                    displayProgress("You will be logged-out from your account and please login to re-activate your account.");         
+                                    
+                                    $timeout(function () {
+                                        displayProgress("Logging out...");                                  
+                                    }, 5000);
+
+                                    $timeout(function () {
+                                        $window.location = "/logout.php";
+                                    }, 2000);
+                                    
+                                    
+                                    
+                                } else {
+                                    //fail
+                                    displayError(response.data.response);
+                                    //notifications.toast("0", response.data.response);
+                                }
+                            }
+                        }, function(response) {
+                            //console.log(response)
+                            //notifications.toast("0", "Error occured while deactivating the account.");
+                        })
+                    
+                    
                 } else {
                     displayError("This customer is already deactivated or have not been subscribed to any package.");
                 }
@@ -935,22 +977,28 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         })
     }
 
-
+    
     vm.deleteCard = function(ev, cardId) {
-        var confirm = $mdDialog.confirm()
-            .title('Delete Confirmation')
-            .textContent('Do you want to delete this card?')
-            .ariaLabel('Lucky day')
-            .targetEvent(ev)
-            .ok('Yes')
-            .cancel('No');
-        $mdDialog.show(confirm).then(function() {
-            //Yes
-            displayProgress("Processing...")
-            vm.deleteCardProcess(cardId);
-        }, function() {
-            //No
-        });
+        if(vm.paymentCards.length==1){
+            displayError("You can not delete default card detail.");
+        }
+        else
+        {
+            var confirm = $mdDialog.confirm()
+                .title('Delete Confirmation')
+                .textContent('Do you want to delete this card?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('No');
+            $mdDialog.show(confirm).then(function() {
+                //Yes
+                displayProgress("Processing...")
+                vm.deleteCardProcess(cardId);
+            }, function() {
+                //No
+            });
+        }           
     }
 
     vm.deleteCardProcess = function(cardId) {
@@ -1031,7 +1079,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             title: 'DigIn',
             description: "Beyond BI",
             logo: '/boarding/img/small-logo.png',
-            label: 'New Card'
+            label: 'Pay amounting $'+plan.price
         };
 
         var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
@@ -2892,12 +2940,9 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
             });
         }
 
-
+        
     //#Customise package add alacartes#//
     $scope.submit = function(ev) {
-        /*if(!$rootScope.userLevel=='admin'){
-           displayError('You are not permitted to do this opertion, allowed only for administrator'); 
-        }*/
         if($rootScope.sharableUsers.length>(parseInt($rootScope.defaultUsers)+parseInt($scope.users))){
             displayError('There are '+ $rootScope.sharableUsers.length+' active users, Please remove user before update alacarte.');
             $scope.users=$rootScope.extraUsers;
@@ -3303,6 +3348,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
     var db = new PouchDB('packaging');
 
     //#Stop subscription immediate
+    /*
     this.stopSubscriptionImmediate = function() {
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionImmediate",
@@ -3316,8 +3362,8 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
-                    notifications.toast("1", "You account is deactivated.");
                     $rootScope.isActive=false;
+                    notifications.toast("1", "You account is deactivated.");                        
                 } else {
                     //fail
                     notifications.toast("0", "Account deactivation is failed.");
@@ -3329,8 +3375,10 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
         })
 
     }
+    */
 
-    //#Stop subscription immediate
+    //#Stop subscription EndofPeriod
+    /*
     this.stopSubscriptionEndOfPeriod = function() {
 
         $http({
@@ -3345,9 +3393,11 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
-                    notifications.toast("1", response.data.response);
+                    $rootScope.isActive=false;
+                    notifications.toast("1", response.data.response);                       
                 } else {
                     //fail
+                    
                     notifications.toast("0", response.data.response);
                 }
             }
@@ -3357,7 +3407,8 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
         })
 
     }
-
+    */
+    
     //#Reactive subscription
     this.reactiveSubscription = function() {
         $http({
@@ -3697,7 +3748,9 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
             $rootScope.extraData=additionaldata;
             $rootScope.extraStorage=additionalstorage;
             
-            
+            $rootScope.SubscriberStatus=response.data.status;
+            $rootScope.payStatus=paystatus;
+
             }   
         }, function(response) {
             console.log(response)

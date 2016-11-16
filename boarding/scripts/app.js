@@ -206,7 +206,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                         title: 'DigIn',
                         description: "Beyond BI",
                         logo: 'img/small-logo.png',
-                        label: 'New Card'
+                        label: 'Pay amounting $'+plan.price
                     };
                    
                     var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);

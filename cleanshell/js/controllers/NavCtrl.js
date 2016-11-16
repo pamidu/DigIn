@@ -1,9 +1,14 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
+	
+	//$rootScope.theme = 'default';
+	colorManager.changeTheme({theme: 'default'});
+	
+
 	
 	//Start of layoutManager
 	$rootScope.showHeader = true;
@@ -214,8 +219,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}else if(action == 'groups')
 		{
 			location.href = '#/groups';
+		}else if(action == 'theme')
+		{
+			location.href = '#/theme';
 		}
-		
 		
 		
 	}// End of Navigate

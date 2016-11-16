@@ -12,9 +12,9 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
 		colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
 		rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
+		isMobile: false, // toggle mobile view
 		margins: [5, 5], // margins in between grid items
 		outerMargin: true,
-		isMobile: false, // toggle mobile view
 		draggable: {
 			handle: '.widget-header'
 		},

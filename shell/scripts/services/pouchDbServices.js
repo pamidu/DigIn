@@ -160,7 +160,6 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                       }
                               }
                           });
-                          console.log(doc);
                       }
                   });
 

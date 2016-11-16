@@ -13,7 +13,66 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
     var Widget = function(wid) {
         this.widget = wid;        
     };
-    
+
+    this.syncDrilledChart = function(obj,scope){
+        var chart = obj.highchartsNG.getHighcharts();
+        var cat = "";
+        var newObj = {};
+        var dataObj = [];
+        var flag = true;
+        if ( chart.options.customVar != obj.widData.drillConf.highestLvl ) {
+            if (typeof obj.commonSrc.src.src != 'undefined'){
+            var db = obj.commonSrc.src.src;}
+            var cl = $diginengine.getClient(db);
+            var series;
+            angular.forEach(obj.highchartsNG.series,function(key){
+                if(key.name == chart.series[0].name){
+                    series = key.origName;
+                }
+            })
+            cl.getExecQuery(obj.widData.drillConf.currentQuery, function(res, status, query) {
+                if(status) {
+                    filterService.filterAggData(res,obj.commonSrc.src.filterFields);
+                    angular.forEach(obj.commonSrc.att,function(field){
+                        for(c in res[0]) {
+                            if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                                if (c == field.filedName) {
+                                    cat = c;
+                                }
+                            }
+                        }
+                    })
+                    angular.forEach(obj.widData.drillConf.drillOrdArr,function(elem){
+                        if(elem.name == cat) {
+                            if (elem.nextLevel === undefined) {
+                                flag = false;
+                            }
+                        }
+                    })
+                    angular.forEach(res,function(key){
+                        newObj = {};
+                        newObj = {
+                            name : key[cat],
+                            y:key[series],
+                            drilldown: flag
+                        }
+                        dataObj.push(newObj);
+                    })
+                    chart.series[0].setData(dataObj);
+                    scope.$apply(function(){
+                        obj.syncState = true;
+                    })
+                    return;
+                } else {
+                    scope.$apply(function(){
+                        obj.syncState = true;
+                    })
+                    return;
+                }
+            });
+        }
+    };
+
     Widget.prototype = {
         sync: function(wid, cb) {
             var q;
@@ -133,7 +192,6 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                         widObj.highchartsNG.options.chart['events'] ={
                             drilldown: function (e) {                                
                                 if (!e.seriesOptions) {
-                                    console.log('drilled');
                                 }
                             },
                             click: function(){
@@ -220,7 +278,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                 if (status){
                     widObj.widData.children = data.children;
                     }
-                widObj.syncState = true;                    
+                widObj.syncState = true;
                 cb(widObj);
             });
         }
@@ -539,7 +597,6 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
             var histogramPlotcat = [];
             var histogramPlotData = [];
             for ( var key in data){
-                console.log(data[key]);
                 histogramPlotData.push(parseFloat(data[key][0]));
                 var category = data[key].splice(0, 1);
                 histogramPlotcat.push(data[key]);

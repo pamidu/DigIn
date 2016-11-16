@@ -1310,7 +1310,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                             softConnector: true
                                         }
                                     },
-                                    showInLegend: false
+                                    showInLegend: false,
+                                    tooltip: {
+                                        pointFormat: '{series.name}: {point.percentage:,.2f}%'
+                                    }                                    
                                 }
                             }
                         },
@@ -3092,7 +3095,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 privateFun.fireMessage('0','Please Select only one aggregate measure to generate chart ');
                 return;
             }
-            if($scope.executeQryData.executeColumns.length == 1) {
+            if($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.generateHierarchy();
             }
         },
@@ -3160,7 +3163,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 privateFun.fireMessage('0','Please Select only one aggregate measure to generate chart ');
                 return;
             }
-            if($scope.executeQryData.executeColumns.length == 1) {
+            if($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.generateHierarchy();
             }
         },
@@ -3441,7 +3444,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                         softConnector: true
                                     }
                                 },
-                                showInLegend: false
+                                showInLegend: false,
+                                tooltip: {
+                                    pointFormat: '{series.name}: {point.percentage:,.2f}%'
+                                }
                             }
                         }
                     },
@@ -3755,11 +3761,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                         highestLvl: highestLevel,
                         fields: fieldArr,
                         level1Query: query,
-                        level2Query: null,
-                        level3Query: null,
                         currentLevel: 1
                     };
-                    if ( $scope.highchartsNG.xAxis !== undefined){
+                    if ($scope.highchartsNG.xAxis !== undefined){
                         $scope.highchartsNG.xAxis["title"] = {
                             text: highestLevel
                         };
@@ -3782,10 +3786,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     origName = "",
                                     tempArrStr = "",
                                     serName = "";
-                                conStr = "";
-                                var level;
-                                var tempArray = [];
-                                var isDate;
+                                    conStr = "";
+                                    var level;
+                                    var tempArray = [];
+                                    var isDate;
                                 // var cat = [];
                                 for (i = 0; i < drillOrdArr.length; i++) {
                                     if (drillOrdArr[i].name == highestLvl) {
@@ -3823,7 +3827,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                     }
                                     tempArray.push(tempArrStr);
                                 }
-                                if (tempArray.length > 0 ){
+                                if (tempArray.length > 0 ) {
                                     conStr = tempArray.join( ' And ');
                                 }
                                 chart.options.lang.drillUpText = "Back to " + highestLvl;
@@ -3832,6 +3836,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                                 //aggregate method
                                 clientObj.getAggData(srcTbl, fields, 100, function(res, status, query) {
                                     if (status) {
+                                        $scope.drillDownConfig["level"+(level+1)+"Query"] = query;
                                         // filter only the selected fields from the result returned by the service
                                         filterService.filterAggData(res, $scope.sourceData.filterFields);
                                         angular.forEach($scope.highchartsNG.series, function(series) {

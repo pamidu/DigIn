@@ -291,7 +291,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                             filesFlag = true;
                                             if ( filesFlag && foldersFlag ) {
                                                 callback($scope.tables, status);
-                                                localStorage.setItem("MSSQL", $scope.tables);
+                                                localStorage.setItem("MSSQL", JSON.stringify($scope.tables));
                                                 commonUi.isDataLoading = false;
                                             }
                                         }
@@ -318,7 +318,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                             foldersFlag = true;
                                             if ( filesFlag && foldersFlag ) {
                                                 callback($scope.tables, flag);
-                                                localStorage.setItem("MSSQL", $scope.tables);
+                                                localStorage.setItem("MSSQL", JSON.stringify($scope.tables));
                                                 commonUi.isDataLoading = false;
                                             }                                        
                                         } else {
@@ -336,7 +336,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 });
                             } else {
                                 var BigQueryTablesString = localStorage.getItem("MSSQL");
-                                var res = BigQueryTablesString.split(',');
+                                var res = angular.fromJson(BigQueryTablesString);
                                 callback(res, true);
                             }
                             break;
@@ -1003,30 +1003,32 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                 });
             },
             //Load the parameters when the v-accordion is expanded
-            loadFilterParams: function(index,id){
+            loadFilterParams: function(index,id) {
                 var query = "";
                 var table_name = $scope.sourceUi.selectedNameSpace;
                 var name = "";
                 for (var i=0;i<$scope.fieldObjects.length;i++) {
                     if ($scope.fieldObjects[i].id == id) {
-                        if ( $scope.fieldObjects[i].valueArray != 'undefined'){
+                        if ($scope.fieldObjects[i].valueArray != 'undefined') {
                             if ($scope.fieldObjects[i].valueArray.length == 0) {
                                 name = $scope.fieldObjects[i].name;
                                 break;                                
                             } else {
                                 return;
                             }
-
-                        } else{
+                        } else {
                             return;
                         }
                     }
                 }
                 $scope.fieldObjects[i].isLoading = true;
-                console.log(i);
-                query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
+                if ($scope.sourceUi.selectedSource == "BigQuery") {
+                    query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
+                } else if ($scope.sourceUi.selectedSource == "MSSQL") {
+                    query = "SELECT " + name + " FROM " + table_name + " GROUP BY " + name + " ORDER BY " + name;
+                }
                 $scope.client.getExecQuery(query, function(data, status) {
-                    if (status){
+                    if (status) {
                         var tempArray = [];
                         for (var res in data){
                             var keyValue = data[res];

@@ -1,4 +1,4 @@
-		/* Starter CSS for Flyout Menu */
+		/* Starter CSS for Flyout Menu 
 		#cssmenu{
 			height: 100%;
 			margin-left: -3px !important;
@@ -57,7 +57,7 @@
 		#cssmenu ul ul li {
 		  font-weight: normal;
 		}
-		/* Custom CSS Styles */
+		/* Custom CSS Styles 
 		#cssmenu {
 		  font-size: 15px;
 		}
@@ -90,7 +90,7 @@
 		#cssmenu > ul > li:hover {
 		  background: #f6f6f6;
 		}
-		/* Sub Menu */
+		/* Sub Menu 
 		#cssmenu ul ul a:link,
 		#cssmenu ul ul a:visited {
 		  font-weight: 400;
@@ -131,4 +131,4 @@
 		  border-right: 10px solid #fff;
 		  border-bottom: 10px solid transparent;
 		  border-top: 10px solid transparent;
-		}
+		}*/

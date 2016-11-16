@@ -416,7 +416,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     //call service if the expanded dropdownaccordion is expanded
                     if (key.values === undefined) {
                         key.sync = true;
-                        query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
+                        if (widget.widgetData.commonSrc.src.src == "BigQuery") {
+                            query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
+                        } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
+                            query = "SELECT " + key.filter.name + " FROM " + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name + " ORDER BY " + key.filter.name;
+                        }
                         $scope.client.getExecQuery(query, function(data, status){
                             if (status) {
                                 key["values"] = [];
@@ -1107,9 +1111,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         // set x and y axis titles (DUODIGIN-914)
                         var flag = false;
                         drillConf.drillOrdArr.forEach(function(key) {
+                            if (key.name == chart.options.customVar) {
+                                drillConf.currentQuery = drillConf["level" + key.level + "Query"];
+                            }
                             if (chart.options.customVar == key.nextLevel) {
-                            chart.options.lang.drillUpText = " Back to " + key.name;
-                            flag = true;
+                                chart.options.lang.drillUpText = " Back to " + key.name;
+                                flag = true;
                             }
                         });
                         if (!flag) {

@@ -313,8 +313,17 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			
 			var primaryColor = $mdColors.getThemeColor(color.theme+'-primary-500');
 			var accentColor = $mdColors.getThemeColor(color.theme+'-accent-500');
-			
+					
 			$rootScope.theme = color.theme;
+			
+			$('.has-sub').css('border-left',"3px solid #d7d8da").hover(
+			function(){
+				$(this).css('border-left',"3px solid "+accentColor);
+			},
+			function(){
+				$(this).css('border-left',"3px solid #d7d8da");
+			});
+			
 			$('.hover-color').css('color',primaryColor).hover(
 			function(){
 				$(this).css('color',accentColor);

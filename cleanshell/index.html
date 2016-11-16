@@ -302,44 +302,44 @@
 					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->
 					<li style="margin-top:25px;height:50px;font-size:24px" class="active has-sub" id="step1"><a class="hover-color" md-colors="{color:'primary'}" ><i class="icon-report"></i></a>
 						<ul>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-filter sub-menu-icon"></i>Report Development</a></li>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-notepad sub-menu-icon"></i>Published Reports</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-filter sub-menu-icon"></i>Report Development</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-notepad sub-menu-icon"></i>Published Reports</a></li>
 						</ul>
 					</li>
-					<li style="height:50px;font-size:24px" ng-click="navigate($event,'RealTime')" id="step2"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-clock"></i></a></li>
+					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'RealTime')" id="step2"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-clock"></i></a></li>
 					<!--li style="height:50px;font-size:24px" ng-click="navigate($event,'DataSource')"><a><i class="icon-database"></i></a></li-->
 					<li style="height:50px;font-size:24px" class="active has-sub"><a id="step3" class="hover-color" md-colors="{color:'primary'}"><i class="icon-database"></i></a>
 						<ul>
-							<li class="has-sub" ng-click="navigate($event,'Visualize Data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
-							<li class="has-sub" ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
+							<li ng-click="navigate($event,'Visualize Data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
+							<li ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
 						</ul>
 					</li>
-					<li style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')" id="step4"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-plugin"></i></a></li>
-					<li style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-profile"></i></a>
+					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')" id="step4"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-plugin"></i></a></li>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-profile"></i></a>
 						<ul>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
 						 
 						</ul>
 					</li>
-					<li style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share"></i></a>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share"></i></a>
 						<ul>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-google sub-menu-icon"></i>Google+</a></li>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-twitter sub-menu-icon"></i>Twitter</a></li>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-linkedin sub-menu-icon"></i>Linkedin</a></li>
-							<li class="has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-email sub-menu-icon"></i>Email</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-google sub-menu-icon"></i>Google+</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-twitter sub-menu-icon"></i>Twitter</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-linkedin sub-menu-icon"></i>Linkedin</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-email sub-menu-icon"></i>Email</a></li>
 						</ul>
 					</li>
-					<li style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings"></i></a>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings"></i></a>
 						<ul>
 							<!--li class="has-sub" ng-click="navigate($event,'createNewUser')"><a><i class="ti-user sub-menu-icon"></i>New user</a></li>
 							<li class="has-sub" ng-click="navigate($event,'shareDashboard')"><a><i class="ti-share sub-menu-icon"></i>Share Dashboard</a></li>
 							<li class="has-sub" ng-click="navigate($event,'userSettings')"><a><i class="ti-pencil sub-menu-icon"></i>User settings</a></li>
 							<li class="has-sub" ng-click="navigate($event,'accountSettings')"><a><i class="ti-settings sub-menu-icon"></i>Account settings</a></li>
 							<li class="has-sub" ng-click="navigate($event,'groups')"><a><i class="icon-group sub-menu-icon"></i>Groups</a></li-->
-							<li class="has-sub" ng-click="navigate($event,'User Administrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
-							<li class="has-sub" ng-click="navigate($event,'createNewUser')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
-							<li class="has-sub" ng-click="navigate($event,'theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
+							<li ng-click="navigate($event,'User Administrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
+							<li ng-click="navigate($event,'createNewUser')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
+							<li ng-click="navigate($event,'theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
 						</ul>
 					</li>
 					

@@ -73,29 +73,6 @@
 	margin-left: 3px;
 }
 
-.md-primary, .md-primary> span{
-
-}
-	
-.themify-icons{
-	color: #4a2a71	; /* !important;*/
-}
-
-.themify-background-secondary{
-	background-color: #70c209; /* !important;*/
-}
-
-#cssmenu > ul > li:hover {
-  border-left: 3px solid #70c209;
-}
-
-/*#cssmenu ul li:hover > a, .blut-header-icon > i:hover , .themify-icons:hover, .blut-search-wrapper:hover, .blut-search-wrapper > i:hover, .themify-icons-secondary, .section-title  {
-  color: #70c209 !important;
-}*/
-/*#cssmenu ul li:hover > a{
-  color: #70c209 !important;
-}*/
-
 
 .blut-search-toggle  {
 	width: 45px;

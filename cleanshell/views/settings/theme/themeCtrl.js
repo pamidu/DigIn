@@ -13,16 +13,7 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 		
 		$scope.changeTheme = function(color)
 		{
-			/*console.log(color);
-			//angular.element(".md-primary").css('background-color', color.primaryColor,'important');*/
-			//$rootScope.theme = color.theme;
 			colorManager.changeTheme(color);
-			
-
-			/*$(".hover-color").hover(function() {
-			  $(this).css("color","blue")
-			});*/
-			
 		}
 
 }])

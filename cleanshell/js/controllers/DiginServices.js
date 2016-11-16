@@ -13,7 +13,7 @@
 						 });
         },getDiginComponents: function() {
              //return the promise directly.
-             return $http.get('http://prod.digin.io:1929/get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io') //jsons/everything.json
+             return $http.get("jsons/everything.json") //'http://prod.digin.io:1929/get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io'
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -26,7 +26,7 @@
 			 //console.log(dashboardId);
 			 notifications.startLoading("Getting Dashboard");
 			 
-                return $http.get('http://prod.digin.io:1929/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io') //jsons/sampleDashboard4.json
+                return $http.get("jsons/sampleDashboard4.json") //jsons/sampleDashboard4.json //'http://prod.digin.io:1929/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io'
                        .then(function(result) {
                             //resolve the promise as the data
 							notifications.finishLoading();

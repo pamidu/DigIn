@@ -1,6 +1,6 @@
 var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary','md-steppers','ngMessages' ,'uiMicrokernel', 'gridster','highcharts-ng','uiGmapgoogle-maps', 'vAccordion','ngCroppie','stripe-payment-tools','angular-intro']);
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider) {
 
 	$urlRouterProvider.otherwise('/home');
 
@@ -35,6 +35,11 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		url: '/userSettings',
 		templateUrl: 'views/settings/userSettings/userSettings.html',
 		controller: 'userSettingsCtrl'
+	})
+	.state('theme', {
+		url: '/theme',
+		templateUrl: 'views/settings/theme/theme.html',
+		controller: 'themeCtrl'
 	})
 	
 	.state('myAccount', {

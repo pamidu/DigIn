@@ -148,6 +148,7 @@
 	color: #3c8eb8;
 }
 .blut-search-right-wrapper {
+	width: 495px !important;
 	position: relative;
 	background: rgb(253, 252, 252);
 	width: 100%;
@@ -309,9 +310,6 @@
 #cssmenu > ul {
   float: none;
 }
-#cssmenu ul {
-  background: #fff;
-}
 #cssmenu > ul > li {
   border-left: 3px solid #d7d8da;
 }
@@ -363,6 +361,14 @@
   border-right: 10px solid #fff;
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
+}
+
+.cssmenu-heading{
+	text-align: center;
+	font-size: 18px;
+	font-weight: 700 !important;
+	letter-spacing: 1px;
+	cursor:default;
 }
 
 /* Dropdown Button */
@@ -439,7 +445,6 @@
 /*Dashbord Home Main*/
 .search-header
 {
-	color: #3b6982;
 	padding:0px 0px 0px 60px;
 }
 
@@ -509,4 +514,12 @@
 .md-3-line-small>.md-no-style
 {
 	color:grey !important;
+}
+
+@media screen and (max-width: 768px) {
+	
+	.blut-search-right-wrapper
+	{
+		width:270px !important;
+	}
 }

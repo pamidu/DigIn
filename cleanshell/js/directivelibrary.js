@@ -199,7 +199,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 			'<md-dialog ng-cloak style="max-width:400px;">'+
 			'	<md-dialog-content style="padding:20px;">'+
 			'		<div layout="row" layout-align="start center">'+
-			'			<md-progress-circular class="md-accent" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>'+
+			'			<md-progress-circular class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>'+
 			'			<span style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;">'+displayText+'</span>'+
 			'		</div>'+
 			'	</md-dialog-content>'+

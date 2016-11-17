@@ -310,9 +310,6 @@
 #cssmenu > ul {
   float: none;
 }
-#cssmenu ul {
-  background: #fff;
-}
 #cssmenu > ul > li {
   border-left: 3px solid #d7d8da;
 }

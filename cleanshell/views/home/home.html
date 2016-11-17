@@ -1,24 +1,24 @@
 <div class="card-container" layout-padding>
-    <h1 class="search-header">Dashboards </h1>
+    <h1 class="search-header" md-colors="{color:'primary-A700'}">Dashboards </h1>
 	<div layout="row" layout-align="center center" layout-wrap>
-		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card" md-colors="{background:'primary-800'}" ng-click="diginComponents.goDashboard(dashboard)">
+		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-800'}" ng-click="diginComponents.goDashboard(dashboard)">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
 				<span class="product_name" style="border-bottom: 1px solid #white;">{{dashboard.compName}}</span>
 			</div>
 			<div layout="row" layout-align="end end">
-				<i class="ti-pie-chart" md-colors="{color:'primary-A400'}"  style="font-size: 150px;"></i>
+				<i class="ti-pie-chart" md-colors="{color:'accent-900'}"  style="font-size: 130px;"></i>
 			</div>
 		</md-card>
 	</div>
 
-	<h1 class="search-header">Reports</h1>
+	<h1 class="search-header" md-colors="{color:'primary-A700'}">Reports</h1>
     <div layout="row" layout-align="center center" layout-wrap>
-		<md-card ng-repeat="report in reports"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card" md-colors="{background:'primary-900'}"  ng-click="diginComponents.goReport(report)">
+		<md-card ng-repeat="report in reports" flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-900'}"  ng-click="diginComponents.goReport(report)">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
 				<span class="product_name" style="border-bottom: 1px solid #white;">{{report.compName}}</span>
 			</div>
 			<div layout="row" layout-align="end end">
-				<i class="ti-bar-chart" md-colors="{color:'primary-A200'}" style="font-size: 150px;"></i>
+				<i class="ti-bar-chart" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>
 			</div>
 		</md-card>
 	</div> 

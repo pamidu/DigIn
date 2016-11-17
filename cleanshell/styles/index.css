@@ -366,6 +366,14 @@
   border-top: 10px solid transparent;
 }
 
+.cssmenu-heading{
+	text-align: center;
+	font-size: 18px;
+	font-weight: 700 !important;
+	letter-spacing: 1px;
+	cursor:default;
+}
+
 /* Dropdown Button */
 .dropbtn {
 	/*background-color: #f9a525;*/

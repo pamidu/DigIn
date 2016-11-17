@@ -1,7 +1,14 @@
 routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,Digin_Domain,pouchDB,filterService,$qbuilder){
 
+    this.tempRootscopePageId;
+
+    var thisService = this;
 
      this.insertPouchDB = function(dashboardObject,dashboardId,cb){
+
+          if ( typeof($rootScope.page_id) != "undefined" || $rootScope.page_id != ""){
+                thisService.tempRootscopePageId = $rootScope.page_id;
+          }
 
           if(dashboardObject == null){
               var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -101,11 +108,11 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
             var db = $rootScope.db;
              // set a new id to a new record to be inserted
-              if ( typeof($rootScope.page_id) == "undefined" || $rootScope.page_id == ""){
+              if ( typeof(thisService.tempRootscopePageId) == "undefined" || thisService.tempRootscopePageId == ""){
                   var id = "temp" + Math.floor(Math.random() * 10000000);
               }
               else {
-                  var id = $rootScope.page_id;
+                  var id = thisService.tempRootscopePageId;
               }
                 
                 db.get( id , function(err, doc){
@@ -167,6 +174,11 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
 
         this.pageSync = function(dashboard,cb){
+          
+            if ( typeof($rootScope.page_id) != "undefined" || $rootScope.page_id != ""){
+                  thisService.tempRootscopePageId = $rootScope.page_id;
+            }
+
             dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
             settoPouch(dashboardJson,false,cb);
         };

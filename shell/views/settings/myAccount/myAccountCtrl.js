@@ -2651,6 +2651,7 @@ routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'not
     $scope.cancel = function() {
         $mdDialog.cancel();
     };
+
     $scope.submit = function() {
         if ($scope.newPassword === $scope.confirmNewPassword) {
 
@@ -2660,6 +2661,7 @@ routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'not
                     if (data.Error) {;
                         notifications.toast('0', data.Message);
                     } else {
+                        $scope.sendChangePwMail();
                         notifications.toast('1', 'Password is changed successfully.');
                         $mdDialog.hide();
                     }
@@ -2672,6 +2674,35 @@ routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'not
             notifications.toast('0', 'Passwords does not match.');
         }
     }
+
+    $scope.sendChangePwMail=function(){
+        $scope.mailData = {
+                            "type":"newemail",
+                            "to":$rootScope.profile_Det.Email,
+                            "subject":"Change Password Notification",
+                            "from":"Digin <info@digin.io>",
+                            "body": "\u003c!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"\u003e\u003chtml xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\"\u003e \u003chead\u003e \u003cmeta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /\u003e \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/\u003e \u003ctitle\u003eDuoWorld - Welcome\u003c/title\u003e \u003cstyle type=\"text/css\"\u003e/* ----- Custom Font Import ----- */@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');/* ----- Text Styles ----- */table{font-family: 'Roboto', sans-serif; -webkit-font-smoothing: antialiased; -moz-font-smoothing: antialiased; font-smoothing: antialiased;}.CTA-button{cursor: pointer; background-color:#097db7; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px; border:none; display:inline-block; cursor:pointer; color:#ffffff; font-family: 'Roboto', sans-serif; font-size:14px; font-weight:bold; line-height: 36px; padding:0 18px 0 18px; text-decoration:none !important; -webkit-transition:all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); -moz-transition:all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); transition:all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.26); box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);}.CTA-button:hover{-moz-box-shadow: 0 4px 8px 0 rgba(0,0,0,.4); -webkit-box-shadow: 0 4px 8px 0 rgba(0,0,0,.4); box-shadow: 0 4px 8px 0 rgba(0,0,0,.4);}@media only screen and (max-width: 600px){/* ----- Base styles ----- */.full-width-container{padding: 0 !important;}.container{width: 100% !important;}/* ----- Header ----- */.header td{padding: 15px 15px 15px 15px !important;}/* ----- Hero subheader ----- */.hero_title{padding: 15px 0px 15px 0px !important; font-size: 35px !important;}/* ----- Paragraph block ----- */.text-block{padding: 0px 0px 0px 0px !important;}}\u003c/style\u003e\u003c!--[if gte mso 9]\u003e\u003cxml\u003e\u003co:OfficeDocumentSettings\u003e\u003co:AllowPNG/\u003e\u003co:PixelsPerInch\u003e96\u003c/o:PixelsPerInch\u003e\u003c/o:OfficeDocumentSettings\u003e\u003c/xml\u003e\u003c![endif]--\u003e\u003c/head\u003e\u003cbody style=\"padding: 0; margin: 0;\" bgcolor=\"#eeeeee\"\u003e \u003c!-- / Full width container --\u003e\u003ctable class=\"full-width-container\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" bgcolor=\"#eeeeee\" style=\"width: 100%; height: 100%; padding: 50px 0 50px 0;\"\u003e \u003ctr\u003e \u003ctd align=\"center\" valign=\"top\"\u003e \u003c!-- / 600px container --\u003e\u003ctable class=\"container\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" bgcolor=\"#ffffff\" style=\"width: 600px;\"\u003e \u003ctr\u003e \u003ctd align=\"center\" valign=\"top\"\u003e \u003c!-- / Product Header --\u003e\u003ctable class=\"container header\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"width: 100%\"\u003e \u003ctr\u003e \u003ctd style=\"width:600px !important;\" align=\"center\"\u003e \u003cimg src=\"http://prod.digin.io/digin_data/digin_mail/dw_logo.png\" width=\"600\" style=\"max-width:100%; display:block; padding:20px 0 20px 0\"/\u003e \u003c/td\u003e \u003c/tr\u003e \u003c/table\u003e \u003c!-- / Product Header --\u003e\u003c!-- / Cygil Container --\u003e\u003ctable border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"width: 100%\"\u003e \u003ctr\u003e \u003ctd style=\"width:600px !important;\" align=\"center\"\u003e \u003c!--img src=\"/mailDigin/assets/welcome.png\" width=\"600\" style=\"max-width:100%; display:block;\"/--\u003e \u003c/td\u003e \u003c/tr\u003e \u003c/table\u003e \u003c!-- / Cygil Container --\u003e\u003c!-- / Hero Title --\u003e\u003ctable class=\"container hero-subheader\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"width: 100%;\"\u003e \u003ctr\u003e \u003ctd class=\"hero_title\" style=\"text-align:center; font-size: 48px; font-weight:regular; padding: 15px 0 0 0; color:#545454;\" align=\"center\"\u003eChange Password\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c!-- / Hero Title --\u003e\u003c!-- / Divider --\u003e\u003ctable class=\"container\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"400\" align=\"center\" style=\"border-bottom: solid 1px #eeeeee; width: 400px; margin-bottom:25px; \"\u003e \u003ctr\u003e \u003ctd align=\"center\"\u003e\u0026nbsp;\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c!-- /// Divider --\u003e \u003c!-- / Text Content --\u003e\u003ctable class=\"container paragraph-block\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"\u003e \u003ctr\u003e \u003ctd align=\"center\" valign=\"top\"\u003e \u003ctable class=\"container hero-subheader\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"400\" style=\"width: 400px;\"\u003e \u003ctr\u003e \u003ctd class=\"user-ref-block\" style=\"padding: 0 0 0 0; font-size:16px; font-weight:regular; line-height: 20px; color: #545454;\" align=\"left\"\u003e \u003cb\u003eDear Customer,\u003c/b\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003ctable class=\"container\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"400\" style=\"width: 400px;\"\u003e \u003ctr\u003e \u003ctd class=\"text-block\" style=\"padding: 0 0 0 0; font-size:16px; font-weight:regular; line-height: 20px; color: #545454;\" align=\"left\"\u003e \u003cp\u003eYour password has been changed succesfully.\u003c/p\u003e\u003cp\u003eThank you for being with DigIn.\u003c/p\u003e\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd class=\"text-block\" style=\"padding: 0 0 0 0; font-size:16px; font-weight:regular; line-height: 20px; color: #545454;\" align=\"left\"\u003e\u003cp\u003eRegards,\u003c/p\u003e\u003cp\u003e\u003cb\u003eDuoworld Team\u003c/b\u003e\u003c/p\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c!-- / Text Content --\u003e\u003c!-- / CTA Block --\u003e\u003c!--table class=\"container CTA-block\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"\u003e \u003ctr\u003e \u003ctd style=\"width:600px !important;\" align=\"center\"\u003e \u003ca href=\"http://prod.digin.io/auth/o/?e=@@CEMAIL@@\u0026o=@@PASSWORD@@\u0026r=http://prod.digin.io/entry/#/change\" class=\"CTA-button\"\u003e\u003cspan\u003eCHANGE PASSWORD\u003c/span\u003e\u003c/a\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table--\u003e\u003c!-- / CTA Block --\u003e\u003c!-- / Product Footer--\u003e\u003ctable class=\"container product-footer-block\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"width: 100%\"\u003e \u003ctr\u003e \u003ctd style=\"width:600px !important;\" align=\"center\"\u003e \u003cimg src=\"http://prod.digin.io/digin_data/digin_mail/default-footer-banner.png\" width=\"600\" style=\"max-width:100%; display:block; padding:0\"/\u003e \u003c/td\u003e \u003c/tr\u003e \u003c/table\u003e \u003c!-- / Product Footer--\u003e\u003c!-- / Info footer --\u003e\u003ctable class=\"container info-footer-block\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"width: 100%\"\u003e \u003ctr\u003e \u003ctd style=\"width:600px !important; height:36px !important; color:#545454;\" align=\"center\"\u003e \u003cb\u003eProduct of DuoWorld.inc\u003c/b\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c!-- / Info footer --\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003c/body\u003e\u003c/html\u003e"
+                        }
+
+        var token =getCookie("securityToken");
+
+        $http({
+            method: 'POST',
+            url: 'http://104.196.114.113:3500/command/notification',
+            data: $scope.mailData,
+            headers:{
+                'Content-Type': 'application/json',
+                'securityToken': token
+            }
+        }).then(function(response){
+
+        },function(response){
+
+        })   
+    }
+
+
+
 }])
 
 routerApp.controller('uploadProfilePictureCtrl', ['$scope', '$mdDialog', '$http', 'notifications', function($scope, $mdDialog, $http, notifications) {

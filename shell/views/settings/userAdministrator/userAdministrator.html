@@ -107,7 +107,7 @@
 							   
 							   
 							   
-							   <md-button class="md-mini ti-trash" style="font-size: 20px;color:grey" aria-label="remove" ng-click="removeUser($event, user)">
+							   <md-button  class="md-mini ti-trash" style="font-size: 20px;color:grey" aria-label="remove" ng-click="removeUser($event, user)" ng-show="{{profile_Det.Email==user.Id}}?false:true">
 								</md-button>
 							   <md-divider ng-show="!$last"></md-divider>
 							   

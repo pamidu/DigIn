@@ -7,7 +7,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.currentView = "Home";
 	//$rootScope.theme = 'default';
-	colorManager.changeTheme({theme: 'purpleTheme'});
+	colorManager.changeTheme({theme: 'blueThemeDark'});
 	
 
 	

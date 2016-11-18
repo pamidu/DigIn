@@ -301,6 +301,40 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
     .primaryPalette('greenPrimary')
 	.accentPalette('greenAccent')
 	
+	
+
+	//Dark
+	$mdThemingProvider.theme('defaultDark')
+      .primaryPalette('customPrimary')
+	  .accentPalette('customAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('redThemeDark')
+      .primaryPalette('redPrimary')
+	  .accentPalette('redAccent')
+      .dark();
+	  
+	  $mdThemingProvider.theme('purpleThemeDark')
+      .primaryPalette('purplePrimary')
+	  .accentPalette('purpleAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('orangeThemeDark')
+      .primaryPalette('orangePrimary')
+	  .accentPalette('orangeAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('blueThemeDark')
+      .primaryPalette('bluePrimary')
+	  .accentPalette('blueAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('greenThemeDark')
+      .primaryPalette('greenPrimary')
+	  .accentPalette('greenAccent')
+      .dark();
+	
+	
 	$mdThemingProvider.alwaysWatchTheme(true);
 	
 }])

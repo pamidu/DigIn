@@ -5,11 +5,11 @@
 	height: 40px !important;
 	border-top: 1px solid lightgrey;
 }
-#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
+/*#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
 {
 	color: white !important;
 	background: #afb6bc;
-}
+}*/
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas
 {
@@ -19,8 +19,8 @@
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
 {
-	color: white !important;
-	background: #3b6981 !important;
+	/*color: white !important;
+	background: #3b6981 !important;*/
 	-ms-transform: scale(1.1, 1.1); /* IE 9 */
     -webkit-transform: scale(1.1, 1.1); /* Safari */
     transform: scale(1.1, 1.1);
@@ -31,6 +31,13 @@
 	height: calc(100vh - 86px);	
 	position: relative;
 
+}
+
+md-ink-bar
+{
+    height: 40px;
+    top: 0px;
+	z-index: -1 !important;
 }
 
 md-tabs[md-align-tabs=bottom]
@@ -231,7 +238,7 @@ md-tabs[md-align-tabs=bottom]
 </style>
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
-	<md-tabs id="pagingTabs" md-align-tabs="bottom">
+	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary">
 	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
 		<md-tab-label layout="row" layout="space-between center">
 			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"  ng-dblclick="editPageName($event,page)" flex>{{page.pageName}}</span>
@@ -243,28 +250,28 @@ md-tabs[md-align-tabs=bottom]
 				<ul>
 					<li gridster-item="widget" ng-repeat="widget in page.widgets" style="background:white;padding-bottom: 49px !important;">
 						<div class="widget-header" layout="row" layout-align="space-between center">
-							<span style="font-size: 20px;color: #3b6982;">{{widget.widgetName}}</span>
+							<span style="font-size: 20px;" md-colors="{color:'primary-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
 							
-								<md-button class="md-icon-button themify-icons ti-menu-alt" ng-click="widgetControls.showData($event,widget)" ng-if="showDataViewBtn(widget)">
+								<md-button class="md-icon-button ti-menu-alt" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)" ng-if="showDataViewBtn(widget)">
 									<md-tooltip>data</md-tooltip>
 								</md-button>
 								
 								<!--commentary common-->
-								<md-button class="md-icon-button themify-icons ti-volume" ng-click="widgetControls.commentary($event,widget)">
+								<md-button class="md-icon-button ti-volume"  md-colors="{color:'primary'}" ng-click="widgetControls.commentary($event,widget)">
 									<md-tooltip>commentary</md-tooltip>
 								</md-button>
 								<!--commentary common-->
 								
 								<!--settings common-->
-								<md-button class="md-icon-button themify-icons ti-settings" ng-click="widgetControls.widgetSettings($event,widget)">
+								<md-button class="md-icon-button ti-settings"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
 								<!--settings common-->
 								
 								
 								<md-menu md-position-mode="target-right target" ng-show="widget.widgetData.initCtrl=='elasticInit'">
-									<md-button class="md-icon-button themify-icons ti-filter" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);" >
+									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
 									  <md-menu-content width="4" >
@@ -278,13 +285,13 @@ md-tabs[md-align-tabs=bottom]
 									  </md-menu-content>
 								</md-menu>
 								
-								<md-button class="md-icon-button themify-icons ti-reload" ng-click="widgetControls.syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+								<md-button class="md-icon-button ti-reload" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
 									<md-tooltip>sync</md-tooltip>
 								</md-button>
 								
 								
 								<!--close common-->
-								<md-button class="md-icon-button themify-icons ti-close" ng-click="widgetControls.removeWidget($event,widget)">
+								<md-button class="md-icon-button ti-close" md-colors="{color:'primary'}" ng-click="widgetControls.removeWidget($event,widget)">
 									<md-tooltip >close</md-tooltip>
 								</md-button>
 								<!--close common-->

@@ -21,6 +21,8 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
         }, getInvitedUsers: function(callback) {
 			$rootScope.sharableUsers=[];
 			$rootScope.sharableGroups=[];
+			$rootScope.users=[];
+			
 				//if(cache.invitedUsers)
 				//{
 				//	callback(cache.invitedUsers);
@@ -29,15 +31,22 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					 return $http.get('/apis/usercommon/getSharableObjects')
 					   .then(function(result) {
 							////return result.data;
+							var j=-1;
 							 for (var i = 0, len = result.data.length; i<len; ++i) {
 								if (result.data[i].Type == "User") {
-									$rootScope.sharableUsers.push(result.data[i]);
-									/*if(result.data[i].Id==$rootScope.profile_Det.Email){
-										
-									}
-									else{
-										$rootScope.sharableUsers.push(result.data[i]);
-									}*/
+									//$rootScope.sharableUsers.push(result.data[i]);
+									$rootScope.users.push(result.data[i]);
+									j++;	
+									/*$http.get('/auth/GetUser/' + result.data[i].Id)
+					                    .success(function (response) {
+					                       result.data[i].Active= response.Active;
+					                    }).error(function (error) {
+					                   	   result.data[i].Active= false;
+					                	});*/
+
+					                	callback(result.data[i].Id,j);
+
+
 								}else if (result.data[i].Type == "Group") {
 									$rootScope.sharableGroups.push(result.data[i]);
 								}

@@ -120,7 +120,31 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	//#Get number of tenant user
 	//userAdminFactory.getTenantUsers();
 	
-	userAdminFactory.getInvitedUsers(function(data) {});
+	//userAdminFactory.getInvitedUsers(function(data) {});
+
+	$scope.getStatus=function(email,j){
+		$scope.chk = function (cb) {
+			$http.get('/auth/GetUser/' + email)
+				.success(function (response) {
+					$scope.aciveStatus=response.Active;
+					 cb(true);
+				}).error(function (error) {
+					cb(false);
+			});
+		}
+		
+		$scope.chk(function(data){
+			if(data){
+				$rootScope.users[j].Active= $scope.aciveStatus;
+				$rootScope.sharableUsers=$rootScope.users;
+			}
+		});
+	}
+	
+	
+	userAdminFactory.getInvitedUsers($scope.getStatus);
+
+	
 	//userAdminFactory.getPackageSummary();
 	
 
@@ -144,8 +168,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 					{
 						userAdminFactory.inviteUser(searchText).then(function(response) {
 							$rootScope.sharableUsers=[];
-							userAdminFactory.getInvitedUsers(function(data) {});
-							
+							//userAdminFactory.getInvitedUsers(function(data) {});
+							userAdminFactory.getInvitedUsers($scope.getStatus);
 							console.log(response);
 							$scope.searchText = "";
 						});
@@ -234,8 +258,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 					userAdminFactory.removeInvitedUser(user.Id);
 
 							$rootScope.sharableUsers=[];
-							userAdminFactory.getInvitedUsers(function(data) {});
-							
+							//userAdminFactory.getInvitedUsers(function(data) {});
+							userAdminFactory.getInvitedUsers($scope.getStatus);
 						
 						displaySuccess("User removed successfully."); 
 					
@@ -310,7 +334,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		  userAdminFactory.removeUserGroup(group.groupId).then(function(data) {
 			  
 					$rootScope.sharableUsers=[];
-					userAdminFactory.getInvitedUsers(function(data) {});
+					//userAdminFactory.getInvitedUsers(function(data) {});
+					userAdminFactory.getInvitedUsers($scope.getStatus);
 					
 				$scope.groups.splice(index, 1); 
 			});
@@ -318,7 +343,6 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	}
 
 }])
-
 
 
 /*DiginApp.controller('addGroupCtrl',[ '$scope','$mdDialog', function ($scope,$mdDialog){
@@ -444,7 +468,9 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 					if(result.IsSuccess == true)
 					{
 						$rootScope.sharableUsers=[];
-						userAdminFactory.getInvitedUsers(function(data) {});
+						
+						//userAdminFactory.getInvitedUsers(function(data) {});
+						userAdminFactory.getInvitedUsers($scope.getStatus);
 						
 						notifications.toast(1, "Group Added");
 						vm.group.groupId = result.Data[0].ID;
@@ -488,7 +514,8 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 						if(result.IsSuccess == true)
 						{
 							$rootScope.sharableUsers=[];
-							userAdminFactory.getInvitedUsers(function(data) {});
+							//userAdminFactory.getInvitedUsers(function(data) {});
+							userAdminFactory.getInvitedUsers($scope.getStatus);
 							
 							notifications.toast(1, "User group updated successfully.");
 							vm.group.groupId = result.Data[0].ID;
@@ -539,3 +566,13 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 	
 
 }])
+
+
+
+
+
+
+
+
+
+

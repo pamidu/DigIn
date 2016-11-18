@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -187,8 +187,43 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     //if user has a default dashboard open it 
 
                     var obj = JSON.parse($rootScope.userSettings.components);
+
                     if(obj.dashboardId != null){
-                        $scope.getDashboard(obj.dashboardId);
+
+                        //check wether this defauld dashboard is allreday in pauch 
+                            var db = $rootScope.db;
+                            var count =0;
+                            db.allDocs({
+                                include_docs: true,
+                                attachments: true
+                            }).catch(function (err) {
+                                console.log(err);
+                            }).then(function (data) {
+                                if(data.rows.length > 0){
+                                        angular.forEach(data.rows, function (row) {
+                                        count++;
+                                        if(row.doc.dashboard.compID == obj.dashboardId){
+                                            var dashboardObj = {
+                                                "dashboardID" : obj.dashboardId,
+                                                "dashboardName" : row.doc.dashboard.compName,
+                                                "pouchID" : row.id
+                                            };
+
+                                            $rootScope.goDashboard(dashboardObj);
+
+                                        }
+                                        else if(count == data.rows.length){
+                                            $scope.getDashboard(obj.dashboardId);
+                                        }
+                                    });
+                                }else{
+                                     $scope.getDashboard(obj.dashboardId);
+                                }
+                                
+                                console.log($scope.dashboards);
+                            });
+                        //--------------------------------------------------------
+                    
                         $rootScope.data.defaultDashboard=obj.dashboardId;
                     }
                 }
@@ -806,7 +841,14 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
         //-------------------------------------------------
         
+
+        
+
         $rootScope.goDashboard = function (dashboard) {
+
+            if(saveDashboardService.IsSavingINprogress == true){
+                return;
+            }
 
             $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
             //$scope.openSearchBar();

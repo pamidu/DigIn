@@ -102,20 +102,20 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
 	.accentPalette('redAccent')
 	
 	$mdThemingProvider.definePalette('purplePrimary', {
-        '50': '#8859c1',
-        '100': '#7b47ba',
-        '200': '#6f3fa9',
-        '300': '#623896',
-        '400': '#563184',
-        '500': '#4a2a71',
-        '600': '#3e235e',
-        '700': '#321c4c',
-        '800': '#251539',
-        '900': '#190e27',
-        'A100': '#956cc8',
-        'A200': '#a37ecf',
-        'A400': '#b091d6',
-        'A700': '#0d0714',
+        '50': '#cbb6e4',
+        '100': '#bda3dd',
+        '200': '#b091d6',
+        '300': '#a37ecf',
+        '400': '#956cc8',
+        '500': '#8859c1',
+        '600': '#7b46ba',
+        '700': '#6e3fa8',
+        '800': '#623896',
+        '900': '#563183',
+        'A100': '#d8c8eb',
+        'A200': '#e5dbf2',
+        'A400': '#f2eef8',
+        'A700': '#4a2a70',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 

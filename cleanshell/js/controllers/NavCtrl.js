@@ -6,8 +6,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.sharableGroups = [];
 	
 	$scope.currentView = "Home";
-	//$rootScope.theme = 'default';
-	colorManager.changeTheme({theme: 'blueThemeDark'});
+	
+	//Theming
+	$rootScope.lightOrDark = '';
+	$rootScope.currentColor = '';
+	$rootScope.h1color = '';
+	colorManager.changeTheme('blueThemeDark');
 	
 
 	

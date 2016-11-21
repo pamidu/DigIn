@@ -343,13 +343,32 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 
 
 	 
-		this.changeTheme = function(color) {
-			
-			var primaryColor = $mdColors.getThemeColor(color.theme+'-primary-500');
-			var accentColor = $mdColors.getThemeColor(color.theme+'-accent-500');
-					
-			$rootScope.theme = color.theme;
-			
+		this.changeTheme = function(theme) {
+
+			if(theme.substr(theme.length - 4) == "Dark")
+			{
+				$rootScope.lightOrDark = "Dark";
+				$rootScope.currentColor = theme.slice(0, -4);
+				$rootScope.theme = theme;
+				$rootScope.h1color = "accent";
+				$('body').css('background',"rgb(88, 88, 88)");
+				$('#cssmenu ul ul li').css('background',"rgb(48,48,48)");
+				$('#cssmenu ul ul li').addClass('dark');
+			}else{
+				$rootScope.lightOrDark = "Light";
+				$rootScope.currentColor = theme;
+				$rootScope.theme = theme;
+				$rootScope.h1color = "primary";
+				$('body').css('background',"rgba(230, 230, 230, 1)");
+				$('#cssmenu ul ul li').css('background',"white");
+				$('#cssmenu ul ul li').removeClass('dark');
+				console.log("boom");
+				
+			}
+
+			var primaryColor = $mdColors.getThemeColor($rootScope.currentColor+'-primary-500');
+			var accentColor = $mdColors.getThemeColor($rootScope.currentColor+'-accent-500');
+
 			$('.has-sub').css('border-left',"3px solid #d7d8da").hover(
 			function(){
 				$(this).css('border-left',"3px solid "+accentColor);
@@ -365,6 +384,26 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			function(){
 				$(this).css('color',primaryColor);
 			});
+		}
+		
+		this.changeMainTheme = function(lightOrDark) {
+
+			if(lightOrDark.theme == 'Dark')
+			{
+				$rootScope.theme = $rootScope.currentColor + lightOrDark.theme;
+				$rootScope.lightOrDark = lightOrDark.theme;
+				$rootScope.h1color = "accent";
+				$('body').css('background',"rgb(88, 88, 88)");
+				$('#cssmenu ul ul li').css('background',"rgb(48,48,48)");
+				$('#cssmenu ul ul li').addClass('dark');
+			}else{
+				$rootScope.theme = $rootScope.currentColor;
+				$rootScope.lightOrDark = lightOrDark.theme;
+				$rootScope.h1color = "primary";
+				$('body').css('background',"rgba(230, 230, 230, 1)");
+				$('#cssmenu ul ul li').css('background',"white");
+				$('#cssmenu ul ul li').removeClass('dark');
+			}
 		}
 }])
 

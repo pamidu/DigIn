@@ -357,6 +357,9 @@
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
 }
+#cssmenu ul ul li.dark:first-child:after {
+  border-right: 10px solid rgb(48,48,48);
+}
 
 .cssmenu-heading{
 	text-align: center;

@@ -1,5 +1,5 @@
 <div class="card-container" layout-padding>
-	<h1 class="search-header" md-colors="{color:'primary-A700'}">Main Themes </h1>
+	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Main Themes </h1>
 	<div layout="row" layout-align="center start" layout-wrap>
 		<md-card ng-repeat="color in themeColor" class="product_card" ng-click="mainTheme(color)" style="background:{{color.backgroundColor}}">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
@@ -10,7 +10,7 @@
 			</div>
 		</md-card>
 	</div>
-    <h1 class="search-header" md-colors="{color:'primary-A700'}">Themes </h1>
+    <h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Themes </h1>
 	<div layout="row" layout-align="center start" layout-wrap>
 		<md-card ng-repeat="color in palette" class="product_card" ng-click="changeTheme(color)">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">

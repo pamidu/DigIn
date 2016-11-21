@@ -46,7 +46,6 @@ md-tabs[md-align-tabs=bottom]
 }
 .widget-header
 {
-	background: white;
     padding: 0px 10px 0px 10px;
 }
 
@@ -248,7 +247,7 @@ md-tabs[md-align-tabs=bottom]
 		<md-tab-body>
 			<div gridster="gridsterOpts">
 				<ul>
-					<li gridster-item="widget" ng-repeat="widget in page.widgets" style="background:white;padding-bottom: 49px !important;">
+					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" style="padding-bottom: 49px !important;overflow:inherit">
 						<div class="widget-header" layout="row" layout-align="space-between center">
 							<span style="font-size: 20px;" md-colors="{color:'primary-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
@@ -332,7 +331,7 @@ md-tabs[md-align-tabs=bottom]
 						<div style="height:100%;width:100%" ng-init="startWidget(widget)" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include="widget.widgetData.widView">
 						</div>
 
-					</li>
+					</md-content>
 				</ul>
 			</div>
 		</md-tab-body>

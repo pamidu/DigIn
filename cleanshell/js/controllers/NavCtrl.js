@@ -298,12 +298,16 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		$mdDialog.cancel();
 	}	
 	
-	$scope.notifications = [{title:"Urgent", message: "Your system needs to be updated asap"}];
+	$scope.notifications = [{title:"Urgent", message: "Your system needs to be updated asap", type: 1, icon: "ti-pie-chart", color: "#4CAF50"}];
 	var audio = new Audio('sounds/notification.mp3');
 	$scope.notificationAudio = true; 
 	
 	$timeout(function(){
-		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: 1};
+		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: "2", href:"#/home"};
+		if(!message.icon){message.icon = "ti-comment"};
+			
+		if(parseInt(message.type) == 0){message.color = "#FF5252";}else if(parseInt(message.type) == 1){message.color = "#4CAF50"}else if(parseInt(message.type) == 2){message.color = "#F9A937";}
+		
 		$scope.notifications.push(message);
 		notifications.toast(message.type, message.message);
 		if($scope.notificationAudio == true)
@@ -311,7 +315,18 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			audio.play();
 		}
 
-	}, 10000);
+	}, 5000);
+	
+	$scope.openNotification = function(path)
+	{
+		if(!path){
+			//do nothing
+		}else{
+			window.location.href = path;
+			$mdSidenav('notifications').toggle();
+		}
+
+	}
 
 
 	

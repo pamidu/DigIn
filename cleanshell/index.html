@@ -312,12 +312,14 @@
 			</md-toolbar>
 			<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0" ng-if="notifications.length >= 1">
 				<md-list style="padding:0">
-					<md-list-item class="md-3-line" ng-repeat="notification in notifications" ng-click="viewNotifications(notification)">
-					  <span class="ti-pie-chart" md-colors="{color:'{{$root.h1color}}-A700'}" style="font-size:35px; padding-right: 15px"></span>
-					  <div class="md-list-item-text" layout="column">
+					<md-list-item class="md-3-line" ng-repeat="notification in notifications" ng-click="openNotification(notification.href)">
+					  <span class="{{notification.icon}}" style="font-size:35px;color:{{notification.color}}"></span><!--md-colors="{color:'{{$root.h1color}}-A700'}" -->
+					  <div class="md-list-item-text" layout="column" style="padding-left: 15px">
 						<h3>{{ notification.title }}</h3>
 						<p>{{ notification.message }}</p>
 					  </div>
+					  <md-button class="md-icon-button icon-cancel md-secondary" ng-click="diginComponents.deleteDashboard(dashboard,$event);$event.stopPropagation()" style="font-size:10px;" aria-label="delete">
+					  </md-button>
 					</md-list-item>
 				</md-list>
 			</md-content>

@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -297,6 +297,25 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	{
 		$mdDialog.cancel();
 	}	
+	
+	$scope.notifications = [{title:"Urgent", message: "Your system needs to be updated asap"}];
+	var audio = new Audio('sounds/notification.mp3');
+	$scope.notificationAudio = true; 
+	
+	$timeout(function(){
+		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: 1};
+		$scope.notifications.push(message);
+		notifications.toast(message.type, message.message);
+		if($scope.notificationAudio == true)
+		{
+			audio.play();
+		}
+
+	}, 10000);
+
+
+	
+	
 	
 	//Introduction to Shell
 	$scope.IntroOptions = {

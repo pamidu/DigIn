@@ -301,21 +301,23 @@
 				<div layout="row" layout-align="space-between center">
 
 					<h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
-					<md-button class="md-icon-button" ng-click="openNotifications()" aria-label="close">
+					<!--md-button class="md-icon-button" ng-click="openNotifications()" aria-label="close">
 						<ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
-					</md-button>
+					</md-button-->
+					<div layout="row">
+						<i class="ti-volume" style="margin-top: 20px;margin-right: 8px;"> </i>
+						<md-switch ng-model="notificationAudio" aria-label="Switch 1"></md-switch>
+					</div>
 				</div>
 			</md-toolbar>
 			<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0" ng-if="notifications.length >= 1">
 				<md-list style="padding:0">
 					<md-list-item class="md-3-line" ng-repeat="notification in notifications" ng-click="viewNotifications(notification)">
-						<div class="md-list-item-text" layout="column">
-							<div layout="row" layout-align="start start" > <h3 style="width: 155px;">{{notification.title}}</h3></div>
-							<p style="margin-top:6px;">{{notification.description}}</p>
-						</div>
-						<md-button class="md-icon-button launch" ng-click="removeNotification($event,notification)" aria-label="removeNotification" style="margin-top: 10px !important" aria-label="delete" ng-if="notification.email == useremail">
-							<ng-md-icon icon="close" style="fill:#979797" size="18px"></ng-md-icon>
-						</md-button>
+					  <span class="ti-pie-chart" md-colors="{color:'{{$root.h1color}}-A700'}" style="font-size:35px; padding-right: 15px"></span>
+					  <div class="md-list-item-text" layout="column">
+						<h3>{{ notification.title }}</h3>
+						<p>{{ notification.message }}</p>
+					  </div>
 					</md-list-item>
 				</md-list>
 			</md-content>
@@ -371,7 +373,7 @@
 
 		</md-sidenav>
 		
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #d7d8da;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce">
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce">
 			<div id="cssmenu">
 				<ul>
 					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->

@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -17,7 +17,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		$rootScope.sharableGroups = [];
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
         var interval;
-        $scope.adjustUI = function () {
+       /* $scope.adjustUI = function () {
 
             if ($scope.headerbarPinned) {
                 $('#content1').css("top", "40px");
@@ -33,7 +33,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 $('.main-headbar-slide').css("transform", "translateY(-40px)");
                 $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
             }
-        }
+        }*/
+		
+		
+		//Theming
+		$rootScope.lightOrDark = '';
+		$rootScope.currentColor = '';
+		$rootScope.h1color = '';
+		colorManager.changeTheme('default');
+		
         // hides and shows the dashboard tabs
         $scope.showTabs = function (boolean) {
 
@@ -2080,7 +2088,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.searchLayerStatus = false;
         $scope.headerMenuToggle = false;
         $scope.leftMenuToggleState = true;
-        var layoutManager = (function () {
+        
+		/*var layoutManager = (function () {
             return {
                 headerMenuToggle: function (status) {
                     if (status) {
@@ -2135,7 +2144,32 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     layoutManager.headerMenuToggle($scope.headerMenuToggle);
                 }
             }
-        })();
+        })();*/
+		
+		//Start of layoutManager
+		$rootScope.showHeader = true;
+		$rootScope.showSideMenu = true;
+		
+		$scope.topMenuToggle = function()
+		{	
+			if($scope.showHeader == true)
+			{
+				$rootScope.showHeader = layoutManager.hideHeader();
+			}else{
+				$rootScope.showHeader = layoutManager.showHeader();
+			}
+		}
+		
+		$scope.leftMenuToggle = function()
+		{
+			if($scope.showSideMenu == true)
+			{
+				$rootScope.showSideMenu = layoutManager.hideSideMenu();
+			}else{
+				$rootScope.showSideMenu = layoutManager.showSideMenu();
+			}
+		}
+		//End of layoutManager
 
 
         $scope.toggelDownSearch = function (status) {
@@ -2147,12 +2181,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         };
 
-        $scope.topMenuToggle = function () {
+        /*$scope.topMenuToggle = function () {
             layoutManager.headerMenuToggle($scope.headerMenuToggle);
-        };
-        $scope.leftMenuToggle = function () {
+        };*/
+       /* $scope.leftMenuToggle = function () {
             layoutManager.leftMenuToggle($scope.leftMenuToggleState);
-        };
+        };*/
 
         //profile setting click
         $scope.profileDownMenu = (function () {
@@ -2245,7 +2279,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
-            layoutManager.headerMenuToggle(true);
            //if(menu.name ==  "Email")
         if(menu ==  "Email")
            {

@@ -142,9 +142,6 @@
 	cursor: pointer;
 }
 
-.blut-current-view > i:hover {
-	color: #3c8eb8;
-}
 .blut-search-right-wrapper {
 	width: 495px;
 	position: relative;
@@ -153,6 +150,14 @@
 	padding-left: 30px;
 	padding-right: 30px;
 	border-left: 1px solid #f4f4f4;
+}
+
+.border-left-light{
+	border-left: 1px solid #f4f4f4;
+}
+
+.border-left-dark{
+	border-left: 1px solid #565656;
 }
 
 .blut-header-icon {
@@ -169,7 +174,6 @@
 
 
 .blut-profile-wrapper-header {
-	border-left: 1px solid #f4f4f4;
 	height: 100%;
 	padding-right: 15px;
 }
@@ -306,7 +310,7 @@
   float: none;
 }
 #cssmenu > ul > li {
-  border-left: 3px solid #d7d8da;
+  border-left: 3px solid #8b8b8b;
 }
 #cssmenu > ul > li > a {
   padding: 10px 10px;
@@ -336,7 +340,7 @@
   font-size: 15px;
 }
 #cssmenu ul ul li:last-child {
-  border-bottom: 3px solid #d7d8da;
+  border-bottom: 0px solid #565656;
 }
 #cssmenu ul ul li:first-child {
   padding-top: 10px;
@@ -359,6 +363,9 @@
 }
 #cssmenu ul ul li.dark:first-child:after {
   border-right: 10px solid rgb(48,48,48);
+}
+#cssmenu ul ul li a.dark{
+    border-bottom: 1px solid #565656;
 }
 
 .cssmenu-heading{

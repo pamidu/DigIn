@@ -3,7 +3,7 @@
     <!-- sidebar items -->
     <md-item ng-repeat="item in sidebarItems">
         <a ng-click="navigate(item.click)">
-            <i ng-mouseover="menuMouseHover(item)" class="blut-left-menu  {{item.icon2}} " layout="column" layout-align="center center" flex id="{{item.id}}"></i>
+            <i md-colors="{color:'primary'}" ng-mouseover="menuMouseHover(item)" class="blut-left-menu  {{item.icon2}} hover-color" layout="column" layout-align="center center" flex id="{{item.id}}"></i>
             <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
         </a>
     </md-item>

@@ -6,10 +6,10 @@ cmds >> common data source style
 drb >> dynamically report builder
 */
 .amcharts-chart-div a {display:none !important;}
-body
+/*body
 {
     background: rgba(230, 230, 230, 1) !important;
-}
+}*/
 
 .ng-cloak,
 [ng-cloak],
@@ -4246,7 +4246,6 @@ close button
 
 .blut-search-right-wrapper {
     position: relative;
-    width: 100%;
     height: 42px;
     overflow: hidden;
     padding-left: 30px;
@@ -4254,10 +4253,17 @@ close button
     border-left: 1px solid #f4f4f4;
 }
 
+.border-left-light{
+	border-left: 1px solid #f4f4f4;
+}
+
+.border-left-dark{
+	border-left: 1px solid #565656;
+}
+
 .blut-header-icon {
     outline: none !important;
 	width: 40px;
-	background:white;
 	height: 40px;
 	padding: 10px;
 	border-radius: 3px;
@@ -4267,20 +4273,18 @@ close button
 
 .blut-header-icon > i {
     font-size: 21px;
-    color: #02b5e2;
     cursor: pointer;
     outline: none !important;
 }
 
-.blut-header-icon > i:hover {
+/*.blut-header-icon > i:hover {
     color: #f9a525
-}
+}*/
 
 .blut-login-user {
     font-family: 'Segoe UI', sans-serif !important;
     font-weight: 600;
     font-size: 13px;
-    color: #3b6982;
 	padding-left: 10px;
 }
 
@@ -4409,7 +4413,6 @@ close button
     height: 43px;
     padding-top: 8px;
     padding-left: 10px;
-    border-left: 1px solid #f4f4f4;
     text-align: center;
 }
 
@@ -4424,7 +4427,6 @@ close button
 }
 
 .blut-search-wrapper {
-    padding-left: 35px;
     font-family: 'Segoe UI', sans-serif;
     font-weight: 600;
     font-size: 19px;
@@ -4438,9 +4440,9 @@ close button
     padding-right: 10px;
 }
 
-.blut-search-wrapper:hover, .blut-search-wrapper > i:hover {
+/*.blut-search-wrapper:hover, .blut-search-wrapper > i:hover {
     color: #f9a525;
-}
+}*/
 
 /*main search layer*/
 
@@ -4465,10 +4467,11 @@ close button
     padding-top: 15px;
 	padding-bottom: 15px;
     font-size: 25px;
-    color: #02b5e2;
-	background:white;
+    /*color: #02b5e2;
+	background:white;*/
     cursor: pointer;
 	border-radius: 3px;
+	
 }
 
 .blut-left-menu.icon-report {
@@ -4478,8 +4481,8 @@ close button
 .blut-search-toggele {
     width: 45px;
     height: 20px;
-    background: #ffffff;
-    color: #f9a525;
+    /*background: #ffffff;
+    color: #f9a525;*/
     text-align: center;
     margin-left: calc(50% - 48px);
     padding-top: 1px;
@@ -4512,7 +4515,7 @@ close button
 .left-menu-toggle {
     width: 20px;
     height: 48px;
-    background: #fff;
+    /*background: #fff;*/
     text-align: center;
     cursor: pointer;
     border-top-right-radius: 10px;
@@ -4520,7 +4523,8 @@ close button
     outline: none !important;
     margin-left: 44px;
     padding-top: 15px;
-    color: #f9a525;
+    /*color: #f9a525;*/
+	overflow: inherit;
     position: absolute;
     top: 215px;
 	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
@@ -4788,7 +4792,7 @@ md-tabs[md-align-tabs=bottom]
 
 .blut-sub-panel-wrapper {
     position: absolute;
-    background: #fff;
+    /*background: #fff;*/
     height: auto;
 }
 
@@ -4882,9 +4886,9 @@ i.icon-cancel:hover {
     }
 }
 
-.blut-left-menu:hover {
+/*.blut-left-menu:hover {
     color: #f9a525;
-}
+}*/
 
 .content-m-top40 {
     margin-top: 45px;
@@ -4904,14 +4908,14 @@ i.icon-cancel:hover {
 
 .blut-log-wrapper {
     background: #fefefe;
-    height: 42px;
+    height: 45px;
     position: fixed;
     top: 0px;
     left: 0px;
 }
 
 .left-toggle-wrapper {
-    background: #2795d8;
+    /*background: #2795d8;*/
     height: 45px;
     width: 45px;
     display: inline-block;
@@ -4937,7 +4941,6 @@ i.icon-cancel:hover {
 }
 
 .blut-profile-wrapper-header {
-    border-left: 1px solid #f4f4f4;
     height: 100%;
     padding-right: 15px;
 }

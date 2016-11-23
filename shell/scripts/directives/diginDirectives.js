@@ -175,3 +175,67 @@ routerApp.directive('pivotSummary', function() {
         }
     }
 });
+
+
+routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$mdDialog){
+	
+	this.hideHeader = function() {
+		console.log("hide header");
+		$('.main-headbar-slide').animate({
+			top: '-45px'
+		}, 200);
+		
+		$('.dropdown').animate({
+			top: '-45px'
+		},200)
+		
+		$('.card-container').animate({
+			paddingTop: '30px'
+		},200)
+		
+		$('md-tabs-content-wrapper').animate({
+			height: '94vh'
+		},200)
+		
+		return false;
+	}
+	this.showHeader = function(){
+		$('.main-headbar-slide').animate({
+			top: '0px'
+		}, 200);
+		
+		$('.dropdown').animate({
+			top: '15px'
+		},200)
+		
+		$('.card-container').animate({
+			paddingTop: '70px'
+		},200)
+		
+		var newHeight = $('md-tabs-content-wrapper').height() - 45;
+		
+		$('md-tabs-content-wrapper').animate({
+			height: newHeight
+		},200)
+		return true;
+	}
+	
+	this.hideSideMenu = function(){
+		$('.left-menu-slide').animate({
+			left: '-45px'
+		}, 200);
+		$('.card-container').animate({
+			paddingLeft: '0px'
+		},200)
+		return false;
+	}
+	this.showSideMenu = function(){
+		$('.left-menu-slide').animate({
+			left: '0px'
+		}, 200);
+		$('.card-container').animate({
+			paddingLeft: '45px'
+		},200)
+		return true;
+	}
+}])

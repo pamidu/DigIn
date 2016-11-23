@@ -156,7 +156,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 			classType = "alert-danger";
 		}else if(type == 1){
 			classType = "alert-success";
-		}else if(type == 3){
+		}else if(type == 2){
 			classType = "alert-warning";
 		}else{
 			classType = "alert-info";

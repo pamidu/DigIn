@@ -718,11 +718,11 @@ li {
 .pentaho-page-background {
     background: none !important;
 }
-
+/*
 html, body {
     background: none !important;
 }
-
+*/
 body {
     overflow: hidden !important;
 }
@@ -1642,9 +1642,9 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
     font-weight: 400;
 }
 
-md-backdrop.md-sidenav-backdrop {
+/*md-backdrop.md-sidenav-backdrop {
     display: none
-}
+}*/
 
 /* google maps */
 

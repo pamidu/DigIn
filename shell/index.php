@@ -347,6 +347,7 @@
 <script src="views/settings/userAdministrator/userAdminFactory.js"></script>
 
 <!--feature wise theming-->
+<script src="views/settings/theme/themeCtrl.js"></script>
 <script src="views/settings/theme/themingConfig.js"></script>
 
 <!--sytem settings-->

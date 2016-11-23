@@ -2279,7 +2279,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.goTORout = function(menu){
 
            console.log(menu);
-            layoutManager.headerMenuToggle(true);
            //if(menu.name ==  "Email")
         if(menu ==  "Email")
            {

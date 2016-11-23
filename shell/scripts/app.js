@@ -420,6 +420,11 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         data: {
             requireLogin: true
         }
+    })
+	.state('home.themes', {
+        url: '/themes',
+        controller: 'themeCtrl',
+        templateUrl: "views/settings/theme/theme.html"
     });
     
 
@@ -428,48 +433,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         clientId: '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
         scope: ['https://www.googleapis.com/auth/drive']
     });
-/*
-    var customPrimary = {
-        '50': '#10cefd', '100': '#02c2f2', '200': '#02aed9', '300': '#019ac0',
-        '400': '#0185a6', '500': '#02b5e2', '600': '#015d74', '700': '#01485a',
-        '800': '#003441', '900': '#002028', 'A100': '#29d3fd', 'A200': '#43d8fe',
-        'A400': '#5cdefe', 'A700': '#000c0e'
-    };
 
-    $mdThemingProvider
-        .definePalette('customPrimary',
-            customPrimary);
-
-    var customAccent = {
-        '50': '#4285F4', '100': '#4285F4', '200': '#4285F4', '300': '#4285F4',
-        '400': '#4285F4', '500': '#4285F4', '600': '#4285F4', '700': '#4285F4',
-        '800': '#4285F4', '900': '#4285F4', 'A100': '#4285F4', 'A200': '#4285F4',
-        'A400': '#4285F4', 'A700': '#4285F4'
-    };
-
-    $mdThemingProvider
-        .definePalette('customAccent',
-            customAccent);
-
-    var customBackground = {
-        '50': '#ffffff', '100': '#ffffff', '200': '#ffffff', '300': '#ffffff',
-        '400': '#ffffff', '500': '#FFF', '600': '#f2f2f2', '700': '#e6e6e6',
-        '800': '#d9d9d9', '900': '#cccccc', 'A100': '#ffffff', 'A200': '#ffffff',
-        'A400': '#ffffff', 'A700': '#bfbfbf'
-    };
-
-    $mdThemingProvider
-        .definePalette('customBackground',
-            customBackground);
-
-    $mdThemingProvider.theme('default')
-        .primaryPalette('customPrimary')
-        .accentPalette('customAccent')
-        .warnPalette('red')
-        .backgroundPalette('customBackground')
-
-    $mdThemingProvider.alwaysWatchTheme(true);
-	*/
 }]);
 
 routerApp.run(function ($rootScope, $auth, $state, $csContainer, $window) {

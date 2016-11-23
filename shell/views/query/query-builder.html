@@ -79,15 +79,6 @@
                         </v-pane>
                     </v-accordion>
                 </div>
-                <!--
-                                <div class="digin-qb-panle-footer">
-                                    <span class="btn btn-block btn-default btn-apply" role="button"
-                                          ng-click="eventHndler.onClickApply()"
-                                          tabindex="0">
-                                            apply
-                                    </span>
-                                </div>
-                -->
             </div>
             <!-- measures -->
             <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' ">
@@ -285,6 +276,7 @@
                 <div ng-disabled="!isDrilled" class="digin-gb-row"
                      ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' ">
                     <div class="panel-header inline-panel-header p-b-0">
+                    <rzslider></rzslider>
                         <h3 class="font-weight-300">
                             custom query design
                             <div class="header-icon" >

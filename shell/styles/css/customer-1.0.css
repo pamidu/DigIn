@@ -5231,3 +5231,8 @@ div.bigcheck {
 md-progress-linear.md-default-theme .md-bar, md-progress-linear .md-bar {
     background-color: #026689;
 }
+
+.chart-settings-labels {
+    font-weight: bolder;
+    color: #01718d;    
+}

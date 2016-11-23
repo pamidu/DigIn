@@ -1,4 +1,4 @@
-DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
+routerApp.config(['$mdThemingProvider', function($mdThemingProvider) {
 
 	$mdThemingProvider.definePalette('customPrimary', {
         '50': '#66dffe',
@@ -6,7 +6,8 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         '200': '#33d5fd',
         '300': '#1acffd',
         '400': '#02c9fb',
-        '500': '#02b5e2',	
+        '500': '#02b5e2',
+		
         '600': '#02a1c9',
         '700': '#028caf',
         '800': '#017896',
@@ -338,12 +339,13 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
 	
 }])
 
-DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function($rootScope,$mdTheming, $mdColors){
+routerApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function($rootScope,$mdTheming, $mdColors){
 
 
 	 
 		this.changeTheme = function(theme) {
 
+			console.log(theme);
 			if(theme.substr(theme.length - 4) == "Dark")
 			{
 				$rootScope.lightOrDark = "Dark";

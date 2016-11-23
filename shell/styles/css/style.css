@@ -718,11 +718,11 @@ li {
 .pentaho-page-background {
     background: none !important;
 }
-
+/*
 html, body {
     background: none !important;
 }
-
+*/
 body {
     overflow: hidden !important;
 }

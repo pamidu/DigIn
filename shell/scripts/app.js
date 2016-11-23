@@ -428,7 +428,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         clientId: '468951747947-jb7obcgd91m7379q4nn7vroid8g37ds0.apps.googleusercontent.com',
         scope: ['https://www.googleapis.com/auth/drive']
     });
-
+/*
     var customPrimary = {
         '50': '#10cefd', '100': '#02c2f2', '200': '#02aed9', '300': '#019ac0',
         '400': '#0185a6', '500': '#02b5e2', '600': '#015d74', '700': '#01485a',
@@ -469,6 +469,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .backgroundPalette('customBackground')
 
     $mdThemingProvider.alwaysWatchTheme(true);
+	*/
 }]);
 
 routerApp.run(function ($rootScope, $auth, $state, $csContainer, $window) {

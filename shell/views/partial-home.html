@@ -1,8 +1,149 @@
 <style>
+	/* Starter CSS for Flyout Menu */
+	#cssmenu{
+		height: 100%;
+		margin-left: -3px !important;
+	}
+
+	#cssmenu,
+	#cssmenu ul,
+	#cssmenu ul li,
+	#cssmenu ul ul {
+	  list-style: none;
+	  margin: 0;
+	  padding: 0;
+	  border: 0;
+	}
+	#cssmenu ul {
+	  position: relative;
+	  z-index: 597;
+	  float: left;
+	  width:45px;
+	}
+	#cssmenu ul li {
+	  float: left;
+	  min-height: 1px;
+	  line-height: 1em;
+	  vertical-align: middle;
+	  outline: none;
+	}
+	#cssmenu ul li.hover,
+	#cssmenu ul li:hover {
+	  position: relative;
+	  z-index: 599;
+	  cursor: pointer;
+	}
+	#cssmenu ul ul {
+	  margin-top: 1px;
+	  visibility: hidden;
+	  position: absolute;
+	  top: 1px;
+	  left: 99%;
+	  z-index: 598;
+	  width: 100%;
+	}
+	#cssmenu ul ul li {
+	  float: none;
+	}
+	#cssmenu ul ul ul {
+	  top: 1px;
+	  left: 99%;
+	}
+	#cssmenu ul li:hover > ul {
+	  visibility: visible;
+	}
+	#cssmenu ul li {
+	  float: none;
+	}
+	#cssmenu ul ul li {
+	  font-weight: normal;
+	}
+	/* Custom CSS Styles */
+	#cssmenu {
+	  font-size: 15px;
+	}
+	#cssmenu ul a,
+	#cssmenu ul a:link,
+	#cssmenu ul a:visited {
+	  display: block;
+	  /*color: #02b5e2;*/
+	  text-decoration: none;
+	  font-weight: 300;
+	}
+	#cssmenu > ul {
+	  float: none;
+	}
+	#cssmenu > ul > li {
+	  border-left: 3px solid #8b8b8b;
+	}
+	#cssmenu > ul > li > a {
+	  padding: 10px 10px;
+	}
+
+	/*#cssmenu > ul > li:hover {
+	  background: #f6f6f6;
+	}*/
+	/* Sub Menu */
+	#cssmenu ul ul a:link,
+	#cssmenu ul ul a:visited {
+	  font-weight: 400;
+	  font-size: 14px;
+	}
+	#cssmenu ul ul {
+	  width: 225px;
+	  background: none;
+	  border-left: 20px solid transparent;
+	}
+	#cssmenu ul ul a {
+	  padding: 8px 0;
+	  border-bottom: 1px solid #eeeeee;
+	}
+	#cssmenu ul ul li {
+	  padding: 0 20px;
+	  background: #fff;
+	  font-size: 15px;
+	}
+	#cssmenu ul ul li:last-child {
+	  border-bottom: 0px solid #565656;
+	}
+	#cssmenu ul ul li:first-child {
+	  padding-top: 10px;
+	}
+	#cssmenu ul ul li:last-child > a {
+	  border-bottom: none;
+	}
+	#cssmenu ul ul li:first-child:after {
+	  content: '';
+	  display: block;
+	  width: 0;
+	  height: 0;
+	  position: absolute;
+	  left: -20px;
+	  top: 13px;
+	  border-left: 10px solid transparent;
+	  border-right: 10px solid #fff;
+	  border-bottom: 10px solid transparent;
+	  border-top: 10px solid transparent;
+	}
+	#cssmenu ul ul li.dark:first-child:after {
+	  border-right: 10px solid rgb(48,48,48);
+	}
+	#cssmenu ul ul li a.dark{
+		border-bottom: 1px solid #565656;
+	}
+
+	.cssmenu-heading{
+		text-align: center;
+		font-size: 18px;
+		font-weight: 700 !important;
+		letter-spacing: 1px;
+		cursor:default;
+	}
+
 	/* Dropdown Button */
 	.dropbtn {
-		background-color: #f9a525;
-		color: white;
+		/*background-color: #f9a525;
+		color: white;*/
 		padding: 4px;
 		border-radius: 100%;
 		font-size: 10px;
@@ -58,11 +199,44 @@
 	.dropdown:hover .dropbtn {
 		/*background-color: #3e8e41;*/
 	}
+	
+	.sub-menu-icon
+	{
+		margin-right:10px;
+		font-size:18px;
+	}
+	
+	.fadeHeaderToggle {
+			  -webkit-transition: top linear 0.2s;
+			  transition: top linear 0.2s;
+			  top: 45px;
+			}
+			.fadeHeaderToggle.ng-hide {
+			  top: 30px;
+			}
+			.fadeHeaderToggle.ng-hide-add,
+			.fadeHeaderToggle.ng-hide-remove {
+			  display: block!important;
+			}
+			
+			.fadeSideMenuToggle {
+			  -webkit-transition: left linear 0.2s;
+			  transition: left linear 0.2s;
+			  left: -2px;
+			  overflow: inherit;
+			}
+			.fadeSideMenuToggle.ng-hide {
+			  left: -20px;
+			}
+			.fadeSideMenuToggle.ng-hide-add,
+			.fadeSideMenuToggle.ng-hide-remove {
+			  display: block!important;
+			}
 </style>
 
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
 
-        <md-toolbar style="min-height: 42px;height:42px;background:#02b5e2">
+        <md-toolbar style="min-height: 45px;height:45px;">
             <div layout="row" layout-align="space-between center">
 
                 <h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
@@ -94,7 +268,7 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="searchBar" style="overflow-y:hidden;z-index:1501;">
 
 
-        <md-toolbar style="min-height: 42px;height:42px;background:#02b5e2">
+        <md-toolbar style="min-height: 45px;height:45px;">
             <div layout="row" layout-align="space-between center">
 
                 <div class="search-box">
@@ -176,7 +350,7 @@
         </div>
         <!-- md theme watch end -->
         <!-- #SerchBar -->
-        <div class="blut-log-wrapper">
+        <div class="blut-log-wrapper" md-colors="{background:'primary'}">
             <md-tooltip md-direction="left" style="z-index: 9999;">
                     v3.2.0.9
             </md-tooltip>
@@ -189,7 +363,7 @@
                 <div class="main-headbar-slide md-theme-light" layout="row" layout-align="space-between center">
                
                     
-					<div class="blut-search-wrapper" ng-click="openSearchBar()" layout="row" flex>
+					<div class="blut-search-wrapper hover-color" ng-click="openSearchBar()" layout="row" flex>
 						<i class="icon-search"></i>
 						Search
 					</div>
@@ -201,30 +375,30 @@
 					</div>
                     <div layout="row" layout-align="end center" class="blut-search-right-wrapper" style="width: 532px;">
 
-                        <div class="blut-header-icon" style="" ng-click="mainclose()" id="home">
-                            <i class="icon-house-outline"></i>
+                        <div class="blut-header-icon" ng-click="mainclose()" md-colors="{color:'primary'}" id="home">
+                            <i class="icon-house-outline hover-color"></i>
 							<md-tooltip md-direction="bottom">Go To Home</md-tooltip>
                         </div>
 
                         <div class="blut-header-icon" ng-click="navigate('TV Mode')" id="fullscreen">
-                            <i class="icon-full-size"></i>
+                            <i class="icon-full-size hover-color" md-colors="{color:'primary'}" ></i>
 							<md-tooltip md-direction="bottom">Toggle Fullscreen</md-tooltip>
                         </div>
-                        <div class="blut-header-icon" ng-click="navigate('Clear Widgets')" id="clearWidgets">
-                            <i class="icon-broom"></i>
+                        <div class="blut-header-icon"  ng-click="navigate('Clear Widgets')" id="clearWidgets">
+                            <i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
 							<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
                         </div>
                         <div class="blut-header-icon" ng-click="navigate('Save')"  id="save">
-                            <i class="ti-save"></i>
+                            <i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
 							<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
                         </div>
                         <div class="blut-header-icon" ng-click="navigate('share Dashboards')" style="margin-top: -3px;">
-                            <i class="ti-share"></i>
+                            <i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
 							<md-tooltip md-direction="bottom">Share Dashboard</md-tooltip>
                         </div>
-                        <div class="blut-header-icon" ng-click="openNotifications()" style="width:45px;" id="notifications">
-                            <ng-md-icon icon="notifications_none" style="fill:#02b5e2;cursor:pointer" class="widicons" size="26px"></ng-md-icon>
-                            <div style="width:15px;height:15px;border-radius:16px;background:#02b5e2;color:white;margin-top:-34px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
+                        <div class="blut-header-icon" md-colors="{color:'primary'}" ng-click="openNotifications()" style="width:45px;" id="notifications">
+                            <i class="ti-bell hover-color" md-colors="{color:'primary'}"></i>
+                            <div md-colors="{background:'accent'}"  style="width:15px;height:15px;border-radius:16px;margin-top:-30px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
 							<md-tooltip md-direction="bottom">Notifications</md-tooltip>
                         </div>
 
@@ -237,7 +411,7 @@
                                     <img src="{{profile_pic}}"/>
                                 </div>
 								<div class="dropdown">
-									<button class="dropbtn"><i class="ti-angle-down"></i></button>
+									<button class="dropbtn" md-colors="{background:'accent'}"><i class="ti-angle-down"></i></button>
 									<div class="dropdown-content">
 									<a ng-click="navigate('switch tenant')")">Switch Tenant</a>
 									<!--a ng-click="navigate($event,'Invite User')">Invite user</a>
@@ -253,17 +427,80 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blut-search-toggele" ng-click="topMenuToggle()">
-                        <span ng-if="!headerMenuToggle" class="ti-angle-down"></span>
-                        <span ng-if="headerMenuToggle" class="ti-angle-up"></span>
+                    <div class="blut-search-toggele hover-color" md-colors="{color:'primary'}" ng-click="topMenuToggle()">
+                        <span ng-if="!showHeader" class="ti-angle-down"></span>
+                        <span ng-if="showHeader" class="ti-angle-up"></span>
                     </div>
                 </div>
 
         <!-- end searchBar -->
 
-        <div id="getReport" class="nav-menu nav-bar-border left-menu-bar" ng-include
-             src="'views/ViewSidebar.html'">
-        </div>
+        <!--md-content id="getReport" class="nav-menu nav-bar-border left-menu-bar" ng-include src="'views/ViewSidebar.html'">
+        </md-content-->
+		
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce">
+			<div id="cssmenu">
+				<ul>
+					<li style="height:30px;font-size:24px"  id="step1"><a md-colors="{color:'primary'}" ></a>
+
+					</li>
+					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate('Add Page')" id="addPage">
+						<md-tooltip md-direction="right">Add Page</md-tooltip>
+						<a class="hover-color" md-colors="{color:'primary'}"><i class="icon-add-page"></i></a>
+					</li>
+					<li style="height:50px;font-size:24px" class="active has-sub" id="reports"><a class="hover-color" md-colors="{color:'primary'}" ><i class="icon-report"></i></a>
+						<ul>
+							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Reports</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}" ng-click="goTORout('home.Reports')"><i class="ti-filter sub-menu-icon"></i>Report Development</a></li>
+						</ul>
+					</li>
+					<li style="height:50px;font-size:24px" class="active has-sub" id="datasource"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-database"></i></a>
+						<ul>
+							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
+							<li ng-click="navigate('Data Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
+							<!--li ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li-->
+						</ul>
+					</li>
+					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate('Add Widgets')" id="addWidgets">
+						<md-tooltip md-direction="right">Add Widgets</md-tooltip>
+						<a class="hover-color" md-colors="{color:'primary'}"><i class="icon-plugin"></i></a>
+					</li>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub" id="socialMedia"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-profile"></i></a>
+						<ul>
+							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Social Media</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}" ng-click="goTORout('home.social-graph-fb')"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+						 
+						</ul>
+					</li>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub" id="settings"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share"></i></a>
+						<ul>
+							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Share</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-google sub-menu-icon"></i>Google+</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-twitter sub-menu-icon"></i>Twitter</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-linkedin sub-menu-icon"></i>Linkedin</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}" ng-click="goTORout('Email')"><i class="ti-email sub-menu-icon"></i>Email</a></li>
+						</ul>
+					</li>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings"></i></a>
+						<ul>
+							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Settings</a></li>
+							<li ng-click="goTORout('home.userAdministrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
+							<li ng-click="goTORout('home.systemSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
+							<li ng-click="navigate($event,'theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
+						</ul>
+					</li>
+					
+					
+
+
+				</ul><!-- -->
+				<md-content class="left-menu-toggle hover-color" md-colors="{color:'primary'}" ng-click="leftMenuToggle()">
+					<span ng-if="!showSideMenu" class="ti-angle-right"></span>
+					<span ng-if="showSideMenu" class="ti-angle-left"></span>
+				</md-content>
+			</div>
+		</md-content>
         <!-- sidebar end -->
         <!-- ui view start -->
         <ul ui-view layout="column" id="content1" style="height:100% !important;">
@@ -272,8 +509,7 @@
         <!-- ui view end -->
         <!-- Common data source start -->
 
-        <div class="commonDataSource" ng-include src="'views/common-data-src/ViewCommonDataSrc.html'"
-             ng-controller="commonDataSrcInit">
+        <div class="commonDataSource" ng-include src="'views/common-data-src/ViewCommonDataSrc.html'" ng-controller="commonDataSrcInit">
         </div>
 
         

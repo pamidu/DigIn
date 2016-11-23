@@ -128,7 +128,7 @@
     <!-- If you'd like to support IE8 -->
         <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 </head>
-<body layout="column" ng-cloak>
+<body layout="column" ng-cloak md-theme="{{$root.theme}}">
 
     <div ui-view layout="column" id="mainContainer" style="height: 100%">
     </div>
@@ -345,6 +345,9 @@
 <!--feature wise userAdministrator-->
 <script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 <script src="views/settings/userAdministrator/userAdminFactory.js"></script>
+
+<!--feature wise theming-->
+<script src="views/settings/theme/themingConfig.js"></script>
 
 <!--sytem settings-->
 <script src="views/settings/systemSettings/systemSettings.js"></script>

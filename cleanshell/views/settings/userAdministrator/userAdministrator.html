@@ -28,7 +28,7 @@
 
 #pagingTabs md-tabs-content-wrapper
 {
-	height: calc(100vh - 86px);	
+	height: calc(100vh - 40px);	
 	position: relative;
 
 }
@@ -91,7 +91,7 @@ md-tabs[md-align-tabs=bottom]
 			<span flex></span>
 		</md-tab-label>
 		<md-tab-body>
-		
+		<div class="card-container">
 			<div layout="row" style="max-width:960px;margin: 0 auto;margin-bottom: 15px;margin-top:20px">
 				<input placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important;box-shadow:0 2px 4px 0 rgba(0,0,0,.15) !important;margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
 				<md-button aria-label="Open demo menu" class="md-raised md-primary" style="border-radius: 0px 4px 4px 0px !important;margin: 0px;" ng-click="enterInviteUser($event,searchText)">
@@ -143,6 +143,7 @@ md-tabs[md-align-tabs=bottom]
 				</md-content>
 
 			</md-whiteframe><br/>
+			</div>
 		</md-tab-body>
 	  </md-tab>
 	  <md-tab label="add page">

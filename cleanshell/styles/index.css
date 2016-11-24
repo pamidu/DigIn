@@ -498,18 +498,7 @@
 
 .product_description
 {
-	color: #797979;
 	font-size: 13px;
-}
-
-.dashboard_card
-{
-	background: #1b7b97;
-}
-
-.report_card
-{
-	background: #13b6b3;
 }
 
 .md-3-line-small>.md-no-style, .md-3-line-small
@@ -529,4 +518,9 @@
 	{
 		width:270px !important;
 	}
+}
+
+.list-item-margin
+{
+	line-height: 18px;
 }

@@ -396,7 +396,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             }
         }).state('home.welcomeSearch', {
         url: '/welcome-search',
-        templateUrl: "views/help/welcomeSearchBar.html",
+        templateUrl: "views/home/home.html",
         data: {
             requireLogin: true
         }

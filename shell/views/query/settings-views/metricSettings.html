@@ -38,13 +38,16 @@
     <md-container>
         <label class="chart-settings-labels">Data Settings</label>
         <br>
-        <md-container flex layout="row">
-            <md-input-container flex="50">
+        <md-container flex layout="column">
+            <md-input-container flex>
                 <label>Actual Value</label>
-                <input ng-disabled="true">
+                <input ng-model="selectedChart.initObj.actualValue">
             </md-input-container>
-            <md-input-container flex="50">
+            <md-input-container flex>
                 <label>Target Value</label>
+                <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in commonData.measures" md-item-text="item.filedName" ng-model="selectedChart.initObj.targetValue">
+                    <span md-highlight-text="searchText">{{item.filedName}}</span>
+                </md-autocomplete>
             </md-input-container>
         </md-container>
     </md-container>
@@ -57,32 +60,40 @@
                     <label>Colouring Type</label>
                 </div>
                 <div  flex="70" layout="column">
-                    <md-radio-group  flex layout="column">
-                        <md-radio-button value="higher" class="md-primary" style="float: left;">
+                    <md-radio-group  flex layout="column" ng-model="selectedChart.initObj.targetRange">
+                        <md-radio-button value="higher" class="md-primary left">
                             Higher is better
                         </md-radio-button>
-                        <md-radio-button value="lower" class="md-primary" style="float: left;">
+                        <md-radio-button value="lower" class="md-primary left">
                             Lower is better
                         </md-radio-button>                        
                     </md-radio-group>
                 </div>
             </md-input-container>
+            <md-input-container>
+                <label>Colour Ranges</label>
+                <rzslider rz-slider-model="selectedChart.initObj.rangeSliderOptions.minValue" rz-slider-high="selectedChart.initObj.rangeSliderOptions.maxValue" rz-slider-options="selectedChart.initObj.rangeSliderOptions.options">
+                </rzslider>
+            </md-input-container>
             <md-input-container flex layout="row">
                 <div flex="30">
                     <label>Color Theme</label>
                 </div>
-                <md-radio-group  flex="70" layout="column">
-                    <md-radio-button value="rog" class="md-primary" style="float: left;">
+                <md-radio-group  flex="70" layout="column" ng-model="selectedChart.initObj.colorTheme">
+                    <md-radio-button value="rog" class="md-primary left">
                         Red, Orange, Green
                     </md-radio-button>
-                    <md-radio-button value="cgy" class="md-primary" style="float: left;">
+                    <md-radio-button value="cgy" class="md-primary left">
                         Cyan, Green, Yellow-Green
                     </md-radio-button>
-                    <md-radio-button value="gpo" class="md-primary" style="float: left;">
+                    <md-radio-button value="gpo" class="md-primary left">
                         Green, Purple, Orange
                     </md-radio-button>
                 </md-radio-group>
             </md-input-container>
+        </md-container>
+        <md-container>
+            <md-button class="md-raised md-primary right">Finish</md-button>         
         </md-container>
     </md-container>    
 </div>

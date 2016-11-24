@@ -35,6 +35,7 @@ var routerApp = angular.module('DuoDiginRt', [
     "ngTagsInput",
     'pouchdb',
     'jkuri.slimscroll',
+    'rzModule',
 	'md-steppers',
     'stripe-payment-tools',
 	'angular-intro'

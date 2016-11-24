@@ -55,7 +55,7 @@
     <!-- angular gridster -->
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
     <!-- <link rel="stylesheet" type="text/css" src="bower_components/mdchips/md-chips-select.css"/> -->
-    
+    <link rel="stylesheet" href="bower_components/angular-slider/rzslider.min.css"/>
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
     <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">

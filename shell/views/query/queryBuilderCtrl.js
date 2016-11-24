@@ -41,7 +41,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService) {
+routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, $timeout) {
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
     }
@@ -116,22 +116,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     $scope.client = $diginengine.getClient($scope.sourceData.src);
     $scope.queryEditState = false;
     $scope.metricObj = {
-        scales: [{
-            name: 'None',
-            val: ""
-        }, {
-            name: '$',
-            val: "$"
-        }, {
-            name: 'cm',
-            val: "cm"
-        }, {
-            name: 'm',
-            val: "m"
-        }, {
-            name: 'kg',
-            val: "kg"
-        }],
         decimals: [0, 1, 2, 3, 4],
         scalePositions: ["front", "back"]
     };
@@ -539,7 +523,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     dec: 2,
                     label: "Sales Average",
                     scalePosition: "back",
-                    color: 'black'
+                    color: 'black',
+                    actualValue: 33852,
+                    targetRange: "higher",
+                    targetValue: 33852,
+                    rangeSliderOptions: {
+                        minValue: 0,
+                        maxValue: 100,
+                        options: {
+                            floor: 0,
+                            ceil: 100,
+                            step: 1,
+                            translate: function(value) {
+                              return value + '%';
+                            }
+                        }
+                    },
+                    colorTheme: "rog"
                 },
                 settingsView: 'views/query/settings-views/metricSettings.html',
 				tooltip: ""
@@ -937,6 +937,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             if (this.openSettingToggle[1].isQueryBuilder) {
                                 this.hideDesignQuery();
                             }
+                        }
+                        if ($scope.selectedChart.chartType == "metric") {
+                            $timeout(function () {
+                                $scope.$broadcast('rzSliderForceRender');
+                            },500);
                         }
                         break;
                     case '4':
@@ -3342,7 +3347,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         },
         removeCat: function() {
             $scope.getAggregation();
-        },
+        },     
         onGetAggData: function(res) {
             for (var c in res) {
                 $scope.isPendingRequest = false;

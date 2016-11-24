@@ -653,22 +653,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
-             $rootScope.currentView ="Reports || "+report;
-            layoutManager.headerMenuToggle(true);
-            $scope.openSearchBar(); 
-            $mdSidenav('right')
-                .close()
-                .then(function () {
-                    $log.debug('right sidepanel closed');
-                });
-            //----------
-            $scope.showTabs(false);
-            //closing the overlay
-            $(".overlay").removeClass("overlay-search active");
-            $(".nav-search").removeClass("active");
-            $(".search-layer").removeClass("activating active");
-            // console.log(report);
             $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
+			$rootScope.currentView ="Reports || "+report;
         }
 
         //Function to Delete Dashbord

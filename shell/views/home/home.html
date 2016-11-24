@@ -1,0 +1,52 @@
+<!--div ng-controller="welcomeSearchBarCtl" class="digin-welcome-sch-wrap" ng-init="onLoaded()">
+    <div class="row">
+
+        <h1 class="search-header dashboard">Dashboards </h1>
+        <div ng-repeat="dashboard in dashboards "
+             class="col-lg-2 welcome-search dashboard hvr-pop">
+            <i class="fa fa-signal"></i>
+            <h2>{{dashboard.dashboardName}}</h2>
+            <a href="javascript:void(0)"
+               ng-click="goDashboard(dashboard)">view</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <h1 class="search-header report">Reports</h1>
+        <div ng-repeat="report in reports"
+             class="col-lg-2 welcome-search report hvr-pop">
+            <i class="fa fa-suitcase"></i>
+
+            <h2>{{report.splitName}}</h2>
+            <a href="javascript:void(0)"
+               ng-click="goReport(report.splitName)">view</a>
+        </div>
+
+    </div>
+</div-->
+
+<div class="card-container" layout-padding>
+    <h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Dashboards </h1>
+	<div layout="row" layout-align="center center" layout-wrap>
+		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-800'}" ng-click="goDashboard(dashboard)">
+			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+				<span class="product_name" style="border-bottom: 1px solid #white;">{{dashboard.dashboardName}}</span>
+			</div>
+			<div layout="row" layout-align="end end">
+				<i class="ti-pie-chart" md-colors="{color:'accent-900'}"  style="font-size: 130px;"></i>
+			</div>
+		</md-card>
+	</div>
+
+	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Reports</h1>
+    <div layout="row" layout-align="center center" layout-wrap>
+		<md-card ng-repeat="report in reports" flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-900'}"  ng-click="goReport(report.splitName)">
+			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+				<span class="product_name" style="border-bottom: 1px solid #white;">{{report.splitName}}</span>
+			</div>
+			<div layout="row" layout-align="end end">
+				<i class="ti-bar-chart" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>
+			</div>
+		</md-card>
+	</div> 
+</div>

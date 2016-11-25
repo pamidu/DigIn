@@ -97,6 +97,13 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		url: '/upload_source',
 		templateUrl: 'views/data_source/upload_source/upload_source.html'
 	})
+	
+	.state('systemSettings', {
+		url: '/systemSettings',
+		templateUrl: 'views/settings/systemSettings/systemSettings.html',
+		controller: 'systemSettingsCtrl',
+		controllerAs: 'vm'
+	})
 
 
   GoogleMapApi.configure({

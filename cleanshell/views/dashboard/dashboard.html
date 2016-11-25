@@ -3,6 +3,7 @@
 {
 	/*background: #aba8a5 !important;*/
 	height: 40px !important;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
 }
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas
@@ -31,6 +32,7 @@ md-ink-bar
     height: 40px;
     top: 0px;
 	z-index: -1 !important;
+	border-radius: 5px 5px 0px 0px;
 }
 
 md-tabs[md-align-tabs=bottom]
@@ -230,7 +232,7 @@ md-tabs[md-align-tabs=bottom]
 </style>
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
-	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-accent">
+	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary">
 	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
 		<md-tab-label layout="row" layout="space-between center">
 			<span md-colors="{color:'{{$root.h1color}}-A700'}" style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"  ng-dblclick="editPageName($event,page)" flex>{{page.pageName}}</span>

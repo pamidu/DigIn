@@ -212,12 +212,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}else if(action == "shareDashboard")
 		{
 			location.href = '#/shareDashboard';
-		}else if(action == "shareDashboard")
+		}else if(action == "systemSettings")
 		{
-			location.href = '#/shareDashboard';
-		}else if(action == "userSettings")
-		{
-			location.href = '#/userSettings';
+			console.log('systemSettings');
+			location.href = '#/systemSettings';
 		}else if(action == 'accountSettings')
 		{
 			location.href = '#/accountSettings';

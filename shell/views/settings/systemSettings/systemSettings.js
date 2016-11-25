@@ -1,5 +1,17 @@
 routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory){
 
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+	}else{
+		$('md-tabs-wrapper').css('background-color',"white", 'important');
+	}
+	
+	$scope.goToNextStep = function()
+	{
+		console.log("next");
+		$scope.selected = 1;
+	}	
     userAdminFactory.getUserLevel();
 
     $scope.sizes = [

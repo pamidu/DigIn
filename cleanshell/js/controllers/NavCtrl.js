@@ -11,7 +11,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
-	colorManager.changeTheme('default');
+	colorManager.changeTheme('defaultDark');
 	
 
 	

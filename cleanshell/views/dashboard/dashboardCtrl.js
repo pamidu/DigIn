@@ -1,6 +1,13 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', 'layoutManager', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,layoutManager) {
 	
 	$rootScope.showSideMenu = layoutManager.hideSideMenu();
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+	}else{
+		$('md-tabs-wrapper').css('background-color',"white", 'important');
+	}
+
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -153,6 +160,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 			removeWidget: function(ev, widget)
 			{
 				console.log("removeWidget");
+				//$('md-tabs-wrapper').css('background-color',"black", 'important');
 			},
 			closeSetting: function () {
 				console.log("closeSetting");

@@ -365,6 +365,9 @@
     float: right !important;
 }
 
+.left {
+    float: left !important;
+}
 /* text box style -*/
 .form-control.form-white {
     background-color: #ffffff;
@@ -1559,19 +1562,24 @@ rzslider .rz-bubble {
 }
 
 rzslider {
-    margin: 46px 0 15px 0;
+    margin: 60px 0 15px 0;
 }
 
 rzslider .rz-pointer {
-    background-color: #F39A00;
+    background-color: #01717d;
+    width: 10px;
+}
+
+rzslider .rz-bar {
+    background: #0db9f0
 }
 
 rzslider .rz-pointer:after {
-    background: #06344A;
+    display: none;
 }
 
 rzslider .rz-bubble {
-    color: #F9FDFF;
+    color: #01717d;
 }
 
 .sf-border-left {

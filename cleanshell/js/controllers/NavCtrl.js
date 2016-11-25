@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -6,8 +6,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.sharableGroups = [];
 	
 	$scope.currentView = "Home";
-	//$rootScope.theme = 'default';
-	colorManager.changeTheme({theme: 'purpleTheme'});
+	
+	//Theming
+	$rootScope.lightOrDark = '';
+	$rootScope.currentColor = '';
+	$rootScope.h1color = '';
+	colorManager.changeTheme('defaultDark');
 	
 
 	
@@ -293,6 +297,40 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	{
 		$mdDialog.cancel();
 	}	
+	
+	$scope.notifications = [{title:"Urgent", message: "Your system needs to be updated asap", type: 1, icon: "ti-pie-chart", color: "#4CAF50"}];
+	var audio = new Audio('sounds/notification.mp3');
+	$scope.notificationAudio = true; 
+	
+	$timeout(function(){
+		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: "2", href:"#/home"};
+		if(!message.icon){message.icon = "ti-comment"};
+			
+		if(parseInt(message.type) == 0){message.color = "#FF5252";}else if(parseInt(message.type) == 1){message.color = "#4CAF50"}else if(parseInt(message.type) == 2){message.color = "#F9A937";}
+		
+		$scope.notifications.push(message);
+		notifications.toast(message.type, message.message);
+		if($scope.notificationAudio == true)
+		{
+			audio.play();
+		}
+
+	}, 5000);
+	
+	$scope.openNotification = function(path)
+	{
+		if(!path){
+			//do nothing
+		}else{
+			window.location.href = path;
+			$mdSidenav('notifications').toggle();
+		}
+
+	}
+
+
+	
+	
 	
 	//Introduction to Shell
 	$scope.IntroOptions = {

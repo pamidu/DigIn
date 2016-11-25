@@ -156,7 +156,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 			classType = "alert-danger";
 		}else if(type == 1){
 			classType = "alert-success";
-		}else if(type == 3){
+		}else if(type == 2){
 			classType = "alert-warning";
 		}else{
 			classType = "alert-info";
@@ -421,9 +421,9 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '30px'
 		},200)
 		
-		$('md-tabs-content-wrapper').animate({
-			height: '94vh'
-		},200)
+		/*$('md-tabs-content-wrapper').animate({
+			height: '100vh'
+		},200)*/
 		
 		return false;
 	}
@@ -440,7 +440,7 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '70px'
 		},200)
 		
-		var newHeight = $('md-tabs-content-wrapper').height() - 45;
+		var newHeight = $('md-tabs-content-wrapper').height(); - 45;
 		
 		$('md-tabs-content-wrapper').animate({
 			height: newHeight

@@ -6,8 +6,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         '200': '#33d5fd',
         '300': '#1acffd',
         '400': '#02c9fb',
-        '500': '#02b5e2',
-		
+        '500': '#02b5e2',	
         '600': '#02a1c9',
         '700': '#028caf',
         '800': '#017896',
@@ -102,20 +101,20 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
 	.accentPalette('redAccent')
 	
 	$mdThemingProvider.definePalette('purplePrimary', {
-        '50': '#8859c1',
-        '100': '#7b47ba',
-        '200': '#6f3fa9',
-        '300': '#623896',
-        '400': '#563184',
-        '500': '#4a2a71',
-        '600': '#3e235e',
-        '700': '#321c4c',
-        '800': '#251539',
-        '900': '#190e27',
-        'A100': '#956cc8',
-        'A200': '#a37ecf',
-        'A400': '#b091d6',
-        'A700': '#0d0714',
+        '50': '#cbb6e4',
+        '100': '#bda3dd',
+        '200': '#b091d6',
+        '300': '#a37ecf',
+        '400': '#956cc8',
+        '500': '#8859c1',
+        '600': '#7b46ba',
+        '700': '#6e3fa8',
+        '800': '#623896',
+        '900': '#563183',
+        'A100': '#d8c8eb',
+        'A200': '#e5dbf2',
+        'A400': '#f2eef8',
+        'A700': '#4a2a70',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -301,6 +300,40 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
     .primaryPalette('greenPrimary')
 	.accentPalette('greenAccent')
 	
+	
+
+	//Dark
+	$mdThemingProvider.theme('defaultDark')
+      .primaryPalette('customPrimary')
+	  .accentPalette('customAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('redThemeDark')
+      .primaryPalette('redPrimary')
+	  .accentPalette('redAccent')
+      .dark();
+	  
+	  $mdThemingProvider.theme('purpleThemeDark')
+      .primaryPalette('purplePrimary')
+	  .accentPalette('purpleAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('orangeThemeDark')
+      .primaryPalette('orangePrimary')
+	  .accentPalette('orangeAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('blueThemeDark')
+      .primaryPalette('bluePrimary')
+	  .accentPalette('blueAccent')
+      .dark();
+	  
+	 $mdThemingProvider.theme('greenThemeDark')
+      .primaryPalette('greenPrimary')
+	  .accentPalette('greenAccent')
+      .dark();
+	
+	
 	$mdThemingProvider.alwaysWatchTheme(true);
 	
 }])
@@ -309,19 +342,31 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 
 
 	 
-		this.changeTheme = function(color) {
-			
-			var primaryColor = $mdColors.getThemeColor(color.theme+'-primary-500');
-			var accentColor = $mdColors.getThemeColor(color.theme+'-accent-500');
-					
-			$rootScope.theme = color.theme;
-			
-			$('.has-sub').css('border-left',"3px solid #d7d8da").hover(
+		this.changeTheme = function(theme) {
+
+			if(theme.substr(theme.length - 4) == "Dark")
+			{
+				$rootScope.lightOrDark = "Dark";
+				$rootScope.currentColor = theme.slice(0, -4);
+				$rootScope.theme = theme;
+				darken();
+
+			}else{
+				$rootScope.lightOrDark = "Light";
+				$rootScope.currentColor = theme;
+				$rootScope.theme = theme;
+				lighten();				
+			}
+
+			var primaryColor = $mdColors.getThemeColor($rootScope.currentColor+'-primary-500');
+			var accentColor = $mdColors.getThemeColor($rootScope.currentColor+'-accent-500');
+
+			$('.has-sub').css('border-left',"3px solid #8b8b8b").hover(
 			function(){
 				$(this).css('border-left',"3px solid "+accentColor);
 			},
 			function(){
-				$(this).css('border-left',"3px solid #d7d8da");
+				$(this).css('border-left',"3px solid #8b8b8b");
 			});
 			
 			$('.hover-color').css('color',primaryColor).hover(
@@ -331,6 +376,42 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			function(){
 				$(this).css('color',primaryColor);
 			});
+		}
+		
+		this.changeMainTheme = function(lightOrDark) {
+
+			if(lightOrDark.theme == 'Dark')
+			{
+				$rootScope.theme = $rootScope.currentColor + lightOrDark.theme;
+				$rootScope.lightOrDark = lightOrDark.theme;
+				darken();
+			}else{
+				$rootScope.theme = $rootScope.currentColor;
+				$rootScope.lightOrDark = lightOrDark.theme;
+				lighten();
+			}
+		}
+		
+		function darken()
+		{
+			$rootScope.h1color = "accent";
+			$('body').css('background',"rgb(88, 88, 88)");
+			$('#cssmenu ul ul li').css('background',"rgb(48,48,48)");
+			$('#cssmenu ul ul li').addClass('dark');
+			$('#cssmenu ul ul li a').addClass('dark');
+			$('.border-left-light').addClass('border-left-dark');
+			$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+		}
+		
+		function lighten()
+		{
+			$rootScope.h1color = "primary";
+			$('body').css('background',"rgba(230, 230, 230, 1)");
+			$('#cssmenu ul ul li').css('background',"white");
+			$('#cssmenu ul ul li').removeClass('dark');
+			$('#cssmenu ul ul li a').removeClass('dark');
+			$('.border-left-light').removeClass('border-left-dark');
+			$('md-tabs-wrapper').css('background-color',"white", 'important');
 		}
 }])
 

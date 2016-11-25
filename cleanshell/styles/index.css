@@ -36,7 +36,6 @@
 .left-menu-toggle {
 	width: 20px;
 	height: 30px;
-	background: #fff;
 	text-align: center;
 	cursor: pointer;
 	border-top-right-radius: 10px;
@@ -77,8 +76,6 @@
 .blut-search-toggle  {
 	width: 45px;
 	height: 20px;
-	background: #ffffff;
-	/*color: #f9a525;*/
 	text-align: center;
 	margin-left: calc(50% - 48px);
 	padding-top: 1px;
@@ -89,6 +86,7 @@
 	position: absolute;
 	top: 45px;
 	box-shadow: 0 1px 0px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+	overflow:inherit;
 }
 
 .blut-search-toggle .go-up {
@@ -144,19 +142,22 @@
 	cursor: pointer;
 }
 
-.blut-current-view > i:hover {
-	color: #3c8eb8;
-}
 .blut-search-right-wrapper {
-	width: 495px !important;
+	width: 495px;
 	position: relative;
-	background: rgb(253, 252, 252);
-	width: 100%;
 	height: 42px;
 	overflow: hidden;
 	padding-left: 30px;
 	padding-right: 30px;
 	border-left: 1px solid #f4f4f4;
+}
+
+.border-left-light{
+	border-left: 1px solid #f4f4f4;
+}
+
+.border-left-dark{
+	border-left: 1px solid #565656;
 }
 
 .blut-header-icon {
@@ -173,7 +174,6 @@
 
 
 .blut-profile-wrapper-header {
-	border-left: 1px solid #f4f4f4;
 	height: 100%;
 	padding-right: 15px;
 }
@@ -182,7 +182,6 @@
 	font-family: 'Segoe UI', sans-serif !important;
 	font-weight: 600;
 	font-size: 13px;
-	color: #3b6982;
 	padding-left: 10px;
 }
 
@@ -311,15 +310,15 @@
   float: none;
 }
 #cssmenu > ul > li {
-  border-left: 3px solid #d7d8da;
+  border-left: 3px solid #8b8b8b;
 }
 #cssmenu > ul > li > a {
   padding: 10px 10px;
 }
 
-#cssmenu > ul > li:hover {
+/*#cssmenu > ul > li:hover {
   background: #f6f6f6;
-}
+}*/
 /* Sub Menu */
 #cssmenu ul ul a:link,
 #cssmenu ul ul a:visited {
@@ -341,7 +340,7 @@
   font-size: 15px;
 }
 #cssmenu ul ul li:last-child {
-  border-bottom: 3px solid #d7d8da;
+  border-bottom: 0px solid #565656;
 }
 #cssmenu ul ul li:first-child {
   padding-top: 10px;
@@ -361,6 +360,12 @@
   border-right: 10px solid #fff;
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
+}
+#cssmenu ul ul li.dark:first-child:after {
+  border-right: 10px solid rgb(48,48,48);
+}
+#cssmenu ul ul li a.dark{
+    border-bottom: 1px solid #565656;
 }
 
 .cssmenu-heading{
@@ -397,18 +402,20 @@
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #f9f9f9;
+	/*background-color: #f9f9f9;*/
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index:600;
 	right: 0px;
 	cursor: pointer;
+	overflow:inherit;
+	
 	
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
-	color: #3b6982;
+	opacity:0.7;
 	padding: 12px 16px;
 	text-decoration: none;
 	display: block;
@@ -416,7 +423,7 @@
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {opacity:1}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
@@ -484,25 +491,14 @@
 
 .product_name
 {
-	color: white;
+	/*color: white;*/
 	font-size: 20px;
 	padding-bottom:10px
 }
 
 .product_description
 {
-	color: #797979;
 	font-size: 13px;
-}
-
-.dashboard_card
-{
-	background: #1b7b97;
-}
-
-.report_card
-{
-	background: #13b6b3;
 }
 
 .md-3-line-small>.md-no-style, .md-3-line-small
@@ -522,4 +518,9 @@
 	{
 		width:270px !important;
 	}
+}
+
+.list-item-margin
+{
+	line-height: 18px;
 }

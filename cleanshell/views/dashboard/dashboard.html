@@ -1,15 +1,9 @@
 <style>
 #pagingTabs md-tabs-wrapper
 {
-	background: white !important;
+	/*background: #aba8a5 !important;*/
 	height: 40px !important;
-	border-top: 1px solid lightgrey;
 }
-/*#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
-{
-	color: white !important;
-	background: #afb6bc;
-}*/
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas
 {
@@ -17,10 +11,9 @@
 	max-height:40px;
 }
 
-#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active, #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active span
 {
-	/*color: white !important;
-	background: #3b6981 !important;*/
+	color: white !important;
 	-ms-transform: scale(1.1, 1.1); /* IE 9 */
     -webkit-transform: scale(1.1, 1.1); /* Safari */
     transform: scale(1.1, 1.1);
@@ -28,7 +21,7 @@
 
 #pagingTabs md-tabs-content-wrapper
 {
-	height: calc(100vh - 86px);	
+	height: calc(100vh - 40px);	
 	position: relative;
 
 }
@@ -46,7 +39,6 @@ md-tabs[md-align-tabs=bottom]
 }
 .widget-header
 {
-	background: white;
     padding: 0px 10px 0px 10px;
 }
 
@@ -238,19 +230,20 @@ md-tabs[md-align-tabs=bottom]
 </style>
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
-	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary">
+	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-accent">
 	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
 		<md-tab-label layout="row" layout="space-between center">
-			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"  ng-dblclick="editPageName($event,page)" flex>{{page.pageName}}</span>
+			<span md-colors="{color:'{{$root.h1color}}-A700'}" style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"  ng-dblclick="editPageName($event,page)" flex>{{page.pageName}}</span>
 			<span flex></span>
 			<i class="icon-cancel" style="font-size:10px;cursor:pointer;outline:none" ng-click="removePage($event, page);$event.stopPropagation()" flex></i>
 		</md-tab-label>
 		<md-tab-body>
+			<div class="card-container">
 			<div gridster="gridsterOpts">
 				<ul>
-					<li gridster-item="widget" ng-repeat="widget in page.widgets" style="background:white;padding-bottom: 49px !important;">
+					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" style="padding-bottom: 49px !important;overflow:inherit">
 						<div class="widget-header" layout="row" layout-align="space-between center">
-							<span style="font-size: 20px;" md-colors="{color:'primary-A700'}">{{widget.widgetName}}</span>
+							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
 							
 								<md-button class="md-icon-button ti-menu-alt" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)" ng-if="showDataViewBtn(widget)">
@@ -332,14 +325,15 @@ md-tabs[md-align-tabs=bottom]
 						<div style="height:100%;width:100%" ng-init="startWidget(widget)" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include="widget.widgetData.widView">
 						</div>
 
-					</li>
+					</md-content>
 				</ul>
+			</div>
 			</div>
 		</md-tab-body>
 	  </md-tab>
 	  <md-tab label="add page">
 		<md-tab-label layout="row" layout="space-between center">
-			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;color:#393939;font-weight: 700;" flex>
+			<span  md-colors="{color:'{{$root.h1color}}-A700'}" style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;font-weight: 700;" flex>
 				<i class="icon-add-page" style="padding-right:20px"></i>Add Page
 			</span>
 		</md-tab-label>
@@ -351,7 +345,7 @@ md-tabs[md-align-tabs=bottom]
 
 					<md-content >
 
-						<form name="addPageFrom"  md-theme="default" ng-submit="addPage()">
+						<form name="addPageFrom" ng-submit="addPage()">
 								
 							<div class="setting-card-header">
 								<h2 style="padding-top:40px !important">Add Page</h2>
@@ -375,7 +369,7 @@ md-tabs[md-align-tabs=bottom]
 
 
 							<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
-								<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit">
+								<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;" ng-disabled="submitted" type="submit">
 									<span style="text-transform:none">Add Page</span>
 								</md-button>
 							</div>

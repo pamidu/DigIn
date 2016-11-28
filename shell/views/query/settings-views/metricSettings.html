@@ -39,15 +39,26 @@
         <label class="chart-settings-labels">Data Settings</label>
         <br>
         <md-container flex layout="column">
-            <md-input-container flex>
+            <md-input-container>
                 <label>Actual Value</label>
-                <input ng-model="selectedChart.initObj.actualValue">
+                <input ng-model="selectedChart.initObj.value" ng-disabled="true">
             </md-input-container>
-            <md-input-container flex>
+            <md-input-container flex layout="row">
                 <label>Target Value</label>
-                <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in commonData.measures" md-item-text="item.filedName" ng-model="selectedChart.initObj.targetValue">
-                    <span md-highlight-text="searchText">{{item.filedName}}</span>
-                </md-autocomplete>
+                <input ng-model="selectedChart.initObj.targetValue" flex="50"/>
+                <md-select flex="50" ng-model="selectedChart.initObj.targetValue">
+                    <md-option ng-repeat="x in commonData.measures" value="{{x.filedName}}">
+                        {{x.filedName}}
+                    </md-option>
+                </md-select>
+<!--                 <md-input-container layout="row" flex>
+                    <input ng-model="selectedChart.initObj.targetValue" flex="50"/>
+                    <md-select>
+                        <md-option ng-repeat="item in commonData.measures" value="{{item.filedName}}">
+                            {{item.filedName}}
+                        </md-option>
+                    </md-select>
+                </md-input-container> -->
             </md-input-container>
         </md-container>
     </md-container>
@@ -61,10 +72,10 @@
                 </div>
                 <div  flex="70" layout="column">
                     <md-radio-group  flex layout="column" ng-model="selectedChart.initObj.targetRange">
-                        <md-radio-button value="higher" class="md-primary left">
+                        <md-radio-button value="high" class="md-primary left">
                             Higher is better
                         </md-radio-button>
-                        <md-radio-button value="lower" class="md-primary left">
+                        <md-radio-button value="low" class="md-primary left">
                             Lower is better
                         </md-radio-button>                        
                     </md-radio-group>
@@ -86,14 +97,15 @@
                     <md-radio-button value="cgy" class="md-primary left">
                         Cyan, Green, Yellow-Green
                     </md-radio-button>
-                    <md-radio-button value="gpo" class="md-primary left">
-                        Green, Purple, Orange
+                    <md-radio-button value="opg" class="md-primary left">
+                        Orange, Purple, Green
                     </md-radio-button>
                 </md-radio-group>
             </md-input-container>
         </md-container>
         <md-container>
-            <md-button class="md-raised md-primary right">Finish</md-button>         
+            <md-button class="md-raised md-primary right" ng-click="applySettings()">Apply</md-button>
+            <md-button class="md-raised md-primary right" ng-click="resetSettings()">Reset</md-button>
         </md-container>
     </md-container>    
 </div>

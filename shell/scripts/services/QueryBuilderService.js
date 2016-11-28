@@ -203,6 +203,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
                     cb(widObj);
                 }else{
                     widObj.syncState = true;
+                    cb(widObj);
                 }
             });
         }
@@ -220,10 +221,62 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
         }
         
         this.sync = function(q, cl, widObj, cb) {
-            cl.getExecQuery(q, function(res, status, query){
-                if(status){
+            cl.getExecQuery(q, function(res, status, query) {
+                if (status) {
                     widObj.widData.decValue = res[0];
                     widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec)).toLocaleString();
+                    var value = parseInt(widObj.selectedChart.initObj.value.replace(/,/g,''));
+                    var highRange = widObj.selectedChart.initObj.targetValue * widObj.selectedChart.initObj.rangeSliderOptions.maxValue / 100;
+                    var lowerRange = widObj.selectedChart.initObj.targetValue * widObj.selectedChart.initObj.rangeSliderOptions.minValue / 100;
+                    if (value <= lowerRange) {
+                        if (widObj.selectedChart.initObj.colorTheme == "rog") {
+                            if (widObj.selectedChart.initObj.targetRange == "high") {
+                                widObj.selectedChart.initObj.color = "red"
+                            } else {
+                                widObj.selectedChart.initObj.color = "green"
+                            }
+                        } else if (widObj.selectedChart.initObj.colorTheme == "cgy") {
+                            if (widObj.selectedChart.initObj.targetRange == "high") {
+                                widObj.selectedChart.initObj.color = "cyan"
+                            } else {
+                                widObj.selectedChart.initObj.color = "yellow"
+                            }
+                        } else if (widObj.selectedChart.initObj.colorTheme == "opg") {
+                            if (widObj.selectedChart.initObj.targetRange == "high") {
+                                widObj.selectedChart.initObj.color = "orange"
+                            } else {
+                                widObj.selectedChart.initObj.color = "green"
+                            }
+                        }
+                    } else if (value >= highRange) {
+                        if (widObj.selectedChart.initObj.colorTheme == "rog") {
+                            if (widObj.selectedChart.initObj.targetRange == "high") {
+                                widObj.selectedChart.initObj.color = "green"
+                            } else {
+                                widObj.selectedChart.initObj.color = "red"
+                            }
+                        } else if (widObj.selectedChart.initObj.colorTheme == "cgy") {
+                            if (widObj.selectedChart.initObj.targetRange == "high") {
+                                widObj.selectedChart.initObj.color = "yellowgreen"
+                            } else {
+                                widObj.selectedChart.initObj.color = "cyan"
+                            }                    
+                        } else if (widObj.selectedChart.initObj.colorTheme == "opg") {
+                            if (widObj.selectedChart.initObj.targetRange == "high") {
+                                widObj.selectedChart.initObj.color = "green"
+                            } else {
+                                widObj.selectedChart.initObj.color = "orange"
+                            }
+                        }
+                    } else {
+                        if (widObj.selectedChart.initObj.colorTheme == "rog") {
+                            widObj.selectedChart.initObj.color = "orange"
+                        } else if (widObj.selectedChart.initObj.colorTheme == "cgy") {
+                            widObj.selectedChart.initObj.color = "green"
+                        } else if (widObj.selectedChart.initObj.colorTheme == "opg") {
+                            widObj.selectedChart.initObj.color = "purple"
+                        }
+                    }
                 }
                 widObj.syncState = true;
                 cb(widObj);

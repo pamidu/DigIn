@@ -4721,29 +4721,11 @@ md-tabs-canvas {
     padding: 5px 13px;
 }
 
-md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
-    background-color: rgba(66, 133, 244, 0);
-}
-
-md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
-    background: #f9a525;
-    color: #fff;
-}
-
 #pagingTabs md-tabs-wrapper
 {
-	background: white !important;
-	height: 35px !important;
-	border-top: 1px solid lightgrey;
-	width: 100%;
-    right: 0px;
-    bottom: 0px;
-    position: fixed;
-}
-#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
-{
-	color: white !important;
-	background: #afb6bc;
+	/*background: #aba8a5 !important;*/
+	height: 40px !important;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
 }
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas
@@ -4752,10 +4734,9 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 	max-height:40px;
 }
 
-#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active, #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active span
 {
 	color: white !important;
-	background: #3b6981 !important;
 	-ms-transform: scale(1.1, 1.1); /* IE 9 */
     -webkit-transform: scale(1.1, 1.1); /* Safari */
     transform: scale(1.1, 1.1);
@@ -4763,9 +4744,17 @@ md-tabs .md-tab.md-active, md-tabs .md-tab.md-focused {
 
 #pagingTabs md-tabs-content-wrapper
 {
-	height: calc(100vh - 35px);	
+	height: calc(100vh - 40px);	
 	position: relative;
 
+}
+
+md-ink-bar
+{
+    height: 40px;
+    top: 0px;
+	z-index: -1 !important;
+	border-radius: 5px 5px 0px 0px;
 }
 
 md-tabs[md-align-tabs=bottom]

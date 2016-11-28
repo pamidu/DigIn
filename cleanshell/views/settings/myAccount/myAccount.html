@@ -1,14 +1,9 @@
 <style>
 #pagingTabs md-tabs-wrapper
 {
-	background: white !important;
+	/*background: #aba8a5 !important;*/
 	height: 40px !important;
-	border-top: 1px solid lightgrey;
-}
-#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab
-{
-	color: white !important;
-	background: #afb6bc;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
 }
 
 #pagingTabs md-tabs-wrapper md-tabs-canvas
@@ -17,10 +12,9 @@
 	max-height:40px;
 }
 
-#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active, #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active span
 {
 	color: white !important;
-	background: #3b6981 !important;
 	-ms-transform: scale(1.1, 1.1); /* IE 9 */
     -webkit-transform: scale(1.1, 1.1); /* Safari */
     transform: scale(1.1, 1.1);
@@ -31,6 +25,14 @@
 	height: calc(100vh - 40px);	
 	position: relative;
 
+}
+
+md-ink-bar
+{
+    height: 40px;
+    top: 0px;
+	z-index: -1 !important;
+	border-radius: 5px 5px 0px 0px;
 }
 
 md-tabs[md-align-tabs=bottom]
@@ -400,13 +402,13 @@ md-tabs[md-align-tabs=bottom]
 						</div>
 
 						<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
-							<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
+							<md-button class="md-raised md-primary" style="width:100px;" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
 								<span style="text-transform:none">Edit Profile</span>
 							</md-button>
 							<md-button class="md-raised md-primary" style="min-width:60px;width:60px;background:#FF5252" type="button" ng-click="profile.cancel()"  aria-label="cancel" ng-if="editModeOn == true">
 								<span style="text-transform:none">Cancel</span>
 							</md-button>
-							<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit" aria-label="save" ng-if="editModeOn == true">
+							<md-button class="md-raised md-primary" style="width:100px;" ng-disabled="submitted" type="submit" aria-label="save" ng-if="editModeOn == true">
 								<span style="text-transform:none">Save Profile</span>
 							</md-button>
 						</div>

@@ -1,8 +1,14 @@
-DiginApp.controller('myAccountCtrl',[ '$scope', '$stateParams', '$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope, $stateParams,$mdDialog,DiginServices,notifications,paymentGateway,$http){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,notifications,paymentGateway,$http){
 	
 	var vm = this;
 	
 	$scope.$parent.currentView = "Settings";
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+	}else{
+		$('md-tabs-wrapper').css('background-color',"white", 'important');
+	}
 	
 	vm.selectedPage = $stateParams.pageNo;
 

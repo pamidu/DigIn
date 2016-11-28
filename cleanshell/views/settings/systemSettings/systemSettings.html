@@ -1,5 +1,44 @@
 <style>
+#pagingTabs md-tabs-wrapper
+{
+	/*background: #aba8a5 !important;*/
+	height: 40px !important;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
+}
 
+#pagingTabs md-tabs-wrapper md-tabs-canvas
+{
+	left: 45px !important;
+	max-height:40px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active, #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active span
+{
+	color: white !important;
+	-ms-transform: scale(1.1, 1.1); /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1); /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#pagingTabs md-tabs-content-wrapper
+{
+	height: calc(100vh - 40px);	
+	position: relative;
+
+}
+
+md-ink-bar
+{
+    height: 40px;
+    top: 0px;
+	z-index: -1 !important;
+	border-radius: 5px 5px 0px 0px;
+}
+
+md-tabs[md-align-tabs=bottom]
+{
+	padding-bottom: 40px !important;
+}
 .widget-header
 {
 	background: white;
@@ -252,81 +291,104 @@
 			<span flex></span>
 		</md-tab-label>
 		<md-tab-body>
-		<div class="setup-wrapper  animated fadeIn">
+		<div class="card-container">
+			<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 
-					<div class="setting-wrap">
-						<div layout="row" layout-align="end end">
-							<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
-						</div>
+				<md-content>
 
-						<div class="setting-card-header">
-							<h5>System Setting</h5>
-							<div class="setting-img-wrap">
-								<img src="styles/css/images/setting/user_settings.png"/>
-							</div>
-						</div>
-						
-						<div layout="row" layout-align="start start">
-						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Settings</div>
-						</div>
-
-						<form name="frmNewUser" autocomplete="off">
+					<form name="editForm" ng-submit="submit()">
+				<div layout="row" layout-align="end end">
+					<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="route('back')"></md-button>
+				</div>
+					
+				<div class="setting-card-header">
+					<h2>User Settings</h2>
+					<div class="setting-img-wrap">
+						<img src="views/settings/userSettings/user_settings.png"/>
+					</div>
+				</div>
 				
-							
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Cache Lifetime (Sec)</label>
-								<input ng-model="cacheLifetime" type="number" class="form-control" step="1" min="0" flex/>
-							</div>
-							<!--div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Number of Widgets</label>
-								<md-select ng-model="noOfWidget">
-									<md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}
-									</md-option>
-								</md-select>
-							</div-->
-
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Request Limit</label>
-								<md-select ng-model="reqLimit">
-									<md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}
-									</md-option>
-								</md-select>
-							</div>
-
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<md-checkbox ng-model="components">
-									Save Dashboard Automatically
-								</md-checkbox>
-							</div>				
-							
-							<div layout="row" layout-align="center center" style="margin-top:20px;">
-								<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="updateSettings()">
-									Update Settings
-								</button>
-							</div>
-						</form>
-							
-						<div layout="row" layout-align="start start">
-						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Cache</div>
+				
+				<!--Input Elements Start-->
+				<div layout="row" layout-align="start start">
+					<div class="section-title">Settings</div>
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Cache Lifetime (Sec)</span>
+						<input required type="number" name="lname" ng-model="content.lname" />
+						<div ng-messages="editForm.lname.$error" role="alert">
+						  <div ng-message-exp="['required']">
+								This is required
+						  </div>
 						</div>
-						
-						<form name="frmNewUser" autocomplete="off">
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Clear Cache</label>
-								<md-select ng-model="clearDetail">
-									<md-select-label>{{ clearDetail.name }}</md-select-label>
-									<md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">
-										{{clearDetail.name}}
-									</md-option>
-								</md-select>
-							</div>
-							<div layout="row" layout-align="center center" style="margin-top:20px;">
-								<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="clearCache()">
-									Clear Cache
-								</button>
-							</div>
-						</form>
-				 </div>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Number of Widgets</span>
+						<md-select class="select" ng-model="content.CardOrAccount">
+							<md-optgroup label="Select Account Type">
+								<md-option  value="1" flex >1</md-option>
+								<md-option  value="2" flex >2</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Request Limit</span>
+						<md-select class="select" ng-model="content.CardOrAccount">
+							<md-optgroup label="Select Account Type">
+								<md-option  value="1000" flex >1000</md-option>
+								<md-option  value="2000" flex >2000</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+
+				</div>
+
+				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+					<md-button id="accountSubmit" class="md-raised md-primary" ng-disabled="submitted" type="submit">
+						<span style="text-transform:none">Update Settings</span>
+					</md-button>
+				</div>
+		
+
+			</form>
+			<form name="editForm"  ng-submit="submit()">				
+				<!--Input Elements Start-->
+				<div layout="row" layout-align="start start">
+					<div class="section-title">Cache</div>
+				</div>
+				
+				
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Clear Cache</span>
+						<md-select class="select" ng-model="content.CardOrAccount">
+							<md-optgroup label="Select Account Type">
+								<md-option  value="1000" flex >1000</md-option>
+								<md-option  value="2000" flex >2000</md-option>
+							</md-optgroup>
+						</md-select>
+					</md-input-container>
+
+				</div>
+
+				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+					<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;" ng-disabled="submitted" type="button" ng-click="clearCache()">
+						<span style="text-transform:none">Clear Cache</span>
+					</md-button>
+				</div>
+		
+
+			</form>
+				</md-content>
+
+			</md-whiteframe><br/>
 			</div>
 		</md-tab-body>
 	  </md-tab>
@@ -337,9 +399,8 @@
 			</span>
 		</md-tab-label>
 		<md-tab-body>
-		<div class="setup-wrapper  animated fadeIn">
-
-					<div class="setting-wrap">
+			<div class="card-container">
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 
 					<md-content>
 
@@ -355,7 +416,7 @@
 									</div>
 								</div>
 								
-							<md-stepper-card-content class="md-no-padding" style>
+							<md-stepper-card-content class="md-no-padding" >
 								<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selected" md-stretch-steppers="always">
 									<md-step label="Select Files & Folders" md-complete="step1.completed" ng-disabled="step1.disabled">
 										<md-step-body>
@@ -369,8 +430,8 @@
 														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click="openInfo()">
 
 											  
-														<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+														<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;padding-right:20px" alt="{{item.who}}" />
+														  <div class="md-list-item-text" layout="column">
 															<div layout="row"><h3>{{file.name}}</h3> <p style="padding-left:20px">({{file.createdDate}})</p></div>
 															<h4>{{file.owner}}</h4>
 															
@@ -387,11 +448,11 @@
 													<h2 style="margin:0">Folders</h2>
 
 													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='item in ["1","2","3","4","5","6","7","8","9"]'ng-click="null">
+														<md-list-item class="md-3-line" ng-repeat='item in ["1","2","3","4","5","6","7","8","9"]' ng-click="null">
 
 											  
-														<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+														<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;padding-right:20px" alt="{{item.who}}" />
+														  <div class="md-list-item-text" layout="column">
 															<h3>sdfsdf</h3>
 															<h4>sdfsdfsdf</h4>
 															<p>sdfsdfsdf</p>
@@ -411,7 +472,7 @@
 											</md-content>
 											<md-step-actions layout="row">
 												<div flex layout="row" layout-align="end top">
-													 <md-button class="md-raised md-primary" ng-click="goToNextStep()">NEXT</md-button>
+													 <md-button class="md-raised md-primary" ng-click="selected = 1">NEXT</md-button>
 												</div>
 											</md-step-actions>
 										</md-step-body>
@@ -424,7 +485,7 @@
 												<div flex>
 													 <div layout="row" layout-align="space-between center">
 														 <h2 style="margin:0">Users</h2>
-														 <div layout="row" style="margin-right:42px">
+														 <div layout="row" style="margin-right:30px">
 															<p style="margin-right: 10px;color:#aba8a5">Read</p>
 															<md-divider></md-divider>
 															<p style="padding-left: 5px;color:#aba8a5">Write</p>
@@ -436,8 +497,8 @@
 														<md-list-item class="md-3-line" ng-repeat='item in ["1","2","3","4","5","6","7","8","9"]' ng-click="openInfo()">
 
 											  
-														<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+														<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;padding-right:20px" alt="{{item.who}}" />
+														  <div class="md-list-item-text" layout="column">
 															<h3>sdfsdf</h3>
 															<h4>sdfsdfsdf</h4>
 															<p>sdfsdfsdf</p>
@@ -456,7 +517,7 @@
 												<div flex>
 													<div layout="row" layout-align="space-between center">
 														 <h2 style="margin:0">Groups</h2>
-														 <div layout="row" style="margin-right:42px">
+														 <div layout="row" style="margin-right:30px">
 															<p style="margin-right: 10px;color:#aba8a5">Read</p>
 															<md-divider></md-divider>
 															<p style="padding-left: 5px;color:#aba8a5">Write</p>
@@ -468,8 +529,8 @@
 														<md-list-item class="md-3-line" ng-repeat='item in ["1","2","3","4","5","6","7","8","9"]'ng-click="null">
 
 											  
-														<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+														<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;padding-right:20px" alt="{{item.who}}" />
+														  <div class="md-list-item-text" layout="column">
 															<h3>sdfsdf</h3>
 															<h4>sdfsdfsdf</h4>
 															<p>sdfsdfsdf</p>
@@ -494,7 +555,8 @@
 											<md-step-actions layout="row">
 												<div flex layout="row" layout-align="end top">
 													<md-button class="md-raised md-primary" ng-click="selected = 0">PREV</md-button>
-													<md-button class="md-raised md-primary" ng-click="share()">Share</md-button>
+													<md-button class="md-raised md-primary" ng-click="step1.completed = true">Complete Step 1</md-button>
+													<md-button class="md-raised md-primary" ng-click="selected = 2">NEXT</md-button>
 												</div>
 											</md-step-actions>
 										</md-step-body>
@@ -506,9 +568,8 @@
 						</form>
 					</md-content>
 
+				</md-whiteframe><br/>
 			</div>
-			</div>
-
 		</md-tab-body>
 	  </md-tab>
 	</md-tabs>

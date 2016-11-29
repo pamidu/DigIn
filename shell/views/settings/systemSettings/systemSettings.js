@@ -340,103 +340,6 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
           };
 
 
-    //------------------------ Users and groups goes here -----------------------------------------------------
-
-
-    $scope.users = ["1","2","3","4","5","6","7","8","9"];
-    $scope.groups = ['1','2','3','4','5','6','7'];
-
-    $scope.getUserandGroups = function(){
-
-          $http.get('http://iamadmin.dev.digin.io/apis/usercommon/getSharableObjects')
-           .then(function(result) {
-
-                var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-                var CurUser = userInfo.Email;
-                ////return result.data;
-                 for (var i = 0, len = result.data.length; i<len; ++i) {
-                    if (result.data[i].Type == "User") {
-                      if(CurUser != result.data[i].Id)
-                          $scope.users.push(result.data[i]);
-                    }else if (result.data[i].Type == "Group") {
-                        $scope.groups.push(result.data[i]);
-                    }
-                }
-                
-            },function errorCallback(response) {
-                notifications.toast(0, "Falied to get users");
-         });  
-
-
-
-    }
-
-    $scope.getUserandGroups();
-
-
-
-    $scope.selectedUsersRead = [];
-    $scope.selectedUsersWrite = []; 
-
-
-    $scope.selectedGroupRead = [];
-    $scope.selectedGroupWrite = []; 
-
-
-
-    // ----------------------- users read---------------------------------------------------------------
-
-     $scope.toggleUsersRead = function (folder, list, listother) {
-        var idx = list.indexOf(folder);
-        if (idx > -1) {
-          list.splice(idx, 1);
-
-          var indO = listother.indexOf(folder);
-            if(indO > -1)
-            listother.splice(indO, 1);
-          
-        }
-        else {
-          list.push(folder);
-         
-        }
-     };
-
-      $scope.existsUsersRead = function (folder, list) {
-        return list.indexOf(folder) > -1;
-      };
-
-    //---------------------- user write------------------------
-
-     $scope.toggleUsersWrite = function (folder, list, listother) {
-        var idx = list.indexOf(folder);
-        if (idx > -1) {
-          list.splice(idx, 1);
-          
-        }
-        else {
-          list.push(folder);
-
-           var indO = listother.indexOf(folder);
-            if(indO < 0)
-            listother.push(folder);
-         
-        }
-
-       
-
-     };
-
-      $scope.existsUsersWrite = function (folder, list) {
-        return list.indexOf(folder) > -1;
-      };
-
-
-    $scope.share = function(){
-        alert($scope.selectedUsersRead);
-        alert($scope.selectedUsersWrite);
-      }
-
 
     $scope.closeDialog =function(){
         $mdDialog.hide();
@@ -446,20 +349,6 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
 
 
 
-      $scope.openFileShareDetails = function(){
-
-        alert("Hi");
-         $mdDialog.show({
-                controller: 'showFileShareDetailsCtrl',
-                templateUrl: 'views/settings/systemSettings/showFileShareDetails.html',
-                resolve: {},
-                locals: {
-                    users: $scope.users,
-                    groups: $scope.groups
-                    //file
-                }
-            })
-      }
 
 
 }])

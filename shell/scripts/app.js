@@ -426,6 +426,11 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         url: '/themes',
         controller: 'themeCtrl',
         templateUrl: "views/settings/theme/theme.html"
+    })
+    .state('home.shareDataset', {
+        url: '/shareDataset',
+        controller: 'shareDataSetCtrl',
+        templateUrl: "views/share-dataset/shareDataSet.html"
     });
     
 

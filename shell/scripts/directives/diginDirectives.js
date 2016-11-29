@@ -193,9 +193,9 @@ routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$md
 			paddingTop: '30px'
 		},200)
 		
-		$('md-tabs-content-wrapper').animate({
-			height: '94vh'
-		},200)
+		/*$('md-tabs-content-wrapper').animate({
+			height: '100vh'
+		},200)*/
 		
 		return false;
 	}
@@ -212,7 +212,7 @@ routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$md
 			paddingTop: '70px'
 		},200)
 		
-		var newHeight = $('md-tabs-content-wrapper').height() - 45;
+		var newHeight = $('md-tabs-content-wrapper').height(); //- 45;
 		
 		$('md-tabs-content-wrapper').animate({
 			height: newHeight

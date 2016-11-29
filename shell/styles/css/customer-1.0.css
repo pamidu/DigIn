@@ -3177,9 +3177,8 @@ li:active {
 
 .search-header {
     font-family: 'Roboto' !important;
-    text-transform: uppercase;
-    position: relative;
-    font-size: 25px;
+    font-size: 32px;
+	padding:0px 0px 0px 60px;
 }
 
 .search-header.dashboard {

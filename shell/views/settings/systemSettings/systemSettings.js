@@ -6,7 +6,6 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
 	}else{
 		$('md-tabs-wrapper').css('background-color',"white", 'important');
 	}
-
     userAdminFactory.getUserLevel();
 
     $scope.sizes = [
@@ -191,6 +190,125 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     $scope.route = function (state) {
           $state.go('home.welcomeSearch');
     };
+
+
+    // ------- Data set settings functions goes here 
+
+
+    $scope.goToNextStep = function()
+    {
+        console.log("next");
+        $scope.selected = 1;
+    }
+
+
+    $scope.files =["1","2","3","4","5","6","7","8","9"];
+    $scope.folders=['1','2','3','4','5','6','7'];
+
+
+    $scope.loadFilesFolder  = function(){
+
+        $http.get('/apis/usercommon/getSharableObjects')
+           .then(function(result) {
+                
+            },function errorCallback(response) {
+                notifications.toast(0, "Falied to get users");
+         }); 
+
+
+    }
+
+
+
+
+
+
+
+
+    $scope.selectedFiles = [];
+    $scope.selectedFolders = [];
+
+    // --- files goes her ----------------------------------------------
+     $scope.toggle = function (file, list) {
+        var idx = list.indexOf(file);
+        if (idx > -1) {
+          list.splice(idx, 1);
+          
+        }
+        else {
+          list.push(file);
+         
+        }
+      };
+
+      $scope.exists = function (file, list) {
+        return list.indexOf(file) > -1;
+      };
+
+      $scope.isIndeterminate = function() {
+        return ($scope.selectedFiles.length !== 0 &&
+            $scope.selectedFiles.length !== $scope.files.length);
+      };
+
+      $scope.isChecked = function() {
+        return $scope.selectedFiles.length === $scope.files.length;
+      };
+
+      $scope.toggleAll = function() {
+        if ($scope.selectedFiles.length === $scope.files.length) {
+          $scope.selectedFiles = [];
+        } else if ($scope.selectedFiles.length === 0 || $scope.selectedFiles.length > 0) {
+          $scope.selectedFiles = $scope.files.slice(0);
+        }
+      };
+
+    //-----------------------------------------------------------------------------
+
+
+    //--- folders goes here -------------------------------------------------------
+         $scope.toggleFolder = function (folder, list) {
+            var idx = list.indexOf(folder);
+            if (idx > -1) {
+              list.splice(idx, 1);
+              
+            }
+            else {
+              list.push(folder);
+             
+            }
+         };
+
+          $scope.existsFolder = function (folder, list) {
+            return list.indexOf(folder) > -1;
+          };
+
+          $scope.isIndeterminateFolder = function() {
+            return ($scope.selectedFolders.length !== 0 &&
+                $scope.selectedFolders.length !== $scope.folders.length);
+          };
+
+          $scope.isCheckedFolder = function() {
+            return $scope.selectedFolders.length === $scope.folders.length;
+          };
+
+          $scope.toggleAllFolder = function() {
+            if ($scope.selectedFolders.length === $scope.folders.length) {
+              $scope.selectedFolders = [];
+            } else if ($scope.selectedFolders.length === 0 || $scope.selectedFolders.length > 0) {
+              $scope.selectedFolders = $scope.folders.slice(0);
+            }
+          };
+
+
+
+    $scope.closeDialog =function(){
+        $mdDialog.hide();
+    }
+
+
+
+
+
 
 
 }])

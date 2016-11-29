@@ -312,13 +312,12 @@ button.md-fab.md-raised.md-primary.md-button.md-teal-theme {
 
 #content1 {
     position: absolute;
-    width: calc(100vw - 40px);
+    width: 100%;
     /*height: 100% !important;*/
     background-size: 100% 100%;
     background-size: 30px 30px;
     overflow: auto;
     padding-left: 0px;
-    left: 40px;
     top: 0px;
     z-index: 1;
     overflow-x: hidden;

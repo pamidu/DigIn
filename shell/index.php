@@ -357,6 +357,9 @@
 <!-- Datasource settings -->
 <script src="views/settings/datasourceSettings/datasourceSettingsCtrl.js"></script>
 
+<script src="views/share-dataset/showFileShareDetailsCtrl.js"></script>
+<script src="views/share-dataset/shareDataSetCtrl.js"></script>
+
 <script src="scripts/charts/d3Force.js"></script>
 
 <script src="scripts/charts/streamgraph.js"></script>

@@ -3,17 +3,15 @@
     <md-tab ng-repeat="page in $root.dashboard.pages" md-on-select="selectPage(page)">
         <md-tab-label>
             <div layout="row" layout-align="space-between center" ng-dblclick="renamePage(page.pageName, page.pageID)" ng-click="syncPage(page)">
-                <span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" class="pageName" flex>{{page.pageName}}</span>
+                <span md-colors="{color:'{{$root.h1color}}-A700'}" style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" class="pageName" flex>{{page.pageName}}</span>
 				<span flex></span>
 				<i class="icon-cancel" style="font-size:10px;cursor:pointer;outline:none" ng-disabled="$root.dashboard.pages.length <= 1" ng-click="removePage(page,$event);$event.stopPropagation()" flex></i>
             </div>
         </md-tab-label>
         <md-tab-body>
-            <div class="tab-style" gridster="gridsterOpts">
-                <li class="digin-widget"
-                    ng-repeat="widget in page.widgets"
-                    gridster-item="widget" layout="column"
-                    layout-align="none stretch">
+			<div class="card-container">
+            <div gridster="gridsterOpts">
+                <li class="digin-widget" ng-repeat="widget in page.widgets" gridster-item="widget" layout="column" layout-align="none stretch">
                     <div class="digin-widget-toolbar" layout="row" layout-align="center center" ng-init="setShowWidgetSettings(widget)">
                         <div ng-class="widgetTitleClass" flex="80" style="color: #02b5e2; padding-left: 50px;">
                             {{widget.widgetData.widName}}
@@ -152,6 +150,7 @@
 
                 </li>
             </div>
+			</div>
         </md-tab-body>
     </md-tab>
 </md-tabs>

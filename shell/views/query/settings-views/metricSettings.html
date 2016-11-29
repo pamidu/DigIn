@@ -58,7 +58,10 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-button class="md-raised md-primary right" ng-click="getTargetValue()" style="height: 50%;">Calculate</md-button>
+                    <md-button class="md-raised md-primary right" ng-click="getTargetValue()" style="height: 50%;" ng-disabled="eventHndler.isLoadingChart" ng-hide="metricLoading">Calculate</md-button>
+                    <div flex layout="column" layout-align="center center" ng-if="metricLoading">
+                        <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
+                    </div>
                 </md-container>
             </md-container>
         </md-container>
@@ -105,8 +108,12 @@
             </md-input-container>
         </md-container>
         <md-container>
-            <md-button class="md-raised md-primary right" ng-click="applySettings()">Apply</md-button>
-            <md-button class="md-raised md-primary right" ng-click="resetSettings()">Reset</md-button>
+            <md-button class="md-raised md-primary right" ng-click="applySettings()" ng-disabled="eventHndler.isLoadingChart">
+                Apply
+            </md-button>
+            <md-button class="md-raised md-primary right" ng-click="resetSettings()" ng-disabled="eventHndler.isLoadingChart">
+                Reset
+            </md-button>
         </md-container>
     </md-container>    
 </div>

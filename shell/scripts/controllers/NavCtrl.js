@@ -17,44 +17,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		$rootScope.sharableGroups = [];
         $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
         var interval;
-       /* $scope.adjustUI = function () {
-
-            if ($scope.headerbarPinned) {
-                $('#content1').css("top", "40px");
-                $('#content1').css("height", "calc(100vh - 40px)");
-                $('.h_iframe').css("height", "calc(100vh - 40px)");
-                $('.main-headbar-slide').css("transform", "translateY(0)");
-                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }
-            else {
-                $('#content1').css("top", "0px");
-                $('#content1').css("height", "calc(100vh)");
-                $('.h_iframe').css("height", "calc(100vh)");
-                $('.main-headbar-slide').css("transform", "translateY(-40px)");
-                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }
-        }*/
-		
 		
 		//Theming
 		$rootScope.lightOrDark = '';
 		$rootScope.currentColor = '';
 		$rootScope.h1color = '';
 		colorManager.changeTheme('default');
-		
-        // hides and shows the dashboard tabs
-        $scope.showTabs = function (boolean) {
-
-            if (boolean) {//show tabs
-                console.log("show tabs");
-                $("md-tabs > md-tabs-wrapper").children().show();
-            } else {//hide tabs
-                console.log("hide tabs");
-                $("md-tabs > md-tabs-wrapper").children().hide();
-            }
-        };
-
-
 
          //#Added by Chamila
         //#to get session detail for logged user
@@ -100,9 +68,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }).error(function (error) {
             //fireMsg('0', '<strong>Error : </strong>Please try again...!');
         });
-
-        //initially hiding the tabs
-        $scope.showTabs(true);
 
         $rootScope.refreshDashboard = function() {
             $rootScope.interval = $interval(function() {
@@ -308,34 +273,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $scope.getURL();
                 });
             }
-
-
-
-
-        //value for jquery of search panel overlay
-        var $windowHeight = $(window).height(),
-            $windowWidth = $(window).width(),
-            $startingPoint = $('.starting-point');
-        // Calculate the diameter of search panel overlay
-        var diameterValue = (Math.sqrt(Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2)) * 2);
-        $startingPoint.children('span').css({
-            height: diameterValue + 'px',
-            width: diameterValue + 'px',
-            top: -(diameterValue / 2) + 'px',
-            left: -(diameterValue / 2) + 'px'
-        });
-        //get sidebar data from menu.json 
-        getJSONData($http, 'menu', function (data) {
-
-            localStorage.setItem("sidebarData", JSON.stringify(data));
-            $scope.sidebarItems = data;
-        });
-        // headerbar 
-        $scope.headerbarPinned = false;
-
-        $scope.pinHeaderbar = function (state) {
-            $scope.headerbarPinned = state;
-        }
+			
 
         //close open pages and go to home
         $scope.mainclose = function (ev) {
@@ -394,38 +332,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             })
 
         }
-
-        //shows user profile in a dialog box
-        $scope.showUserProfile = function (ev) {
-            $mdDialog.show({
-                    templateUrl: 'templates/profileDialogTemplate.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    //controller start
-                    controller: function showProfileController($rootScope, $scope, $mdDialog) {
-                        //var userInfo = $auth.getSession();
-
-                        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-                        $scope.user = {
-                            name: $rootScope.profile_Det.Name,
-                            email: $rootScope.profile_Det.Email,
-                            address: $rootScope.profile_Det.BillingAddress,
-                            mobile: $rootScope.profile_Det.PhoneNumber,
-                            profile_pic: $rootScope.profile_pic,
-                            company: $rootScope.profile_Det.Company
-
-                        };
-                        $scope.close = function () {
-                            $mdDialog.cancel();
-                        };
-                    }
-                    //controller end
-                })
-                .then(function (answer) {
-                }, function () {
-                });
-        };
 
         //shows tennant dialog box
         $scope.showTennant = function (ev) {
@@ -1731,16 +1637,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 });
         };
-        $scope.openTheme = function (ev) {
 
-            $mdDialog.show({
-                controller: 'ThemeCtrl',
-                templateUrl: 'views/change-theme.html',
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                resolve: {}
-            });
-        };
         $scope.Share = function (ev) {
 
             $mdDialog.show({
@@ -1998,139 +1895,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 doneLabel: 'DONE'
             };
 			
-			/*
-            $scope.IntroOptions = {
-                steps: [{
-                    element: document.querySelectorAll('.main-headbar')[0],
-                    intro: "<strong> This is the main head bar area. Hover over the blue line to bring it down</strong>",
-                    position: 'bottom'
-                }, {
-                    element: document.querySelector('#getReport'),
-                    intro: "<strong>This is the side navigation panel</strong>",
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('#getReport > md-list > md-item:nth-child(2) > a > md-item-content')[0],
-                    intro: '<strong>Use this to create new dashboards</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[1],
-                    intro: '<strong>Use this to access reports</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[2],
-                    intro: '<strong>Realtime tool is a handy tool for data analysis </strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list md-item > a > md-item-content')[4],
-                    intro: '<strong>This is the Digin P Stack feature</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[5],
-                    intro: '<strong>D3plugins is a tool to create D3 visualizations</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[6],
-                    intro: '<strong>Use this to add widgets to your dashbaord</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[7],
-                    intro: '<strong>Settings feature can be used to create users and to add/remove features</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[8],
-                    intro: '<strong>Save feature is to save Dashboards</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[9],
-                    intro: '<strong>Give a nice look to the app with your desired theme</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[10],
-                    intro: '<strong>Share using most popular social media and email</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[11],
-                    intro: '<strong>Export your widget in any format</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[12],
-                    intro: '<strong>Switch between browser view and Full Screen mode</strong>',
-                    position: 'right'
-                }],
-                showStepNumbers: false,
-                exitOnOverlayClick: true,
-                exitOnEsc: true,
-                nextLabel: '<strong>NEXT</strong>',
-                prevLabel: '<strong>PREVIOUS</strong>',
-                skipLabel: 'EXIT',
-                doneLabel: 'DONE'
-            };*/
-
             $scope.ShouldAutoStart = true;
 
         }, 1000);
-        //update code damith
+        //update code dilshan
         //new ui changes
-        $scope.searchLayerStatus = false;
-        $scope.headerMenuToggle = false;
-        $scope.leftMenuToggleState = true;
-        
-		/*var layoutManager = (function () {
-            return {
-                headerMenuToggle: function (status) {
-                    if (status) {
-                        $('.main-headbar-slide').animate({
-                            top: '-45px'
-                        }, 300);
-                        //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
-                        $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
-                        $scope.headerMenuToggle = false;
-                    } else {
-                        $('.main-headbar-slide').animate({
-                            top: '0px'
-                        }, 300);
-                        //$('.blut-search-toggele').removeClass('go-down').addClass('go-up');
-                        $('#content1').removeClass('content-m-top0').addClass('content-m-top40');
-                        $scope.headerMenuToggle = true;
-                    }
-                },
-                toggleSearchLayer: function (status) {
-                    if (status) {
-                        $scope.searchLayerStatus = false;
-                        $('#searchLayer').animate({
-                            opacity: 0,
-                            left: '-100%'
-                        }, 500);
-                    } else {
-                        $scope.searchLayerStatus = true;
-                        $('#searchLayer').animate({
-                            opacity: '1',
-                            left: '0'
-                        }, 500);
-
-
-                    }
-                },
-                leftMenuToggle: function (status) {
-                    if (status) {
-                        $('.left-menu-bar').animate({
-                            left: '-45px'
-                        }, 300);
-                        $scope.leftMenuToggleState = false;
-                        $('#content1').removeClass('content-m-left-0').addClass('content-m-left-40');
-                    } else {
-                        $('.left-menu-bar').animate({
-                            left: '0px'
-                        }, 300);
-                        $scope.leftMenuToggleState = true;
-                        $('#content1').removeClass('content-m-left-40').addClass('content-m-left-0');
-                    }
-                },
-                closeHeaderMenu: function () {
-                    layoutManager.headerMenuToggle($scope.headerMenuToggle);
-                }
-            }
-        })();*/
 		
 		//Start of layoutManager
 		$rootScope.showHeader = true;
@@ -2166,26 +1935,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
 
         };
-
-        /*$scope.topMenuToggle = function () {
-            layoutManager.headerMenuToggle($scope.headerMenuToggle);
-        };*/
-       /* $scope.leftMenuToggle = function () {
-            layoutManager.leftMenuToggle($scope.leftMenuToggleState);
-        };*/
-
-        //profile setting click
-        $scope.profileDownMenu = (function () {
-            return {
-                clickProfileSetting: function () {
-                    $state.go('home.profileSetting');
-                    layoutManager.closeHeaderMenu();
-                }
-            }
-        })();
-
-            //enable sub menu
-        $scope.isEnableSubMenu = false;
         
         var settingsSub = [
                                 {name: "New user",icon: "ti-user", link: "home.createUser"},
@@ -2328,154 +2077,3 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
 }])
-
-
-/*
-routerApp.controller('inviteUserCtrl',['$scope','$mdDialog','$http','Digin_Tenant','ngToast','$rootScope', function ($scope,$mdDialog,$http,Digin_Tenant,ngToast,$rootScope) {
-
-    $scope.cancel = function() {
-        $mdDialog.cancel();
-    };
-
-
-    // create a toast with settings:
-    // ngToast.create({
-    //   className: 'warning',
-    //   content: '<a href="#" class="ng-toast-msg">a message</a>'
-    // });
-
-
-    function fireMsg(msgType, content) {
-        ngToast.dismiss();
-        var _className;
-        if (msgType == '0') {
-            _className = 'danger';
-        } else if (msgType == '1') {
-            _className = 'success';
-        }
-        ngToast.create({
-            className: _className,
-            content: content,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            dismissOnClick: true,
-            dismissButton:true
-        });
-    }
-
-
-    $scope.validateEmail1=function(email){
-
-        if(email==undefined){
-            fireMsg('0', 'Email can not be a blank.');
-            return false;
-        }
-        else if(email==""){
-            fireMsg('0', 'Email can not be a blank.');
-            return false;
-        }
-        else{
-            return true;
-        }
-        return true;
-    }
-    
-    $scope.validateEmail2=function (email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    }
-    
-    $scope.inviteUser = function () {   
-        var mail=$scope.user.email;
-        if($scope.validateEmail1(mail)==false){return;}
-        else if ($scope.validateEmail2(mail)==false){fireMsg('0', 'Please enter valid email address to proceed.'); return;}
-        else{
-            
-            $scope.exist=false;
-
-            if($rootScope.sharableUsers==undefined){
-                $scope.invite();
-            } 
-
-            else if($rootScope.sharableUsers.length>0){
-                for(var i=0; i<$rootScope.sharableUsers.length; i++){
-                    if($scope.user.email==$rootScope.sharableUsers[i].Id){
-                        $scope.exist=true;
-                    }
-                };
-
-                if($scope.exist==true){
-                    fireMsg('0', '</strong>This user is already invited');
-                    return;
-                }
-                else{
-                    $scope.invite();
-                }
-            }
-        }   
-    }
-
-    $scope.invite = function () {
-        var baseUrl = "http://" + window.location.hostname;
-        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-        $http.get(baseUrl + '/auth/tenant/AddUser/' + $scope.user.email + '/user', {
-                headers: {'Securitytoken': userInfo.SecurityToken}
-            })
-            .success(function (response) {
-                if(response=="false"){
-                    fireMsg('0', '</strong>This user has not been registered for DigIn.');
-                }
-                else{
-                    fireMsg('1', '</strong>Invitation sent successfully.');
-                    $scope.getSharableObj();
-                    $scope.inviteForm.$setUntouched();
-                    $scope.user.email='';
-                    $mdDialog.cancel();
-                }
-            }).error(function (error) {
-                fireMsg('0', 'Invitation sending fail');
-        });
-    };
-   
-    $scope.getSharableObj=function(){
-        var baseUrl = "http://" + window.location.hostname;
-        
-        //$http.get("http://omalduosoftwarecom.prod./apis/usercommon/getSharableObjects")
-        $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
-            .success(function (data) {
-                console.log(data);
-                $rootScope.sharableObjs = [];
-                $rootScope.sharableUsers = [];
-                $rootScope.sharableGroups = [];
-
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].Type == "User") {
-                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                        $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
-                    }
-                    else if (data[i].Type == "Group") {
-                        $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                        $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
-                    }
-                }
-                console.log($rootScope.sharableObjs);
-                console.log($rootScope.sharableUsers);
-                console.log($rootScope.sharableGroups);
-        
-            }).error(function () {
-            
-        });
-    }
-
-
-
-
-    $scope.route = function(state, pageNo) //pageNo is optional
-    {
-        $state.go(state,{ 'pageNo': pageNo });
-    }
-
-
-
-
-}])*/

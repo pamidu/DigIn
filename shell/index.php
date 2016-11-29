@@ -82,9 +82,7 @@
     <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/fonts/digin-main/digin-main.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2.min.css" type="text/css"/>
-    <link rel="stylesheet"
-          href="bower_components/angular-ui/anuglar-bootstrap-datepicker/angular-bootstrap-datepicker.css"
-          type="text/css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui/anuglar-bootstrap-datepicker/angular-bootstrap-datepicker.css" type="text/css"/>
     <link rel="stylesheet" href="styles/fonts/digin-chart/digin-chart.css" type='text/css'/>
     <link rel="stylesheet" href="styles/fonts/themify/themify-icons.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/digin-on-board.css"/>
@@ -129,9 +127,8 @@
     <!-- If you'd like to support IE8 -->
         <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 </head>
-<body layout="column" ng-cloak md-theme="{{$root.theme}}">
-
-    <div ui-view layout="column" id="mainContainer" style="height: 100%">
+<body layout="column" ng-cloak>
+    <div ui-view layout="column" id="mainContainer" style="height: 100%" md-theme="{{$root.theme}}">
     </div>
 </body>
 <!--  new changes  -->

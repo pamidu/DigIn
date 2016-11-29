@@ -353,6 +353,7 @@
 
 <!--sytem settings-->
 <script src="views/settings/systemSettings/systemSettings.js"></script>
+<script src="views/settings/systemSettings/showFileShareDetailsCtrl.js"></script>
 
 <script src="scripts/charts/d3Force.js"></script>
 

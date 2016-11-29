@@ -214,7 +214,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state('home.Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html",
+            templateUrl: "views/dashboard/dashboard.html",
             data: {
                 requireLogin: true
             }

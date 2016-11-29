@@ -350,23 +350,9 @@
 
 <div class="digin-style" ng-init="checkIslocal()" ng-intro-options="IntroOptions" ng-intro-method="Introduce">
     <toast></toast>
-    <!-- preloader start -->
-    
-    <!-- preloader end -->
-    <!-- gridster start -->
-    <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent"
-         ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent"
-         ng-intro-onafterchange="AfterChangeEvent"
-         ng-intro-autostart="ShouldAutoStart">
-    </div>
-    <!-- gridster end -->
-    <!-- md theme watch start -->
-    <div>
         <script type="text/javascript" src="scripts/fbSDK.js"></script>
-        <div id="fb-root">
-        </div>
-        <!-- md theme watch end -->
-        <!-- #SerchBar -->
+        <div id="fb-root"></div>
+		
         <div class="blut-log-wrapper" md-colors="{background:'primary'}">
             <md-tooltip md-direction="left" style="z-index: 9999;">
                     v3.2.0.9
@@ -400,10 +386,15 @@
 						<i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate('share Dashboards')">
+					<div class="blut-header-icon" ng-click="navigate('Save')">
 						<i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
+					<div class="blut-header-icon" ng-click="navigate('Share Dashboards')">
+						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
+						<md-tooltip md-direction="bottom">Share Dashboard</md-tooltip>
+					</div>
+					
 					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
 						<i class="ti-help-alt"></i>
 					</div-->
@@ -441,81 +432,8 @@
 				<span ng-if="showHeader" class="ti-angle-up"></span>
 			</md-content>
 		</md-content>
-                <!--div class="main-headbar-slide" layout="row" layout-align="space-between center">
-               
-                    
-					<div class="blut-search-wrapper hover-color" ng-click="openSearchBar()" layout="row" flex>
-						<i class="icon-search"></i>
-						Search
-					</div>
-                     
-               
-                 
-					<div class="blut-current-view" flex hide-xs hide-sm>
-						{{currentView}}
-					</div>
-                    <div layout="row" layout-align="end center" class="blut-search-right-wrapper" style="width: 532px;">
-
-                        <div class="blut-header-icon" ng-click="mainclose()" md-colors="{color:'primary'}" id="home">
-                            <i class="icon-house-outline hover-color"></i>
-							<md-tooltip md-direction="bottom">Go To Home</md-tooltip>
-                        </div>
-
-                        <div class="blut-header-icon" ng-click="navigate('TV Mode')" id="fullscreen">
-                            <i class="icon-full-size hover-color" md-colors="{color:'primary'}" ></i>
-							<md-tooltip md-direction="bottom">Toggle Fullscreen</md-tooltip>
-                        </div>
-                        <div class="blut-header-icon"  ng-click="navigate('Clear Widgets')" id="clearWidgets">
-                            <i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
-							<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
-                        </div>
-                        <div class="blut-header-icon" ng-click="navigate('Save')"  id="save">
-                            <i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
-							<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
-                        </div>
-                        <div class="blut-header-icon" ng-click="navigate('share Dashboards')" style="margin-top: -3px;">
-                            <i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
-							<md-tooltip md-direction="bottom">Share Dashboard</md-tooltip>
-                        </div>
-                        <div class="blut-header-icon" md-colors="{color:'primary'}" ng-click="openNotifications()" style="width:45px;" id="notifications">
-                            <i class="ti-bell hover-color" md-colors="{color:'primary'}"></i>
-                            <div md-colors="{background:'accent'}"  style="width:15px;height:15px;border-radius:16px;margin-top:-30px;margin-left:16px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
-							<md-tooltip md-direction="bottom">Notifications</md-tooltip>
-                        </div>
-
-
-                        <div class="blut-profile-wrapper-header">
-                            <div layout="row" class="blut-login-user pull-right">
-                                <p ng-model="username">{{firstName }}</p>
-                                <div class="login-img"> 
-                                    <img src="{{profile_pic}}"/>
-                                </div>
-								<div class="dropdown">
-									<button class="dropbtn" md-colors="{background:'accent'}"><i class="ti-angle-down"></i></button>
-									<div class="dropdown-content">
-									<a ng-click="navigate('switch tenant')")">Switch Tenant</a>
-									<a ng-click="navigate('my account')">My Account</a>
-									<a ng-click="Introduce()">Help</a>
-									<a ng-click="navigate('Logout')">
-										<span flex="80">Logout</span>
-									</a>
-								  </div>
-								</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blut-search-toggele hover-color" md-colors="{color:'primary'}" ng-click="topMenuToggle()">
-                        <span ng-if="!showHeader" class="ti-angle-down"></span>
-                        <span ng-if="showHeader" class="ti-angle-up"></span>
-                    </div>
-                </div-->
-
-        <!-- end searchBar -->
-
-        <!--md-content id="getReport" class="nav-menu nav-bar-border left-menu-bar" ng-include src="'views/ViewSidebar.html'">
-        </md-content-->
 		
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce">
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit">
 			<div id="cssmenu">
 				<ul>
 					<li style="height:30px;font-size:24px"  id="step1"><a md-colors="{color:'primary'}" ></a>
@@ -597,5 +515,5 @@
                 <!--</div>-->
             </div>
         </div>
-    </div>
+
 </div>

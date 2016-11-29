@@ -46,9 +46,17 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications','pouchDbServices',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications,pouchDbServices) {
-
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications','pouchDbServices','layoutManager',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications,pouchDbServices,layoutManager) {
+		
+		$rootScope.showSideMenu = layoutManager.hideSideMenu();
+		if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+		{
+			$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+		}else{
+			$('md-tabs-wrapper').css('background-color',"white", 'important');
+		}
+	
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
             if (e.target.className == "pvtAttr") {

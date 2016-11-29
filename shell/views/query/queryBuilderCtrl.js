@@ -171,7 +171,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         }
     };
     $scope.otherChartConfig = [];
-
+    $scope.metricLoading = false;
     $scope.recordedColors = {};
     $scope.initRequestLimit = {
         value: 100
@@ -523,10 +523,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     dec: 2,
                     label: "Sales Average",
                     scalePosition: "back",
-                    color: 'black',
-                    actualValue: 33852,
-                    targetRange: "higher",
+                    color: 'white',
+                    targetRange: "",
                     targetValue: 33852,
+                    targetField: "",
                     rangeSliderOptions: {
                         minValue: 0,
                         maxValue: 100,
@@ -539,7 +539,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                             }
                         }
                     },
-                    colorTheme: "rog"
+                    colorTheme: "",
+                    lowerRange: 0,
+                    higherRange: 33852
                 },
                 settingsView: 'views/query/settings-views/metricSettings.html',
 				tooltip: ""
@@ -3307,22 +3309,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     }
     $scope.metric = {
         onInit: function(recon) {
-            // $scope.highchartsNG = $scope.widget.highchartsNG;
-            // $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
             $scope.prevChartSize = {
                 width: 300,
                 height: 220
             };
         },
         changeType: function() {
-            //$scope.highchartsNG.options.chart.type = $scope.selectedChart.chart;
+
         },
         selectCondition: function() {
             $scope.getAggregation();
+            $scope.resetSettings();
         },
         selectAttribute: function(fieldName) {
-            //$scope.getGroupedAggregation(fieldName);
-            //alert("grouping in metric is not supported");
             privateFun.fireMessage('0', 'grouping in metric is not supported');
             $scope.isPendingRequest = false;
         },
@@ -3334,6 +3333,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     $scope.selectedChart.initObj.label = c;
                 }
             }
+            $scope.resetSettings();
             $scope.eventHndler.isLoadingChart = false;
             $scope.dataToBeBind.receivedQuery = query;
         },
@@ -3344,11 +3344,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 $scope.executeQryData.executeColumns = [];
                 $scope.highchartsNG = $scope.selectedChart.initObj;
             }
+            $scope.resetSettings();
         },
         removeCat: function() {
             $scope.getAggregation();
         },     
         onGetAggData: function(res) {
+            $scope.resetSettings();
             for (var c in res) {
                 $scope.isPendingRequest = false;
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
@@ -3364,7 +3366,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.widData = {
                 decValue: $scope.selectedChart.initObj.decValue,
                 dec: $scope.selectedChart.initObj.dec,
-                //initCtrl: "metricInit",
+                initCtrl: "metricInit",
                 scale: $scope.selectedChart.initObj.scale,
                 value: $scope.selectedChart.initObj.value,
                 label: $scope.selectedChart.initObj.label,
@@ -4249,6 +4251,123 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
     };
     $scope.recordColor = function(ser) {
         $scope.recordedColors[ser.name] = ser.color;
+    };
+    $scope.applySettings = function() {
+        // Validations
+        if ($scope.executeQryData.executeMeasures.length < 1) {
+            privateFun.fireMessage('0','Please generate metric chart before configuring settings.');
+            return;
+        }
+        if ($scope.selectedChart.initObj.colorTheme == "") {
+            privateFun.fireMessage('0','Please select a colour theme.');
+            return;
+        }
+        if ($scope.selectedChart.initObj.targetRange == "") {
+            privateFun.fireMessage('0','Please select a colouring type.');
+            return;
+        }        
+        if (typeof $scope.selectedChart.initObj.value != "number") var value = parseInt($scope.selectedChart.initObj.value.replace(/,/g,''));
+        var highRange = $scope.selectedChart.initObj.targetValue * $scope.selectedChart.initObj.rangeSliderOptions.maxValue / 100;
+        var lowerRange = $scope.selectedChart.initObj.targetValue * $scope.selectedChart.initObj.rangeSliderOptions.minValue / 100;
+        if (value <= lowerRange) {
+            if ($scope.selectedChart.initObj.colorTheme == "rog") {
+                if ($scope.selectedChart.initObj.targetRange == "high") {
+                    $scope.selectedChart.initObj.color = "red"
+                } else if($scope.selectedChart.initObj.targetRange == "low") {
+                    $scope.selectedChart.initObj.color = "green"
+                }
+            } else if ($scope.selectedChart.initObj.colorTheme == "cgy") {
+                if ($scope.selectedChart.initObj.targetRange == "high") {
+                    $scope.selectedChart.initObj.color = "cyan"
+                } else if($scope.selectedChart.initObj.targetRange == "low") {
+                    $scope.selectedChart.initObj.color = "yellow"
+                }
+            } else if ($scope.selectedChart.initObj.colorTheme == "opg") {
+                if ($scope.selectedChart.initObj.targetRange == "high") {
+                    $scope.selectedChart.initObj.color = "orange"
+                } else if($scope.selectedChart.initObj.targetRange == "low") {
+                    $scope.selectedChart.initObj.color = "green"
+                }
+            }
+        } else if (value >= highRange) {
+            if ($scope.selectedChart.initObj.colorTheme == "rog") {
+                if ($scope.selectedChart.initObj.targetRange == "high") {
+                    $scope.selectedChart.initObj.color = "green"
+                } else if($scope.selectedChart.initObj.targetRange == "low") {
+                    $scope.selectedChart.initObj.color = "red"
+                }
+            } else if ($scope.selectedChart.initObj.colorTheme == "cgy") {
+                if ($scope.selectedChart.initObj.targetRange == "high") {
+                    $scope.selectedChart.initObj.color = "yellowgreen"
+                } else if($scope.selectedChart.initObj.targetRange == "low") {
+                    $scope.selectedChart.initObj.color = "cyan"
+                }                    
+            } else if ($scope.selectedChart.initObj.colorTheme == "opg") {
+                if ($scope.selectedChart.initObj.targetRange == "high") {
+                    $scope.selectedChart.initObj.color = "green"
+                } else if($scope.selectedChart.initObj.targetRange == "low") {
+                    $scope.selectedChart.initObj.color = "orange"
+                }
+            }
+        } else {
+            if ($scope.selectedChart.initObj.colorTheme == "rog") {
+                $scope.selectedChart.initObj.color = "orange"
+            } else if ($scope.selectedChart.initObj.colorTheme == "cgy") {
+                $scope.selectedChart.initObj.color = "green"
+            } else if ($scope.selectedChart.initObj.colorTheme == "opg") {
+                $scope.selectedChart.initObj.color = "purple"
+            }
+        }
+    };
+    $scope.resetSettings = function() {
+        $scope.selectedChart.initObj.scale = "";
+        $scope.selectedChart.initObj.dec = 2;
+        $scope.selectedChart.initObj.color = "white";
+        $scope.selectedChart.initObj.targetRange = "";
+        $scope.selectedChart.initObj.targetValue = $scope.selectedChart.initObj.value;
+        $scope.selectedChart.initObj.targetField = "";
+        $scope.selectedChart.initObj.rangeSliderOptions = {
+            minValue: 0,
+            maxValue: 100,
+            options: {
+                floor: 0,
+                ceil: 100,
+                step: 1,
+                translate: function(value) {
+                  return value + '%';
+                }
+            }                
+        };
+        $timeout(function () {
+            $scope.$broadcast('rzSliderForceRender');
+        },500);        
+        $scope.selectedChart.initObj.colorTheme = "";
+        $scope.selectedChart.initObj.lowerRange = 0;
+        $scope.selectedChart.initObj.higherRange = $scope.selectedChart.initObj.value;
+    };
+    $scope.getTargetValue = function() {
+        // Validations
+        if ($scope.executeQryData.executeMeasures.length < 1) {
+            privateFun.fireMessage('0','Please generate metric chart before calculating target value.');
+            return;
+        }
+        if ($scope.selectedChart.initObj.targetField == "") {
+            privateFun.fireMessage('0','Please select a target field for calculating target value.');
+            return;
+        }
+        var nameSpace = $scope.executeQryData.executeMeasures[0].condition + "_" + $scope.selectedChart.initObj.targetField;
+        var query = "SELECT " + $scope.executeQryData.executeMeasures[0].condition + "(" + $scope.selectedChart.initObj.targetField + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
+        $scope.metricLoading = true;
+        $scope.client.getExecQuery(query, function(res, status, query) {
+            if (status) {
+                $scope.$apply(function() {
+                    $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
+                    $scope.metricLoading = false;
+                })
+            } else {
+                $scope.metricLoading = false;
+            }
+        });     
     };
     //#damith
     //create custom query design catch syntax error

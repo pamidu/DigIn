@@ -426,6 +426,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         url: '/themes',
         controller: 'themeCtrl',
         templateUrl: "views/settings/theme/theme.html"
+    })
+    .state('home.datasourceSettings', {
+        url: '/datasource-settings',
+        controller: 'datasourceSettingsCtrl',
+        templateUrl: 'views/settings/datasourceSettings/datasourceSettings.html',
+        data: {
+            requireLogin: true
+        }        
     });
     
 

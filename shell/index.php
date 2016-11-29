@@ -354,6 +354,9 @@
 <!--sytem settings-->
 <script src="views/settings/systemSettings/systemSettings.js"></script>
 
+<!-- Datasource settings -->
+<script src="views/settings/datasourceSettings/datasourceSettingsCtrl.js"></script>
+
 <script src="scripts/charts/d3Force.js"></script>
 
 <script src="scripts/charts/streamgraph.js"></script>

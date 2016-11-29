@@ -43,23 +43,24 @@
                 <label>Actual Value</label>
                 <input ng-model="selectedChart.initObj.value" ng-disabled="true">
             </md-input-container>
-            <md-input-container flex layout="row">
-                <label>Target Value</label>
-                <input ng-model="selectedChart.initObj.targetValue" flex="50"/>
-                <md-select flex="50" ng-model="selectedChart.initObj.targetValue">
-                    <md-option ng-repeat="x in commonData.measures" value="{{x.filedName}}">
-                        {{x.filedName}}
-                    </md-option>
-                </md-select>
-<!--                 <md-input-container layout="row" flex>
-                    <input ng-model="selectedChart.initObj.targetValue" flex="50"/>
-                    <md-select>
-                        <md-option ng-repeat="item in commonData.measures" value="{{item.filedName}}">
-                            {{item.filedName}}
-                        </md-option>
-                    </md-select>
-                </md-input-container> -->
-            </md-input-container>
+            <md-container flex layout="column">
+                <md-input-container>
+                    <label>Target Value (Enter the value or select the target value field</label>
+                </md-input-container>
+                <md-container flex layout="row">
+                    <md-input-container  flex="40">
+                        <input ng-model="selectedChart.initObj.targetValue"/>                
+                    </md-input-container>
+                    <md-input-container  flex="40">
+                        <md-select ng-model="selectedChart.initObj.targetField">
+                            <md-option ng-repeat="item in commonData.measures" value="{{item.filedName}}">
+                                {{item.filedName}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-button class="md-raised md-primary right" ng-click="getTargetValue()" style="height: 50%;">Calculate</md-button>
+                </md-container>
+            </md-container>
         </md-container>
     </md-container>
     <md-container>

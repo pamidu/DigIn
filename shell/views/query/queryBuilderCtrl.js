@@ -526,6 +526,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     color: 'white',
                     targetRange: "",
                     targetValue: 33852,
+                    targetField: "",
                     rangeSliderOptions: {
                         minValue: 0,
                         maxValue: 100,
@@ -4251,7 +4252,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         $scope.recordedColors[ser.name] = ser.color;
     };
     $scope.applySettings = function() {
-        var value = parseInt($scope.selectedChart.initObj.value.replace(/,/g,''));
+        if (typeof $scope.selectedChart.initObj.value != "number") var value = parseInt($scope.selectedChart.initObj.value.replace(/,/g,''));
         var highRange = $scope.selectedChart.initObj.targetValue * $scope.selectedChart.initObj.rangeSliderOptions.maxValue / 100;
         var lowerRange = $scope.selectedChart.initObj.targetValue * $scope.selectedChart.initObj.rangeSliderOptions.minValue / 100;
         if (value <= lowerRange) {
@@ -4310,6 +4311,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         $scope.selectedChart.initObj.color = "white";
         $scope.selectedChart.initObj.targetRange = "";
         $scope.selectedChart.initObj.targetValue = $scope.selectedChart.initObj.value;
+        $scope.selectedChart.initObj.targetField = "";
         $scope.selectedChart.initObj.rangeSliderOptions = {
             minValue: 0,
             maxValue: 100,
@@ -4328,6 +4330,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         $scope.selectedChart.initObj.colorTheme = "";
         $scope.selectedChart.initObj.lowerRange = 0;
         $scope.selectedChart.initObj.higherRange = $scope.selectedChart.initObj.value;
+    };
+    $scope.getTargetValue = function() {
+        alert($scope.selectedChart.initObj.targetField);
+        var nameSpace = $scope.executeQryData.executeMeasures[0].condition + "_" + $scope.selectedChart.initObj.targetField;
+        var query = "SELECT " + $scope.executeQryData.executeMeasures[0].condition + "(" + $scope.selectedChart.initObj.targetField + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
+        $scope.client.getExecQuery(query, function(res, status, query) {
+            if (status) {
+                $scope.$apply(function() {
+                    $scope.selectedChart.initObj.targetValue = res[0][nameSpace];                    
+                })
+            }
+        });     
     };
     //#damith
     //create custom query design catch syntax error

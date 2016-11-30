@@ -11,15 +11,12 @@
         <md-tab-body>
 			<div class="card-container">
             <div gridster="gridsterOpts">
-                <li class="digin-widget" ng-repeat="widget in page.widgets" gridster-item="widget" layout="column" layout-align="none stretch">
-                    <div class="digin-widget-toolbar" layout="row" layout-align="center center" ng-init="setShowWidgetSettings(widget)">
-                        <div ng-class="widgetTitleClass" flex="80" style="color: #02b5e2; padding-left: 50px;">
-                            {{widget.widgetData.widName}}
-                        </div>
-                        <div class="" layout="row" layout-align="end center" >
+                <md-content ng-repeat="widget in page.widgets" gridster-item="widget" style="padding-bottom: 49px !important;overflow:inherit">
+                    <div class="widget-header" layout="row" layout-align="space-between center" ng-init="setShowWidgetSettings(widget)">
+                        <span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
+                        <div layout="row" layout-align="end center" >
 
-                            <md-button class="widget-button" ng-if="showDataView(widget)"
-                                       ng-click="shareWidget($event,widget)" style="margin-top: 0px;">
+                            <md-button class="widget-button" ng-if="showDataView(widget)" ng-click="shareWidget($event,widget)" style="margin-top: 0px;">
                                 <i class="ti-sharethis blut-widget-icon"></i>
                                 <md-tooltip >share</md-tooltip>
                             </md-button>
@@ -31,9 +28,7 @@
                             </md-button>
 
                           
-                            <md-button class="widget-button"
-                                       ng-show="widget.widgetData.initTemplate!=undefined ||
-                            widget.widgetData.commonSrc!=undefined" ng-click="widgetSettings($event,widget)" style="margin-top: 5px;">
+                            <md-button class="widget-button" ng-show="widget.widgetData.initTemplate!=undefined || widget.widgetData.commonSrc!=undefined" ng-click="widgetSettings($event,widget)" style="margin-top: 5px;">
                                 <ng-md-icon icon="settings" class="widicons"  size="20"></ng-md-icon>
                                 <md-tooltip>settings</md-tooltip>
                             </md-button>
@@ -100,7 +95,7 @@
                                         </v-pane>                       
                                     </v-accordion>                               
                                 </md-menu-content>
-                            </md-menu>                             
+                            </md-menu>
                             <md-button class="widget-button" ng-click="syncWidget(widget)"
                                        ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.initCtrl=='metricInit'">
                                 <i class="ti-reload blut-widget-icon"></i>
@@ -109,6 +104,7 @@
 
                             <md-button class="widget-button" ng-click="removeWidget(widget, $event)">
                                 <i class="ti-close blut-widget-icon"></i>
+								<md-tooltip>close</md-tooltip>
                             </md-button>
 
                         </div>
@@ -142,13 +138,12 @@
                         </canvas>
 
                         <div id="png-container"></div>
-                        <div style="height:100%;width:100%" class="dashoard-Wrapper {{widget.widgetID}}"  id="d3Chart-wrap" ng-include
-                             src="widget.widgetData.widView">
+                        <div style="height:100%;width:100%" class="dashoard-Wrapper {{widget.widgetID}}"  id="d3Chart-wrap" ng-include="widget.widgetData.widView">
                         </div>
                        
                     </div>
 
-                </li>
+                </md-content>
             </div>
 			</div>
         </md-tab-body>

@@ -257,9 +257,9 @@
             <div layout="row" layout-align="space-between center">
 
                 <h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
-                <md-button class="md-icon-button"  ng-click="openNotifications()">
+                <!--md-button class="md-icon-button"  ng-click="openNotifications()">
                     <ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
-                </md-button>
+                </md-button-->
             </div>
         </md-toolbar>
         <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0" ng-if="notifications.length >= 1">
@@ -291,9 +291,9 @@
                 <div class="search-box">
                     <input class="form-control txt-sm-search-header" placeholder="search dashboard or report..." ng-model="SearchText">
                 </div>
-				<md-button class="md-icon-button"  ng-click="openSearchBar()">
+				<!--md-button class="md-icon-button"  ng-click="openSearchBar()">
                     <ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
-                </md-button>
+                </md-button-->
             </div>
         </md-toolbar>
         <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0">
@@ -365,7 +365,7 @@
 		<md-content class="main-headbar-slide" ng-mouseenter="headerToggleVisible = true" ng-mouseleave="headerToggleVisible = false">
 			<div layout="row" layout-align="space-between center" style="padding: 0 25px">
 			
-				<div class="blut-search-wrapper hover-color" ng-click="openSearchBar()" layout="row" flex>
+				<div class="blut-search-wrapper hover-color" ng-click="openSearchBar()" aria-label="search" layout="row" flex>
 					<i class="icon-search"></i>
 					<span hide-sm hide-xs>Search</span>
 				</div>
@@ -398,7 +398,7 @@
 					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
 						<i class="ti-help-alt"></i>
 					</div-->
-					<div class="blut-header-icon" ng-click="openNotifications()" id="notifications">
+					<div class="blut-header-icon" ng-click="openNotifications()" aria-label="notifications" id="notifications">
 						<i class="ti-bell hover-color" md-colors="{color:'primary'}"></i>
 						<div md-colors="{background:'accent'}"  style="width:15px;height:15px;border-radius:16px;color:white;margin-top:-30px;margin-left:15px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
 						<md-tooltip md-direction="bottom">Notifications</md-tooltip>

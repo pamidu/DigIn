@@ -399,15 +399,15 @@
 						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
 					  </div>
 					  <md-content>
-						<md-menu-item>
-						  <md-button ng-click="navigate('share', 'dashboard')">
+						<md-menu-item ng-if="$root.dashboard.compID">
+						  <md-button ng-click="navigate('share', 'sharedashboard')">
 							  <div layout="row" flex>
 								<p flex>Share Dashboard</p>
 							  </div>
 						  </md-button>
 						</md-menu-item>
 						<md-menu-item>
-						  <md-button ng-click="navigate('share', 'dataset')">
+						  <md-button ng-click="navigate('share', 'shareDataset')">
 							  <div layout="row" flex>
 								<p flex>Share Dataset</p>
 							  </div>

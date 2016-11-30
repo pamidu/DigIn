@@ -1399,8 +1399,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 				    $timeout(function(){
 						$mdMenu.hide();
 					},200);
+					$state.go("home."+ev);
                     break;
-            case "Share Dashboards":
+            case "share":
                 if($rootScope.dashboard.compID != null)
                     $state.go("home.sharedashboard");
                 else{

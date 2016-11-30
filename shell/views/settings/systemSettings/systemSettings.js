@@ -306,7 +306,22 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     }
 
 
+   $scope.showInsideFolder  =  function() {
+       
 
+           $mdDialog.show({
+                controller: 'showFolderDetailsCtrl',
+                templateUrl: 'views/settings/systemSettings/showFolderDetails.html',
+                resolve: {},
+                locals: {
+                    users: $scope.users,
+                    groups: $scope.groups
+                    //file
+                }
+            })
+
+
+    }
 
 
 

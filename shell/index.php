@@ -350,6 +350,8 @@
 
 <!--sytem settings-->
 <script src="views/settings/systemSettings/systemSettings.js"></script>
+<script src="views/settings/systemSettings/showFolderDetailsCtrl.js"></script>
+
 
 <!-- Datasource settings -->
 <script src="views/settings/datasourceSettings/datasourceSettingsCtrl.js"></script>

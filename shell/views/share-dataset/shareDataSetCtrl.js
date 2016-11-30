@@ -1,4 +1,4 @@
-routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory){
+routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications){
 
 
 
@@ -9,8 +9,10 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
     }
 
 
-    $scope.files =["1","2","3","4","5","6","7","8","9"];
-    $scope.folders=['1','2','3','4','5','6','7'];
+
+ 
+    $scope.files =[];
+    $scope.folders=[];
 
 
     $scope.loadFilesFolder  = function(){
@@ -19,11 +21,28 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
            .then(function(result) {
                 
             },function errorCallback(response) {
-                notifications.toast(0, "Falied to get users");
+                //notifications.toast(0, "Falied to get users");
          }); 
+
+        var response = {"Exception": null, "Result": [{"datasource_id": "888", "created_tenant": "iamadmin.dev.digin.io", "created_user": "123", "shared_user_groups": [], "upload_type": null, "file_uploads": [{"uploaded_datetime": null, "uploaded_user": null, "upload_id": null, "modified_datetime": null, "file_name": null}], "created_datetime": "2016-11-18T14:41:16", "shared_users": ["3e5685e2c1a575e286784f4fa98d8bec"], "security_level": "write", "datasource_name": "table_name", "shared_by": "33b90429cb058a94fbe2c2b0e67303c7", "datasource_type": "table", "schema": {"logo_name": "comp_Arch.png", "theme_config": "bla bla", "query_limit": 1000, "user_role": "admin", "cache_lifetime": null, "widget_limit": 7, "components": "dashboard1", "dp_name": "fe", "SecurityToken": "1e9fe96bb7a42eb87342b44a6b82f03c", "email": "marlonabeykoodn@gmail.com"}}, {"datasource_id": "1480094864372", "created_tenant": "prod.digin.io", "created_user": "232d2f787798dda9383f01867d9e4add", "shared_user_groups": [], "upload_type": "csv-directory", "file_uploads": [{"uploaded_datetime": "2016-11-25T17:30:08", "uploaded_user": "232d2f787798dda9383f01867d9e4add", "upload_id": "444", "modified_datetime": "2016-11-25T17:30:08", "file_name": "manually_added.csv"}, {"uploaded_datetime": "2016-11-25T17:29:08", "uploaded_user": "232d2f787798dda9383f01867d9e4add", "upload_id": "1480094947714", "modified_datetime": "2016-11-25T17:29:08", "file_name": "results-2015.csv"}], "created_datetime": "2016-11-25T17:28:08", "shared_users": [], "security_level": "write", "datasource_name": "test72", "shared_by": "33b90429cb058a94fbe2c2b0e67303c7", "datasource_type": "table", "schema": [{"type": "integer", "mode": "nullable", "name": "index_id"}, {"type": "string", "mode": "nullable", "name": "name"}, {"type": "string", "mode": "nullable", "name": "gender"}, {"type": "integer", "mode": "nullable", "name": "count"}]}], "Is_Success": true, "Custom_Message": "Tables retrieved!"}
+
+
+
+        for(var i = 0; i < response.Result.length; i++){
+
+            if(response.Result[i].upload_type == null){
+                $scope.files.push(response.Result[i]);
+            }else{
+              $scope.folders.push(response.Result[i]);
+            }
+
+        }
+
 
 
     }
+
+    $scope.loadFilesFolder();
 
 
     $scope.selectedFiles = [];
@@ -104,12 +123,12 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
     //------------------------ Users and groups goes here -----------------------------------------------------
 
 
-    $scope.users = ["1","2","3","4","5","6","7","8","9"];
-    $scope.groups = ['1','2','3','4','5','6','7'];
+    $scope.users = [];
+    $scope.groups = [];
 
     $scope.getUserandGroups = function(){
 
-          $http.get('http://iamadmin.dev.digin.io/apis/usercommon/getSharableObjects')
+          $http.get('http://pectivarkten.prod.digin.io/apis/usercommon/getSharableObjects')
            .then(function(result) {
 
                 var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -193,33 +212,127 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
       };
 
 
-    $scope.share = function(){
-        alert($scope.selectedUsersRead);
-        alert($scope.selectedUsersWrite);
-      }
-
-
     $scope.closeDialog =function(){
         $mdDialog.hide();
     }
 
 
+      $scope.openFileShareDetails = function(file){
 
-
-
-      $scope.openFileShareDetails = function(){
-
-        alert("Hi");
          $mdDialog.show({
                 controller: 'showFileShareDetailsCtrl',
                 templateUrl: 'views/share-dataset/showFileShareDetails.html',
                 resolve: {},
                 locals: {
                     users: $scope.users,
-                    groups: $scope.groups
-                    //file
+                    groups: $scope.groups,
+                    file:file
                 }
             })
+      }
+
+
+
+      $scope.shareDataSet = function(){
+
+        var shareObj = [];
+
+        if(($scope.selectedFiles.length > 0 ||  $scope.selectedFolders.length > 0) && ($scope.selectedUsersRead.length >0 ||  $scope.selectedGroupRead.length >0))
+        {
+
+          // get users files and folders
+          shareObj.concat($scope.getSharableObject($scope.selectedFiles,$scope.selectedUsersRead,$scope.selectedUsersWrite,shareObj,true)); 
+          shareObj.concat($scope.getSharableObject($scope.selectedFolders,$scope.selectedUsersRead,$scope.selectedUsersWrite,shareObj,true)); 
+          
+          // get groups files and folders 
+          shareObj.concat($scope.getSharableObject($scope.selectedFiles,$scope.selectedGroupRead,$scope.selectedGroupWrite,shareObj,false)); 
+          shareObj.concat($scope.getSharableObject($scope.selectedFolders,$scope.selectedGroupRead,$scope.selectedGroupWrite,shareObj,false)); 
+
+          console.log();
+
+        }else if(($scope.selectedFiles.length +  $scope.selectedFolders.length) == 0){
+           notifications.toast(0, "Please select a file or a folder");
+        }else if(($scope.selectedUsersRead.length + $scope.selectedGroupRead.length) == 0){
+          notifications.toast(0, "Please select a user or a group");
+        }
+
+      }
+
+
+      $scope.getSharableObject = function(selectedArray,readArray,writeArr,shareObj,isUser){
+
+         for(var i = 0; i< selectedArray.length ; i++ ){
+              for(var j = 0; j< readArray.length ; j++ ){
+
+                  if(!$scope.isExist(readArray[j].UserID,selectedArray[i].shared_users) && !$scope.isCurrntUser(selectedArray[i].created_tenant,selectedArray[i].created_user))
+                  {
+                    var obj = {
+                        "comp_id":selectedArray[i].datasource_id,
+                        "is_user":isUser,
+                        "id":readArray[j].Id,
+                        "security_level":$scope.getPermition(readArray[j].Id,writeArr)
+
+                    };
+
+                    shareObj.push(obj);
+                    console.log();
+                  }
+              }
+          }
+
+
+
+          return shareObj;
+
+
+      }
+
+
+
+      $scope.isExist = function(Id, array){
+        var isExist = false;
+
+        for(var i =0; i < array.length ; i++){
+
+            if(Id == array[i]){
+                isExist = true;
+                break;
+            }
+
+        }
+
+        return isExist;
+      }
+
+      $scope.isCurrntUser = function(created_tenant,created_user){
+        var isCurrntUser = false;
+        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+        var curUserId = userInfo.UserID;
+        var curTenent = $rootScope.TenantID;
+
+
+        if(created_tenant == curTenent && created_user == curUserId)
+            isCurrntUser = true; 
+
+       return isCurrntUser; 
+      }
+
+
+      $scope.getPermition = function(userId, writeArr){
+
+        var permition = "read";
+
+        for(var i =0; i < writeArr.length ; i++){
+
+            if(userId == writeArr[i].Id){
+              permition = "write";
+              break;
+            }
+        }
+
+
+        return permition;
+
       }
 
 

@@ -272,20 +272,22 @@
 
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Files</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-left: 10px;">
+														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;">
 											              <span ng-if="isChecked()">Un-</span>Select All files 
 											            </md-checkbox>
 													</div>
 
 													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "openFileShareDetails()">
+														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "openFileShareDetails(file)">
 
 											  
 															<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
 															  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-																<div layout="row"><h3>Super store</h3>
-																<p style="padding-left:20px">(2016-10-29)</p></div>
-																<h4>Gevindu Mallikarachchi</h4>
+																<div layout="row">
+																	<h3>{{file.datasource_name}}</h3>
+																	<p style="padding-left:20px">({{file.created_datetime}})</p>
+																</div>
+																<h4>{{file.created_user}}</h4>
 																
 															  </div>
 
@@ -307,20 +309,22 @@
 
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Folders</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style="margin-left: 10px;">
+														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style=" margin-right: 30px;">
 											              <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
 											            </md-checkbox>
 													</div>
 
 													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click="null">
+														<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click = "openFileShareDetails(folder)">
 
 											  
 														<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
 														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-															<h3>sdfsdf</h3>
-															<h4>sdfsdfsdf</h4>
-															<p>sdfsdfsdf</p>
+															<div layout="row">
+																	<h3>{{folder.datasource_name}}</h3>
+																	<p style="padding-left:20px">({{folder.created_datetime}})</p>
+																</div>
+																<h4>{{folder.created_user}}</h4>
 														  </div>
 
 														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)"></md-checkbox>
@@ -337,7 +341,6 @@
 											</md-content>
 											<md-step-actions layout="row">
 												<div flex layout="row" layout-align="end top">
-													<md-button class="md-raised md-primary" ng-click="">DELETE</md-button>
 													 <md-button class="md-raised md-primary" ng-click="goToNextStep()">NEXT</md-button>
 												</div>
 											</md-step-actions>
@@ -365,9 +368,10 @@
 											  
 														<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
 														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-															<h3>sdfsdf</h3>
-															<h4>sdfsdfsdf</h4>
-															<p>sdfsdfsdf</p>
+															<div layout="row">
+																	<h3>{{user.Name}}</h3>
+																</div>
+																<h4>{{user.Id}}</h4>
 														  </div>
 														 <div layout="row" style="margin-right:48px">
 															 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(user, selectedUsersRead)" ng-click="toggleUsersRead(user, selectedUsersRead,selectedUsersWrite)"></md-checkbox>
@@ -397,9 +401,8 @@
 											  
 														<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
 														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-															<h3>sdfsdf</h3>
-															<h4>sdfsdfsdf</h4>
-															<p>sdfsdfsdf</p>
+															<h3>{{group.Name}}</h3>
+															
 														  </div>
 
 														<div layout="row" style="margin-right:48px">
@@ -421,7 +424,7 @@
 											<md-step-actions layout="row">
 												<div flex layout="row" layout-align="end top">
 													<md-button class="md-raised md-primary" ng-click="selected = 0">PREV</md-button>
-													<md-button class="md-raised md-primary" ng-click="share()">Share</md-button>
+													<md-button class="md-raised md-primary" ng-click="shareDataSet()">Share</md-button>
 												</div>
 											</md-step-actions>
 										</md-step-body>

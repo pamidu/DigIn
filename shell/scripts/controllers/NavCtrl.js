@@ -1,9 +1,9 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http', 'filterService',
+    '$timeout', '$rootScope', '$mdDialog', '$mdMenu', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
     'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager',
-    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog,$mdMenu, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
               $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager) {
 
@@ -1393,6 +1393,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     })
                     .then(function(answer) {
                     });
+                    break;
+			case "share": 
+                   console.log(ev)
+				    $timeout(function(){
+						$mdMenu.hide();
+					},200);
                     break;
             case "Share Dashboards":
                 if($rootScope.dashboard.compID != null)

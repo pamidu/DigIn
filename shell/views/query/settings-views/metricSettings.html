@@ -3,11 +3,11 @@
         <label class="chart-settings-labels">Basic Settings</label>
         <br>
         <md-container flex layout="row">
-            <md-input-container flex="50">
+<!--             <md-input-container flex="50">
                 <label>Label text</label>
                 <input ng-model="selectedChart.initObj.label">
-            </md-input-container>
-            <md-input-container flex="50">
+            </md-input-container> -->
+            <md-input-container flex="100">
                 <label>Scale</label>
                 <input ng-model="selectedChart.initObj.scale">
             </md-input-container>
@@ -38,32 +38,15 @@
     <md-container>
         <label class="chart-settings-labels">Data Settings</label>
         <br>
-        <md-container flex layout="column">
-            <md-input-container>
+        <md-container flex layout="row">
+            <md-input-container flex="50">
                 <label>Actual Value</label>
                 <input ng-model="selectedChart.initObj.value" ng-disabled="true">
             </md-input-container>
-            <md-container flex layout="column">
-                <md-input-container>
-                    <label>Target Value (Enter the value or select the target value field</label>
-                </md-input-container>
-                <md-container flex layout="row">
-                    <md-input-container  flex="40">
-                        <input ng-model="selectedChart.initObj.targetValue"/>                
-                    </md-input-container>
-                    <md-input-container  flex="40">
-                        <md-select ng-model="selectedChart.initObj.targetField">
-                            <md-option ng-repeat="item in commonData.measures" value="{{item.filedName}}">
-                                {{item.filedName}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-button class="md-raised md-primary right" ng-click="getTargetValue()" style="height: 50%;" ng-disabled="eventHndler.isLoadingChart" ng-hide="metricLoading">Calculate</md-button>
-                    <div flex layout="column" layout-align="center center" ng-if="metricLoading">
-                        <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
-                    </div>
-                </md-container>
-            </md-container>
+            <md-input-container flex="50">
+                <label>Target Value</label>
+                <input ng-model="selectedChart.initObj.targetValue" ng-disabled="true">
+            </md-input-container>        
         </md-container>
     </md-container>
     <md-container>

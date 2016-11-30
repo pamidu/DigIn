@@ -37,7 +37,7 @@
                                 <ng-md-icon icon="settings" class="widicons"  size="20"></ng-md-icon>
                                 <md-tooltip>settings</md-tooltip>
                             </md-button>
-                            <md-menu ng-show="widget.widgetData.initCtrl=='elasticInit'">
+                            <md-menu ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.initCtrl=='metricInit' ">
                                 <md-button class="widget-button"  ng-show="widget.widgetData.selectedChart.chartType!='forecast'" ng-click="$mdOpenMenu($event);$event.stopPropagation();onClickFilterButton(widget);">
                                     <i class="ti-filter" ng-class="widget.widgetData.filteredState==true? 'blut-filtered-icon' : 'blut-widget-icon'"></i>
                                     <md-tooltip>filter</md-tooltip>
@@ -102,7 +102,7 @@
                                 </md-menu-content>
                             </md-menu>                             
                             <md-button class="widget-button" ng-click="syncWidget(widget)"
-                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.initCtrl=='metricInit'">
                                 <i class="ti-reload blut-widget-icon"></i>
                                 <md-tooltip>sync</md-tooltip>
                             </md-button>

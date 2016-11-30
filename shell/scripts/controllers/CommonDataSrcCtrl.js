@@ -53,9 +53,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
             'type': 'datetime',
             'category': 'att'
         }, {
+            'type': 'DATETIME',
+            'category': 'att'
+        }, {
             'type': 'DATE',
             'category': 'att'
-        },{
+        }, {
             'type': 'TIMESTAMP',
             'category': 'att'
         }, {

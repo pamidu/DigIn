@@ -171,7 +171,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         }
     };
     $scope.otherChartConfig = [];
-    $scope.metricLoading = false;
     $scope.recordedColors = {};
     $scope.initRequestLimit = {
         value: 100
@@ -521,7 +520,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                     decValue: 33852,
                     scale: "",
                     dec: 2,
-                    label: "Sales Average",
                     scalePosition: "back",
                     color: 'white',
                     targetRange: "",
@@ -3330,7 +3328,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                     $scope.selectedChart.initObj.decValue = res[0][c];
                     $scope.selectedChart.initObj.value = convertDecimals(res[0][c], 2).toLocaleString();
-                    $scope.selectedChart.initObj.label = c;
                 }
             }
             $scope.resetSettings();
@@ -3366,16 +3363,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
             widget.widgetData.widData = {
                 decValue: $scope.selectedChart.initObj.decValue,
                 dec: $scope.selectedChart.initObj.dec,
-                initCtrl: "metricInit",
                 scale: $scope.selectedChart.initObj.scale,
                 value: $scope.selectedChart.initObj.value,
-                label: $scope.selectedChart.initObj.label,
                 color: $scope.selectedChart.initObj.color,
                 scalePosition: $scope.selectedChart.initObj.scalePosition
             };
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
             widget.widgetName = "metric";
+            widget.widgetData.initCtrl = "metricInit";
             $scope.saveChart(widget);
         }
     };
@@ -4357,15 +4353,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $lo
         }
         var nameSpace = $scope.executeQryData.executeMeasures[0].condition + "_" + $scope.selectedChart.initObj.targetField;
         var query = "SELECT " + $scope.executeQryData.executeMeasures[0].condition + "(" + $scope.selectedChart.initObj.targetField + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
-        $scope.metricLoading = true;
         $scope.client.getExecQuery(query, function(res, status, query) {
             if (status) {
                 $scope.$apply(function() {
                     $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
-                    $scope.metricLoading = false;
                 })
             } else {
-                $scope.metricLoading = false;
             }
         });     
     };

@@ -556,7 +556,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     return;
                 }
             } else {
-                requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;
+                if (widget.widgetData.commonSrc.att.length > 0) {
+                    requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;    
+                } else {
+                    requestArray[0] = "";
+                }
+                
             }
             widget.widgetData.syncState = false;
             $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {

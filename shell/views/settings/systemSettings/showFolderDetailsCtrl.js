@@ -1,6 +1,40 @@
-routerApp.controller('showFolderDetailsCtrl',function ($scope,$rootScope,$mdDialog,$http,Digin_Engine_API,Digin_Domain,$state,notifications){
+routerApp.controller('showFolderDetailsCtrl',function ($scope,$rootScope,$mdDialog,$http,Digin_Engine_API,Digin_Domain,$state,notifications,folder,users){
 
-  $scope.files = ['1','2','3','4','5','6','7','8','9'];
+
+  $scope.folder = folder;
+  $scope.users = users;
+
+  $scope.folderName = folder.datasource_name
+  $scope.files = [];
+
+  for(var i =0; i< $scope.folder.file_uploads.length; i++ ){
+
+    $scope.files.push($scope.folder.file_uploads[i]);
+  }
+
+
+      $scope.getDate = function(datetime){
+
+        var res = datetime.split("T");
+        return res[0];
+    }
+
+    $scope.getUserName = function(Id){
+
+        var name;
+        for(var i=0; i< $scope.users.length; i++){
+
+                if($scope.users[i].UserID == Id){
+                    name = $scope.users[i].Id
+                    break;
+                }
+            }
+        return name;
+    }
+    
+
+
+
 
   $scope.selectedFiles = [];
 

@@ -1,10 +1,48 @@
 routerApp.controller('showFileShareDetailsCtrl',
-  function ($scope,$rootScope,$mdDialog,users,groups,file){
+  function ($scope,$rootScope,$mdDialog,users,groups,file,tag,$http,Digin_Engine_API){
 
-  $scope.users = ["1","2","3","4","5","6","7","8","9"];
-  $scope.groups = ['1','2','3','4','5','6','7'];
 
-  $scope.file = file;
+
+  $scope.fileName = file.datasource_name;
+
+  $scope.users = file.shared_users;
+  $scope.groups = file.shared_user_groups;
+
+  $scope.tenenTUsers =users ;
+  $scope.tenenTGroups = groups;
+
+
+
+
+ $scope.getUserName = function(Id){
+
+        var name;
+        for(var i=0; i< $scope.tenenTUsers.length; i++){
+
+                if($scope.tenenTUsers[i].UserID == Id){
+                    name = $scope.tenenTUsers[i].Id
+                    break;
+                }
+            }
+        return name;
+  }
+
+  $scope.getGroupName = function(Id){
+
+        var name;
+        for(var i=0; i< $scope.tenenTGroups.length; i++){
+
+                if($scope.tenenTGroups[i].UserID == Id){
+                    name = $scope.tenenTGroups[i].Name
+                    break;
+                }
+            }
+        return name;
+    }
+
+
+
+  $scope.fileFolder = file;
 
   $scope.selectedUsers = [];
   $scope.selectedgroups = []; 
@@ -85,8 +123,74 @@ routerApp.controller('showFileShareDetailsCtrl',
             }
           };
 
+          $scope.selectedUsers = [];
+          $scope.selectedgroups = []; 
+          
+          $scope.unShare = function(){
+
+            var unshareObj = [];
+            var compId = file.datasource_id;
+
+            for(var i=0; i< $scope.selectedUsers.length ;i++){
+
+                var obj = {
+                  "comp_id":compId,
+                  "is_user":true,
+                  "id":$scope.selectedUsers[i].user_id,
+                  "security_level":$scope.selectedUsers[i].security_level
+                }
+
+                unshareObj.push(obj);
+            }
+
+            for(var i=0; i< $scope.selectedgroups.length ;i++){
+
+                var obj = {
+                  "comp_id":compId,
+                  "is_user":false,
+                  "id":$scope.selectedgroups[i].user_group_id,
+                  "security_level":$scope.selectedgroups[i].security_level
+                }
+
+                unshareObj.push(obj);
+            }
 
 
+            var finalUnshareObj = {
+                "method":"component_internal",
+                "comp_type":"datasource",
+                "share_data":null,
+                "unshare_data":unshareObj
+            }
+
+            var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+              $http({
+                  method: 'POST',
+                  url: Digin_Engine_API +'component_internal',
+                  data: angular.fromJson(JSON.stringify(finalUnshareObj)),
+                  headers: {  
+                              'Content-Type': 'application/json',
+                              'SecurityToken': userInfo.SecurityToken
+                  }
+              })
+              .success(function(response){
+                 
+                  if(response.Is_Success == false){
+                     notifications.toast(0, response.Custom_Message);
+                }
+                else{
+                    notifications.toast(1, response.Custom_Message);
+                }
+
+              })
+              .error(function(error){  
+                notifications.toast(0, error.Custom_Message);
+               
+              });
+
+
+
+          }
 
 
     // // ----------------------- users read---------------------------------------------------------------

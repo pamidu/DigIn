@@ -1,11 +1,11 @@
-<md-dialog style="width:1030px;height:500px">
+<md-dialog style="width:830px;height:500px">
   <md-dialog-content layout="column">
 
 
   	 <div layout="row" layout-align="space-between start" style="color: #1b7b97;border-bottom:1px solid #1b7b97;height: 40px;">
-              <span style="font-size: 20px;margin-top: 10px;margin-left: 8px;" flex="75">Share details</span>
+              <span style="font-size: 20px;margin-top: 10px;margin-left: 8px;" flex="75">Share details of {{fileName}}</span>
               
-              <div layout="column"       layout-align="end end">
+              <div layout="column"   layout-align="end end">
                   <md-button class="buttonMinwidth38 b-r-0" ng-click="closeDialog()">      
                     <ng-md-icon icon="close"></ng-md-icon>   
                   </md-button> 
@@ -39,9 +39,9 @@
 	  
 				<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
 				<div class="md-list-item-text" layout="column" style="padding-left:20px">
-					<h3>sdfsdf</h3>
-					<h4>sdfsdfsdf</h4>
-					<p>sdfsdfsdf</p>
+					<h4>{{getUserName(user.user_id)}}</h4>
+					<h5>permission : <span style="color:rgb(2, 181, 226)">{{user.security_level}}</span> <h5>
+					
 				</div>
 
 
@@ -81,9 +81,8 @@
 		  
 					<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
 					  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-						<h3>sdfsdf</h3>
-						<h4>sdfsdfsdf</h4>
-						<p>sdfsdfsdf</p>
+						<h4>{{getGroupName(group.user_group_id)}}</h4>
+						<h5>permission : <span style="color:rgb(2, 181, 226)">{{group.security_level}}</span> <h5>
 					  </div>
 
 					<div layout="row" style="margin-right:48px">
@@ -103,7 +102,7 @@
       </div>
 
       <div layout="column" layout-align="center end">
-      		<md-button  class="md-raised" >Un-Share</md-button>
+      		<md-button  class="md-raised" ng-click="unShare()">Un-Share</md-button>
       </div>
     
      

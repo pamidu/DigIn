@@ -5,7 +5,7 @@
   		<div flex>
 
 			<div layout="row" layout-align="space-between end">
-				<h2 style="margin:0">Files</h2>
+				<h2 style="margin:0">{{folderName}}</h2>
 
 				<div>
 					<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-left: 10px;">
@@ -18,15 +18,14 @@
 			</div>
 
 			<md-list ng-cloak flex style="max-height:400px;overflow:scroll">
-				<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "openFileShareDetails()">
+				<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "null">
 
 	  
 					<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
 					  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-						<div layout="row"><h3>Super store</h3>
-						<p style="padding-left:20px">(2016-10-29)</p></div>
-						<h4>Gevindu Mallikarachchi</h4>
-						
+						<div layout="row"><h3>{{file.file_name}}</h3>
+						<p style="padding-left:20px">({{getDate(file.uploaded_datetime)}})</p></div>
+						<h4>{{getUserName(file.uploaded_user)}}</h4>
 					  </div>
 
 					

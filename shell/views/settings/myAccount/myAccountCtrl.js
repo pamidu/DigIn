@@ -2916,7 +2916,7 @@ routerApp.directive('customOnChange', function() {
     };
 });
 
-routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory','pouchDB', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory,pouchDB) {
+routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory','pouchDB','paymentGatewaySvc', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory,pouchDB,paymentGatewaySvc) {
 
     userAdminFactory.getInvitedUsers();
 
@@ -3096,7 +3096,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                     "tag": "data",
                     "feature": "Additional data",
                     "quantity": parseInt($rootScope.extraData)-parseInt($scope.bandwidth),
-                    "amount": (-parseInt($rootScope.extraData)-parseInt($scope.bandwidth)) * $scope.bandwithRate,
+                    "amount": (parseInt($rootScope.extraData)-parseInt($scope.bandwidth)) * $scope.bandwithRate,
                     "action": "remove"
                 }];
 
@@ -3222,6 +3222,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
             if (response.statusText == "OK") {
                 if (response.data.status == true) {
                     //Success
+                    paymentGatewaySvc.checkSubscription();
                     $scope.updatePackageDigin(objDigin);
                     $mdDialog.hide();
                     //$scope.clearData();

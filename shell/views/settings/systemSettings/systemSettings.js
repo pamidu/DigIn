@@ -208,27 +208,33 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     $scope.users = [];
     $scope.groups = [];
 
-
+    var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
     $scope.loadFilesFolder  = function(){
 
-        $http.get('/apis/usercommon/getSharableObjects')
+         $http.get('/GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
-                
+                for(var i = 0; i < response.Result.length; i++){
+                    if(response.Result[i].upload_type == null){
+                      $scope.files.push(response.Result[i]);
+                    }else{
+                      $scope.folders.push(response.Result[i]);
+                    }
+
+                }
             },function errorCallback(response) {
-                //notifications.toast(0, "Falied to get users");
+                notifications.toast(0, "Falied to Load Data Set");
          }); 
 
-        var response = {"Exception": null, "Result": [{"datasource_id": "888", "created_tenant": "iamadmin.dev.digin.io", "created_user": "3e5685e2c1a575e286784f4fa98d8bec", "shared_user_groups": [], "upload_type": null, "file_uploads": [{"uploaded_datetime": null, "uploaded_user": null, "upload_id": null, "modified_datetime": null, "file_name": null}], "created_datetime": "2016-11-18T14:41:16", "shared_users": ["3e5685e2c1a575e286784f4fa98d8bec"], "security_level": "write", "datasource_name": "table_name", "shared_by": "33b90429cb058a94fbe2c2b0e67303c7", "datasource_type": "table", "schema": {"logo_name": "comp_Arch.png", "theme_config": "bla bla", "query_limit": 1000, "user_role": "admin", "cache_lifetime": null, "widget_limit": 7, "components": "dashboard1", "dp_name": "fe", "SecurityToken": "1e9fe96bb7a42eb87342b44a6b82f03c", "email": "marlonabeykoodn@gmail.com"}}, {"datasource_id": "1480094864372", "created_tenant": "prod.digin.io", "created_user": "eeb90d0d1cf1304350dfaf0e2da9c769", "shared_user_groups": [], "upload_type": "csv-directory", "file_uploads": [{"uploaded_datetime": "2016-11-25T17:30:08", "uploaded_user": "232d2f787798dda9383f01867d9e4add", "upload_id": "444", "modified_datetime": "2016-11-25T17:30:08", "file_name": "manually_added.csv"}, {"uploaded_datetime": "2016-11-25T17:29:08", "uploaded_user": "232d2f787798dda9383f01867d9e4add", "upload_id": "1480094947714", "modified_datetime": "2016-11-25T17:29:08", "file_name": "results-2015.csv"}], "created_datetime": "2016-11-25T17:28:08", "shared_users": [], "security_level": "write", "datasource_name": "test72", "shared_by": "33b90429cb058a94fbe2c2b0e67303c7", "datasource_type": "table", "schema": [{"type": "integer", "mode": "nullable", "name": "index_id"}, {"type": "string", "mode": "nullable", "name": "name"}, {"type": "string", "mode": "nullable", "name": "gender"}, {"type": "integer", "mode": "nullable", "name": "count"}]}], "Is_Success": true, "Custom_Message": "Tables retrieved!"}
+        // var response = {"Exception": null, "Result": [{"datasource_id": "888", "created_tenant": "iamadmin.dev.digin.io", "created_user": "3e5685e2c1a575e286784f4fa98d8bec", "shared_user_groups": [], "upload_type": null, "file_uploads": [{"uploaded_datetime": null, "uploaded_user": null, "upload_id": null, "modified_datetime": null, "file_name": null}], "created_datetime": "2016-11-18T14:41:16", "shared_users": ["3e5685e2c1a575e286784f4fa98d8bec"], "security_level": "write", "datasource_name": "table_name", "shared_by": "33b90429cb058a94fbe2c2b0e67303c7", "datasource_type": "table", "schema": {"logo_name": "comp_Arch.png", "theme_config": "bla bla", "query_limit": 1000, "user_role": "admin", "cache_lifetime": null, "widget_limit": 7, "components": "dashboard1", "dp_name": "fe", "SecurityToken": "1e9fe96bb7a42eb87342b44a6b82f03c", "email": "marlonabeykoodn@gmail.com"}}, {"datasource_id": "1480094864372", "created_tenant": "prod.digin.io", "created_user": "eeb90d0d1cf1304350dfaf0e2da9c769", "shared_user_groups": [], "upload_type": "csv-directory", "file_uploads": [{"uploaded_datetime": "2016-11-25T17:30:08", "uploaded_user": "232d2f787798dda9383f01867d9e4add", "upload_id": "444", "modified_datetime": "2016-11-25T17:30:08", "file_name": "manually_added.csv"}, {"uploaded_datetime": "2016-11-25T17:29:08", "uploaded_user": "232d2f787798dda9383f01867d9e4add", "upload_id": "1480094947714", "modified_datetime": "2016-11-25T17:29:08", "file_name": "results-2015.csv"}], "created_datetime": "2016-11-25T17:28:08", "shared_users": [], "security_level": "write", "datasource_name": "test72", "shared_by": "33b90429cb058a94fbe2c2b0e67303c7", "datasource_type": "table", "schema": [{"type": "integer", "mode": "nullable", "name": "index_id"}, {"type": "string", "mode": "nullable", "name": "name"}, {"type": "string", "mode": "nullable", "name": "gender"}, {"type": "integer", "mode": "nullable", "name": "count"}]}], "Is_Success": true, "Custom_Message": "Tables retrieved!"}
+        // for(var i = 0; i < response.Result.length; i++){
 
-        for(var i = 0; i < response.Result.length; i++){
+        //     if(response.Result[i].upload_type == null){
+        //         $scope.files.push(response.Result[i]);
+        //     }else{
+        //       $scope.folders.push(response.Result[i]);
+        //     }
 
-            if(response.Result[i].upload_type == null){
-                $scope.files.push(response.Result[i]);
-            }else{
-              $scope.folders.push(response.Result[i]);
-            }
-
-        }
+        // }
     }
 
 
@@ -237,7 +243,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
 
     $scope.getUserandGroups = function(){
 
-          $http.get('http://pectivarkten.prod.digin.io/apis/usercommon/getSharableObjects')
+          $http.get('/apis/usercommon/getSharableObjects')
            .then(function(result) {
 
                 var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));

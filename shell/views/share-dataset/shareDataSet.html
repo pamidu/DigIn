@@ -290,7 +290,7 @@
 															  </div>
 
 															
-															<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)" ng-show="{{file.shared_by}}"></md-checkbox>
+															<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)" ng-show="{{!file.shared_by}}"></md-checkbox>
 
 														</md-list-item>  
 
@@ -320,7 +320,7 @@
 																
 														</div>
 
-														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)"></md-checkbox>
+														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)" ng-show="{{!folder.shared_by}}"></md-checkbox>
 
 
 

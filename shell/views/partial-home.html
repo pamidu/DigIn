@@ -390,10 +390,31 @@
 						<i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate('Share Dashboards')">
+					<!--div class="blut-header-icon" ng-click="navigate('Share Dashboards')">
 						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Share Dashboard</md-tooltip>
-					</div>
+					</div-->
+					<md-menu md-position-mode="target-right target" >
+					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
+					  </div>
+					  <md-content>
+						<md-menu-item ng-if="$root.dashboard.compID">
+						  <md-button ng-click="navigate('share', 'sharedashboard')">
+							  <div layout="row" flex>
+								<p flex>Share Dashboard</p>
+							  </div>
+						  </md-button>
+						</md-menu-item>
+						<md-menu-item>
+						  <md-button ng-click="navigate('share', 'shareDataset')">
+							  <div layout="row" flex>
+								<p flex>Share Dataset</p>
+							  </div>
+						  </md-button>
+						</md-menu-item>
+					  </md-content>
+					</md-menu>
 					
 					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
 						<i class="ti-help-alt"></i>

@@ -357,20 +357,20 @@
 
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Files</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-left: 10px;">
+														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 40px;">
 											              <span ng-if="isChecked()">Un-</span>Select All files 
 											            </md-checkbox>
 													</div>
 
-													<md-list ng-cloak flex style="max-height:400px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "openFileShareDetails()">
+													<md-list ng-cloak flex style="max-height:375px;overflow:scroll">
+														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "null">
 
 											  
 															<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
 															  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-																<div layout="row"><h3>Super store</h3>
-																<p style="padding-left:20px">(2016-10-29)</p></div>
-																<h4>Gevindu Mallikarachchi</h4>
+																<div layout="row"><h3>{{file.datasource_name}}</h3>
+																<p style="padding-left:20px">({{getDate(file.created_datetime)}})</p></div>
+																<h4>{{getUserName(file.created_user)}}</h4>
 																
 															  </div>
 
@@ -392,22 +392,22 @@
 											            </md-checkbox>
 													</div>
 
-													<md-list ng-cloak flex style="max-height:400px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click="null">
+													<md-list ng-cloak flex style="max-height:375px;overflow:scroll">
+														<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click="showInsideFolder(folder)">
 
 														<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-															<h3>sdfsdf</h3>
-															<h4>sdfsdfsdf</h4>
-															<p>sdfsdfsdf</p>
-														  </div>
+														 <div class="md-list-item-text" layout="column" style="padding-left:20px">
+																<div layout="row"><h3>{{folder.datasource_name}}</h3>
+																<p style="padding-left:20px">({{getDate(folder.created_datetime)}})</p></div>
+																<h4>{{getUserName(folder.created_user)}}</h4>
+														</div>
 														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)"></md-checkbox>
 														</md-list-item>  
 													</md-list>
 												</div>
 											</div>
 								</md-content>
-								<md-button class="md-raised">Delete</md-button>
+								<md-button  class="md-raised" style="float: right;"  ng-click="DeleteFilesFolders()">Delete</md-button>
 				</div>
 				</div>
 

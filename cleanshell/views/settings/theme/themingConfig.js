@@ -401,6 +401,7 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			$('#cssmenu ul ul li a').addClass('dark');
 			$('.border-left-light').addClass('border-left-dark');
 			$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+			$('md-menu-content').css('background-color',"black");
 		}
 		
 		function lighten()
@@ -411,7 +412,7 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			$('#cssmenu ul ul li').removeClass('dark');
 			$('#cssmenu ul ul li a').removeClass('dark');
 			$('.border-left-light').removeClass('border-left-dark');
-			$('md-tabs-wrapper').css('background-color',"white", 'important');
+			$('md-menu-content').css('background-color',"white", 'important');
 		}
 }])
 

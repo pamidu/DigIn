@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -13,7 +13,14 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.h1color = '';
 	colorManager.changeTheme('defaultDark');
 	
-
+	$scope.share = function(index, type)
+	{
+		$timeout(function(){
+			$mdMenu.hide();
+		},200);
+		
+	}
+	
 	
 	//Start of layoutManager
 	$rootScope.showHeader = true;

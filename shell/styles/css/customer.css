@@ -855,8 +855,8 @@ md-card md-card-content.card-warning {
 }
 
 #content1 {
-    overflow-x: hidden;
-    /*height: 100% !important;*/
+    /*overflow-x: hidden;
+    height: 100% !important;*/
 }
 
 .graph-map {

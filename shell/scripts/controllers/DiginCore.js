@@ -559,37 +559,47 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 if (widget.widgetData.commonSrc.att.length > 0) {
                     requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;    
                 } else {
-                    requestArray[0] = "";
+                    requestArray = undefined;
                 }
                 
             }
             widget.widgetData.syncState = false;
             $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
                 if (status) {
-                    var color = [];
-                    var name = [];
-                    var origName = [];
-                    //Store the name and the color to apply to the chart after it is regenareted
-                    for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++) {
-                        color.push(widget.widgetData.highchartsNG.series[i].color);
-                        name.push(widget.widgetData.highchartsNG.series[i].name);
-                        origName.push(widget.widgetData.highchartsNG.series[i].origName);
-                    }
-                    filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
-                    if (widget.widgetData.commonSrc.att.length <=1){
-                       widget.widgetData.widData.drilled = false;
-                    } else {
-                        widget.widgetData.widData.drilled = true;
-                    }
-                    var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
-                    widget.widgetData.syncState = true;
-                    widget.widgetData.filteredState = true;
-                    if ( data !== undefined ){
-                        widget.widgetData.highchartsNG.series = data;
-                        widget.widgetData.highchartsNG.series.forEach(function(key) {
-                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                        });
+                    if ( widget.widgetData.selectedChart.chart = "metric" ) {
+                        var objName = widget.widgetData.commonSrc.mea[0].condition.toLowerCase() + '_' + widget.widgetData.commonSrc.mea[0].filedName;
+                        widget.widgetData.widData.decValue = res[0][objName];
+                        widget.widgetData.widData.value = convertDecimals(res[0][objName], 2).toLocaleString();
+                        widget.widgetData.selectedChart.initObj.value = widget.widgetData.widData.value;
+                        widget.widgetData.selectedChart.initObj.decValue = widget.widgetData.widData.decValue;
+                        widget.widgetData.syncState = true;
                         $scope.$apply();
+                    } else {
+                        var color = [];
+                        var name = [];
+                        var origName = [];
+                        //Store the name and the color to apply to the chart after it is regenareted
+                        for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++) {
+                            color.push(widget.widgetData.highchartsNG.series[i].color);
+                            name.push(widget.widgetData.highchartsNG.series[i].name);
+                            origName.push(widget.widgetData.highchartsNG.series[i].origName);
+                        }
+                        filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
+                        if (widget.widgetData.commonSrc.att.length <=1) {
+                           widget.widgetData.widData.drilled = false;
+                        } else {
+                            widget.widgetData.widData.drilled = true;
+                        }
+                        var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
+                        widget.widgetData.syncState = true;
+                        widget.widgetData.filteredState = true;
+                        if ( data !== undefined ) {
+                            widget.widgetData.highchartsNG.series = data;
+                            widget.widgetData.highchartsNG.series.forEach(function(key) {
+                                if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                            });
+                            $scope.$apply();
+                        }
                     }
                 } else {
                     $scope.$apply(function(){
@@ -597,7 +607,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         widget.widgetData.syncState = true;
                     })
                 }
-            },requestArray,filterStr);            
+            },requestArray,filterStr);
         };
 
         //when all checkbox is clicked

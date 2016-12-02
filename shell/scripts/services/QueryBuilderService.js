@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($diginengine,filterService){
+routerApp.service('$qbuilder',function($diginengine,filterService,chartServices){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -210,7 +210,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
     };
     
     var METRIC = function() {
-        function setMeasureData(res){
+        function setMeasureData(res) {
             var val = "";
             for (var c in res) {
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
@@ -219,64 +219,63 @@ routerApp.service('$qbuilder',function($diginengine,filterService){
             }
             return val;
         }
+
+        function setValues(widObj,metricValue,targetValue) {
+            widObj.widData.decValue = metricValue[0];
+            widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
+            widObj.selectedChart.initObj.value = widObj.widData.value;
+            widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
+            // Apply metric settings after filtering if target value is set
+            if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
+                if (widObj.commonSrc.target.length == 1) {
+                    widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
+                    widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
+                }
+                chartServices.applyMetricSettings(widObj.selectedChart);
+            }
+        }
         
         this.sync = function(q, cl, widObj, cb) {
-            cl.getExecQuery(q, function(res, status, query) {
-                if (status) {
-                    widObj.widData.decValue = res[0];
-                    widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec)).toLocaleString();
-                    var value = parseInt(widObj.selectedChart.initObj.value.replace(/,/g,''));
-                    var highRange = widObj.selectedChart.initObj.targetValue * widObj.selectedChart.initObj.rangeSliderOptions.maxValue / 100;
-                    var lowerRange = widObj.selectedChart.initObj.targetValue * widObj.selectedChart.initObj.rangeSliderOptions.minValue / 100;
-                    if (value <= lowerRange) {
-                        if (widObj.selectedChart.initObj.colorTheme == "rog") {
-                            if (widObj.selectedChart.initObj.targetRange == "high") {
-                                widObj.selectedChart.initObj.color = "red"
-                            } else {
-                                widObj.selectedChart.initObj.color = "green"
-                            }
-                        } else if (widObj.selectedChart.initObj.colorTheme == "cgy") {
-                            if (widObj.selectedChart.initObj.targetRange == "high") {
-                                widObj.selectedChart.initObj.color = "cyan"
-                            } else {
-                                widObj.selectedChart.initObj.color = "yellow"
-                            }
-                        } else if (widObj.selectedChart.initObj.colorTheme == "opg") {
-                            if (widObj.selectedChart.initObj.targetRange == "high") {
-                                widObj.selectedChart.initObj.color = "orange"
-                            } else {
-                                widObj.selectedChart.initObj.color = "green"
-                            }
-                        }
-                    } else if (value >= highRange) {
-                        if (widObj.selectedChart.initObj.colorTheme == "rog") {
-                            if (widObj.selectedChart.initObj.targetRange == "high") {
-                                widObj.selectedChart.initObj.color = "green"
-                            } else {
-                                widObj.selectedChart.initObj.color = "red"
-                            }
-                        } else if (widObj.selectedChart.initObj.colorTheme == "cgy") {
-                            if (widObj.selectedChart.initObj.targetRange == "high") {
-                                widObj.selectedChart.initObj.color = "yellowgreen"
-                            } else {
-                                widObj.selectedChart.initObj.color = "cyan"
-                            }                    
-                        } else if (widObj.selectedChart.initObj.colorTheme == "opg") {
-                            if (widObj.selectedChart.initObj.targetRange == "high") {
-                                widObj.selectedChart.initObj.color = "green"
-                            } else {
-                                widObj.selectedChart.initObj.color = "orange"
+            var targetRequest = false;
+            var metricRequest = false;
+            var targetSuccess = false;
+            var metricSuccess = false;
+            var metricValue, targetValue;
+            if (widObj.commonSrc.target.length == 1) {
+                cl.getExecQuery(widObj.selectedChart.initObj.targetQuery, function(res, status, targetQuery) {
+                    if (status) {
+                        targetRequest = true;
+                        targetSuccess = true;
+                        targetValue = res;
+                        if (targetRequest && metricRequest) {
+                            if (targetSuccess && metricSuccess) {
+                                // call sync method
+                                setValues(widObj,metricValue,targetValue);
                             }
                         }
                     } else {
-                        if (widObj.selectedChart.initObj.colorTheme == "rog") {
-                            widObj.selectedChart.initObj.color = "orange"
-                        } else if (widObj.selectedChart.initObj.colorTheme == "cgy") {
-                            widObj.selectedChart.initObj.color = "green"
-                        } else if (widObj.selectedChart.initObj.colorTheme == "opg") {
-                            widObj.selectedChart.initObj.color = "purple"
+                        targetRequest = true;
+                    }
+                });
+            } else {
+                targetRequest = true;
+                targetSuccess = true;
+            }
+            cl.getExecQuery(q, function(res, status, query) {
+                if (status) {
+                    metricRequest = true;
+                    metricSuccess = true;
+                    metricValue = res;
+                    if (targetRequest && metricRequest) {
+                        if (targetSuccess && metricSuccess) {
+                            // call sync method
+                            setValues(widObj,metricValue,targetValue);
                         }
                     }
+
+                } else {
+                    metricRequest = true;
+                    metricSuccess = false;
                 }
                 widObj.syncState = true;
                 cb(widObj);

@@ -241,6 +241,10 @@
 <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
 <script type="text/javascript" src="scripts/factories/socialMedia/twitterService.js"></script>
+<script type="text/javascript" src="scripts/services/filterService.js"></script>
+<script type="text/javascript" src="scripts/services/chartServices.js"></script>
+<script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
+
 <!-- services end -->
 
 <script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
@@ -290,8 +294,6 @@
 <script type="text/javascript" src="views/query/queryBuilderCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/dynamically-report-builder/dynamicallyReportCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
-<script type="text/javascript" src="scripts/services/filterService.js"></script>
-<script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
 
 <!-- profile

@@ -384,61 +384,84 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     }
     
 
-    $scope.DeleteFilesFolders = function(){
+        $scope.DeleteFilesFolders = function(){
 
-            //get delete files
-          var deleteObj=[];
-            for(var i = 0; i< $scope.selectedFiles.length; i++){
+         if($scope.selectedFiles.length > 0 || $scope.selectedFolders.length > 0 ){
+                      var confirm = $mdDialog.confirm()
+                      .title('Delete Data Set')
+                      .textContent('Would you like to delete the data set?')
+                      .ariaLabel('')
+                      .targetEvent()
+                      .ok('Yes')
+                      .cancel('No');
+
+                        $mdDialog.show(confirm).then(function() {
+
+                                //get delete files
+                                    var deleteObj=[];
+                                    for(var i = 0; i< $scope.selectedFiles.length; i++){
+                                        
+                                        var obj = {
+                                            "file_type":"single",
+                                            "datasource_id":$scope.selectedFiles[i].datasource_id,
+                                            "shared_user_Id":$scope.selectedFiles[i].shared_by,
+                                            "deletion_type":"permanent"
+                                        };
+                                        deleteObj.push(obj);
+                                    }
+
+
+                                    //get delete folders
+                                    for(var i = 0; i< $scope.selectedFolders.length; i++){
+                                        
+                                        var obj = {
+                                            "file_type":"folder",
+                                            "datasource_id":$scope.selectedFolders[i].datasource_id,
+                                            "shared_user_Id":$scope.selectedFolders[i].shared_by,
+                                            "deletion_type":"permanent"
+                                        };
+                                        deleteObj.push(obj);
+                                    }
+
+                                  var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+                                  $http({
+                                      method: 'POST',
+                                      
+                                      url: Digin_Engine_API +'datasource_delete',
+                                      data: angular.fromJson(JSON.stringify(deleteObj)),
+                                      headers: {  
+                                                  'Content-Type': 'application/json',
+                                                  'SecurityToken': userInfo.SecurityToken
+                                      }
+                                  })
+                                  .success(function(response){
+                                     
+                                      if(response.Is_Success == false){
+                                         notifications.toast(0, response.Custom_Message);
+                                    }
+                                    else{
+                                        notifications.toast(1, response.Custom_Message);
+                                        $scope.loadFilesFolder();
+                                        $scope.selectedFolders = [];
+                                        $scope.selectedFiles = [];
+                                        
+                                    }
+
+                                  })
+                                  .error(function(error){  
+                                    notifications.toast(0, error.Custom_Message);
+                                   
+                                  }); 
+                        }, function() {
+                   
+                             
+                        });  
+          }else{
+              notifications.toast(0, "Please select files or folders you wish to Delete");
+          }
                 
-                var obj = {
-                    "file_type":"single",
-                    "datasource_id":$scope.selectedFiles[i].datasource_id,
-                    "shared_user_Id":$scope.selectedFiles[i].shared_by,
-                    "deletion_type":"permenat"
-                };
-                deleteObj.push(obj);
-            }
 
-
-            //get delete folders
-            for(var i = 0; i< $scope.selectedFolders.length; i++){
-                
-                var obj = {
-                    "file_type":"folder",
-                    "datasource_id":$scope.selectedFolders[i].datasource_id,
-                    "shared_user_Id":$scope.selectedFolders[i].shared_by,
-                    "deletion_type":"permanent"
-                };
-                deleteObj.push(obj);
-            }
-
-              var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
-              $http({
-                  method: 'POST',
-                  
-                  url: Digin_Engine_API +'datasource_delete',
-                  data: angular.fromJson(JSON.stringify(deleteObj)),
-                  headers: {  
-                              'Content-Type': 'application/json',
-                              'SecurityToken': userInfo.SecurityToken
-                  }
-              })
-              .success(function(response){
-                 
-                  if(response.Is_Success == false){
-                     notifications.toast(0, response.Custom_Message);
-                }
-                else{
-                    notifications.toast(1, response.Custom_Message);
-                }
-
-              })
-              .error(function(error){  
-                notifications.toast(0, error.Custom_Message);
-               
-              }); 
-
-    }
+        }
 
 
 }])

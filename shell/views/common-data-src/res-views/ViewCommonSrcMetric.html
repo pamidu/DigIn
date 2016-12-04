@@ -1,11 +1,11 @@
 <md-content ng-show="widget.widgetData.syncState" style="height:100%;width:100%;" flex>
     <div style="height:100%;width:100%;" layout="column" layout-align='center center' ng-if="widget.widgetData.widData.scalePosition==='front'" ng-style="{background:widget.widgetData.selectedChart.initObj.color}">
-        <h1>  {{widget.widgetData.widData.scale}}&nbsp;{{widget.widgetData.widData.value}}</h1>
-        <h2>  {{widget.widgetData.widData.label}} </h2>
+        <h1>  {{widget.widgetData.widData.scale}}&nbsp;{{widget.widgetData.widData.value}}</h1> <br>
+        <h1> {{widget.widgetData.selectedChart.initObj.targetValueString}} </h1>
     </div>
     <div style="height:100%;width:100%;" layout="column" layout-align='center center' ng-if="widget.widgetData.widData.scalePosition==='back'" ng-style="{background:widget.widgetData.selectedChart.initObj.color}">
-        <h1>  {{widget.widgetData.widData.value}}&nbsp;{{widget.widgetData.widData.scale}}</h1>
-        <h2>  {{widget.widgetData.widData.label}} </h2>
+        <h1>  {{widget.widgetData.widData.value}}&nbsp;{{widget.widgetData.widData.scale}}</h1><br>
+        <h1> {{widget.widgetData.selectedChart.initObj.targetValueString}} </h1>
     </div>    
 </md-content>
 <div ng-hide="widget.widgetData.syncState" layout="row" layout-sm="column" layout-align="center center" style="height:100%;width:100%;">

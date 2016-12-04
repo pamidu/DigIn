@@ -45,8 +45,9 @@
             </md-input-container>
             <md-input-container flex="50">
                 <label>Target Value</label>
-                <input ng-model="selectedChart.initObj.targetValue" ng-disabled="true">
-            </md-input-container>        
+                <input type="number" ng-model="selectedChart.initObj.targetValue"
+                    ng-change="changeTargetValue()" ng-disabled="executeQryData.executeTargetField.length == 1">
+            </md-input-container>
         </md-container>
     </md-container>
     <md-container>

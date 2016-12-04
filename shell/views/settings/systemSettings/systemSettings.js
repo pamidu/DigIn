@@ -211,13 +211,13 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
     $scope.loadFilesFolder  = function(){
 
-         $http.get('/GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
+         $http.get(Digin_Engine_API+'GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
-                for(var i = 0; i < response.Result.length; i++){
-                    if(response.Result[i].upload_type == null){
-                      $scope.files.push(response.Result[i]);
+                for(var i = 0; i < result.data.Result.length; i++){
+                    if(result.data.Result[i].upload_type == "csv-singlefile"){
+                      $scope.files.push(result.data.Result[i]);
                     }else{
-                      $scope.folders.push(response.Result[i]);
+                      $scope.folders.push(result.data.Result[i]);
                     }
 
                 }
@@ -239,7 +239,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
 
 
 
-
+    
 
     $scope.getUserandGroups = function(){
 
@@ -387,14 +387,14 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     $scope.DeleteFilesFolders = function(){
 
             //get delete files
-            var deleteObj=[];
+          var deleteObj=[];
             for(var i = 0; i< $scope.selectedFiles.length; i++){
                 
                 var obj = {
-                    "file_type":"Single",
+                    "file_type":"single",
                     "datasource_id":$scope.selectedFiles[i].datasource_id,
                     "shared_user_Id":$scope.selectedFiles[i].shared_by,
-                    "deletion type":"permenat"
+                    "deletion_type":"permenat"
                 };
                 deleteObj.push(obj);
             }
@@ -407,7 +407,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
                     "file_type":"folder",
                     "datasource_id":$scope.selectedFolders[i].datasource_id,
                     "shared_user_Id":$scope.selectedFolders[i].shared_by,
-                    "deletion_type":"permenat"
+                    "deletion_type":"permanent"
                 };
                 deleteObj.push(obj);
             }
@@ -416,7 +416,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
               $http({
                   method: 'POST',
                   
-                  url: Digin_Engine_API +'share_components',
+                  url: Digin_Engine_API +'datasource_delete',
                   data: angular.fromJson(JSON.stringify(deleteObj)),
                   headers: {  
                               'Content-Type': 'application/json',

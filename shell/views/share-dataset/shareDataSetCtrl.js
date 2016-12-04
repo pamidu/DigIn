@@ -4,12 +4,8 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
 
     $scope.goToNextStep = function()
     {
-        console.log("next");
         $scope.selected = 1;
     }
-
-
-
  
     $scope.files = [];
     $scope.folders=[];
@@ -17,17 +13,25 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
     $scope.sharedFiles = []; 
     $scope.sharedFolders = [];
 
+     $scope.route = function (state) {
+          $state.go('home.welcomeSearch');
+    };
+
     var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
 
     $scope.loadFilesFolder  = function(){
 
-        $http.get('/GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
+
+      $scope.files = [];
+      $scope.folders=[];
+
+       $http.get(Digin_Engine_API+'GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
-                for(var i = 0; i < response.Result.length; i++){
-                    if(response.Result[i].upload_type == null){
-                      $scope.files.push(response.Result[i]);
+                for(var i = 0; i < result.data.Result.length; i++){
+                    if(result.data.Result[i].upload_type == "csv-singlefile"){
+                      $scope.files.push(result.data.Result[i]);
                     }else{
-                      $scope.folders.push(response.Result[i]);
+                      $scope.folders.push(result.data.Result[i]);
                     }
 
                 }
@@ -130,6 +134,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
 
 
     $scope.users = [];
+    $scope.Allusers = [];
     $scope.groups = [];
 
     $scope.getUserandGroups = function(){
@@ -142,6 +147,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                 ////return result.data;
                  for (var i = 0, len = result.data.length; i<len; ++i) {
                     if (result.data[i].Type == "User") {
+                      $scope.Allusers.push(result.data[i]);
                       if(CurUser != result.data[i].Id)
                           $scope.users.push(result.data[i]);
                     }else if (result.data[i].Type == "Group") {
@@ -222,6 +228,11 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
         $mdDialog.hide();
     }
 
+    $scope.callbackResetUnshare = function(){
+        $scope.loadFilesFolder();
+    };
+
+
 
       $scope.openFileShareDetails = function(file,tag){
 
@@ -231,10 +242,11 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                   templateUrl: 'views/share-dataset/showFileShareDetails.html',
                   resolve: {},
                   locals: {
-                      users: $scope.users,
+                      users: $scope.Allusers,
                       groups: $scope.groups,
                       file:file,
-                      tag:tag
+                      tag:tag,
+                      cb:$scope.callbackResetUnshare
                   }
               })
           }
@@ -263,13 +275,13 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                 "method":"component_internal",
                 "comp_type":"datasource",
                 "share_data":shareObj,
-                "unshare_data":null
+                "unshare_data":[]
             }
 
           var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
               $http({
                   method: 'POST',
-                  url: Digin_Engine_API +'component_internal',
+                  url: Digin_Engine_API +'share_components',
                   data: angular.fromJson(JSON.stringify(finalshareObj)),
                   headers: {  
                               'Content-Type': 'application/json',
@@ -283,6 +295,15 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                 }
                 else{
                     notifications.toast(1, response.Custom_Message);
+                    $scope.loadFilesFolder();
+                    
+                    $scope.selectedUsersRead = [];
+                    $scope.selectedUsersWrite = []; 
+
+
+                    $scope.selectedGroupRead = [];
+                    $scope.selectedGroupWrite = []; 
+
                 }
 
               })
@@ -305,12 +326,12 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
          for(var i = 0; i< selectedArray.length ; i++ ){
               for(var j = 0; j< readArray.length ; j++ ){
 
-                  if(!$scope.isExist(readArray[j].UserID,selectedArray[i].shared_users) && !$scope.isShared(selectedArray[i].shared_by) && !$scope.isCurrntUser(selectedArray[i].created_tenant,selectedArray[i].created_user))
+                  if(!$scope.isExist(readArray[j].UserID,selectedArray[i].shared_users) && !$scope.isShared(selectedArray[i].shared_by) && !$scope.isCurrntUser(selectedArray[i].created_tenant,readArray[j].UserID))
                   {
                     var obj = {
                         "comp_id":selectedArray[i].datasource_id,
                         "is_user":isUser,
-                        "id":readArray[j].Id,
+                        "id":readArray[j].UserID,
                         "security_level":$scope.getPermition(readArray[j].Id,writeArr)
 
                     };
@@ -392,10 +413,10 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
     $scope.getUserName = function(Id){
 
         var name;
-        for(var i=0; i< $scope.users.length; i++){
+        for(var i=0; i< $scope.Allusers.length; i++){
 
-                if($scope.users[i].UserID == Id){
-                    name = $scope.users[i].Id
+                if($scope.Allusers[i].UserID == Id){
+                    name = $scope.Allusers[i].Id
                     break;
                 }
             }

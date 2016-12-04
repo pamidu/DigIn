@@ -272,8 +272,8 @@
 
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Files</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;">
-											              <span ng-if="isChecked()">Un-</span>Select All files 
+														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;" ng-show="{{files.length > 0}}">
+											              <span ng-if="isChecked()" >Un-</span>Select All files 
 											            </md-checkbox>
 													</div>
 
@@ -292,6 +292,9 @@
 															
 															<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)" ng-show="{{!file.shared_by}}"></md-checkbox>
 
+															<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-show="{{file.shared_by}}"/>
+															
+
 														</md-list-item>  
 
 													</md-list>
@@ -303,7 +306,8 @@
 
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Folders</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style=" margin-right: 30px;">
+														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style=" margin-right: 30px;"
+														ng-show="{{folders.length > 0}}">
 											              <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
 											            </md-checkbox>
 													</div>
@@ -322,6 +326,7 @@
 
 														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)" ng-show="{{!folder.shared_by}}"></md-checkbox>
 
+														<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-show="{{file.shared_by}}"/>
 
 
 														</md-list-item>  

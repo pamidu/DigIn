@@ -304,6 +304,9 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                     $scope.selectedGroupRead = [];
                     $scope.selectedGroupWrite = []; 
 
+                    $scope.selectedFiles = [];
+                    $scope.selectedFolders = [];
+
                 }
 
               })

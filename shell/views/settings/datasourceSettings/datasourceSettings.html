@@ -6,7 +6,7 @@
 			<span flex></span>
 		</md-tab-label>
 		<md-tab-body>
-		<div class="setup-wrapper  animated fadeIn">
+		<div class="setup-wrapper  animated fadeIn" ng-init="getAllconnections()">
 			<div class="setting-wrap">
 				<md-content class="border-radius10">
 					<div layout="row" layout-align="end end">
@@ -23,12 +23,50 @@
 					    <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep">
 					        <md-step label="Existing Connections" md-complete="stepData[0].data.completed">
 					            <md-step-body>
-		                            <table class="table table-striped">
+                        			<div layout="row" layout-wrap flex layout-align="center center">					            
+			                            <md-card flex="30">                       
+			                                <md-card-title>
+			                                    <md-card-title-text>
+			                                    Connection 1
+			                                    </md-card-title-text>
+			                                </md-card-title>
+			                            </md-card>
+			                            <md-card flex="30">                       
+			                                <md-card-title>
+			                                    <md-card-title-text>
+			                                    Connection 2
+			                                    </md-card-title-text>
+			                                </md-card-title>
+			                            </md-card>
+			                            <md-card flex="30">
+			                                <md-card-title>
+			                                    <md-card-title-text>
+			                                    Connection 3
+			                                    </md-card-title-text>
+			                                </md-card-title>
+			                            </md-card>
+			                            <md-card flex="30">
+			                                <md-card-title>
+			                                    <md-card-title-text>
+			                                    Connection 3
+			                                    </md-card-title-text>
+			                                </md-card-title>
+			                            </md-card>
+			                            <md-card flex="30">
+			                                <md-card-title>
+			                                    <md-card-title-text>
+			                                    Connection 3
+			                                    </md-card-title-text>
+			                                </md-card-title>
+			                            </md-card>
+			                        </div>
+
+<!-- 		                            <table class="table table-striped">
 		                                <thead>
 		                                    <tr>
-		                                        <th>Connection</th>
+		                                        <th>Connection Name</th>
 		                                        <th>Connection Type</th>
-		                                        <th>Database</th>
+		                                        <th>Database Name</th>
 		                                    </tr>
 		                                    <tbody>
 		                                        <tr>
@@ -48,9 +86,19 @@
 		                                        </tr>
 		                                    </tbody>
 		                                   </thead>
-		                            </table>
+		                            </table> -->
+<!-- 					                <div class="digin-cmds-source h-inherit">
+					                    <div class="error-wrap error m-50 h-inherit">
+					                        <span> No Connections</span>
+					                    </div>
+					                </div> -->
+<!-- 					                <div layout="row" layout-align="center center">
+										<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+										</md-progress-circular>
+									</div> -->
 		                            <div flex layout = "row" layout-align="center center">
-										<button type="button" class="blut-edit-btn" class="p10" ng-click="submitCurrentStep(stepData[0])">
+										<button type="button" class="blut-edit-btn" class="p10" ng-click="createConnection()">
+											<!-- ng-click="submitCurrentStep(stepData[0])" -->
 											CREATE NEW CONNECTION
 										</button>		                            
 		                            </div>
@@ -66,25 +114,25 @@
 									<div flex layout="row">
 										<div flex layout="column" class="p10" flex="50">
 											<label>Host</label>
-											<input class="form-control" flex/>
+											<input class="form-control" flex ng-model="host"/>
 										</div>
 										<div flex layout="column" class="p10" flex="50">
 											<label>Port Number</label>
-											<input class="form-control" flex/>
+											<input class="form-control" flex ng-model="port"/>
 										</div>
 									</div>
 									<div flex layout="row">
 										<div flex layout="column" class="p10" flex="50">
 											<label>User Name</label>
-											<input class="form-control" flex/>
+											<input class="form-control" flex ng-model="userName"/>
 										</div>
 										<div flex layout="column" class="p10" flex="50">
 											<label>Password</label>
-											<input type="Password" class="form-control" flex/>
+											<input type="Password" class="form-control" flex ng-model="password"/>
 										</div>									
 									</div>									
 		                            <div flex layout = "row" layout-align="center center">
-										<button type="button" class="blut-edit-btn" class="p10" ng-click="status = true">
+										<button type="button" class="blut-edit-btn" class="p10" ng-click="submitUserDetails()">
 											Submit
 										</button>
 		                            </div>
@@ -95,7 +143,7 @@
 									<div flex layout="row">
 										<div layout="column" flex class="p10" ng-show="status" flex="50">
 											<label>Database Type</label>
-											<md-select ng-model="dt">
+											<md-select ng-model="databaseType">
 												<md-option ng-value="dt1">Database Type 1</md-option>
 												<md-option ng-value="dt2">Database Type 2</md-option>
 												<md-option ng-value="dt3">Database Type 3</md-option>
@@ -103,7 +151,7 @@
 										</div>
 										<div layout="column" flex class="p10" ng-show="status" flex="50">
 											<label>Database Name</label>
-											<md-select ng-model="dn">
+											<md-select ng-model="databaseName">
 												<md-option ng-value="dn1">Database Name 1</md-option>
 												<md-option ng-value="dn2">Database Name 2</md-option>
 												<md-option ng-value="dn3">Database Name 3</md-option>
@@ -116,11 +164,11 @@
 									</div>
 									<div layout="column" class="p10" ng-show="status">
 										<label> Authentication Type </label>
-					                    <md-radio-group  flex layout="column" ng-model="selectedChart.initObj.targetRange">
-					                        <md-radio-button value="high" class="md-primary left">
+					                    <md-radio-group  flex layout="column" ng-model="authType">
+					                        <md-radio-button value="windows" class="md-primary left">
 					                            Use windows authentication
 					                        </md-radio-button>
-					                        <md-radio-button value="low" class="md-primary left">
+					                        <md-radio-button value="sql" class="md-primary left">
 					                            Use SQL Server authentication
 					                        </md-radio-button>
 					                    </md-radio-group>
@@ -148,7 +196,7 @@
 					            		Connection saved!
 					            	</div>
 		                            <div flex layout = "row" layout-align="center center" ng-show="testStatus">
-										<button type="button" class="blut-edit-btn" class="p10" ng-click="moveToPreviousStep()">
+										<button type="button" class="blut-edit-btn" class="p10" ng-click="createConnection()">
 											Create New Connection
 										</button>
 		                            </div>
@@ -169,4 +217,3 @@
 	</md-tabs>
 
 </footer>
-

@@ -3352,7 +3352,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         selectTargetCondition: function(row,field) {
             $scope.eventHndler.isLoadingChart = true;
             var nameSpace = row.name + '_' + field.filedName;
-            var query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
+            var db = $scope.sourceData.src;
+            var query;
+            if (db == 'BigQuery')
+                query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
+            else if (db == 'MSSQL')
+                query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $scope.sourceData.tbl;
             $scope.client.getExecQuery(query, function(res, status, query) {
                 if (status) {
                     $scope.isPendingRequest = false;

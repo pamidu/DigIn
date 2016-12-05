@@ -46,17 +46,17 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications','pouchDbServices','layoutManager',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications,pouchDbServices,layoutManager) {
-		
-		$rootScope.showSideMenu = layoutManager.hideSideMenu();
-		if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
-		{
-			$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
-		}else{
-			$('md-tabs-wrapper').css('background-color',"white", 'important');
-		}
-	
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications','pouchDbServices','layoutManager','chartServices',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications,pouchDbServices,layoutManager,chartServices) {
+        
+        $rootScope.showSideMenu = layoutManager.hideSideMenu();
+        if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+        {
+            $('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+        }else{
+            $('md-tabs-wrapper').css('background-color',"white", 'important');
+        }
+    
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
             if (e.target.className == "pvtAttr") {
@@ -122,7 +122,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
                 enabled: true,
-				handle: '.digin-widget-toolbar'
+                handle: '.digin-widget-toolbar'
             },
             resizable: {
                 enabled: true,
@@ -427,7 +427,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (widget.widgetData.commonSrc.src.src == "BigQuery") {
                             query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
                         } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
-                            query = "SELECT " + key.filter.name + " FROM " + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name + " ORDER BY " + key.filter.name;
+                            query = "SELECT [" + key.filter.name + "] FROM " + widget.widgetData.commonSrc.src.tbl + " GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
                         }
                         $scope.client.getExecQuery(query, function(data, status){
                             if (status) {
@@ -456,7 +456,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                     }
                                 }
                             } else {
-                                $scope.apply(function(){
+                                $scope.$apply(function(){
                                     key.sync = false;
                                     notifications.toast('0', 'Error Occured! Please try again!');
                                     return;
@@ -564,17 +564,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 
             }
             widget.widgetData.syncState = false;
-            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
-                if (status) {
-                    if ( widget.widgetData.selectedChart.chart = "metric" ) {
-                        var objName = widget.widgetData.commonSrc.mea[0].condition.toLowerCase() + '_' + widget.widgetData.commonSrc.mea[0].filedName;
-                        widget.widgetData.widData.decValue = res[0][objName];
-                        widget.widgetData.widData.value = convertDecimals(res[0][objName], 2).toLocaleString();
-                        widget.widgetData.selectedChart.initObj.value = widget.widgetData.widData.value;
-                        widget.widgetData.selectedChart.initObj.decValue = widget.widgetData.widData.decValue;
-                        widget.widgetData.syncState = true;
-                        $scope.$apply();
-                    } else {
+            if ( widget.widgetData.selectedChart.chart == "metric" ) {
+                //Apply filters to metric widget
+                $scope.filterMetricWidget(widget,filterStr);
+            } else {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
+                    if (status) {
                         var color = [];
                         var name = [];
                         var origName = [];
@@ -600,15 +595,96 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             });
                             $scope.$apply();
                         }
+                    } else {
+                        $scope.$apply(function(){
+                            notifications.toast('0', 'Error Occured!Please try again!');
+                            widget.widgetData.syncState = true;
+                        })
+                    }
+                },requestArray,filterStr);
+            }
+        };
+        // Apply fileters to metric widget
+        $scope.filterMetricWidget = function(widget,filterStr) {
+            var targetRequest = false;
+            var metricRequest = false;
+            var targetSuccess = false;
+            var metricSuccess = false;
+            var metricValue, targetValue;
+            if (widget.widgetData.commonSrc.target.length == 1) {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.target, undefined, function(res, status, query) {
+                    if (status) {
+                        targetRequest = true;
+                        targetSuccess = true;
+                        targetValue = res;
+                        if (targetRequest && metricRequest) {
+                            widget.widgetData.syncState = true;
+                            if (targetSuccess && metricSuccess) {
+                                // call sync method
+                                $scope.setValues(widget.widgetData,metricValue,targetValue);
+                            } else {
+                                $scope.$apply(function(){
+                                    notifications.toast('0', 'Error Occured!Please try again!');
+                                    widget.widgetData.syncState = true;
+                                })
+                            }
+                        }
+                    } else {
+                        targetRequest = true;
+                    }
+                },undefined,filterStr);
+            } else {
+                targetRequest = true;
+                targetSuccess = true;
+            }
+            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, undefined, function(res, status, query) {
+                if (status) {
+                    metricRequest = true;
+                    metricSuccess = true;
+                    metricValue = res;
+                    if (targetRequest && metricRequest) {
+                        widget.widgetData.syncState = true;
+                        if (targetSuccess && metricSuccess) {
+                            // call sync method
+                            $scope.setValues(widget.widgetData,metricValue,targetValue);
+                        } else {
+                            $scope.$apply(function(){
+                                notifications.toast('0', 'Error Occured!Please try again!');
+                                widget.widgetData.syncState = true;
+                            })
+                        }
                     }
                 } else {
-                    $scope.$apply(function(){
-                        notifications.toast('0', 'Error Occured!Please try again!');
-                        widget.widgetData.syncState = true;
-                    })
+                    metricRequest = true;
                 }
-            },requestArray,filterStr);
-        };
+            },undefined,filterStr);            
+        }
+        // Set values to metric widget
+        $scope.setValues = function (widObj,metricValue,targetValue) {
+            widObj.widData.decValue = metricValue[0];
+            widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
+            widObj.selectedChart.initObj.value = widObj.widData.value;
+            widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
+            // Apply metric settings after filtering if target value is set
+            if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
+                if (widObj.commonSrc.target.length == 1) {
+                    widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
+                    widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
+                }
+                chartServices.applyMetricSettings(widObj.selectedChart);
+            }
+            $scope.$apply();
+        }
+
+        function setMeasureData(res) {
+            var val = "";
+            for (var c in res) {
+                if (Object.prototype.hasOwnProperty.call(res, c)) {
+                    val = res[c];
+                }
+            }
+            return val;
+        }        
 
         //when all checkbox is clicked
         $scope.onCLickAll = function(widgetId,name,filterId){

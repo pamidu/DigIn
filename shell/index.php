@@ -357,6 +357,7 @@
 
 <!-- Datasource settings -->
 <script src="views/settings/datasourceSettings/datasourceSettingsCtrl.js"></script>
+<script src="views/settings/datasourceSettings/datasourceFactory.js"></script>
 
 <script src="views/share-dataset/showFileShareDetailsCtrl.js"></script>
 <script src="views/share-dataset/shareDataSetCtrl.js"></script>

@@ -429,7 +429,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     })
     .state('home.datasourceSettings', {
         url: '/datasource-settings',
-        controller: 'datasourceSettingsCtrl',
+        controller: 'DatasourceSettingsCtrl',
         templateUrl: 'views/settings/datasourceSettings/datasourceSettings.html',
         data: {
             requireLogin: true

@@ -519,6 +519,10 @@ v-pane-content
     margin-right: 25px;
 }
 
+.m-50 {
+    margin: 50px !important;
+}
+
 .p-r-45 {
     padding-right: 45px;
 }
@@ -1986,6 +1990,10 @@ md-checkbox.md-checked .md-icon {
     100% {
         height: 0%;
     }
+}
+/*heigh*/
+.h-inherit {
+    height: initial !important;
 }
 
 /*iframe style */

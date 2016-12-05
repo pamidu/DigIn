@@ -182,6 +182,19 @@ routerApp
             //'Username password incorrect' User name or password incorrect, please try again. 
             $scope.login = function () {
 
+                if ($scope.signindetails.Username == '' || angular.isUndefined($scope.signindetails.Username)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Username is required..');
+                    $scope.error.isUserName = true;
+                    focus('$scope.signindetails.Username');
+                    return;
+                }
+                else if ($scope.signindetails.Password == '' || angular.isUndefined($scope.signindetails.Password)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
+                    $scope.error.isPwd = true;
+                    focus('$scope.signindetails.Password');
+                    return;
+                }
+
                 displayProgress();
                 $http({
                     method: 'POST',
@@ -1005,23 +1018,23 @@ routerApp
                     return;
                 }
                 else if (signUpUsr.email == '') {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Username is required.');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
                 }
                 else if (angular.isUndefined(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid username.');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
                 }
-                else if (!mainFun.validateEmail(signUpUsr.email)) {
+                /*else if (!mainFun.validateEmail(signUpUsr.email)) {
                     mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
                     $scope.error.isEmail = true;
                     focus('email');
                     return;
-                }
+                }*/
                 else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
                     mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
                     $scope.error.isPassword = true;

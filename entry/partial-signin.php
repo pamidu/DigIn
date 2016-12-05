@@ -71,7 +71,7 @@
                                                        id="txtUname"
                                                        name="loginUserName"
                                                        ng-model="signindetails.Username"
-                                                       placeholder="username@digin.io"
+                                                       placeholder="Username"
 
                                                        class="form-control">
                                             </div>

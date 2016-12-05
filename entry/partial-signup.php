@@ -115,7 +115,7 @@
                                         </div>
                                         
                                         
-                                        <div class="txt-box-login p-t-20"
+                                        <!--div class="txt-box-login p-t-20"
                                              ng-class="{error:error.isEmail,'':!error.isEmail}">
                                             <label for="email">Email</label>
                                             <div>
@@ -132,10 +132,25 @@
                                                 <div ng-message="required">*</div>
                                                 <div ng-message="pattern">Invalid email address</div>
                                             </div>
+                                        </div-->
+                                        
+                                        
+                                        <div class="txt-box-login p-t-20"
+                                             ng-class="{error:error.isEmail,'':!error.isEmail}">
+                                            <label for="email">Username</label>
+                                            <div>
+                                                <input type="text" class="form-control"
+                                                       id="email"
+                                                       name="email" 
+                                                       required 
+                                                       ng-model="signUpUsr.email"
+                                                       placeholder="Username" ng-disabled={{freeze}} >
+                                            </div>
+                                            <div ng-show="frmDiginSignUp.email.$invalid && !frmDiginSignUp.email.$pristine"
+                                            class="ng-message" ng-messages="frmDiginSignUp.email.$error">
+                                                <div ng-message="required">*</div>
+                                            </div>
                                         </div>
-                                        
-                                        
-                                        
                                         
 
                                         <div class="form-inline">

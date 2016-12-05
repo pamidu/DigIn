@@ -42,7 +42,16 @@
                                     </tr>
 
                                     <tr>
-                                        <td class="hero_title" style="text-align:center; font-size: 15px; font-weight:regular; padding: 15px 0 0 0; color:#545454;" align="center"><p><br><br><b>Please check your email to complete your registration.</b></p></td>
+                                        <td class="hero_title" style="text-align:center; font-size: 15px; font-weight:regular; padding: 15px 0 0 0; color:#545454;" align="center"><p><br><br><b>Click here to login.</b></p>
+                                            
+                                            <md-button class="md-raised md-primary" aria-label="change" ng-click="onClickSignIn()">
+
+                                            Go to Login
+                                            </md-button> 
+
+                                            <br>
+                                        </td>
+
                                     </tr>
                                 </table>   
 

@@ -967,7 +967,7 @@ routerApp
                             if (data.Success === false) {
                                 $mdDialog.hide();
                                 if(data.Message=="Already Registered."){
-                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
+                                    mainFun.fireMsg('0','The username you entered is already registered, please try again!');
                                 }else{
                                     mainFun.fireMsg('0',data.Message);
                                 }                               

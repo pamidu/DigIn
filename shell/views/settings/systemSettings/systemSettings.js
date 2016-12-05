@@ -211,6 +211,9 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
     $scope.loadFilesFolder  = function(){
 
+        $scope.files =[];
+        $scope.folders=[];
+
          $http.get(Digin_Engine_API+'GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
                 for(var i = 0; i < result.data.Result.length; i++){

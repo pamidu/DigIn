@@ -2,10 +2,15 @@ routerApp.controller('showFileShareDetailsCtrl',
   function ($scope,$rootScope,$mdDialog,users,groups,file,tag,$http,Digin_Engine_API,notifications,cb){
 
 
-    cb();
+  cb();
   $scope.fileName = file.datasource_name;
-
-  $scope.users = file.shared_users;
+  $scope.users =[];
+  var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+  for(var i =0; i< file.shared_users.length ;i++){
+    if(file.shared_users[i].user_id != userInfo.UserID)
+        $scope.users.push(file.shared_users[i]); 
+  }
+  
   $scope.groups = file.shared_user_groups;
 
   $scope.tenenTUsers =users ;

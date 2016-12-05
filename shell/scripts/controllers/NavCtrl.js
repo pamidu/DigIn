@@ -1036,6 +1036,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 dismissOnClick: true
                             });
                             //fetch all saved dashboards from pouchdb
+                            var db = $rootScope.db;
                             db.allDocs({
                                 include_docs: true,
                                 attachments: true

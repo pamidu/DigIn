@@ -1,8 +1,8 @@
 routerApp.controller('showFileShareDetailsCtrl',
-  function ($scope,$rootScope,$mdDialog,users,groups,file,tag,$http,Digin_Engine_API){
+  function ($scope,$rootScope,$mdDialog,users,groups,file,tag,$http,Digin_Engine_API,notifications,cb){
 
 
-
+    cb();
   $scope.fileName = file.datasource_name;
 
   $scope.users = file.shared_users;
@@ -126,71 +126,95 @@ routerApp.controller('showFileShareDetailsCtrl',
           $scope.selectedUsers = [];
           $scope.selectedgroups = []; 
           
-          $scope.unShare = function(){
+        $scope.unShare = function(){
 
-            var unshareObj = [];
-            var compId = file.datasource_id;
+                if($scope.selectedUsers.length > 0 || $scope.selectedgroups.length > 0 ){
+                  var confirm = $mdDialog.confirm()
+                  .title('Unshare the Data Set')
+                  .textContent('Would you like to unshare the data set?')
+                  .ariaLabel('')
+                  .targetEvent()
+                  .ok('Yes')
+                  .cancel('No');
 
-            for(var i=0; i< $scope.selectedUsers.length ;i++){
+                    $mdDialog.show(confirm).then(function() {
 
-                var obj = {
-                  "comp_id":compId,
-                  "is_user":true,
-                  "id":$scope.selectedUsers[i].user_id,
-                  "security_level":$scope.selectedUsers[i].security_level
-                }
+                      var unshareObj = [];
+                      var compId = file.datasource_id;
 
-                unshareObj.push(obj);
-            }
+                    for(var i=0; i< $scope.selectedUsers.length ;i++){
 
-            for(var i=0; i< $scope.selectedgroups.length ;i++){
+                        var obj = {
+                          "comp_id":compId,
+                          "is_user":true,
+                          "id":$scope.selectedUsers[i].user_id,
+                          "security_level":$scope.selectedUsers[i].security_level
+                        }
 
-                var obj = {
-                  "comp_id":compId,
-                  "is_user":false,
-                  "id":$scope.selectedgroups[i].user_group_id,
-                  "security_level":$scope.selectedgroups[i].security_level
-                }
+                        unshareObj.push(obj);
+                    }
 
-                unshareObj.push(obj);
-            }
+                    for(var i=0; i< $scope.selectedgroups.length ;i++){
+
+                        var obj = {
+                          "comp_id":compId,
+                          "is_user":false,
+                          "id":$scope.selectedgroups[i].user_group_id,
+                          "security_level":$scope.selectedgroups[i].security_level
+                        }
+
+                        unshareObj.push(obj);
+                    }
 
 
-            var finalUnshareObj = {
-                "method":"component_internal",
-                "comp_type":"datasource",
-                "share_data":null,
-                "unshare_data":unshareObj
-            }
+                    var finalUnshareObj = {
+                        "method":"component_internal",
+                        "comp_type":"datasource",
+                        "share_data":[],
+                        "unshare_data":unshareObj
+                    }
 
-            var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
-              $http({
-                  method: 'POST',
-                  url: Digin_Engine_API +'component_internal',
-                  data: angular.fromJson(JSON.stringify(finalUnshareObj)),
-                  headers: {  
-                              'Content-Type': 'application/json',
-                              'SecurityToken': userInfo.SecurityToken
+                    var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+                      $http({
+                          method: 'POST',
+                          url: Digin_Engine_API +'share_components',
+                          data: angular.fromJson(JSON.stringify(finalUnshareObj)),
+                          headers: {  
+                                      'Content-Type': 'application/json',
+                                      'SecurityToken': userInfo.SecurityToken
+                          }
+                      })
+                      .success(function(response){
+                         
+                          if(response.Is_Success == false){
+                             notifications.toast(0, response.Custom_Message);
+                             
+                        }
+                        else{
+                            notifications.toast(1, response.Custom_Message);
+                            $scope.selectedgroups = [];
+                            $scope.selectedUsers  = [];
+                            cb();
+                        }
+
+                      })
+                      .error(function(error){  
+                        notifications.toast(0, error.Custom_Message);
+                       
+                      });
+
+
+                    }, function() {
+                       
+                                 
+                    });
+                    
+                  }else{
+                      notifications.toast(0, "Please select users or groups you wish to unshare");
                   }
-              })
-              .success(function(response){
-                 
-                  if(response.Is_Success == false){
-                     notifications.toast(0, response.Custom_Message);
-                }
-                else{
-                    notifications.toast(1, response.Custom_Message);
-                }
-
-              })
-              .error(function(error){  
-                notifications.toast(0, error.Custom_Message);
-               
-              });
-
-
 
           }
+
 
 
     // // ----------------------- users read---------------------------------------------------------------

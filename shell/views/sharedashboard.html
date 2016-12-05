@@ -1,0 +1,148 @@
+	<style>
+.widget-header
+{
+	background: white;
+    padding: 0px 10px 0px 10px;
+}
+
+.widget-button
+{
+	color: #02b5e2;
+}
+.widget-button:hover
+{
+	color: #f9a525;
+}
+
+.md-tab.md-disabled
+{
+	opacity: 1;
+	background: white !important;
+	color: black !important;
+}
+
+.md-menu {
+    padding: 0px
+}
+
+.links
+{
+	text-decoration:none;
+	color: #428bca;
+}
+
+.align-left
+{
+    text-align: left;
+	color: white;
+	font-size:20px;
+	line-height:30px;
+}
+ 
+ p{
+	margin: 4px;
+ }
+
+</style>
+
+	<div class="card-container">
+				<!--WHITEFRAME START-->
+				
+				<div class="setup-wrapper  animated fadeIn">
+					<div class="setting-wrap" style="max-width:960px;margin:0 auto;padding-bottom:10px; margin-top: 20px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
+
+						<form name="editForm"  md-theme="default" ng-submit="submit()">
+							<div layout="row" layout-align="end end">
+								<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="closeReort()"></md-button>
+							</div>
+								
+							<div class="setting-card-header">
+								<h3>Your going to share Dashboards : {{dashboard.compName}}</h3>
+								<h4>please select users and groups to proceed</h4>
+								<div class="setting-img-wrap">
+									<img src="views/settings/userAdministrator/groups.png"/>
+									<div layout="row" layout-align="end center" style="margin-right:20px">
+										<md-button class="md-raised" aria-label="Add Group" ng-click="getArray()">
+											<span style="color:grey">Share</span>
+										</md-button>
+									</div>
+								</div>
+							</div>
+							
+							<div style="padding:20px">
+								<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" multiple ng-show="isVisble">
+									<v-pane id="users" expanded="$first"> 
+										<v-pane-header id="Store-header" aria-controls="Store-content">
+											<h5 style="margin:0px;">Users</h5> 
+										</v-pane-header>
+
+										<v-pane-content id="Store-content" aria-labelledby="Store-header" style="background: #eaeaea;border-radius: 4px;">
+											<!--div layout="row" layout-align="end end">
+									
+												<md-button  aria-label="Add user" ng-click="vm.addGroup($event,group,$index)" layout="row">
+													<span style="text-transform:none;color:#f9a525">Edit Group</span>
+												</md-button>
+												<md-button  aria-label="delete user" ng-click="vm.deleteGroup($event, $index,group)">
+													<span style="text-transform:none;color:#f9a525">Delete Group</span>
+												</md-button>
+											
+											</div-->
+											<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
+								              <span ng-if="isChecked()">Un-</span>Select All
+								            </md-checkbox>
+											<md-list ng-cloak>
+									
+												<md-list-item class="secondary-button-padding" ng-repeat="user in users">
+													<!-- <p><span style="font-weight:700">{{user.Name}}</span> ({{user.Id}})</p> -->
+													<md-checkbox ng-checked="exists(user, selected)" ng-click="toggle(user, selected)">
+										               {{user}}
+										              </md-checkbox>
+										              <p><span style="font-weight:700">{{user.Name}}</span> ({{user.Id}})</p>
+												</md-list-item>
+								
+
+											</md-list>
+										</v-pane-content>  
+									</v-pane>
+									<v-pane id="groups"> 
+										<v-pane-header id="Store-header" aria-controls="Store-content">
+											<h5 style="margin:0px;">Groups</h5> 
+										</v-pane-header>
+
+										<v-pane-content id="Store-content" aria-labelledby="Store-header" style="background: #eaeaea;border-radius: 4px;">
+											<!--div layout="row" layout-align="end end">
+									
+												<md-button  aria-label="Add user" ng-click="vm.addGroup($event,group,$index)" layout="row">
+													<span style="text-transform:none;color:#f9a525">Edit Group</span>
+												</md-button>
+												<md-button  aria-label="delete user" ng-click="vm.deleteGroup($event, $index,group)">
+													<span style="text-transform:none;color:#f9a525">Delete Group</span>
+												</md-button>
+											
+											</div-->
+											<md-checkbox aria-label="Select All" ng-checked="isCheckedGroup()" md-indeterminate="isIndeterminateGroup()" ng-click="toggleAllGroup()">
+								              <span ng-if="isCheckedGroup()">Un-</span>Select All
+								            </md-checkbox>
+
+											<md-list ng-cloak>
+									
+												<md-list-item class="secondary-button-padding" ng-repeat="group in groups">
+													<md-checkbox ng-checked="existsGroup(group, selectedgroups)" ng-click="toggleGroup(group, selectedgroups)">
+										               {{group}}
+										              </md-checkbox>
+													<p><span style="font-weight:700">{{group.Name}}</span> ({{group.Id}})</p>
+						
+												</md-list-item>
+								
+
+											</md-list>
+										</v-pane-content>  
+									</v-pane>
+								</v-accordion>
+							</div>
+							
+						</form>
+					</div>
+				</div>
+				<!--WHITEFRAME END-->
+			</div>

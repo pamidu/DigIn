@@ -1,6 +1,6 @@
-var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary','md-steppers','ngMessages' ,'uiMicrokernel', 'gridster','highcharts-ng','uiGmapgoogle-maps', 'vAccordion','ngCroppie']);
+var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary','md-steppers','ngMessages' ,'uiMicrokernel', 'gridster','highcharts-ng','uiGmapgoogle-maps', 'vAccordion','ngCroppie','stripe-payment-tools','angular-intro']);
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider) {
 
 	$urlRouterProvider.otherwise('/home');
 
@@ -36,6 +36,35 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		templateUrl: 'views/settings/userSettings/userSettings.html',
 		controller: 'userSettingsCtrl'
 	})
+	.state('theme', {
+		url: '/theme',
+		templateUrl: 'views/settings/theme/theme.html',
+		controller: 'themeCtrl'
+	})
+	
+	.state('myAccount', {
+		url: '/myAccount',
+		templateUrl: 'views/settings/myAccount/myAccount.html',
+		controller: 'myAccountCtrl',
+		controllerAs: 'vm',
+		 params: {
+			'pageNo': '0'
+		  }
+	})
+	
+	.state('addaLaCarte', {
+		url: '/addaLaCarte',
+		templateUrl: 'views/settings/myAccount/addaLaCarte.html',
+		controller: 'addaLaCarteCtrl',
+		controllerAs: 'vm'
+	})
+	
+	.state('userAdministrator', {
+		url: '/userAdministrator',
+		templateUrl: 'views/settings/userAdministrator/userAdministrator.html',
+		controller: 'userAdministratorCtrl',
+		controllerAs: 'vm'
+	})
 	
 	.state('accountSettings', {
 		url: '/accountSettings',
@@ -47,12 +76,6 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		url: '/groups',
 		templateUrl: 'views/settings/groups/groups.html',
 		controller: 'groupsCtrl'
-	})
-	
-	.state('inviteUser', {
-		url: '/inviteUser',
-		templateUrl: 'views/settings/inviteUser/inviteUser.html',
-		controller: 'inviteUserCtrl'
 	})
 	
 	.state('userSettngs', {
@@ -73,6 +96,13 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 	.state('upload_source', {
 		url: '/upload_source',
 		templateUrl: 'views/data_source/upload_source/upload_source.html'
+	})
+	
+	.state('systemSettings', {
+		url: '/systemSettings',
+		templateUrl: 'views/settings/systemSettings/systemSettings.html',
+		controller: 'systemSettingsCtrl',
+		controllerAs: 'vm'
 	})
 
 

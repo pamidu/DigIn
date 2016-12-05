@@ -15,7 +15,7 @@ routerApp.service('filterService',function(){
                     }
                 }
             }
-            if (cat !== undefined){
+            if (typeof cat != 'undefined'){
                 angular.forEach(filterFields,function(field){
                     if(field.name == cat){
                         for (var i=0;i<field.valueArray.length;i++){
@@ -40,7 +40,7 @@ routerApp.service('filterService',function(){
         }
 	};
 
-    this.mapResult = function(cat, res, d, color, name) {
+    this.mapResult = function(cat, res, d, color, name, origName) {
         var serArr = [];
         var i = 0;
         for(c in res[0]){
@@ -49,11 +49,12 @@ routerApp.service('filterService',function(){
                     serArr.push({
                         temp: c,
                         name: name[i],
+                        origName: origName[i],
                         data: [],
                         color: color[i]
                     });
                     i++;
-                }                
+                }
             }
         }
 
@@ -65,13 +66,13 @@ routerApp.service('filterService',function(){
                         name: key[cat],
                         y: parseFloat(key[ser.temp])
                     });
-                }else{
+                } else {
                     ser.data.push({
                         name: key[cat],
                         y: parseFloat(key[ser.temp]),
                         drilldown: true
                     });
-                }                    
+                }
             });
         });
         serArr.forEach(function(ser){
@@ -81,7 +82,7 @@ routerApp.service('filterService',function(){
         // cb(serArr);
     };
 
-    // clear the filters when the chart is re-set    
+    // clear the filters when the chart is re-set
     this.clearFilters = function(widget) {
         var fieldId ="";
         if (typeof widget.widgetData.commonSrc.filter != "undefined"){

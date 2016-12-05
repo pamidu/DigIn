@@ -3,9 +3,11 @@
 /*
 
 	CloudCharge Endpoint Library
-		Version 1.0.5
+		Version 1.0.8
 	
 	change-log [
+		2016-10-05 - added subscription check method for plans.
+		2016-9-26 - introduce new methods to handle plan upgrade related operations.
 		2016-9-08 - introduce new methods to handle plan related operations.
 		2016-9-02 - introduce new methods to handle card related operations.
 		2016-9-02 - format method responses.
@@ -105,8 +107,7 @@ Class Card {
 		if($cardId) {
 			$card = new stdClass();
 			$card->card_id = $cardId;
-
-			$res = $this->cClient->getRequestInvoker()->post("/makeDefault", $card);
+			$res = $this->cClient->getRequestInvoker()->post("/makeDefault", $card);		
 			return $this->getDefaultValue($res);
 		}
 
@@ -117,7 +118,7 @@ Class Card {
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -145,7 +146,7 @@ class User {
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -283,7 +284,7 @@ class App {
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -339,9 +340,10 @@ class Plan {
 		$plan->planDetails = $planInfo->attributes;
 		$plan->interval = $planInfo->subscription;
 		$plan->quantity = (isset($planInfo->quantity)) ? (int)$planInfo->quantity : 1;
-		//echo json_encode($plan); exit();
+
 		$res = $this->cClient->getRequestInvoker()->post("/customPackage", $plan);
 		return $this->getDefaultValue($res);
+
 	}
 
 	public function customize($planInfo) {
@@ -376,7 +378,53 @@ class Plan {
 
 	}
 
-	public function upgrade() { }
+	public function upgradeToFixedplan($planInfo) {
+		/* {"plan":"Gold", "amount": 10, "quantity":1} */
+
+		$plan = new FixedPlanStruct();
+		$plan->plan = $planInfo->plan;
+		$plan->amount = (float)$planInfo->amount;
+		$plan->quantity = (isset($planInfo->quantity)) ? (int)$planInfo->quantity : 1;
+		unset($plan->token);
+
+		$res = $this->cClient->getRequestInvoker()->post("/upgrade", $plan);
+		return $this->getDefaultValue($res);
+
+	}
+
+	public function upgradeToCustomplan($planInfo) {
+
+		/*
+			{
+				"attributes": [
+					{"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+					{"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+				],
+				"subscription": "month",
+				"quantity":	1 
+			}
+		*/
+
+		$plan = new CustomPlanStruct();
+
+		$totamount = 0.0;
+		foreach ($planInfo->attributes as $attribute) {
+			if($attribute->action === "add")
+				$totamount += (float)$attribute->amount;
+		}
+		
+		$plan->plan = "custom";
+		$plan->pacakgeAmount = $totamount;
+		$plan->planDetails = $planInfo->attributes;
+		$plan->interval = $planInfo->subscription;
+		$plan->quantity = (isset($planInfo->quantity)) ? (int)$planInfo->quantity : 1;
+		unset($plan->customer);
+		unset($plan->token);
+
+		$res = $this->cClient->getRequestInvoker()->post("/upgrade", $plan);
+		return $this->getDefaultValue($res);
+
+	}
 
 	public function stopSubscription($now = false) { 
 
@@ -395,13 +443,19 @@ class Plan {
 		
 	}
 
+	public function checkSubscription() {
+		$res = $this->cClient->getRequestInvoker()->get("/subscriberCheck");
+		return $this->getDefaultValue($res);
+		
+	}
+
 	private function getDefaultValue($res){
 
 		$jsonObj =json_decode($res);
 		if (!$jsonObj){
 			$jsonObj = new stdClass();
 			$jsonObj->status = false;
-			$jsonObj->message = $res;
+			$jsonObj->response = $res;
 		}
 		return $jsonObj;
 
@@ -445,14 +499,16 @@ class CloudCharge {
 				$paygateway = PAYMENT_GATWAY;
 
 		$this->invoker = new WsInvoker("http://". $GLOBALS['mainDomain'] ."/services/duosoftware.paymentgateway.service/" . $paygateway);
-		$this->invoker->addHeader("securityToken", $_COOKIE['securityToken']);
+		
+		$secToken;
+		if($GLOBALS['mainDomain'] === $_SERVER['HTTP_HOST']) {			
+			$headers = getallheaders();
+			if(isset($headers['securityToken'])) $secToken = $headers['securityToken'];
+		} else $secToken = $_COOKIE['securityToken'];
+		$this->invoker->addHeader("securityToken", $secToken);
 	}
 	
 }
-
-
-////http://staging.digin.io/services/duosoftware.paymentgateway.service/stripe/fixedPackage
-//
 
 /*
 
@@ -481,9 +537,22 @@ class CloudCharge {
 			]
 		}
 
-	(new CloudCharge())->plan()->upgrade();
+	(new CloudCharge())->plan()->upgradeToFixedplan($planInfo); 
+		{"plan":"Gold", "amount": 10, "quantity":1}
+
+	(new CloudCharge())->plan()->upgradeToCustomplan($planInfo);
+		{
+			"attributes": [
+				{"tag":"storage","feature": "25GB storage","quantity":0,"amount": 30,"action":"remove"},
+				{"tag":"user","feature": "Additional users","amount": 15,"quantity":5,"action":"add"}
+			],
+			"subscription": "month",
+			"quantity":	1 
+		}
+
 	(new CloudCharge())->plan()->stopSubscription([$stopnow]);
 	(new CloudCharge())->plan()->resubscribe();
+	(new CloudCharge())->plan()->checkSubscription();
 
 	(new CloudCharge())->app()->create($app); // invoke during app publishing
 	(new CloudCharge())->app()->purchase($appkey, $price [,$token]); // invoke during one time payment app purchase

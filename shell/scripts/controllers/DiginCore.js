@@ -3,6 +3,7 @@
  | Controllers listed below are here                        |
  ------------------------------------------------------------
  |      showWidgetCtrl                                      |
+
  |      DashboardCtrl                                       |
  |      ReportCtrl                                          |
  |      analyticsCtrl                                       |
@@ -45,9 +46,17 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce','sales_distribution', 'notifications',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce, sales_distribution, notifications) {
-
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications','pouchDbServices','layoutManager','chartServices',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications,pouchDbServices,layoutManager,chartServices) {
+        
+        $rootScope.showSideMenu = layoutManager.hideSideMenu();
+        if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+        {
+            $('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+        }else{
+            $('md-tabs-wrapper').css('background-color',"white", 'important');
+        }
+    
         //code to keep widget fixed on pivot summary drag events
         $('#content1').on('mousedown', function(e) {
             if (e.target.className == "pvtAttr") {
@@ -60,27 +69,15 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
         });
 
-          
             $scope.updateRealtime = function(){
 
             $scope.temp = 1770697;
 
             $interval(function () {
                 //var ranId =$scope.random();
-                    var x =  Math.floor(Math.random() * 10) + 1;
-                    $scope.temp = $scope.temp + x;
-
-                    $scope.value = numberWithCommas($scope.temp);
-                    
-                    // $http.get('http://digin.io:1929/executeQuery?db=BigQuery&query=select%20sum(834770697%2Bsum(product_quantity))%20qty%20from%20digin_duosoftware_com.orders_RT&ranId='+ranId+'&SecurityToken=cc9ccbac6a952a498c5328c35d01d988')
-                    // .success(function(data) {
-                    //      //$scope.value = numberWithCommas(data.Result[0].qty);
-                         
-                    // })
-                    // .error(function(err) {
-                          
-                    // });  
-
+                var x =  Math.floor(Math.random() * 10) + 1;
+                $scope.temp = $scope.temp + x;
+                $scope.value = numberWithCommas($scope.temp);
             }, 3000);
 
         }
@@ -124,7 +121,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             maxSizeY: null, // maximum row height of an item
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
-                enabled: true
+                enabled: true,
+                handle: '.digin-widget-toolbar'
             },
             resizable: {
                 enabled: true,
@@ -135,7 +133,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
         $scope.reportWidgetURL = $sce.trustAsResourceUrl(report_Widget_Iframe);
-        $scope.sales_distribution = $sce.trustAsResourceUrl(sales_distribution);
+        
         $scope.widgetTitleClass = 'widget-title-35';
 
         $scope.adjustTitleLength = function() {
@@ -425,10 +423,17 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     }
                     //call service if the expanded dropdownaccordion is expanded
                     if (key.values === undefined) {
-                        query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
+                        key.sync = true;
+                        if (widget.widgetData.commonSrc.src.src == "BigQuery") {
+                            query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
+                        } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
+                            query = "SELECT [" + key.filter.name + "] FROM " + widget.widgetData.commonSrc.src.tbl + " GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
+                        }
                         $scope.client.getExecQuery(query, function(data, status){
                             if (status) {
                                 key["values"] = [];
+                                data.sort(function(a,b){return a[key.filter.name] - b[key.filter.name]});
+                                key.sync = false;
                                 for (var res in data) {
                                     var keyValue = data[res];
                                     for (var v in keyValue){
@@ -450,6 +455,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         })
                                     }
                                 }
+                            } else {
+                                $scope.$apply(function(){
+                                    key.sync = false;
+                                    notifications.toast('0', 'Error Occured! Please try again!');
+                                    return;
+                                });
                             }
                         });
                     } else{
@@ -524,11 +535,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var tempStr = "";
             var requestArray = [];
             var cat = "";
-
+            var limit;
             //map the selected filter fields
             filterArray = filterService.generateFilterParameters($scope.widgetFilters);
 
-            if (filterArray.length > 0){
+            if (filterArray.length > 0) {
                 var filterStr = filterArray.join( ' And ');
             } else { // validation if no fields are selected and tried to filter
                 notifications.toast('0', 'Please select fields to apply filters!');
@@ -536,7 +547,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
 
             //if chart is configured for drilled down, get the highest level to apply filters
-            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled){
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                 var chart = widget.widgetData.highchartsNG.getHighcharts();
                 if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
                     requestArray[0] = chart.options.customVar;                    
@@ -544,37 +555,136 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     notifications.toast('0', 'Please go to level 1 to apply filters!');
                     return;
                 }
-            } else{
-                requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;                
+            } else {
+                if (widget.widgetData.commonSrc.att.length > 0) {
+                    requestArray[0] = widget.widgetData.commonSrc.att[0].filedName;    
+                } else {
+                    requestArray = undefined;
+                }
+                
             }
-
-            console.log(filterStr);
             widget.widgetData.syncState = false;
-            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, function(res, status, query) {
-                if (status) {
-                    var color = [];
-                    var name = [];                    
-                    //Store the name and the color to apply to the chart after it is regenareted
-                    for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++){
-                        color.push(widget.widgetData.highchartsNG.series[i].color);
-                        name.push(widget.widgetData.highchartsNG.series[i].name);
+            if ( widget.widgetData.selectedChart.chart == "metric" ) {
+                //Apply filters to metric widget
+                $scope.filterMetricWidget(widget,filterStr);
+            } else {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
+                    if (status) {
+                        var color = [];
+                        var name = [];
+                        var origName = [];
+                        //Store the name and the color to apply to the chart after it is regenareted
+                        for ( var i = 0; i < widget.widgetData.highchartsNG.series.length; i++) {
+                            color.push(widget.widgetData.highchartsNG.series[i].color);
+                            name.push(widget.widgetData.highchartsNG.series[i].name);
+                            origName.push(widget.widgetData.highchartsNG.series[i].origName);
+                        }
+                        filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
+                        if (widget.widgetData.commonSrc.att.length <=1) {
+                           widget.widgetData.widData.drilled = false;
+                        } else {
+                            widget.widgetData.widData.drilled = true;
+                        }
+                        var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
+                        widget.widgetData.syncState = true;
+                        widget.widgetData.filteredState = true;
+                        if ( data !== undefined ) {
+                            widget.widgetData.highchartsNG.series = data;
+                            widget.widgetData.highchartsNG.series.forEach(function(key) {
+                                if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                            });
+                            $scope.$apply();
+                        }
+                    } else {
+                        $scope.$apply(function(){
+                            notifications.toast('0', 'Error Occured!Please try again!');
+                            widget.widgetData.syncState = true;
+                        })
                     }
-                    filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);                                        
-                    var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name);
-                    widget.widgetData.syncState = true;
-                    widget.widgetData.filteredState = true;
-                    if ( data !== undefined ){
-                        widget.widgetData.highchartsNG.series = data;
-                        widget.widgetData.highchartsNG.series.forEach(function(key) {
-                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
-                        });
-                        $scope.$apply();
+                },requestArray,filterStr);
+            }
+        };
+        // Apply fileters to metric widget
+        $scope.filterMetricWidget = function(widget,filterStr) {
+            var targetRequest = false;
+            var metricRequest = false;
+            var targetSuccess = false;
+            var metricSuccess = false;
+            var metricValue, targetValue;
+            if (widget.widgetData.commonSrc.target.length == 1) {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.target, undefined, function(res, status, query) {
+                    if (status) {
+                        targetRequest = true;
+                        targetSuccess = true;
+                        targetValue = res;
+                        if (targetRequest && metricRequest) {
+                            widget.widgetData.syncState = true;
+                            if (targetSuccess && metricSuccess) {
+                                // call sync method
+                                $scope.setValues(widget.widgetData,metricValue,targetValue);
+                            } else {
+                                $scope.$apply(function(){
+                                    notifications.toast('0', 'Error Occured!Please try again!');
+                                    widget.widgetData.syncState = true;
+                                })
+                            }
+                        }
+                    } else {
+                        targetRequest = true;
+                    }
+                },undefined,filterStr);
+            } else {
+                targetRequest = true;
+                targetSuccess = true;
+            }
+            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, undefined, function(res, status, query) {
+                if (status) {
+                    metricRequest = true;
+                    metricSuccess = true;
+                    metricValue = res;
+                    if (targetRequest && metricRequest) {
+                        widget.widgetData.syncState = true;
+                        if (targetSuccess && metricSuccess) {
+                            // call sync method
+                            $scope.setValues(widget.widgetData,metricValue,targetValue);
+                        } else {
+                            $scope.$apply(function(){
+                                notifications.toast('0', 'Error Occured!Please try again!');
+                                widget.widgetData.syncState = true;
+                            })
+                        }
                     }
                 } else {
-                    notifications.toast('0', 'Error Occured!Please try again!');
+                    metricRequest = true;
                 }
-            },requestArray,filterStr);            
-        };
+            },undefined,filterStr);            
+        }
+        // Set values to metric widget
+        $scope.setValues = function (widObj,metricValue,targetValue) {
+            widObj.widData.decValue = metricValue[0];
+            widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
+            widObj.selectedChart.initObj.value = widObj.widData.value;
+            widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
+            // Apply metric settings after filtering if target value is set
+            if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
+                if (widObj.commonSrc.target.length == 1) {
+                    widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
+                    widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
+                }
+                chartServices.applyMetricSettings(widObj.selectedChart);
+            }
+            $scope.$apply();
+        }
+
+        function setMeasureData(res) {
+            var val = "";
+            for (var c in res) {
+                if (Object.prototype.hasOwnProperty.call(res, c)) {
+                    val = res[c];
+                }
+            }
+            return val;
+        }        
 
         //when all checkbox is clicked
         $scope.onCLickAll = function(widgetId,name,filterId){
@@ -605,15 +715,17 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         //clear filters
         $scope.clearFilter = function(widget) {
             //if chart is configured for drilled down, get the highest level to apply filters
-            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                 var chart = widget.widgetData.highchartsNG.getHighcharts();
                 if ( chart.options.customVar == widget.widgetData.widData.drillConf.highestLvl ) {
+                    widget.widgetData.filteredState = false;
                     $scope.syncWidget(widget);
                 } else {
                     notifications.toast('0', 'Please go to level 1 to remove filters!');
                     return;
                 }
             } else{
+                widget.widgetData.filteredState = false;
                 $scope.syncWidget(widget);
             }           
         };
@@ -626,15 +738,22 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             });
         };
         $scope.shareWidget = function(ev, widget){
-            $mdDialog.show({
-                controller: 'shareCtrl',
-                templateUrl: 'views/dashboard-share.html',
-                clickOutsideToClose: true,
-                resolve: {},
-                locals: {
-                    widget: widget
-                }
-            });
+            var dashboardName = $rootScope.dashboard.compName;
+            if(typeof dashboardName != "undefined"){
+                $mdDialog.show({
+                    controller: 'shareCtrl',
+                    templateUrl: 'views/dashboard-share.html',
+                    clickOutsideToClose: true,
+                    resolve: {},
+                    locals: {
+                        widget: widget,
+                        DashboardName:dashboardName
+                    }
+                });
+            }else{
+                notifications.toast('0', 'Please save the dashboard before proceed');
+            }
+        
         }
 
         /*Summary:
@@ -643,26 +762,38 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
          */
         $scope.syncWidget = function(widget) {
 
-            console.log('syncing...');
             if (typeof widget.widgetData.widConfig != 'undefined') {
                 DynamicVisualization.syncWidget(widget, function(data) {
                     widget.widgetData.syncState = true;
                     widget = data;
                 });
             } else if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                widget.widgetData.syncState = false;
-                //If the widget has filters, clear the selections
-                widget.widgetData.filteredState = false;                
-                $qbuilder.sync(widget.widgetData, function(data) {
-                    filterService.clearFilters(widget);
-                    widget.widgetData.syncState = true;
-                    widget = data;
-                    if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
-                        $scope.widInit();
-                });
+                // if chart is configured for drilled down, get the highest level to apply filters
+                if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
+                    var chart = widget.widgetData.highchartsNG.getHighcharts();
+                    if ( chart.options.customVar != widget.widgetData.widData.drillConf.highestLvl ) {
+                        widget.widgetData.syncState = false;
+                        $qbuilder.syncDrilledChart(widget.widgetData,$scope);
+                        return;
+                    }
+                }
+                // If the chart is configured for filters, it should sync accordinly
+                if (widget.widgetData.filteredState) {
+                    widget.widgetData.syncState = false;
+                    $scope.buildChart(widget);
+                } else {
+                    widget.widgetData.syncState = false;
+                    widget.widgetData.filteredState = false;
+                    $qbuilder.sync(widget.widgetData, function(data) {
+                        filterService.clearFilters(widget);
+                        $scope.$apply(function(){
+                            widget.widgetData.syncState = true;
+                            widget = data;
+                        });
+                    });
+                }
             }
         };
-
 
         $scope.pngDownload = function(widget) {
 
@@ -701,17 +832,32 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             $("#svg-container").append(element[0].innerHTML);
             var svgEle = $("#svg-container").children();
             var svgElement = svgEle[0];
+
+
+
+            svgElement.children[0].setAttribute("transform", "translate(" + 300+ "," + 300 + ") rotate(-90 0 0)");
             console.log(svgElement);
             var svgString = new XMLSerializer().serializeToString(svgElement);
+
+
+            var name = "";
+            if(typeof widget.widgetData.widName != 'undefined')
+                name = widget.widgetData.widName;
+
+            var svgInnerContainer = svgEle[0].innerHTML;
+            var chartName = '<text fill="#000000" font-size="15" font-family="Verdana" x="250" y="20">'+name+'</text>';
+            svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0  600 600" width="100%"> '+chartName+' + '+svgInnerContainer+' +</svg>';
+
+
 
             $("#canvas").empty();
             var canvas = document.getElementById("canvas");
             var ctx = null;
             var ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, 400, 400);
+            ctx.clearRect(0, 0, 600, 600);
             if (type == "jpeg") {
                 ctx.fillStyle = "#FFFFFF";
-                ctx.fillRect(0, 0, 400, 400);
+                ctx.fillRect(0, 0, 600, 600);
             }
             var DOMURL = self.URL || self.webkitURL || self;
             var img, svg = null;
@@ -749,41 +895,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var svgEle = $("#svg-container").children();
             var svg = svgEle[0];
 
-            svgAsDataUri(svg, {}, function(svg_uri) {
-                var image = document.createElement('img');
+            svg.setAttribute("viewBox", "0 0  600 600")
+            svg.children[0].setAttribute("transform", "translate(300,300) rotate(-90 0 0)");
+            var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+            newElement.setAttribute('x',20);
+            newElement.setAttribute('y',20);
+            newElement.setAttribute('fill','#000000');
+            newElement.setAttribute('font-size',20);
+            newElement.setAttribute('font-family','Verdana');
 
-                image.src = svg_uri;
-                image.style.background = "#FFFFFF";
-                image.style.backgroundColor = "#FFFFFF";
 
-                image.onload = function() {
-                    var canvas = document.getElementById("canvas");
-                    var context = canvas.getContext('2d');
-                    context.clearRect(0, 0, 400, 400);
-                    context.setFillColor = "#FFFFFF";
-                    context.fillRect(0, 0, 400, 400);
-                    var doc = new jsPDF('landscape', 'pt');
-                    var dataUrl;
+            if(typeof widget.widgetData.widName != 'undefined')
+                newElement.innerHTML = widget.widgetData.widName;
 
-                    canvas.width = image.width;
-                    canvas.height = image.height;
-                    context.drawImage(image, 0, 0, image.width, image.height);
-                    dataUrl = canvas.toDataURL('image/JPEG');
-                    doc.addImage(dataUrl, 'JPEG', 0, 0, image.width, image.height);
-                    doc.setFillColor = "#FFFFFF";
+            svg.appendChild(newElement);
 
-                    var x = doc.output('dataurlstring');
-                    var link = document.createElement('a');
-                    link.addEventListener('click', function(ev) {
-                        link.href = doc.output('dataurlstring');
-                        link.download = "download";
-                        document.body.removeChild(link);
-
-                    }, false);
-
-                    document.body.appendChild(link);
-                    link.click();
-                }
+             $scope.svg_to_pdf_fun(svg, function (pdf) {
+                $scope.download_pdf('SVG.pdf', pdf.output('dataurlstring'));
             });
 
 
@@ -791,6 +919,43 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
 
         }
+
+        //--------------------------
+        $scope.svg_to_pdf_fun = function (svg, callback) {
+          svgAsDataUri(svg, {}, function(svg_uri) {
+            var image = document.createElement('img');
+
+            image.src = svg_uri;
+            image.onload = function() {
+              var canvas = document.createElement('canvas');
+              var context = canvas.getContext('2d');
+              var doc = new jsPDF('portrait', 'pt');
+              var dataUrl;
+
+              canvas.width = image.width;
+              canvas.height = image.height;
+              context.drawImage(image, 0, 0, image.width, image.height);
+              dataUrl = canvas.toDataURL('image/png');
+              doc.addImage(dataUrl, 'PNG', 0, 0, image.width, image.height);
+
+              callback(doc);
+            }
+          });
+        }
+
+
+        $scope.download_pdf = function (name, dataUriString) {
+          var link = document.createElement('a');
+          link.addEventListener('click', function(ev) {
+            link.href = dataUriString;
+            link.download = name;
+            document.body.removeChild(link);
+          }, false);
+          document.body.appendChild(link);
+          link.click();
+        }
+
+        //--------------------------
 
         $scope.printD3Chart = function(widget) {
 
@@ -800,17 +965,31 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var printContents = element[0].innerHTML;
             var originalContents = document.body.innerHTML;
 
+            //----------------------------------------------------
+
+            var name = "";
+            if(typeof widget.widgetData.widName != 'undefined')
+                name = widget.widgetData.widName;
+
+            var chartName = '<text fill="#000000" font-size="15" font-family="Verdana" x="250" y="0">'+name+'</text>';
+            svgString= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -20  600 800" width="100%"> '+chartName+' + '+printContents+' +</svg>';
+
+            console.log(svgString);
+            
+            //----------------------------------------------------
+
+
+
             var popupWin = window.open('', '_blank', 'width=800,height=500');
             popupWin.document.open();
             popupWin.document.write('');
-            popupWin.document.write('<html><head></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.write('<html><head></head><body onload="window.print()">' + svgString + '</body></html>');
             popupWin.document.close();
 
             $scope.d3chartBtnClick(widget);
 
 
         }
-
 
         $scope.d3chartBtnClick = function(widget) {
 
@@ -822,10 +1001,32 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         $scope.syncPage = function(page) {
             $scope.isPageSync = true;
             if (!page.isSeen) {
+                var count=0;
                 for (var i = 0; i < page.widgets.length; i++) {
-                    if (typeof page.widgets[i].widgetData.commonSrc != 'undefined') {
-                        $scope.syncWidget(page.widgets[i]);
-                    }
+                   
+                        if (typeof(page.widgets[i].widgetData.commonSrc) != "undefined") {
+                            page.widgets[i].widgetData.syncState = false;
+                            //Clear the filter indication when the chart is re-set
+                            page.widgets[i].widgetData.filteredState = false;
+                            filterService.clearFilters(page.widgets[i]);
+                            if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
+                                $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                    count++;
+                                    if(page.widgets.length == count){
+                                        pouchDbServices.pageSync($rootScope.dashboard);
+                                    }
+                                });
+                            }else{
+                                 count++;
+                            }
+                        }else{
+                          count++;
+                          if(page.widgets.length == count){
+                              pouchDbServices.pageSync($rootScope.dashboard);
+                              
+                           }
+                        }
+                    
                 }
                 $scope.isPageSync = false;
                 for (var j = 0; j < $rootScope.dashboard.pages.length; j++) {
@@ -841,8 +1042,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         };
 
         $scope.widInit = function(widget) {
-
-
             widget.isD3chart = false;
             widget.d3chartBtn = false;
             switch (widget.widgetName) {
@@ -857,7 +1056,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
             }
 
-            if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled) {
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                 var drillConf = widget.widgetData.widData.drillConf;
                 var client = $diginengine.getClient(drillConf.dataSrc);
                 widget.widgetData.highchartsNG.options['customVar'] = drillConf.highestLvl;
@@ -874,77 +1073,119 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 nextLevel = "",
                                 highestLvl = this.options.customVar,
                                 drillObj = {},
-                                isLastLevel = false;
-                                selectedSeries = e.point.series.name;
-                                filterStr = "";
+                                isLastLevel = false,
+                                selectedSeries = e.point.series.name,
+                                filterStr = "",
+                                origName = "",
+                                serName = "",
+                                tempArrStr = "",
+                                conStr = "";
+                                var limit;
+                                var level;
+                                var tempArray = [];
+                                var isDate;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
+                                    drillOrdArr[i].clickedPoint = clickedPoint;
+                                    level = drillOrdArr[i].level;
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
                                 }
                             }
                             chart.options.lang.drillUpText = " Back to " + highestLvl;
                             // Show the loading label
                             chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
-                            filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
 
-                            if (filterArray.length > 0) {
-                                filterStr = filterArray.join( ' And ');
-                                filterStr += ' And ' + highestLvl + "='" + clickedPoint + "'";
-                            } else {
-                                filterStr = highestLvl + "='" + clickedPoint + "'";
-                            }
-                            console.log(filterStr);
-                            //aggregate method
-                            clientObj.getAggData(srcTbl, fields, function(res, status, query) {
-                                filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
-                                widget.widgetData.widData.drillConf.currentLevel++;
-                                switch (widget.widgetData.widData.drillConf.currentLevel) {
-                                    case 2:
-                                        widget.widgetData.widData.drillConf.level2Query = query;
-                                        break;
-                                    case 3:
-                                        widget.widgetData.widData.drillConf.level3Query = query;
-                                        break;
+                            // get the filter parameters              
+                            if (widget.widgetData.filteredState) {
+                                filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
+                                if (filterArray.length > 0) {
+                                    filterStr = filterArray.join( ' And ');
                                 }
-                                widget.widgetData.widData.drillConf.previousQuery = widget.widgetData.widData.drillConf.currentQuery;
+                            }
+                            for(var c = 0; c<level;c++) {
+                                tempArrStr = "";
+                                isDate = false;
+                                angular.forEach(widget.widgetData.commonSrc.src.fAttArr,function(key) {
+                                    if (key.name == drillOrdArr[c].name) {
+                                        if (key.dataType !== undefined) {
+                                            if (key.dataType == 'DATE' || key.dataType == 'Date'){
+                                                isDate = true;
+                                            }
+                                        }
+                                    }
+                                });
+                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                    if (isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                    }
+                                } else {
+                                    if(isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
+                                }
+                                tempArray.push(tempArrStr);
+                            }
+                            if (tempArray.length > 0){
+                                var tempStr = tempArray.join( ' And ');
+                                if (filterStr != ""){
+                                    filterStr = filterStr + ' And ' + tempStr;
+                                } else {
+                                    filterStr += tempStr;
+                                }
+                            }
+                            //aggregate method
+                            clientObj.getAggData(srcTbl, fields, limit, function(res, status, query) {
+                                filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
+                                angular.forEach( widget.widgetData.highchartsNG.series, function(series) {
+                                    if ( series.name == selectedSeries ) {
+                                        origName = series.origName;
+                                        serName = series.name;
+                                    }
+                                });
+                                drillConf["level"+(level+1)+"Query"] = query;
                                 widget.widgetData.widData.drillConf.currentQuery = query;
-
                                 if (status) {
                                     for (var key in res[0]) {
                                         if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-                                            if (key != nextLevel && key == selectedSeries) {
+                                            if (key != nextLevel && key == origName) {
                                                 drillObj = {
-                                                    name: key,
-                                                    data: []
+                                                    name: serName,
+                                                    data: [],
+                                                    origName: key,
+                                                    turboThreshold: 0
                                                 };
                                             }
                                         }
                                     }
-
-                                    res.forEach(function(key) {
-                                        if (!isLastLevel) {
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.name]),
-                                                drilldown: true
-                                            });
-                                        } else {
-                                            drillObj.data.push({
-                                                name: key[nextLevel],
-                                                y: parseFloat(key[drillObj.name])
-                                            });
-                                        }
-                                    });
-
+                                    if (res.length > 0 ) {
+                                        res.forEach(function(key) {
+                                            if (!isLastLevel) {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName]),
+                                                    drilldown: true
+                                                });
+                                            } else {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName])
+                                                });
+                                            }
+                                        });
+                                        drillObj['cropThreshold'] = drillObj.data.length;
+                                    }
                                     chart.addSeriesAsDrilldown(e.point, drillObj);
 
                                 } else {
-                                    alert('request failed due to :' + JSON.stringify(res));
+                                    notifications.toast('0','request failed due to :' + JSON.stringify(res));
                                     e.preventDefault();
                                 }
-                                console.log(JSON.stringify(res));
                                 widget.widgetData.highchartsNG.xAxis["title"] = {
                                     text: nextLevel
                                 };
@@ -957,8 +1198,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         }
                     },
                     drillup: function(e) {
-                        console.log(e);
                         var chart = this;
+                        console.log(chart);
                         console.log(chart.options.customVar);
                         drillConf.drillOrdArr.forEach(function(key) {
                         if (key.nextLevel && key.nextLevel == chart.options.customVar) {
@@ -971,9 +1212,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         // set x and y axis titles (DUODIGIN-914)
                         var flag = false;
                         drillConf.drillOrdArr.forEach(function(key) {
+                            if (key.name == chart.options.customVar) {
+                                drillConf.currentQuery = drillConf["level" + key.level + "Query"];
+                            }
                             if (chart.options.customVar == key.nextLevel) {
-                            chart.options.lang.drillUpText = " Back to " + key.name;
-                            flag = true;
+                                chart.options.lang.drillUpText = " Back to " + key.name;
+                                flag = true;
                             }
                         });
                         if (!flag) {
@@ -981,7 +1225,23 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 text: 'values'
                             };
                         }
-                    }
+                    },
+                    beforePrint: function() {
+                        this.setTitle({
+                            text: this.options.exporting.chartOptions.title.text
+                        })
+                        this.heightPrev = this.chartHeight;
+                        this.widthPrev = this.chartWidth;
+                        if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
+                        this.setSize(800,600, false);
+                    },
+                    afterPrint: function() {
+                        this.setTitle({
+                            text: null
+                        })
+                        this.setSize(this.widthPrev,this.heightPrev, true);
+                        if (this.drilldownLevels.length != 0) this.showDrillUpButton();
+                    }                      
                 }
             }
         };
@@ -992,8 +1252,6 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                     var removePage = null;
                     $scope.close = function() {
-
-
                         removePage = true;
                         $mdDialog.hide(removePage);
                     }
@@ -1036,7 +1294,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                     ngToast.create({
                         className: 'success',
-                        content: 'page removal succussful',
+                        content: 'Page removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true
@@ -1099,7 +1357,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     ngToast.dismiss();
                     ngToast.create({
                         className: 'success',
-                        content: '' + widget.widgetName + ' widget removed successfully',
+                        content: 'Widget removed successfully',
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
                         dismissOnClick: true
@@ -1215,8 +1473,8 @@ routerApp.controller('ReportsDevCtrl', ['$scope', '$mdSidenav', '$sce', 'ReportS
         }
     }
 ]);
-routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain',
-    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain) {
+routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localStorage', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'fileUpload', '$http', 'Upload', 'ngToast', 'Digin_Domain','$state','$mdDialog','$window','$rootScope',
+    function($scope, dynamicallyReportSrv, $localStorage, Digin_Engine_API, Digin_Tomcat_Base, fileUpload, $http, Upload, ngToast, Digin_Domain,$state,$mdDialog,$window,$rootScope) {
 
 
         // update damith
@@ -1234,6 +1492,12 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
             var getSession = function() {
                 reqParameter.token = getCookie("securityToken");
             };
+            $scope.Download = function(){
+            $window.open('https://sourceforge.net/projects/pentaho/files/Report%20Designer/5.3/', '_blank');
+        };
+
+
+
 
             var startReportService = function() {
                 if (rptService == 0) {
@@ -1245,40 +1509,38 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                 }
             }; //end
 
+            $scope.goBackFromReports = function(){
 
+               $state.go('home.welcomeSearch');
+            }
             return {
                 getAllReport: function() {
                     reqParameter.userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $scope.reports = [];
                     getSession();
                     startReportService();
-                    dynamicallyReportSrv.getAllReports(reqParameter).success(function(data) {
-                        console.log(data);
-                        if (data.Is_Success) {
-                            for (var i = 0; i < data.Result.length; i++) {
-                                console.log($scope.reports);
-                                $scope.reports.push({
-                                    splitName: data.Result[i],
-                                    path: '/dynamically-report-builder'
-                                });
-                            }
-                        }
-                    }).error(function(respose) {
-                        console.error('error request getAllReports...');
-                    });
                     dynamicallyReportSrv.getAllComponents(reqParameter).success(function(data) {
+                        $rootScope.reports = [];
                         angular.forEach(data.Result, function(key) {
                             if (key.compType == "Report") {
                                 $scope.reports.push({
                                     splitName: key.compName,
-                                    path: '/dynamically-report-builder'
+                                    path: '/dynamically-report-builder',
+                                    reportId: key.compID
                                 });
+
+                                $rootScope.reports.push({
+                                    splitName: key.compName,
+                                    path: '/dynamically-report-builder',
+                                    reportId: key.compID
+                                });
+                                   
                             }
                         });
+
                     }).error(function(error) {
 
                     });
-
                 }
             }
         }());
@@ -1288,15 +1550,6 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
         $scope.reports = [];
         $scope.preloader = false;
 
-        /* file upload */
-        /*$scope.$watch('files', function () {
-         $scope.upload($scope.files);
-         });
-         $scope.$watch('file', function () {
-         if ($scope.file != null) {
-         $scope.files = [$scope.file];
-         }
-         });*/
         $scope.log = '';
 
         $scope.upload = function(files) {
@@ -1304,78 +1557,173 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             var uploadFlag;
             var storeFlag;
+            var repid = null;
+            
+
             if (files && files.length) {
-                $scope.preloader = true;
-                $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+               
 
                 for (var i = 0; i < files.length; i++) {
                     var lim = i == 0 ? "" : "-" + i;
 
-                    Upload.upload({
-                        url: Digin_Engine_API + 'file_upload',
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        data: {
-                            file: files[i],
-                            db: 'BigQuery',
-                            SecurityToken: userInfo.SecurityToken,
-                            other_data: 'prpt_reports'
-                        }
-                    }).success(function(data) {
-                        console.log(data);
-                        uploadFlag = true;
-                        console.log($scope.reports);
-                        $scope.preloader = false;
-                        $scope.diginLogo = 'digin-logo-wrapper2';
-                        if (uploadFlag && storeFlag) {
-                            fireMsg('1', 'Successfully uploaded!');
-                            privateFun.getAllReport();
-                        }
-                    }).error(function(data) {
-                        console.log(data);
-                        uploadFlag = false;
-                        fireMsg('0', 'Error uploading file!');
-                        $scope.preloader = false;
-                        $scope.diginLogo = 'digin-logo-wrapper2';
-                    });
 
-                    var dashboardObject = {
+                    if(typeof $rootScope.reports != "undefined" ){
+                       for(var j=0; j<$rootScope.reports.length;j++){
+                            if($rootScope.reports[j].splitName+".zip" == files[i].name || $rootScope.reports[j].splitName+".rar" == files[i].name){
+                                repid = $rootScope.reports[j].reportId;
+                            }
+                        } 
 
-                        "pages": [],
-                        "compClass": '',
-                        "compType": "Report",
-                        "compCategory": "",
-                        "compID": null,
-                        "compName": files[i].name.replace(/\.[^/.]+$/, ""),
-                        "refreshInterval": 0,
-                        "deletions": {
-                            "componentIDs": [],
-                            "pageIDs": [],
-                            "widgetIDs": []
+                        if(repid != null){
+                              var confirm = $mdDialog.confirm()
+                                  .title('Upload Report')
+                                  .textContent('Do you want to overwrite the existing report?')
+                                  .ariaLabel('Lucky day')
+                                  .ok('yes')
+                                  .cancel('no');
+                                    $mdDialog.show(confirm).then(function() {
+                                       $scope.preloader = true;
+                                        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+                                        Upload.upload({
+                                                url: Digin_Engine_API + 'file_upload',
+                                                headers: {
+                                                    'Content-Type': 'multipart/form-data',
+                                                },
+                                                data: {
+                                                    file: files[0],
+                                                    db: 'BigQuery',
+                                                    SecurityToken: userInfo.SecurityToken,
+                                                    other_data: 'prpt_reports'
+                                                }
+                                            }).success(function(data) {
+                                                console.log(data);
+                                                uploadFlag = true;
+                                                console.log($scope.reports);
+                                                $scope.preloader = false;
+                                                $scope.diginLogo = 'digin-logo-wrapper2';
+                                                if (uploadFlag && storeFlag) {
+                                                    fireMsg('1', 'Successfully uploaded!');
+                                                    privateFun.getAllReport();
+                                                }
+                                            }).error(function(data) {
+                                                console.log(data);
+                                                uploadFlag = false;
+                                                fireMsg('0', 'Error uploading file!');
+                                                $scope.preloader = false;
+                                                $scope.diginLogo = 'digin-logo-wrapper2';
+                                            });
+
+                                            var dashboardObject = {
+
+                                                "pages": [],
+                                                "compClass": '',
+                                                "compType": "Report",
+                                                "compCategory": "",
+                                                "compID": repid,
+                                                "compName": files[0].name.replace(/\.[^/.]+$/, ""),
+                                                "refreshInterval": 0,
+                                                "deletions": {
+                                                    "componentIDs": [],
+                                                    "pageIDs": [],
+                                                    "widgetIDs": []
+                                                }
+                                            }
+
+                                            $http({
+                                                method: 'POST',
+
+                                                url: Digin_Engine_API + 'store_component',
+                                                data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'SecurityToken': userInfo.SecurityToken
+                                                }
+                                            }).success(function(data) {
+                                                storeFlag = true;
+                                                if (uploadFlag && storeFlag) {
+                                                    fireMsg('1', 'Successfully uploaded!');
+                                                    privateFun.getAllReport();
+                                                    
+                                                }
+                                            }).error(function(data) {
+                                                storeFlag = false;
+                                                fireMsg('2', 'Error uploading file!');
+                                            })
+                                    }, function() {
+                                      
+                                });
+                        }else{
+
+                            $scope.preloader = true;
+                            $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
+                            Upload.upload({
+                                    url: Digin_Engine_API + 'file_upload',
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data',
+                                    },
+                                    data: {
+                                        file: files[i],
+                                        db: 'BigQuery',
+                                        SecurityToken: userInfo.SecurityToken,
+                                        other_data: 'prpt_reports'
+                                    }
+                                }).success(function(data) {
+                                    console.log(data);
+                                    uploadFlag = true;
+                                    console.log($scope.reports);
+                                    $scope.preloader = false;
+                                    $scope.diginLogo = 'digin-logo-wrapper2';
+                                    if (uploadFlag && storeFlag) {
+                                        fireMsg('1', 'Successfully uploaded!');
+                                        privateFun.getAllReport();
+                                    }
+                                }).error(function(data) {
+                                    console.log(data);
+                                    uploadFlag = false;
+                                    fireMsg('0', 'Error uploading file!');
+                                    $scope.preloader = false;
+                                    $scope.diginLogo = 'digin-logo-wrapper2';
+                                });
+
+                                var dashboardObject = {
+
+                                    "pages": [],
+                                    "compClass": '',
+                                    "compType": "Report",
+                                    "compCategory": "",
+                                    "compID": repid,
+                                    "compName": files[i].name.replace(/\.[^/.]+$/, ""),
+                                    "refreshInterval": 0,
+                                    "deletions": {
+                                        "componentIDs": [],
+                                        "pageIDs": [],
+                                        "widgetIDs": []
+                                    }
+                                }
+
+                                $http({
+                                    method: 'POST',
+
+                                    url: Digin_Engine_API + 'store_component',
+                                    data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'SecurityToken': userInfo.SecurityToken
+                                    }
+                                }).success(function(data) {
+                                    storeFlag = true;
+                                    if (uploadFlag && storeFlag) {
+                                        fireMsg('1', 'Successfully uploaded!');
+                                        privateFun.getAllReport();
+                                        
+                                    }
+                                }).error(function(data) {
+                                    storeFlag = false;
+                                    fireMsg('2', 'Error uploading file!');
+                                })
                         }
                     }
-
-                    $http({
-                        method: 'POST',
-
-                        url: Digin_Engine_API + 'store_component',
-                        data: angular.fromJson(CircularJSON.stringify(dashboardObject)),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'SecurityToken': userInfo.SecurityToken
-                        }
-                    }).success(function(data) {
-                        storeFlag = true;
-                        if (uploadFlag && storeFlag) {
-                            fireMsg('1', 'Successfully uploaded!');
-                            privateFun.getAllReport();
-                        }
-                    }).error(function(data) {
-                        storeFlag = false;
-                        fireMsg('2', 'Error uploading file!');
-                    })
-
+         
                 }
             }
         };
@@ -1480,6 +1828,7 @@ routerApp.controller('summarizeCtrl', ['$scope', '$http', '$objectstore', '$mdDi
 
             client.getFields("com.duosoftware.com", index.display);
         }
+
         $scope.remove = function() {
             // Easily hides most recent dialog shown...
             // no specific instance reference is needed.

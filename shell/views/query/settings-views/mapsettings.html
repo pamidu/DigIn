@@ -18,22 +18,22 @@ ng-color-picker li.selected {
 <md-switch ng-model="isDrilled" ng-change="toggleDrilled(isDrilled)" aria-label="Switch 1">
     Drilled: {{ isDrilled }}
 </md-switch>
-<div>
-    <h4>Select Map Type:</h3>
+<div  ng-init="getCountries()">
+    <h5>Map Type:</h5>
     <div layout="row">
-   <md-input-container>
+   <md-input-container flex="60">
         <label>Select Map Type:</label>
         <md-select ng-model="mapconfig.mapType">
             <md-option ng-repeat="d in mapTypes" value="{{d.name}}">
                 {{d.name}}
             </md-option>
         </md-select>
-    </md-input-container>
+    </md-input-container flex="40">
        <md-input-container ng-show="mapconfig.mapType == 'Country'">
         <label>Select Country:</label>
         <md-select ng-model="mapconfig.selectedCountry">
-            <md-option ng-repeat="d in countries" value="{{d.key}}">
-                {{d.code}}
+            <md-option ng-repeat="d in countries" value="{{d.code}}">
+                {{d.name}}
             </md-option>
         </md-select>
     </md-input-container>
@@ -44,7 +44,7 @@ ng-color-picker li.selected {
     <div layout="row">
         <div layout-gt-sm="row">
             <md-input-container ng-show="mapconfig.mapType == 'World' ">
-                <label>Continent</label>
+                <label>Level 1 </label>
                 <md-select ng-model="mapconfig.Continent">
                     <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
                         {{d.filedName}}
@@ -52,7 +52,7 @@ ng-color-picker li.selected {
                 </md-select>
             </md-input-container>
             <md-input-container ng-show="mapconfig.mapType == 'World' ">
-                <label>Country</label>
+                <label>Level 2</label>
                 <md-select ng-model="mapconfig.Country">
                     <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
                         {{d.filedName}}
@@ -60,7 +60,7 @@ ng-color-picker li.selected {
                 </md-select>
             </md-input-container>
             <md-input-container ng-show="mapconfig.mapType == 'Country' || mapconfig.mapType == 'World'">
-                <label>State</label>
+                <label>Level 3</label>
                 <md-select ng-model="mapconfig.State">
                     <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
                         {{d.filedName}}
@@ -68,7 +68,7 @@ ng-color-picker li.selected {
                 </md-select>
             </md-input-container>
             <md-input-container ng-show="mapconfig.mapType == 'Country' || mapconfig.mapType == 'World'">
-                <label>City</label>
+                <label>Level 4</label>
                 <md-select ng-model="mapconfig.City">
                     <md-option ng-repeat="d in executeQryData.executeColumns" value="{{d.filedName}}">
                         {{d.filedName}}

@@ -11,7 +11,6 @@
 	margin:0 auto;
 	max-width:960px;
 	border-radius: 8px;
-	background: white;
 }
 
 .layout-whiteframe > md-content
@@ -23,11 +22,10 @@
 .section-title
 {
 	padding:10px;
-	background:rgb(224, 224, 224) !important;
-	color:#f9a624;
 	font-weight:700;
 	letter-spacing: 1px;
 	margin: 10px 0px 5px 0px;
+	border-radius: 0px 4px 4px 0px;
 }
 
 .setting-card-header {
@@ -35,7 +33,6 @@
 }
 .setting-card-header > h2
 {
-	color: #3b6982;
 	margin-top: 0px;
 }
 
@@ -48,9 +45,53 @@
 	margin: 0px 10px 0px 10px;
 }
 
-input:disabled {
+input:disabled, md-select[disabled] {
 	background: #e9e9e9;
 	cursor: not-allowed;
 	background-image: none !important;
 
 }
+
+/*contact chips start*/
+
+.chipsdemoContactChips md-content.autocomplete {
+  min-height: 250px; }
+.chipsdemoContactChips .md-item-text.compact {
+  padding-top: 8px;
+  padding-bottom: 8px; }
+.chipsdemoContactChips .contact-item {
+  box-sizing: border-box; }
+  .chipsdemoContactChips .contact-item.selected {
+    opacity: 0.5; }
+    .chipsdemoContactChips .contact-item.selected h3 {
+      opacity: 0.5; }
+  .chipsdemoContactChips .contact-item .md-list-item-text {
+    padding: 14px 0; }
+    .chipsdemoContactChips .contact-item .md-list-item-text h3 {
+      margin: 0 !important;
+      padding: 0;
+      line-height: 1.2em !important; }
+    .chipsdemoContactChips .contact-item .md-list-item-text h3, .chipsdemoContactChips .contact-item .md-list-item-text p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+  @media (min-width: 900px) {
+    .chipsdemoContactChips .contact-item {
+      float: left;
+      width: 33%; } }
+.chipsdemoContactChips md-contact-chips {
+  margin-bottom: 10px; }
+
+.chipsdemoContactChips .fixedRows {
+  height: 250px;
+ }
+.chipsdemoContactChips .contact-item > img {
+     min-width: 40px; }
+	 
+md-chips-wrap{
+    border: 1px solid #ccc !important;
+    border-radius: 3px;
+    padding-left: 8px;	 
+}
+/*contact chips end*/
+

@@ -1,0 +1,14 @@
+<div flex layout="row" layout-align="space-between center">
+	<md-input-container>
+	    <label>Decimals</label>
+	    <md-select ng-change="changeHierarchyDecimal()" ng-model="selectedChart.initObj.dec">
+	    	<md-option ng-repeat="d in metricObj.decimals" value="{{d}}">
+	    		{{d}}
+	    	</md-option>
+	    </md-select>
+	</md-input-container>
+<!-- 	<md-button class="md-raised md-primary" ng-click="generateHierarchy()">
+		Generate Chart
+	</md-button> -->
+	<div></div>
+</div>

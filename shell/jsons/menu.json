@@ -4,49 +4,43 @@
       "title": "Add Page",
       "icon2": "icon-add-page",
       "type": "menu",
-      "click":"Add Page"
+      "click":"Add Page",
+	  "id": "addPage"
     },
     {
       "title": "Reports",
       "icon2": "icon-report",
       "type": "sub-menu",
-      "menuName":"Reports"
-    },
-    {
-      "title": "RealTime",
-      "icon2": "icon-clock",
-      "type": "menu",
-      "click":"RealTime"
+      "menuName":"Reports",
+	  "id": "reports"
     },
     {
       "title": "Data Source",
       "icon2": "icon-database",
       "type": "menu",
-      "click":"Data Source"
+      "click":"Data Source",
+	  "id": "datasource"
     },
     {
       "title": "Add Widgets",
       "icon2": "icon-plugin",
       "type": "menu",
-      "click":"Add Widgets"
+      "click":"Add Widgets",
+	  "id": "addWidgets"
     },
     {
       "title": "Social Media",
       "icon2": "icon-profile",
       "type": "sub-menu",
-      "menuName":"Social Media"
-    },
-    {
-      "title": "Share",
-      "icon2": "icon-share",
-      "type": "sub-menu",
-      "menuName":"Share"
+      "menuName":"Social Media",
+	  "id": "socialMedia"
     },
     {
       "title": "Settings",
       "icon2": "icon-settings",
       "type": "sub-menu",
-      "menuName":"Settings"
+      "menuName":"Settings",
+	  "id": "settings"
     }
   ]
 }

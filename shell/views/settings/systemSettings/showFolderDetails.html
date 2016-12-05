@@ -1,0 +1,41 @@
+
+<md-dialog style="width:730px;height:500px">
+  <md-dialog-content layout="column">
+
+  		<div flex>
+
+			<div layout="row" layout-align="space-between end">
+				<h2 style="margin:0">{{folderName}}</h2>
+
+				<div>
+					<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-left: 10px;">
+		              <span ng-if="isChecked()">Un-</span>Select All files 
+		            </md-checkbox>
+	                  <md-button class="buttonMinwidth38 b-r-0" ng-click="closeDialog()">      
+	                    <ng-md-icon icon="close"></ng-md-icon>   
+	                  </md-button> 
+              	</div>
+			</div>
+
+			<md-list ng-cloak flex style="max-height:400px;overflow:scroll">
+				<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "null">
+
+	  
+					<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
+					  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+						<div layout="row"><h3>{{file.file_name}}</h3>
+						<p style="padding-left:20px">({{getDate(file.uploaded_datetime)}})</p></div>
+						<h4>{{getUserName(file.uploaded_user)}}</h4>
+					  </div>
+
+					
+					<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)"></md-checkbox>
+
+				</md-list-item>  
+			</md-list>
+
+			<md-button  class="md-raised" style="float: right;">Delete</md-button>
+		</div>
+
+    </md-dialog-content>
+</md-dialog>

@@ -195,16 +195,16 @@ routerApp.directive('sunburstChart', function() {
             chartData : '='
         },
         link: function(scope, elem, attrs) {
-            
+
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){
-                    scope.drawSunburstSummary(newValue.data,newValue.id);
+                    scope.drawSunburstSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
                 }
             });
-            
-            scope.drawSunburstSummary = function(rootData,divID){
-                var width = 500,
-                        height = 500,
+
+            scope.drawSunburstSummary = function(rootData,divID,attribute,decimal){
+                var width = 300,
+                        height = 290,
                         radius = Math.min(width, height) / 2;
 
                     var x = d3.scale.linear()
@@ -219,7 +219,7 @@ routerApp.directive('sunburstChart', function() {
                     d3.select(divid).selectAll("*").remove();
                     
                     svg = d3.select(divid)
-                        .append("svg").attr("viewBox", "0 0  500 600")
+                        .append("svg").attr("viewBox", "0 0  300  300")
                         .attr("width", '100%')
                         .attr("height", '100%')
                         .append("g")
@@ -281,15 +281,15 @@ routerApp.directive('sunburstChart', function() {
                                 .duration(200)
                                 .style("opacity", .9);
                             var sizeStr = "";
-                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b> Count: " + d.size + "</b>";
+                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b>" + attribute + ":"  + d.size.toFixed(decimal) + "</b>";
                             div.html(d.name + sizeStr)
                                 .style("left", 100 + "px")
                                 .style("top", 300 + "px");
 
                         })
                         .on("mousemove", function(d) {
-                            div.style("top", (d3.event.pageY-10)+"px")
-                                .style("left", (d3.event.pageX+10)+"px");
+                            div.style("top", (d3.event.pageY)+"px")
+                                .style("left", (d3.event.pageX)+"px");
                         })
                         .on("mouseout", function(d) {
                             div.transition()
@@ -315,7 +315,7 @@ routerApp.directive('sunburstChart', function() {
                             if (angle < 0.1){
                                 return "none";
                             }else {
-                                return "white";
+                                return "#008080";
                             }
                         });
 
@@ -344,8 +344,7 @@ routerApp.directive('sunburstChart', function() {
                                 .each("end", function(e, i) {
                                     // check if the animated element's data e lies within the visible angle span given in d
                                     if (e.x >= d.x && e.x < (d.x + d.dx)) {
-                                        console.log("saa")
-                                            // get a selection of the associated text element
+                                        // get a selection of the associated text element
                                         var arcText = d3.select(this.parentNode).select("text");
                                         // fade in the text element and recalculate positions
                                         arcText.transition().duration(750)
@@ -361,7 +360,7 @@ routerApp.directive('sunburstChart', function() {
                                                 if (angle < 0.06){
                                                     return "none";
                                                 }else {
-                                                    return "white";
+                                                    return "#008080";
                                                 }                                                
                                             });
                                     }
@@ -412,7 +411,7 @@ routerApp.directive('sunburstChart', function() {
             };
             
             if(typeof scope.chartData != "undefined"){
-                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id);
+                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id, scope.chartData.attribute, scope.chartData.dec);
             }
             
 

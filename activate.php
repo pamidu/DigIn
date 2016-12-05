@@ -11,8 +11,13 @@ $status=curl_exec ($curl);
 curl_close ($curl);
 	
 	if($status==true){
+
+			unset($_COOKIE["userName"]);
+			setcookie("userName",$email, time() + 3600, "/");
+		
+
 			echo '{"success":true,"message":"Account ativated successfully."}';
-			//header("Location: http://www.digin.io");
+			//header("Location:http://".$mainDomain."/entry/#/signin?activated=true&id=".$email);
 			header("Location:http://".$mainDomain."/entry/#/signin?activated=true");
 
 		/*
@@ -23,10 +28,10 @@ curl_close ($curl);
 			header("Location: http://www.digin.io");
 		}	
 		*/
-
 	}
 	else{
 		echo '{"success":false,"message":"Error occured"}';
+		//header("Location: http://".$mainDomain."/entry/#/signin?activated=false&id=".$email);
 		header("Location: http://".$mainDomain."/entry/#/signin?activated=false");
 	}
 

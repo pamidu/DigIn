@@ -82,7 +82,7 @@
                                         <div class="form-inline">
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isFirstName,'':!error.isFirstName}">
-                                                <label for="firstName">First name</label>
+                                                <label for="firstName">Firstname</label>
                                                 <div>
                                                     <input type="text" class="form-control"
                                                            id="firstName"
@@ -98,7 +98,7 @@
                                             </div>
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isLastName,'':!error.isLastName}">
-                                                <label for="lastName">Last name</label>
+                                                <label for="lastName">Lastname</label>
                                                 <div>
                                                     <input type="text" class="form-control"
                                                            id="lastName"
@@ -148,7 +148,8 @@
                                                            name="password"
                                                            required
                                                            ng-model="signUpUsr.pwd"
-
+                                                           ng-keyup="signUpUsr.cnfrPwd=''" 
+                                                           ng-focus="signUpUsr.cnfrPwd=''" 
                                                            placeholder="password">
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"

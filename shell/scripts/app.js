@@ -23,8 +23,16 @@ var routerApp = angular.module('DuoDiginRt', [
     'ngFileUpload', 
    'ngToast',   
     'pouchdb',
+<<<<<<< HEAD
       'FBAngular',
     'jkuri.slimscroll'
+=======
+    'jkuri.slimscroll',
+    'rzModule',
+	'md-steppers',
+    'stripe-payment-tools',
+	'angular-intro'
+>>>>>>> Development
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
@@ -49,8 +57,8 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         */
         
         if (localStorage.getItem('initialLogin') == undefined) {
-            localStorage.setItem('initialLogin', false);
-            state = "home";
+            //localStorage.setItem('initialLogin', false);
+            state = "welcome";
         }
         else if(localStorage.getItem('initialLogin') == "false"){
            state = "home";
@@ -71,12 +79,20 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: false
             }
         })
-        .state("signup", {
+        /*.state("signup", {
             url: "/signup",
             controller: "signUpCtrl",
             templateUrl: "views/signup.html",
             data: {
                 requireLogin: false
+            }
+        })*/
+        .state("signup", {
+            url: "/home",
+            controller: "NavCtrl",
+            templateUrl: "views/partial-home.html",
+            data: {
+                requireLogin: true
             }
         })
         .state("welcome", {
@@ -144,6 +160,35 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
+		.state("home.userAdministrator", {
+            url: "/settings-userAdministrator",
+            controller: "userAdministratorCtrl",
+            templateUrl: "views/settings/userAdministrator/userAdministrator.html",
+            controllerAs: 'vm'
+        })
+		.state("home.excelFileUpload", {
+            url: "/excelFileUpload",
+            controller: "excelFileUploadCtrl",
+            templateUrl: "views/widgets/excelFileUpload/excelFileUpload.html",
+            controllerAs: 'vm'
+        })
+		.state("home.myAccount", {
+            url: "/myAccount",
+            controller: "myAccountCtrl",
+            templateUrl: "views/settings/myAccount/myAccount.html",
+            controllerAs: 'vm',
+			 params: {
+				'pageNo': '0'
+			  }
+        })
+		
+		.state('home.addaLaCarte', {
+			url: '/addaLaCarte',
+			templateUrl: 'views/settings/myAccount/addaLaCarte.html',
+			controller: 'addaLaCarteCtrl',
+			controllerAs: 'vm'
+		})
+		
         .state("home.userProfile", {
             url: "/settings-userProfile",
             controller: "dashboardSetupCtrl",
@@ -163,7 +208,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state('home.Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html",
+            templateUrl: "views/dashboard/dashboard.html",
             data: {
                 requireLogin: true
             }
@@ -345,7 +390,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             }
         }).state('home.welcomeSearch', {
         url: '/welcome-search',
-        templateUrl: "views/help/welcomeSearchBar.html",
+        templateUrl: "views/home/home.html",
         data: {
             requireLogin: true
         }
@@ -356,50 +401,43 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         data: {
             requireLogin: true
         }
+    }).state('home.systemSettings', {
+        url: '/systemSettings',
+        controller: 'systemSettingsCtrl',
+        templateUrl: "views/settings/systemSettings/systemSettings.html",
+        data: {
+            requireLogin: true
+        }
+    }).state('home.sharedashboard', {
+        url: '/sharedashboard',
+        controller: 'sharedashboardgroupsCtrl',
+        templateUrl: "views/sharedashboard.html",
+        data: {
+            requireLogin: true
+        }
+    })
+	.state('home.themes', {
+        url: '/themes',
+        controller: 'themeCtrl',
+        templateUrl: "views/settings/theme/theme.html"
+    })
+    .state('home.datasourceSettings', {
+        url: '/datasource-settings',
+        controller: 'DatasourceSettingsCtrl',
+        templateUrl: 'views/settings/datasourceSettings/datasourceSettings.html',
+        data: {
+            requireLogin: true
+            }
+    })
+    .state('home.shareDataset', {
+        url: '/shareDataset',
+        controller: 'shareDataSetCtrl',
+        templateUrl: "views/share-dataset/shareDataSet.html"
     });
+    
 
 
 
-    var customPrimary = {
-        '50': '#10cefd', '100': '#02c2f2', '200': '#02aed9', '300': '#019ac0',
-        '400': '#0185a6', '500': '#01718D', '600': '#015d74', '700': '#01485a',
-        '800': '#003441', '900': '#002028', 'A100': '#29d3fd', 'A200': '#43d8fe',
-        'A400': '#5cdefe', 'A700': '#000c0e'
-    };
-
-    $mdThemingProvider
-        .definePalette('customPrimary',
-            customPrimary);
-
-    var customAccent = {
-        '50': '#4285F4', '100': '#4285F4', '200': '#4285F4', '300': '#4285F4',
-        '400': '#4285F4', '500': '#4285F4', '600': '#4285F4', '700': '#4285F4',
-        '800': '#4285F4', '900': '#4285F4', 'A100': '#4285F4', 'A200': '#4285F4',
-        'A400': '#4285F4', 'A700': '#4285F4'
-    };
-
-    $mdThemingProvider
-        .definePalette('customAccent',
-            customAccent);
-
-    var customBackground = {
-        '50': '#ffffff', '100': '#ffffff', '200': '#ffffff', '300': '#ffffff',
-        '400': '#ffffff', '500': '#FFF', '600': '#f2f2f2', '700': '#e6e6e6',
-        '800': '#d9d9d9', '900': '#cccccc', 'A100': '#ffffff', 'A200': '#ffffff',
-        'A400': '#ffffff', 'A700': '#bfbfbf'
-    };
-
-    $mdThemingProvider
-        .definePalette('customBackground',
-            customBackground);
-
-    $mdThemingProvider.theme('default')
-        .primaryPalette('customPrimary')
-        .accentPalette('customAccent')
-        .warnPalette('red')
-        .backgroundPalette('customBackground')
-
-    $mdThemingProvider.alwaysWatchTheme(true);
 }]);
 
 routerApp.run(function ($rootScope, $auth, $state, $csContainer, $window) {

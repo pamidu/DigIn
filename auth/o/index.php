@@ -9,9 +9,6 @@ include ($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 include ($_SERVER["DOCUMENT_ROOT"] . "/include/session.php");
 $error='';
 
-//$_POST = json_decode(file_get_contents('php://input'), true);
-
-	// var_dump($_COOKIE['securityToken']);
 if (isset($_GET["r"])){
 
 	$_SESSION['r']=$_GET["r"];
@@ -49,37 +46,52 @@ if (isset($_GET['e']) && isset($_GET['o'])) {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$data=curl_exec($ch);
 		$authObject = json_decode($data);
+		curl_close($ch);	
 		
-		//$s=curl_error($ch);
-		
+		//--------------------------get domain name
+	
+		$baseUrl=SVC_AUTH_URL."/tenant/GetTenants/".$authObject->SecurityToken;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $baseUrl);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$data=curl_exec($ch);
+		$tenantObject = json_decode($data);
 		curl_close($ch);
-		
-		//var_dump($baseUrl); exit();
-		
+	
+		//--------------------------get tenant token
+		$baseUrl=SVC_AUTH_URL."/GetSession/".$authObject->SecurityToken."/".$tenantObject[0]->TenantID;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $baseUrl);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$data=curl_exec($ch);
+		$tenant = json_decode($data);
+		curl_close($ch);
+
+		//---------------------------
+
 		if(isset($authObject))
 		{	
 			if(isset($authObject->SecurityToken)){
-				setcookie('securityToken',$authObject->SecurityToken,time()+86400,"/");
+		
+				setcookie('securityToken',$tenant->SecurityToken,time()+86400,"/");
 				setcookie('authData',json_encode($authObject),time()+86400,"/");
-				$_SESSION['securityToken']=$authObject->SecurityToken;
+				$_SESSION['securityToken']=$tenant->SecurityToken;
 				$_SESSION['userObject']=$authObject;
 
 				if(isset($_SESSION['r']))
 				{
-					//header("Location: ".$_SESSION['r']."?securityToken=".$_SESSION["securityToken"]);
-					//var_dump($_SESSION['r']."#/change?o=".$password); exit();
-					header("Location: ".$_SESSION['r']."#/change?o=".$password);
+					header("Location: /entry?r=http://".$tenantObject[0]->TenantID."/entry/#/change?o=".$password."&x=".$tenant->SecurityToken);		
+					//header("Location: /entry?r=http://prod.digin.io/entry/#/change?o=".$password."&x=".$tenant->SecurityToken);							
 					session_unset('r');
 					exit();
 				}
 				else
 				{
-						echo '{"Status":false,"Message":"Redirection Failed."}';
+					echo '{"Status":false,"Message":"Redirection Failed."}';
 		        exit();	
 				}
 			}
-			var_dump($authObject);
-			//header("Location: http://".$mainDomain."/entry/#/change?o=".$password);
+
 			exit();
 		}
 		else{

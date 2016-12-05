@@ -429,6 +429,7 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                 'isHierarchy': dynObject.isHierarchy,
                                 'ParamName': dynObject.ParamName
                             });
+                            var i = 0;
                             angular.forEach(val, function (value, key) {
                                 var executeQueryAryObj = {
                                     id: '',
@@ -468,6 +469,10 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                         //if (val.Query != "" && loop == 1) {
                                         privateFun.waitLoadingFiled();
                                         getExecuteQuery(val.Query, length, function (res) {
+                                            i++;
+                                            if ( i == length ) {
+                                                privateFun.doneLoadedFiled();
+                                            }
                                             if (res.data == 500) {
                                                 privateFun.fireMsg('0', '<strong>Error 500 :' +
                                                     ' </strong>Report filed load error...');
@@ -475,7 +480,6 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                             }
                                             var jsonObj = JSON.parse(res.data);
                                             var filed = [];
-                                            privateFun.doneLoadedFiled();
                                             for (var c in jsonObj.Result) {
                                                 if (Object.prototype.hasOwnProperty.call(jsonObj.Result, c)) {
                                                     val = jsonObj.Result[c];
@@ -498,12 +502,13 @@ routerApp.controller('dynamicallyReportCtrl', function ($scope, dynamicallyRepor
                                                     });
                                                 }
                                             }
-
-                                            reportFiledList.UIDropDown[res.length].data = filed;
+                                            $scope.$apply(function() {
+                                                reportFiledList.UIDropDown[res.length].data = filed;
+                                            });
                                         });
                                         //  }
                                         break;
-                                }
+                                }                                
                             });
                         }
                     }

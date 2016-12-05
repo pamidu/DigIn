@@ -23,17 +23,29 @@ md-content{
 .pricePlanCard
  {
 	width: 250px;
+	height:430px;
 	margin: 20px;
 	margin-top: 0px;
 	outline:none;
  }
- 
+
+
 .form-container
 {
-	max-width:960px;
+	max-width:400px;
 	margin: 0 auto;
 	border-radius: 8px;
+	align:center;
 }
+
+.form-containerNew
+{
+	max-width:900px;
+	margin: 0 auto;
+	border-radius: 8px;
+	align:center;
+}
+
  .setting-card-header {
 	text-align: center;
 }

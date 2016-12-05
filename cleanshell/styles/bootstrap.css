@@ -3,8 +3,6 @@ md-select, input
 	padding: 6px 12px !important;
 	font-size: 14px;
 	line-height: 1.42857143 !important;
-	color: #555;
-	background-color: #fff;
 	background-image: none;
 	border: 1px solid #ccc !important;
 	border-radius: 4px !important;
@@ -15,12 +13,15 @@ md-select, input
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	outline: none;
 	margin-top: 5px !important;
-	color: #3b6982 !important;
 
 }
-input:focus, md-select:focus {
+input[type=text]:focus, md-select:focus {
 	box-shadow: 0 0 4px rgba(81, 203, 238, 1) !important;
 	border: 1px solid rgba(81, 203, 238, 1) !important;
+}
+
+input[type=search] {
+	border: none !important;
 }
 
 .select

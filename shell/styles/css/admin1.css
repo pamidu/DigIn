@@ -10186,19 +10186,56 @@ h6 {
 }
 
 .nav-bar-border {
-    position: relative;
+    position: fixed;
     left: 0;
-    top: 43px;
-    width: 44px;
+    top: 45px;
+    width: 45px;
     height: calc(103vh);
-    background: #fff;
+    /*background: #fff;*/
     z-index: 1500;
-    border-right: 1px solid #f4f4f4;
+    box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px
 }
 
 /*
 4.2 - Header
 */
+
+.main-headbar-slide {
+    width:100%;
+	height:45px;
+	position:fixed;
+	left:45px;
+	-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+	z-index:3;
+	overflow:inherit
+}
+
+.main-headbar-transparent {
+    visibility: visible;
+    transform: translateY(0);
+    transition: transform .5s linear;
+    background-color: transparent;
+    z-index: 1400;
+    height: 15px;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    top: 0px;
+    left: 0px;
+}
+
+.main-headbar-logo {
+    visibility: visible;
+    width: 50px;
+    background-color: rgb(226, 226, 226);
+    z-index: 1000;
+    height: 45px;
+    position: initial;
+    overflow: hidden;
+    /*box-shadow: 1px 1px 5px grey;*/
+}
+
+
 .page-header {
     display: block;
     position: relative;
@@ -12477,6 +12514,7 @@ button.toast-close-button {
     right: 0;
     border-right: 0;
     border-left: 1px solid #f0f0f0;
+	overflow: inherit;
 }
 
 .layout-rtl .overlay {
@@ -13080,15 +13118,10 @@ md-icon {
     height: 20px !important;
 }
 
-md-tooltip {
-    position: absolute;
-    z-index: 100;
-    overflow: hidden;
-    pointer-events: none;
-    border-radius: 4px;
-    font-size: 14px;
-    padding: 5px;
-    margin-left: 2px;
+md-tooltip .md-content {
+	background-color: rgb(97,97,97) !important;
+	color: white !important;
+	font-size: 13px;
 }
 
 .gridster .gridster-item:hover .handle-se {

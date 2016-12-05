@@ -1,6 +1,13 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', 'layoutManager', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,layoutManager) {
 	
 	$rootScope.showSideMenu = layoutManager.hideSideMenu();
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+	}else{
+		$('md-tabs-wrapper').css('background-color',"white", 'important');
+	}
+
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -12,9 +19,9 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
 		colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
 		rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
+		isMobile: false, // toggle mobile view
 		margins: [5, 5], // margins in between grid items
 		outerMargin: true,
-		isMobile: false, // toggle mobile view
 		draggable: {
 			handle: '.widget-header'
 		},
@@ -153,6 +160,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 			removeWidget: function(ev, widget)
 			{
 				console.log("removeWidget");
+				//$('md-tabs-wrapper').css('background-color',"black", 'important');
 			},
 			closeSetting: function () {
 				console.log("closeSetting");

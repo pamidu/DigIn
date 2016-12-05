@@ -1,13 +1,4 @@
 <style>
-.md-primary
-{
-	background: #02b5e2 !important;
-}
-.md-button.md-raised[disabled]
-{
-	background: rgba(0,0,0,0.12) !important;
-}
-
 
 .checkboxdemoSelectAll .demo-legend {
   color: #3F51B5; }
@@ -28,11 +19,11 @@
 		<md-content>
 
 				<div layout="row" layout-align="end end">
-					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+					<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('back')"></md-button>
 				</div>
 					
 				<div class="setting-card-header">
-					<h2>Visualize data</h2>
+					<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Visualize data</h2>
 					<div class="setting-img-wrap" layout="row" layout-align="center center">
 						<img ng-src="views/data_source/visualize_data/stats.png" />
 					</div>

@@ -1,9 +1,26 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers',function ($scope,$rootScope ,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
+	
+	$scope.currentView = "Home";
+	
+	//Theming
+	$rootScope.lightOrDark = '';
+	$rootScope.currentColor = '';
+	$rootScope.h1color = '';
+	colorManager.changeTheme('defaultDark');
+	
+	$scope.share = function(index, type)
+	{
+		$timeout(function(){
+			$mdMenu.hide();
+		},200);
+		
+	}
+	
 	
 	//Start of layoutManager
 	$rootScope.showHeader = true;
@@ -104,9 +121,13 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 		}else if(action == "Invite User")
 		{
 			location.href = '#/inviteUser';
-		}else if(action == "Profile Settings")
+		}else if(action == "My Account")
 		{
-			location.href = '#/profile';
+			console.log("My Account");
+			location.href = '#/myAccount';
+		}else if(action == "User Administrator")
+		{
+			location.href = '#/userAdministrator';
 		}else if(action == "Help")
 		{
 			
@@ -198,23 +219,28 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 		}else if(action == "shareDashboard")
 		{
 			location.href = '#/shareDashboard';
-		}else if(action == "shareDashboard")
+		}else if(action == "systemSettings")
 		{
-			location.href = '#/shareDashboard';
-		}else if(action == "userSettings")
-		{
-			location.href = '#/userSettings';
+			console.log('systemSettings');
+			location.href = '#/systemSettings';
 		}else if(action == 'accountSettings')
 		{
 			location.href = '#/accountSettings';
 		}else if(action == 'groups')
 		{
 			location.href = '#/groups';
+		}else if(action == 'theme')
+		{
+			location.href = '#/theme';
 		}
 		
 		
-		
 	}// End of Navigate
+	
+	$scope.getUserSettings = {};
+	DiginServices.getUserSettings().then(function(data) {
+		$scope.getUserSettings = data;
+    });
 	
 	$scope.dashboards = [];
 	$scope.reports = [];
@@ -266,11 +292,90 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$mdDialog', '$mdMedia','
 		});
 	}
 	
+	$scope.route = function(state, pageNo) //pageNo is optional
+	{
+		$state.go(state,{ 'pageNo': pageNo });
+	}
+	
 	//close any dialog box
 	$rootScope.cancel = function()
 	{
 		$mdDialog.cancel();
 	}	
+	
+	$scope.notifications = [{title:"Urgent", message: "Your system needs to be updated asap", type: 1, icon: "ti-pie-chart", color: "#4CAF50"}];
+	var audio = new Audio('sounds/notification.mp3');
+	$scope.notificationAudio = true; 
+	
+	$timeout(function(){
+		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: "2", href:"#/home"};
+		if(!message.icon){message.icon = "ti-comment"};
+			
+		if(parseInt(message.type) == 0){message.color = "#FF5252";}else if(parseInt(message.type) == 1){message.color = "#4CAF50"}else if(parseInt(message.type) == 2){message.color = "#F9A937";}
+		
+		$scope.notifications.push(message);
+		notifications.toast(message.type, message.message);
+		if($scope.notificationAudio == true)
+		{
+			audio.play();
+		}
+
+	}, 5000);
+	
+	$scope.openNotification = function(path)
+	{
+		if(!path){
+			//do nothing
+		}else{
+			window.location.href = path;
+			$mdSidenav('notifications').toggle();
+		}
+
+	}
+
+
+	
+	
+	
+	//Introduction to Shell
+	$scope.IntroOptions = {
+        steps:[
+        {
+            element: document.querySelector('#step1'),
+            intro: "The <b>Form designer</b> is an interactive tool which helps developers to easily create Angular forms in Material Design.",
+			position: 'right'
+        },
+		{
+            element: '#step2',
+            intro: "<b>Add a New Row</b> to the form, right-click the form inputs and edit properties there after",
+            position: 'right'
+        },
+		{
+            element: '#step3',
+            intro: 'After the design you can <b>Save</b> your work to continue working later',
+            position: 'right'
+        },
+        {
+            element: '#step4',
+            intro: "You can <b>Load</b> a previously saved Form (JSON file) and continue working from there, or else upload a project",
+            position: 'right'
+        },
+        {
+            element: '#step5',
+            intro: "The Script of the project can also be changed",
+            position: 'right'
+        }
+        ],
+        showStepNumbers: false,
+        exitOnOverlayClick: true,
+        exitOnEsc:true,
+        nextLabel: '<strong style="color:green">NEXT</strong>',
+        prevLabel: '<span>Previous</span>',
+        skipLabel: 'End Tour',
+        doneLabel: '<strong style="color:green">Got it!!</strong>'
+    };
+
+    $scope.ShouldAutoStart = false;
 
 	
 }])//END OF NavCtrl

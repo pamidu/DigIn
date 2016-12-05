@@ -156,7 +156,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 			classType = "alert-danger";
 		}else if(type == 1){
 			classType = "alert-success";
-		}else if(type == 3){
+		}else if(type == 2){
 			classType = "alert-warning";
 		}else{
 			classType = "alert-info";
@@ -199,7 +199,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 			'<md-dialog ng-cloak style="max-width:400px;">'+
 			'	<md-dialog-content style="padding:20px;">'+
 			'		<div layout="row" layout-align="start center">'+
-			'			<md-progress-circular class="md-accent" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>'+
+			'			<md-progress-circular class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>'+
 			'			<span style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;">'+displayText+'</span>'+
 			'		</div>'+
 			'	</md-dialog-content>'+
@@ -421,9 +421,9 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '30px'
 		},200)
 		
-		$('md-tabs-content-wrapper').animate({
-			height: '94vh'
-		},200)
+		/*$('md-tabs-content-wrapper').animate({
+			height: '100vh'
+		},200)*/
 		
 		return false;
 	}
@@ -440,7 +440,7 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '70px'
 		},200)
 		
-		var newHeight = $('md-tabs-content-wrapper').height() - 45;
+		var newHeight = $('md-tabs-content-wrapper').height(); - 45;
 		
 		$('md-tabs-content-wrapper').animate({
 			height: newHeight
@@ -494,3 +494,43 @@ directiveLibraryModule.directive('customOnChange', function() {
     }
   };
 });
+
+directiveLibraryModule.directive('countdownn', ['Util', '$interval', function(Util, $interval) {
+	return {
+		restrict: 'A',
+		scope: {
+			date: '@',
+			warning: '='
+		},
+		link: function(scope, element) {
+			var future;
+			future = new Date(scope.date);
+			$interval(function() {
+				var diff;
+				diff = Math.floor((future.getTime() - new Date().getTime()) / 1000);
+				var remaining = Util.dhms(diff);
+				scope.warning = remaining.warn;
+				return element.text(remaining.remaining);
+			}, 1000);
+		}
+	};
+}]).factory('Util', [function() {
+	return {
+		dhms: function(t) {
+			var days, hours, minutes, seconds;
+			days = Math.floor(t / 86400);
+			t -= days * 86400;
+			hours = Math.floor(t / 3600) % 24;
+			t -= hours * 3600;
+			minutes = Math.floor(t / 60) % 60;
+			t -= minutes * 60;
+			seconds = t % 60;
+			if(days < 30)
+			{
+				return {remaining: [days + ' days ', hours + ' hours ', minutes + ' minutes and ', seconds + ' seconds remaining '].join(' '), warn: true};
+			}else{
+				return {remaining: [days + ' days ', hours + ' hours ', minutes + ' minutes remaining '].join(' '), warn: false};
+			}
+		}
+	};
+}]);

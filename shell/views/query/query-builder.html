@@ -79,22 +79,46 @@
                         </v-pane>
                     </v-accordion>
                 </div>
-                <!--
-                                <div class="digin-qb-panle-footer">
-                                    <span class="btn btn-block btn-default btn-apply" role="button"
-                                          ng-click="eventHndler.onClickApply()"
-                                          tabindex="0">
-                                            apply
-                                    </span>
-                                </div>
-                -->
             </div>
             <!-- measures -->
-            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
+            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' ">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Series
+                            <fieldset ng-disabled="isPendingRequest"
+                                      data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
+                                      class="toggle-icon animated "
+                                      ng-class="eventHndler.isToggleMeasure==true?'left-icon-toggle':'left-icon'"
+                                      ng-click="eventHndler.onToggleEvent('1')">
+                                <i class="" style="cursor:inherit;"
+                                   ng-class="eventHndler.isToggleMeasure==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
+                                ></i>
+                            </fieldset>
+                        </h3>
+                    </div>
+                    <div class="measures-body">
+                        <div class="draggable-measure data-row"
+                             ng-repeat="measure in executeQryData.executeMeasures">
+                            <i class="ti-close" ng-click="removeMeasure(measure)"></i>
+                            <span>
+                              &nbsp;&nbsp;{{measure.filedName}}
+                            </span>
+                            <div class="measures-type">
+                                {{measure.condition}}
+                            </div>
+                        </div>
+                        <div class="filter-data-not-fund"
+                             ng-if="executeQryData.executeMeasures.length < 1">
+                            <i class="ti-filter"></i>
+                            <h5>add aggregations</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-show="selectedChart.chartType == 'metric'">
+                    <div class="panel-header">
+                        <h3 class="font-weight-300">
+                            Actual Value
                             <fieldset ng-disabled="isPendingRequest"
                                       data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
                                       class="toggle-icon animated "
@@ -122,15 +146,15 @@
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeMeasures.length < 1">
                             <i class="ti-filter"></i>
-                            <h5>add aggregations</h5>
+                            <h5>add actual value field</h5>
                         </div>
                     </div>
                 </div>
 
                 <!-- columns config panel -->
-                <div class="columns-config-panel animated  "
+                <div class="columns-config-panel animated"
                      id="togglePanelColumns">
-                    <div class="header">
+                    <div class="header" ng-hide="selectedChart.chartType == 'metric'">
                         <h4 class="font-weight-300 p-20">
                             Attributes
                             <div class="header-icon">
@@ -138,7 +162,7 @@
                             </div>
                         </h4>
                     </div>
-                    <div class="chart-config-wrap">
+                    <div class="chart-config-wrap"  ng-hide="selectedChart.chartType == 'metric'">
                         <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
                                      onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
                             <v-pane id="{{ ::column.id }}" ng-repeat="column in commonData.columns"
@@ -150,22 +174,41 @@
                                         <i class="ti-close"></i>
                                     </h5>
                                 </v-pane-header>
-
                             </v-pane>
                         </v-accordion>
                     </div>
-
-                    <!--
-                                        <div class="digin-qb-panle-footer">
-                                                <span class="btn btn-block btn-default btn-apply" role="button"
-                                                      ng-click="eventHndler.onClickApply()"
-                                                      tabindex="0">
-                                                        apply
-                                                </span>
-                                        </div>
-                    -->
-                </div>
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
+                    <div class="header" ng-show="selectedChart.chartType == 'metric'">
+                        <h4 class="font-weight-300 p-20">
+                            Target Field
+                            <div class="header-icon">
+                                <i class="ti-help"></i>
+                            </div>
+                        </h4>
+                    </div>
+                    <div class="chart-config-wrap"  ng-show="selectedChart.chartType == 'metric'">
+                        <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                     onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                            <v-pane id="{{ ::measure.id }}" ng-repeat="measure in commonData.measures" class="v-pane">
+                                <v-pane-header id="{{ ::measure.id }}-header" aria-controls="{{ ::measure.id }}-content">
+                                    <h5 class="font-weight-300 text-upper">{{ ::measure.filedName }}</h5>
+                                </v-pane-header>
+                                <v-pane-content class="trans-bg v-pane-content" id="{{ ::measure.id }}-content"
+                                                aria-labelledby="{{ ::measure.id }}-header">
+                                    <p class="data-row-style-2 hvr-sweep-to-right"
+                                       markable
+                                       ng-click="eventHndler.onClickTargetField(condition,measure,$event )"
+                                       ng-repeat="condition in commonData.measureCondition">
+                                        {{ ::condition.name }}
+                                        <i class="ti-close"
+                                           remove-markable
+                                           ng-click="eventHndler.onClickRmvCondition(condition,measure)"></i>
+                                    </p>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+                </div>               
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             category
@@ -194,6 +237,40 @@
                         </div>
                     </div>
                 </div>
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-show="selectedChart.chartType == 'metric'">
+                    <div class="panel-header">
+                        <h3 class="font-weight-300">
+                            Target Value
+                            <fieldset ng-disabled="isPendingRequest"
+                                      data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
+                                      class="toggle-icon animated "
+                                      ng-class="eventHndler.isToggleColumns==true?'left-icon-toggle':'left-icon'"
+                                      ng-click="eventHndler.onToggleEvent('2')">
+                                <i class="" style="cursor:inherit;"
+                                   ng-class="eventHndler.isToggleColumns==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
+                                ></i>
+                            </fieldset>
+                        </h3>
+                    </div>
+
+                    <div class="measures-body">
+                        <div class="draggable-measure data-row"
+                             ng-repeat="measure in executeQryData.executeTargetField">
+                            <i class="ti-close" ng-click="removeTarget(measure)"></i>
+                            <span>
+                              &nbsp;&nbsp;{{measure.filedName}}
+                            </span>
+                            <div class="measures-type">
+                                {{measure.condition}}
+                            </div>
+                        </div>
+                        <div class="filter-data-not-fund"
+                             ng-if="executeQryData.executeTargetField.length < 1">
+                            <i class="ti-filter"></i>
+                            <h5>add target value field</h5>
+                        </div>
+                    </div>
+                </div>               
                 <!-- Filter config panel -->
                 <div class="filter-config-panel animated  "
                      id="togglePanelFilter">
@@ -231,14 +308,11 @@
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Filter
-                            <fieldset ng-disabled="isPendingRequest"
+                            <fieldset class="toggle-icon animated"ng-disabled="isPendingRequest"
                                       data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
-                                      class="toggle-icon animated "
                                       ng-class="eventHndler.isTogglePanelFilter==true?'left-icon-toggle':'left-icon'"
                                       ng-click="eventHndler.onToggleEvent('4')">
-                                <i class="" style="cursor:inherit;"
-                                   ng-class="eventHndler.isTogglePanelFilter==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
-                                ></i>
+                                <i class="small-rotate-icon" ng-class="eventHndler.isTogglePanelFilter==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"></i>
 
                             </fieldset>                            
                         </h3>
@@ -286,7 +360,7 @@
                 </div>
 
                 <div ng-disabled="!isDrilled" class="digin-gb-row"
-                     ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric'">
+                     ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' ">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
                             custom query design
@@ -430,49 +504,40 @@
             <div flex="10">
                 <div class="digin-gb-menu">
                     <div class="last-icon">
-                        <fieldset ng-disabled="isPendingRequest"
-                                  data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="right-menu "
-                                  ng-click="eventHndler.onClickSetting('1')" style="cursor:inherit">
-                            <i class="ti-pie-chart hvr-pop "
-                               style="cursor:inherit"
-                               selected-setting-icon></i>
+                        <fieldset ng-disabled="isPendingRequest" data-ng-style="isPendingRequest && {'cursor':'not-allowed'}" class="right-menu "
+                                  ng-click="eventHndler.onClickSetting('1')" style="cursor:inherit;outline:none;">
+                            <i class="ti-pie-chart hvr-pop "></i>
                         </fieldset>
+						<md-tooltip md-direction="left">Visualization Types</md-tooltip>
                     </div>
-
-                    <div class="last-icon">
+                    <div class="last-icon"  ng-click="eventHndler.onClickSetting('3')">
                         <div class="right-menu">
-                            <i class="ti-package hvr-pop"
-                               ng-click="eventHndler.onClickSetting('2')"></i>
+                            <i class="ti-settings hvr-pop"></i>
                         </div>
+						<md-tooltip md-direction="left">Chart Settings</md-tooltip>
                     </div>
-
-                    <div class="last-icon">
+                    <div class="last-icon" ng-click="eventHndler.onClickSetting('4')">
                         <div class="right-menu">
-                            <i class="ti-settings hvr-pop"
-                               ng-click="eventHndler.onClickSetting('3')"></i>
+                            <i class="ti-save hvr-pop"></i>
                         </div>
-                    </div>
-                    <div class="last-icon">
-                        <div class="right-menu">
-                            <i class="ti-save hvr-pop"
-                               ng-click="eventHndler.onClickSetting('4')"></i>
-                        </div>
-
+						<md-tooltip md-direction="left">Create Widget</md-tooltip>
                     </div>
                     <div class=" last-icon">
                         <div class="right-menu">
                             <i class="ti-eraser hvr-pop"></i>
                         </div>
+						<md-tooltip md-direction="left">Clear</md-tooltip>
                     </div>
-
-                    <div class="right-menu">
-                        <i class="ti-help-alt hvr-pop"></i>
-                    </div>
+					<div class=" last-icon">
+						<div class="right-menu">
+							<i class="ti-help-alt hvr-pop"></i>
+						</div>
+						<md-tooltip md-direction="left">Help</md-tooltip>
+					</div>
                 </div>
 
                 <!-- chart setting panle -->
-                <div class="digin-bq-chart-rw1 p-15 p-t"
-                     id="toggleSettingPanel">
+                <div class="digin-bq-chart-rw1 p-15 p-t" id="toggleSettingPanel">
                     <div class="header">
                         <h4 class="font-weight-300 p-20">
                             Visualization type
@@ -486,17 +551,18 @@
                     </div>
                     <div class="chart-config-wrap-rw1 animated fadeIn">
                         <ul>
-                            <li class="hvr-border-fade" ng-repeat="chart in commonData.chartTypes"
-                                ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)">
-                                <i class="{{chart.icon}}"></i>
+                            <li class="hvr-border-fade" ng-repeat="chart in commonData.chartTypes" ng-click="eventHndler.onClickSelectedChart(commonData.chartTypes,chart)" ng-mouseover="changeTip(chart.tooltip)">
+                                <p ng-class="chart.name=='bar'?'custom-chart-rotate-icon':'custom-chart-icon'">
+                                    <i class="{{chart.icon}}"></i>
+                                </p>
                                 <small>{{chart.name}}</small>
-                                <div class="selectedChart"
-                                     ng-class="chart.selected==true?'selectedChart':'displayNone'">
+                                <div class="selectedChart" ng-class="chart.selected==true?'selectedChart':'displayNone'">
                                     <i class="fa fa-check-circle-o"></i>
                                 </div>
                             </li>
                         </ul>
                     </div>
+					<div layout="row" ng-show="tooltip"><b>Tip:</b>&nbsp {{tooltip}}</div>
                 </div>
 
                 <!-- organize Data Structure -->
@@ -548,7 +614,7 @@
                     <div class="chart-config-wrap-rw1 animated fadeIn">
                         <md-input-container flex>
                             <label>Widget Title</label>
-                             <input ng-if = "selectedChart.chartType == 'highCharts' " ng-model="widget.widgetData.widName" ng-blur="highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" >
+                             <input ng-if = "selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'map' " ng-model="widget.widgetData.widName" ng-blur="highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" >
                             <input ng-if = "selectedChart.chartType == 'boxplot' || selectedChart.chartType ==  'histogram' || selectedChart.chartType ==  'bubble' || selectedChart.chartType ==  'forecast' " ng-model="widget.widgetData.widName" 
                             ng-blur="widget.widgetData.highchartsNG.options.exporting.chartOptions.title.text=widget.widgetData.widName" > 
                             <input ng-if = "selectedChart.chartType == 'd3hierarchy' || selectedChart.chartType ==  'd3sunburst' || selectedChart.chartType ==  'pivotSummary' || selectedChart.chartType ==  'metric' " ng-model="widget.widgetData.widName" >                            

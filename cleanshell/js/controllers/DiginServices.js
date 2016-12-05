@@ -1,9 +1,19 @@
  DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
 	var cache = {};
 	return {
-        getDiginComponents: function() {
+        getUserSettings: function() {
              //return the promise directly.
-             return $http.get('jsons/everything.json')
+             return $http.get('http://prod.digin.io:1929/get_user_settings?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io')
+                       .then(function(result) {
+                            //resolve the promise as the data
+                            return result.data.Result;
+                        },function errorCallback(response) {
+								console.log(response);
+								notifications.toast(0, "Falied to get Digin Components");
+						 });
+        },getDiginComponents: function() {
+             //return the promise directly.
+             return $http.get("jsons/everything.json") //'http://prod.digin.io:1929/get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io'
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -16,7 +26,7 @@
 			 //console.log(dashboardId);
 			 notifications.startLoading("Getting Dashboard");
 			 
-             return $http.get('jsons/sampleDashboard4.json')
+                return $http.get("jsons/sampleDashboard4.json") //jsons/sampleDashboard4.json //'http://prod.digin.io:1929/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io'
                        .then(function(result) {
                             //resolve the promise as the data
 							notifications.finishLoading();
@@ -122,7 +132,39 @@
 					 });	
 				}
 		
-		   }, getProfile: function(callback) {
+		   }, addUserGroup: function(userGroup) {
+				//notifications.startLoading("Adding User Group, Please wait..");
+				var req = {
+					method: "POST",
+					url: "/apis/usercommon/addUserGroup",
+					headers: {
+						"Content-Type": "application/json"
+						//"SecurityKey" : $auth.getSecurityToken()
+					},
+					data: userGroup
+				}
+				 return $http(req)
+					.then(function(result){
+						//notifications.finishLoading();
+						console.log(result);
+						return result.data;
+						
+						
+					},function errorCallback(response) {
+						notifications.toast(0, "Falied to add group");
+						notifications.finishLoading();
+				});	
+		
+		},removeUserGroup: function(groupId) {
+			 return $http.get('/apis/usercommon/removeUserGroup/'+groupId) //jsons/everything.json
+			   .then(function(result) {
+					//resolve the promise as the data
+					return result.data.Result;
+				},function errorCallback(response) {
+						console.log(response);
+						notifications.toast(0, "Falied to Remove User");
+				 });
+        },getProfile: function(callback) {
 				if(cache.profile)
 				{
 					callback(cache.profile);

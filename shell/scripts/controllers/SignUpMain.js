@@ -5,6 +5,9 @@ routerApp.controller('signUpCtrl', ['$scope', '$mdToast', '$animate',
     function ($scope, $mdToast, $animate, $http, $objectstore, $state,
               ngToast, focus, $diginurls, Digin_Domain) {
 
+        window.location = "http://"+Digin_Domain+"/entry";
+
+
         $scope.onClickSignIn = function () {
             $scope.isLoggedin = false;
             $state.go('login');

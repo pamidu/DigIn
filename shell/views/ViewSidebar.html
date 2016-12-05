@@ -3,11 +3,7 @@
     <!-- sidebar items -->
     <md-item ng-repeat="item in sidebarItems">
         <a ng-click="navigate(item.click)">
-            <i ng-mouseover="menuMouseHover(item)"
-
-               class="blut-left-menu  {{item.icon2}} " layout="column"
-               layout-align="center center"
-               flex></i>
+            <i md-colors="{color:'primary'}" ng-mouseover="menuMouseHover(item)" class="blut-left-menu  {{item.icon2}} hover-color" layout="column" layout-align="center center" flex id="{{item.id}}"></i>
             <md-tooltip md-direction="right">{{item.title}}</md-tooltip>
         </a>
     </md-item>
@@ -18,7 +14,7 @@
     <span ng-if="leftMenuToggleState" class="ti-angle-left"></span>
 </div>
 <div ng-show="isEnableSubMenu" ng-mouseleave="menuMouseLeave()" class="blut-sub-panel-wrapper blut-setting">
-    <div class="blut-wrap">
+    <div class="blut-wrap" id="step{{$index}}">
         <div class="header-wrap">
             <ul>
                 <li>{{currentSubMenu.header}}</li>
@@ -39,15 +35,13 @@
 				<li ng-click="goTORout('home.social-graph-fb')">
 					<i class="ti-facebook"></i>Facebook
 				</li>
-				<li ng-click="goTORout('home.SocialGraphTwitter')">
-					<i class="ti-twitter-alt"></i>Twitter
-				</li>
+				 
             </ul>
 
 			<ul ng-if="currentItem == 'Reports'">		
-				<li ng-click="goTORout('home.ReportsDev')">
+				<!-- <li ng-click="goTORout('home.ReportsDev')">
 					<i class="ti-filter"></i>Report Development
-				</li>
+				</li> -->
 				<li ng-click="goTORout('home.Reports')">
 					<i class="ti-notepad"></i>Published Reports
 				</li>
@@ -80,11 +74,8 @@
 				</li>
             </ul>
 			<ul ng-if="currentItem == 'Settings'">	
-				<li ng-click="goTORout('home.createUser')">
+				<!--li ng-click="goTORout('home.createUser')">
 					<i class="ti-user"></i>New user
-				</li>
-				<li ng-click="goTORout('home.share')">
-					<i class="ti-share"></i>Share
 				</li>
 				<li ng-click="goTORout('home.userSettings')">
 					<i class="ti-pencil"></i>User settings
@@ -94,6 +85,12 @@
 				</li>
 				<li ng-click="goTORout('home.group')">
 					<i class="ti-settings"></i>Groups
+				</li-->
+				<li ng-click="goTORout('home.userAdministrator')">
+					<i class="ti-pencil"></i>User Administrator
+				</li>
+				<li ng-click="goTORout('home.systemSettings')">
+					<i class="ti-settings"></i>System Settings
 				</li>
             </ul>
         </div>

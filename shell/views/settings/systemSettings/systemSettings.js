@@ -206,6 +206,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     $scope.folders=[];
 
     $scope.users = [];
+    $scope.Allusers = [];
     $scope.groups = [];
 
     var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -253,6 +254,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
                 var CurUser = userInfo.Email;
                 ////return result.data;
                  for (var i = 0, len = result.data.length; i<len; ++i) {
+                    $scope.Allusers.push(result.data[i]);
                     if (result.data[i].Type == "User") {
                       if(CurUser != result.data[i].Id)
                           $scope.users.push(result.data[i]);
@@ -354,18 +356,21 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     }
 
 
-   $scope.showInsideFolder  =  function(folder) {
+$scope.showInsideFolder  =  function(folder) {
+    if(folder.shared_by == null || folder.shared_by ==""){
 
            $mdDialog.show({
                 controller: 'showFolderDetailsCtrl',
                 templateUrl: 'views/settings/systemSettings/showFolderDetails.html',
                 resolve: {},
                 locals: {
-                    users: $scope.users,
-                    folder: folder
+                    users: $scope.Allusers,
+                    folder: folder,
+                    cb:$scope.loadFilesFolder
                 }
-            })
+            });
     }
+}
 
     $scope.getDate = function(datetime){
 
@@ -376,10 +381,10 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
     $scope.getUserName = function(Id){
 
         var name;
-        for(var i=0; i< $scope.users.length; i++){
+        for(var i=0; i< $scope.Allusers.length; i++){
 
-                if($scope.users[i].UserID == Id){
-                    name = $scope.users[i].Id
+                if($scope.Allusers[i].UserID == Id){
+                    name = $scope.Allusers[i].Id
                     break;
                 }
             }

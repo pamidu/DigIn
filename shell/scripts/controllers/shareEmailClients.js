@@ -167,7 +167,6 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardN
 
     $scope.fireMsg=function (msgType, content) {
             ngToast.dismiss();
-
             var _className;
             if (msgType == '0') {
                 _className = 'danger';

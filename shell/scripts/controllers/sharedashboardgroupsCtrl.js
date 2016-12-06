@@ -125,7 +125,7 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
 
               var shareObject  ={
                 "method":"component_internal",
-                "comp_type":"datasource",
+                "comp_type":"dashboard",
                 "share_data":idArr,
                 "unshare_data":[]
               };

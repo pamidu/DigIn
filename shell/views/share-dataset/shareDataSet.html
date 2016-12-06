@@ -272,7 +272,7 @@
 
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Files</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;" ng-show="{{files.length > 0}}">
+														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;" ng-if="files.length">
 											              <span ng-if="isChecked()" >Un-</span>Select All files 
 											            </md-checkbox>
 													</div>
@@ -307,7 +307,7 @@
 													<div layout="row" layout-align="space-between end">
 														<h2 style="margin:0">Folders</h2>
 														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style=" margin-right: 30px;"
-														ng-show="{{folders.length > 0}}">
+														ng-if="files.length">
 											              <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
 											            </md-checkbox>
 													</div>

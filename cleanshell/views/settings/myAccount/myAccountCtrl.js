@@ -6,6 +6,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
 		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+		$("input").attr("disabled", true).css("background","black");
 	}else{
 		$('md-tabs-wrapper').css('background-color',"white", 'important');
 	}

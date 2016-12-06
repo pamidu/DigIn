@@ -322,7 +322,7 @@ md-tabs[md-align-tabs=bottom]
 						</div>
 							
 						<div class="setting-card-header">
-							<h2>User Profile</h2>
+							<h2 md-colors="{color:'{{$root.h1color}}-A700'}">User Profile</h2>
 							<div class="setting-img-wrap" layout="row" layout-align="center center">
 								<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
 									<md-tooltip md-direction="bottom">
@@ -335,13 +335,13 @@ md-tabs[md-align-tabs=bottom]
 						
 						
 						<div layout="row" layout-align="start start">
-							<div class="section-title" md-colors="{color:'accent', background:'primary-A700'}">Profile details</div>
+							<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Profile details</div>
 						</div>
 						
 						<div layout-gt-sm="row" class="side-margins">
 							<md-input-container class="md-block" flex-gt-sm>
 								<span>Full Name</span>
-								<input required type="text" name="name" ng-model="user.Name"  ng-disabled="!editModeOn" aria-label="name"/>
+								<input required type="text" name="name" ng-model="user.Name"  ng-disabled="!editModeOn" aria-label="name"/><!--md-colors="{background:'{{$root.h1color}}-section'}"-->
 								<div ng-messages="editForm.name.$error" role="alert">
 								  <div ng-message-exp="['required']">
 										Full name is required
@@ -414,7 +414,7 @@ md-tabs[md-align-tabs=bottom]
 						</div>
 						
 						<div layout="row" layout-align="start start">
-							<div class="section-title" md-colors="{color:'accent'}">Security</div>
+							<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Security</div>
 						</div>
 						<div layout="row" layout-align="start start" layout-margin >
 							<md-button class="md-raised" ng-disabled="submitted" type="button" ng-click="profile.changePassword($event)">
@@ -495,7 +495,30 @@ md-tabs[md-align-tabs=bottom]
 				<md-card class="product_card" style="padding: 10px">
 						<div id="container" style="margin:10px">Placeholder for chart</div>
 				</md-card>
-		
+				<md-card class="product_card" style="width:300px;">
+						<div layout="row">
+							<div layout="row" flex style="padding:10px;">
+
+								<div layout="column" flex>
+									<text style="font-weight:700;color:grey;font-size:15px;padding-bottom:10px">Tomatoes</text>
+									<text style="font-size:30px;font-weight: 700;letter-spacing: 1px;">$ 1210</text>
+									<text style="font-size:15px">Sales</text>
+								</div>
+								<text style="color:grey;font-size:12px">2015 >> December</text>
+							</div>
+							
+						</div>
+						<div layout="row">
+							<div layout="row" flex style="padding:10px;">
+								<div layout="column" flex>
+									<text style="font-size:20px;font-weight: 700;letter-spacing: 1px;">$ 275</text>
+									<text style="font-size:15px">Cost</text>
+								</div>
+							</div>
+							
+						</div>
+
+					</md-card>
 				
 			</div>
 		</md-tab-body>

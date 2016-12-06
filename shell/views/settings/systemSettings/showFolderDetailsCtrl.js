@@ -32,7 +32,9 @@ routerApp.controller('showFolderDetailsCtrl',function ($scope,$rootScope,$mdDial
         return name;
     }
     
-
+$scope.closeDialog =function(){
+        $mdDialog.hide();
+  }
 
 
 

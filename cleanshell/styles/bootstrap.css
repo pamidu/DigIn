@@ -24,6 +24,13 @@ input[type=search] {
 	border: none !important;
 }
 
+input:disabled, md-select[disabled] {
+	/*background: #e9e9e9;*/
+	cursor: not-allowed;
+	background-image: none !important;
+
+}
+
 .select
 {
 	padding:0px !important;

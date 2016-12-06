@@ -46,8 +46,8 @@ routerApp.controller('showWidgetCtrl', function($scope, $mdDialog, widget) {
     };
 
 });
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast', 'report_Widget_Iframe', '$sce', 'notifications','pouchDbServices','layoutManager','chartServices',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast, report_Widget_Iframe, $sce,  notifications,pouchDbServices,layoutManager,chartServices) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','chartServices',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,chartServices) {
         
         $rootScope.showSideMenu = layoutManager.hideSideMenu();
         if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
@@ -132,7 +132,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
         // if($rootScope.tempDashboard.length != 0)
         $rootScope.tempDashboard = angular.copy($rootScope.dashboard);
-        $scope.reportWidgetURL = $sce.trustAsResourceUrl(report_Widget_Iframe);
+        
         
         $scope.widgetTitleClass = 'widget-title-35';
 

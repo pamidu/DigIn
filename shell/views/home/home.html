@@ -1,30 +1,3 @@
-<!--div ng-controller="welcomeSearchBarCtl" class="digin-welcome-sch-wrap" ng-init="onLoaded()">
-    <div class="row">
-
-        <h1 class="search-header dashboard">Dashboards </h1>
-        <div ng-repeat="dashboard in dashboards "
-             class="col-lg-2 welcome-search dashboard hvr-pop">
-            <i class="fa fa-signal"></i>
-            <h2>{{dashboard.dashboardName}}</h2>
-            <a href="javascript:void(0)"
-               ng-click="goDashboard(dashboard)">view</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <h1 class="search-header report">Reports</h1>
-        <div ng-repeat="report in reports"
-             class="col-lg-2 welcome-search report hvr-pop">
-            <i class="fa fa-suitcase"></i>
-
-            <h2>{{report.splitName}}</h2>
-            <a href="javascript:void(0)"
-               ng-click="goReport(report.splitName)">view</a>
-        </div>
-
-    </div>
-</div-->
-
 <div class="card-container" layout-padding>
     <h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Dashboards </h1>
 	<div layout="row" layout-align="center center" layout-wrap>
@@ -36,6 +9,8 @@
 				<i class="ti-pie-chart" md-colors="{color:'accent-900'}"  style="font-size: 130px;"></i>
 			</div>
 		</md-card>
+		<div ng-if="dashboards.length == 0 && componentsLoaded == true" layout="row"><i class="ti-pie-chart" style="font-size: 30px;padding-right: 20px;"></i><p style="font-size:24px;margin:0px">There are no dashboards</p></div>
+		<div ng-show="componentsLoaded == false" layout="row"><md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular><p style="font-size:24px;margin:0px">Loading Dashboards</p></div>
 	</div>
 
 	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Reports</h1>
@@ -48,5 +23,7 @@
 				<i class="ti-bar-chart" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>
 			</div>
 		</md-card>
+		<div ng-if="reports.length == 0 && componentsLoaded == true" layout="row"><i class="ti-bar-chart" style="font-size: 30px;padding-right: 20px;"></i><p style="font-size:24px;margin:0px">There are no reports</p></div>
+		<div ng-show="componentsLoaded == false" layout="row"><md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular><p style="font-size:24px;margin:0px">Loading Reports</p></div>
 	</div> 
 </div>

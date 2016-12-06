@@ -960,7 +960,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             return {
                 getAllDashboards: function () {
-
+					$scope.componentsLoaded = false;
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
                     $scope.dashboards = [];
@@ -971,7 +971,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         url: Digin_Engine_API + 'get_all_components?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                     })
                         .success(function (data) {
-
+							$scope.componentsLoaded = true;
                             console.log("data getAllDashboards", data);
 
                             $scope.dashboards = [];

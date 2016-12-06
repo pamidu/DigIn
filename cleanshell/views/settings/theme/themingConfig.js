@@ -15,6 +15,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#98eafe',
         'A400': '#b2effe',
         'A700': '#015064',
+		'section': '#DBDBDB',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -38,6 +39,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#f9a525',
         'A400': '#f89b0c',
         'A700': '#fcd8a1',
+		'section': '#434343',
 		'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
 											// on this palette should be dark or light
 
@@ -65,6 +67,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#f0c1bf',
         'A400': '#f4d5d3',
         'A700': '#641c18',
+		'section': '#DBDBDB',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -88,6 +91,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#19ccc7',
         'A400': '#16b5b1',
         'A700': '#76eeeb',
+		'section': '#434343',
 		'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
 											// on this palette should be dark or light
 
@@ -115,6 +119,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#e5dbf2',
         'A400': '#f2eef8',
         'A700': '#4a2a70',
+		'section': '#DBDBDB',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -138,6 +143,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#70c209',
         'A400': '#62aa08',
         'A700': '#aff753',
+		'section': '#434343',
 		'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
 											// on this palette should be dark or light
 
@@ -165,6 +171,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#f7e4bf',
         'A400': '#faeed5',
         'A700': '#75530f',
+		'section': '#DBDBDB',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -188,6 +195,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#6191f2',
         'A400': '#4981f0',
         'A700': '#d7e3fc',
+		'section': '#434343',
 		'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
 											// on this palette should be dark or light
 
@@ -215,6 +223,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#b6e1f9',
         'A400': '#ceebfb',
         'A700': '#094e74',
+		'section': '#DBDBDB',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -238,6 +247,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#00af8c',
         'A400': '#009578',
         'A700': '#2fffd5',
+		'section': '#434343',
 		'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
 											// on this palette should be dark or light
 
@@ -265,6 +275,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#cae8b7',
         'A400': '#d8eeca',
         'A700': '#31521b',
+		'section': '#DBDBDB',
     'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
                                         // on this palette should be dark or light
 
@@ -288,6 +299,7 @@ DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         'A200': '#e6358c',
         'A400': '#e31e7f',
         'A700': '#f4a6cd',
+		'section': '#434343',
 		'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
 											// on this palette should be dark or light
 
@@ -400,8 +412,8 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			$('#cssmenu ul ul li').addClass('dark');
 			$('#cssmenu ul ul li a').addClass('dark');
 			$('.border-left-light').addClass('border-left-dark');
-			$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
 			$('md-menu-content').css('background-color',"black");
+			$("input").attr("disabled", true).css("background-color","black");
 		}
 		
 		function lighten()
@@ -413,6 +425,7 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			$('#cssmenu ul ul li a').removeClass('dark');
 			$('.border-left-light').removeClass('border-left-dark');
 			$('md-menu-content').css('background-color',"white", 'important');
+			$("input").attr("disabled", true).css("background-color","#e9e9e9");
 		}
 }])
 

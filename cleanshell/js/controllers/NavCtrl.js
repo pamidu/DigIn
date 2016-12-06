@@ -307,6 +307,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	var audio = new Audio('sounds/notification.mp3');
 	$scope.notificationAudio = true; 
 	
+	/*
 	$timeout(function(){
 		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: "2", href:"#/home"};
 		if(!message.icon){message.icon = "ti-comment"};
@@ -321,6 +322,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 
 	}, 5000);
+	*/
 	
 	$scope.openNotification = function(path)
 	{

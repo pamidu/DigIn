@@ -245,8 +245,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.dashboards = [];
 	$scope.reports = [];
 	
+	$scope.componentsLoaded = false;
 	DiginServices.getDiginComponents().then(function(data) {
 		console.log(data);
+		$scope.componentsLoaded = true;
 		for (i = 0, len = data.length; i<len; ++i){
 			if(data[i].compType == 'dashboard')
 			{

@@ -9,6 +9,8 @@
 				<i class="ti-pie-chart" md-colors="{color:'accent-900'}"  style="font-size: 130px;"></i>
 			</div>
 		</md-card>
+		<div ng-if="dashboards.length == 0 && componentsLoaded == true" layout="row"><i class="ti-pie-chart" style="font-size: 30px;padding-right: 20px;"></i><p style="font-size:24px;margin:0px">There are no dashboards</p></div>
+		<div ng-show="componentsLoaded == false" layout="row"><md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular><p style="font-size:24px;margin:0px">Loading Dashboards</p></div>
 	</div>
 
 	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Reports</h1>
@@ -21,5 +23,7 @@
 				<i class="ti-bar-chart" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>
 			</div>
 		</md-card>
+		<div ng-if="reports.length == 0 && componentsLoaded == true" layout="row"><i class="ti-bar-chart" style="font-size: 30px;padding-right: 20px;"></i><p style="font-size:24px;margin:0px">There are no reports</p></div>
+		<div ng-show="componentsLoaded == false" layout="row"><md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular><p style="font-size:24px;margin:0px">Loading Reports</p></div>
 	</div> 
 </div>

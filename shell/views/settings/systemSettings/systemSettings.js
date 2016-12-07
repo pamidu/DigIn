@@ -423,7 +423,7 @@ $scope.showInsideFolder  =  function(folder) {
                                     for(var i = 0; i< $scope.selectedFolders.length; i++){
                                         
                                         var obj = {
-                                            "file_type":"folder",
+                                            "file_type":"directory",
                                             "datasource_id":$scope.selectedFolders[i].datasource_id,
                                             "shared_user_Id":$scope.selectedFolders[i].shared_by,
                                             "deletion_type":"permanent"
@@ -457,7 +457,7 @@ $scope.showInsideFolder  =  function(folder) {
 
                                   })
                                   .error(function(error){  
-                                    notifications.toast(0, error.Custom_Message);
+                                    notifications.toast(0, "Error occurred during deletion, please try again");
                                    
                                   }); 
                         }, function() {

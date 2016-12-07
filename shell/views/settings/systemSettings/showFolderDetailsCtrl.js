@@ -98,7 +98,7 @@ $scope.closeDialog =function(){
                                         
                                         var obj = {
                                             "file_type":"directory_file",
-                                            "datasource_id":$scope.selectedFiles[i].datasource_id,
+                                            "datasource_id":$scope.folder.datasource_id,
                                             "shared_user_Id":$scope.folder.shared_by,
                                             "deletion_type":"permanent",
                                             "upload_id" : $scope.selectedFiles[i].upload_id
@@ -141,8 +141,8 @@ $scope.closeDialog =function(){
 
      }
      else{
-                     notifications.toast(0, "Please select the file you wish to Delete");
-                 }
+             notifications.toast(0, "Please select the file you wish to Delete");
+         }
     }
 
 

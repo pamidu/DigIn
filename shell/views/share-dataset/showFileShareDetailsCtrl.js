@@ -2,7 +2,7 @@ routerApp.controller('showFileShareDetailsCtrl',
   function ($scope,$rootScope,$mdDialog,users,groups,file,tag,$http,Digin_Engine_API,notifications,cb){
 
 
-  cb();
+  
   $scope.fileName = file.datasource_name;
   $scope.users =[];
   var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -204,7 +204,7 @@ routerApp.controller('showFileShareDetailsCtrl',
 
                       })
                       .error(function(error){  
-                        notifications.toast(0, error.Custom_Message);
+                        notifications.toast(0, "Error occurred during un-share, please try again");
                        
                       });
 

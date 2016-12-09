@@ -3084,9 +3084,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     hObj[entry.value] = entry.level;
                 });
                 var tbl = $scope.sourceData.tbl;
+                var id = $scope.sourceData.id;
                 var measure = $scope.executeQryData.executeMeasures[0].filedName;
                 var aggData = $scope.executeQryData.executeMeasures[0].condition;
-                $scope.client.getHierarchicalSummary(hObj,measure,aggData,tbl, function(data, status) {
+                $scope.client.getHierarchicalSummary(hObj,measure,aggData,tbl,id, function(data, status) {
                     $scope.TochartData = angular.copy(data);
                     if (status) {
                         if ($scope.selectedChart.chartType == "d3hierarchy"){

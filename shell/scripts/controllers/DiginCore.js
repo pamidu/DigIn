@@ -568,7 +568,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 //Apply filters to metric widget
                 $scope.filterMetricWidget(widget,filterStr);
             } else {
-                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, widget.widgetData.commonSrc.id, function(res, status, query) {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                     if (status) {
                         var color = [];
                         var name = [];
@@ -622,6 +622,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             if (targetSuccess && metricSuccess) {
                                 // call sync method
                                 $scope.setValues(widget.widgetData,metricValue,targetValue);
+                                widget.widgetData.filteredState = true;
                             } else {
                                 $scope.$apply(function(){
                                     notifications.toast('0', 'Error Occured!Please try again!');
@@ -647,6 +648,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (targetSuccess && metricSuccess) {
                             // call sync method
                             $scope.setValues(widget.widgetData,metricValue,targetValue);
+                            widget.widgetData.filteredState = true;
                         } else {
                             $scope.$apply(function(){
                                 notifications.toast('0', 'Error Occured!Please try again!');

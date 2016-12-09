@@ -242,7 +242,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
             var metricSuccess = false;
             var metricValue, targetValue;
             if (widObj.commonSrc.target.length == 1) {
-                cl.getExecQuery(widObj.selectedChart.initObj.targetQuery,  widObj.commonSrc.src.id, function(res, status, targetQuery) {
+                cl.getExecQuery(widObj.selectedChart.initObj.targetQuery, widObj.commonSrc.src.id, function(res, status, targetQuery) {
                     if (status) {
                         targetRequest = true;
                         targetSuccess = true;
@@ -299,7 +299,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                     data.forEach(function(entry) {
                         hObj[entry.value] = entry.level;
                     });
-                    cl.getHierarchicalSummary(hObj,measure,agg,table, function(data, status) {
+                    cl.getHierarchicalSummary(hObj,measure,agg,table, id, function(data, status) {
                         if (status) {
                             widObj.widData.data = data.children;
                             }
@@ -314,7 +314,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
     var D3HIERARCHY = function(){
 
         this.sync = function(q, cl, widObj, cb) {
-            cl.getHierarchicalSummary(q, function(data, status) {
+            cl.getHierarchicalSummary(q, widObj.commonSrc.src.id, function(data, status) {
                 if (status){
                     widObj.widData.data = data.children;
                     }
@@ -327,7 +327,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
    var MAP = function(){
 
         this.sync = function(q, cl, widObj, cb) {
-            cl.getHierarchicalSummary(q, function(data, status) {
+            cl.getHierarchicalSummary(q, widObj.commonSrc.src.id, function(data, status) {
                 if (status){
                     widObj.widData.children = data.children;
                     }

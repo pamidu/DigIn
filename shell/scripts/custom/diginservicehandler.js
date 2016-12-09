@@ -140,11 +140,14 @@
                     });
                 },
 
-                getHierarchicalSummary: function(hObj,measure,aggData,tbl,cb) {
+                getHierarchicalSummary: function(hObj,measure,aggData,tbl,id,cb) {
                     var query = "";
                     if (database == "BigQuery") {
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
                         getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database;
+                    } else if ( database == "MSSQL") {
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
+                        tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database + "&datasource_config_id=" + id;
                     } else {
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
                         tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;

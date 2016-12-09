@@ -5024,6 +5024,14 @@ i.icon-cancel:hover {
     display: inline-block;
 }
 
+.data-source-radio {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 0px;
+    padding: 14px 8px 0px 15px !important;
+    box-shadow: -1px 7px 7px -10px rgba(0, 0, 0, 0.41) !important;
+}
+
 .view-more-btn,
 .delete-btn {
     font-family: 'Roboto', sans-serif;

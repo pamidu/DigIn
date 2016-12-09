@@ -94,7 +94,6 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 				notifications.toast('0',data.Custom_Message);
 			}
 		}).error(function(data){
-			console.log(data);
 			$scope.connectionStatus = true;
 			notifications.toast('0','Request failed.Please try again.');
 		});

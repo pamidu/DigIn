@@ -35,12 +35,22 @@
                         cb(data, status);
                     }, $diginurls.diginengine + url_string);
                 },
+                getConnectionTables: function(id,cb) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "GetTables?db=mssql&datasource_config_id=" + id);
+                },
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public");
                 },
-                getHighestLevel: function(tbl, fieldstr, cb) {
+                getMSSQLFields: function(tbl, MSSQLid, cb) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public&datasource_config_id=" + MSSQLid);
+                },
+                getHighestLevel: function(tbl, fieldstr, id, cb) {
                     if (database == "BigQuery") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
@@ -50,7 +60,7 @@
 
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
                     }
                     if (database == "postgresql") {
 
@@ -60,7 +70,7 @@
                     }
 
                 },
-                getAggData: function(tbl, aggObjArr, limit, cb, gb, con) {
+                getAggData: function(tbl, aggObjArr, limit, id, cb, gb, con) {
                     var strField = "";
                     if (con !== undefined) {
                         con = con.replace(/&/g , "%26");                        
@@ -83,9 +93,9 @@
                     }
                     if (database == "MSSQL") {
                         if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         }
                     }
                     if (database == "postgresql") {
@@ -111,11 +121,15 @@
 
                 },
 
-                getExecQuery: function(qStr, cb, limit) {
+                getExecQuery: function(qStr, id, cb, limit) {
                     var wSrc = "scripts/webworkers/webWorker.js";
                     var limVal = 1000;
                     if (limit) limVal = limit;
-                    var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
+                    if (database == 'MSSQL')
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_config_id=" + id;
+                    else
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
+                        
 
                     var wData = {
                         rUrl: reqUrl,

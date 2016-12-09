@@ -33,7 +33,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
             cl.getExecQuery(obj.widData.drillConf.currentQuery, function(res, status, query) {
                 if(status) {
                     filterService.filterAggData(res,obj.commonSrc.src.filterFields);
-                    angular.forEach(obj.commonSrc.att,function(field){
+                    angular.forEach(obj.commonSrc.att, obj.commonSrc.src.id, function(field){
                         for(c in res[0]) {
                             if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                                 if (c == field.filedName) {
@@ -158,7 +158,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
         }
         
         this.sync = function(q, cl, widObj, cb) {            
-            cl.getExecQuery(q, function(res, status, query){
+            cl.getExecQuery(q, widObj.commonSrc.src.id, function(res, status, query){
                 var cat = "";
                 var drilled;
                 if(status){
@@ -242,7 +242,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
             var metricSuccess = false;
             var metricValue, targetValue;
             if (widObj.commonSrc.target.length == 1) {
-                cl.getExecQuery(widObj.selectedChart.initObj.targetQuery, function(res, status, targetQuery) {
+                cl.getExecQuery(widObj.selectedChart.initObj.targetQuery,  widObj.commonSrc.src.id, function(res, status, targetQuery) {
                     if (status) {
                         targetRequest = true;
                         targetSuccess = true;
@@ -261,7 +261,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                 targetRequest = true;
                 targetSuccess = true;
             }
-            cl.getExecQuery(q, function(res, status, query) {
+            cl.getExecQuery(q,  widObj.commonSrc.src.id, function(res, status, query) {
                 if (status) {
                     metricRequest = true;
                     metricSuccess = true;
@@ -287,11 +287,12 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
         this.sync = function(q, cl, widObj, cb) {
             var fieldArray = [];
             var table = widObj.commonSrc.src.tbl;
+            var id = widObj.commonSrc.src.id;
             var hObj= {};
             angular.forEach(widObj.commonSrc.att,function(attribute){
                 fieldArray.push("'"+ attribute.filedName +"'");
             })
-            cl.getHighestLevel(table,fieldArray.toString(),function(data,status){
+            cl.getHighestLevel(table,fieldArray.toString(),id,function(data,status){
                 if(status) {
                     var measure = widObj.commonSrc.mea[0].filedName;
                     var agg = widObj.commonSrc.mea[0].condition;
@@ -675,7 +676,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
 
     var PIVOTSUMMARY = function(){
         this.sync = function(q, cl, widObj, cb){
-            cl.getExecQuery(q, function(data, status) {
+            cl.getExecQuery(q,  widObj.commonSrc.src.id, function(data, status) {
                 widObj.widData.summary = data;
                 widObj.syncState = true;
                 cb(widObj);                

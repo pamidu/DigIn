@@ -25,6 +25,9 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
       $scope.files = [];
       $scope.folders=[];
 
+      $scope.selectedFiles = [];
+      $scope.selectedFolders = [];
+
        $http.get(Digin_Engine_API+'GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
                 for(var i = 0; i < result.data.Result.length; i++){
@@ -311,7 +314,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
 
               })
               .error(function(error){  
-                notifications.toast(0, error.Custom_Message);
+                notifications.toast(0, "Error occurred during share, please try again");
                
               });
 

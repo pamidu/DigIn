@@ -826,6 +826,17 @@ v-pane-content
     display: none;
 }
 
+.forecast-filter-config-panel {
+    max-height: 450px;
+    width: 280px;
+    background: #4285F4;
+    position: absolute;
+    left: 20%;
+    z-index: 2;
+    border-radius: 10px;
+    display: none;
+}
+
 .chart-config-wrap {
     padding: 20px;
     overflow: scroll;
@@ -846,6 +857,7 @@ v-pane-content
 }
 
 .chart-config-panel .header > h4 .header-icon,
+.forecast-filter-config-panel .header > h4 .header-icon,
 .filter-config-panel .header > h4 .header-icon,
 .columns-config-panel .header > h4 .header-icon,
 .query-builder .header > h4 .header-icon,
@@ -859,6 +871,7 @@ v-pane-content
 .header-icon > i,
 .query-builder .header > h4
 .header-icon > i,
+.forecast-filter-config-panel .header > h4
 .filter-config-panel .header > h4
 .columns-config-panel .header > h4
 .header-icon > i,
@@ -874,6 +887,7 @@ v-pane-content
 }
 
 .chart-config-panel .header > h4,
+.forecast-filter-config-panel .header > h4,
 .filter-config-panel .header > h4,
 .columns-config-panel .header > h4,
 .query-builder .header > h4,
@@ -1455,6 +1469,31 @@ span {
 }
 
 .filter-config-panel:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-width: 36px;
+    margin-top: -36px;
+}
+
+.forecast-filter-config-panel:after,
+.forecast-filter-config-panel:before {
+    right: 100%;
+    top: 20%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.forecast-filter-config-panel:after {
+    border-color: rgba(47, 64, 74, 0);
+    border-right-color: #4285F4;
+    border-width: 14px;
+    margin-top: -15px;
+}
+
+.forecast-filter-config-panel:before {
     border-color: rgba(194, 225, 245, 0);
     border-width: 36px;
     margin-top: -36px;

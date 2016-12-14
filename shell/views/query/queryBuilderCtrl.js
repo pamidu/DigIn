@@ -3346,6 +3346,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;                    
                 }
             }
+            // if ($scope.executeQryData.executeMeasures.length != 0) {
+            //     $scope.getAggregation();
+            // }
+            //$scope.resetSettings();
         },
         selectCondition: function() {
             $scope.getAggregation();
@@ -4354,7 +4358,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 translate: function(value) {
                   return value + '%';
                 }
-            }                
+            }
         };
         $timeout(function () {
             $scope.$broadcast('rzSliderForceRender');

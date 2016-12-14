@@ -1,6 +1,6 @@
 // Services for chart functionalities
 routerApp.service('chartServices',function() {
-	// Apply colour settings for metruc widget
+	// Apply colour settings for metric widget
 	this.applyMetricSettings = function(selectedChart) {
 	    if (typeof selectedChart.initObj.value != "number") var value = parseInt(selectedChart.initObj.value.replace(/,/g,''));
 	    var highRange = selectedChart.initObj.targetValue * selectedChart.initObj.rangeSliderOptions.maxValue / 100;
@@ -16,7 +16,7 @@ routerApp.service('chartServices',function() {
 	            if (selectedChart.initObj.targetRange == "high") {
 	                selectedChart.initObj.color = "cyan"
 	            } else {
-	                selectedChart.initObj.color = "yellow"
+	                selectedChart.initObj.color = "yellowgreen"
 	            }
 	        } else if (selectedChart.initObj.colorTheme == "opg") {
 	            if (selectedChart.initObj.targetRange == "high") {

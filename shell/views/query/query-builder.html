@@ -82,8 +82,8 @@
                 </div>
             </div>
             <!-- measures -->
-            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' ">
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric'">
+            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' || selectedChart.chartType == 'forecast' ">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'forecast'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Series
@@ -155,7 +155,7 @@
                 <!-- columns config panel -->
                 <div class="columns-config-panel animated"
                      id="togglePanelColumns">
-                    <div class="header" ng-hide="selectedChart.chartType == 'metric'">
+                    <div class="header" ng-hide="selectedChart.chartType == 'metric'  || selectedChart.chartType == 'forecast'">
                         <h4 class="font-weight-300 p-20">
                             Attributes
                             <div class="header-icon">
@@ -209,7 +209,7 @@
                         </v-accordion>
                     </div>
                 </div>               
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric'">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'forecast' ">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             category
@@ -273,8 +273,9 @@
                     </div>
                 </div>               
                 <!-- Filter config panel -->
-                <div class="filter-config-panel animated  "
-                     id="togglePanelFilter">
+                <div class="animated  "
+                    ng-class="selectedChart.chartType == 'forecast'?'forecast-filter-config-panel':'filter-config-panel'"
+                    id="togglePanelFilter" >
                     <div class="header">
                         <h4 class="font-weight-300 p-20">
                             Filters
@@ -284,8 +285,9 @@
                         </h4>
                     </div>
                     <div class="chart-config-wrap">
+                    <!-- chart filter for metric and highcharts -->
                     <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
-                                 onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                                 onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)"  ng-hide="selectedChart.chartType == 'forecast'">
                         <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in commonData.filters" class="v-pane">
                             <v-pane-header id="{{ ::Attr.id }}-header" aria-controls="{{ ::Attr.id }}-content">
                                 <h5 class="font-weight-300 text-upper">{{ ::Attr.name }}</h5>
@@ -302,14 +304,34 @@
                                 </p>                                
                             </v-pane-content>
                         </v-pane>
-                    </v-accordion>                        
+                    </v-accordion>
+                    <!-- chart filters for forecast charts -->
+                    <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                 onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)"  ng-show="selectedChart.chartType == 'forecast'">
+                        <v-pane id="{{ ::Attr.id }}" ng-repeat="Attr in sourceData.forecastAtt" class="v-pane">
+                            <v-pane-header id="{{ ::Attr.id }}-header" aria-controls="{{ ::Attr.id }}-content">
+                                <h5 class="font-weight-300 text-upper">{{ ::Attr.name }}</h5>
+                            </v-pane-header>
+                            <v-pane-content class="trans-bg v-pane-content" id="{{ ::Attr.id }}-content"
+                                            aria-labelledby="{{ ::Attr.id }}-header">
+                                <p class="data-row-style-2 hvr-sweep-to-right"
+                                   markable ng-click="eventHndler.onClickFilter(Attr,'single')">
+                                    Single Select
+                                </p>
+                                <p class="data-row-style-2 hvr-sweep-to-right"
+                                   markable ng-click="eventHndler.onClickFilter(Attr,'multiple')">
+                                    Multiple Select
+                                </p>                                
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>  
                     </div>
-                </div>                
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle">
+                </div>
+                <div class="digin-gb-measures last-icon" ng-style="{ 'height' : (selectedChart.chartType == 'forecast') ? '100%' : 'initial' }" >
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Filter
-                            <fieldset class="toggle-icon animated"ng-disabled="isPendingRequest"
+                            <fieldset class="toggle-icon animated" ng-disabled="isPendingRequest"
                                       data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
                                       ng-class="eventHndler.isTogglePanelFilter==true?'left-icon-toggle':'left-icon'"
                                       ng-click="eventHndler.onToggleEvent('4')">
@@ -333,7 +355,7 @@
                         <div class="filter-data-not-fund"
                              ng-if="executeQryData.executeFilters.length < 1">
                             <i class="ti-filter"></i>
-                            <h5>add aggregations</h5>
+                            <h5>add filters</h5>
                         </div>
                     </div>
                 </div>                

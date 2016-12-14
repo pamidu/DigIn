@@ -193,6 +193,10 @@ routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$md
 			paddingTop: '30px'
 		},200)
 		
+		$('.setting-container').animate({
+			paddingTop: '0px'
+		},200)
+		
 		/*$('md-tabs-content-wrapper').animate({
 			height: '100vh'
 		},200)*/
@@ -212,6 +216,10 @@ routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$md
 			paddingTop: '70px'
 		},200)
 		
+		$('.setting-container').animate({
+			paddingTop: '45px'
+		},200)
+		
 		var newHeight = $('md-tabs-content-wrapper').height(); //- 45;
 		
 		$('md-tabs-content-wrapper').animate({
@@ -227,6 +235,10 @@ routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$md
 		$('.card-container').animate({
 			paddingLeft: '0px'
 		},200)
+		
+		$('.setting-container').animate({
+			paddingLeft: '0px'
+		},200)
 		return false;
 	}
 	this.showSideMenu = function(){
@@ -234,6 +246,9 @@ routerApp.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$md
 			left: '0px'
 		}, 200);
 		$('.card-container').animate({
+			paddingLeft: '45px'
+		},200)
+		$('.setting-container').animate({
 			paddingLeft: '45px'
 		},200)
 		return true;

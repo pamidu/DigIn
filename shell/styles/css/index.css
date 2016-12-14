@@ -53,6 +53,14 @@
 	animation: fadeIn .8s forwards;
 }
 
+.setting-container
+{
+	padding-top:45px;
+	padding-left:45px;
+	-webkit-animation: fadeIn .8s forwards;
+	animation: fadeIn .8s forwards;
+}
+
 .layout-whiteframe
 {
 	margin:0 auto;

@@ -712,11 +712,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
             },
             onSaveSource: function() {
                 commonUi.onCLickFilterClose();
-                $('.main-headbar-slide').animate({
+               /* $('.main-headbar-slide').animate({
                             top: '-43px'
-                        }, 300);
+                        }, 300);*/
                         //  $('.blut-search-toggele').removeClass('go-up').addClass('go-down');
-                        $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
+                       // $('#content1').removeClass('content-m-top40').addClass('content-m-top0');
                         $scope.headerMenuToggle = false;
                     // save the dashboard if it contains any widget
                     var saveFlag = false;

@@ -176,7 +176,7 @@
                     }, query);
                 },
 
-                getForcast: function(fObj,widget, cb, gb) {
+                getForcast: function(fObj,widget,filters, cb, gb) {
 
 
                     function formattedDate(date) {
@@ -223,7 +223,9 @@
                         "&start_date=" + startdate +
                         "&end_date=" + endDate +
                         "&group_by=" + fObj.forecastAtt +
-                        "&dbtype=" + database);
+                        "&filter="+filters+
+                        "&dbtype=" + database+
+                        "&datasource_config_id=");
                       }
                       else
                       {

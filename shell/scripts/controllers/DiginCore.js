@@ -567,7 +567,22 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             if ( widget.widgetData.selectedChart.chart == "metric" ) {
                 //Apply filters to metric widget
                 $scope.filterMetricWidget(widget,filterStr);
-            } else {
+            } 
+            else if(widget.widgetData.selectedChart.chart == "forecast"){
+                    widget.widgetData.syncState = false;
+                    widget.widgetData.filteredState = true;
+                    widget.widgetData.filterStr = "";
+                    widget.widgetData.filterStr = filterStr;
+                    $qbuilder.sync(widget.widgetData, function(data) {
+                        $scope.$apply(function(){
+                            widget.widgetData.syncState = true;
+                            widget = data;
+                        });
+                    });
+
+
+            }
+            else {
                 $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                     if (status) {
                         var color = [];
@@ -726,7 +741,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     notifications.toast('0', 'Please go to level 1 to remove filters!');
                     return;
                 }
-            } else{
+            } 
+            else if(widget.widgetData.selectedChart.chart == "forecast"){
+                widget.widgetData.filteredState = false;
+                widget.widgetData.filterStr = "";
+                $scope.syncWidget(widget);
+
+            }
+            else{
                 widget.widgetData.filteredState = false;
                 $scope.syncWidget(widget);
             }           

@@ -546,7 +546,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
         }
 
         this.sync = function(q, cl, widObj, cb){
-            cl.getForcast(widObj.foreCastObj,widObj, function(data, status){
+            cl.getForcast(widObj.foreCastObj,widObj,widObj.filterStr, function(data, status){
                 if (status){
                     dataArray = mapResult(data,widObj.foreCastObj,widObj);
                     widObj.highchartsNG.series = dataArray[0];

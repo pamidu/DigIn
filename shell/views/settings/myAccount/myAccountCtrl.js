@@ -1,5 +1,5 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
-    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window) {
+    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window,apis_Path, include_Path) {
 
 
     var vm = this;
@@ -40,7 +40,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     
     $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCustomerInformations",
-            url: "/include/duoapi/paymentgateway/getCustomerInformations",
+            url: include_Path+"duoapi/paymentgateway/getCustomerInformations",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -228,7 +228,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 //----get card info------------------------------------------   
     $http({
         //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
-        url: "/include/duoapi/paymentgateway/getCardInformation",
+        url: include_Path+"duoapi/paymentgateway/getCardInformation",
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -259,7 +259,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     $scope.getCardsList=function(){
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/getCardInformation",
-            url: "/include/duoapi/paymentgateway/getCardInformation",
+            url: include_Path+"duoapi/paymentgateway/getCardInformation",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -636,7 +636,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 //#Check subscription ----------------------------------------------------------
         var packagename="";       
         $http({
-            url: "/include/duoapi/paymentgateway/checkSubscription",
+            url: include_Path+"duoapi/paymentgateway/checkSubscription",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -787,7 +787,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                         $rootScope.isActive=false;
                         $http({
                         //url : "http://staging.digin.io/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
-                        url: "/include/duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
+                        url: include_Path+"duoapi/paymentgateway/stopSubscriptionEndOfPeriod",
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
@@ -903,7 +903,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         }
 
         $http({
-            url: "/include/duoapi/paymentgateway/addCard",
+            url: include_Path+"duoapi/paymentgateway/addCard",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -951,7 +951,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             "cardId": cardId
         }
         $http({
-            url: "/include/duoapi/paymentgateway/setDefaultCard",
+            url: include_Path+"duoapi/paymentgateway/setDefaultCard",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -1006,7 +1006,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             "cardId": cardId
         }
         $http({
-            url: "/include/duoapi/paymentgateway/deleteCard",
+            url: include_Path+"duoapi/paymentgateway/deleteCard",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -1154,7 +1154,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
                 $http({
                     //url : "http://staging.digin.io/include/duoapi/paymentgateway/upgradePackage",
-                    url: "/include/duoapi/paymentgateway/upgradePackage",
+                    url: include_Path+"duoapi/paymentgateway/upgradePackage",
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -1301,7 +1301,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         }
 
         $http({
-            url: "/include/duoapi/paymentgateway/puchasePackage",
+            url: include_Path+"duoapi/paymentgateway/puchasePackage",
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/puchasePackage",
             method: "POST",
             headers: {
@@ -1386,7 +1386,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/reactiveSubscription",
-            url: "/include/duoapi/paymentgateway/reactiveSubscription",
+            url: include_Path+"duoapi/paymentgateway/reactiveSubscription",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -1751,7 +1751,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
             $http({
                 method: 'POST',
                 //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
-                url: baseUrl + '/apis/profile/userprofile',
+                url: baseUrl + apis_Path+'profile/userprofile',
                 data: angular.toJson($scope.userProfile),
                 headers: {
                     'Content-Type': 'application/json',
@@ -2646,7 +2646,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 });
 
-routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'notifications', function($scope, $mdDialog, $http, notifications) {
+routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'notifications', function($scope, $mdDialog, $http, notifications,auth_Path) {
 
     $scope.cancel = function() {
         $mdDialog.cancel();
@@ -2655,8 +2655,8 @@ routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'not
     $scope.submit = function() {
         if ($scope.newPassword === $scope.confirmNewPassword) {
 
-            console.log(window.location.host + '/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
-            $http.get('/auth/ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword))
+            console.log(window.location.host + auth_Path+'ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
+            $http.get(auth_Path+'ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword))
                 .success(function(data) {
                     if (data.Error) {;
                         notifications.toast('0', data.Message);
@@ -2850,12 +2850,12 @@ routerApp.service('notifications', ['ngToast', '$mdDialog', function(ngToast, $m
 }]);
 
 
-routerApp.service('profile', ['$rootScope', '$http', 'ProfileService', function($rootScope, $http, ProfileService) {
+routerApp.service('profile', ['$rootScope', '$http', 'ProfileService', function($rootScope, $http, ProfileService,apis_Path) {
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        $http.get(baseUrl + '/apis/profile/userprofile/' + $rootScope.profile_Det.Email)
+        $http.get(baseUrl + apis_Path+'profile/userprofile/' + $rootScope.profile_Det.Email)
             .success(function(response) {
                 console.log(response);
                 //#load exisitging data
@@ -2916,7 +2916,7 @@ routerApp.directive('customOnChange', function() {
     };
 });
 
-routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory','pouchDB','paymentGatewaySvc', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory,pouchDB,paymentGatewaySvc) {
+routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$http', 'notifications', '$state', '$stateParams','Digin_Engine_API','userAdminFactory','pouchDB','paymentGatewaySvc','include_Path', function($scope, $rootScope, $mdDialog, $http, notifications, $state, $stateParams,Digin_Engine_API,userAdminFactory,pouchDB,paymentGatewaySvc,include_Path) {
 
     userAdminFactory.getInvitedUsers();
 
@@ -3211,7 +3211,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
               
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/customizePackage",
-            url: "/include/duoapi/paymentgateway/customizePackage",
+            url: include_Path+"duoapi/paymentgateway/customizePackage",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -3375,7 +3375,7 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 }]);
 
 
-routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','pouchDB', function($http, notifications, $rootScope,pouchDB) {
+routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','pouchDB', function($http, notifications, $rootScope,pouchDB,include_Path) {
 
     var db = new PouchDB('packaging');
 
@@ -3445,7 +3445,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
     this.reactiveSubscription = function() {
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/reinstall",
-            url: "/include/duoapi/paymentgateway/reactiveSubscription",
+            url: include_Path+"duoapi/paymentgateway/reactiveSubscription",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -3646,7 +3646,7 @@ routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','
     
         $http({
             //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
-            url: "/include/duoapi/paymentgateway/checkSubscription",
+            url: include_Path+"duoapi/paymentgateway/checkSubscription",
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

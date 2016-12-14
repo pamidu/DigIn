@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$mdMenu', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog,$mdMenu, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -26,7 +26,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
          //#Added by Chamila
         //#to get session detail for logged user
-        $http.get('/auth/GetSession/' + getCookie('securityToken') + '/Nil')
+        $http.get(auth_Path+'GetSession/' + getCookie('securityToken') + '/Nil')
             .success(function (data) {
                 console.log(data);
                 $rootScope.SessionDetail = data;
@@ -40,7 +40,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         });
 
         //#to get tenant ID for logged user
-         $http.get('/auth/tenant/GetTenants/' + getCookie('securityToken'))
+         $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))
             .success(function (data) {
                 console.log(data);
                 $rootScope.TenantID = data[0].TenantID;
@@ -60,7 +60,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //#get user profile       
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.firstName)
+        $http.get(baseUrl+apis_Path+'profile/userprofile/'+$scope.firstName)
             .success(function (response) {
                 console.log(response);
                 $rootScope.profile_Det = response;
@@ -353,7 +353,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $rootScope.username = userInfo.Username;
-                    $http.get('/auth/tenant/GetTenants/' + userInfo.SecurityToken)
+                    $http.get(auth_Path+'tenant/GetTenants/' + userInfo.SecurityToken)
                         .success(function (response) {
                             $scope.tennants = response;
                         });
@@ -1077,7 +1077,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
                 getTenantID: function () {
-                $http.get('/auth/tenant/GetTenants/' + getCookie('securityToken'))
+                $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))
                         .success(function (data) {
                             console.log(data);
                             $rootScope.TenantID = data[0].TenantID;
@@ -1165,7 +1165,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.getSharableUsers = function () {
             var baseUrl = "http://" + window.location.hostname;
             //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
-            $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
+            $http.get(baseUrl + apis_Path+"usercommon/getSharableObjects")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableObjs = [];
@@ -1195,7 +1195,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             //-----------
             //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
-            $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+            $http.get(baseUrl + apis_Path+"usercommon/getAllGroups")
                 .success(function (data) {
                     console.log(data);
                     $rootScope.sharableGroupsDtls = [];
@@ -2048,10 +2048,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
  }]);
 
- routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant', function ($scope,$mdDialog,$http,Digin_Tenant) {
+ routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant', function ($scope,$mdDialog,$http,Digin_Tenant,auth_Path) {
 
     //$http.get(Digin_Tenant + '/tenant/GetTenants/' + '15430a361f730ec5ea2d79f60d0fa78e')
-    $http.get('/auth/tenant/GetTenants/' + getCookie('securityToken'))
+    $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))
     .success(function (response) {
         $scope.tennants = response;
     });

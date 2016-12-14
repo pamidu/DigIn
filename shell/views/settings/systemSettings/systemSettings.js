@@ -1,4 +1,4 @@
-routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory){
+routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,apis_Path){
 
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
@@ -247,7 +247,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
 
     $scope.getUserandGroups = function(){
 
-          $http.get('/apis/usercommon/getSharableObjects')
+          $http.get(apis_Path+'usercommon/getSharableObjects')
            .then(function(result) {
 
                 var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));

@@ -3,7 +3,7 @@
  */
 
 routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $mdDialog,notifications,profile,$http, Upload,
-                                                     Digin_Domain, Digin_Tenant,$mdDialog, $location,Digin_Engine_API, $apps,ProfileService) {
+                                                     Digin_Domain, Digin_Tenant,$mdDialog, $location,Digin_Engine_API, $apps,ProfileService,apis_Path) {
 
     console.log('user profile ctrl load');
     var baseUrl = "http://" + window.location.hostname;
@@ -241,7 +241,7 @@ routerApp.controller('userProfileCtrl', function ($scope,$rootScope, $state, $md
         $http({
                 method: 'POST',
                 //url:'http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile',
-                url: baseUrl+'/apis/profile/userprofile',
+                url: baseUrl+apis_Path+'profile/userprofile',
                 data: angular.toJson($scope.userProfile),
                 headers: {
                      'Content-Type': 'application/json',
@@ -1197,12 +1197,12 @@ routerApp.service('notifications',['ngToast','$mdDialog', function(ngToast,$mdDi
 }]);
 
 
-routerApp.service('profile',['$rootScope','$http','ProfileService', function($rootScope,$http,ProfileService){
+routerApp.service('profile',['$rootScope','$http','ProfileService', function($rootScope,$http,ProfileService,apis_Path){
 
     this.getProfile = function() {
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$rootScope.profile_Det.Email)
+        $http.get(baseUrl+apis_Path+'profile/userprofile/'+$rootScope.profile_Det.Email)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data

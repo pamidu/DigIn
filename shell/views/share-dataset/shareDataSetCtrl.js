@@ -1,4 +1,4 @@
-routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications){
+routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications,apis_Path){
 
 
 
@@ -142,7 +142,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
 
     $scope.getUserandGroups = function(){
 
-          $http.get('/apis/usercommon/getSharableObjects')
+          $http.get(apis_Path+'usercommon/getSharableObjects')
            .then(function(result) {
 
                 var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));

@@ -72,8 +72,10 @@
     <br>
     <md-container style="margin-top: 15px;">
         <label style="font-weight: bolder;color: #01718d;">Use Visualisation period</label>
+         <md-checkbox ng-model="useFiltering.status" aria-label="" style="position: relative;left: 40px;">
+        </md-checkbox>   
         <br>
-        <div>
+        <div ng-if="useFiltering.status">
             <div class="date-filter">
                 <div class="inline-date"  style="width: 160px;margin-top: 15px;">
                     <label>Start Date</label>
@@ -89,8 +91,7 @@
                 </div>
             </div>
         </div> 
-        <md-checkbox ng-model="useFiltering.status" aria-label="" style="position: relative;top: -104px;left: 160px;">
-        </md-checkbox>   
+       
     </md-container>   
     <br>
      <md-input-container>

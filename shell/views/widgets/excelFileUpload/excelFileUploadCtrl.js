@@ -13,7 +13,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.progressPercentage = 0;
     $scope.folderName;
     $scope.uploadedFiles = [];
-    $scope.datasource_id = null;
+    $scope.datasource_id = '';
     $scope.selectedFolder = "";
     $scope.client = $diginengine.getClient("BigQuery");
     $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","RECORD","TIMESTAMP","DATE","TIME","DATETIME"];
@@ -175,8 +175,8 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     angular.forEach(res,function(key) {
                         if (key.upload_type == 'csv-singlefile') {
                             $scope.uploadedFiles.push({
-                                name : key.datasource_name,
-                                id : key.datasource_id
+                                file_name : key.datasource_name,
+                                upload_id : key.datasource_id
                             });
                         }
                     })
@@ -206,12 +206,12 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     })
                     stepData.completed = true;
                     $scope.showBusyText = false;
-                    stepData.data.completed = true;                    
+                    stepData.data.completed = true;
                     $scope.enableNextStep();
                 }else{
                     stepData.completed = true;
                     $scope.showBusyText = false;
-                    stepData.data.completed = true;                    
+                    stepData.data.completed = true;
                     $scope.enableNextStep();
                 }
             });
@@ -222,8 +222,11 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 if (folder.name == $scope.folderName){
                     $scope.isExist = true;
                     $scope.uploadedFiles = folder.files;
+                    $scope.datasource_id = folder.id;
+                    // $scope.uploadedFiles["upload_id"] = folder.id;
                 }
             })
+            if (!$scope.isExist) $scope.datasource_id = '';
             stepData.completed = true;
             $scope.showBusyText = false;
             stepData.data.completed = true;
@@ -244,16 +247,22 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 fileName = file.name;
             }
             angular.forEach($scope.uploadedFiles,function(f){
-                if (fileName == f.name) {
+                if (fileName == f.file_name) {
                     duplicateflag = true;
-                    $scope.datasource_id = f.id;
+                    if ($scope.selectedPath == "File") $scope.datasource_id = f.upload_id;
                 }
             });
+            if ($scope.selectedPath == "Folder") {
+                if ($scope.isExist) {
+                    console.log($scope.datasource_id);
+                }
+            }
+
         });
         if (duplicateflag) {
             $scope.showConfirmBox(files,$scope);
         } else {
-            $scope.datasource_id = null;
+            if ($scope.selectedPath == "File") $scope.datasource_id = '';
             $scope.upload(files);
         }
     }

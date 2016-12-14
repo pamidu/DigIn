@@ -7,7 +7,6 @@ routerApp.config(['$mdThemingProvider', function($mdThemingProvider) {
         '300': '#1acffd',
         '400': '#02c9fb',
         '500': '#02b5e2',
-		
         '600': '#02a1c9',
         '700': '#028caf',
         '800': '#017896',

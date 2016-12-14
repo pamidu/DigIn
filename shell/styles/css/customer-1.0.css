@@ -1141,7 +1141,7 @@ h3 {
 
 .digin-gb-row {
     width: 100%;
-    height: 50vh;
+    height: 37vh;
     background: #ffffff;
     border-top: 3px solid #ECECEC;
     border-left: 3px solid #ECECEC;
@@ -4906,6 +4906,7 @@ i.icon-cancel:hover {
     background: #fefefe;
     height: 45px;
     position: fixed;
+    z-index: 3;
     top: 0px;
     left: 0px;
 }
@@ -4927,7 +4928,7 @@ i.icon-cancel:hover {
 }
 
 .left-toggle-wrapper > img {
-    width: 35px;
+    width: 30px;
     background: #fff;
     border-radius: 50%;
     padding: 4px;

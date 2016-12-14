@@ -1,9 +1,9 @@
-routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API, Digin_Domain) {
+routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
     return {
     	getAllConnections: function(securityToken) {
     		return $http({
     			method: 'GET',
-    			url: 'http://192.168.5.166:8080/get_datasource_config?SecurityToken=' + '34a4865cb010be062fe1b7cbd399f328'
+    			url: Digin_Engine_API + 'get_datasource_config?SecurityToken=' + securityToken
     		})
     	},
     	/*
@@ -12,8 +12,8 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API, Digin_
     	getAllDatabases: function(securityToken,reqParam) {
             return $http({
                 method: 'GET',
-                url: 'http://192.168.5.166:8080/get_all_databases?' + 
-                'SecurityToken=' + '34a4865cb010be062fe1b7cbd399f328' +
+                url: Digin_Engine_API + 'get_all_databases?' + 
+                'SecurityToken=' + securityToken +
                 '&hostname=' + reqParam.host + 
                 '&port=' + reqParam.port +
                 '&username=' + reqParam.username + 
@@ -23,8 +23,8 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API, Digin_
         testConnection: function(securityToken,reqParam) {
             return $http({
                 method: 'GET',
-                url: 'http://192.168.5.166:8080/' + 'test_database_connection?' + 
-                'SecurityToken=' + '34a4865cb010be062fe1b7cbd399f328' +
+                url: 'http://192.168.0.115:8080/' + 'test_database_connection?' + 
+                'SecurityToken=' + securityToken +
                 '&hostname=' + reqParam.host + 
                 '&port=' + reqParam.port +
                 '&username=' + reqParam.username + 
@@ -35,11 +35,11 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API, Digin_
         saveConnection: function(securityToken,reqParam) {
             return $http({
                 method: 'POST',
-                url: 'http://192.168.5.166:8080/store_datasource_config/',
+                url: Digin_Engine_API + 'store_datasource_config/',
                 data: angular.toJson(reqParam),
                 headers: {
                     'Content-Type': 'application/json',
-                    'securityToken' : '34a4865cb010be062fe1b7cbd399f328'
+                    'securityToken' : securityToken
                 }
             })
         }

@@ -190,11 +190,11 @@
                         </md-input-container>                          
                     </div>
                     <!-- table data -->
-                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search} | orderBy: 'name' ">
+                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search} | orderBy: 'name' " ng-hide="sourceUi.selectedSource == 'MSSQL' ">
                         <li class="col-sheet"
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
-                        > 
+                        >
                             <span>
                                 <i class="{{row.type}}"></i>&nbsp;&nbsp;
                                 {{ row.name | limitTo: 25 }}{{row.name.length > 25 ? '...' : ''}}
@@ -203,21 +203,29 @@
                             </i>
                         </li>
                     </ui>
+                    <v-accordion id="accordionDataSource" class="vAccordion--default" control="accordionA" 
+                        onexpand="commonUi.onExpandConnection(index)"> 
+                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections | filter : {connection_name: sourceUi.search}" ng-show="sourceUi.selectedSource == 'MSSQL' ">
+                            <v-pane-header>
+                                <h5 class="font-weight-300 text-upper">{{ ::row.connection_name }}</h5>
+                            </v-pane-header>
+                            <v-pane-content class="trans-bg v-pane-content">
+                                <div layout="row" layout-sm="column" layout-align="space-around" style="padding-top: 5px;" 
+                                    ng-show="isConnectionTablesLoading">
+                                    <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
+                                </div>
+                                <div opacity="0.1" ng-hide="isConnectionTablesLoading">
+                                    <md-radio-group ng-model="selectedTable">
+                                        <md-radio-button value="{{field.name}}" class="md-primary dashboard-wrap data-source-radio"         ng-repeat="field in sourceUi.tableData" ng-click="commonUi.onSelectClassRow(field)">
+                                            <li class="pull-left dashboard-name">{{field.name}}</li>
+                                        </md-radio-button>
+                                    </md-radio-group>
+                                </div>
+                            </v-pane-content>
+                        </v-pane>                       
+                    </v-accordion>
                 </div>
             </div>
-            <!--div class="cmds-btn-footer">
-                <div class="cmds-btn-footer m-top-10">
-                        <span class="btn btn-block btn-default btn-close"
-                              ng-click="commonUi.onClickNext('2')" ng-disabled="!sourceUi.selectedNameSpace"
-                              ng-if="commonUi.isServiceError==false">
-                            next
-                        </span>
-                        <span class="btn btn-block btn-default"
-                            ng-click="commonUi.onClickBack('2')">
-                            back
-                        </span>
-                </div>
-            </div-->
 			 <div layout="row" layout-align="space-between center">
 				<md-button md-no-ink class="md-raised"  ng-click="commonUi.onClickBack('2')"><span style="text-transform:none;color:black">Back</span></md-button> 
 				<span flex></span>   				

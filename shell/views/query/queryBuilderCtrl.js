@@ -2558,9 +2558,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 //get highest level
                 var database = $scope.sourceData.src;
                 var tbl = $scope.sourceData.tbl;
+                var id = $scope.sourceData.id;
                 var fieldstr = fieldArray.toString();
                 if (database == "BigQuery") {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database;
+                } else if (database == "MSSQL") {
+                    var query = $diginurls.diginengine + "generateboxplot?q=[{'" + tbl + "':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=" + id;
                 } else {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'" + tbl + "':[" + fieldstr + "]}]&dbtype=" + database;
                 }
@@ -2745,12 +2748,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var c = $scope.commonData.columns[0].filedName;
             var database = $scope.sourceData.src;
             var tbl = $scope.sourceData.tbl;
+            var id = $scope.sourceData.id;
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
             } else if (database == "postgresql") {
                 var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
             } else {
-                var query = $diginurls.diginengine + "generatebubble?&table=[" + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatebubble?&table=[" + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_config_id=" + id;
             }
             //get highest level
             $scope.client.generateBubble(query, function(data, status) {
@@ -2891,10 +2895,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
             var database = $scope.sourceData.src;
             var tbl = $scope.sourceData.tbl;
+            var id = $scope.sourceData.id;
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
             } else if (database == "MSSQL") {
-                var query = $diginurls.diginengine + "generatehist?q=[{'[" + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatehist?q=[{'[" + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=" + id;
             } else {
                 var query = $diginurls.diginengine + "generatehist?q=[{'" + tbl + "':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
             }
@@ -3071,7 +3076,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
 
         //get highest level
-        $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(), function(data, status) {
+        $scope.client.getHighestLevel($scope.sourceData.tbl, fieldArray.toString(), $scope.sourceData.id, function(data, status) {
             var hObj = {};
             var id;
             if (status) {
@@ -3079,9 +3084,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     hObj[entry.value] = entry.level;
                 });
                 var tbl = $scope.sourceData.tbl;
+                var id = $scope.sourceData.id;
                 var measure = $scope.executeQryData.executeMeasures[0].filedName;
                 var aggData = $scope.executeQryData.executeMeasures[0].condition;
-                $scope.client.getHierarchicalSummary(hObj,measure,aggData,tbl, function(data, status) {
+                $scope.client.getHierarchicalSummary(hObj,measure,aggData,tbl,id, function(data, status) {
                     $scope.TochartData = angular.copy(data);
                     if (status) {
                         if ($scope.selectedChart.chartType == "d3hierarchy"){
@@ -3279,7 +3285,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl;
                 }
                 console.log("query", query);
-                $scope.client.getExecQuery(query, function(data, status) {
+                $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
                     $scope.summaryData = data;
                     $scope.eventHndler.isLoadingChart = false;
                 }, $scope.initRequestLimit.value);
@@ -3358,7 +3364,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
             else if (db == 'MSSQL')
                 query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $scope.sourceData.tbl;
-            $scope.client.getExecQuery(query, function(res, status, query) {
+            $scope.client.getExecQuery(query,  $scope.sourceData.id, function(res, status, query) {
                 if (status) {
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isToggleColumns = true;
@@ -3584,7 +3590,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     agg: key.condition
                 });
             });
-            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
+            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
                 if (status) {
                     if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
                         $scope.dataToBeBind.receivedQuery = "";
@@ -3644,7 +3650,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 });
             });
         }
-        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
+        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
             if (status) {
                 // filter only the selected fields from the result returned by the service
                 filterService.filterAggData(res, $scope.sourceData.filterFields);
@@ -3736,7 +3742,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.executeQryData.executeColumns.forEach(function(key) {
             catArr.push('"' + key.filedName + '"');
         });
-        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
+        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), $scope.sourceData.id, function(res, status) {
             if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
                 $scope.dataToBeBind.receivedQuery = "";
                 $scope.isPendingRequest = false;
@@ -3767,7 +3773,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         filedName: res[i].value
                     });
                 }
-                $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res, status, query) {
+                $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
 
                     // filter only the selected fields from the result returned by the service
                     filterService.filterAggData(res, $scope.sourceData.filterFields);
@@ -3892,7 +3898,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                 // Show the loading label
                                 chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
                                 //aggregate method
-                                clientObj.getAggData(srcTbl, fields, 100, function(res, status, query) {
+                                clientObj.getAggData(srcTbl, fields, 100, $scope.sourceData.id, function(res, status, query) {
                                     if (status) {
                                         $scope.drillDownConfig["level"+(level+1)+"Query"] = query;
                                         // filter only the selected fields from the result returned by the service
@@ -4022,7 +4028,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.executeQryData.executeColumns.forEach(function(key) {
             catArr.push('"' + key.filedName + '"');
         });
-        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), function(res, status) {
+        $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), $scope.sourceData.id,function(res, status) {
             if (status) {
                 var serArr = [];
                 var serMainArr = [];
@@ -4034,7 +4040,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
                 function syncDrill(i, res) {
                     if (i < res.length) {
-                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res1, status, query) {
+                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res1, status, query) {
                             if (status) {
 
                                 var serNameKey = "";
@@ -4063,7 +4069,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                     if (j < res1.length) {
                                         var con = res[i].value + "='" + res1[j][res[i].value] + "'";
                                         var drillSerArr = [];
-                                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, function(res2, status, query) {
+                                        $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res2, status, query) {
                                             if (status) {
                                                 var dserNameKey = "";
                                                 var dserValKey = "";
@@ -4166,7 +4172,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         // privateFun.isQrySyntaxError(query);
         if (typeof query != "undefined") {
             $scope.eventHndler.isLoadingChart = true;
-            $scope.client.getExecQuery(query, function(res, status, query) {
+            $scope.client.getExecQuery(query,  $scope.sourceData.id, function(res, status, query) {
                 var cat = "";
                 var measureArr = [];
                 if (status) {

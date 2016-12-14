@@ -429,7 +429,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
                             query = "SELECT [" + key.filter.name + "] FROM " + widget.widgetData.commonSrc.src.tbl + " GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
                         }
-                        $scope.client.getExecQuery(query, function(data, status){
+                        $scope.client.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status){
                             if (status) {
                                 key["values"] = [];
                                 data.sort(function(a,b){return a[key.filter.name] - b[key.filter.name]});
@@ -568,7 +568,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 //Apply filters to metric widget
                 $scope.filterMetricWidget(widget,filterStr);
             } else {
-                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, function(res, status, query) {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                     if (status) {
                         var color = [];
                         var name = [];
@@ -612,7 +612,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var metricSuccess = false;
             var metricValue, targetValue;
             if (widget.widgetData.commonSrc.target.length == 1) {
-                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.target, undefined, function(res, status, query) {
+                $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.target, undefined, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                     if (status) {
                         targetRequest = true;
                         targetSuccess = true;
@@ -622,6 +622,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             if (targetSuccess && metricSuccess) {
                                 // call sync method
                                 $scope.setValues(widget.widgetData,metricValue,targetValue);
+                                widget.widgetData.filteredState = true;
                             } else {
                                 $scope.$apply(function(){
                                     notifications.toast('0', 'Error Occured!Please try again!');
@@ -637,7 +638,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 targetRequest = true;
                 targetSuccess = true;
             }
-            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, undefined, function(res, status, query) {
+            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, undefined, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                 if (status) {
                     metricRequest = true;
                     metricSuccess = true;
@@ -647,6 +648,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (targetSuccess && metricSuccess) {
                             // call sync method
                             $scope.setValues(widget.widgetData,metricValue,targetValue);
+                            widget.widgetData.filteredState = true;
                         } else {
                             $scope.$apply(function(){
                                 notifications.toast('0', 'Error Occured!Please try again!');
@@ -1140,7 +1142,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 }
                             }
                             //aggregate method
-                            clientObj.getAggData(srcTbl, fields, limit, function(res, status, query) {
+                            clientObj.getAggData(srcTbl, fields, limit, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                                 filterService.filterAggData(res,widget.widgetData.commonSrc.src.filterFields);
                                 angular.forEach( widget.widgetData.highchartsNG.series, function(series) {
                                     if ( series.name == selectedSeries ) {

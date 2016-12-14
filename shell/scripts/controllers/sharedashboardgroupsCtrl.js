@@ -1,4 +1,4 @@
-routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootScope', '$http','notifications','Digin_Engine_API','$state', function( $scope, $mdDialog,$rootScope, $http,notifications,Digin_Engine_API,$state ) {
+routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootScope', '$http','notifications','Digin_Engine_API','$state','apis_Path', function( $scope, $mdDialog,$rootScope, $http,notifications,Digin_Engine_API,$state,apis_Path ) {
 
     $scope.users =[];
     $scope.groups=[];
@@ -10,7 +10,7 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
 
     
 
-    $http.get('/apis/usercommon/getSharableObjects')
+    $http.get(apis_Path+'usercommon/getSharableObjects')
        .then(function(result) {
 
             $scope.isVisble= true;

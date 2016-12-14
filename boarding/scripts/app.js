@@ -9,7 +9,7 @@ app.config(["$httpProvider", function ($httpProvider) {
 }]);
 
 
-app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API) {
+app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path) {
 
     var vm = this;
 
@@ -316,7 +316,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                
                 $http({
                     method: 'GET',
-                    url: "/apis/usertenant/tenant/" + tenant.name + '.' + Digin_Domain,
+                    url: apis_Path+"usertenant/tenant/" + tenant.name + '.' + Digin_Domain,
                     headers: {
                         'Content-Type': 'application/json'
                     } 
@@ -466,7 +466,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         
         $http({
             method: 'POST',
-            url: '/apis/usertenant/tenant/',
+            url: apis_Path+'usertenant/tenant/',
             data: angular.toJson($scope.tenantDtl),
             headers: {
                 'Content-Type': 'application/json'

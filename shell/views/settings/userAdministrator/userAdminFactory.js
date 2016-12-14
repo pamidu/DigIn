@@ -1,4 +1,4 @@
-routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API','pouchDB', function($rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API,pouchDB) {
+routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API','pouchDB','apis_Path','auth_Path', function($rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API,pouchDB,apis_Path,auth_Path) {
 	var cache = {};
 	
 	return {
@@ -6,7 +6,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 			 notifications.startLoading("Inviting user, Please wait..");
              //return the promise directly.
 			 //http://testfirst1t.qa.duoworld.com/auth/tenant/AddUser/chamila@duosoftware.com/user
-             return $http.get('/auth/tenant/AddUser/' + userEmail + '/user', {
+             return $http.get(auth_Path+'tenant/AddUser/' + userEmail + '/user', {
 					headers: {'Securitytoken': JSON.parse(decodeURIComponent(getCookie('authData'))).SecurityToken}
 				})
 			   .then(function(result) {
@@ -28,7 +28,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				//	callback(cache.invitedUsers);
 				//}else{
 					 ////return the promise directly.
-					 return $http.get('/apis/usercommon/getSharableObjects')
+					 return $http.get(apis_Path+'usercommon/getSharableObjects')
 					   .then(function(result) {
 							////return result.data;
 							var j=-1;
@@ -65,7 +65,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					callback(cache.allGroups);
 				}else{*/
 					 //return the promise directly.
-					 return $http.get('/apis/usercommon/getAllGroups')
+					 return $http.get(apis_Path+'usercommon/getAllGroups')
 					   .then(function(result) {
 							//return result.data;
 							cache = {};
@@ -81,7 +81,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				//notifications.startLoading("Adding User Group, Please wait..");
 				var req = {
 					method: "POST",
-					url: "/apis/usercommon/addUserGroup",
+					url: apis_Path+"usercommon/addUserGroup",
 					headers: {
 						"Content-Type": "application/json"
 						//"SecurityKey" : $auth.getSecurityToken()
@@ -103,7 +103,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 		}, addUserToGroup: function(userGroup) {
 				var req = {
 					method: "POST",
-					url: "/apis/usercommon/addUserToGroup",
+					url: apis_Path+"usercommon/addUserToGroup",
 					headers: {
 						"Content-Type": "application/json"
 					},
@@ -120,7 +120,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				});	
 		
 		},removeUserGroup: function(groupId) {
-			 return $http.get('/apis/usercommon/removeUserGroup/'+groupId) //jsons/everything.json
+			 return $http.get(apis_Path+'usercommon/removeUserGroup/'+groupId) //jsons/everything.json
 			   .then(function(result) {
 					//resolve the promise as the data
 					return result.data.Result;
@@ -141,7 +141,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 						
 			var req = {
 					method: "POST",
-					url: "/apis/usercommon/removeUserFromGroup",
+					url: apis_Path+"usercommon/removeUserFromGroup",
 					headers: {
 						"Content-Type": "application/json"
 					},
@@ -162,7 +162,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 		},removeInvitedUser:function(email){
 			
 			//http://hxllnisqyomailinfo.staging.digin.io/auth/tenant/RemoveUser/juafbeblvexc@dropmail.me
-			return $http.get('/auth/tenant/RemoveUser/'+email)
+			return $http.get(auth_Path+'tenant/RemoveUser/'+email)
 			   .then(function(result) {
 					//resolve the promise as the data
 					if(result.Error==true){
@@ -284,7 +284,7 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 			   //$http.get('http://chamila103.prod.digin.io/auth/tenant/Autherized/chamila103.prod.digin.io',{
                //$http.get(baseUrl+'/auth/tenant/Autherized/' + JSON.parse(decodeURIComponent(getCookie('tenantData')))[0].TenantID, {
 				//$http.get('/auth/tenant/Autherized/' + $rootScope.TenantID, {
-				$http.get('/auth/tenant/Autherized/' +  window.location.hostname, {	
+				$http.get(auth_Path+'tenant/Autherized/' +  window.location.hostname, {	
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})
 			   .then(function(result) {

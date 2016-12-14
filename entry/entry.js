@@ -66,8 +66,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','pouchDB','$cookies',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB,$cookies) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','pouchDB','$cookies','apis_Path','auth_Path','include_Path',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB,$cookies,apis_Path,auth_Path,include_Path) {
 
             var db = new PouchDB('login');
                 
@@ -185,7 +185,7 @@ routerApp
                 displayProgress();
                 $http({
                     method: 'POST',
-                    url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/login',
+                    url: 'http://'+Digin_Domain+apis_Path+'authorization/userauthorization/login',
                     //url: '/apis/authorization/userauthorization/login',
                     headers: {'Content-Type': 'application/json'},
                     data: $scope.signindetails
@@ -246,7 +246,7 @@ routerApp
                 $scope.checkStatus = function (cb) {
                     $http({
                         //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
-                        url: "/include/duoapi/paymentgateway/checkSubscription",
+                        url: include_Path+"duoapi/paymentgateway/checkSubscription",
                         method: "POST",
                         headers: {'Content-Type': 'application/json',
                                   'securityToken':Securitytoken }
@@ -321,7 +321,7 @@ routerApp
                 $scope.getUsageSummary = function (cb) {
                     $http({
                         method: 'GET',
-                        url:"http://"+Digin_Domain+ "/auth/tenant/GetTenants/" + SecurityToken,
+                        url:"http://"+Digin_Domain+ auth_Path+"tenant/GetTenants/" + SecurityToken,
                         headers: {'Content-Type': 'application/json'}
                     })
                     .success(function(data){
@@ -341,7 +341,7 @@ routerApp
                         }
                         else{
                             $http({method: 'GET', 
-                            url: 'http://'+Digin_Domain+'/auth/GetSession/'+SecurityToken+'/'+data[0].TenantID, 
+                            url: 'http://'+Digin_Domain+auth_Path+'GetSession/'+SecurityToken+'/'+data[0].TenantID, 
                             headers: {'Securitytoken':SecurityToken}
                             })
                             .success(function (response) {
@@ -561,7 +561,7 @@ routerApp
 
 
             $scope.isUserExist = function (email, cb) {
-                $http.get('/auth/GetUser/' + email)
+                $http.get(auth_Path+'GetUser/' + email)
                     .success(function (response) {
                         cb(true);
                     }).error(function (error) {
@@ -617,7 +617,7 @@ routerApp
 
 
             $scope.ChangePassword=function(){
-                $http.get('http://'+Digin_Domain+'/auth/GetUser/'+$scope.email)
+                $http.get('http://'+Digin_Domain+auth_Path+'GetUser/'+$scope.email)
                     .success(function(response){
                         if(response.Error){
                             $mdDialog.hide();
@@ -637,7 +637,7 @@ routerApp
             };
 
             $scope.sendMail=function(){
-                $http.get('http://'+Digin_Domain+'/apis/authorization/userauthorization/forgotpassword/'+$scope.email)
+                $http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+$scope.email)
                 //http://digin.io/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
                 .success(function(response){
                     if(response.Success){
@@ -674,7 +674,7 @@ routerApp
                     //document.cookie = "securityToken=" + ($location.search()).x + "; path=/";                 
                     //document.cookie = "authData="+ encodeURIComponent("SecurityToken="+($location.search()).x+"Domain=pio.prod.digin.io") + "; path=/";           
                     if ($scope.newPassword === $scope.confirmNewPassword) {
-                        $http.get('/auth/ChangePassword/' + oid + '/' + encodeURIComponent($scope.newPassword))
+                        $http.get(auth_Path+'ChangePassword/' + oid + '/' + encodeURIComponent($scope.newPassword))
                             .success(function (data) {
 
                                 if (data.Error == "true") {
@@ -735,9 +735,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout',
+        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout) {
+                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path) {
 
 
             $scope.onClickSignIn = function () {
@@ -896,7 +896,7 @@ routerApp
                     
 
                     acceptRequest:function(email,token){
-                        $http.get('/apis/usertenant/tenant/request/accept/' + email + '/' + token, {
+                        $http.get(apis_Path+'usertenant/tenant/request/accept/' + email + '/' + token, {
                             headers: {'Content-Type':'application/json'}
                         })
                         .success(function (response) {
@@ -938,7 +938,7 @@ routerApp
                         $scope.error.isLoading = true;
                         $http({
                             method: 'POST',
-                            url: 'http://'+Digin_Domain+'/apis/authorization/userauthorization/userregistration',
+                            url: 'http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration',
                             //url: '/apis/authorization/userauthorization/userregistration',
                             data: angular.toJson($scope.user),
                             headers: {

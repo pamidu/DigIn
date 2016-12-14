@@ -174,7 +174,7 @@ $scope.inviteUser = function () {
 //#Update account ***
     $scope.openLogoUploadWindow = function () {
         $mdDialog.show({
-                controller: function fileUploadCtrl($scope, $rootScope, $mdDialog, fileUpload, $http, Upload) {
+                controller: function fileUploadCtrl($scope, $rootScope, $mdDialog, fileUpload, $http, Upload,apis_Path) {
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     var filename;
@@ -322,7 +322,7 @@ $scope.inviteUser = function () {
     //Get groups shared for specific apps //***
     $scope.viewGroupsInApp = function (appId, event) {
         //$http.get('http://digin.io/apis/usercommon/getUserFromGroup/'+app)
-        $http.get(baseUrl + '/apis/usercommon/getUserFromGroup/' + appId)
+        $http.get(baseUrl + apis_Path+'usercommon/getUserFromGroup/' + appId)
             .success(function (response) {
                 $scope.users = response;
             });
@@ -411,7 +411,7 @@ $scope.inviteUser = function () {
         };
         $http({
             method: 'POST',
-            url: baseUrl + '/apis/usercommon/addUserGroup',          
+            url: baseUrl + apis_Path+'usercommon/addUserGroup',          
             data: angular.toJson($scope.grpDtl)
         })
         .success(function (response) {
@@ -481,7 +481,7 @@ $scope.inviteUser = function () {
             };
             $http({
                 method: 'POST',
-                url: baseUrl+'/apis/usercommon/removeUserFromGroup',
+                url: baseUrl+apis_Path+'usercommon/removeUserFromGroup',
                 data: angular.toJson($scope.UsrDtl)
             })
                 .success(function (response) {
@@ -502,7 +502,7 @@ $scope.inviteUser = function () {
     //# Dashboard sharing 
     $scope.loadShareWindow = function (appId, appName) {    
         $scope.chk = function (cb) {
-            $http.get(baseUrl+'/apis/usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
+            $http.get(baseUrl+apis_Path+'usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
                 .success(function (response) {
                     $scope.pickedObj=response;
                      cb(true);
@@ -525,7 +525,7 @@ $scope.inviteUser = function () {
 
     $scope.viewSharedListWindow=function(appId, appName){
          $scope.chked = function (cb) {
-            $http.get(baseUrl+'/apis/usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
+            $http.get(baseUrl+apis_Path+'usercommon/loadUiShareData/APP_SHELL_MY_ACCOUNT')//+appName
                 .success(function (response) {
                     $scope.pickedObj=response;
                      cb(true);
@@ -684,7 +684,7 @@ $scope.inviteUser = function () {
             
             $http({
                 method: 'POST',
-                url: baseUrl+'/apis/usercommon/addUserToGroup',
+                url: baseUrl+apis_Path+'usercommon/addUserToGroup',
                 data: angular.toJson($scope.userDtl)
             })
                 .success(function (response) {
@@ -694,7 +694,7 @@ $scope.inviteUser = function () {
                     //}
 
                     
-                      $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                      $http.get(baseUrl + apis_Path+"usercommon/getAllGroups")
                         .success(function(data) 
                         {
                             console.log(data); 
@@ -1063,7 +1063,7 @@ $scope.inviteUser = function () {
     $scope.viewUserProfile=function(){
         var baseUrl = "http://" + window.location.hostname;
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com') 
-        $http.get(baseUrl+'/apis/profile/userprofile/'+$scope.username)
+        $http.get(baseUrl+apis_Path+'profile/userprofile/'+$scope.username)
             .success(function(response){
                 console.log(response);
                 //#load exisitging data
@@ -1567,7 +1567,7 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
             
             $http({
                 method: 'POST',
-                url: baseUrl+'/apis/usercommon/addUserToGroup',
+                url: baseUrl+apis_Path+'usercommon/addUserToGroup',
                 //url: 'http://omalduosoftwarecom.prod.digin.io/apis/usercommon/addUserToGroup',
                 data: angular.toJson($scope.userDtl)
             })
@@ -1581,7 +1581,7 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
 
                     
                     //$http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups")
-                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                    $http.get(baseUrl + apis_Path+"usercommon/getAllGroups")
                         .success(function(data) 
                         {
                             console.log(data); 
@@ -1654,7 +1654,7 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
             $http({
                 method: 'POST',
                 //url: 'http://omalduosoftwarecom.prod.digin.io/apis/usercommon/removeUserFromGroup',
-                url: baseUrl+'/apis/usercommon/removeUserFromGroup',
+                url: baseUrl+apis_Path+'usercommon/removeUserFromGroup',
                 data: angular.toJson($scope.UsrDtl)
             })
                 .success(function (response) {
@@ -1687,7 +1687,7 @@ routerApp.controller('userGroupsCtrl',['$scope','$http','$rootScope', '$mdDialog
             .cancel('No!');
         $mdDialog.show(confirm).then(function () {
             //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/removeUserGroup/'+group)
-            $http.get(baseUrl+'/apis/usercommon/removeUserGroup/'+group)
+            $http.get(baseUrl+apis_Path+'usercommon/removeUserGroup/'+group)
                 .success(function (response) {
                     $rootScope.sharableGroupsDtls.splice(index, 1);
                     $rootScope.groups.splice(index, 1);

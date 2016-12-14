@@ -1,4 +1,4 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','auth_Path', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,auth_Path){
 	var vm = this;
 	
 	
@@ -124,7 +124,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 
 	$scope.getStatus=function(email,j){
 		$scope.chk = function (cb) {
-			$http.get('/auth/GetUser/' + email)
+			$http.get(auth_Path+'GetUser/' + email)
 				.success(function (response) {
 					$scope.aciveStatus=response.Active;
 					 cb(true);

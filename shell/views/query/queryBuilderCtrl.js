@@ -1899,7 +1899,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.widget.widgetData.namespace = namespace;
         }
 
-        $scope.client.getForcast($scope.forecastObj.paramObj,$scope.widget.widgetData,"", function(data, status, fObj) {
+        $scope.client.getForcast($scope.forecastObj.paramObj,$scope.widget.widgetData,"",$scope.sourceData.id, function(data, status, fObj) {
 
             if (status) {
                 var forcastArr = [];
@@ -2391,7 +2391,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
         
 
-        $scope.client.getForcast(fObj,$scope.widget.widgetData,"", function(data, status, fObj) {
+        $scope.client.getForcast(fObj,$scope.widget.widgetData,"",$scope.sourceData.id, function(data, status, fObj) {
             if (status) {
                 var forcastArr = [];
                 var serArr = [];

@@ -2610,7 +2610,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 var id = $scope.sourceData.id;
                 var fieldstr = fieldArray.toString();
                 if (database == "BigQuery") {
-                    var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database;
+                    var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
                 } else if (database == "MSSQL") {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'" + tbl + "':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=" + id;
                 } else {
@@ -2799,7 +2799,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var tbl = $scope.sourceData.tbl;
             var id = $scope.sourceData.id;
             if (database == "BigQuery") {
-                var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "postgresql") {
                 var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
             } else {
@@ -2946,7 +2946,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var tbl = $scope.sourceData.tbl;
             var id = $scope.sourceData.id;
             if (database == "BigQuery") {
-                var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=" + id;
             } else {
@@ -3413,19 +3413,26 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var nameSpace = row.name + '_' + field.filedName;
             var db = $scope.sourceData.src;
             var query;
-            if (db == 'BigQuery')
-                query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
-            else if (db == 'MSSQL')
-                query = "SELECT " + row.name + "(" + field.filedName + ") AS " + nameSpace + " FROM " + $scope.sourceData.tbl;
-            $scope.client.getExecQuery(query,  $scope.sourceData.id, function(res, status, query) {
+            var filterStr = "";
+            var fieldArr = [{
+                field: field.filedName,
+                agg: row.name
+            }]
+            // apply design mode filters to metric
+            var filterArray = [];
+            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields);
+            if (filterArray.length > 0) {
+                filterStr = filterArray.join( ' And ');
+            }
+            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
                 if (status) {
                     $scope.isPendingRequest = false;
                     $scope.eventHndler.isToggleColumns = true;
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.selectedChart.initObj.targetQuery = query;
                     $scope.$apply(function() {
-                        $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
-                        $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace],2).toLocaleString();
+                        $scope.selectedChart.initObj.targetValue = res[0][nameSpace.toLowerCase()];
+                        $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace.toLowerCase()],2).toLocaleString();
                     })
                 } else {
                     $scope.isPendingRequest = false;
@@ -3433,7 +3440,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.eventHndler.isLoadingChart = false;
                     executeQryData.executeTargetField = [];
                 }
-            });            
+            },undefined,filterStr);         
         },
         executeQuery: function(cat, res, query) {
             for (var c in res[0]) {
@@ -3643,9 +3650,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     agg: key.condition
                 });
             });
+            // apply design mode filters to metric
+            var filterArray = [];
+            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields);
+            if (filterArray.length > 0) {
+                var filterStr = filterArray.join( ' And ');
+            }
             $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
                 if (status) {
-                    if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                    if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0) {
                         $scope.dataToBeBind.receivedQuery = "";
                         $scope.isPendingRequest = false;
                         $scope.eventHndler.isLoadingChart = false;
@@ -3661,7 +3674,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.eventHndler.isLoadingChart = false;
                     privateFun.fireMessage('0', 'request failed');
                 }
-            });
+            },undefined,filterStr);
         } else {
             row = $scope.executeQryData.executeColumns[0].filedName;
             $scope.getGroupedAggregation(row);

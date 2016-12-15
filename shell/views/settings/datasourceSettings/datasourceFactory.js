@@ -23,7 +23,7 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
         testConnection: function(securityToken,reqParam) {
             return $http({
                 method: 'GET',
-                url: 'http://192.168.0.115:8080/' + 'test_database_connection?' + 
+                url: Digin_Engine_API + 'test_database_connection?' + 
                 'SecurityToken=' + securityToken +
                 '&hostname=' + reqParam.host + 
                 '&port=' + reqParam.port +

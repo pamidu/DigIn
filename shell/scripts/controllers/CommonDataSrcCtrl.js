@@ -33,7 +33,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
         $scope.show = false;
         $scope.filterMenuStatus = false;
         $scope.fieldObjects = [];
-        $scope.MSSQLid = '';
+        $scope.datasourceId = '';
         //data base field type
         $scope.dataBaseFiledTypes = [{
             'type': 'nvarchar',
@@ -301,6 +301,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                             FieldType : field.type
                                         })
                                     })
+                                    $scope.datasourceId = $scope.allTables[i].datasource_id;
                                     callback(tables,true);
                                     break;
                                 }
@@ -322,7 +323,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                             var saveName = "MSSQL" + tbl;
                             if (localStorage.getItem(saveName) === null ||
                                 localStorage.getItem(saveName) === "undefined") {
-                                $scope.client.getMSSQLFields(tbl, $scope.MSSQLid ,function(data, status) {
+                                $scope.client.getMSSQLFields(tbl, $scope.datasourceId ,function(data, status) {
                                     callback(data, status);
                                     localStorage.setItem(saveName, JSON.stringify(data));
                                 });
@@ -469,7 +470,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                 if ( $scope.sourceUi.selectedSource != null ){
                     $csContainer.fillCSContainer({
                         src: $scope.sourceUi.selectedSource,
-                        id: $scope.MSSQLid,
+                        id: $scope.datasourceId,
                         tbl: "",
                         fAttArr: "",
                         fMeaArr: ""
@@ -826,7 +827,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     $csContainer.fillCSContainer({
                         //                    wid: $scope.currWidget,
                         src: $scope.sourceUi.selectedSource,
-                        id: $scope.MSSQLid,
+                        id: $scope.datasourceId,
                         tbl: $scope.sourceUi.selectedNameSpace,
                         fAttArr: $scope.sourceUi.attrObj,
                         fMeaArr: $scope.sourceUi.mearsuresObj,
@@ -860,9 +861,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                 if ($scope.mssqlConnections.fields === undefined) {
                     $scope.isConnectionTablesLoading = true;
                     var client = $diginengine.getClient($scope.sourceUi.selectedSource);
-                    $scope.MSSQLid = $scope.mssqlConnections[index].ds_config_id;
+                    $scope.datasourceId = $scope.mssqlConnections[index].ds_config_id;
                     //call method to retrieve the tables
-                    client.getConnectionTables($scope.MSSQLid,function(data,status) {
+                    client.getConnectionTables($scope.datasourceId,function(data,status) {
                         if (status) {
                             $scope.isConnectionTablesLoading = false;
                             for (var i = 0; i < data.length; i++) {
@@ -954,7 +955,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                 } else if ($scope.sourceUi.selectedSource == "MSSQL") {
                     query = "SELECT " + name + " FROM " + table_name + " GROUP BY " + name + " ORDER BY " + name;
                 }
-                $scope.client.getExecQuery(query, $scope.MSSQLid, function(data, status) {
+                $scope.client.getExecQuery(query, $scope.datasourceId, function(data, status) {
                     if (status) {
                         var tempArray = [];
                         for (var res in data){

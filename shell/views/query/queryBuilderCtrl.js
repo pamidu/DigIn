@@ -2610,7 +2610,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 var id = $scope.sourceData.id;
                 var fieldstr = fieldArray.toString();
                 if (database == "BigQuery") {
-                    var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database;
+                    var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
                 } else if (database == "MSSQL") {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'" + tbl + "':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=" + id;
                 } else {
@@ -2799,7 +2799,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var tbl = $scope.sourceData.tbl;
             var id = $scope.sourceData.id;
             if (database == "BigQuery") {
-                var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "postgresql") {
                 var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
             } else {
@@ -2946,7 +2946,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var tbl = $scope.sourceData.tbl;
             var id = $scope.sourceData.id;
             if (database == "BigQuery") {
-                var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=" + id;
             } else {

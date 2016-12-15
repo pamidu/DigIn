@@ -177,7 +177,7 @@
                     }, query);
                 },
 
-                getForcast: function(fObj,widget,filters, cb, gb) {
+                getForcast: function(fObj,widget,filters,id, cb, gb) {
 
                     //check filters for undefine 
                     if(typeof filters == "undefined"){
@@ -231,8 +231,8 @@
                         "&group_by=" + fObj.forecastAtt +
                         "&filter="+filters+
                         "&dbtype=" + database+
-                        "&datasource_config="+ +
-                        "datasource_id="+ +);
+                        "&datasource_config_id="+ ""+
+                        "&datasource_id="+ id);
                       }
                       else
                       {
@@ -254,8 +254,8 @@
                         "&group_by=" + fObj.forecastAtt +
                         "&filter="+filters+
                         "&dbtype=" + database+
-                        "&datasource_config="+ +
-                        "datasource_id="+ +);
+                        "&datasource_config="+id +
+                        "&datasource_id="+ id);
                       }
 
                 }

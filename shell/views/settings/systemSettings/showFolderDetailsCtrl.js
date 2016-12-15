@@ -9,7 +9,9 @@ routerApp.controller('showFolderDetailsCtrl',function ($scope,$rootScope,$mdDial
 
   for(var i =0; i< $scope.folder.file_uploads.length; i++ ){
 
-    $scope.files.push($scope.folder.file_uploads[i]);
+    if($scope.folder.file_uploads[i].file_name != null){
+      $scope.files.push($scope.folder.file_uploads[i]);
+    }
   }
 
   $scope.getDate = function(datetime){

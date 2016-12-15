@@ -2048,7 +2048,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
  }]);
 
- routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant', function ($scope,$mdDialog,$http,Digin_Tenant,auth_Path) {
+ routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant','auth_Path', function ($scope,$mdDialog,$http,Digin_Tenant,auth_Path) {
 
     //$http.get(Digin_Tenant + '/tenant/GetTenants/' + '15430a361f730ec5ea2d79f60d0fa78e')
     $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))

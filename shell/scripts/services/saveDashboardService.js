@@ -21,6 +21,13 @@ var localThis = this;
       widgetsArray = retObj[0];
       dynamicWidgets = retObj[1];
 
+      //if the widget is a forecast remove filters from the widget
+      for(var w=0; w< $rootScope.dashboard.pages[i].widgets.length ;w++)
+      {
+        if($rootScope.dashboard.pages[i].widgets[w].widgetData.selectedChart.chart == "forecast")
+          $rootScope.dashboard.pages[i].widgets[w].widgetData.filterStr = "";
+      }
+
       //if the page is a temporary / new page 
       if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp" && $rootScope.online ){
         pageObject = {

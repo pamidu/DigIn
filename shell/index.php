@@ -336,6 +336,9 @@
 <script src="scripts/charts/treemap.js"></script>
 <script src="scripts/controllers/prediction/prediction.js"></script>
 
+<!--feature wise dashboardCtrl-->
+<script src="views/dashboard/dashboardCtrl.js"></script>
+
 <!--feature wise excelUpload-->
 <script src="views/widgets/excelFileUpload/excelFileUploadCtrl.js"></script>
 

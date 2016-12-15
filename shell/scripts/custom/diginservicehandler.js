@@ -230,7 +230,8 @@
                         "&group_by=" + fObj.forecastAtt +
                         "&filter="+filters+
                         "&dbtype=" + database+
-                        "&datasource_config_id=");
+                        "&datasource_config="+ +
+                        "datasource_id="+ +);
                       }
                       else
                       {
@@ -252,7 +253,8 @@
                         "&group_by=" + fObj.forecastAtt +
                         "&filter="+filters+
                         "&dbtype=" + database+
-                        "&datasource_config_id=");
+                        "&datasource_config="+ +
+                        "datasource_id="+ +);
                       }
 
                 }

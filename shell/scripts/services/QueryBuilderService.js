@@ -30,7 +30,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                     series = key.origName;
                 }
             })
-            cl.getExecQuery(obj.widData.drillConf.currentQuery, function(res, status, query) {
+            cl.getExecQuery(obj.widData.drillConf.currentQuery,obj.commonSrc.src.id, function(res, status, query) {
                 if(status) {
                     filterService.filterAggData(res,obj.commonSrc.src.filterFields);
                     angular.forEach(obj.commonSrc.att, obj.commonSrc.src.id, function(field){
@@ -158,7 +158,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
         }
         
         this.sync = function(q, cl, widObj, cb) {            
-            cl.getExecQuery(q, widObj.commonSrc.src.id, function(res, status, query){
+            cl.getExecQuery(q, widObj.commonSrc.src.src.id, function(res, status, query){
                 var cat = "";
                 var drilled;
                 if(status){

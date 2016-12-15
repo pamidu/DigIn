@@ -180,6 +180,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                             var type;
                             $scope.client.getTables(function(res, status) {
                                 if(status) {
+                                    $scope.allTables = res;
                                     angular.forEach(res,function(key) {
                                         if(key.upload_type == 'csv-directory') {
                                             type = 'ti-folder';
@@ -289,20 +290,33 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     $scope.sourceUi.selectedMeasures = [];
                     commonUi.isDataLoading = true;
                     commonUi.isServiceError = false;
+                    var tables = [];
                     switch ($scope.sourceUi.selectedSource) {
                         case "BigQuery":
-                            var saveName = "BigQuery" + tbl;
-                            if (localStorage.getItem(saveName) === null ||
-                                localStorage.getItem(saveName) === "undefined") {
-                                $scope.client.getFields(tbl, function(data, status) {
-                                    callback(data, status);
-                                    localStorage.setItem(saveName, JSON.stringify(data));
-                                });
-                            } else {
-                                var BigQueryFieldsString = localStorage.getItem(saveName);
-                                console.log(BigQueryFieldsString);
-                                callback(JSON.parse(BigQueryFieldsString), true);
+                            for(var i = 0; i < $scope.allTables.length; i++ ) {
+                                if ($scope.allTables[i].datasource_name == tbl) {
+                                    angular.forEach($scope.allTables[i].schema,function(field) {
+                                        tables.push({
+                                            Fieldname : field.name,
+                                            FieldType : field.type
+                                        })
+                                    })
+                                    callback(tables,true);
+                                    break;
+                                }
                             }
+                            // var saveName = "BigQuery" + tbl;
+                            // if (localStorage.getItem(saveName) === null ||
+                            //     localStorage.getItem(saveName) === "undefined") {
+                            //     $scope.client.getFields(tbl, function(data, status) {
+                            //         callback(data, status);
+                            //         localStorage.setItem(saveName, JSON.stringify(data));
+                            //     });
+                            // } else {
+                            //     var BigQueryFieldsString = localStorage.getItem(saveName);
+                            //     console.log(BigQueryFieldsString);
+                            //     callback(JSON.parse(BigQueryFieldsString), true);
+                            // }
                             break;
                             case "MSSQL":
                             var saveName = "MSSQL" + tbl;

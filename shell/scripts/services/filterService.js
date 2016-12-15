@@ -104,6 +104,7 @@ routerApp.service('filterService',function(){
         angular.forEach(filterParams,function(filter){
             tempFilterArray = [];
             tempStr = "";
+            // view mode filters
             if (filter.values !== undefined){
                 angular.forEach(filter.values,function(key){
                     if(key.status){
@@ -124,5 +125,35 @@ routerApp.service('filterService',function(){
         });
         return filterArray;        
     };
+
+    this.generateDesginFilterParams = function(filterParams){
+        var filterArray = [];
+        angular.forEach(filterParams,function(filter){
+            tempFilterArray = [];
+            tempStr = "";
+
+            // designs mode filters
+            if (filter.valueArray !== undefined){
+                if (filter.valueArray.length > 0) {
+                    angular.forEach(filter.valueArray,function(key){
+                        if(key.status){
+                            if (typeof key.value == 'number'){
+                                tempFilterArray.push(key.value);
+                            } else{
+                                tempFilterArray.push( "'" + key.value + "'");
+                            }
+                        }
+                    })
+                }
+            }
+            //if fields are seected, convert the array to string for the request
+            if(tempFilterArray.length > 0) {
+                tempFilterArray = tempFilterArray.toString();
+                tempStr = filter.name + " in ( " + tempFilterArray + " )";
+                filterArray.push(tempStr);
+            }
+        });
+        return filterArray;
+    }
 
 });

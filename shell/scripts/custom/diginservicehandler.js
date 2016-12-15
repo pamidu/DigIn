@@ -178,6 +178,11 @@
 
                 getForcast: function(fObj,widget,filters, cb, gb) {
 
+                    //check filters for undefine 
+                    if(typeof filters == "undefined"){
+                        filters ="";
+                    }
+
 
                     function formattedDate(date) {
 
@@ -245,7 +250,9 @@
                         "&start_date=" + startdate +
                         "&end_date=" + endDate +
                         "&group_by=" + fObj.forecastAtt +
-                        "&dbtype=" + database);
+                        "&filter="+filters+
+                        "&dbtype=" + database+
+                        "&datasource_config_id=");
                       }
 
                 }

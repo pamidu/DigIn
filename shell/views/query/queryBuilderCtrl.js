@@ -41,7 +41,14 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, chartServices) {
+routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, chartServices, layoutManager) {
+    if($rootScope.showHeader == true)
+   {
+    $rootScope.showHeader = layoutManager.showHeader();
+   }else{
+    $rootScope.showHeader = layoutManager.hideHeader();
+   }
+
     $scope.goDashboard = function() {
         $state.go('home.Dashboards');
     }

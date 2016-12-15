@@ -57,7 +57,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.executeQryData.executeMeasures = $scope.widget.widgetData.commonSrc.mea;
             $scope.executeQryData.executeColumns = $scope.widget.widgetData.commonSrc.att;
             $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.commonSrc.query;
-            $scope.executeQryData.executeFilters = $scope.widget.widgetData.commonSrc.filter;
+            if ($scope.selectedChart.chartType == 'forecast') {
+                $scope.executeQryData.executeForecastFilters = $scope.widget.widgetData.commonSrc.filter;    
+            } else {
+                $scope.executeQryData.executeFilters = $scope.widget.widgetData.commonSrc.filter;
+            }
             $scope.executeQryData.executeTargetField = $scope.widget.widgetData.commonSrc.target;
             if ($scope.selectedChart.chartType != 'metric' && $scope.selectedChart.chartType != 'highCharts') {
                 $scope.dynFlex = 90;
@@ -666,6 +670,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         executeMeasures: [],
         executeColumns: [],
         executeFilters: [],
+        executeForecastFilters: [],
         executeTargetField: [],
         chartType: '',
         electQry: [],
@@ -855,31 +860,59 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     if (filter.dataType == 'datetime' || filter.dataType == 'DATE' || filter.dataType == 'TIMESTAMP') {
                         type = 'date-' + type;
                     }
-                    angular.forEach(executeQryData.executeFilters, function(field) {
-                        if (field.filter.name == filter.name) {
-                            if (field.type == type) {
-                                privateFun.fireMessage('0', 'Duplicate record found in object');
-                            } else {
-                                field.type = type;
+                    if ($scope.selectedChart.chartType == 'forecast') {
+                        angular.forEach(executeQryData.executeForecastFilters, function(field) {
+                            if (field.filter.name == filter.name) {
+                                if (field.type == type) {
+                                    privateFun.fireMessage('0', 'Duplicate record found in object');
+                                } else {
+                                    field.type = type;
+                                }
+                                duplicateRecord = true;
                             }
-                            duplicateRecord = true;
-                        }
-                    });
+                        });
+                    } else {
+                        angular.forEach(executeQryData.executeFilters, function(field) {
+                            if (field.filter.name == filter.name) {
+                                if (field.type == type) {
+                                    privateFun.fireMessage('0', 'Duplicate record found in object');
+                                } else {
+                                    field.type = type;
+                                }
+                                duplicateRecord = true;
+                            }
+                        });
+                    }
+
                 }
                 if (duplicateRecord) {
                     return;
                 }
 
-                executeQryData.executeFilters.push({
-                    filter: {
-                        name: filter.name,
-                        id: filter.id
-                    },
-                    type: type
-                });
+                if ($scope.selectedChart.chartType == 'forecast') {
+                    executeQryData.executeForecastFilters.push({
+                        filter: {
+                            name: filter.name,
+                            id: filter.id
+                        },
+                        type: type
+                    });
+                } else {
+                    executeQryData.executeFilters.push({
+                        filter: {
+                            name: filter.name,
+                            id: filter.id
+                        },
+                        type: type
+                    });
+                }
             },
             removeFilter: function(filter) {
-                executeQryData.executeFilters.splice(executeQryData.executeFilters.indexOf(filter), 1);
+                if ($scope.selectedChart.chartType == 'forecast') {
+                    executeQryData.executeForecastFilters.splice(executeQryData.executeForecastFilters.indexOf(filter), 1);
+                } else {
+                    executeQryData.executeFilters.splice(executeQryData.executeFilters.indexOf(filter), 1);
+                }
             },
             onClickApply: function() {
                 this.isLoadingChart = true;
@@ -1180,14 +1213,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.dataToBeBind.receivedQuery = $scope.drillDownQuery;
             widget.widgetData.widData.drilled = true;
         }
+
         widget.widgetData["commonSrc"] = {
             src: $scope.sourceData,
             mea: $scope.executeQryData.executeMeasures,
             att: $scope.executeQryData.executeColumns,
             query: $scope.dataToBeBind.receivedQuery,
-            target: $scope.executeQryData.executeTargetField,
-            filter: $scope.executeQryData.executeFilters
+            target: $scope.executeQryData.executeTargetField
         };
+        if ($scope.selectedChart.chartType == 'forecast') {
+            widget.widgetData.commonSrc["filter"] = $scope.executeQryData.executeForecastFilters;
+        } else {
+            widget.widgetData.commonSrc["filter"] = $scope.executeQryData.executeFilters;
+        }
         widget.sizeX = 6;
         widget.sizeY = 21;
         var objIndex = getRootObjectById(widget.widgetID, widgets);
@@ -1200,9 +1238,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 mea: $scope.executeQryData.executeMeasures,
                 att: $scope.executeQryData.executeColumns,
                 query: $scope.dataToBeBind.receivedQuery,
-                target: $scope.executeQryData.executeTargetField,
-                filter: $scope.executeQryData.executeFilters
+                target: $scope.executeQryData.executeTargetField
             };
+            if ($scope.selectedChart.chartType == 'forecast') {
+                 $scope.widget.widgetData.commonSrc["filter"] = $scope.executeQryData.executeForecastFilters;
+            } else {
+                 $scope.widget.widgetData.commonSrc["filter"] = $scope.executeQryData.executeFilters;
+            }
             var objIndex = getRootObjectById(widget.widgetID, widgets);
             widgets[objIndex] = $scope.widget;
             console.log("$scope.widget", $scope.widget);

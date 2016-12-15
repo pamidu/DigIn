@@ -321,7 +321,7 @@
                                 <p class="data-row-style-2 hvr-sweep-to-right"
                                    markable ng-click="eventHndler.onClickFilter(Attr,'multiple')">
                                     Multiple Select
-                                </p>                                
+                                </p>
                             </v-pane-content>
                         </v-pane>
                     </v-accordion>  
@@ -341,9 +341,26 @@
                         </h3>
                     </div>
 
-                    <div class="measures-body">
+                    <div class="measures-body" ng-hide="selectedChart.chartType == 'forecast'">
                         <div class="draggable-measure data-row"
                              ng-repeat="filter in executeQryData.executeFilters">
+                            <i class="ti-close" ng-click="eventHndler.removeFilter(filter)"></i>
+                            <span>
+                              &nbsp;&nbsp;{{filter.filter.name}}
+                            </span>
+                            <div class="measures-type">
+                                {{filter.type}}
+                            </div>                            
+                        </div>
+                        <div class="filter-data-not-fund"
+                             ng-if="executeQryData.executeFilters.length < 1">
+                            <i class="ti-filter"></i>
+                            <h5>add filters</h5>
+                        </div>
+                    </div>
+                    <div class="measures-body" ng-show="selectedChart.chartType == 'forecast'">
+                        <div class="draggable-measure data-row"
+                             ng-repeat="filter in executeQryData.executeForecastFilters">
                             <i class="ti-close" ng-click="eventHndler.removeFilter(filter)"></i>
                             <span>
                               &nbsp;&nbsp;{{filter.filter.name}}

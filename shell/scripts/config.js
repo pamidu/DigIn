@@ -16,7 +16,7 @@
 
     //#for loggin process
     .constant('IsLocal', true)
-    .constant('Local_Shell_Path', 'http://localhost:8080/api/DigIn/shell')
+    .constant('Local_Shell_Path', 'http://localhost:8081/DigIn/shell')
     .constant('report_Widget_Iframe', 'http://dev.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
 
     //#apis folder path inside the html folder ** NOTE : if apis folder in -->html/apis/ then apis_path--> '/apis/'

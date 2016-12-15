@@ -158,7 +158,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
         }
         
         this.sync = function(q, cl, widObj, cb) {            
-            cl.getExecQuery(q, widObj.commonSrc.src.src.id, function(res, status, query){
+            cl.getExecQuery(q, widObj.commonSrc.src.id, function(res, status, query){
                 var cat = "";
                 var drilled;
                 if(status){

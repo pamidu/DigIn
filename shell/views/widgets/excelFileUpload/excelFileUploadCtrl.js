@@ -8,6 +8,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.uploadPreLoader = false;
     $scope.insertPreLoader = false;
     $scope.isExist = false;
+    $scope.is_first_try = 'True';
     $scope.selectedPath ="File";
     $scope.schemaCollection = [];
     $scope.progressPercentage = 0;
@@ -249,20 +250,20 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
             angular.forEach($scope.uploadedFiles,function(f){
                 if (fileName == f.file_name) {
                     duplicateflag = true;
-                    if ($scope.selectedPath == "File") $scope.datasource_id = f.upload_id;
+                    // if ($scope.selectedPath == "File") $scope.datasource_id = f.upload_id;
                 }
             });
-            if ($scope.selectedPath == "Folder") {
-                if ($scope.isExist) {
-                    console.log($scope.datasource_id);
-                }
-            }
-
+            // if ($scope.selectedPath == "Folder") {
+            //     if ($scope.isExist) {
+            //         console.log($scope.datasource_id);
+            //     }
+            // }
+            if ($scope.selectedPath == "File") $scope.datasource_id = '';
         });
         if (duplicateflag) {
             $scope.showConfirmBox(files,$scope);
         } else {
-            if ($scope.selectedPath == "File") $scope.datasource_id = '';
+            // if ($scope.selectedPath == "File") $scope.datasource_id = '';
             $scope.upload(files);
         }
     }
@@ -328,6 +329,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     }
 
                 }).then(function (data) {
+                    $scope.is_first_try = 'True';
                     if (data.data.Is_Success){
                         $scope.schema = data.data.Result;
                         angular.forEach($scope.schema,function(key){
@@ -344,6 +346,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     $scope.uploadPreLoader = false;
                     $scope.preloader = false;
                 }, function (data) {
+                    $scope.is_first_try = 'True';
                     uploadFlag = false;
                     notifications.toast('0', 'Error uploading file!');
                     $scope.uploadPreLoader = false;
@@ -393,9 +396,11 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                     filename: $scope.files[i].name,
                     folder_name: $scope.folderName.toLowerCase(),
                     folder_type: $scope.folder_type,
-                    datasource_id : $scope.datasource_id
+                    datasource_id : $scope.datasource_id,
+                    is_first_try : $scope.is_first_try
                 }
             }).then(function (data) {
+                $scope.is_first_try = 'False';
                 $scope.insertPreLoader = false;
                 if (data.data.Is_Success){
                     uploadFlag = true;

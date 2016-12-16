@@ -33,7 +33,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
             cl.getExecQuery(obj.widData.drillConf.currentQuery,obj.commonSrc.src.id, function(res, status, query) {
                 if(status) {
                     filterService.filterAggData(res,obj.commonSrc.src.filterFields);
-                    angular.forEach(obj.commonSrc.att, obj.commonSrc.src.id, function(field){
+                    angular.forEach(obj.commonSrc.att, function(field){
                         for(c in res[0]) {
                             if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                                 if (c == field.filedName) {

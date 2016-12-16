@@ -296,10 +296,12 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                             for(var i = 0; i < $scope.allTables.length; i++ ) {
                                 if ($scope.allTables[i].datasource_name == tbl) {
                                     angular.forEach($scope.allTables[i].schema,function(field) {
-                                        tables.push({
-                                            Fieldname : field.name,
-                                            FieldType : field.type
-                                        })
+                                        if ( field.name != "_index_id" && field.type != "integer" ) {
+                                            tables.push({
+                                                Fieldname : field.name,
+                                                FieldType : field.type
+                                            })
+                                        }
                                     })
                                     $scope.datasourceId = $scope.allTables[i].datasource_id;
                                     callback(tables,true);

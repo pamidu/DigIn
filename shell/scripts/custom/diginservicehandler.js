@@ -123,7 +123,7 @@
 
                 getExecQuery: function(qStr, id, cb, limit) {
                     var wSrc = "scripts/webworkers/webWorker.js";
-                    var limVal = 1000;
+                    var limVal = undefined;
                     if (limit) limVal = limit;
                     if (database == 'MSSQL')
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_config_id=" + id;

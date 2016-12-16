@@ -254,7 +254,7 @@
                         "&group_by=" + fObj.forecastAtt +
                         "&filter="+filters+
                         "&dbtype=" + database+
-                        "&datasource_config="+id +
+                        "&datasource_config_id="+id +
                         "&datasource_id="+ id);
                       }
 

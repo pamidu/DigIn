@@ -1317,8 +1317,7 @@ routerApp
                                     method: 'GET',
                                     url: 'http://'+Digin_Domain+apis_Path+"usertenant/tenant/" + tenantcode + '.' + Digin_Domain,
                                     headers: {
-                                        'Content-Type': 'application/json',
-                                        Securitytoken:
+                                        'Content-Type': 'application/json'
                                     } 
                                 })
                                 .success(function (response) {

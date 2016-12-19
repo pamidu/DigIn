@@ -9,7 +9,7 @@ app.config(["$httpProvider", function ($httpProvider) {
 }]);
 
 
-app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path,onsite) {
+app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path,onsite,dbType) {
 
     var vm = this;
 
@@ -158,7 +158,16 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     $scope.initializedDB=function(plan,ev){
         $scope.createDataSet = function (cb) {      
                 displayProgress('Initialising dataset...');
-                $scope.data = {"db": "bigquery"}
+                
+                if(dbType=="mssql"){
+                    $scope.data = {"db": "mssql"}
+                }
+                else if(dbType=="bigquery"){
+                    $scope.data = {"db": "bigquery"}
+                }
+                else{
+                    $scope.data = {"db": "bigquery"}
+                }
                 
                 $http({
                         method: 'POST',

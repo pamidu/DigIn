@@ -5,7 +5,7 @@
 //     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
 
 var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
-    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','pouchdb','ngCookies']);
+    , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','ngCookies']);
 
 
 routerApp
@@ -66,17 +66,11 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','pouchDB','$cookies','apis_Path','auth_Path','include_Path',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,pouchDB,$cookies,apis_Path,auth_Path,include_Path) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','$cookies','$filter','apis_Path','auth_Path','include_Path','onsite',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path,onsite) {
 
-            var db = new PouchDB('login');
-                
-            var doc_login = {
-              "_id": "login",
-              "initialLogin": "true"
-            };
-            db.put(doc_login);
-        
+
+            
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -182,6 +176,19 @@ routerApp
             //'Username password incorrect' User name or password incorrect, please try again. 
             $scope.login = function () {
 
+                if ($scope.signindetails.Username == '' || angular.isUndefined($scope.signindetails.Username)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Username is required..');
+                    $scope.error.isUserName = true;
+                    focus('$scope.signindetails.Username');
+                    return;
+                }
+                else if ($scope.signindetails.Password == '' || angular.isUndefined($scope.signindetails.Password)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
+                    $scope.error.isPwd = true;
+                    focus('$scope.signindetails.Password');
+                    return;
+                }
+
                 displayProgress();
                 $http({
                     method: 'POST',
@@ -192,11 +199,16 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
-                        
-
-                        //#check whether user is blocked or not
-                        $scope.checkUsage(data.Data.SecurityToken,data.Data);
-
+                        if(onsite){
+                            $scope.authData=data.Data.AuthData;
+                            $scope.token=data.Data.SecurityToken;
+                            //$scope.checkTenantName(tenantId);
+                            $scope.proceedLogin($scope.authData,$scope.token);
+                        }
+                        else{
+                            //#check whether user is blocked or not
+                            $scope.checkUsage(data.Data.SecurityToken,data.Data);
+                        }
                         
                         /*
                         //#loggin direct to shell
@@ -240,78 +252,417 @@ routerApp
             
 
 
-            //------------check subscriptions START-------------------------------
-  
-            $scope.checkSubscription = function(Securitytoken) {
+            //------------check Customer START-------------------------------
+            $scope.checkCustomer = function(Securitytoken, authData) {
+                $scope.checkCust = function (cb) {
+                    $http({ 
+                    //url :"http://prod.digin.io/include/duoapi/paymentgateway/getCustomerInformations",    
+                    url: 'http://'+Digin_Domain+include_Path+"duoapi/paymentgateway/getCustomerInformations",
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json',
+                              'securityToken':Securitytoken }
+                    }).then(function(response) {
+                        if (response.statusText == "OK") {
+                                console.log(response)
+                                $scope.custStatus = response.data.status;
+                                //$scope.custActive=response.data.data[0].active;
+                                cb(true);
+                        }
+                        else {
+
+                        }
+                    }, function(response) {
+                       cb(false);
+                    })
+                }
+
+                $scope.checkCust(function(data){
+                    if(data){                        
+                        $scope.checkSubscription(Securitytoken, authData);
+                    }
+                })
+
+            }
+            
+            //------------check Customer END-------------------------------
+
+
+            //------------check subscription START-------------------------------
+            $scope.checkSubscription = function(Securitytoken,authData) {
                 $scope.checkStatus = function (cb) {
                     $http({
-                        //url : "http://staging.digin.io/include/duoapi/paymentgateway/checkSubscription",
-                        url: include_Path+"duoapi/paymentgateway/checkSubscription",
+                        //url :"http://prod.digin.io/include/duoapi/paymentgateway/checkSubscription", 
+                        url: 'http://'+Digin_Domain+include_Path+"duoapi/paymentgateway/checkSubscription",
                         method: "POST",
                         headers: {'Content-Type': 'application/json',
                                   'securityToken':Securitytoken }
                     })
                     .success(function(response) {
-                        //console.log(response)
-                        if (response.statusText == "OK") {
-                            $scope.custStatus = response.data.status;
-                            cb(true);
-                        }
+                        $scope.subscriptionStatus = response.status;
+                        $scope.paymentStatus = response.response[0].status;
+                        $scope.createdDate=new Date(response.response[0].createdDate* 1000);
+                        $scope.currentPeriod=new Date(response.response[0].currentPeriod* 1000);
+                        $scope.currentPeriodEnd=new Date(response.response[0].currentPeriodEnd* 1000);
+                        $scope.existPackageInfo=response.response[0].otherInfo;
+                        
+                        cb(true);
                     }).error(function(error) {
                         console.log(response)
                         cb(false);
                     })
                 }
 
+
+
                 $scope.checkStatus(function(data){
                     if(data){
-                        if(!$scope.custStatus){ //if trial, need to chk remaining days
-                            $scope.checkTrialExpiry(Securitytoken);
-                        }
-                        else{//proceed with usage detail to check blocking status
+                        if($scope.custStatus){ //#if subscription status true
+                            //#check pay status "trialing","due"
+                            if($scope.paymentStatus=="trialing"){
+                                //#can login 
+                                $scope.proceedLogin(authData, Securitytoken);
+                            }
+                            else if($scope.paymentStatus=="due"){
+                                //#can login - show as payment pending state    
+                                $scope.proceedLogin(authData, Securitytoken);
+                            }
+                            else if($scope.paymentStatus=="active"){
+                                //#can login - show as payment pending state    
+                                $scope.proceedLogin(authData, Securitytoken);
+                            }
+                            else{
 
+                            }
+                            
+                        }
+                        else{
+                            //#if customer status false
+                            //#Account may be free/deacticated/cancelled/
+                                if($scope.subscriptionStatus==true){
+                                    //#Account deactivated
+                                    displayError("Your account has been deactivated...");
+                                }
+                                else{
+                                    if($scope.paymentStatus=="canceled"){
+                                        //#Account deactivated
+                                        displayError("Your account has been cancelled ...");
+                                    }
+                                    else{
+                                        //#This is free user
+                                        //$scope.checkTrialExpiry(authData,Securitytoken);
+                                        $scope.checkExpiry(authData,Securitytoken);
+                                    }
+                                }
                         }
 
                     }
-                })
-                
+                })                
             }
             
-
-
-   
-
-
-
-
+            $scope.proceedLogin=function(authData, token){
+                
+                $scope.comparePackage(token);
+                
+                //#loggin direct to shell
+                if(IsLocal==false) { 
+                    //#Added for live servers ------------------------------
+                    $window.location.href = "/s.php?securityToken=" + token;
+                }  
+                else{
+                //#Added for local host ------------------------------
+                     document.cookie = "securityToken=" + token + "; path=/";
+                     document.cookie = "authData=" + encodeURIComponent(JSON.stringify(authData)) + "; path=/";
+                     window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                }
+            }
 
 
             //------------check subscriptions END-------------------------------------
 
         
 
-            //#get trial expiry #//
-            
-            $scope.checkTrialExpiry=function(SecurityToken){
-                $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
-                .success(function(data) {
-                    $scope.PackageDetail=data.data.Result;
-                    if($scope.PackageDetail.length>0){ 
-                        for(i=0; i<$scope.PackageDetail.length; i++){
-                            if($scope.PackageDetail[i].package_name=="Free"){
-                                $scope.remainingDays=$scope.PackageDetail[i].remaining_days;
+            //------------compare subscription and digin package detail and update digin package detail to get actual expiry-------------------------------
+            $scope.checkExpiry = function(authData,SecurityToken) {
+                $scope.getExpiry = function (cb) {
+                    $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + SecurityToken)
+                    .success(function(data) {
+                        $scope.PackageDetail=data.Result;
+                        if($scope.PackageDetail.length>0){ 
+                            for(i=0; i<$scope.PackageDetail.length; i++)
+                            {
+                                if($scope.PackageDetail[i].package_name!="additional")
+                                {
+                                    $scope.remainingDays=$scope.PackageDetail[i].remaining_days;
+                                    i=$scope.PackageDetail.length;
+                                    cb(true);   
+                                }                               
                             }
                         }
-                    }
-                    else{
-                        $scope.remainingDays=30;
+                    
+                    })
+                    .error(function() {
+                        console.log("error");
+                    });
+                }
+
+                $scope.getExpiry(function(data){
+                    if(data){                        
+                        if($scope.remainingDays>0){
+                            $scope.proceedLogin(authData, SecurityToken);
+                        }
+                        else{
+                            //#trial period has been expired
+                            var confirm = $mdDialog.confirm()
+                                .title('Package subscription')
+                                .textContent('The trial period has been expired, subscribe a package to proceed. ')
+                                .ariaLabel('Lucky day')
+                                //.targetEvent(ev)
+                                .ok('Subscribe')
+                                .cancel('Cancel');
+                                $mdDialog.show(confirm).then(function() {
+                                    //*Go to My Account
+                                    //*If agreed to subscribe, direct myAccount page
+                                    mainFun.fireMsg(0, "direct only myAccount");
+                                    return; 
+                                }, function() {
+                                    //*Exit
+                                    //*if not going to update Exit from system
+                                    $scope.process="logout";
+                                    return;
+                                });     
+                        }
                     }
                 })
-                .error(function() {
-                    console.log("error");
+
+            }
+            
+            //------------check Customer END-------------------------------
+
+            
+            
+            $scope.comparePackage = function(SecurityToken) {
+                $scope.compare = function (cb) {
+                    $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + SecurityToken)
+                    .success(function(data) {
+                        $scope.PackageDetail=data.Result;
+
+                        $scope.dateDiff=0;
+                        
+                        if(data.Result.length!=0){
+                            if($scope.PackageDetail.length>0)
+                            { 
+                                for(i=0; i<$scope.PackageDetail.length; i++)
+                                {
+                                    if($scope.PackageDetail[i].package_name!="Free")
+                                    {
+                                        $scope.expiryDate=$scope.PackageDetail[i].expiry_datetime;
+                                        i=$scope.PackageDetail;
+                                    }
+                                }
+                                                    
+                                $scope.currentPeriodEnd=$filter('date')($scope.currentPeriodEnd, "yyyy/MM/dd");
+                                $scope.expiryDate=$filter('date')($scope.expiryDate, "yyyy/MM/dd");
+                                
+                                $scope.currentPeriodEnd=new Date($scope.currentPeriodEnd)
+                                $scope.expiryDate=new Date($scope.expiryDate)
+
+                                $scope.dateDiff=($scope.currentPeriodEnd-$scope.expiryDate)/(1000 * 60 * 60 * 24)
+                                        
+                                if($scope.dateDiff>1)
+                                {
+                                    $scope.additionaluser=0;
+                                    $scope.additionaldata=0;
+                                    $scope.additionalstorage=0;   
+                                    $scope.plan=[];
+
+                                    for(i=0; i<$scope.existPackageInfo.length; i++)
+                                    {                   
+                                        if($scope.existPackageInfo[i].tag=="Package")
+                                        {
+                                            if($scope.existPackageInfo[i].feature=="personal_space"){                                               
+                                                $scope.plan.name='Personal Space';
+                                                $scope.plan.package_id='1002';
+                                            }
+                                            else if($scope.existPackageInfo[i].feature=="mini_team"){
+                                                $scope.plan.name='We Are A Mini Team';
+                                                $scope.plan.package_id='1003';
+                                            }
+                                            else if($scope.existPackageInfo[i].feature="world"){                              
+                                                $scope.plan.name='We Are the World';
+                                                $scope.plan.package_id='1004';;
+                                            }
+                                            else{
+                                                $scope.plan.name='Free';
+                                                $scope.plan.package_id='1001';;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if($scope.existPackageInfo[i].tag=="user")
+                                            {
+                                                if($scope.existPackageInfo[i].action=="add")
+                                                {
+                                                    additionaluser=additionaluser+$scope.existPackageInfo[i].quantity;
+                                                }
+                                                if($scope.existPackageInfo[i].action=="remove")
+                                                {
+                                                    additionaluser=additionaluser-$scope.existPackageInfo[i].quantity;
+                                                }
+                                            }
+                                            else if($scope.existPackageInfo[i].tag=="data")
+                                            {
+                                                if($scope.existPackageInfo[i].action=="add")
+                                                {
+                                                    additionaldata=additionaldata+$scope.existPackageInfo[i].quantity;
+                                                }
+                                                if($scope.existPackageInfo[i].action=="remove")
+                                                {
+                                                    additionaldata=additionaldata-$scope.existPackageInfo[i].quantity;
+                                                }
+                                            }
+                                            else if($scope.existPackageInfo[i].tag=="storage")
+                                            {
+                                                if($scope.existPackageInfo[i].action=="add")
+                                                {
+                                                    additionalstorage=additionalstorage+$scope.existPackageInfo[i].quantity;
+                                                }
+                                                if($scope.existPackageInfo[i].action=="remove")
+                                                {
+                                                    additionalstorage=additionalstorage-$scope.existPackageInfo[i].quantity;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    cb(true);
+                                    
+                                }
+                                else{
+                                    
+                                    cb(true)
+                                }
+                                                                                    
+                            }
+                            else{
+                                cb(true)
+                            }
+                        }
+                        else{
+                           $scope.plan=[];
+                           $scope.plan.package_id='1001';
+                           $scope.plan.name='Free';
+                           $scope.AddMainPackageToDigin($scope.plan,SecurityToken);
+                        } 
+                    })
+                    .error(function() {
+                        //console.log("error");
+                    });
+                }
+            
+                $scope.compare(function(data){
+                    if(data){  
+                        if ($scope.dateDiff>1)   {
+                                $scope.AddMainPackageToDigin(SecurityToken);    
+                                $scope.AddAdditionalFeaturesToDigin(SecurityToken); 
+                        }   
+                        else{
+                            
+                        }                       
+                    }
+                })
+
+            }
+            
+            
+            //#Add main package to digin engine#//
+            $scope.AddMainPackageToDigin = function(SecurityToken) {
+                $scope.detail=[{
+                                "package_id":$scope.plan.package_id,
+                                "package_name":$scope.plan.name,
+                                "package_attribute": "",
+                                "package_value":0,
+                                "package_price":0,
+                                "is_default":true,
+                                "is_new": false
+                            }];
+                    
+                $http({
+                    method: 'POST',
+                    url: Digin_Engine_API + 'activate_packages/',
+                    data: angular.toJson($scope.detail),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'SecurityToken': SecurityToken
+                    }
+                })
+                .success(function(response) {  
+                    //console.log(response);
+                })
+                .error(function(data) {
+                    //console.log(data);
                 });
             }
 
+            //#Add additional features to digin engine#//
+            $scope.AddAdditionalFeaturesToDigin = function(SecurityToken) {
+                var objDigin=[];
+
+                if($scope.additionaluser!=0){
+                    var usersDigin = [{
+                        "package_id":null,
+                        "package_name":"additional",
+                        "package_attribute": "users",
+                        "package_value": parseInt($scope.additionaluser),
+                        "package_price": parseInt($scope.additionaluser)*5,
+                        "is_default":false,
+                        "is_new": true
+                    }];
+                    objDigin.push(usersDigin[0]); 
+                }
+                else if($scope.additionaldata!=0){
+                    var dataDigin = [{
+                        "package_id":null,
+                        "package_name":"additional",
+                        "package_attribute": "data",
+                        "package_value":parseInt($scope.additionaldata),
+                        "package_price": parseInt($scope.additionaldata)*10,
+                        "is_default":false ,
+                        "is_new":true
+                    }];
+                    objDigin.push(dataDigin[0]);
+                }
+                else if($scope.additionalstorage!=0){
+                    var storageDigin = [{
+                        "package_id":null,
+                        "package_name":"additional",
+                        "package_attribute": "storage",
+                        "package_value":parseInt($scope.additionalstorage),
+                        "package_price":parseInt($scope.additionalstorage)*8,
+                        "is_default":false ,
+                        "is_new":true
+                    }];
+                    objDigin.push(storageDigin[0]); 
+                }
+                
+                if(objDigin.length>0){
+                    $http({
+                        method: 'POST',
+                        url: Digin_Engine_API + 'activate_packages/',
+                        data: angular.toJson(objDigin),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'SecurityToken': SecurityToken
+                        }
+                    })
+                    .success(function(response) { 
+                        console.log(response);                  
+                    })
+                    .error(function(data) {
+                        console.log(data);
+                    });
+                }
+                
+            }
 
 
 
@@ -321,23 +672,29 @@ routerApp
                 $scope.getUsageSummary = function (cb) {
                     $http({
                         method: 'GET',
-                        url:"http://"+Digin_Domain+ auth_Path+"tenant/GetTenants/" + SecurityToken,
+                        url:"http://"+Digin_Domain+auth_Path+"tenant/GetTenants/" + SecurityToken,
                         headers: {'Content-Type': 'application/json'}
                     })
                     .success(function(data){
-                        if(data.length==0){
+                        if(data.length==0){ //#this is new customer tenant not yet created
                             //*This is a new user so, can't see usage details yet
                             //*continue with user login 
-                            $scope.process="login";
-                            cb(true);
-                            return;
+                            //$scope.process="login";
+                            //cb(true);
+                            //return;
+
+                            $scope.proceedLogin(result.AuthData,SecurityToken);
+
                         }
-                        else if(data[0].TenantID==null || data[0].TenantID==""){
+                        else if(data[0].TenantID==null || data[0].TenantID==""){  //#this is new customer tenant not yet created
                             //*This is a new user so, can't see usage details yet
                             //*continue with user login 
-                            $scope.process="login";
-                            cb(true);
-                            return;
+                            //$scope.process="login";
+                            //cb(true);
+                            //return;
+
+                             $scope.proceedLogin(result.AuthData,SecurityToken);
+
                         }
                         else{
                             $http({method: 'GET', 
@@ -346,53 +703,61 @@ routerApp
                             })
                             .success(function (response) {
                                 //#get usage summary------------------------------
-                                $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + SecurityToken)
+                                $rootScope.TenantSecToken=response.SecurityToken;
+                                $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + $rootScope.TenantSecToken)
                                 .success(function(data) {
                                     //#if user blocked 
-                                     if(data.Result.is_blocked){
+                                if(data.Result.exceed_blocked.storage==true || data.Result.exceed_blocked.data==true || data.Result.exceed_blocked.users==true ){
                                      //#Do what will do if blocked
+                                     var blockReason;
+                                     if(data.Result.exceed_blocked.storage==true){blockReason="storage";}
+                                     else if(data.Result.exceed_blocked.data==true){blockReason="data";}
+                                     else if(data.Result.exceed_blocked.users==true){blockReason="users";}
+                                     else{blockReason="";}
+                                     
                                             var confirm = $mdDialog.confirm()
                                             .title('Update Account')
-                                            .textContent('Currently your account have been blocked, please update user account')
+                                            .textContent('Currently your account have been blocked, please update '+blockReason)
                                             .ariaLabel('Lucky day')
                                             //.targetEvent(ev)
                                             .ok('Go to My Account')
                                             .cancel('Exit');
                                             $mdDialog.show(confirm).then(function() {
                                                 //*Go to My Account
-                                                //*If agreed to update direct myAccount 
+                                                //*If agreed to update, direct myAccount page
                                                 $scope.process="myAccount";
                                                 cb(true);
                                                 return;
                                                 
                                             }, function() {
                                                 //*Exit
-                                                //*if not going to update Exit system
+                                                //*if not going to update Exit from system
                                                 $scope.process="logout";
                                                 cb(true);
                                                 return;
                                             });     
                                      }
                                      //#if user not blocked
-                                     else{
+                                else
+                                {
                                         //*continue with user login 
-                                        $scope.process="login";
-                                        cb(true);
-                                        return;
-                                     }
-                                }).error(function() {
-                                    console.log("error");
+                                    $scope.process="login";
+                                    cb(true);
                                     return;
-                                });
-                                //------------------------------------------------
-                            }).error(function (error) {
+                                }
+                            }).error(function() {
                                 console.log("error");
                                 return;
                             });
-                        }
-                    }).error(function(error){
-                        console.log("error");
-                    });
+                                //------------------------------------------------
+                        }).error(function (error) {
+                            console.log("error");
+                            return;
+                        });
+                    }
+                }).error(function(error){
+                    console.log("error");
+                });
                 }
 
                 $scope.getUsageSummary(function(data){
@@ -408,17 +773,21 @@ routerApp
                             $window.location = "/logout.php";
                         }
                         else if($scope.process=="login"){
-                            //#loggin direct to shell
-                            if(IsLocal==false) { 
-                                //#Added for live servers ------------------------------
-                                $window.location.href = "/s.php?securityToken=" + SecurityToken;
-                            }  
-                            else{
-                            //#Added for local host ------------------------------
-                                 document.cookie = "securityToken=" + SecurityToken + "; path=/";
-                                 document.cookie = "authData=" + encodeURIComponent(JSON.stringify(result.AuthData)) + "; path=/";
-                                 window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
-                            }
+                            $scope.checkCustomer($rootScope.TenantSecToken,result.AuthData);
+                            
+                                /*
+                                //#loggin direct to shell
+                                if(IsLocal==false) { 
+                                    //#Added for live servers ------------------------------
+                                    $window.location.href = "/s.php?securityToken=" + SecurityToken;
+                                }  
+                                else{
+                                //#Added for local host ------------------------------
+                                     document.cookie = "securityToken=" + SecurityToken + "; path=/";
+                                     document.cookie = "authData=" + encodeURIComponent(JSON.stringify(result.AuthData)) + "; path=/";
+                                     window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
+                                }
+                                */
                         }
                         else
                         {
@@ -644,7 +1013,7 @@ routerApp
                         console.log(response);
                         $mdDialog.hide();
                         mainFun.fireMsg('1', "Successfully reset your password, please check your mail.");
-                        //displaySuccess('uccussfully reset your password, Please check your mail for new password...');
+                        //displaySuccess('Succussfully reset your password, Please check your mail for new password...');
                         $scope.email='';
                         $state.go('signin');
                     }
@@ -658,8 +1027,7 @@ routerApp
                     mainFun.fireMsg('0', error);
                 });     
             };
-
-        
+       
 
             //Send request to change password 
             $scope.submitPassword = function()
@@ -735,9 +1103,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path',
+        'Digin_Domain','Digin_Tenant', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path','auth_Path','include_Path','onsite',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path) {
+                  Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite) {
 
 
             $scope.onClickSignIn = function () {
@@ -936,10 +1304,18 @@ routerApp
                             //"Domain": signUpUsr.firstName + "." + Digin_Domain
                         };
                         $scope.error.isLoading = true;
+
+                        var regUrl;
+                        if(onsite){
+                            regUrl= Digin_Tenant+'/InvitedUserRegistration';
+
+                        }else{
+                            regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
+                        }
+
                         $http({
                             method: 'POST',
-                            url: 'http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration',
-                            //url: '/apis/authorization/userauthorization/userregistration',
+                            url: regUrl,
                             data: angular.toJson($scope.user),
                             headers: {
                                 'Content-Type': 'application/json'
@@ -949,39 +1325,59 @@ routerApp
                             //$scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
 
                             $scope.error.isLoading = false;
-                            //$state.go('signin');
 
-                            if (data.Success === false) {
+                            if(onsite){
+                                $scope.error.isLoading = false;
                                 $mdDialog.hide();
-                                if(data.Message=="Already Registered."){
-                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
-                                }else{
-                                    mainFun.fireMsg('0',data.Message);
-                                }                               
+                                $state.go('registered');    
                             }
-                            else { 
-                                // For invited users---------
-                                if($scope.freeze==true){
-                                    mainFun.acceptRequest(email,token);
-                                }
-                                else{
+                            else{
+
+                                //$state.go('signin');
+
+                                if (data.Success === false) {
                                     $mdDialog.hide();
-                                    $state.go('registered');    
+                                    if(data.Message=="Already Registered."){
+                                        mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
+                                    }else{
+                                        mainFun.fireMsg('0',data.Message);
+                                    }                               
+                                }
+                                else { 
+                                    // For invited users---------
+                                    if($scope.freeze==true){
+                                        mainFun.acceptRequest(email,token);
+                                    }
+                                    else{
+                                        $mdDialog.hide();
+                                        $state.go('registered');    
 
-                                    /*
-                                    mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                    $timeout(function () {
-                                       window.location = "http://"+Digin_Domain+"/entry";
-                                    }, 5000);
-                                    */
-                                    
-
+                                        /*
+                                        mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
+                                        $timeout(function () {
+                                           window.location = "http://"+Digin_Domain+"/entry";
+                                        }, 5000);
+                                        */                                   
+                                    }
                                 }
                             }
                         }).error(function (data, status) {
+
                             $scope.error.isLoading = false;
                             $mdDialog.hide();
-                            mainFun.fireMsg('0', 'Please Try again...!');
+                            
+                            if(onsite) {
+                                if(data=="Already Registered."){
+                                    mainFun.fireMsg('0','The username you entered is already registered, please try again!');
+                                }
+                                else{
+                                    mainFun.fireMsg('0', 'Please Try again...!');
+                                }
+                            }
+                            else{
+                                mainFun.fireMsg('0', 'Please Try again...!');
+                            }
+
                         });
                     },
                 }
@@ -993,58 +1389,111 @@ routerApp
 
                 console.log(signUpUsr);
                 //*validation
-                if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
-                    $scope.error.isFirstName = true;
-                    focus('firstName');
-                    return;
-                } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
-                    $scope.error.isLastName = true;
-                    focus('lastName');
-                    return;
+                if(onsite){              
+                    if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
+                        $scope.error.isFirstName = true;
+                        focus('firstName');
+                        return;
+                    } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
+                        $scope.error.isLastName = true;
+                        focus('lastName');
+                        return;
+                    }
+                    else if (signUpUsr.email == '') {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Username is required.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (angular.isUndefined(signUpUsr.email)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid username.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        $scope.error.isPassword = true;
+                        focus('password');
+                        return;
+                    }
+                    else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
+                        $scope.error.isPassword = true;
+                        $scope.error.isRetypeCnfrm = true;
+                        focus('cnfrmPwd');
+                        return;
+                    }
+                    else if(localStorage.getItem('termsNconditions')=="false")
+                    {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
+                        $scope.error.isagreed = true;
+                        focus('agreed');
+                        return;
+                    }
+                    else {
+                        displayProgress('User registration is processing.');
+                        mainFun.signUpUser();
+                    }     
                 }
-                else if (signUpUsr.email == '') {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
-                    $scope.error.isEmail = true;
-                    focus('email');
-                    return;
-                }
-                else if (angular.isUndefined(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
-                    $scope.error.isEmail = true;
-                    focus('email');
-                    return;
-                }
-                else if (!mainFun.validateEmail(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
-                    $scope.error.isEmail = true;
-                    focus('email');
-                    return;
-                }
-                else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
-                    $scope.error.isPassword = true;
-                    focus('password');
-                    return;
-                }
-                else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
-                    $scope.error.isPassword = true;
-                    $scope.error.isRetypeCnfrm = true;
-                    focus('cnfrmPwd');
-                    return;
-                }
-                else if(localStorage.getItem('termsNconditions')=="false")
-                {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
-                    $scope.error.isagreed = true;
-                    focus('agreed');
-                    return;
-                }
-                else {
-                    displayProgress('User registration is processing.');
-                    mainFun.signUpUser();
+                else{
+                    if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
+                        $scope.error.isFirstName = true;
+                        focus('firstName');
+                        return;
+                    } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
+                        $scope.error.isLastName = true;
+                        focus('lastName');
+                        return;
+                    }
+
+                    else if (signUpUsr.email == '') {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (angular.isUndefined(signUpUsr.email)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (!mainFun.validateEmail(signUpUsr.email)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+
+                    else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        $scope.error.isPassword = true;
+                        focus('password');
+                        return;
+                    }
+                    else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
+                        $scope.error.isPassword = true;
+                        $scope.error.isRetypeCnfrm = true;
+                        focus('cnfrmPwd');
+                        return;
+                    }
+                    else if(localStorage.getItem('termsNconditions')=="false")
+                    {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
+                        $scope.error.isagreed = true;
+                        focus('agreed');
+                        return;
+                    }
+                    else {
+                        displayProgress('User registration is processing.');
+                        mainFun.signUpUser();
+                    }
                 }
             };
 
@@ -1092,5 +1541,6 @@ routerApp.directive('passwordVerify', function () {
         });
     };
 });
+
 
 

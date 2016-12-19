@@ -3375,7 +3375,7 @@ routerApp.directive('countdownn', ['Util', '$interval', function(Util, $interval
 }]);
 
 
-routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','pouchDB', function($http, notifications, $rootScope,pouchDB,include_Path) {
+routerApp.service('paymentGatewaySvc', ['$http', 'notifications', '$rootScope','pouchDB','include_Path', function($http, notifications, $rootScope,pouchDB,include_Path) {
 
     var db = new PouchDB('packaging');
 

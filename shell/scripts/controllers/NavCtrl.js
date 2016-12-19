@@ -1915,7 +1915,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		
 		$scope.topMenuToggle = function()
 		{	
-			if($scope.showHeader == true)
+			if($rootScope.showHeader == true)
 			{
 				$rootScope.showHeader = layoutManager.hideHeader();
 			}else{

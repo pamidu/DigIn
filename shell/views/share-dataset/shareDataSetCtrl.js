@@ -281,48 +281,55 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                 "unshare_data":[]
             }
 
-          var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
-              $http({
-                  method: 'POST',
-                  url: Digin_Engine_API +'share_components',
-                  data: angular.fromJson(JSON.stringify(finalshareObj)),
-                  headers: {  
-                              'Content-Type': 'application/json',
-                              'SecurityToken': userInfo.SecurityToken
-                  }
-              })
-              .success(function(response){
-                 
-                  if(response.Is_Success == false){
-                     notifications.toast(0, response.Custom_Message);
-                }
-                else{
-                    notifications.toast(1, response.Custom_Message);
-                    $scope.loadFilesFolder();
-                    
-                    $scope.selectedUsersRead = [];
-                    $scope.selectedUsersWrite = []; 
+            if(finalshareObj.share_data.length > 0){
+
+                   var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+                  $http({
+                      method: 'POST',
+                      url: Digin_Engine_API +'share_components',
+                      data: angular.fromJson(JSON.stringify(finalshareObj)),
+                      headers: {  
+                                  'Content-Type': 'application/json',
+                                  'SecurityToken': userInfo.SecurityToken
+                      }
+                  })
+                  .success(function(response){
+                     
+                      if(response.Is_Success == false){
+                         notifications.toast(0, response.Custom_Message);
+                    }
+                    else{
+                        notifications.toast(1, response.Custom_Message);
+                        $scope.loadFilesFolder();
+                        
+                        $scope.selectedUsersRead = [];
+                        $scope.selectedUsersWrite = []; 
 
 
-                    $scope.selectedGroupRead = [];
-                    $scope.selectedGroupWrite = []; 
+                        $scope.selectedGroupRead = [];
+                        $scope.selectedGroupWrite = []; 
 
-                    $scope.selectedFiles = [];
-                    $scope.selectedFolders = [];
+                        $scope.selectedFiles = [];
+                        $scope.selectedFolders = [];
 
-                }
+                    }
 
-              })
-              .error(function(error){  
-                notifications.toast(0, "Error occurred during share, please try again");
-               
-              });
+                  })
+                  .error(function(error){  
+                    notifications.toast(0, "Error occurred during share, please try again");
+                   
+                  });
+
+            }else{
+              notifications.toast(0, "Your trying to share with already shared users or you dont have permition to share");
+            }
 
         }else if(($scope.selectedFiles.length +  $scope.selectedFolders.length) == 0){
            notifications.toast(0, "Please select a file or a folder");
         }else if(($scope.selectedUsersRead.length + $scope.selectedGroupRead.length) == 0){
           notifications.toast(0, "Please select a user or a group");
         }
+            }
 
       }
 
@@ -348,10 +355,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
               }
           }
 
-
-
           return shareObj;
-
 
       }
 

@@ -66,8 +66,8 @@ routerApp
 
 routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
-        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','$cookies','$filter','apis_Path','auth_Path','include_Path',
-        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path) {
+        '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','$cookies','$filter','apis_Path','auth_Path','include_Path','onsite',
+        function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path,onsite) {
 
 
             
@@ -176,6 +176,19 @@ routerApp
             //'Username password incorrect' User name or password incorrect, please try again. 
             $scope.login = function () {
 
+                if ($scope.signindetails.Username == '' || angular.isUndefined($scope.signindetails.Username)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Username is required..');
+                    $scope.error.isUserName = true;
+                    focus('$scope.signindetails.Username');
+                    return;
+                }
+                else if ($scope.signindetails.Password == '' || angular.isUndefined($scope.signindetails.Password)) {
+                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
+                    $scope.error.isPwd = true;
+                    focus('$scope.signindetails.Password');
+                    return;
+                }
+
                 displayProgress();
                 $http({
                     method: 'POST',
@@ -186,11 +199,16 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
-                        
-
-                        //#check whether user is blocked or not
-                        $scope.checkUsage(data.Data.SecurityToken,data.Data);
-
+                        if(onsite){
+                            $scope.authData=data.Data.AuthData;
+                            $scope.token=data.Data.SecurityToken;
+                            //$scope.checkTenantName(tenantId);
+                            $scope.proceedLogin($scope.authData,$scope.token);
+                        }
+                        else{
+                            //#check whether user is blocked or not
+                            $scope.checkUsage(data.Data.SecurityToken,data.Data);
+                        }
                         
                         /*
                         //#loggin direct to shell
@@ -1085,9 +1103,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path','auth_Path','include_Path',
+        'Digin_Domain','Digin_Tenant', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path','auth_Path','include_Path','onsite',
         function ($scope, $http, $state, focus,
-                  Digin_Domain, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path) {
+                  Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite) {
 
 
             $scope.onClickSignIn = function () {
@@ -1286,10 +1304,18 @@ routerApp
                             //"Domain": signUpUsr.firstName + "." + Digin_Domain
                         };
                         $scope.error.isLoading = true;
+
+                        var regUrl;
+                        if(onsite){
+                            regUrl= Digin_Tenant+'/InvitedUserRegistration';
+
+                        }else{
+                            regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
+                        }
+
                         $http({
                             method: 'POST',
-                            url: 'http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration',
-                            //url: '/apis/authorization/userauthorization/userregistration',
+                            url: regUrl,
                             data: angular.toJson($scope.user),
                             headers: {
                                 'Content-Type': 'application/json'
@@ -1299,39 +1325,59 @@ routerApp
                             //$scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
 
                             $scope.error.isLoading = false;
-                            //$state.go('signin');
 
-                            if (data.Success === false) {
+                            if(onsite){
+                                $scope.error.isLoading = false;
                                 $mdDialog.hide();
-                                if(data.Message=="Already Registered."){
-                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
-                                }else{
-                                    mainFun.fireMsg('0',data.Message);
-                                }                               
+                                $state.go('registered');    
                             }
-                            else { 
-                                // For invited users---------
-                                if($scope.freeze==true){
-                                    mainFun.acceptRequest(email,token);
-                                }
-                                else{
+                            else{
+
+                                //$state.go('signin');
+
+                                if (data.Success === false) {
                                     $mdDialog.hide();
-                                    $state.go('registered');    
+                                    if(data.Message=="Already Registered."){
+                                        mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
+                                    }else{
+                                        mainFun.fireMsg('0',data.Message);
+                                    }                               
+                                }
+                                else { 
+                                    // For invited users---------
+                                    if($scope.freeze==true){
+                                        mainFun.acceptRequest(email,token);
+                                    }
+                                    else{
+                                        $mdDialog.hide();
+                                        $state.go('registered');    
 
-                                    /*
-                                    mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                    $timeout(function () {
-                                       window.location = "http://"+Digin_Domain+"/entry";
-                                    }, 5000);
-                                    */
-                                    
-
+                                        /*
+                                        mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
+                                        $timeout(function () {
+                                           window.location = "http://"+Digin_Domain+"/entry";
+                                        }, 5000);
+                                        */                                   
+                                    }
                                 }
                             }
                         }).error(function (data, status) {
+
                             $scope.error.isLoading = false;
                             $mdDialog.hide();
-                            mainFun.fireMsg('0', 'Please Try again...!');
+                            
+                            if(onsite) {
+                                if(data=="Already Registered."){
+                                    mainFun.fireMsg('0','The username you entered is already registered, please try again!');
+                                }
+                                else{
+                                    mainFun.fireMsg('0', 'Please Try again...!');
+                                }
+                            }
+                            else{
+                                mainFun.fireMsg('0', 'Please Try again...!');
+                            }
+
                         });
                     },
                 }
@@ -1343,58 +1389,111 @@ routerApp
 
                 console.log(signUpUsr);
                 //*validation
-                if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
-                    $scope.error.isFirstName = true;
-                    focus('firstName');
-                    return;
-                } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
-                    $scope.error.isLastName = true;
-                    focus('lastName');
-                    return;
+                if(onsite){              
+                    if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
+                        $scope.error.isFirstName = true;
+                        focus('firstName');
+                        return;
+                    } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
+                        $scope.error.isLastName = true;
+                        focus('lastName');
+                        return;
+                    }
+                    else if (signUpUsr.email == '') {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Username is required.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (angular.isUndefined(signUpUsr.email)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid username.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        $scope.error.isPassword = true;
+                        focus('password');
+                        return;
+                    }
+                    else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
+                        $scope.error.isPassword = true;
+                        $scope.error.isRetypeCnfrm = true;
+                        focus('cnfrmPwd');
+                        return;
+                    }
+                    else if(localStorage.getItem('termsNconditions')=="false")
+                    {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
+                        $scope.error.isagreed = true;
+                        focus('agreed');
+                        return;
+                    }
+                    else {
+                        displayProgress('User registration is processing.');
+                        mainFun.signUpUser();
+                    }     
                 }
-                else if (signUpUsr.email == '') {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
-                    $scope.error.isEmail = true;
-                    focus('email');
-                    return;
-                }
-                else if (angular.isUndefined(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
-                    $scope.error.isEmail = true;
-                    focus('email');
-                    return;
-                }
-                else if (!mainFun.validateEmail(signUpUsr.email)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
-                    $scope.error.isEmail = true;
-                    focus('email');
-                    return;
-                }
-                else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
-                    $scope.error.isPassword = true;
-                    focus('password');
-                    return;
-                }
-                else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
-                    $scope.error.isPassword = true;
-                    $scope.error.isRetypeCnfrm = true;
-                    focus('cnfrmPwd');
-                    return;
-                }
-                else if(localStorage.getItem('termsNconditions')=="false")
-                {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
-                    $scope.error.isagreed = true;
-                    focus('agreed');
-                    return;
-                }
-                else {
-                    displayProgress('User registration is processing.');
-                    mainFun.signUpUser();
+                else{
+                    if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
+                        $scope.error.isFirstName = true;
+                        focus('firstName');
+                        return;
+                    } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
+                        $scope.error.isLastName = true;
+                        focus('lastName');
+                        return;
+                    }
+
+                    else if (signUpUsr.email == '') {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (angular.isUndefined(signUpUsr.email)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+                    else if (!mainFun.validateEmail(signUpUsr.email)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                        $scope.error.isEmail = true;
+                        focus('email');
+                        return;
+                    }
+
+                    else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        $scope.error.isPassword = true;
+                        focus('password');
+                        return;
+                    }
+                    else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
+                        $scope.error.isPassword = true;
+                        $scope.error.isRetypeCnfrm = true;
+                        focus('cnfrmPwd');
+                        return;
+                    }
+                    else if(localStorage.getItem('termsNconditions')=="false")
+                    {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Please read and accept the terms and conditions.');
+                        $scope.error.isagreed = true;
+                        focus('agreed');
+                        return;
+                    }
+                    else {
+                        displayProgress('User registration is processing.');
+                        mainFun.signUpUser();
+                    }
                 }
             };
 

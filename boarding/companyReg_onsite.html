@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <title>DigIn | Boarding Process</title>
+	<link rel="shortcut icon" href="./img/innerlogo.ico" type="image/png">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="styles/md-steppers.css">
+	<link rel="stylesheet" href="styles/bootstrap.css">
+	<link rel="stylesheet" href="styles/styles.css">
+	<style>
+	.enlarge_box
+	{
+		transform: scale(1.04, 1.04);
+	}
+
+	</style>
+</head>
+
+<body ng-controller="MainCtrl as vm" layout="row">
+    <md-content flex="nogrow" style="width:100%;">
+     
+
+                <md-stepper-card-content class="md-no-padding">
+                    <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="vm.selectedStep" md-busy-text="'Processing...'" md-busy="vm.showBusyText">
+                        <md-step label="Register Tenant" md-complete="vm.stepData[0].data.completed" ng-disabled="vm.stepProgress < 1">
+                            <md-step-body>
+                                <form name="step1" ng-submit="vm.submitCurrentStep(tenant)" novalidate>
+                                
+										<md-card class="form-container">
+										
+										<div class="setting-card-header">
+											<h2>Register Company</h2>
+											<div class="setting-img-wrap">
+												<img src="store.png"/>
+											</div>
+										</div>
+										
+										<div layout-gt-sm="column" class="side-margins">
+
+										  <md-input-container class="md-block" flex-gt-sm>
+											<span>Company name</span>
+											<input  name="tenantName" ng-model="tenant.name"  ng-pattern="/[a-zA-Z0-9]/"  ng-required="true"/>
+											<div ng-messages="step1.tenantName.$error" role="alert">
+												<div ng-message="required">
+													Comapy name is required.
+												</div>
+												<div ng-message="pattern">
+													Company name cannot contain only special characotors.
+												</div>
+											</div>
+										  </md-input-container>
+										  
+										  <!--md-input-container class="md-block" flex-gt-sm>
+											<span>Company Name</span>
+											<input required name="companyName" ng-model="tenant.company">
+											<div ng-messages="step1.companyName.$error">
+											  <div ng-message="required">Company name is required.</div>
+											</div>
+										  </md-input-container-->
+										  
+										  <md-input-container class="md-block" flex-gt-sm>
+											<span>Company address</span>
+											<input required name="companyAddress" ng-model="tenant.address">
+											<div ng-messages="step1.companyAddress.$error">
+											  <div ng-message="required">Address is required.</div>
+											</div>
+										  </md-input-container>
+
+										  <md-input-container class="md-block" flex-gt-sm>
+											<span>Number of Users</span>
+											<input type="number" min="1" step="1" required name="companyUsers" ng-model="tenant.users">
+											<div ng-messages="step1.companyUsers.$error">
+											  <div ng-message="required">Number of users are required.</div>
+											</div>
+										  </md-input-container>		
+
+										  
+										  <!--md-input-container class="md-block" flex-gt-sm>
+												<span>Business Model</span>
+												<md-select ng-model="tenant.businessModel" >
+													<md-optgroup label="Select business model">
+														<md-option  value="Sole Proprietorship" flex >Sole Proprietorship</md-option>
+														<md-option  value="Partnership" flex >Partnership</md-option>
+														<md-option  value="Corporation" flex >Corporation</md-option>
+													</md-optgroup>
+												</md-select>
+											</md-input-container-->
+										  
+										</div>
+										
+										
+										 <div flex layout="row" layout-align="end top"  class="side-margins">
+                                            <!--md-button class="md-warn">CANCEL</md-button-->
+                                            <md-button type="submit" ng-disabled="vm.showBusyText" class="md-raised next-btn">NEXT</md-button>
+                                        </div>
+										</md-card><br/>
+                                 
+                                    <md-step-actions layout="row">
+                                     
+                                    </md-step-actions>
+                                </form>
+                            </md-step-body>
+                        </md-step>
+						
+						
+						
+                        <md-step label="Select Package" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
+                            <md-step-body>
+                                <form name="step2">
+                                    <md-content class="md-padding">
+                                         <div layout="row" layout-align="center top" class="fadeIn">
+											
+										   <div layout="row" layout-align="center center">
+											   <md-card class="tint showbox pricePlanCard product_card" ng-repeat="plan in vm.companyPricePlans" ng-class="{selected: $index == selectedCard}" ng-click="vm.selectPlan($event,plan,$index)">
+															
+															  <center style="background:#06a7cf;color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
+															  <center style="background:#02b5e2;padding:10px;">
+																<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
+																	<span style="color:white;font-size:25px;">{{plan.sp}}</span>
+																	<span style="color:white;font-size:25px;">{{plan.currancy+plan.perMonth}}</span>
+																	<span style="color:white;font-size:12px;">{{plan.per}}</span>
+																</div>
+																<md-button class="md-fab md-mini" ng-disabled="false" aria-label="Comment" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-show="plan.isSelected == true">
+																	<md-icon md-svg-src="ic_check_24px.svg"></md-icon>
+																</md-button>
+															  </center>
+															<md-card-content layout="column" layout-align="center center" style="height:125px;">
+															  <p layout="row">{{plan.numberOfUsers }} <span ng-if="plan.numberOfUsers == '1'">&nbspUser</span><span ng-if="plan.numberOfUsers != '1'">&nbspUsers</span></p>
+															  <p>{{plan.storage+plan.StorageStr}}</p>
+															  <p>{{plan.bandwidth+plan.BandwidthStr}}</p>
+															</md-card-content>
+															
+															<md-card-content layout="column" layout-align="center center" style="background:#e7faff; height:100px;" >
+															  <p>{{plan.perMonth+plan.currancy+plan.permonthStr}}</p>
+															  <p>{{plan.perYear+plan.currancy+plan.peryearStr}}  </p>
+															  <p>{{plan.Description}}</p>
+															</md-card-content>
+															
+															<!--md-card-content layout="column" layout-align="start start">
+															  <b style="margin-bottom:10px;">Advanced Options:</b>
+															  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
+															</md-card-content!-->
+															<md-card-content layout="column" layout-align="end end" style="background:#e7faff;padding:0">
+															  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">
+																Total Amount:
+																<b style="font-size:20px;">
+																	<label for="price">${{plan.price}}</label>
+																</b>
+															  </span>
+															</md-card-content>
+													
+											  </md-card>
+											  
+											</div>
+                                        </div>
+                                    </md-content>
+                                    <md-step-actions layout="row">
+                                        <!-- flex>
+                                            <md-button ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
+                                        </div-->
+										
+										 <div  class="side-margins">
+                                            <md-button class="md-raised next-btn" ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
+                                        </div>
+										
+	
+                                        <div flex layout="row" layout-align="end top">
+                                            <!--md-button class="md-warn" ng-click="">CANCEL</md-button-->
+											
+                                            <!--md-button ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep('Cancel', !(vm.stepData[1].data.firsname && vm.stepData[1].data.lastname))" class="md-primary md-raised">
+                                                {{ vm.stepData[1].data.firsname && vm.stepData[1].data.lastname ? 'NEXT' : 'SKIP' }}
+                                            </md-button-->
+											
+										<div  class="side-margins">
+											<md-button class="md-raised next-btn" ng-click="vm.loadCardDetail($event)"  ng-show="vm.iscontinue">CONTINUE</md-button>	
+                                        </div>
+											
+                                   </md-step-actions>
+                                </form>
+                            </md-step-body>
+                        </md-step>
+						
+						
+                        <!--md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
+                            <md-step-body>
+                                <form name="step2">
+                                    <md-content class="md-padding">
+                                        <div layout="column" layout-align="center center" style="min-height: 200px">
+                                            <h4>{{btnMessage}}</h4>
+                                            <md-button class="md-primary md-raised" ng-click="vm.continueBtn()" text>{{btnContinue}}</md-button>
+                                        </div>
+                                    </md-content>
+									
+									 <md-step-actions layout="row">
+                                        <div flex>
+                                            <md-button ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
+                                        </div>
+                                    </md-step-actions>
+                                </form>
+                            </md-step-body>
+                        </md-step-->
+						
+						
+						
+						<md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
+                            <md-step-body>
+                                <form name="step2">
+                                   	<md-card class="form-containerNew">
+										<div class="setting-card-header">
+											<h2>{{btnMessage}}</h2>
+											<div class="setting-img-wrap">
+												<img src="checked.png"/>
+											</div>
+										</div>
+										
+										<md-content class="md-padding">
+											<div layout="column" layout-align="center center" style="min-height: 200px">
+												<h4>{{btnMessage2}}</h4>
+												<md-button class="md-raised next-btn" ng-click="vm.continueBtn()" text>{{btnContinue}}</md-button>
+											</div>
+							
+										</md-content>
+										
+										<!--md-step-actions layout="row">
+											<div flex>
+												<md-button ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
+											</div>
+										</md-step-actions-->
+										
+									</md-card><br/>
+										
+                                </form>
+                            </md-step-body>
+                        </md-step>
+						
+						
+                    </md-steppers>
+                </md-stepper-card-content>
+        
+ 
+    </md-content>
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+	<script src="bower_components/angular/angular-cookies.min.js"></script>
+
+    <!-- Your application bootstrap  -->
+    <script src="scripts/md-steppers.js"></script>
+    <script src="scripts/app.js"></script>
+	<script type="text/javascript" src="../shell/scripts/config.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script src="scripts/stripe.payment.tool.js"></script>
+</body>
+
+</html>

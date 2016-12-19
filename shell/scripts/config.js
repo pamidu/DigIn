@@ -1,4 +1,4 @@
- angular.module('configuration', [])
+angular.module('configuration', [])
     .constant('Digin_Engine_API', 'http://dev.digin.io:1929/')
     //.constant('Digin_Engine_API', 'http://digin.io:1929/')
     .constant('Digin_Engine_API_Namespace', 'Demo')
@@ -27,3 +27,6 @@
     //#for onsite implementation (Note : for on prem  version onsite=true, for cloud version onsite=false)
     .constant('onsite', false)   
     .constant('tenantId','test')
+
+
+    

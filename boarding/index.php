@@ -1,7 +1,5 @@
-
 <?php
-
-	if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
+    if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
     }
     else{
@@ -9,12 +7,8 @@
     }
 
     if(onsite) {
-        include("signin_onsite.html");
+        include("companyReg_onsite.html");
     } else {
-        include("signin_cloud.html");
+        include("companyReg_cloud.html");
     } 
 ?>
-
-
-
-

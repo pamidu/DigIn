@@ -1,0 +1,53 @@
+<md-dialog aria-label="Register Company">
+  <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
+	  <md-toolbar class="modal-header">
+	    <div class="md-toolbar-tools">
+	       <div layout="row" layout-align="center center">
+			<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+			<h2>Register company</h2>
+		  </div>
+	      <span flex></span>
+	      <md-button class="md-icon-button icon-cancel" ng-click="cancel()" aria-label="Close">
+	      </md-button>
+	    </div>
+	  </md-toolbar>
+	  <md-dialog-content style="max-width:800px;max-height:810px; ">
+	    <div class="md-dialog-content">
+				
+			 <md-input-container class="md-block" flex-gt-sm>
+				<span>Company name</span>
+				<input required name="companyName" ng-model="companyName">
+				<div ng-messages="editForm.companyName.$error">
+				  <div ng-message="required">Company name is required.</div>
+				</div>
+			  </md-input-container>		
+
+			 <md-input-container class="md-block" flex-gt-sm>
+				<span>Company address</span>
+				<input required name="companyAddress" ng-model="companyAddress">
+				<div ng-messages="editForm.companyAddress.$error">
+				  <div ng-message="required">Company address is required.</div>
+				</div>
+			  </md-input-container>
+
+			  <md-input-container class="md-block" flex-gt-sm>
+				<span>Number of User</span>
+				<input required name="companyUsers" ng-model="companyUsers">
+				<div ng-messages="editForm.companyUsers.$error">
+				  <div ng-message="required">Number of users required.</div>
+				</div>
+			  </md-input-container>
+
+	    </div>
+		
+		<md-dialog-actions layout="row">
+				<span flex></span>
+				<md-button aria-label="change" type="submit">
+					Register Company
+				</md-button>
+		</md-dialog-actions>
+		  
+	  </md-dialog-content>
+
+  </form>
+</md-dialog>

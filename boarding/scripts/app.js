@@ -9,7 +9,7 @@ app.config(["$httpProvider", function ($httpProvider) {
 }]);
 
 
-app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path) {
+app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path,onsite) {
 
     var vm = this;
 
@@ -185,10 +185,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }
 
         $scope.createDataSet(function(data){
-            if(data){
-                
-                
-                
+            if(data){                 
                 if(plan.id=="Free"){
                     vm.addPackage(plan, $scope.TenantSecToken);
                     $rootScope.trial=true;
@@ -198,6 +195,20 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     localStorage.setItem('firstLogin',true);
                     $rootScope.btnContinue="Go to Home";
                     vm.enableNextStep();
+                }
+                else if(plan.id=="onsite"){
+                    vm.addPackage(plan, $scope.TenantSecToken);
+                    $rootScope.trial=false;
+                    $rootScope.btnMessage="Congratulations...!";
+                    $rootScope.btnMessage2="Company creation process for this onsite version is completed successfully.";
+                    
+                    $mdDialog.hide();
+                    localStorage.setItem('firstLogin',true);
+                    $rootScope.btnContinue="Go to Home";
+                    //vm.selectedStep = vm.selectedStep + 1;
+                    
+                   vm.enableNextStep();
+                   vm.enableNextStep();
                 }
                 else{
                     //--------------------load stripe payement detail window
@@ -233,15 +244,36 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
          
     //#Add package to digin engine#//
     vm.addPackage = function(plan,SecurityToken) {
-        $scope.detail=[{
+        if(onsite){
+            $scope.detail=[{
+                        "package_id":"1005",
+                        "package_name":"onsite",
+                        "package_attribute": "",
+                        "package_value":0,
+                        "package_price":0,
+                        "is_default":true,
+                        "is_new": true
+                        },{
+                        "package_id":null,
+                        "package_name":"additional",
+                        "package_attribute": "users",
+                        "package_value":$scope.tenant.users,
+                        "package_price":0,
+                        "is_default":false,
+                        "is_new": true
+                        }];
+        }
+        else{
+            $scope.detail=[{
                         "package_id":plan.package_id,
                         "package_name":plan.name,
-                        "package_attribute": "users",
+                        "package_attribute": "",
                         "package_value":0,
                         "package_price":0,
                         "is_default":true,
                         "is_new": true
                         }];
+        }
             
         $http({
             method: 'POST',
@@ -270,6 +302,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         }*/
         else if($scope.tenant.address=="" || $scope.tenant.address==undefined){
             return;
+        }
+        else if (onsite){
+            if($scope.tenant.users=="" || $scope.tenant.users==undefined){
+            return;
+            }
         }
         else{
             
@@ -340,16 +377,29 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                                     vm.showBusyText = false;
                                     console.log('On submit success');
                                     deferred.resolve({ status: 200, statusText: 'success', data: {} });
-                                    //move to next step when success
+                                    //move to next step when success                                    
                                     tenant.completed = true;
-                                    vm.enableNextStep();
+                                    if(onsite){
+                                        $scope.plan=[];
+                                        $scope.plan.id='onsite'
+                                        vm.createTenant($scope.plan,event);
+                                    }else{
+                                        vm.enableNextStep();
+                                    }                                                                       
                                 }, 1000)
                             } else {
                                 $mdDialog.hide();
-                                vm.showBusyText = false;
-                                vm.enableNextStep();
-                            }
-                            
+                                vm.showBusyText = false;                                
+                                if(onsite){
+                                    $scope.plan=[];
+                                    $scope.plan.id='onsite'
+                                    vm.createTenant($scope.plan,event);
+                                }
+                                else{
+                                    vm.enableNextStep();
+                                }
+                                
+                            }                           
                     }
                     else
                     {

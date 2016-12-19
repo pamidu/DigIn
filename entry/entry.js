@@ -1103,9 +1103,9 @@ routerApp
 //#signup controller
 routerApp
     .controller('signup-ctrl', ['$scope', '$http', '$state', 'focus',
-        'Digin_Domain','Digin_Tenant', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path','auth_Path','include_Path','onsite',
+        'Digin_Domain','Digin_Tenant', 'Digin_Engine_API','ngToast','$mdDialog','$location','$timeout','apis_Path','auth_Path','include_Path','onsite','tenantId',
         function ($scope, $http, $state, focus,
-                  Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite) {
+                  Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite,tenantId) {
 
 
             $scope.onClickSignIn = function () {
@@ -1303,85 +1303,132 @@ routerApp
                             //,
                             //"Domain": signUpUsr.firstName + "." + Digin_Domain
                         };
+
                         $scope.error.isLoading = true;
 
                         var regUrl;
-                        if(onsite){
-                            regUrl= Digin_Tenant+'/InvitedUserRegistration';
-
-                        }else{
-                            regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
-                        }
-
-                        $http({
-                            method: 'POST',
-                            url: regUrl,
-                            data: angular.toJson($scope.user),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }).success(function (data, status) {
-                            //*Create Data Set
-                            //$scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
-
-                            $scope.error.isLoading = false;
 
                             if(onsite){
-                                $scope.error.isLoading = false;
-                                $mdDialog.hide();
-                                $state.go('registered');    
-                            }
-                            else{
-
-                                //$state.go('signin');
-
-                                if (data.Success === false) {
-                                    $mdDialog.hide();
-                                    if(data.Message=="Already Registered."){
-                                        mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
-                                    }else{
-                                        mainFun.fireMsg('0',data.Message);
-                                    }                               
-                                }
-                                else { 
-                                    // For invited users---------
-                                    if($scope.freeze==true){
-                                        mainFun.acceptRequest(email,token);
+                                var tenantcode=tenantId;
+                                tenantcode=tenantcode.toLowerCase();
+                                tenantcode=tenantcode.replace(/ /g, '');
+                               
+                                $http({
+                                    method: 'GET',
+                                    url: 'http://'+Digin_Domain+apis_Path+"usertenant/tenant/" + tenantcode + '.' + Digin_Domain,
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        Securitytoken:
+                                    } 
+                                })
+                                .success(function (response) {
+                                    console.log(response);
+                                    if(response.TenantID==null || response.TenantID==""){
+                                        //#tenant not exist
+                                        regUrl= Digin_Tenant+'/InvitedUserRegistration';
+                                        $scope.registerUser();
                                     }
-                                    else{
-                                        $mdDialog.hide();
-                                        $state.go('registered');    
-
-                                        /*
-                                        mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                        $timeout(function () {
-                                           window.location = "http://"+Digin_Domain+"/entry";
-                                        }, 5000);
-                                        */                                   
+                                    else
+                                    {
+                                        //#tenant exist 
+                                        //#not for first time registration-Onsite
+                                        regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId;
+                                        $scope.registerUser();
                                     }
-                                }
+                                    
+                                }).error(function (error) {
+                                    mainFun.fireMsg(0,error);
+                                   
+                                });
+                            }else{
+                                //#Normal registration process 
+                                regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
+                                $scope.registerUser();
                             }
-                        }).error(function (data, status) {
 
+
+
+
+
+
+
+
+                    },
+                }
+            })();
+
+
+            $scope.registerUser=function(){
+                $http({
+                        method: 'POST',
+                        url: regUrl,
+                        data: angular.toJson($scope.user),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).success(function (data, status) {
+                        //*Create Data Set
+                        //$scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
+
+                        $scope.error.isLoading = false;
+
+                        if(onsite){
                             $scope.error.isLoading = false;
                             $mdDialog.hide();
-                            
-                            if(onsite) {
-                                if(data=="Already Registered."){
-                                    mainFun.fireMsg('0','The username you entered is already registered, please try again!');
+                            $state.go('registered');    
+                        }
+                        else{
+
+                            //$state.go('signin');
+
+                            if (data.Success === false) {
+                                $mdDialog.hide();
+                                if(data.Message=="Already Registered."){
+                                    mainFun.fireMsg('0','This email address you entered is already registered, please try again!');
+                                }else{
+                                    mainFun.fireMsg('0',data.Message);
+                                }                               
+                            }
+                            else { 
+                                // For invited users---------
+                                if($scope.freeze==true){
+                                    mainFun.acceptRequest(email,token);
                                 }
                                 else{
-                                    mainFun.fireMsg('0', 'Please Try again...!');
+                                    $mdDialog.hide();
+                                    $state.go('registered');    
+
+                                    /*
+                                    mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
+                                    $timeout(function () {
+                                       window.location = "http://"+Digin_Domain+"/entry";
+                                    }, 5000);
+                                    */                                   
                                 }
+                            }
+                        }
+                    }).error(function (data, status) {
+
+                        $scope.error.isLoading = false;
+                        $mdDialog.hide();
+                        
+                        if(onsite) {
+                            if(data=="Already Registered."){
+                                mainFun.fireMsg('0','The username you entered is already registered, please try again!');
                             }
                             else{
                                 mainFun.fireMsg('0', 'Please Try again...!');
                             }
+                        }
+                        else{
+                            mainFun.fireMsg('0', 'Please Try again...!');
+                        }
 
-                        });
-                    },
-                }
-            })();
+                    });
+            };
+
+
+
 
 
             $scope.submit = function () {

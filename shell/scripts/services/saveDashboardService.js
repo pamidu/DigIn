@@ -24,7 +24,7 @@ var localThis = this;
       //if the widget is a forecast remove filters from the widget
       for(var w=0; w< $rootScope.dashboard.pages[i].widgets.length ;w++)
       {
-        if($rootScope.dashboard.pages[i].widgets[w].widgetData.selectedChart.chart == "forecast")
+        if($rootScope.dashboard.pages[i].widgets[w].widgetName == "forecast")
           $rootScope.dashboard.pages[i].widgets[w].widgetData.filterStr = "";
       }
 

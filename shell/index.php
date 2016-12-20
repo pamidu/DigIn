@@ -23,7 +23,7 @@
 
 ?>
 
-<html ng-app="DuoDiginRt" ng-controller="LoginCtrl">
+<html ng-app="DuoDiginRt" ng-controller="NavCtrl">
 <head>
     <title>DigIn - Beyond BI</title>
     <link rel="shortcut icon" href="./styles/css/images/innerlogo.ico" type="image/png">
@@ -218,7 +218,6 @@
 
 <script type="text/javascript" src="scripts/custom/utility.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
-<script type="text/javascript" src="scripts/controllers/login.js"></script>
 <script type="text/javascript" src="scripts/controllers/welcomePageCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/SignUpMain.js"></script>
 <script type="text/javascript" src="scripts/controllers/sourceAlgorithm/sourceAlgorithmCtrl.js"></script>
@@ -263,6 +262,7 @@
 
 <!-- controller -->
 <script type="text/javascript" src="scripts/controllers/NavCtrl.js"></script>
+<script type="text/javascript" src="views/home/homeCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore.js"></script>
 <script type="text/javascript" src="scripts/controllers/DiginCore2.js"></script>
 <script type="text/javascript" src="scripts/controllers/DashboardshareCtrl.js"></script>

@@ -2039,7 +2039,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            }else{
                //$state.go(menu.link);
                $state.go(menu);
-               $scope.currentView = $scope.currentSubMenu.header;
            }
 
         }

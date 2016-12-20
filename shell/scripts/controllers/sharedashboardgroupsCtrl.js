@@ -7,7 +7,7 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
 
     $scope.isVisble= false;
 
-
+    $scope.$parent.currentView = "Dashboard Share";
     
 
     $http.get(apis_Path+'usercommon/getSharableObjects')

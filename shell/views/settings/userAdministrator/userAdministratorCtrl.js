@@ -1,7 +1,14 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','auth_Path', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,auth_Path){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','auth_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,auth_Path,onsite){
 	var vm = this;
 	
 	
+	if(onsite){
+        $scope.tabVisible=false;
+    }
+    else{
+        $scope.tabVisible=true;
+    }
+
 	userAdminFactory.getUserLevel();
 	$rootScope.totUsers=$rootScope.defaultUsers+$rootScope.extraUsers
 	

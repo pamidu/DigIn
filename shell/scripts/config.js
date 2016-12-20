@@ -15,7 +15,7 @@ angular.module('configuration', [])
    .constant('Digin_ObjStore', 'http://digin.duoworld.com:3000')
 
     //#for loggin process
-    .constant('IsLocal', true)
+    .constant('IsLocal', false)
     .constant('Local_Shell_Path', 'http://localhost:8080/DigIn/shell')
     .constant('report_Widget_Iframe', 'http://dev.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
 
@@ -25,10 +25,10 @@ angular.module('configuration', [])
     .constant('include_Path', '/include/')
 
     //#for onsite implementation (Note : for on prem  version onsite=true, for cloud version onsite=false)
-    .constant('onsite', true)   
+    .constant('onsite', false)   
     .constant('tenantId','test')
 
     //#Database type --> mssql, postgresql,bigquery,mysql
-    .constant('dbType', 'mssql')  
+    .constant('dbType', 'bigquery')  
 
     

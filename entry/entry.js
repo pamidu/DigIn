@@ -1306,7 +1306,7 @@ routerApp
 
                         $scope.error.isLoading = true;
 
-                        var regUrl;
+                        $scope.regUrl="";
 
                             if(onsite){
                                 var tenantcode=tenantId;
@@ -1324,14 +1324,14 @@ routerApp
                                     console.log(response);
                                     if(response.TenantID==null || response.TenantID==""){
                                         //#tenant not exist
-                                        regUrl= Digin_Tenant+'/InvitedUserRegistration';
+                                        $scope.regUrl= Digin_Tenant+'/InvitedUserRegistration';
                                         $scope.registerUser();
                                     }
                                     else
                                     {
                                         //#tenant exist 
                                         //#not for first time registration-Onsite
-                                        regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId;
+                                        $scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId;
                                         $scope.registerUser();
                                     }
                                     
@@ -1341,7 +1341,7 @@ routerApp
                                 });
                             }else{
                                 //#Normal registration process 
-                                regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
+                                $scope.regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
                                 $scope.registerUser();
                             }
 
@@ -1360,7 +1360,7 @@ routerApp
             $scope.registerUser=function(){
                 $http({
                         method: 'POST',
-                        url: regUrl,
+                        url: $scope.regUrl,
                         data: angular.toJson($scope.user),
                         headers: {
                             'Content-Type': 'application/json'

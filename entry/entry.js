@@ -1324,14 +1324,15 @@ routerApp
                                     console.log(response);
                                     if(response.TenantID==null || response.TenantID==""){
                                         //#tenant not exist
-                                        $scope.regUrl= Digin_Tenant+'/InvitedUserRegistration';
+                                        //$scope.regUrl= Digin_Tenant+'/InvitedUserRegistration';
+                                        $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/userregistration';
                                         $scope.registerUser();
                                     }
                                     else
                                     {
                                         //#tenant exist 
                                         //#not for first time registration-Onsite
-                                        $scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId;
+                                        $scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId+ '.' + Digin_Domain;
                                         $scope.registerUser();
                                     }
                                     

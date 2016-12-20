@@ -1,9 +1,9 @@
- DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications','Digin_Engine_API','apis_Path', function($rootScope,$http, $v6urls, $auth,notifications,Digin_Engine_API,apis_Path) {
+ DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
 	var cache = {};
 	return {
         getUserSettings: function() {
              //return the promise directly.
-             return $http.get(Digin_Engine_API+'get_user_settings?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io')
+             return $http.get('http://prod.digin.io:1929/get_user_settings?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io')
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -97,7 +97,7 @@
 					callback(cache.invitedUsers);
 				}else{
 					 //return the promise directly.
-					 return $http.get(apis_Path+'usercommon/getSharableObjects')
+					 return $http.get('/apis/usercommon/getSharableObjects')
 					   .then(function(result) {
 							//return result.data;
 							 for (var i = 0, len = result.data.length; i<len; ++i) {
@@ -121,7 +121,7 @@
 					callback(cache.allGroups);
 				}else{
 					 //return the promise directly.
-					 return $http.get(apis_Path+'usercommon/getAllGroups')
+					 return $http.get('/apis/usercommon/getAllGroups')
 					   .then(function(result) {
 							//return result.data;
 							cache.allGroups = result.data;
@@ -136,7 +136,7 @@
 				//notifications.startLoading("Adding User Group, Please wait..");
 				var req = {
 					method: "POST",
-					url: apis_Path+"usercommon/addUserGroup",
+					url: "/apis/usercommon/addUserGroup",
 					headers: {
 						"Content-Type": "application/json"
 						//"SecurityKey" : $auth.getSecurityToken()
@@ -156,7 +156,7 @@
 				});	
 		
 		},removeUserGroup: function(groupId) {
-			 return $http.get(apis_Path+'usercommon/removeUserGroup/'+groupId) //jsons/everything.json
+			 return $http.get('/apis/usercommon/removeUserGroup/'+groupId) //jsons/everything.json
 			   .then(function(result) {
 					//resolve the promise as the data
 					return result.data.Result;
@@ -170,7 +170,7 @@
 					callback(cache.profile);
 				}else{
 					 //return the promise directly.
-					 return $http.get(apis_Path+'profile/userprofile/'+$rootScope.authObject.Email)
+					 return $http.get('/apis/profile/userprofile/'+$rootScope.authObject.Email)
 					   .then(function(result) {
 							//return result.data;
 							cache.profile = result.data;
@@ -185,7 +185,7 @@
 				notifications.startLoading("Updating Profile, Please wait..");
 				var req = {
 					method: "POST",
-					url: apis_Path+"profile/userprofile",
+					url: "/apis/profile/userprofile",
 					headers: {
 						"Content-Type": "application/json"
 						//"SecurityKey" : $auth.getSecurityToken()

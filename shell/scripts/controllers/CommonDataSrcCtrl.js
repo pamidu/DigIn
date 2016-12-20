@@ -187,9 +187,18 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                         } else {
                                             type = 'ti-file';
                                         }
+
+                                        if(key.shared_by == null){
+                                            isShared =false;
+                                        }else{
+                                            isShared = true
+                                        }
+
+
                                         $scope.tables.push({
                                             name: key.datasource_name,
-                                            type: type
+                                            type: type,
+                                            isShared : isShared
                                         })
                                     })
                                     callback($scope.tables, status);
@@ -365,7 +374,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 'id': i,
                                 'name': res[i].name,
                                 'selected': false,
-                                'type' : res[i].type
+                                'type' : res[i].type,
+                                'isShared':res[i].isShared
                             });
                         }
                     } else {

@@ -17,7 +17,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.datasource_id = '';
     $scope.selectedFolder = "";
     $scope.client = $diginengine.getClient("BigQuery");
-    $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","RECORD","TIMESTAMP","DATE","TIME","DATETIME"];
+    $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","TIMESTAMP","DATE","TIME","DATETIME"];
 
     //start of page one Folder name configuring
     $scope.currentNavItem = 'page1';

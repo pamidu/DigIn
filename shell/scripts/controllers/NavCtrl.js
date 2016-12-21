@@ -1409,7 +1409,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ngToast.dismiss();
                         ngToast.create({
                             className: 'danger',
-                            content: 'Please open the dashboards you wish to share..!',
+                            content: 'Dashboard should be saved in order to share the widget',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true

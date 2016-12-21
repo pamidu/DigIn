@@ -236,6 +236,54 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		return exist;
 	}
 	
+
+	$scope.resetPassword = function(ev, user)
+	{
+		//if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){
+		//	return;
+		//}
+		
+		
+		if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for system administrator'); 
+		   return;
+        }
+		else{
+			 var confirm = $mdDialog.confirm()
+			  .title('Remove User')
+			  .textContent('Are you sure you want to reset password for '+user.Id+'?')
+			  .ariaLabel('Reset password')
+			  .targetEvent(ev)
+			  .ok('Please do it!')
+			  .cancel('Cancel');
+			$mdDialog.show(confirm).then(function() {
+				//*send HTTP request and add the below call only if it succeeds
+				
+				userAdminFactory.resetPassword(user.Id);
+
+
+				$http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+user.Id)
+                .success(function(response){
+                    if(response.Success){
+                        console.log(response);
+                        $mdDialog.hide();
+                        displaySuccess(response); 
+                        $scope.email='';
+                        $state.go('signin');
+                    }
+                    else{
+                        console.log(response);
+                        $mdDialog.hide();
+                        displayError(response.Message); 
+                    }
+                }).error(function(error){  
+                    $mdDialog.hide(); 
+                    displayError(error); 
+                });    	
+			});
+		}				
+	}
+
 	$scope.removeUser = function(ev, user)
 	{
 		if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){

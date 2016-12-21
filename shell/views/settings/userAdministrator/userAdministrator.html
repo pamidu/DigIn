@@ -51,6 +51,7 @@
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
 	<md-tabs id="pagingTabs" md-align-tabs="bottom">
+
 	 
 	  <md-tab   id="tab1" md-on-select="selectPage($index)" >
 		<md-tab-label layout="row" layout="space-between center">
@@ -59,7 +60,7 @@
 		</md-tab-label>
 		<md-tab-body>
 		
-			<div layout="row" style="max-width:960px;margin: 0 auto;margin-bottom: 15px;margin-top:20px">
+			<div layout="row" style="max-width:960px;margin: 0 auto;margin-bottom: 15px;margin-top:20px" ng-if="tabVisible">
 				<input placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important;box-shadow:0 2px 4px 0 rgba(0,0,0,.15) !important;margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
 				<md-button aria-label="Open demo menu" class="md-raised md-primary" style="border-radius: 0px 4px 4px 0px !important;background: #02b5e2;margin: 0px;" ng-click="enterInviteUser($event,searchText)">
 					<span style="text-transform:none">Add User</span>
@@ -78,8 +79,8 @@
 							<md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText" ng-class=" user.Active?'nav-active':'nav-inactive'">
 								<img ng-src="{{getCatLetter(user.Name)}}" err-src="{{getCatLetter(user.Name)}}" class="md-avatar" alt="{{user.Name}}" />
 								<div layout="row" flex>
-									<p style="font-weight:700"  flex="40"> {{ user.Name }} </p>
-									<p style="color:#717171" flex> {{ user.Id}} </p>
+									<div><p style="font-weight:700; width:250px;"> {{ user.Name }} </p></div>
+									<div><p style="color:#717171; width:300px;"> {{ user.Id}} </p></div>
 								</div>
 								<!--md-menu md-position-mode="target-right target" >
 									<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdOpenMenu($event)">
@@ -96,22 +97,26 @@
 									</md-menu-content>
 							   </md-menu-->
 							   
-							   
-							   
-							   <md-button  class="md-mini ti-trash" style="font-size: 20px;color:grey" aria-label="remove" ng-click="removeUser($event, user)" ng-show="{{profile_Det.Email==user.Id}}?false:true">
-								</md-button>
-							   <md-divider ng-show="!$last"></md-divider>
-							   
-							   
-							  
-							   
-							   
+							
+										<md-button ng-if="!tabVisible" md-font-icon="icon-home"  style="font-size: 15px;color:grey height:30px;" aria-label="update" ng-click="resetPassword($event, user)">
+										Reset Password
+										</md-button>
+									
+									
+										<md-button class="md-mini ti-trash" style="font-size: 20px;color:grey" aria-label="remove" ng-click="removeUser($event, user)" ng-show="{{profile_Det.Email==user.Id}}?false:true">
+										</md-button>
+							
+									
+								<md-divider ng-show="!$last"></md-divider>
+								
 							</md-list-item>
 						
 						</md-list>
+
 						<div ng-show="($root.sharableUsers|filter:searchText).length == 0" layout="row" layout-align="center center">
 							<img src="views/settings/userAdministrator/desert.png" />
-							<span style="padding-left:20px;font-weight:700">There are currently no users with access to your account with this keyword/ email.</span>
+							<span style="padding-left:20px;font-weight:700" ng-if="tabVisible">There are currently no users with access to your account with this keyword/ email.</span>
+							<span style="padding-left:20px;font-weight:700" ng-if="!tabVisible">users not found.</span>
 						</div>
 
 				
@@ -195,6 +200,7 @@
 			<!--CARD CONTAINER END-->
 		</md-tab-body>
 	  </md-tab>
+
 	  <md-tab label="add page">
 		<md-tab-label layout="row" layout="space-between center">
 			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>

@@ -360,8 +360,11 @@ routerApp
             }
             
             $scope.proceedLogin=function(authData, token){
-                
-                $scope.comparePackage(token);
+                if(onsite){  
+                }
+                else{
+                    $scope.comparePackage(token);
+                }
                 
                 //#loggin direct to shell
                 if(IsLocal==false) { 

@@ -33,5 +33,31 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 			}
 		}
 		
+		$scope.zoomLevel = "100%";
+		document.body.style.zoom = $scope.zoomLevel;
+		
+		$scope.increaseFontSize = function()
+		{
+			var currentZoom = "";
+			if(document.body.style.zoom != "120%")
+			{
+				currentZoom = parseInt(document.body.style.zoom.slice(0, -1));
+				$scope.zoomLevel = String(currentZoom + 10) + "%";
+				document.body.style.zoom = $scope.zoomLevel;
+			}
+			
+		}
+		
+		$scope.reduceFontSize = function()
+		{
+			var currentZoom = "";
+			if(document.body.style.zoom != "70%")
+			{
+				currentZoom = parseInt(document.body.style.zoom.slice(0, -1));
+				$scope.zoomLevel = String(currentZoom - 10) + "%";
+				document.body.style.zoom = $scope.zoomLevel;
+			}
+		}
+		
 
 }])

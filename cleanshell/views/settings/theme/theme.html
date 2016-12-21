@@ -21,4 +21,11 @@
 			</div>
 		</md-card>
 	</div>
+	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Zoom Level </h1>
+	<div layout="row" layout-align="start start" style="margin-left:20px">
+		<md-button class="md-rasied" ng-click="reduceFontSize()" style="font-size:22px">-</md-button>
+		<center style="width:70px;font-size:30px">{{zoomLevel}}</center>
+		<md-button class="md-rasied" ng-click="increaseFontSize()" style="font-size:22px">+</md-button>
+
+	</div>
 </div>

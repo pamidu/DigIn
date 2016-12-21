@@ -1,4 +1,4 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','auth_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,auth_Path,onsite){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','Digin_Domain','auth_Path','apis_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,Digin_Domain,auth_Path,apis_Path,onsite){
 	var vm = this;
 	
 	
@@ -258,9 +258,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 			  .cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
 				//*send HTTP request and add the below call only if it succeeds
-				
-				userAdminFactory.resetPassword(user.Id);
-
+			
 
 				$http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+user.Id)
                 .success(function(response){

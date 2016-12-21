@@ -194,7 +194,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                             isShared = true
                                         }
 
-
                                         $scope.tables.push({
                                             name: key.datasource_name,
                                             type: type,

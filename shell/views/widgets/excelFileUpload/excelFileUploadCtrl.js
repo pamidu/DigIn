@@ -158,7 +158,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
         // Validation for file name
         if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
             if ($scope.folderName === undefined) {
-                notifications.toast('0','Please Enter a Valid File Name.');
+                notifications.toast('0','Folder name should not contain spaces and special characters.');
                 $location.hash('report-top');
                 $anchorScroll();
                 return;

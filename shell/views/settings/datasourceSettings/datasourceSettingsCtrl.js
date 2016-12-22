@@ -18,6 +18,8 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.databaseName = "";
 	$scope.authType = "";
 	$scope.connName = "";
+	$scope.action = "";
+	$scope.connectionID = "";
 	$scope.loginStatus = false;
 	$scope.submitLogin = false;
 	$scope.testStatus = false;
@@ -101,6 +103,8 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	// Create new connection
 	$scope.createConnection = function()
 	{
+		$scope.connectionID = "";
+		$scope.action="Create";
 		if($scope.selectedStep == 0)
 		{
 			$scope.incrementStep();
@@ -109,6 +113,25 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			$scope.decrementStep();
 		}
 		$scope.clearDetails();
+	}
+	// Edit a connection
+	$scope.editConnection = function(connection)
+	{
+		$scope.connectionID = connection.ds_config_id;
+		$scope.action="Edit";
+		if($scope.selectedStep == 0)
+		{
+			$scope.incrementStep();
+		}
+		$scope.clearDetails();
+		$scope.host = connection.host_name;
+		$scope.port = connection.port;
+		$scope.userName = connection.user_name;
+		$scope.password = "";
+		$scope.databaseType = "MSSQL";
+		$scope.databaseName = connection.database_name;
+		$scope.authType = 'sql';
+		$scope.connName = connection.connection_name;
 	}
 	// clear all fields
 	$scope.clearDetails = function()
@@ -152,10 +175,13 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		datasourceFactory.getAllDatabases(securityToken,reqParam).success(function(data){
 			if(data.Is_Success)
 			{
-				$scope.databaseType = "";
-				$scope.databaseName = "";
-				$scope.authType = "";
-				$scope.connName = "";
+				if ($scope.action == "Create")
+				{
+					$scope.databaseType = "";
+					$scope.databaseName = "";
+					$scope.authType = "";
+					$scope.connName = "";
+				}
 				$scope.loginStatus = true;
 				$scope.submitLogin = false;
 				$scope.dbNames = data.Result.sort();
@@ -183,7 +209,11 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		}
 		angular.forEach($scope.existingConnections,function(key){
 			console.log(key);
-			if (key.connection_name == $scope.connName && key.database_name == $scope.databaseName && key.host_name == $scope.host)
+			if (key.connection_name == $scope.connName && 
+				key.database_name == $scope.databaseName && 
+				key.host_name == $scope.host && 
+				key.user_name == $scope.userName &&
+				key.port == $scope.port)
 			{
 				notifications.toast('1','connection already exist');
 				$scope.port = key.port;
@@ -232,7 +262,15 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			ds_config_id: null,
 			others: {}
 		}
+		if ($scope.action == "Create")
+		{
+			reqParam.ds_config_id = null;
+		} else if ($scope.action == "Edit")
+		{
+			reqParam.ds_config_id = $scope.connectionID;
+		}
 		$scope.saveRequest = true;
+		$scope.testStatus = false;
 		datasourceFactory.saveConnection(securityToken,reqParam).success(function(res){
 			if(res.Is_Success)
 			{
@@ -241,6 +279,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 					if(data.Is_Success)
 					{	
 						$scope.saveRequest = false;
+						$scope.testStatus = true;
 						$scope.incrementStep();
 						notifications.toast('1',res.Custom_Message);
 						$scope.existingConnections = data.Result;

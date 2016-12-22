@@ -24,9 +24,14 @@
 					        <md-step label="Existing Connections" md-complete="stepData[0].data.completed">
 					            <md-step-body>
                         			<div layout="row" layout-wrap flex >					            
-			                            <md-card flex="30" ng-repeat="connection in existingConnections">                       
-			                                <md-card-title >
-			                                    <md-card-title-text layout="column" flex>
+			                            <md-card flex="30" ng-repeat="connection in existingConnections">
+			                                <md-card-content layout="column" flex>
+			                                		<div layout="column" flex layout-align="end end" class="blut-datasource-view" >
+			                                			<i class= "ti-pencil pull-left" ng-click="editConnection(connection)"></i>
+														<md-tooltip md-direction="right">
+															Edit Connection
+														</md-tooltip>
+			                                		</div>
 				                                    <div layout="row" flex>
 				                                    	<div><b> Connection Name: </b></div>
 				                                    	<div> {{connection.connection_name}} </div>
@@ -39,8 +44,7 @@
 				                                    	<div><b> Database Name: </b></div>
 				                                    	<div> {{connection.database_name}} </div>
 				                                    </div>
-			                                    </md-card-title-text>
-			                                </md-card-title>
+			                                </md-card-content>
 			                            </md-card>
 			                        </div>
 					                <div class="digin-cmds-source h-inherit" ng-show="connectionStatus && connectionNotAvailable">
@@ -60,7 +64,7 @@
 		                            </div>
 					            </md-step-body>
 					        </md-step>
-					        <md-step label="New Connection" md-complete="stepData[1].data.completed">
+					        <md-step label="Connection Settings" md-complete="stepData[1].data.completed">
 					            <md-step-body>
 									<div layout="row" layout-align="start start">
 										<div class="p10" style="background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">
@@ -89,7 +93,7 @@
 									</div>									
 		                            <div flex layout = "row" layout-align="center center">
 										<button type="button" class="blut-edit-btn" class="p10" ng-click="submitUserDetails()" ng-disabled="testStatus || submitLogin">
-											Submit
+											Get all databases
 										</button>
 		                            </div>
 					                <div layout="row" layout-align="center center" ng-show="submitLogin">
@@ -97,14 +101,15 @@
 										</md-progress-circular>
 									</div>
 									<div layout="row" layout-align="start start" ng-show="loginStatus">
-										<div class="p10" style="background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Connection Settings
+										<div class="p10" style="background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">
+											{{action}} Connection Settings
 										</div>
 									</div>
 									<div flex layout="row">
 										<div layout="column" flex class="p10" ng-show="loginStatus" flex="50">
 											<label>Database Type</label>
 											<md-select ng-model="databaseType" ng-disabled="testStatus">
-												<md-option ng-value="mssql">MSSQL</md-option>
+												<md-option ng-value="MSSQL">MSSQL</md-option>
 											</md-select>
 										</div>
 										<div layout="column" flex class="p10" ng-show="loginStatus" flex="50">
@@ -138,7 +143,7 @@
 										<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
 										</md-progress-circular>
 									</div>
-		                            <div flex layout = "row" layout-align="center center" ng-show="testStatus">
+		                            <div flex layout = "row" layout-align="center center" ng-show="loginStatus">
 										<button type="button" class="blut-edit-btn" class="p10" ng-click="saveConnection()">
 											Save Connection
 										</button>

@@ -74,7 +74,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
             draggable: {
                 enabled: true,
-                handle: '.digin-widget-toolbar'
+                handle: '.widget-header'
             },
             resizable: {
                 enabled: true,
@@ -489,7 +489,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var cat = "";
             var limit;
             //map the selected filter fields
-            filterArray = filterService.generateFilterParameters($scope.widgetFilters);
+            filterArray = filterService.generateFilterParameters($scope.widgetFilters,widget.widgetData.commonSrc.src.src);
 
             if (filterArray.length > 0) {
                 var filterStr = filterArray.join( ' And ');
@@ -1075,7 +1075,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
                             // get the filter parameters              
                             if (widget.widgetData.filteredState) {
-                                filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter);
+                                filterArray = filterService.generateFilterParameters(widget.widgetData.commonSrc.filter,widget.widgetData.commonSrc.src.src);
                                 if (filterArray.length > 0) {
                                     filterStr = filterArray.join( ' And ');
                                 }
@@ -1092,17 +1092,33 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         }
                                     }
                                 });
-                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
-                                    if (isDate){
-                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
-                                    }else{
-                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                if ( widget.widgetData.commonSrc.src.src == "MSSQL") {
+                                    if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                        if (isDate){
+                                            tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = " + drillOrdArr[c].clickedPoint;
+                                        }else{
+                                            tempArrStr = '[' + drillOrdArr[c].name + "] = " + drillOrdArr[c].clickedPoint;
+                                        }
+                                    } else {
+                                        if(isDate){
+                                            tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = '" + drillOrdArr[c].clickedPoint + "'";
+                                        }else{
+                                            tempArrStr = '[' + drillOrdArr[c].name + "] = '" + drillOrdArr[c].clickedPoint + "'";
+                                        }
                                     }
                                 } else {
-                                    if(isDate){
-                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
-                                    }else{
-                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                        if (isDate){
+                                            tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
+                                        }else{
+                                            tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                        }
+                                    } else {
+                                        if(isDate){
+                                            tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
+                                        }else{
+                                            tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                        }
                                     }
                                 }
                                 tempArray.push(tempArrStr);

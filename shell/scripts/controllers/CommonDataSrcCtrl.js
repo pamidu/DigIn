@@ -212,6 +212,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                         case "MSSQL":
                             $scope.sourceUi.tableData = [];
                             $scope.tables = [];
+                            $scope.mssqlConnections = [];
                             var filesFlag = false;
                             var foldersFlag = false;
                             var flag;
@@ -869,13 +870,14 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
             // Retrieve the table name when v-accordion is expanded
             onExpandConnection: function(index) {
                 $scope.sourceUi.tableData = [];
-                if ($scope.mssqlConnections.fields === undefined) {
+                if ($scope.mssqlConnections[index].fields === undefined) {
                     $scope.isConnectionTablesLoading = true;
                     var client = $diginengine.getClient($scope.sourceUi.selectedSource);
                     $scope.datasourceId = $scope.mssqlConnections[index].ds_config_id;
                     //call method to retrieve the tables
                     client.getConnectionTables($scope.datasourceId,function(data,status) {
                         if (status) {
+                            data.sort();
                             $scope.isConnectionTablesLoading = false;
                             for (var i = 0; i < data.length; i++) {
                                 $scope.sourceUi.tableData.push({
@@ -885,14 +887,15 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                     'type' : ''
                                 });
                                 $rootScope.tableData = $scope.sourceUi.tableData;
-                                $scope.mssqlConnections.fields = $scope.sourceUi.tableData;
+                                $scope.mssqlConnections[index].fields = $scope.sourceUi.tableData;
                             }
                         } else {
                             $scope.isConnectionTablesLoading = false;
                         }
                     })
                 } else {
-                    $scope.sourceUi.tableData = $scope.mssqlConnections.fields;
+                    $scope.sourceUi.tableData = $scope.mssqlConnections[index].fields;
+                    $rootScope.tableData = $scope.sourceUi.tableData;
                 }
             },
             // retrieve the fields of selected categories
@@ -964,7 +967,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                 if ($scope.sourceUi.selectedSource == "BigQuery") {
                     query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
                 } else if ($scope.sourceUi.selectedSource == "MSSQL") {
-                    query = "SELECT " + name + " FROM " + table_name + " GROUP BY " + name + " ORDER BY " + name;
+                    query = "SELECT [" + name + "] FROM " + table_name + " GROUP BY [" + name + "] ORDER BY [" + name + "]";
                 }
                 $scope.client.getExecQuery(query, $scope.datasourceId, function(data, status) {
                     if (status) {

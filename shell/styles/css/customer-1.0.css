@@ -4472,6 +4472,23 @@ close button
     color: #3c8eb8;
 }
 
+.blut-datasource-view {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    color: #aba8a5;
+}
+
+.blut-datasource-view > i {
+    font-size: 15px;
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+.blut-datasource-view > i:hover {
+    color: #3c8eb8;
+}
+
 .blut-search-wrapper {
     font-family: 'Segoe UI', sans-serif;
     font-weight: 600;

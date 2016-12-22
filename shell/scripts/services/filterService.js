@@ -99,7 +99,7 @@ routerApp.service('filterService',function(){
     };
 
     //create the 'cons' parameter of the request
-    this.generateFilterParameters = function(filterParams){
+    this.generateFilterParameters = function(filterParams,datasource){
         var filterArray = [];
         angular.forEach(filterParams,function(filter){
             tempFilterArray = [];
@@ -119,14 +119,17 @@ routerApp.service('filterService',function(){
             //if fields are seected, convert the array to string for the request
             if(tempFilterArray.length > 0) {
                 tempFilterArray.toString();
-                tempStr = filter.filter.name + " in ( " + tempFilterArray + " )";
+                if (datasource == 'MSSQL')
+                    tempStr = '[' + filter.name + "] in ( " + tempFilterArray + " )";
+                else
+                    tempStr = filter.filter.name + " in ( " + tempFilterArray + " )";
                 filterArray.push(tempStr);
             }
         });
         return filterArray;        
     };
 
-    this.generateDesginFilterParams = function(filterParams){
+    this.generateDesginFilterParams = function(filterParams,datasource){
         var filterArray = [];
         angular.forEach(filterParams,function(filter){
             tempFilterArray = [];
@@ -149,7 +152,10 @@ routerApp.service('filterService',function(){
             //if fields are seected, convert the array to string for the request
             if(tempFilterArray.length > 0) {
                 tempFilterArray = tempFilterArray.toString();
-                tempStr = filter.name + " in ( " + tempFilterArray + " )";
+                if (datasource == 'MSSQL')
+                    tempStr = "[" + filter.name + "] in ( " + tempFilterArray + " )";
+                else 
+                    tempStr = filter.name + " in ( " + tempFilterArray + " )";
                 filterArray.push(tempStr);
             }
         });

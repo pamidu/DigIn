@@ -1039,6 +1039,20 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             }
                         }
                         break;
+                    case '6':
+                        $scope.dataToBeBind.receivedQuery = "";
+                        $scope.executeQryData.executeMeasures = [];
+                        $scope.executeQryData.executeColumns = [];
+                        $scope.executeQryData.executeFilters = [];
+                        if ( $scope.selectedChart.chartType !== undefined ) {
+                            if ( $scope.selectedChart.chartType == 'highCharts') {
+                                $scope.highchartsNG = $scope.initHighchartObj;
+                            } else if ( $scope.selectedChart.chartType == 'boxplot' || $scope.selectedChart.chartType == 'histogram' || $scope.selectedChart.chartType == 'bubble' || $scope.selectedChart.chartType == 'forecast') {
+                                $scope.widget.widgetData.highchartsNG = "";
+                            } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3sunburst' ) {
+                                $scope.hierarData = [];
+                            }
+                        }
                 }
             },
             //hide dialog boxes
@@ -2799,7 +2813,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "postgresql") {
-                var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=[" + c + "]&&s=" + s + "&dbtype=" + database;
             } else {
                 var query = $diginurls.diginengine + "generatebubble?&table=[" + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
             }
@@ -3128,7 +3142,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var id;
             if (status) {
                 data.forEach(function(entry) {
-                    hObj[entry.value] = entry.level;
+                    if ($scope.sourceData.src == "MSSQL")
+                        hObj[ '[' + entry.value + ']'] = entry.level;
+                    else
+                        hObj[entry.value] = entry.level;
                 });
                 var tbl = $scope.sourceData.tbl;
                 var id = $scope.sourceData.id;
@@ -3418,7 +3435,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }]
             // apply design mode filters to metric
             var filterArray = [];
-            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields);
+            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
             if (filterArray.length > 0) {
                 filterStr = filterArray.join( ' And ');
             }
@@ -3648,9 +3665,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     agg: key.condition
                 });
             });
-            // apply design mode filters to metric
+            // apply design mode filters
             var filterArray = [];
-            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields);
+            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
             if (filterArray.length > 0) {
                 var filterStr = filterArray.join( ' And ');
             }
@@ -3883,18 +3900,34 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                         }
                                     }
                                 }
-                            });                                    
-                            if (typeof drillOrdArr[c].clickedPoint == 'number') {
-                                if (isDate){
-                                    tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
-                                }else{
-                                    tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                            });
+                            if ($scope.sourceData.src == "MSSQL") {
+                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                    if (isDate){
+                                        tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = " + drillOrdArr[c].clickedPoint;
+                                    }else{
+                                        tempArrStr = '[' + drillOrdArr[c].name + "] = " + drillOrdArr[c].clickedPoint;
+                                    }
+                                } else {
+                                    if (isDate){
+                                        tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }else{
+                                        tempArrStr = '[' + drillOrdArr[c].name + "] = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
                                 }
                             } else {
-                                if (isDate){
-                                    tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
-                                }else{
-                                    tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                    if (isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                    }
+                                } else {
+                                    if (isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
                                 }
                             }
                             tempArray.push(tempArrStr);

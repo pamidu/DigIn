@@ -2654,7 +2654,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
 
 });
 
-routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'notifications', function($scope, $mdDialog, $http, notifications,auth_Path) {
+routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'notifications','auth_Path','onsite', function($scope, $mdDialog, $http, notifications,auth_Path,onsite) {
 
     $scope.cancel = function() {
         $mdDialog.cancel();
@@ -2663,15 +2663,22 @@ routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'not
     $scope.submit = function() {
         if ($scope.newPassword === $scope.confirmNewPassword) {
 
-            console.log(window.location.host + auth_Path+'ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
+            //console.log(window.location.host + auth_Path+'ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword));
             $http.get(auth_Path+'ChangePassword/' + encodeURIComponent($scope.oldPassword) + '/' + encodeURIComponent($scope.newPassword))
                 .success(function(data) {
                     if (data.Error) {;
                         notifications.toast('0', data.Message);
                     } else {
-                        $scope.sendChangePwMail();
-                        notifications.toast('1', 'Password is changed successfully.');
-                        $mdDialog.hide();
+                        if(onsite){
+                            notifications.toast('1', 'Password is changed successfully.');
+                            $mdDialog.hide();
+                        }
+                        else{
+                            $scope.sendChangePwMail();
+                            notifications.toast('1', 'Password is changed successfully.');
+                            $mdDialog.hide();
+                        }
+                        
                     }
 
                 }).error(function() {

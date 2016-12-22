@@ -1,4 +1,4 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','auth_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,auth_Path,onsite){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','Digin_Domain','Digin_Tenant','auth_Path','apis_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,Digin_Domain,Digin_Tenant,auth_Path,apis_Path,onsite){
 	var vm = this;
 	
 	
@@ -236,8 +236,68 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		return exist;
 	}
 	
+
+	$scope.resetPassword = function(ev, user)
+	{
+		//if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){
+		//	return;
+		//}
+		
+
+		if(onsite){
+			if($rootScope.userLevel=='User'){
+           		displayError('You are not permitted to do this operation, allowed only for administrator'); 
+			   	return;
+        	}
+		}
+
+		
+		if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for system administrator'); 
+		   return;
+        }
+		else{
+			 var confirm = $mdDialog.confirm()
+			  .title('Remove User')
+			  .textContent('Are you sure you want to reset password for '+user.Id+'?')
+			  .ariaLabel('Reset password')
+			  .targetEvent(ev)
+			  .ok('Please do it!')
+			  .cancel('Cancel');
+			$mdDialog.show(confirm).then(function() {
+
+				$http({
+	                method: 'GET',
+					url: '/auth/ResetPasswordByTenantAdmin/'+user.Id,
+	                headers: {
+	                    'Securitytoken': getCookie('securityToken')
+	                }
+            	})
+                .success(function(response){
+                    console.log(response);
+                    $mdDialog.hide();
+                    displaySuccess(response.Message);               
+                }).error(function(error){  
+                    $mdDialog.hide(); 
+                    displayError(error.Message); 
+                });    	
+			});
+		}				
+	}
+
 	$scope.removeUser = function(ev, user)
 	{
+		if(onsite){
+			if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Email){
+				return;
+			}
+
+			if($rootScope.userLevel=='User'){
+           		displayError('You are not permitted to do this operation, allowed only for administrator'); 
+			   	return;
+        	}
+		}
+
 		if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){
 			return;
 		}

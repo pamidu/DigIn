@@ -21,7 +21,7 @@ define("SVC_SMOOTHFLOW_URL", "http://smoothflow.io");
 define("Digin_Domain", "dev.digin.io");
 define("Digin_Engine_API", "http://dev.digin.io:1929/");
 define("PAYMENT_GATWAY", "stripe");
-define("onsite", false);
+define("onsite", true);
 
 
 

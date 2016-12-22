@@ -70,7 +70,6 @@ routerApp
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path,onsite) {
 
 
-            
 
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -360,9 +359,12 @@ routerApp
             }
             
             $scope.proceedLogin=function(authData, token){
-                
-                $scope.comparePackage(token);
-                
+                if(onsite){  
+                }
+                else{
+                    $scope.comparePackage(token);
+                }
+
                 //#loggin direct to shell
                 if(IsLocal==false) { 
                     //#Added for live servers ------------------------------
@@ -1332,8 +1334,8 @@ routerApp
                                     {
                                         //#tenant exist 
                                         //#not for first time registration-Onsite
-                                        $scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId+ '.' + Digin_Domain;
-                                        $scope.registerUser();
+                                        //$scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId+ '.' + Digin_Domain;
+                                        $scope.checkLicence();
                                     }
                                     
                                 }).error(function (error) {
@@ -1428,9 +1430,73 @@ routerApp
             };
 
 
+            //#offline licencing process
+             $scope.checkLicence = function() {
+                $scope.licencedUsers=1;
+                $scope.checkusers = function (cb) {
+                    $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=null&tanent="+tenantId+'.'+Digin_Domain)
+                    //$http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=&TenantID=122")
+                    .success(function(data) {
+                        if(data.Is_Success==true){
+                            if(data.Result.length>0){
+                                for(i=0; i<=data.Result.length; i++){
+                                    if(data.Result[i].package_name=='additional'){
+                                        $scope.licencedUsers=data.Result[i].package_value_sum;  
+                                        i=data.Result.length;
+                                        cb(true);
+                                    }   
+                                }   
+                            }
+                        }       
+                    }, function(response) {
+                       cb(false);
+                    })
+                }
 
+                $scope.checkusers(function(data){
+                    if(data){                        
+                        $scope.checkTenantUsersCount();
+                    }
+                })
 
+            }
+                          
+    
+            //#get exist tenat users count
+            $scope.checkTenantUsersCount=function(){
+                /*$http({
+                    method: 'GET',
+                    url: "/auth/tenant/GetUsers/" + tenantId+Digin_Domain,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .success(function(data){
+                    $scope.tenantUsers=data;
+                    console.log(data);
+                    if($scope.licencedUsers==$scope.tenantUsers){
+                        displayError('Number of licence users has been exceeded.');
+                    }
+                    else{
+                        mainFun.signUpUser();  
+                    }
+                }).error(function(error){
+                    console.log("error");
+                });*/
 
+                //#------------ remove whn recieve above method
+                $scope.tenantUsers=0;
+                    if($scope.licencedUsers==$scope.tenantUsers){
+                        displayError('Number of licence users has been exceeded.');
+                    }
+                    else{
+                        //mainFun.signUpUser();  
+                        $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
+                        $scope.registerUser();
+                    }
+
+            }
+                
             $scope.submit = function () {
                 mainFun.validationClear();
 
@@ -1482,7 +1548,7 @@ routerApp
                     }
                     else {
                         displayProgress('User registration is processing.');
-                        mainFun.signUpUser();
+                        mainFun.signUpUser();  
                     }     
                 }
                 else{
@@ -1539,7 +1605,7 @@ routerApp
                     }
                     else {
                         displayProgress('User registration is processing.');
-                        mainFun.signUpUser();
+                         mainFun.signUpUser();  
                     }
                 }
             };

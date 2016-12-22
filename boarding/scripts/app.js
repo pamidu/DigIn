@@ -9,9 +9,20 @@ app.config(["$httpProvider", function ($httpProvider) {
 }]);
 
 
-app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path,onsite,dbType) {
+app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGateway,$mdDialog,$cookies,$http,Digin_Tenant,Digin_Domain,Digin_Engine_API,apis_Path,onsite,dbType,tenantId) {
 
     var vm = this;
+
+     if(onsite){
+        var tenant={
+            name: '',
+            address: '',
+            users: ''
+        };
+        $scope.tenant=tenant;
+        tenant.name=tenantId;
+    }
+   
 
     vm.companyPricePlans = [
         {

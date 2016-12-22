@@ -95,7 +95,7 @@
                         if (gb === undefined) {
                             var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         }
                     }
                     if (database == "postgresql") {

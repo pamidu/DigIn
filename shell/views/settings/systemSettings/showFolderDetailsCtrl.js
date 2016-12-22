@@ -1,4 +1,4 @@
-routerApp.controller('showFolderDetailsCtrl',function ($scope,$rootScope,$mdDialog,$http,Digin_Engine_API,Digin_Domain,$state,notifications,folder,users){
+routerApp.controller('showFolderDetailsCtrl',function ($scope,$rootScope,$mdDialog,$http,Digin_Engine_API,Digin_Domain,$state,notifications,folder,users,cb){
 
 
   $scope.folder = folder;

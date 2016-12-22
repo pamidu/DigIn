@@ -1,7 +1,14 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','auth_Path', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,auth_Path){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','Digin_Domain','Digin_Tenant','auth_Path','apis_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,Digin_Domain,Digin_Tenant,auth_Path,apis_Path,onsite){
 	var vm = this;
 	
 	
+	if(onsite){
+        $scope.tabVisible=false;
+    }
+    else{
+        $scope.tabVisible=true;
+    }
+
 	userAdminFactory.getUserLevel();
 	$rootScope.totUsers=$rootScope.defaultUsers+$rootScope.extraUsers
 	
@@ -229,6 +236,53 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		return exist;
 	}
 	
+
+	$scope.resetPassword = function(ev, user)
+	{
+		//if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){
+		//	return;
+		//}
+		
+		
+		if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for system administrator'); 
+		   return;
+        }
+		else{
+			 var confirm = $mdDialog.confirm()
+			  .title('Remove User')
+			  .textContent('Are you sure you want to reset password for '+user.Id+'?')
+			  .ariaLabel('Reset password')
+			  .targetEvent(ev)
+			  .ok('Please do it!')
+			  .cancel('Cancel');
+			$mdDialog.show(confirm).then(function() {
+				//*send HTTP request and add the below call only if it succeeds
+			
+
+				//$http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+user.Id)
+				//$http.get(Digin_Tenant+'/ResetPasswordByTenantAdmin/'+user.Id)
+
+				$http({
+                method: 'GET',
+                url: Digin_Tenant+'/ResetPasswordByTenantAdmin/'+user.Id,
+                headers: {
+                    'Securitytoken': getCookie('securityToken')
+                }
+            	})
+                .success(function(response){
+                        console.log(response);
+                        $mdDialog.hide();
+                        displaySuccess(response); 
+                       
+                }).error(function(error){  
+                    $mdDialog.hide(); 
+                    displayError(error); 
+                });       	
+			});
+		}				
+	}
+
 	$scope.removeUser = function(ev, user)
 	{
 		if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){

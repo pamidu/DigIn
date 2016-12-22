@@ -332,7 +332,8 @@ p {
 </style>
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
     <md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
-        <md-tab id="tab1" md-on-select="selectPage($index)">
+
+        <md-tab id="tab1" md-on-select="selectPage($index)" >
             <md-tab-label layout="row" layout="space-between center">
                 <span style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Profile Details</span>
                 <span flex></span>
@@ -480,7 +481,8 @@ p {
                 <!-- end -->
             </md-tab-body>
         </md-tab>
-        <md-tab label="add page">
+
+        <md-tab label="add page" >
             <md-tab-label layout="row" layout="space-between center">
                 <span style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
                 Usage Details
@@ -556,13 +558,14 @@ p {
                             </div>
                         </md-card>
                     </div>
-                    <md-card class="product_card" style="padding: 10px">
+                    <md-card class="product_card" style="padding: 10px" ng-if="tabVisible">
                       <highchart  config="chartConfig"></highchart>
                     </md-card>
                 </div>
             </md-tab-body>
         </md-tab>
-        <md-tab label="add page">
+
+        <md-tab label="add page" ng-if="tabVisible">
             <md-tab-label layout="row" layout="space-between center">
                 <span style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
                 Package Details
@@ -785,7 +788,58 @@ p {
                 </div>
             </md-tab-body>
         </md-tab>
-            <md-tab label="Payment history">
+
+
+        <md-tab label="add page" ng-if="!tabVisible">
+            <md-tab-label layout="row" layout="space-between center">
+                <span style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
+                Package Details
+            </span>
+            </md-tab-label>
+            <md-tab-body>
+                <div layout="row" layout-align="end end" class="card-container card-top">
+                    <md-button class="md-icon-button icon-cancel" aria-label="More" style="color:#14bae4;margin-top: 10px !important;margin-right:20px;" ng-click="closeWindow()"></md-button>
+                </div>
+                <div>
+
+                    <v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)" style="padding-left: 65px;padding-right:30px;">
+                        <v-pane id="Cards" expanded="$first">
+                            <v-pane-header id="Store-header" aria-controls="Store-content">
+                                <!--h1 class="search-header" style="margin:0px;">Subscription Details</h1-->
+                                <div class="setting-card-header">
+                                    <h5>Licence Details</h5>
+                                </div>
+                            </v-pane-header>
+                            <v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;background:transparent;">
+                                <div layout="row" layout-align="center start" layout-wrap>
+                                        
+                                           <md-card class="product_card" style="width:460px;height:205px;background:#499300;padding:0px;" layout="column">
+                                                <center style="background:#3c7a00;color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;width:460px">DigIn Version - {{version}}</center>
+                                                <center style="padding:10px;" layout="row">
+                                                    <div flex="40" layout="row" layout-align="space-between end">
+                                                        <div layout="column" layout-align="center center">
+                                                            <img src="views/settings/myAccount/good.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);padding-left: 10px;" ng-hide="false" />
+                                                            <img src="views/settings/myAccount/bad.png" style="width: 160px;-webkit-filter: drop-shadow(1px 0px 1px #222);filter: drop-shadow(1px 0px 1px #222);padding-left: 10px;" ng-show="false" />
+                                                        </div>
+                                                    </div>
+                                                    <div flex layout="column">
+                                                            <span class="align-left" style="font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Purchase Date : </span>
+                                                            <span class="align-left"> {{onsiteDate | date:'medium'}}</span>
+                                                            <span class="align-left" style="font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Number of Licenced Users : </span>
+                                                            <span class="align-left"> {{onsiteUsers}} user</span>
+                                                    </div>
+                                                </center>
+                                            </md-card>
+                                    </div>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                </div>
+            </md-tab-body>
+        </md-tab>
+
+
+        <md-tab label="Payment history" ng-if="tabVisible">
             <md-tab-label layout="row" layout="space-between center">
                 <span style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
                     Payment History
@@ -856,6 +910,7 @@ p {
                     </div>
                 </div>
             </md-tab-body>
-        </md-tab>       
+        </md-tab>  
+
     </md-tabs>
 </footer>

@@ -1,6 +1,6 @@
 routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications,apis_Path){
 
-
+  $scope.$parent.currentView = "Data Set Share";
 
     $scope.goToNextStep = function()
     {
@@ -331,8 +331,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
         }
             }
 
-      }
-
+     
 
       $scope.getSharableObject = function(selectedArray,readArray,writeArr,shareObj,isUser){
 

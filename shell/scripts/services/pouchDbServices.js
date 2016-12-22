@@ -21,6 +21,10 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                               var dashboard = angular.fromJson(CircularJSON.stringify(data.Result));
                                 var count=0;
                                 var index=0;
+
+                                if(dashboard.pages[index].widgets.length == 0)
+                                  settoPouch(dashboard,true,cb);
+
                                 for (var i = 0; i < dashboard.pages[index].widgets.length; i++) {
                                     dashboard.pages[index]["isSeen"] = true;
                                     var widget = dashboard.pages[index].widgets[i];
@@ -42,6 +46,11 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
                                         }else{
                                           count++;
+                                           if(dashboard.pages[0].widgets.length == count){
+                                                  dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                  settoPouch(dashboardJson,true,cb);
+                                                  $rootScope.dashboard = dashboard;
+                                               }
                                         }
                                     }else{
                                       count++;
@@ -64,6 +73,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
               var dashboard = angular.fromJson(CircularJSON.stringify(dashboardObject));
                                 var count=0;
                                 var index =0;
+                               
                                 for (var i = 0; i < dashboard.pages[index].widgets.length; i++) {
                                     dashboard.pages[index]["isSeen"] = true;
                                     var widget = dashboard.pages[index].widgets[i];
@@ -85,6 +95,11 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
                                         }else{
                                           count++;
+                                           if(dashboard.pages[0].widgets.length == count){
+                                                  dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                  settoPouch(dashboardJson,true,cb);
+                                                  $rootScope.dashboard = dashboard;
+                                               }
                                         }
                                     }else{
                                       count++;

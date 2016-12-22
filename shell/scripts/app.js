@@ -77,14 +77,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     });
 
     $stateProvider
-        .state("login", {
-            url: "/login",
-            controller: "LoginCtrl",
-            templateUrl: "views/partial-login.html",
-            data: {
-                requireLogin: false
-            }
-        })
+        
         /*.state("signup", {
             url: "/signup",
             controller: "signUpCtrl",
@@ -111,7 +104,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         })
         .state("home", {
             url: "/home",
-            controller: "NavCtrl",
             templateUrl: "views/partial-home.html",
             data: {
                 requireLogin: true,
@@ -397,6 +389,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         }).state('home.welcomeSearch', {
         url: '/welcome-search',
         templateUrl: "views/home/home.html",
+        controller: "homeCtrl",
         data: {
             requireLogin: true
         }

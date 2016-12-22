@@ -141,7 +141,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $rootScope.userSettings = data.Result;
                     ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
                     ProfileService.widget_limit = data.Result.widget_limit;
+                    $rootScope.onsiteDate=data.Result.created_date_time;
 
+                    if($rootScope.onsiteDate==undefined){
+                        $rootScope.onsiteDate=new Date();
+                    }
 
                     if (data.Result.logo_path == undefined) {
                         $rootScope.image = "styles/css/images/DiginLogo.png";
@@ -1409,7 +1413,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         ngToast.dismiss();
                         ngToast.create({
                             className: 'danger',
-                            content: 'Please open the dashboards you wish to share..!',
+                            content: 'Dashboard should be saved in order to share the widget',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true
@@ -2039,7 +2043,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
            }else{
                //$state.go(menu.link);
                $state.go(menu);
-               $scope.currentView = $scope.currentSubMenu.header;
            }
 
         }

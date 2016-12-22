@@ -91,12 +91,16 @@ routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_En
         }).success(function (data) {
 
 //http://staging.digin.io/digin_data/digin_user_data/b53bd4afc6a56b2d32ab26fc25ec60c2/omalduosoftwarecom.prod.digin.io/shared_files/highcharts1473758675719.png
-
-           var tenent = $rootScope.TenantID;
+        if(data.Is_Success == true){
+          var tenent = $rootScope.TenantID;
             //var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + userInfo.Username + "/shared_files/" +fileName;
             var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileNamepng;
             
             callback(url,provider);
+        }else{
+          notifications.toast(0, data.Custom_Message);
+        }
+           
 
         }).error(function (data) {
            

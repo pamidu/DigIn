@@ -185,7 +185,12 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					for(i=0; i<data.data.Result.length; i++)
 					{
 						if(data.data.Result[i].package_name=="additional")
-						{}
+						{
+							if(data.data.Result[i].package_attribute=='users'){
+								$rootScope.onsiteUsers=data.data.Result[i].package_value_sum;
+							}
+
+						}
 						else{
 							$rootScope.expiryDate=data.data.Result[i].expiry_datetime;
 							$rootScope.remainingDays=data.data.Result[i].remaining_days;

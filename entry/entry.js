@@ -1433,8 +1433,9 @@ routerApp
 
             //#offline licencing process
              $scope.checkLicence = function() {
+                $scope.licencedUsers=1;
                 $scope.checkusers = function (cb) {
-                    $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=&TenantID=&"+tenantId+Digin_Domain)
+                    $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=null&tanent="+tenantId+'.'+Digin_Domain)
                     //$http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=&TenantID=122")
                     .success(function(data) {
                         if(data.Is_Success==true){
@@ -1442,7 +1443,8 @@ routerApp
                                 for(i=0; i<=data.Result.length; i++){
                                     if(data.Result[i].package_name=='additional'){
                                         $scope.licencedUsers=data.Result[i].package_value_sum;  
-                                        i=data.Result.length
+                                        i=data.Result.length;
+                                        cb(true);
                                     }   
                                 }   
                             }
@@ -1459,29 +1461,11 @@ routerApp
                 })
 
             }
-                            
-            //#Get number of licenced  count
-            /*$http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=1234567890")
-            .success(function(data) {
-                if(data.Is_Success==true){
-                    if(data.Result.length>0){
-                        for(i=0; i<=data.Result.length; i++){
-                            if(data.Result[i].package_name=='additional'){
-                                $scope.licencedUsers=data.Result[i].package_value_sum;  
-                                i=data.Result.length
-                            }   
-                        }   
-                    }
-                }               
-            })
-            .error(function() {
-                console.log("error");
-            });*/
-    
+                          
     
             //#get exist tenat users count
             $scope.checkTenantUsersCount=function(){
-                $http({
+                /*$http({
                     method: 'GET',
                     url: "/auth/tenant/GetUsers/" + tenantId+Digin_Domain,
                     headers: {
@@ -1499,7 +1483,17 @@ routerApp
                     }
                 }).error(function(error){
                     console.log("error");
-                });
+                });*/
+
+                //#------------ remove whn recieve above method
+                $scope.tenantUsers=0;
+                    if($scope.licencedUsers==$scope.tenantUsers){
+                        displayError('Number of licence users has been exceeded.');
+                    }
+                    else{
+                        mainFun.signUpUser();  
+                    }
+
             }
                 
             $scope.submit = function () {
@@ -1553,7 +1547,17 @@ routerApp
                     }
                     else {
                         displayProgress('User registration is processing.');
-                        mainFun.signUpUser();
+                        if(onsite){
+                            $scope.checkLicence();
+                                /*if($scope.licencedUsers==$scope.tenantUsers){
+                                    displayError('Number of licence users has been exceeded.');
+                                }
+                                else{
+                                    mainFun.signUpUser();  
+                                }*/
+                        }else{
+                            mainFun.signUpUser();  
+                        }
                     }     
                 }
                 else{
@@ -1610,18 +1614,7 @@ routerApp
                     }
                     else {
                         displayProgress('User registration is processing.');
-                        if(onsite){
-                            $scope.checkLicence();
-                                /*if($scope.licencedUsers==$scope.tenantUsers){
-                                    displayError('Number of licence users has been exceeded.');
-                                }
-                                else{
-                                    mainFun.signUpUser();  
-                                }*/
-                        }else{
-                            mainFun.signUpUser();  
-                        }
-                        
+                         mainFun.signUpUser();  
                     }
                 }
             };

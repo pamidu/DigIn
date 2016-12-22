@@ -1,8 +1,10 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
-    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window,apis_Path, include_Path,onsite) {
+    Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window,apis_Path, include_Path,onsite,version) {
 
     if(onsite){
         $scope.tabVisible=false;
+        $scope.version=version;
+         $scope.onsiteUsers=1;
     }
     else{
         $scope.tabVisible=true;

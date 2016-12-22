@@ -1,4 +1,4 @@
-routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','Digin_Domain','auth_Path','apis_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,Digin_Domain,auth_Path,apis_Path,onsite){
+routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','Digin_Domain','Digin_Tenant','auth_Path','apis_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,Digin_Domain,Digin_Tenant,auth_Path,apis_Path,onsite){
 	var vm = this;
 	
 	
@@ -260,24 +260,25 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 				//*send HTTP request and add the below call only if it succeeds
 			
 
-				$http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+user.Id)
+				//$http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+user.Id)
+				//$http.get(Digin_Tenant+'/ResetPasswordByTenantAdmin/'+user.Id)
+
+				$http({
+                method: 'GET',
+                url: Digin_Tenant+'/ResetPasswordByTenantAdmin/'+user.Id,
+                headers: {
+                    'Securitytoken': getCookie('securityToken')
+                }
+            	})
                 .success(function(response){
-                    if(response.Success){
                         console.log(response);
                         $mdDialog.hide();
                         displaySuccess(response); 
-                        $scope.email='';
-                        $state.go('signin');
-                    }
-                    else{
-                        console.log(response);
-                        $mdDialog.hide();
-                        displayError(response.Message); 
-                    }
+                       
                 }).error(function(error){  
                     $mdDialog.hide(); 
                     displayError(error); 
-                });    	
+                });       	
 			});
 		}				
 	}

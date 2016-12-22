@@ -141,7 +141,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $rootScope.userSettings = data.Result;
                     ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
                     ProfileService.widget_limit = data.Result.widget_limit;
+                    $rootScope.onsiteDate=data.Result.created_date_time;
 
+                    if($rootScope.onsiteDate==undefined){
+                        $rootScope.onsiteDate=new Date();
+                    }
 
                     if (data.Result.logo_path == undefined) {
                         $rootScope.image = "styles/css/images/DiginLogo.png";

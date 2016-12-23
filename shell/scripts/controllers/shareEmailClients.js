@@ -76,7 +76,12 @@ routerApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashbo
 
         }
         else if(provider=="outlook"){
-            window.location.href ='mailto:?subject='+emailSubject+'&body='+emailBody+'';
+            //window.location.href ='mailto:?subject='+emailSubject+'&body='+emailBody+'';
+
+            window.open('https://outlook.live.com/?path=/mail/action/compose&to=&subject='+emailSubject+'&body='+emailBody+'','_blank');
+
+
+
 
         }
 

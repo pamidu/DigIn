@@ -2951,10 +2951,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.histogramPlot = []
             var fieldArray = [];
             for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
+                fieldArray.push("'[" + $scope.commonData.measures[i].filedName + "]'");
             }
             for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
+                fieldArray.push("'[" + $scope.commonData.columns[i].filedName + "]'");
             }
             var database = $scope.sourceData.src;
             var tbl = $scope.sourceData.tbl;
@@ -2962,12 +2962,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
-                var query = $diginurls.diginengine + "generatehist?q=[{'[" + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
-            } else {
-                 var db = tbl.split(".");              
-                
-                var query = $diginurls.diginengine + "generatehist?q=[{'[" + db[0] + "].["+db[1]+"':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
-            }
+               var db = tbl.split(".");                              
+                var query = $diginurls.diginengine + "generatehist?q=[{'[" + db[0] + "].["+db[1]+"]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
+         } else {
+                       }
             //get highest level
             $scope.client.generatehist(query, function(data, status) {
                 var hObj = {};

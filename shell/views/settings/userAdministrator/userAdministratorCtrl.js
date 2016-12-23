@@ -276,7 +276,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
                 .success(function(response){
                     console.log(response);
                     $mdDialog.hide();
-                    displaySuccess(response.Message);               
+                    displaySuccess(response);               
                 }).error(function(error){  
                     $mdDialog.hide(); 
                     displayError(error.Message); 

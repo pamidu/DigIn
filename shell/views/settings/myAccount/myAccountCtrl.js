@@ -4,7 +4,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     if(onsite){
         $scope.tabVisible=false;
         $scope.version=version;
-         $scope.onsiteUsers=1;
     }
     else{
         $scope.tabVisible=true;
@@ -1765,7 +1764,13 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                     'Content-Type': 'application/json',
                 }
             }).success(function(data) {
-                $scope.error.isLoading = false;
+
+                if(onsite){
+
+                }else{
+                  $scope.error.isLoading = false;
+                }
+                
                 console.log(data);
 
                 if (data.IsSuccess == false) {

@@ -141,7 +141,14 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
 
     //#Get tenant secutity token#//
     $scope.getTenantToken=function(plan,ev)
-    {
+    {       
+        if(onsite){
+            $rootScope.createdTenantID=tenantId+'.'+Digin_Domain;
+        }
+        if($rootScope.createdTenantID==undefined){
+            $rootScope.createdTenantID=$scope.tenant.name+'.'+Digin_Domain;
+        }
+        
         $scope.getToken = function (cb) {
             $http({method: 'GET',       
                  url: '/auth/GetSession/'+decodeURIComponent($cookies.get('securityToken'))+'/'+$rootScope.createdTenantID, 
@@ -189,17 +196,26 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                         }
                     })
                     .success(function (response) {
-                        if (response.Is_Success == true) {
+                        /*if (response.Is_Success == true) {
                             cb (true);
                         }
                         else {  
-                            cb (false);
-                        }
-                        //$mdDialog.hide();
+                            if(onsite){
+                                cb (true);
+                            }
+                            else{                                
+                                cb (false);
+                            }
+                        }*/
+
+                        cb (true);
+                        
+
+
                     })
                     .error(function (error) {
                         displayError('Data set creation fail');
-                        cb (false);
+                        cb (true);
                         $mdDialog.hide();
                     });
         }
@@ -207,17 +223,19 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         $scope.createDataSet(function(data){
             if(data){                 
                 if(plan.id=="Free"){
-                    vm.addPackage(plan, $scope.TenantSecToken);
+                    //vm.addPackage(plan, $scope.TenantSecToken);
+                    vm.chkPackageExistOrNot(plan, $scope.TenantSecToken);
                     $rootScope.trial=true;
                     $rootScope.btnMessage="Congratulations...!";
                     $rootScope.btnMessage2="This trial version is valid only for 30 days.";
                     $mdDialog.hide();
                     localStorage.setItem('firstLogin',true);
                     $rootScope.btnContinue="Go to Home";
-                    vm.enableNextStep();
+                    /*vm.enableNextStep();*/
                 }
                 else if(plan.id=="onsite"){
-                    vm.addPackage(plan, $scope.TenantSecToken);
+                    //vm.addPackage(plan, $scope.TenantSecToken);
+                    vm.chkPackageExistOrNot(plan, $scope.TenantSecToken);
                     $rootScope.trial=false;
                     $rootScope.btnMessage="Congratulations...!";
                     $rootScope.btnMessage2="Company creation process for this onsite version is completed successfully.";
@@ -225,45 +243,86 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     $mdDialog.hide();
                     localStorage.setItem('firstLogin',true);
                     $rootScope.btnContinue="Go to Home";
-                    //vm.selectedStep = vm.selectedStep + 1;
-                    
-                   vm.enableNextStep();
-                   vm.enableNextStep();
+                   /*vm.enableNextStep();
+                   vm.enableNextStep();*/
                 }
                 else{
                     //--------------------load stripe payement detail window
-                    var stripeConfig = {
-                        publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
-                        title: 'DigIn',
-                        description: "Beyond BI",
-                        logo: 'img/small-logo.png',
-                        label: 'Pay amounting $'+plan.price
-                    };
-                   
-                    var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
-                    stripegateway.open(ev,function(token, args) {
-                        console.log(token);
-                        if(token!=null || token!="" || token!=undefined){ 
-                            vm.proceedPayment(token,plan);
-                        }
-                        else
-                        {
-                            displayError("Error while retriving token from stripe");
-                        }
-                    }); 
+                    
+                        var stripeConfig = {
+                            publishKey: 'pk_test_cFGvxmetyz9eV82nGBhdQ8dS',
+                            title: 'DigIn',
+                            description: "Beyond BI",
+                            logo: 'img/small-logo.png',
+                            label: 'Pay amounting $'+plan.price
+                        };
+                       
+                        var stripegateway = paymentGateway.setup('stripe').configure(stripeConfig);
+                        stripegateway.open(ev,function(token, args) {
+                            console.log(token);
+                            if(token!=null || token!="" || token!=undefined){ 
+                                vm.proceedPayment(token,plan);
+                            }
+                            else
+                            {
+                                displayError("Error while retriving token from stripe");
+                            }
+                        }); 
+
+                            /*vm.addPackage(plan, $scope.TenantSecToken);
+                            $rootScope.btnMessage="Congratulations...!";
+                            $rootScope.btnMessage2="Tenant creation completed successfully.";
+                            localStorage.setItem('firstLogin',true);
+                            $rootScope.btnContinue="Go to Home";
+                            $mdDialog.hide();
+                            vm.enableNextStep();*/
+                    
                     //------------------
                 }
-                $mdDialog.hide();
+                
             }
             
-            $mdDialog.hide();
+            //$mdDialog.hide();
         });
         
     }   
-         
+       
+    vm.chkPackageExistOrNot=function(plan,TenantSecToken){
+        displayProgress("Initializing package...");
+        $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + $scope.TenantSecToken)
+        .success(function(data) {
+            $scope.PackageDetail=data.Result;
+            if($scope.PackageDetail.length>0){ 
+                if(plan.id=="Free"){
+                    $rootScope.trial=true;
+                    $rootScope.btnMessage="Congratulations...!";
+                    $rootScope.btnMessage2="This trial version is valid only for 30 days.";
+                    $mdDialog.hide();
+                    localStorage.setItem('firstLogin',true);
+                    $rootScope.btnContinue="Go to Home";
+                    $mdDialog.hide();
+                    vm.enableNextStep();
+                }
+                else if(plan.id=="onsite"){
+                    $mdDialog.hide();
+                    vm.enableNextStep();
+                    vm.enableNextStep();
+                }   
+            }
+            else{
+                vm.addPackage(plan, $scope.TenantSecToken);
+            }
+        })
+        .error(function() {
+            console.log("error");
+            vm.addPackage(plan, $scope.TenantSecToken);
+        });
+    }
+
          
     //#Add package to digin engine#//
-    vm.addPackage = function(plan,SecurityToken) {
+    vm.addPackage = function(plan,SecurityToken) { 
+        displayProgress("Creating package...");                       
         if(onsite){
             $scope.detail=[{
                         "package_id":"1005",
@@ -305,10 +364,25 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             }
         })
         .success(function(response) {
-            
+            console.log(response);
+            if(plan.id=="Free"){
+                $rootScope.trial=true;
+                $rootScope.btnMessage="Congratulations...!";
+                $rootScope.btnMessage2="This trial version is valid only for 30 days.";
+                $mdDialog.hide();
+                localStorage.setItem('firstLogin',true);
+                $rootScope.btnContinue="Go to Home";
+                $mdDialog.hide();
+                vm.enableNextStep();
+            }
+            else if(plan.id=="onsite"){
+                $mdDialog.hide();
+                vm.enableNextStep();
+                vm.enableNextStep();
+            }   
         })
         .error(function(data) {
-            
+            console.log(data);
         });
     }
     
@@ -424,7 +498,15 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                     else
                     {
                         $mdDialog.hide();
-                        displayError("This tenant name is already registered...");
+                        if(onsite){
+                            $scope.plan=[];
+                            $scope.plan.id='onsite'
+                            $scope.getTenantToken($scope.plan,null); 
+                        }
+                        else{
+                            displayError("This tenant name is already registered...");
+                        }
+                        
                     }
                     
                     //displayError("This tenant name is already registered...");
@@ -546,12 +628,13 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             //var res=decodeURIComponent(response);
             if (response.Success == true) {
                 $rootScope.createdTenantID=response.Data.TenantID;
-               $scope.getTenantToken(plan,ev); 
+                $scope.getTenantToken(plan,ev); 
             }
             else {  
                 $mdDialog.hide();
                 console.log(response.Message);
-                displayError(response.Message);
+                $scope.getTenantToken(plan,ev);
+                //displayError(response.Message);
             }
         })
         .error(function (error) {
@@ -611,17 +694,33 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                         }
                         else{
                             displayError(response.data.result);
+                            $scope.plan=[]
+                            $scope.plan.package_id="1005";
+                            $scope.plan.name="Free";
+                            displayError("Direct to free package.");
+                            vm.addPackage($scope.plan, $scope.TenantSecToken);     
+
                         }    
                     }
                     else
                     {
                         displayError("Error occured while completing payment procees...");
+                        $scope.plan=[]
+                            $scope.plan.package_id="1005";
+                            $scope.plan.name="Free";
+                        displayError("Direct to free package.");
+                        vm.addPackage($scope.plan, $scope.TenantSecToken);  
                     }
                 $mdDialog.hide();
         },function(response){
             console.log(response)
             $mdDialog.hide();
             displayError("Error occured while completing payment procees...");
+            $scope.plan=[]
+                            $scope.plan.package_id="1005";
+                            $scope.plan.name="Free";
+            displayError("Direct to free package.");
+            vm.addPackage($scope.plan, $scope.TenantSecToken);  
         })
     }
 

@@ -244,6 +244,16 @@
                       }
                       else
                       {
+
+                        var group_by ="";
+                        if(fObj.forecastAtt != ""){
+                             group_by = "["+fObj.forecastAtt+"]";
+                        }
+
+                        var str = fObj.tbl;
+                        var res = str.split(".");
+                        var tableName = "["+res[0]+"]."+"["+res[1]+"]";
+
                           $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status,fObj);
                         }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
@@ -252,14 +262,14 @@
                         "&beta=" + fObj.b +
                         "&gamma=" + fObj.g +
                         "&n_predict=" + fObj.fcast_days +
-                        "&table= "+ fObj.tbl +
-                        "&date_field=" + fObj.date_field +
-                        "&f_field=" + fObj.f_field +
-                        "&period=" + fObj.interval +
+                        "&table= "+ tableName+
+                        "&date_field=[" + fObj.date_field +
+                        "]&f_field=[" + fObj.f_field +
+                        "]&period=" + fObj.interval +
                         "&len_season=" + fObj.len_season +
                         "&start_date=" + startdate +
                         "&end_date=" + endDate +
-                        "&group_by=" + fObj.forecastAtt +
+                        "&group_by=" + group_by +
                         "&filter="+filters+
                         "&dbtype=" + database+
                         "&datasource_config_id="+id +

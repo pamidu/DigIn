@@ -181,7 +181,8 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 		
 			return $http.get(Digin_Engine_API + "get_packages?get_type=detail&SecurityToken=" + getCookie('securityToken'))
 			.then (function(data) {
-				if(data.data.Result.length>0){			
+				if(data.data.Result.length>0){
+
 					for(i=0; i<data.data.Result.length; i++)
 					{
 						if(data.data.Result[i].package_name=="additional")
@@ -190,6 +191,12 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 								$rootScope.onsiteUsers=data.data.Result[i].package_value_sum;
 							}
 
+						}
+					}
+
+					for(i=0; i<data.data.Result.length; i++)
+					{
+						if(data.data.Result[i].package_name=="additional"){	
 						}
 						else{
 							$rootScope.expiryDate=data.data.Result[i].expiry_datetime;

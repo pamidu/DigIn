@@ -243,6 +243,14 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		//	return;
 		//}
 		
+
+		if(onsite){
+			if($rootScope.userLevel=='User'){
+           		displayError('You are not permitted to do this operation, allowed only for administrator'); 
+			   	return;
+        	}
+		}
+
 		
 		if($rootScope.userLevel=='user'){
            displayError('You are not permitted to do this operation, allowed only for system administrator'); 
@@ -257,34 +265,39 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 			  .ok('Please do it!')
 			  .cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				//*send HTTP request and add the below call only if it succeeds
-			
-
-				//$http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+user.Id)
-				//$http.get(Digin_Tenant+'/ResetPasswordByTenantAdmin/'+user.Id)
 
 				$http({
-                method: 'GET',
-                url: Digin_Tenant+'/ResetPasswordByTenantAdmin/'+user.Id,
-                headers: {
-                    'Securitytoken': getCookie('securityToken')
-                }
+	                method: 'GET',
+					url: '/auth/ResetPasswordByTenantAdmin/'+user.Id,
+	                headers: {
+	                    'Securitytoken': getCookie('securityToken')
+	                }
             	})
                 .success(function(response){
-                        console.log(response);
-                        $mdDialog.hide();
-                        displaySuccess(response); 
-                       
+                    console.log(response);
+                    $mdDialog.hide();
+                    displaySuccess(response);               
                 }).error(function(error){  
                     $mdDialog.hide(); 
-                    displayError(error); 
-                });       	
+                    displayError(error.Message); 
+                });    	
 			});
 		}				
 	}
 
 	$scope.removeUser = function(ev, user)
 	{
+		if(onsite){
+			if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Email){
+				return;
+			}
+
+			if($rootScope.userLevel=='User'){
+           		displayError('You are not permitted to do this operation, allowed only for administrator'); 
+			   	return;
+        	}
+		}
+
 		if(user.Id==JSON.parse(decodeURIComponent(getCookie('authData'))).Username){
 			return;
 		}

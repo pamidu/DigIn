@@ -1335,8 +1335,7 @@ routerApp
                                         //#tenant exist 
                                         //#not for first time registration-Onsite
                                         //$scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId+ '.' + Digin_Domain;
-                                        $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
-                                        $scope.registerUser();
+                                        $scope.checkLicence();
                                     }
                                     
                                 }).error(function (error) {
@@ -1491,7 +1490,9 @@ routerApp
                         displayError('Number of licence users has been exceeded.');
                     }
                     else{
-                        mainFun.signUpUser();  
+                        //mainFun.signUpUser();  
+                        $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
+                        $scope.registerUser();
                     }
 
             }
@@ -1547,17 +1548,7 @@ routerApp
                     }
                     else {
                         displayProgress('User registration is processing.');
-                        if(onsite){
-                            $scope.checkLicence();
-                                /*if($scope.licencedUsers==$scope.tenantUsers){
-                                    displayError('Number of licence users has been exceeded.');
-                                }
-                                else{
-                                    mainFun.signUpUser();  
-                                }*/
-                        }else{
-                            mainFun.signUpUser();  
-                        }
+                        mainFun.signUpUser();  
                     }     
                 }
                 else{

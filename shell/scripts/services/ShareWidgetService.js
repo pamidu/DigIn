@@ -1,4 +1,4 @@
-routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_Engine_API,Digin_Domain){
+routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_Engine_API,Digin_Domain,notifications){
 
       
 

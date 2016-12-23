@@ -19,7 +19,7 @@ angular.module('configuration', [])
     .constant('include_Path', '/include/')
     //#for onsite implementation (Note : for on prem  version onsite=true, for cloud version onsite=false)
     .constant('onsite', true)   
-    .constant('tenantId','test512')
+    .constant('tenantId','test514')
     .constant('version','V3.2.0.9')
     //#Database type --> mssql, postgresql,bigquery,mysql
     .constant('dbType', 'bigquery')  

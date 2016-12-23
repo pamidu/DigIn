@@ -2815,7 +2815,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             } else if (database == "postgresql") {
                 var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=[" + c + "]&&s=" + s + "&dbtype=" + database;
             } else {
-                var query = $diginurls.diginengine + "generatebubble?&table=[" + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
+                var db = tbl.split(".");
+                
+                var query = $diginurls.diginengine + "generatebubble?&table=[" + db[0] + "].["+db[1]+"]&&x=[" + x + "]&&y=[" + y + "]&&c=[" + c + "]&&s=[" + s + "]&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
             }
             //get highest level
             $scope.client.generateBubble(query, function(data, status) {
@@ -2962,7 +2964,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             } else if (database == "MSSQL") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
             } else {
-                var query = $diginurls.diginengine + "generatehist?q=[{'" + tbl + "':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+                 var db = tbl.split(".");              
+                
+                var query = $diginurls.diginengine + "generatehist?q=[{'[" + db[0] + "].["+db[1]+"':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
             }
             //get highest level
             $scope.client.generatehist(query, function(data, status) {

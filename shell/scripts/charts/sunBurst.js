@@ -145,7 +145,7 @@ routerApp.directive('sunburstChart', function() {
                     function click(d) {
                             // fade out all text elements
                             if (d.size !== undefined) {
-                                d.size += 100;
+                                // d.size += 100;
                             };
                             text.transition().attr("opacity", 0);
 

@@ -76,10 +76,18 @@
                         con = con.replace(/&/g , "%26");                        
                     }
                     aggObjArr.forEach(function(key) {
-                        if (key.field !== undefined){
-                            strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";                            
-                        } else{
-                            strField += "[%27" + key.filedName + "%27,%27" + key.condition + "%27],";
+                        if (database == "MSSQL") {
+                            if (key.field !== undefined){
+                                strField += "[%27[" + key.field + "]%27,%27" + key.agg + "%27],";                            
+                            } else{
+                                strField += "[%27[" + key.filedName + "]%27,%27" + key.condition + "%27],";
+                            }
+                        } else {
+                            if (key.field !== undefined){
+                                strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";                            
+                            } else{
+                                strField += "[%27" + key.filedName + "%27,%27" + key.condition + "%27],";
+                            }
                         }
                     });
 
@@ -148,7 +156,7 @@
                         getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database + "&datasource_id=" + id;
                     } else if ( database == "MSSQL") {
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
-                        tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database + "&datasource_config_id=" + id;
+                        tbl + "&measure=[" + measure + "]&agg=" + aggData + "&db=" + database + "&datasource_config_id=" + id;
                     } else {
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
                         tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;

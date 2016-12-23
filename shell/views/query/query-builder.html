@@ -68,6 +68,7 @@
                             <v-pane-content class="trans-bg v-pane-content" id="{{ ::measure.id }}-content"
                                             aria-labelledby="{{ ::measure.id }}-header">
                                 <p class="data-row-style-2 hvr-sweep-to-right"
+                                   ng-hide = "selectedChart.chartType == 'metric'"
                                    markable
                                    ng-click="eventHndler.onClickCondition(condition,measure,$event )"
                                    ng-repeat="condition in commonData.measureCondition">
@@ -75,6 +76,16 @@
                                     <i class="ti-close"
                                        remove-markable
                                        ng-click="eventHndler.onClickRmvCondition(condition,measure)"></i>
+                                </p>
+                                <p class="data-row-style-2 hvr-sweep-to-right"
+                                   ng-show="selectedChart.chartType == 'metric'"
+                                   markable
+                                   ng-click="eventHndler.onClickActualField(condition,measure,$event )"
+                                   ng-repeat="condition in commonData.measureCondition">
+                                    {{ ::condition.name }}
+                                    <i class="ti-close"
+                                       remove-markable
+                                       ng-click="eventHndler.onClickActualField(condition,measure)"></i>
                                 </p>
                             </v-pane-content>
                         </v-pane>
@@ -135,8 +146,8 @@
 
                     <div class="measures-body">
                         <div class="draggable-measure data-row"
-                             ng-repeat="measure in executeQryData.executeMeasures">
-                            <i class="ti-close" ng-click="removeMeasure(measure)"></i>
+                             ng-repeat="measure in executeQryData.executeActualField">
+                            <i class="ti-close" ng-click="removeActual(measure)"></i>
                             <span>
                               &nbsp;&nbsp;{{measure.filedName}}
                             </span>
@@ -145,7 +156,7 @@
                             </div>
                         </div>
                         <div class="filter-data-not-fund"
-                             ng-if="executeQryData.executeMeasures.length < 1">
+                             ng-if="executeQryData.executeActualField.length < 1">
                             <i class="ti-filter"></i>
                             <h5>add actual value field</h5>
                         </div>

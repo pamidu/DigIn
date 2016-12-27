@@ -1110,6 +1110,21 @@ routerApp
                   Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite,tenantId) {
 
 
+
+
+            //--------------------------------------------------
+
+            //--------------------------------------------------
+
+
+
+            //--------------------------------------------------
+
+
+
+
+
+
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
                 $scope.freeze=false;
@@ -1657,3 +1672,81 @@ routerApp.directive('passwordVerify', function () {
 
 
 
+
+//Password Strength Directive - Start
+routerApp.directive('passwordStrengthIndicator',passwordStrengthIndicator);
+
+function passwordStrengthIndicator() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        scope: {
+            ngModel: '='
+        },
+        link: function (scope, element, attrs, ngModel) {
+
+            scope.strengthText = "";
+
+            var strength = {
+                measureStrength: function (p) {
+                    var _passedMatches = 0;
+                    var _regex = /[$@&+#-/:-?{-~!^_`\[\]]/g;
+                    if (/[a-z]+/.test(p)) {
+                        _passedMatches++;
+                    }
+                    if (/[A-Z]+/.test(p)) {
+                        _passedMatches++;
+                    }
+                    if (_regex.test(p)) {
+                        _passedMatches++;
+                    }
+                    return _passedMatches;
+                }
+            };
+
+            var indicator = element.children();
+            var dots = Array.prototype.slice.call(indicator.children());
+            var weakest = dots.slice(-1)[0];
+            var weak = dots.slice(-2);
+            var strong = dots.slice(-3);
+            var strongest = dots.slice(-4);
+
+            element.after(indicator);
+
+            var listener = scope.$watch('ngModel', function (newValue) {
+                angular.forEach(dots, function (el) {
+                    el.style.backgroundColor = '#EDF0F3';
+                });
+                if (ngModel.$modelValue) {
+                    var c = strength.measureStrength(ngModel.$modelValue);
+                    if (ngModel.$modelValue.length > 7 && c > 2) {
+                        angular.forEach(strongest, function (el) {
+                            el.style.backgroundColor = '#039FD3';
+                            scope.strengthText = "is very strong";
+                        });
+                   
+                    } else if (ngModel.$modelValue.length > 5 && c > 1) {
+                        angular.forEach(strong, function (el) {
+                            el.style.backgroundColor = '#72B209';
+                            scope.strengthText = "is strong";
+                        });
+                    } else if (ngModel.$modelValue.length > 3 && c > 0) {
+                        angular.forEach(weak, function (el) {
+                            el.style.backgroundColor = '#E09015';
+                            scope.strengthText = "is weak";
+                        });
+                    } else {
+                        weakest.style.backgroundColor = '#D81414';
+                        scope.strengthText = "is very weak";
+                    }
+                }
+            });
+
+            scope.$on('$destroy', function () {
+                return listener();
+            });
+        },
+        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>password strength {{strengthText}}</md-tooltip></span>'
+    };
+}
+//Password Strength Directive - End

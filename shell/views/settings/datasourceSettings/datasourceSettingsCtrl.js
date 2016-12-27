@@ -251,6 +251,12 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	//Save the created connection
 	$scope.saveConnection = function()
 	{
+		// Add validation
+		if ($scope.databaseName == '' || $scope.connName == '' || $scope.databaseType == '' || $scope.host == '' || $scope.username == '' || $scope.password == '' || $scope.port == '')
+		{
+			notifications.toast('0', 'Please fill in all required fields.');
+			return;
+		}
 		var reqParam = {
 			host_name: $scope.host,
 			user_name: $scope.userName,

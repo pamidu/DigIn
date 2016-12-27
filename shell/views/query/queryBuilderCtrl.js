@@ -1069,6 +1069,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                 $scope.highchartsNG = $scope.initHighchartObj;
                             } else if ( $scope.selectedChart.chartType == 'boxplot' || $scope.selectedChart.chartType == 'histogram' || $scope.selectedChart.chartType == 'bubble' || $scope.selectedChart.chartType == 'forecast') {
                                 $scope.widget.widgetData.highchartsNG = $scope.initHighchartObj;
+                            } else if ( $scope.selectedChart.chartType == 'metric' ) {
+                                $scope.resetSettings();
                             }
                             // } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3hierarchy' ) {
                             //     $scope.hierarData.data = {};

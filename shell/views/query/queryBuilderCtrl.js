@@ -1070,6 +1070,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             } else if ( $scope.selectedChart.chartType == 'boxplot' || $scope.selectedChart.chartType == 'histogram' || $scope.selectedChart.chartType == 'bubble' || $scope.selectedChart.chartType == 'forecast') {
                                 $scope.widget.widgetData.highchartsNG = $scope.initHighchartObj;
                             } else if ( $scope.selectedChart.chartType == 'metric' ) {
+                                $scope.dataToBeBind.receivedQuery = "";
                                 $scope.resetSettings();
                             }
                             // } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3hierarchy' ) {
@@ -4512,7 +4513,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     $scope.applySettings = function() {
         // Validations
-        if ($scope.executeQryData.executeMeasures.length < 1) {
+        if ($scope.executeQryData.executeActualField.length < 1) {
             privateFun.fireMessage('0','Please generate metric chart before configuring settings.');
             return;
         }

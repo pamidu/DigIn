@@ -70,6 +70,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.executeQryData.executeFilters = $scope.widget.widgetData.commonSrc.filter;
             }
             $scope.executeQryData.executeTargetField = $scope.widget.widgetData.commonSrc.target;
+            $scope.executeQryData.executeActualField = $scope.widget.widgetData.commonSrc.actual;
             if ($scope.selectedChart.chartType != 'metric' && $scope.selectedChart.chartType != 'highCharts') {
                 $scope.dynFlex = 90;
                 $scope.chartWrapStyle.height = 'calc(91vh)';
@@ -679,6 +680,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         executeFilters: [],
         executeForecastFilters: [],
         executeTargetField: [],
+        executeActualField: [],
         chartType: '',
         electQry: [],
         GrpFiled: []
@@ -826,6 +828,24 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 };
                 executeQryData.executeTargetField.push(obj);
                 eval("$scope." + $scope.selectedChart.chartType + ".selectTargetCondition(row, field)");
+            },
+            // Select an actual field for metric widget
+            onClickActualField: function(row, field) {
+                $("#togglePanel").hide(200);
+                $scope.isPendingRequest = true;
+                $scope.eventHndler.isToggleColumns = false;
+                // validation -  allow only one target field
+                if ( executeQryData.executeActualField.length == 1 ) {
+                    privateFun.fireMessage('0', 'Only one actual value can be selected.');
+                    $scope.isPendingRequest = false;
+                    return;
+                }
+                var obj = {
+                    filedName: field.filedName,
+                    condition: row.name
+                };
+                executeQryData.executeActualField.push(obj);
+                eval("$scope." + $scope.selectedChart.chartType + ".selectActualCondition(row, field)");
             },
             onClickColumn: function(column) {
                 $("#togglePanelColumns").hide(200);
@@ -1048,10 +1068,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             if ( $scope.selectedChart.chartType == 'highCharts') {
                                 $scope.highchartsNG = $scope.initHighchartObj;
                             } else if ( $scope.selectedChart.chartType == 'boxplot' || $scope.selectedChart.chartType == 'histogram' || $scope.selectedChart.chartType == 'bubble' || $scope.selectedChart.chartType == 'forecast') {
-                                $scope.widget.widgetData.highchartsNG = "";
-                            } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3sunburst' ) {
-                                $scope.hierarData = [];
+                                $scope.widget.widgetData.highchartsNG = $scope.initHighchartObj;
+                            } else if ( $scope.selectedChart.chartType == 'metric' ) {
+                                $scope.dataToBeBind.receivedQuery = "";
+                                $scope.resetSettings();
                             }
+                            // } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3hierarchy' ) {
+                            //     $scope.hierarData.data = {};
+                            // }
                         }
                 }
             },
@@ -1242,7 +1266,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             mea: $scope.executeQryData.executeMeasures,
             att: $scope.executeQryData.executeColumns,
             query: $scope.dataToBeBind.receivedQuery,
-            target: $scope.executeQryData.executeTargetField
+            target: $scope.executeQryData.executeTargetField,
+            actual: $scope.executeQryData.executeActualField
         };
         if ($scope.selectedChart.chartType == 'forecast') {
             widget.widgetData.commonSrc["filter"] = $scope.executeQryData.executeForecastFilters;
@@ -1261,7 +1286,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 mea: $scope.executeQryData.executeMeasures,
                 att: $scope.executeQryData.executeColumns,
                 query: $scope.dataToBeBind.receivedQuery,
-                target: $scope.executeQryData.executeTargetField
+                target: $scope.executeQryData.executeTargetField,
+                actual: $scope.executeQryData.executeActualField
             };
             if ($scope.selectedChart.chartType == 'forecast') {
                  $scope.widget.widgetData.commonSrc["filter"] = $scope.executeQryData.executeForecastFilters;
@@ -2610,21 +2636,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.widget.widgetData.highchartsNG.yAxis = {};
             if (dataTypeFlag && $scope.sourceData.fAttArr.length == 0) {
                 var fieldArray = [];
-                for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                    fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
-                }
-                for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                    fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
-                }
                 //get highest level
                 var database = $scope.sourceData.src;
                 var tbl = $scope.sourceData.tbl;
                 var id = $scope.sourceData.id;
+                if (database == "MSSQL") {
+                    for (var i = 0; i < $scope.commonData.measures.length; i++) {
+                        fieldArray.push("'[" + $scope.commonData.measures[i].filedName + "]'");
+                    }
+                    for (var i = 0; i < $scope.commonData.columns.length; i++) {
+                        fieldArray.push("'[" + $scope.commonData.columns[i].filedName + "]'");
+                    }
+                } else {
+                    for (var i = 0; i < $scope.commonData.measures.length; i++) {
+                        fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
+                    }
+                    for (var i = 0; i < $scope.commonData.columns.length; i++) {
+                        fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
+                    }
+                }
                 var fieldstr = fieldArray.toString();
                 if (database == "BigQuery") {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
                 } else if (database == "MSSQL") {
-                    var query = $diginurls.diginengine + "generateboxplot?q=[{'" + tbl + "':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
+                    var db = tbl.split(".");
+                    var query = $diginurls.diginengine + "generateboxplot?q=[{'" + db[0] + '.' + db[1] + "':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
                 } else {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'" + tbl + "':[" + fieldstr + "]}]&dbtype=" + database;
                 }
@@ -2813,10 +2849,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "postgresql") {
-                var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=[" + c + "]&&s=" + s + "&dbtype=" + database;
+                var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
             } else {
                 var db = tbl.split(".");
-                
                 var query = $diginurls.diginengine + "generatebubble?&table=[" + db[0] + "].["+db[1]+"]&&x=[" + x + "]&&y=[" + y + "]&&c=[" + c + "]&&s=[" + s + "]&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
             }
             //get highest level
@@ -2950,23 +2985,34 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.eventHndler.isLoadingChart = true;
             $scope.histogramPlot = []
             var fieldArray = [];
-            for (var i = 0; i < $scope.commonData.measures.length; i++) {
-                fieldArray.push("'[" + $scope.commonData.measures[i].filedName + "]'");
-            }
-            for (var i = 0; i < $scope.commonData.columns.length; i++) {
-                fieldArray.push("'[" + $scope.commonData.columns[i].filedName + "]'");
-            }
             var database = $scope.sourceData.src;
             var tbl = $scope.sourceData.tbl;
             var id = $scope.sourceData.id;
+
+            if (database == "MSSQL") {
+                for (var i = 0; i < $scope.commonData.measures.length; i++) {
+                    fieldArray.push("'[" + $scope.commonData.measures[i].filedName + "]'");
+                }
+                for (var i = 0; i < $scope.commonData.columns.length; i++) {
+                    fieldArray.push("'[" + $scope.commonData.columns[i].filedName + "]'");
+                }
+            } else {
+                for (var i = 0; i < $scope.commonData.measures.length; i++) {
+                    fieldArray.push("'" + $scope.commonData.measures[i].filedName + "'");
+                }
+                for (var i = 0; i < $scope.commonData.columns.length; i++) {
+                    fieldArray.push("'" + $scope.commonData.columns[i].filedName + "'");
+                }                
+            }
+
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
-               var db = tbl.split(".");                              
+                var db = tbl.split(".");                              
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + db[0] + "].["+db[1]+"]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
-           
-         } else {
-                       }
+            } else {
+                var query = $diginurls.diginengine + "generatehist?q=[{'" + tbl + "':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
+            }
             //get highest level
             $scope.client.generatehist(query, function(data, status) {
                 var hObj = {};
@@ -3413,14 +3459,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;                    
                 }
             }
+            $scope.resetSettings();
             // if ($scope.executeQryData.executeMeasures.length != 0) {
             //     $scope.getAggregation();
             // }
             //$scope.resetSettings();
-        },
-        selectCondition: function() {
-            $scope.getAggregation();
-            $scope.resetSettings();
         },
         selectAttribute: function(fieldName) {
             privateFun.fireMessage('0', 'grouping in metric is not supported');
@@ -3460,6 +3503,37 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
             },undefined,filterStr);         
         },
+        selectActualCondition: function(row,field) {
+            $scope.eventHndler.isLoadingChart = true;
+            var nameSpace = row.name + '_' + field.filedName;
+            var db = $scope.sourceData.src;
+            var query;
+            var filterStr = "";
+            var fieldArr = [{
+                field: field.filedName,
+                agg: row.name
+            }]
+            // apply design mode filters to metric
+            var filterArray = [];
+            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
+            if (filterArray.length > 0) {
+                filterStr = filterArray.join( ' And ');
+            }
+            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
+                if (status) {
+                    $scope.isPendingRequest = false;
+                    $scope.eventHndler.isToggleColumns = true;
+                    $scope.eventHndler.isLoadingChart = false;
+                    $scope.dataToBeBind.receivedQuery = query;
+                    $scope.metric.onGetAggData(res[0]);
+                } else {
+                    $scope.isPendingRequest = false;
+                    $scope.eventHndler.isToggleColumns = true;
+                    $scope.eventHndler.isLoadingChart = false;
+                    executeQryData.executeActualField = [];
+                }
+            },undefined,filterStr);
+        },
         executeQuery: function(cat, res, query) {
             for (var c in res[0]) {
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
@@ -3470,27 +3544,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.resetSettings();
             $scope.eventHndler.isLoadingChart = false;
             $scope.dataToBeBind.receivedQuery = query;
-        },
-        removeMea: function(l) {
-            if (l > 0) $scope.getAggregation();
-            else {
-                // $scope.eventHndler.isLoadingChart = false;
-                $scope.executeQryData.executeColumns = [];
-                $scope.highchartsNG = $scope.selectedChart.initObj;
-            }
-            $scope.resetSettings();
-        },
-        removeCat: function() {
-            $scope.getAggregation();
-        },     
+        },    
         onGetAggData: function(res) {
-            $scope.resetSettings();
+            //$scope.resetSettings();
             for (var c in res) {
                 $scope.isPendingRequest = false;
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
-                    $scope.selectedChart.initObj.decValue = res[c];
-                    var value = convertDecimals(parseFloat(res[c]), parseInt($scope.selectedChart.initObj.dec));
-                    $scope.selectedChart.initObj.value = value.toLocaleString();
+                    $scope.$apply(function() {
+                        $scope.selectedChart.initObj.decValue = res[c];
+                        var value = convertDecimals(parseFloat(res[c]), parseInt($scope.selectedChart.initObj.dec));
+                        $scope.selectedChart.initObj.value = value.toLocaleString();
+                    })
                 }
             }
             $scope.eventHndler.isLoadingChart = false;
@@ -4406,6 +4470,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.removeTarget = function(t) {
         $scope.resetSettings();
     };
+    // Remove the target field
+    $scope.removeActual = function(t) {
+        $scope.resetSettings();
+    };
     var queryBuilderData = {
         select: []
     };
@@ -4445,7 +4513,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     $scope.applySettings = function() {
         // Validations
-        if ($scope.executeQryData.executeMeasures.length < 1) {
+        if ($scope.executeQryData.executeActualField.length < 1) {
             privateFun.fireMessage('0','Please generate metric chart before configuring settings.');
             return;
         }
@@ -4466,6 +4534,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     // Reset metric chart settings
     $scope.resetSettings = function() {
         $scope.executeQryData.executeTargetField = [];
+        $scope.executeQryData.executeActualField = [];
+        $scope.selectedChart.initObj.decValue = "";
+        $scope.selectedChart.initObj.value = "";
         $scope.selectedChart.initObj.scale = "";
         $scope.selectedChart.initObj.dec = 2;
         $scope.selectedChart.initObj.color = "white";

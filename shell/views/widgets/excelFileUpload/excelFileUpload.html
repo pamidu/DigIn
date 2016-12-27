@@ -224,7 +224,7 @@ input:disabled {
                                         <td> {{val.name}} </td>
                                         <td>
                                             <md-select ng-model="val.type" 
-                                            ng-disabled="isExist || showBusyText || preloader || insertPreLoader || uploadPreLoader">
+                                            ng-disabled="isExist || showBusyText || preloader || insertPreLoader || uploadPreLoader" ng-change="    validateType(val.type,'{{val.type}}',$index)">
                                                 <md-option ng-repeat="type in fieldTypeObj" value="{{type}}">
                                                     {{type}}
                                                 </md-option>

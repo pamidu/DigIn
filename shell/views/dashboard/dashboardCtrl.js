@@ -488,7 +488,10 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             var requestArray = [];
             var cat = "";
             var limit;
+            $scope.client = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
             //map the selected filter fields
+            if ($scope.widgetFilters === undefined)
+                $scope.widgetFilters = widget.widgetData.commonSrc.filter;
             filterArray = filterService.generateFilterParameters($scope.widgetFilters,widget.widgetData.commonSrc.src.src);
 
             if (filterArray.length > 0) {

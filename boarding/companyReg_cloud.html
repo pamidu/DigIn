@@ -44,13 +44,13 @@
 
 										  <md-input-container class="md-block" flex-gt-sm>
 											<span>Company name</span>
-											<input  name="tenantName" ng-model="tenant.name"  ng-pattern="/[a-zA-Z0-9]/"  ng-required="true"/>
+											<input  name="tenantName" ng-model="tenant.name"  ng-pattern="/^[\w-]*$/"  ng-required="true"/>
 											<div ng-messages="step1.tenantName.$error" role="alert">
 												<div ng-message="required">
 													Comapy name is required.
 												</div>
 												<div ng-message="pattern">
-													Company name cannot contain only special characotors.
+													Company name cannot contain any special characotor or space.
 												</div>
 											</div>
 										  </md-input-container>

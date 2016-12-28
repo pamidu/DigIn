@@ -165,7 +165,7 @@
                                                            ng-model="signUpUsr.pwd"
                                                            ng-keyup="signUpUsr.cnfrPwd=''" 
                                                            ng-focus="signUpUsr.cnfrPwd=''" 
-                                                           placeholder="password">
+                                                           placeholder="password"  password-strength-indicator>
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"
                                                 class="ng-message"
@@ -214,6 +214,9 @@
                                     </div>
                                 </div>
 
+
+
+
                                 <div class="login-loading" ng-if="error.isLoading">
                                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                                     <span class="sr-only">Loading...</span>
@@ -227,8 +230,19 @@
                                     </a>
                                 </div>
 
+
+                                            
                             </div>
+                                    
+                                                               
+
                         </form>
+
+                                  
+
+
+
+
 
                     </div>
                 </div>

@@ -1437,6 +1437,24 @@ span {
     margin-bottom: 0px !important;
 }
 
+
+/*Password strength meter styling*/
+#password-strength-indicator {
+    position: absolute;
+    cursor: pointer;
+    right: 170px;
+    margin-top: 8px;
+}
+
+#password-strength-indicator span {
+    display: block;
+    height: 5px;
+    margin-bottom: 2px;
+    width: 6px;
+    border-radius: 3px;
+    background: #EDF0F3
+}
+
 .filed-list-warp > div > .inline,
 .filed-list-warp > md-radio-group > .inline {
     display: inline-block;

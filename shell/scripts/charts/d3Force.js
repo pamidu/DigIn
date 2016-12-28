@@ -21,7 +21,10 @@ routerApp.directive('linearChart', function() {
 
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue) {
-                    scope.drawHierarchicalSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
+                    if (newValue.data != "")
+                        scope.drawHierarchicalSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
+                    else
+                        $("#" + newValue.id).html("");
                 }
             });
 
@@ -54,9 +57,6 @@ routerApp.directive('linearChart', function() {
                 console.log(svg);
                 scope.setSvg(svg[0][0].innerHTML);
  
-
-               
-
                 function update() {
                     console.log(nodes)  
                     var nodes = flatten(root),                    

@@ -1072,10 +1072,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             } else if ( $scope.selectedChart.chartType == 'metric' ) {
                                 $scope.dataToBeBind.receivedQuery = "";
                                 $scope.resetSettings();
+                            } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3hierarchy' ) {
+                                $scope.hierarData.data = "";
+                                $("#" + $scope.hierarData.id).html("");
                             }
-                            // } else if ( $scope.selectedChart.chartType == 'd3sunburst' || $scope.selectedChart.chartType == 'd3hierarchy' ) {
-                            //     $scope.hierarData.data = {};
-                            // }
                         }
                 }
             },

@@ -3008,7 +3008,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
-                var db = tbl.split(".");                              
+                var db = tbl.split(".");
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + db[0] + "].["+db[1]+"]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
             } else {
                 var query = $diginurls.diginengine + "generatehist?q=[{'" + tbl + "':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;

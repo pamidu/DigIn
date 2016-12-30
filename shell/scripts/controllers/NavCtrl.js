@@ -1697,11 +1697,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 '<md-input-container flex="100">' +
                 '<label>Refresh Interval</label>' +
                 '<md-select ng-model="refreshInterval" name="refreshInterval">' +
-                '<md-option value="30" ng-selected>30 Seconds</md-option>' +
-                '<md-option value="60">1 minute</md-option>' +
-                '<md-option value="120">2 minutes</md-option>' +
-                '<md-option value="300">5 minutes</md-option>' +
-                '<md-option value="3600">60 minutes</md-option>' +
+                '<md-option value="30000" ng-selected>30 Seconds</md-option>' +
+                '<md-option value="60000">1 minute</md-option>' +
+                '<md-option value="120000">2 minutes</md-option>' +
+                '<md-option value="300000">5 minutes</md-option>' +
+                '<md-option value="3600000">60 minutes</md-option>' +
                 '<md-option value="0">No Refresh</md-option>' +
                 '</md-select>' +
                 '</md-input-container>' +

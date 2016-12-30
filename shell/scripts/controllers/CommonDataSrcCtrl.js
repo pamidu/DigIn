@@ -220,7 +220,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 if(data.Is_Success) {
                                     commonUi.isDataLoading = false;
                                     $scope.mssqlConnections = data.Result;
-                                    $scope.mssqlConnections.sort();
+                                    $scope.mssqlConnections = $filter('orderBy')($scope.mssqlConnections,'connection_name');
                                     notifications.toast('1',data.Custom_Message);
                                 } else {
                                     commonUi.isDataLoading = false;

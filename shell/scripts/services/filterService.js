@@ -120,7 +120,7 @@ routerApp.service('filterService',function(){
             if(tempFilterArray.length > 0) {
                 tempFilterArray.toString();
                 if (datasource == 'MSSQL')
-                    tempStr = '[' + filter.name + "] in ( " + tempFilterArray + " )";
+                    tempStr = '[' + filter.filter.name + "] in ( " + tempFilterArray + " )";
                 else
                     tempStr = filter.filter.name + " in ( " + tempFilterArray + " )";
                 filterArray.push(tempStr);

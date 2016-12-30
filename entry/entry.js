@@ -172,6 +172,28 @@ routerApp
 
 
 
+            //#check tenant package status
+            $scope.checkPackageStatus=function(status){
+                $scope.statusDetail={"status":status}
+                $http({
+                method: 'PUT',
+                url: Digin_Engine_API+'authorization/userauthorization/login',
+                data: angular.toJson($scope.statusDetail),
+                headers: {
+                     'Content-Type': 'application/json',
+                    'SecurityToken': SecurityToken
+                    }
+                
+                }).success(function (data) {
+                    fireMsg('1', data);  
+                }).error(function (data) {      
+                    fireMsg('0', data);;
+                });
+            };
+
+
+
+
             //'Username password incorrect' User name or password incorrect, please try again. 
             $scope.login = function () {
 
@@ -1111,16 +1133,9 @@ routerApp
 
 
 
-
-            //--------------------------------------------------
-
-            //--------------------------------------------------
-
-
-
-            //--------------------------------------------------
-
-
+            //-----------------------------------------------------
+            //$scope.minLengthMsg = false;
+            //-----------------------------------------------------
 
 
 
@@ -1362,12 +1377,6 @@ routerApp
                                 $scope.regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
                                 $scope.registerUser();
                             }
-
-
-
-
-
-
 
 
                     },
@@ -1729,6 +1738,7 @@ function passwordStrengthIndicator() {
                         angular.forEach(strong, function (el) {
                             el.style.backgroundColor = '#72B209';
                             scope.strengthText = "is strong";
+
                         });
                     } else if (ngModel.$modelValue.length > 3 && c > 0) {
                         angular.forEach(weak, function (el) {
@@ -1746,7 +1756,10 @@ function passwordStrengthIndicator() {
                 return listener();
             });
         },
-        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>password strength {{strengthText}}</md-tooltip></span>'
+        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>Password strength {{strengthText}}</md-tooltip></span>'
     };
 }
 //Password Strength Directive - End
+
+
+//#Pw strength directive test ------------------start-------

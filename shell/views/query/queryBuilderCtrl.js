@@ -635,9 +635,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/mapsettings.html',
 				tooltip: "A visualization to plot analyse the data on the gographical map"
-
-
+            },{
+                id: 'ct22',
+                icon: 'fa fa-table',
+                name: 'Tabular Widget',
+                chart: 'Tabular',
+                chartType: 'Tabular',
+                view: 'views/query/chart-views/Tabular.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/Tabularsettings.html',
+                tooltip: "A visualization to plot analyse the data on the gographical map"
             }
+
         ]
     };
 	
@@ -1125,6 +1134,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         chartTypeTrue = false;
                         break;
                     case 'forecast':
+                        chartTypeTrue = false;
+                        break;
+                    case 'Tabular':
                         chartTypeTrue = false;
                         break;
                     case 'sunburst':

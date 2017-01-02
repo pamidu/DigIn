@@ -1,0 +1,35 @@
+<div layout="column">
+
+	<label>Data Settings</label>
+
+	<div layout="row" layout-align="space-between center">
+
+		<label>Total for Numerics:</label>
+
+		<md-radio-group ng-model="selected" layout="row" layout-align="space-between center">
+			   <md-radio-button value="Enable"> Enable </md-radio-button>
+			   <md-radio-button value="Enable"> Disable </md-radio-button>
+		</md-radio-group>
+
+	</div>
+
+	<div layout="row" layout-align="space-between center">
+		<label>Default Sort Field:</label>
+
+		<div layout="column" layout-align="space-between center">
+
+			  <md-select ng-model="selectedUser">
+			    <md-option ng-value="user" ng-repeat="user in users">{{ user.name }}</md-option>
+			  </md-select>
+
+			<md-radio-group ng-model="selected" layout="row" >
+			   <md-radio-button value="Enable"> Enable </md-radio-button>
+			   <md-radio-button value="Enable"> Disable </md-radio-button>
+			</md-radio-group>
+			
+		</div>
+		
+	</div>
+
+
+</div>

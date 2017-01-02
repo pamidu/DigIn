@@ -126,11 +126,7 @@
                                             </div>
                                         </div>
                                         
-                                        
-                                        
-                                        
-
-                                        <div class="form-inline">
+                                    
                                             <div class="text-domain-name full-name p-t-20"
                                                  ng-class="{error:error.isPassword,'':!error.isPassword}">
                                                 <label for="password">Password</label>
@@ -142,14 +138,25 @@
                                                            ng-model="signUpUsr.pwd"
                                                            ng-keyup="signUpUsr.cnfrPwd=''" 
                                                            ng-focus="signUpUsr.cnfrPwd=''" 
-                                                           placeholder="password" password-strength-indicator>
+                                                           placeholder="password" 
+                                                           ng-minlength="6" ng-maxlength="32" password-strength-indicator>
                                                 </div>
+
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"
                                                 class="ng-message"
                                                      ng-messages="frmDiginSignUp.password.$error">
                                                     <div ng-message="required">*</div>
+                                                    <span class="error" ng-show="frmDiginSignUp.password.$error.minlength">
+                                                        Password must contain atleast 6 charactors. 
+                                                    </span>
+                                                    <span class="error" ng-show="frmDiginSignUp.password.$error.maxlength">
+                                                        Maximum length for password can be 32 charactors. 
+                                                    </span>
+
                                                 </div>
                                             </div>
+
+
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isRetypeCnfrm,'':!error.isRetypeCnfrm}">
                                                 <label for="cnfrmPwd">Confirm password</label>
@@ -179,7 +186,6 @@
                                                     >the terms and conditions.</a>  
                                                 </div>
                                             </div>
-
 
                                             <!-- captcha -->
                                             <div class="captcha-box p-t-20">

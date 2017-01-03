@@ -1,3 +1,12 @@
+////////////////////////////////
+// File : QueryBuilderCtrl
+// Owner  : Dilani
+// Last changed date : 2016/12/20
+// Version : 3.1.0.2
+// Modified By : Gevindu
+/////////////////////////////////
+
+
 routerApp.provider('ngColorPickerConfig', function() {
 
     var templateUrl = '';

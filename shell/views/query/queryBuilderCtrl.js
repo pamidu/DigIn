@@ -644,9 +644,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/mapsettings.html',
 				tooltip: "A visualization to plot analyse the data on the gographical map"
-
-
+            },{
+                id: 'ct22',
+                icon: 'fa fa-table',
+                name: 'Tabular Widget',
+                chart: 'Tabular',
+                chartType: 'Tabular',
+                view: 'views/query/chart-views/Tabular.html',
+                initObj: $scope.initHighchartObj,
+                settingsView: 'views/query/settings-views/Tabularsettings.html',
+                tooltip: "A visualization to plot analyse the data on the gographical map"
             }
+
         ]
     };
 	
@@ -1134,6 +1143,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         chartTypeTrue = false;
                         break;
                     case 'forecast':
+                        chartTypeTrue = false;
+                        break;
+                    case 'Tabular':
                         chartTypeTrue = false;
                         break;
                     case 'sunburst':
@@ -3017,7 +3029,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             if (database == "BigQuery") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
-                var db = tbl.split(".");                              
+                var db = tbl.split(".");
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + db[0] + "].["+db[1]+"]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_id=&datasource_config_id=" + id;
             } else {
                 var query = $diginurls.diginengine + "generatehist?q=[{'" + tbl + "':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database;
@@ -3480,7 +3492,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         },
         selectTargetCondition: function(row,field) {
             $scope.eventHndler.isLoadingChart = true;
-            var nameSpace = row.name + '_' + field.filedName;
+            var nameSpace = row.name.toLowerCase() + '_' + field.filedName;
             var db = $scope.sourceData.src;
             var query;
             var filterStr = "";
@@ -3501,8 +3513,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.selectedChart.initObj.targetQuery = query;
                     $scope.$apply(function() {
-                        $scope.selectedChart.initObj.targetValue = res[0][nameSpace.toLowerCase()];
-                        $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace.toLowerCase()],2).toLocaleString();
+                        $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
+                        $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace],2).toLocaleString();
                     })
                 } else {
                     $scope.isPendingRequest = false;

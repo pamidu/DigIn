@@ -121,7 +121,11 @@
                     <span class="btn btn-block btn-default"
                           ng-click="commonUi.onExecuteManualQuery()" ng-disabled="!sourceUi.selectedSource">
                         Custom Query
-                    </span>                 
+                    </span>
+                    <md-input-container style="width: 100%;font-size: large;float: left !important;font-weight: 100;" class="text-color-grey-600">
+                        <label>Search</label>
+                        <input type="text" ng-model="sourceUi.search">
+                    </md-input-container>
             </h3>
 
             <div layout="row">
@@ -182,13 +186,6 @@
                                     fill="none" stroke-width="6" stroke-miterlimit="10"/>
                         </svg>
                     </div>
-                    <div layout="row" class="margin-top-20" layout-align="center center"
-                    ng-if="!commonUi.isDataLoading && !commonUi.isServiceError">
-                        <md-input-container class="md-icon-float md-block width100percent">
-                            <label>Search</label>
-                            <input type="text" ng-model="sourceUi.search">
-                        </md-input-container>                          
-                    </div>
                     <!-- table data -->
                     <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search} | orderBy: 'name' " ng-hide="sourceUi.selectedSource == 'MSSQL' ">
                         <li class="col-sheet"
@@ -206,7 +203,7 @@
                     </ui>
                     <v-accordion id="accordionDataSource" class="vAccordion--default" control="accordionA" 
                         onexpand="commonUi.onExpandConnection(index)"> 
-                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections | filter : {connection_name: sourceUi.search}" ng-show="sourceUi.selectedSource == 'MSSQL' ">
+                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections" ng-show="sourceUi.selectedSource == 'MSSQL' ">
                             <v-pane-header>
                                 <h5 class="font-weight-300 text-upper">{{ ::row.connection_name }}</h5>
                             </v-pane-header>
@@ -217,7 +214,7 @@
                                 </div>
                                 <div opacity="0.1" ng-hide="isConnectionTablesLoading">
                                     <md-radio-group ng-model="selectedTable">
-                                        <md-radio-button value="{{field.name}}" class="md-primary dashboard-wrap data-source-radio"         ng-repeat="field in sourceUi.tableData" ng-click="commonUi.onSelectClassRow(field)">
+                                        <md-radio-button value="{{field.name}}" class="md-primary dashboard-wrap data-source-radio"         ng-repeat="field in sourceUi.tableData | filter : {name: sourceUi.search}" ng-click="commonUi.onSelectClassRow(field)">
                                             <li class="pull-left dashboard-name">{{field.name}}</li>
                                         </md-radio-button>
                                     </md-radio-group>

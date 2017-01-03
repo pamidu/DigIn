@@ -3471,7 +3471,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         },
         selectTargetCondition: function(row,field) {
             $scope.eventHndler.isLoadingChart = true;
-            var nameSpace = row.name + '_' + field.filedName;
+            var nameSpace = row.name.toLowerCase() + '_' + field.filedName;
             var db = $scope.sourceData.src;
             var query;
             var filterStr = "";
@@ -3492,8 +3492,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.eventHndler.isLoadingChart = false;
                     $scope.selectedChart.initObj.targetQuery = query;
                     $scope.$apply(function() {
-                        $scope.selectedChart.initObj.targetValue = res[0][nameSpace.toLowerCase()];
-                        $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace.toLowerCase()],2).toLocaleString();
+                        $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
+                        $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace],2).toLocaleString();
                     })
                 } else {
                     $scope.isPendingRequest = false;

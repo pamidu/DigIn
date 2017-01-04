@@ -18,7 +18,30 @@ routerApp.provider('ngColorPickerConfig', function() {
             defaultColors: defaultColors
         }
     }
-})
+});
+
+routerApp.run(function(cellEditorFactory){
+  // create cell editor
+  cellEditorFactory['boolean'] = {
+    // cell key event handler
+    cellKey:function(event, options, td, cellCursor){
+      if(event.type=='keydown'){
+        switch(event.which){
+        case 13:
+        case 32:
+          event.stopPropagation();
+          options.setValue(!options.getValue());
+          return true;
+        }
+      }
+    },
+    // editor open handler
+    open:function(options, td, finish, cellEditor){
+      options.setValue(!options.getValue());
+      finish();
+    }
+  };
+});
 routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPickerConfig) {
 
     return {
@@ -183,6 +206,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             showActual: $scope.showActual,
         }
     };
+
+  
+
     $scope.otherChartConfig = [];
     $scope.recordedColors = {};
     $scope.initRequestLimit = {
@@ -1787,7 +1813,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.forecastObj.paramObj.mod = 'triple_exp';
                     break;
             }
-            $scope.generateForecast($scope.forecastObj.paramObj);
+            
         },
         saveWidget: function(widget) {
             widget.widgetData.highchartsNG = $scope.widget.widgetData.highchartsNG;
@@ -1808,6 +1834,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.saveChart(widget);
         }
     };
+
+
+
 
 
     $scope.$watch("forecastObj.paramObj", function(newValue, oldValue) {
@@ -2630,6 +2659,100 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
         });
     };
+
+    // --- tabular widget ------------------------------------
+
+    $scope.Tabular = {
+        onInit: function(recon) {
+            alert('onInit');
+        },
+        changeType: function() {
+             $scope.generateTabular();
+        },
+        saveWidget: function(widget) {
+            alert('saveWidget');
+            
+        }
+    };
+
+    $scope.allingArr=[];
+    $scope.tabularConfig = {
+
+        totForNumeric : true,
+        defSortFeild : "",
+        AscOrDec : "Ascending",
+        AllingArr: $scope.allingArr,
+        numOfRows:10,
+
+    };
+
+   
+
+    $scope.start = 0;
+    $scope.sort ='';
+    $scope.limit = 10;
+    $scope.query = "";
+    $scope.userList=[];
+  
+
+    for(var i=0;i<1000;i++){
+        var user = null;
+        user = {
+            id:i,
+            profit:Math.floor(Math.random()*20+20),
+            order_priority:Math.floor(Math.random()*20+20),
+            sales:Math.floor(Math.random()*20+20),
+        }
+
+        $scope.userList.push(user);
+    }
+
+
+    $scope.changeSort = function(name){
+        //$scope.cc.deselect();
+        if($scope.sort==name.Attribute){
+          $scope.sort='-'+name.Attribute;
+        }else if($scope.sort=='-'+name.Attribute){
+          $scope.sort='';
+        }else{
+          $scope.sort=name.Attribute;
+        }
+    };
+
+
+     $scope.generateTabular = function(){
+
+            var colObj = {
+                "Attribute":'profit',
+                "DislayName": 'profit',
+                "Alignment": 'right'
+            }; 
+
+            var colObj1 = {
+                "Attribute":'order_priority',
+                "DislayName": 'order_priority',
+                "Alignment": 'left'
+            }; 
+
+            var colObj2 = {
+                "Attribute":'sales',
+                "Dislay name": 'sales',
+                "Alignment": 'right'
+            };
+
+
+            $scope.allingArr.push(colObj);
+            $scope.allingArr.push(colObj1);
+            $scope.allingArr.push(colObj2);
+     };
+
+
+     //-------------------------------------------------------------
+
+
+
+
+
     $scope.boxplot = {
         onInit: function(recon) {},
         changeType: function() {

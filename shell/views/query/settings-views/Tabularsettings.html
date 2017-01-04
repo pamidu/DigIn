@@ -31,5 +31,40 @@
 		
 	</div>
 
+	<div>
+		<label>Display name and Allingment</label>
+
+		<table>
+
+		<tr>
+			<th>Attribute</th>
+			<th>Display Name</th>
+			<th>Alignment</th>
+		</tr>
+
+		<tr ng-repeat="att in tabularConfig.AllingArr">
+		    <td>{{att.Attribute}}</td>
+		    <td>
+		    	<md-input-container>
+        			<input ng-model="att.DislayName">
+      			</md-input-container>
+		    </td>
+		    <td>{{att.Alignment}}</td>
+		</tr>
+
+		</table>
+
+	</div>
+
+	<div layout="row" layout-align="">
+
+		<label>Number of rows to display:</label>
+
+		<md-input-container style="margin-top: -19px;float: left;margin-left: 19px;width: 100px;" >
+            <input ng-model="limit">
+         </md-input-container>
+
+	</div>
+
 
 </div>

@@ -98,6 +98,7 @@
     <link rel="stylesheet" href="styles/css/customer-1.0.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/socialMedFb.css" type="text/css"/>
     <link rel="stylesheet" href="styles/css/md-steppers.css" type="text/css"/>
+    <link rel="stylesheet" href="styles/css/cellCursor.css" type='text/css'/>
     <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
@@ -183,6 +184,7 @@
 <script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
 
 <script src="bower_components/tag-input/ng-tags-input.min.js"></script>
+<script src="bower_components/cell-cursor-develop/cellCursor.js"></script>
 
 <!-- codemirror -->
 <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>

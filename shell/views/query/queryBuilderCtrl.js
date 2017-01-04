@@ -73,6 +73,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.executeQryData.executeMeasures = $scope.widget.widgetData.commonSrc.mea;
             $scope.executeQryData.executeColumns = $scope.widget.widgetData.commonSrc.att;
             $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.commonSrc.query;
+
             if ($scope.selectedChart.chartType == 'forecast') {
                 $scope.executeQryData.executeForecastFilters = $scope.widget.widgetData.commonSrc.filter;    
             } else {
@@ -898,25 +899,28 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     }
                 }
             },
-            onClickAttributes: function(column) { //#for tabular widget
-                $("#togglePanelColumns").hide(200);
+            onClickAttributes: function(column) { //#for Tabular widget
+                //$("#togglePanelColumns").hide(200);
                 $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
                 var isFoundCnd = false;
-                var selectedField=[]
-                selectedField=$scope.commonData.columns;
-
-                for (i in selectedField) {
-                    console.log(i);
+                for (i in executeQryData.executeColumns) {
+                    if (executeQryData.executeColumns[i].filedName == column.filedName) {
+                        isFoundCnd = true;
+                        privateFun.fireMessage('0', 'duplicate record found in object...');
+                        $scope.isPendingRequest = false;
+                        return;
+                    }
+                    isFoundCnd = false;
                 }
-                
+
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
-                    if (seriesArr.length > 0) {
-                        eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
-                    } 
-                }
-                $scope.tabular.getData();
+                    $scope.Tabular.selectAttribute(column.filedName);
+                    
+                }     
+
+                //$scope.Tabular.getData();
                 $scope.isPendingRequest = false;
             },
             onClickRmvCondition: function(condition, measure) {
@@ -1191,8 +1195,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
 
                 if($scope.chartType == "Tabular"){
-                    if ($scope.sourceData.fAttArr.length > 1) {
-                        $scope.tabular.getData();
+                    if ($scope.sourceData.fAttArr.length > 1) { 
+                        //$scope.Tabular.loadAllSelectedFields();
+                        //$scope.Tabular.getData();
                     }
                 }
 
@@ -3629,7 +3634,29 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
 
-    $scope.tabular = {
+
+    $scope.generateTable=function(){
+        $scope.Tabular.getData();
+    }
+
+    $scope.Tabular = {
+        loadAllSelectedFields:function(){
+        //$scope.executeQryData.executeColumns=$scope.sourceData.fAttArr;
+            if ($scope.sourceData.fAttArr.length > 0) {     
+                for (i in $scope.sourceData.fAttArr) {
+                    if (i == 0) {
+                        $scope.executeQryData.executeColumns = [{
+                            filedName: $scope.sourceData.fAttArr[i].name
+                        }];
+                    } 
+                    else {
+                        $scope.executeQryData.executeColumns.push({
+                            filedName: $scope.sourceData.fAttArr[i].name
+                        });                            
+                    }
+                }
+            }
+        },
         onInit: function(recon) {
             $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;
         },
@@ -3644,14 +3671,20 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         getData: function() {
             $scope.eventHndler.isLoadingChart = true;
             $scope.fieldArray = [];
-            var fieldArrayLength = $scope.sourceData.fAttArr.length;
+            //var fieldArrayLength = $scope.sourceData.fAttArr.length;
+            var fieldArrayLength = $scope.executeQryData.executeColumns.length;
                 $scope.chartState = true;
                 //for (var i = 0; i < $scope.sourceData.fMeaArr.length; i++) {
                 //    $scope.fieldArray.push($scope.sourceData.fMeaArr[i].name);
                 //}
-                for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
-                    $scope.fieldArray.push($scope.sourceData.fAttArr[i].name);
+                //for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
+                //    $scope.fieldArray.push($scope.sourceData.fAttArr[i].name);
+                //}
+
+                for (var i = 0; i < $scope.executeQryData.executeColumns.length; i++) {
+                    $scope.fieldArray.push($scope.executeQryData.executeColumns[i].filedName);
                 }
+
                 console.log($scope.fieldArray);
                 var parameter;
                 var i = 0;
@@ -3675,9 +3708,34 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
                     $scope.eventHndler.isLoadingChart = false;
                 }, $scope.initRequestLimit.value);
-                $scope.dataToBeBind.receivedQuery = query;
+               //$scope.dataToBeBind.receivedQuery = query;
             
-        },       
+        }, 
+        selectAttribute : function(fieldName) {
+            $scope.isPendingRequest = false;
+            if ($scope.executeQryData.executeColumns.length == 0) {
+                $scope.executeQryData.executeColumns = [{
+                    filedName: fieldName
+                }];
+            } else if ($scope.executeQryData.executeColumns.length >= 1) {
+                $scope.executeQryData.executeColumns.push({
+                    filedName: fieldName
+                });
+            }
+            //if($scope.executeQryData.executeMeasures.length == 1) {
+            //    $scope.generateHierarchy();
+            //}
+            $scope.eventHndler.isLoadingChart = false;
+        },
+        removeCat: function() {
+            $scope.isPendingRequest = false;
+            if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
+                //$scope.generateHierarchy();
+            } else {
+                //privateFun.fireMessage('0','Please Select atleast one aggregate measure and category to generate chart ');
+                //return;
+            }
+        },      
         saveWidget: function(widget) {
         }
     };

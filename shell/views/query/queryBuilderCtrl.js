@@ -6,6 +6,7 @@
 // Modified By : Dilani
 ////////////////////////////////
 
+
 routerApp.provider('ngColorPickerConfig', function() {
 
     var templateUrl = '';
@@ -651,9 +652,66 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     },
                     colorTheme: "",
                     lowerRange: 0,
-                    higherRange: 33852
+                    higherRange: 33852,
+                    trendChart: {
+                        options: {
+                            chart: {
+                            backgroundColor: 'transparent'
+                        },
+                        xAxis: {
+                            labels:{
+                              enabled:false//default is true
+                            },
+                           lineWidth: 0,
+                           minorGridLineWidth: 0,
+                           lineColor: 'transparent',
+                           minorTickLength: 0,
+                           tickLength: 0
+                        },
+                        exporting: {
+                                 enabled: false
+                        },
+                        yAxis: {
+                            min: 0,
+                            gridLineWidth: 0,
+                            title: {
+                              text: '',
+                              align: 'high'
+                            },
+                            labels:{
+                              enabled:false//default is true
+                            }
+                        },
+                        credits: {
+                          enabled: false
+                        },
+                        tooltip: {
+                            enabled:false
+                        },
+                        plotOptions: {
+                            series: {
+                                enableMouseTracking: false
+                            },
+                            line: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
+                        },
+                        legend: {
+                                    enabled: false
+                        }
+                        },
+                        series: [],
+                        title: {
+                            text: ''
+                        }
+                    }
                 },
+                groupByField: "",
+                timeAttribute: "",
                 settingsView: 'views/query/settings-views/metricSettings.html',
+                notificationValue: "",
 				tooltip: ""
             }, {
                 id: 'ct15',
@@ -4827,6 +4885,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             privateFun.fireMessage('0','Please select a colouring type.');
             return;
         }
+        var fieldArr = [{
+            field: executeQryData.executeActualField[0].filedName,
+            agg: executeQryData.executeActualField[0].condition
+        }];
+        $scope.client.getAggData($scope.sourceData.tbl, executeQryData.executeActualField, $scope.limit, $scope.sourceData.id, function(res, status, query) {
+            if (status) {
+                console.log(res);
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isToggleColumns = true;
+                $scope.eventHndler.isLoadingChart = false;
+
+            } else {
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isToggleColumns = true;
+                $scope.eventHndler.isLoadingChart = false;
+            }
+        },$scope.selectedChart.initObj.groupByField.filedName);
         chartServices.applyMetricSettings($scope.selectedChart);
     };
     // Reset metric chart settings
@@ -4843,6 +4918,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.targetQuery = "";
         $scope.selectedChart.initObj.targetValueString = "";
         $scope.selectedChart.initObj.targetField = "";
+        $scope.selectedChart.initObj.groupByField = "";
+        $scope.selectedChart.initObj.timeAttribute = "";
+        $scope.selectedChart.initObj.notificationValue = "";
         $scope.selectedChart.initObj.rangeSliderOptions = {
             minValue: 0,
             maxValue: 300,
@@ -4864,7 +4942,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     // convert target value integer to comma seperated value
     $scope.changeTargetValue = function() {
-        console.log($scope.selectedChart.initObj.targetValue);
         if ($scope.selectedChart.initObj.targetValue != null) {
             $scope.selectedChart.initObj.targetValueString = $scope.selectedChart.initObj.targetValue.toLocaleString();            
         } else {

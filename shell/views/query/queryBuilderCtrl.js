@@ -5,6 +5,10 @@
 // Version : 3.1.0.2
 // Modified By : Dilani
 ////////////////////////////////
+
+
+
+>>>>>>> 39541607a1254feb783ba1c1b163b09956b750ea
 routerApp.provider('ngColorPickerConfig', function() {
 
     var templateUrl = '';
@@ -78,7 +82,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
             $scope.executeQryData.executeTargetField = $scope.widget.widgetData.commonSrc.target;
             $scope.executeQryData.executeActualField = $scope.widget.widgetData.commonSrc.actual;
-            if ($scope.selectedChart.chartType != 'metric' && $scope.selectedChart.chartType != 'highCharts') {
+            if ($scope.selectedChart.chartType != 'metric' && $scope.selectedChart.chartType != 'highCharts' && $scope.selectedChart.chartType != 'Tabular') {
                 $scope.dynFlex = 90;
                 $scope.chartWrapStyle.height = 'calc(91vh)';
             } else {
@@ -951,12 +955,35 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     var seriesArr = $scope.executeQryData.executeMeasures;
                     if (seriesArr.length > 0 || $scope.chartType == "pie" || $scope.chartType == "hierarchy" || $scope.chartType == "sunburst" ) {
                         eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
-                    } else {
+                    } 
+
+                    else {
                         //alert("First select atleast one measure");
                         privateFun.fireMessage('0', 'Select atleast one measure or select appropriate chart type..');
                         $scope.isPendingRequest = false;
                     }
                 }
+            },
+            onClickAttributes: function(column) { //#for tabular widget
+                $("#togglePanelColumns").hide(200);
+                $scope.isPendingRequest = true;
+                $scope.eventHndler.isToggleColumns = false;
+                var isFoundCnd = false;
+                var selectedField=[]
+                selectedField=$scope.commonData.columns;
+
+                for (i in selectedField) {
+                    console.log(i);
+                }
+                
+                if (!isFoundCnd) {
+                    var seriesArr = $scope.executeQryData.executeMeasures;
+                    if (seriesArr.length > 0) {
+                        eval("$scope." + $scope.selectedChart.chartType + ".selectAttribute(column.filedName)");
+                    } 
+                }
+                $scope.tabular.getData();
+                $scope.isPendingRequest = false;
             },
             onClickRmvCondition: function(condition, measure) {
                 $scope.isPendingRequest = false;
@@ -1228,6 +1255,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         chartTypeTrue = false;
                         break;
                 }
+
+                if($scope.chartType == "Tabular"){
+                    if ($scope.sourceData.fAttArr.length > 1) {
+                        $scope.tabular.getData();
+                    }
+                }
+
+
+
                 // CHART VALIDATIONS
                 if ($scope.chartType == "forecast") {
                     if ($scope.sourceData.fAttArr.length == 1 && $scope.sourceData.fMeaArr.length == 1) {
@@ -3658,6 +3694,60 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.saveChart(widget);
         }
     };
+
+    $scope.tabular = {
+        onInit: function(recon) {
+            $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;
+        },
+        changeType: function() {
+            if (typeof $scope.widget !== 'undefined') {
+                if (typeof $scope.widget.widgetData.selectedChart !== 'undefined') {
+                    $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;                    
+                }
+            }
+            $scope.resetSettings();  
+        },
+        getData: function() {
+            $scope.eventHndler.isLoadingChart = true;
+            $scope.fieldArray = [];
+            var fieldArrayLength = $scope.sourceData.fAttArr.length;
+                $scope.chartState = true;
+                //for (var i = 0; i < $scope.sourceData.fMeaArr.length; i++) {
+                //    $scope.fieldArray.push($scope.sourceData.fMeaArr[i].name);
+                //}
+                for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
+                    $scope.fieldArray.push($scope.sourceData.fAttArr[i].name);
+                }
+                console.log($scope.fieldArray);
+                var parameter;
+                var i = 0;
+                $scope.fieldArray.forEach(function(entry) {
+                    if (i == 0) {
+                        parameter = entry
+                    } else {
+                        parameter += "," + entry;
+                    }
+                    i++;
+                });
+                var db = $scope.sourceData.src;
+                if (db == "BigQuery") {
+                    var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
+                } else {
+                    var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl;
+                }
+                console.log("query", query);
+                $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
+                    $scope.summaryData = data;
+
+                    $scope.eventHndler.isLoadingChart = false;
+                }, $scope.initRequestLimit.value);
+                $scope.dataToBeBind.receivedQuery = query;
+            
+        },       
+        saveWidget: function(widget) {
+        }
+    };
+
     $scope.getAggregation = function() {
         $scope.eventHndler.isLoadingChart = true;
         if ($scope.highchartsNG === undefined) {

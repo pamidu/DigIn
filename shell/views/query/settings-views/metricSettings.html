@@ -1,3 +1,11 @@
+<!-- ////////////////////////////////
+// File : metricSettings
+// Owner  : Dilani
+// Last changed date : 2017/01/03
+// Version : 3.1.0.2
+// Modified By : Dilani
+//////////////////////////////// -->
+
 <div ng-show="selectedChart.chartType == 'metric'" class="chart-config-wrap">
     <md-container>
         <label class="chart-settings-labels">Basic Settings</label>
@@ -27,12 +35,12 @@
             </md-input-container>  -->   
             <md-input-container flex="50">
                 <label>Decimals</label>
-                    <md-select ng-change="changeDecimals()" ng-model="selectedChart.initObj.dec">
-                  <md-option ng-repeat="d in metricObj.decimals" value="{{d}}">
-                    {{d}}
-                  </md-option>
+                <md-select ng-change="changeDecimals()" ng-model="selectedChart.initObj.dec">
+                    <md-option ng-repeat="d in metricObj.decimals" value="{{d}}">
+                        {{d}}
+                    </md-option>
                 </md-select>
-            </md-input-container>        
+            </md-input-container>
         </md-container>
     </md-container>
     <md-container>
@@ -47,6 +55,40 @@
                 <label>Target Value</label>
                 <input type="number" ng-model="selectedChart.initObj.targetValue"
                     ng-change="changeTargetValue()" ng-disabled="executeQryData.executeTargetField.length == 1">
+            </md-input-container>
+        </md-container>
+    </md-container>
+    <md-container>
+        <label class="chart-settings-labels">Trend Settings</label>
+        <br>
+        <md-container flex layout="row">
+            <md-input-container flex="50">
+                <label>Group by</label>
+                <md-select ng-change="changeDecimals()" ng-model="s">
+                    <md-option>
+                        Year
+                    </md-option>
+                    <md-option>
+                        Month
+                    </md-option>
+                    <md-option>
+                        Quarter
+                    </md-option>
+                    <md-option>
+                        Daily
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex="50">
+                <label>Time Attribute</label>
+                <md-select ng-change="changeDecimals()" ng-model="w">
+                    <md-option ng-repeat="column in commonData.columns" value="{{column}}"  ng-if=" measure.type == 'datetime' 
+                     || measure.type == 'DATETIME'
+                     || measure.type == 'DATE'
+                     || measure.type == 'TIMESTAMP'" >
+                        {{ ::column.filedName }}
+                    </md-option>
+                </md-select>
             </md-input-container>
         </md-container>
     </md-container>

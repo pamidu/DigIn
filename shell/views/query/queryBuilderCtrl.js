@@ -1,3 +1,10 @@
+////////////////////////////////
+// File : QueryBuilderCtrl
+// Owner  : Sajeetharan
+// Last changed date : 2017/01/03
+// Version : 3.1.0.2
+// Modified By : Dilani
+////////////////////////////////
 routerApp.provider('ngColorPickerConfig', function() {
 
     var templateUrl = '';
@@ -155,7 +162,69 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         startdate: $scope.intDate,
         enddate: $scope.intDate,
     };
-
+    $scope.chart = {
+        options: {
+            chart: {
+            backgroundColor: 'transparent'
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels:{
+              enabled:false//default is true
+            },
+           lineWidth: 0,
+           minorGridLineWidth: 0,
+           lineColor: 'transparent',
+           minorTickLength: 0,
+           tickLength: 0
+        },
+        exporting: {
+                 enabled: false
+        },
+        yAxis: {
+            min: 0,
+            gridLineWidth: 0,
+            title: {
+              text: '',
+              align: 'high'
+            },
+            labels:{
+              enabled:false//default is true
+            }
+        },
+        credits: {
+          enabled: false
+        },
+        tooltip: {
+            enabled:false
+        },
+        plotOptions: {
+            series: {
+                enableMouseTracking: false
+            },
+            line: {
+                marker: {
+                    enabled: false
+                }
+            }
+        },
+        legend: {
+                    enabled: false
+        }
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }],
+        title: {
+            text: ''
+        }
+    };
     $scope.generateDesable = false;
     $scope.forecastObj = {
         method: ["Additive", "Multiplicative"],
@@ -542,10 +611,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     targetField: "",
                     rangeSliderOptions: {
                         minValue: 0,
-                        maxValue: 100,
+                        maxValue: 300,
                         options: {
                             floor: 0,
-                            ceil: 100,
+                            ceil: 300,
                             step: 1,
                             translate: function(value) {
                               return value + '%';
@@ -662,6 +731,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 id: $scope.sourceData.fMeaArr[i].id,
                 filedName: $scope.sourceData.fMeaArr[i].name,
                 click: false,
+                type: $scope.sourceData.fMeaArr[i].dataType,
                 selectQry: [],
                 proBy: 'm0'
             });
@@ -674,6 +744,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 id: $scope.sourceData.fAttArr[i].id,
                 filedName: $scope.sourceData.fAttArr[i].name,
                 click: false,
+                type: $scope.sourceData.fAttArr[i].dataType,
                 selectQry: [],
                 proBy: 'c0'
             });
@@ -4559,10 +4630,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.targetField = "";
         $scope.selectedChart.initObj.rangeSliderOptions = {
             minValue: 0,
-            maxValue: 100,
+            maxValue: 300,
             options: {
                 floor: 0,
-                ceil: 100,
+                ceil: 300,
                 step: 1,
                 translate: function(value) {
                   return value + '%';

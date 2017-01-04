@@ -1283,13 +1283,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         break;
                 }
 
-                if($scope.chartType == "Tabular"){
-                    if ($scope.sourceData.fAttArr.length > 1) { 
-                        //$scope.Tabular.loadAllSelectedFields();
-                        //$scope.Tabular.getData();
-                    }
-                }
-
+          
 
 
                 // CHART VALIDATIONS
@@ -2769,94 +2763,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         });
     };
 
-    // --- tabular widget ------------------------------------
-
-    $scope.Tabular = {
-        onInit: function(recon) {
-            alert('onInit');
-        },
-        changeType: function() {
-             $scope.generateTabular();
-        },
-        saveWidget: function(widget) {
-            alert('saveWidget');
-            
-        }
-    };
-
-    $scope.allingArr=[];
-    $scope.tabularConfig = {
-
-        totForNumeric : true,
-        defSortFeild : "",
-        AscOrDec : "Ascending",
-        AllingArr: $scope.allingArr,
-        numOfRows:10,
-
-    };
-
-   
-
-    $scope.start = 0;
-    $scope.sort ='';
-    $scope.limit = 10;
-    $scope.query = "";
-    $scope.userList=[];
-  
-
-    for(var i=0;i<1000;i++){
-        var user = null;
-        user = {
-            id:i,
-            profit:Math.floor(Math.random()*20+20),
-            order_priority:Math.floor(Math.random()*20+20),
-            sales:Math.floor(Math.random()*20+20),
-        }
-
-        $scope.userList.push(user);
-    }
-
-
-    $scope.changeSort = function(name){
-        //$scope.cc.deselect();
-        if($scope.sort==name.Attribute){
-          $scope.sort='-'+name.Attribute;
-        }else if($scope.sort=='-'+name.Attribute){
-          $scope.sort='';
-        }else{
-          $scope.sort=name.Attribute;
-        }
-    };
-
-
-     $scope.generateTabular = function(){
-
-            var colObj = {
-                "Attribute":'profit',
-                "DislayName": 'profit',
-                "Alignment": 'right'
-            }; 
-
-            var colObj1 = {
-                "Attribute":'order_priority',
-                "DislayName": 'order_priority',
-                "Alignment": 'left'
-            }; 
-
-            var colObj2 = {
-                "Attribute":'sales',
-                "Dislay name": 'sales',
-                "Alignment": 'right'
-            };
-
-
-            $scope.allingArr.push(colObj);
-            $scope.allingArr.push(colObj1);
-            $scope.allingArr.push(colObj2);
-     };
-
-
-     //-------------------------------------------------------------
 
 
 
@@ -3821,33 +3727,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
 
 
-    $scope.generateTable=function(){
-        if($scope.executeQryData.executeColumns.length>0){
-            $scope.Tabular.getData();
-        }
-        else{
-            privateFun.fireMessage('0','Please Select atleast one attribute to generate table ');
-        }
-    }
+    
 
     $scope.Tabular = {
-        loadAllSelectedFields:function(){
-        //$scope.executeQryData.executeColumns=$scope.sourceData.fAttArr;
-         /*   if ($scope.sourceData.fAttArr.length > 0) {     
-                for (i in $scope.sourceData.fAttArr) {
-                    if (i == 0) {
-                        $scope.executeQryData.executeColumns = [{
-                            filedName: $scope.sourceData.fAttArr[i].name
-                        }];
-                    } 
-                    else {
-                        $scope.executeQryData.executeColumns.push({
-                            filedName: $scope.sourceData.fAttArr[i].name
-                        });                            
-                    }
-                }
-            }*/
-        },
         onInit: function(recon) {
             $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;
         },
@@ -3858,6 +3740,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
             }
             $scope.resetSettings();  
+            $scope.generateTable();
+            
         },
         getData: function() {
             $scope.eventHndler.isLoadingChart = true;
@@ -3896,10 +3780,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 console.log("query", query);
                 $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
                     $scope.summaryData = data;
-
+                    $scope.generateTabular();
                     $scope.eventHndler.isLoadingChart = false;
                 }, $scope.initRequestLimit.value);
-               //$scope.dataToBeBind.receivedQuery = query;
+               $scope.dataToBeBind.receivedQuery = query;
             
         }, 
         selectAttribute : function(fieldName) {
@@ -3930,6 +3814,64 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         saveWidget: function(widget) {
         }
     };
+
+    $scope.allingArr=[];
+    $scope.tabularConfig = {
+
+        totForNumeric : true,
+        defSortFeild : "",
+        AscOrDec : "Ascending",
+        AllingArr: $scope.allingArr,
+        numOfRows:10,
+
+    };
+
+   
+
+    $scope.start = 0;
+    $scope.sort ='';
+    $scope.limit = 10;
+    $scope.query = "";
+    $scope.userList=[];
+ 
+    $scope.changeSort = function(name){
+        //$scope.cc.deselect();
+        if($scope.sort==name.Attribute){
+          $scope.sort='-'+name.Attribute;
+        }else if($scope.sort=='-'+name.Attribute){
+          $scope.sort='';
+        }else{
+          $scope.sort=name.Attribute;
+        }
+    };
+
+
+     $scope.generateTabular = function(){
+
+            for(var i=0; i< $scope.executeQryData.executeColumns.length; i++){
+
+                var colObj = {
+                    "id":i,
+                    "Attribute": $scope.executeQryData.executeColumns[i].filedName,
+                    "DislayName": $scope.executeQryData.executeColumns[i].filedName,
+                    "Alignment": 'right'
+                };
+
+                $scope.allingArr.push(colObj);
+            }
+
+            $scope.userList = $scope.summaryData;
+     };
+
+        $scope.generateTable=function(){
+                if($scope.executeQryData.executeColumns.length>0){
+                    $scope.Tabular.getData();
+                }
+                else{
+                    privateFun.fireMessage('0','Please Select atleast one attribute to generate table ');
+                }
+            }
+     //-------------------------------------------------------------
 
     $scope.getAggregation = function() {
         $scope.eventHndler.isLoadingChart = true;

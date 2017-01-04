@@ -3699,13 +3699,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
 
     $scope.generateTable=function(){
-        $scope.Tabular.getData();
+        if($scope.executeQryData.executeColumns.length>0){
+            $scope.Tabular.getData();
+        }
+        else{
+            privateFun.fireMessage('0','Please Select atleast one attribute to generate table ');
+        }
     }
 
     $scope.Tabular = {
         loadAllSelectedFields:function(){
         //$scope.executeQryData.executeColumns=$scope.sourceData.fAttArr;
-            if ($scope.sourceData.fAttArr.length > 0) {     
+         /*   if ($scope.sourceData.fAttArr.length > 0) {     
                 for (i in $scope.sourceData.fAttArr) {
                     if (i == 0) {
                         $scope.executeQryData.executeColumns = [{
@@ -3718,7 +3723,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         });                            
                     }
                 }
-            }
+            }*/
         },
         onInit: function(recon) {
             $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;

@@ -63,34 +63,43 @@
         <br>
         <md-container flex layout="row">
             <md-input-container flex="50">
-                <label>Group by</label>
-                <md-select ng-change="changeDecimals()" ng-model="s">
-                    <md-option>
+                <label>Group by {{selectedChart.initObj.groupByField}}</label>
+                <md-select ng-model="selectedChart.initObj.timeAttribute">
+                    <md-option value="year">
                         Year
                     </md-option>
-                    <md-option>
+                    <md-option value="month">
                         Month
                     </md-option>
-                    <md-option>
+                    <md-option value="quarter">
                         Quarter
                     </md-option>
-                    <md-option>
+                    <md-option value="daily">
                         Daily
                     </md-option>
                 </md-select>
             </md-input-container>
             <md-input-container flex="50">
                 <label>Time Attribute</label>
-                <md-select ng-change="changeDecimals()" ng-model="w">
-                    <md-option ng-repeat="column in commonData.columns" value="{{column}}"  ng-if=" measure.type == 'datetime' 
-                     || measure.type == 'DATETIME'
-                     || measure.type == 'DATE'
-                     || measure.type == 'TIMESTAMP'" >
+                <md-select ng-model="selectedChart.initObj.groupByField">
+                    <md-option ng-repeat="column in commonData.columns" value="{{column}}"  ng-if=" column.type == 'datetime' 
+                     || column.type == 'DATETIME'
+                     || column.type == 'DATE'
+                     || column.type == 'TIMESTAMP'" >
                         {{ ::column.filedName }}
                     </md-option>
                 </md-select>
             </md-input-container>
         </md-container>
+    </md-container>
+    <md-container>
+        <label class="chart-settings-labels">Notification Settings</label>
+        <md-input-container layout="column">
+            <div>
+                <label>Notification Trigger Value</label>
+                <input type="number" ng-model="selectedChart.initObj.notificationValue">
+            </div>
+        </md-input-container>
     </md-container>
     <md-container>
         <label class="chart-settings-labels">Visualization Settings</label>
@@ -141,5 +150,5 @@
                 Reset
             </md-button>
         </md-container>
-    </md-container>    
+    </md-container>
 </div>

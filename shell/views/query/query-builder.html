@@ -269,10 +269,10 @@
                     </div>
                 </div>
 
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-show="selectedChart.chartType == 'Tabular' ">
+                <div class="digin-gb-measures last-icon"  ng-style="{ 'height' : (selectedChart.chartType == 'Tabular') ? '100%' : 'initial' }" ng-show="selectedChart.chartType == 'Tabular' "> <!--ng-style="chartBgMeaStyle"-->
                     <div class="panel-header">
                         <h3 class="font-weight-300">
-                            Columns  
+                            Attributes 
                             <fieldset ng-disabled="isPendingRequest"
                                       data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
                                       class="toggle-icon animated "
@@ -285,13 +285,14 @@
                             </fieldset>
                         </h3>
                     </div>
-                    <div class="measures-body">
+                    <div class="measures-body" ng-style="{ 'height' : (selectedChart.chartType == 'Tabular') ? '100%' : 'initial' }">
                         <div class="data-row"
                              ng-repeat="row in executeQryData.executeColumns">
                             <i class="ti-close" ng-click="removeCategory(row)"></i>&nbsp;&nbsp;
                             {{row.filedName}}
                         </div>
                     </div>
+
                 </div>
 
 
@@ -384,7 +385,7 @@
                     </v-accordion>  
                     </div>
                 </div>
-                <div class="digin-gb-measures last-icon" ng-style="{ 'height' : (selectedChart.chartType == 'forecast') ? '100%' : 'initial' }" >
+                <div class="digin-gb-measures last-icon" ng-style="{ 'height' : (selectedChart.chartType == 'forecast') ? '100%' : 'initial' }"  ng-hide="selectedChart.chartType == 'Tabular'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Filter

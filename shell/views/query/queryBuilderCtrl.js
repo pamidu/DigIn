@@ -6,9 +6,6 @@
 // Modified By : Dilani
 ////////////////////////////////
 
-
-
->>>>>>> 39541607a1254feb783ba1c1b163b09956b750ea
 routerApp.provider('ngColorPickerConfig', function() {
 
     var templateUrl = '';

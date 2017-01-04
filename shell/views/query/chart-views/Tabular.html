@@ -70,8 +70,8 @@ tr .wrap{
         <div class="cell-cursor-col-resize"></div>
         {{x.Attribute}}
         <!-- sort key indicator example -->
-        <span ng-show="sort=='{{x.Attribute}}'">▲</span>
-        <span ng-show="sort=='-{{x.Attribute}}'">▼</span>
+        <span ng-show="sort=='{{x.Attribute}}'">?</span>
+        <span ng-show="sort=='-{{x.Attribute}}'">?</span>
       </td>
     </tr>
   </thead>
@@ -83,7 +83,7 @@ tr .wrap{
       	<div class="cell-cursor-row-resize"></div>
         <!-- drag-drop handle -->
         <span class="drag-handler"
-          cell-cursor-Drag="cc">＝</span>
+          cell-cursor-Drag="cc">=</span>
         {{user.id}}
 
       </td>

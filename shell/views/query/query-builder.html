@@ -93,8 +93,8 @@
                 </div>
             </div>
             <!-- measures -->
-            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' || selectedChart.chartType == 'forecast' ">
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'forecast'">
+            <div flex="20" ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType =='map' || selectedChart.chartType == 'metric' || selectedChart.chartType =='d3hierarchy' || selectedChart.chartType =='d3sunburst' || selectedChart.chartType == 'forecast'  || selectedChart.chartType == 'Tabular'">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'forecast'  || selectedChart.chartType == 'Tabular'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Series
@@ -166,7 +166,7 @@
                 <!-- columns config panel -->
                 <div class="columns-config-panel animated"
                      id="togglePanelColumns">
-                    <div class="header" ng-hide="selectedChart.chartType == 'metric'  || selectedChart.chartType == 'forecast'">
+                    <div class="header" ng-hide="selectedChart.chartType == 'metric'  || selectedChart.chartType == 'forecast">
                         <h4 class="font-weight-300 p-20">
                             Attributes
                             <div class="header-icon">
@@ -174,7 +174,8 @@
                             </div>
                         </h4>
                     </div>
-                    <div class="chart-config-wrap"  ng-hide="selectedChart.chartType == 'metric'">
+
+                    <div class="chart-config-wrap"  ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'Tabular'">
                         <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
                                      onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
                             <v-pane id="{{ ::column.id }}" ng-repeat="column in commonData.columns"
@@ -189,6 +190,24 @@
                             </v-pane>
                         </v-accordion>
                     </div>
+
+                    <!--for tabular widget-->
+                     <div class="chart-config-wrap"  ng-show="selectedChart.chartType == 'Tabular'">
+                        <v-accordion id="accordionA" class="vAccordion--default" control="accordionA"
+                                     onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+                            <v-pane id="{{ ::column.id }}" ng-repeat="column in commonData.columns"
+                                    class="v-pane-column">
+                                <v-pane-header id="{{ ::column.id }}-header" class="data-row-columns"
+                                               ng-click="eventHndler.onClickAttributes(column)"
+                                               aria-controls="{{ ::column.id }}-content">
+                                    <h5 markable class="font-weight-300 text-upper">{{ ::column.filedName }}
+                                        <i class="ti-close"></i>
+                                    </h5>
+                                </v-pane-header>
+                            </v-pane>
+                        </v-accordion>
+                    </div>
+
                     <div class="header" ng-show="selectedChart.chartType == 'metric'">
                         <h4 class="font-weight-300 p-20">
                             Target Field
@@ -220,7 +239,7 @@
                         </v-accordion>
                     </div>
                 </div>               
-                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'forecast' ">
+                <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-hide="selectedChart.chartType == 'metric' || selectedChart.chartType == 'forecast' || selectedChart.chartType == 'Tabular' ">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             category
@@ -249,6 +268,34 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="digin-gb-measures last-icon"  ng-style="{ 'height' : (selectedChart.chartType == 'Tabular') ? '100%' : 'initial' }" ng-show="selectedChart.chartType == 'Tabular' "> <!--ng-style="chartBgMeaStyle"-->
+                    <div class="panel-header">
+                        <h3 class="font-weight-300">
+                            Attributes 
+                            <fieldset ng-disabled="isPendingRequest"
+                                      data-ng-style="isPendingRequest && {'cursor':'not-allowed'}"
+                                      class="toggle-icon animated "
+                                      ng-class="eventHndler.isToggleColumns==true?'left-icon-toggle':'left-icon'"
+                                      ng-click="eventHndler.onToggleEvent('2')">
+                                <i class="" style="cursor:inherit;"
+                                   ng-class="eventHndler.isToggleColumns==true?'ti-angle-left rotateOut':'ti-angle-right rotateIn'"
+                                ></i>
+
+                            </fieldset>
+                        </h3>
+                    </div>
+                    <div class="measures-body" ng-style="{ 'height' : (selectedChart.chartType == 'Tabular') ? '100%' : 'initial' }">
+                        <div class="data-row"
+                             ng-repeat="row in executeQryData.executeColumns">
+                            <i class="ti-close" ng-click="removeCategory(row)"></i>&nbsp;&nbsp;
+                            {{row.filedName}}
+                        </div>
+                    </div>
+
+                </div>
+
+
                 <div class="digin-gb-measures last-icon" ng-style="chartBgMeaStyle" ng-show="selectedChart.chartType == 'metric'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
@@ -338,7 +385,7 @@
                     </v-accordion>  
                     </div>
                 </div>
-                <div class="digin-gb-measures last-icon" ng-style="{ 'height' : (selectedChart.chartType == 'forecast') ? '100%' : 'initial' }" >
+                <div class="digin-gb-measures last-icon" ng-style="{ 'height' : (selectedChart.chartType == 'forecast') ? '100%' : 'initial' }"  ng-hide="selectedChart.chartType == 'Tabular'">
                     <div class="panel-header">
                         <h3 class="font-weight-300">
                             Filter
@@ -411,7 +458,7 @@
                 </div>
 
                 <div ng-disabled="!isDrilled" class="digin-gb-row"
-                     ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' ">
+                     ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' || selectedChart.chartType == 'Tabular'">
                     <div class="panel-header inline-panel-header p-b-0">
                         <h3 class="font-weight-300">
                             custom query design

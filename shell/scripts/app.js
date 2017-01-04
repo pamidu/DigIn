@@ -37,7 +37,8 @@ var routerApp = angular.module('DuoDiginRt', [
     'rzModule',
 	'md-steppers',
     'stripe-payment-tools',
-	'angular-intro'
+	'angular-intro',
+    'cellCursor'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {

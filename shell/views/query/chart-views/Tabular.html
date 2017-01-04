@@ -1,1 +1,103 @@
-{{summaryData}}
+
+
+<style>
+table.table-data tr.error{
+  background:#f2dede;
+}
+table.table-data td{
+  padding:4px;
+}
+table.table-data td{
+  padding:4px;
+}
+thead td[ng-click]{
+  cursor: pointer;
+}
+.drag-handler{
+  visibility: hidden;
+}
+.dragable .drag-handler{
+  visibility: visible;
+  border:outset 1px lightgray;
+  cursor:row-resize;
+  font-size:60%;
+  margin:4px;
+}
+
+.id{
+  background:#F3F3F3;
+}
+tr.cursor .id{
+  background:#E3E3E3;
+}
+tr .wrap{
+  overflow: hidden;
+}
+.code pre{
+  background:#f8f8f8;
+}
+
+.row.vdivide [class*='col-']:not(:last-child):after {
+  background: #e0e0e0;
+  width: 1px;
+  content: "";
+  display:block;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  right: 0;
+  min-height: 70px;
+}
+.hljs-comment, .diff .hljs-header {
+  color: #FFF;
+  background-color: #677130;
+  font-style: normal;
+}
+</style>
+
+<md-content ng-show="widget.widgetData.syncState" flex style="padding-top:20px;">
+	<div  id="{{widget.widgetData.id}}">
+	<table class="table-data" style="float:left" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
+  	cell-cursor-paste="cc.setSelectedCellValues($data)"
+  	ng-keydown="keydown($event)"
+  	ng-class="{dragable:dragable()}">
+		
+	<thead>
+    <tr>
+      <td></td>
+      <!-- changeSort is change $scope.sort -->
+      <td ng-click="changeSort(x)" ng-repeat="x in allingArr">
+        <div class="cell-cursor-col-resize"></div>
+        {{x.Attribute}}
+        <!-- sort key indicator example -->
+        <span ng-show="sort=='{{x.Attribute}}'">?</span>
+        <span ng-show="sort=='-{{x.Attribute}}'">?</span>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- angular.js default directive `ng-repeat` and default filters -->
+    <tr ng-repeat="user in userList|filter:query|orderBy:sort|limitTo:limit:start as result  track by $index" ng-class="{error:isError(user)}">
+      <td class="id">
+
+      	<div class="cell-cursor-row-resize"></div>
+        <!-- drag-drop handle -->
+        <span class="drag-handler"
+          cell-cursor-Drag="cc">=</span>
+        {{user.id}}
+
+      </td>
+      <td ng-repeat="y in allingArr" style=" text-align:{{y.Alignment}}">
+      	  	{{user[y.Attribute]}}
+      </td>
+
+       <!--td>{{user.profit}}</td>
+       <td>{{user.order_priority}}</td>
+       <td>{{user.sales}}</td-->
+    </tr>
+  </tbody>
+</table>
+
+
+	</div>
+</md-content>

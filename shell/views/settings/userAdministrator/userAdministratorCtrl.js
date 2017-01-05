@@ -333,7 +333,49 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 				});
 		}				
 	}
-	
+
+	$scope.changeStatus = function(ev, user)
+	{
+
+		if(onsite){
+			if($rootScope.userLevel=='User'){
+           		displayError('You are not permitted to do this operation, allowed only for administrator'); 
+			   	return;
+        	}
+		}
+		
+		if($rootScope.userLevel=='user'){
+           displayError('You are not permitted to do this operation, allowed only for system administrator'); 
+		   return;
+        }
+		else{
+			 var confirm = $mdDialog.confirm()
+			  .title('Activate/deactivate user')
+			  .textContent('Are you sure you want to activate '+user.Id+'?')
+			  .ariaLabel('Activate')
+			  .targetEvent(ev)
+			  .ok('Please do it!')
+			  .cancel('Cancel');
+			$mdDialog.show(confirm).then(function() {
+				$http({
+	                method: 'GET',
+					url: '/auth/ResetPasswordByTenantAdmin/'+user.Id,
+	                headers: {
+	                    'Securitytoken': getCookie('securityToken')
+	                }
+            	})
+                .success(function(response){
+                    console.log(response);
+                    $mdDialog.hide();
+                    displaySuccess(response);               
+                }).error(function(error){  
+                    $mdDialog.hide(); 
+                    displayError(error.Message); 
+                });    	
+			});
+		}				
+	}
+
 	$scope.getCatLetter=function(catName){
 		try{
 			var catogeryLetter = "images/material_alperbert/avatar_tile_"+catName.charAt(0).toLowerCase()+"_28.png";

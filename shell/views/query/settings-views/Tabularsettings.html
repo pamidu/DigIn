@@ -6,9 +6,9 @@
 
 		<label>Total for Numerics:</label>
 
-		<md-radio-group ng-model="selected" layout="row" layout-align="space-between center">
-			   <md-radio-button value="Enable"> Enable </md-radio-button>
-			   <md-radio-button value="Enable"> Disable </md-radio-button>
+		<md-radio-group ng-model="tabularConfig.totForNumeric" layout="row" layout-align="space-between center">
+			   <md-radio-button value="true"> Enable </md-radio-button>
+			   <md-radio-button value="false"> Disable </md-radio-button>
 		</md-radio-group>
 
 	</div>
@@ -18,13 +18,13 @@
 
 		<div layout="column" layout-align="space-between center">
 
-			  <md-select ng-model="selectedUser">
-			    <md-option ng-value="user" ng-repeat="user in users">{{ user.name }}</md-option>
+			  <md-select ng-model="tabularConfig.defSortFeild">
+			    <md-option ng-value="user.Attribute" ng-repeat="user in tabularConfig.AllingArr">{{ user.Attribute }}</md-option>
 			  </md-select>
 
-			<md-radio-group ng-model="selected" layout="row" >
-			   <md-radio-button value="Enable"> Enable </md-radio-button>
-			   <md-radio-button value="Enable"> Disable </md-radio-button>
+			<md-radio-group ng-model="tabularConfig.AscOrDec" layout="row" >
+			   <md-radio-button value="Ascending"> Ascending </md-radio-button>
+			   <md-radio-button value="Descending"> Descending </md-radio-button>
 			</md-radio-group>
 			
 		</div>
@@ -61,7 +61,7 @@
 		<label>Number of rows to display:</label>
 
 		<md-input-container style="margin-top: -19px;float: left;margin-left: 19px;width: 100px;" >
-            <input ng-model="limit">
+            <input ng-model="limitTable"> 
          </md-input-container>
 
 	</div>

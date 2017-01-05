@@ -1974,6 +1974,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.forecastObj.paramObj.mod = 'triple_exp';
                     break;
             }
+            $scope.generateForecast($scope.forecastObj.paramObj);
             
         },
         saveWidget: function(widget) {
@@ -3876,11 +3877,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.allingArr=[];
     $scope.tabularConfig = {
 
-        totForNumeric : true,
+        totForNumeric : "true",
         defSortFeild : "",
         AscOrDec : "Ascending",
         AllingArr: $scope.allingArr,
-        numOfRows:10,
+        numOfRows:$scope.limitTable,
 
     };
 
@@ -3888,7 +3889,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
     $scope.start = 0;
     $scope.sort ='';
-    $scope.limit = 10;
+    $scope.limitTable = 10;
     $scope.query = "";
     $scope.userList=[];
  
@@ -3909,7 +3910,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             for(var i=0; i< $scope.executeQryData.executeColumns.length; i++){
 
                 var colObj = {
-                    "id":i,
                     "Attribute": $scope.executeQryData.executeColumns[i].filedName,
                     "DislayName": $scope.executeQryData.executeColumns[i].filedName,
                     "Alignment": 'right'
@@ -3922,6 +3922,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
      };
 
         $scope.generateTable=function(){
+
+                alert($scope.tabularConfig);
                 if($scope.executeQryData.executeColumns.length>0){
                     $scope.Tabular.getData();
                 }

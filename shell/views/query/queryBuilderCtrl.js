@@ -3847,18 +3847,27 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }, 
         selectAttribute : function(fieldName) {
             $scope.isPendingRequest = false;
+            var dataType='STRING';
+
+            //#get datatype of executeColumns
+            for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
+                if(fieldName==$scope.sourceData.fAttArr[i].name){
+                    dataType=$scope.sourceData.fAttArr[i].dataType;
+                    i = $scope.sourceData.fAttArr.length;
+                }
+            }
+            
             if ($scope.executeQryData.executeColumns.length == 0) {
                 $scope.executeQryData.executeColumns = [{
-                    filedName: fieldName
+                    filedName: fieldName,
+                    dataType:dataType
                 }];
             } else if ($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.executeQryData.executeColumns.push({
-                    filedName: fieldName
+                    filedName: fieldName,
+                    dataType:dataType
                 });
             }
-            //if($scope.executeQryData.executeMeasures.length == 1) {
-            //    $scope.generateHierarchy();
-            //}
             $scope.eventHndler.isLoadingChart = false;
         },
         removeCat: function() {

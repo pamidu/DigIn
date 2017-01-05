@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$mdMenu', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB', 'Fullscreen', '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB',  '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog,$mdMenu, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, Fullscreen, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path,dbType) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path,dbType) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -1377,9 +1377,26 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     // $state.go('home.Settings');
                     break;
                 case "TV Mode":
-                    $rootScope.currentView = "TV Mode";
-                    if (Fullscreen.isEnabled()) Fullscreen.cancel();
-                    else Fullscreen.all();
+                      //Start of Navigate TVMode
+                       if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+                          (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                        if (document.documentElement.requestFullScreen) {  
+                          document.documentElement.requestFullScreen();  
+                        } else if (document.documentElement.mozRequestFullScreen) {  
+                          document.documentElement.mozRequestFullScreen();  
+                        } else if (document.documentElement.webkitRequestFullScreen) {  
+                          document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+                        }  
+                         } else {  
+                        if (document.cancelFullScreen) {  
+                          document.cancelFullScreen();  
+                        } else if (document.mozCancelFullScreen) {  
+                          document.mozCancelFullScreen();  
+                        } else if (document.webkitCancelFullScreen) {  
+                          document.webkitCancelFullScreen();  
+                        }  
+                         }
+                    //End of Navigate TVMode
                     break;
                 case "Clear Widgets":
                     $scope.clearAllWidgets(ev);

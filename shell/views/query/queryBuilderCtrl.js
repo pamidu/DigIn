@@ -1976,6 +1976,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.forecastObj.paramObj.mod = 'triple_exp';
                     break;
             }
+            $scope.generateForecast($scope.forecastObj.paramObj);
             
         },
         saveWidget: function(widget) {
@@ -3790,17 +3791,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     
 
     $scope.Tabular = {
-        onInit: function(recon) {
-            $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;
+        onInit: function() {
+          
         },
         changeType: function() {
-            if (typeof $scope.widget !== 'undefined') {
-                if (typeof $scope.widget.widgetData.selectedChart !== 'undefined') {
-                    $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;                    
-                }
-            }
-            $scope.resetSettings();  
-            $scope.generateTable();
+            
+                $scope.allingArr=[];
+                
+
+                $scope.widget.widgetData.widData.tabularConfig = {
+
+                totForNumeric : "true",
+                defSortFeild : "",
+                AscOrDec : "Ascending",
+                AllingArr: $scope.allingArr,
+                numOfRows:$scope.limitTable,
+
+            };
             
         },
         getData: function() {
@@ -3848,18 +3855,27 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }, 
         selectAttribute : function(fieldName) {
             $scope.isPendingRequest = false;
+            var dataType='STRING';
+
+            //#get datatype of executeColumns
+            for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
+                if(fieldName==$scope.sourceData.fAttArr[i].name){
+                    dataType=$scope.sourceData.fAttArr[i].dataType;
+                    i = $scope.sourceData.fAttArr.length;
+                }
+            }
+            
             if ($scope.executeQryData.executeColumns.length == 0) {
                 $scope.executeQryData.executeColumns = [{
-                    filedName: fieldName
+                    filedName: fieldName,
+                    dataType:dataType
                 }];
             } else if ($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.executeQryData.executeColumns.push({
-                    filedName: fieldName
+                    filedName: fieldName,
+                    dataType:dataType
                 });
             }
-            //if($scope.executeQryData.executeMeasures.length == 1) {
-            //    $scope.generateHierarchy();
-            //}
             $scope.eventHndler.isLoadingChart = false;
         },
         removeCat: function() {
@@ -3872,27 +3888,20 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
         },      
         saveWidget: function(widget) {
+            widget.widgetData.widView = "views/query/chart-views/Tabular.html";
+            $scope.saveChart(widget);
+
         }
     };
 
-    $scope.allingArr=[];
-    $scope.tabularConfig = {
 
-        totForNumeric : true,
-        defSortFeild : "",
-        AscOrDec : "Ascending",
-        AllingArr: $scope.allingArr,
-        numOfRows:10,
-
-    };
-
-   
 
     $scope.start = 0;
     $scope.sort ='';
-    $scope.limit = 10;
+    $scope.limitTable = 10;
     $scope.query = "";
     $scope.userList=[];
+    $scope.allingments = ["left","right"];
  
     $scope.changeSort = function(name){
         //$scope.cc.deselect();
@@ -3909,21 +3918,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
      $scope.generateTabular = function(){
 
             for(var i=0; i< $scope.executeQryData.executeColumns.length; i++){
-
+                var Alignment = "left";
+                if($scope.executeQryData.executeColumns[i].dataType == "INTEGER" || $scope.executeQryData.executeColumns[i].dataType == "FLOAT")
+                    Alignment = "right";
                 var colObj = {
-                    "id":i,
                     "Attribute": $scope.executeQryData.executeColumns[i].filedName,
                     "DislayName": $scope.executeQryData.executeColumns[i].filedName,
-                    "Alignment": 'right'
+                    "Alignment": Alignment
                 };
 
                 $scope.allingArr.push(colObj);
             }
-
-            $scope.userList = $scope.summaryData;
+            $scope.userList=[];
+            $scope.widget.widgetData.widData.userList = $scope.summaryData;
      };
 
         $scope.generateTable=function(){
+
                 if($scope.executeQryData.executeColumns.length>0){
                     $scope.Tabular.getData();
                 }

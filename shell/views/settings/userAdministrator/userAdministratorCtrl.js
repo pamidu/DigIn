@@ -334,9 +334,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		}				
 	}
 
-	$scope.changeStatus = function(ev, user)
+	$scope.acivateUser = function(ev, user)
 	{
-
 		if(onsite){
 			if($rootScope.userLevel=='User'){
            		displayError('You are not permitted to do this operation, allowed only for administrator'); 
@@ -355,11 +354,11 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 			  .ariaLabel('Activate')
 			  .targetEvent(ev)
 			  .ok('Please do it!')
-			  .cancel('Cancel');
+			  .cancel('Cancel');                 
 			$mdDialog.show(confirm).then(function() {
 				$http({
 	                method: 'GET',
-					url: '/auth/ResetPasswordByTenantAdmin/'+user.Id,
+					url: 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuser/activation/'+user.Id,
 	                headers: {
 	                    'Securitytoken': getCookie('securityToken')
 	                }
@@ -367,10 +366,15 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
                 .success(function(response){
                     console.log(response);
                     $mdDialog.hide();
-                    displaySuccess(response);               
+					if(response.Success){
+						displayError(response.Message); 
+					}
+					else{
+						displaySuccess(response); 
+					}                
                 }).error(function(error){  
                     $mdDialog.hide(); 
-                    displayError(error.Message); 
+                    displayError(error); 
                 });    	
 			});
 		}				

@@ -249,8 +249,14 @@ routerApp
                     }
                     else {
                         $mdDialog.hide();
-                        if(data.Message=="Email Address is not varified."){
-                            mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
+                        if(data.Message=="Email Address is not verified."){
+                            if(onsite){
+                                mainFun.fireMsg('0', "Your account is still inactive, Please contact system administrator.");
+                            }
+                            else{
+                                mainFun.fireMsg('0', "This email address is not verified, please verify your email.");
+                            }
+                            
                         }else if(data.Message.slice(0,22) == "User account is locked")
                         {
                             mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes.");
@@ -1401,7 +1407,18 @@ routerApp
                         if(onsite){
                             $scope.error.isLoading = false;
                             $mdDialog.hide();
-                            $state.go('registered');    
+
+                            if (data.Success === false) {
+                                if(data.Message=="Already Registered."){
+                                    mainFun.fireMsg('0','This user name is already registered, please try again!');
+                                }else{
+                                    mainFun.fireMsg('0',data.Message);
+                                }                               
+                            }
+                            else{
+                                $mdDialog.hide();
+                                $state.go('registered'); 
+                            }    
                         }
                         else{
 

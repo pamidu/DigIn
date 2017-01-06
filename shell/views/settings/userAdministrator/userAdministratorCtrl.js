@@ -349,7 +349,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
         }
 		else{
 			 var confirm = $mdDialog.confirm()
-			  .title('Activate/deactivate user')
+			  .title('Activate user')
 			  .textContent('Are you sure you want to activate '+user.Id+'?')
 			  .ariaLabel('Activate')
 			  .targetEvent(ev)
@@ -360,17 +360,17 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	                method: 'GET',
 					url: 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuser/activation/'+user.Id,
 	                headers: {
-	                    'Securitytoken': getCookie('securityToken')
+	                    'securityToken': getCookie('securityToken')
 	                }
             	})
                 .success(function(response){
                     console.log(response);
                     $mdDialog.hide();
 					if(response.Success){
-						displayError(response.Message); 
+						displaySuccess(response.Message); 
 					}
 					else{
-						displaySuccess(response); 
+						displayError(response); 
 					}                
                 }).error(function(error){  
                     $mdDialog.hide(); 

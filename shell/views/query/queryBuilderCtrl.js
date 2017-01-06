@@ -3803,7 +3803,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
                 totForNumeric : "true",
                 defSortFeild : "",
-                AscOrDec : "Ascending",
+                AscOrDec : "ASC", //#ASC or DESC
                 AllingArr: $scope.allingArr,
                 numOfRows:$scope.limitTable,
 
@@ -3827,6 +3827,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.fieldArray.push($scope.executeQryData.executeColumns[i].filedName);
                 }
 
+                $scope.widget.widgetData.widData.tabularConfig.defSortFeild=$scope.executeQryData.executeColumns[0].filedName;
+
                 console.log($scope.fieldArray);
                 var parameter;
                 var i = 0;
@@ -3839,11 +3841,26 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     i++;
                 });
                 var db = $scope.sourceData.src;
-                if (db == "BigQuery") {
-                    var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl;
-                } else {
-                    var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl;
+        
+                if($scope.sorting==undefined || $scope.sorting==''){
+                    $scope.sorting=false;
                 }
+
+                if(!$scope.sorting){
+                    if (db == "BigQuery") {
+                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
+                    } else {
+                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
+                    }
+                }
+                else{
+                    if (db == "BigQuery") {
+                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
+                    } else {
+                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
+                    }
+                }
+
                 console.log("query", query);
                 $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
                     $scope.summaryData = data;
@@ -3907,11 +3924,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         //$scope.cc.deselect();
         if($scope.sort==name.Attribute){
           $scope.sort='-'+name.Attribute;
+          $scope.orderByColumnName=name.Attribute;
+          $scope.OrderType='DESC';
+          $scope.sorting=true;
         }else if($scope.sort=='-'+name.Attribute){
           $scope.sort='';
+          $scope.sorting=false;
         }else{
           $scope.sort=name.Attribute;
+          $scope.orderByColumnName=name.Attribute;
+           $scope.OrderType='ASC';
+           $scope.sorting=true;
         }
+
+        $scope.generateTable();
+
     };
 
 

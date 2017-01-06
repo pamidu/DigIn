@@ -118,7 +118,7 @@
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";
                     if (con) params += "&cons=" + con;
-                    if (limit) params += "&limit" + limit;
+                    if (limit) params += "&limit=" + limit;
                     var reqUrl = $diginurls.diginengine + "aggregatefields?" + params;
                     var wData = {
                         rUrl: reqUrl,

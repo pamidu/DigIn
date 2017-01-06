@@ -1,5 +1,12 @@
+<!-- ////////////////////////////////
+// File : metric.html
+// Owner  : Dilani
+// Last changed date : 2017/01/06
+// Version : 3.1.0.2
+// Modified By : Dilani
+//////////////////////////////// -->
 <div style="height:100%;width:100%;" layout="row" ng-style="{background:selectedChart.initObj.color}" >
-	<div flex="50" layout="column" layout-align='start start'>
+	<div flex="50" layout="column" layout-align='center start'>
 		<div ng-show="selectedChart.initObj.value">
 			<div flex style="padding:10px;">
 
@@ -25,7 +32,7 @@
 		</div>
 	</div>
 	<div flex = "50" layout="row" ng-show="selectedChart.initObj.value">
-		<div layout="column" flex style="height: 30%; width: 30%;">
+		<div layout="column" flex>
 			<highchart config="selectedChart.initObj.trendChart"></highchart>
 		</div>
 	</div>

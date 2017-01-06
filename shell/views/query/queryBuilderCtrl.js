@@ -4940,31 +4940,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.client.getAggData($scope.sourceData.tbl, executeQryData.executeActualField, $scope.limit, $scope.sourceData.id, function(res, status, query) {
             if (status) {
                 $scope.selectedChart.initObj.trendQuery = query;
-                res = $filter('orderBy')(res,$scope.selectedChart.initObj.groupByField);
-                angular.forEach(res,function(key){
-                    var utc = moment(key[$scope.selectedChart.initObj.groupByField]).utc().valueOf();
-                    tempArr = [utc,key[executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName]];
-                    seriesData.push(tempArr);
-                });
-                if ($scope.selectedChart.initObj.timeAttribute == 'quarter') {
-                    units = [['month',[3]]];
-                } else {
-                    units = [[$scope.selectedChart.initObj.timeAttribute,[1]]];
-                }
-                $scope.$apply(function(){
-                    $scope.selectedChart.initObj.trendChart.series = [{
-                        color: 'black',
-                        data: seriesData,
-                        dataGrouping: {
-                            approximation: "sum",
-                            enabled: true,
-                            forced: true,
-                            units: units
-                        },
-                        turboThreshold: 0,
-                        cropThreshold: res.length
-                    }]
-                })
+                var nameSpace = executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName;
+                chartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
                 chartServices.applyMetricSettings($scope.selectedChart);
                 $scope.isPendingRequest = false;
                 $scope.eventHndler.isToggleColumns = true;

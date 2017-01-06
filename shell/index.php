@@ -126,6 +126,7 @@
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script> 
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>

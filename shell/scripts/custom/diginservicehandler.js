@@ -57,10 +57,10 @@
                         }, $diginurls.diginengine + "gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_id=" + id);
                     }
                     if (database == "MSSQL") {
-
+                        var db = tbl.split(".");
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=[" + db[0] + '].[' + db[1] + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
                     }
                     if (database == "postgresql") {
 
@@ -100,10 +100,11 @@
                         }
                     }
                     if (database == "MSSQL") {
+                        var db = tbl.split(".");
                         if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
+                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
+                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         }
                     }
                     if (database == "postgresql") {
@@ -155,8 +156,9 @@
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
                         getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database + "&datasource_id=" + id;
                     } else if ( database == "MSSQL") {
-                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
-                        tbl + "&measure=[" + measure + "]&agg=" + aggData + "&db=" + database + "&datasource_config_id=" + id;
+                        var db = tbl.split(".");
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
+                        db[0] + '].[' + db[1] + "]&measure=[" + measure + "]&agg=" + aggData + "&db=" + database + "&datasource_config_id=" + id;
                     } else {
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
                         tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;

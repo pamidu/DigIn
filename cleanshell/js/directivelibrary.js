@@ -421,6 +421,10 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '30px'
 		},200)
 		
+		$('.setting-container').animate({
+			paddingTop: '0px'
+		},200)
+		
 		/*$('md-tabs-content-wrapper').animate({
 			height: '100vh'
 		},200)*/
@@ -440,6 +444,10 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '70px'
 		},200)
 		
+		$('.setting-container').animate({
+			paddingTop: '45px'
+		},200)
+		
 		var newHeight = $('md-tabs-content-wrapper').height(); - 45;
 		
 		$('md-tabs-content-wrapper').animate({
@@ -455,6 +463,9 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 		$('.card-container').animate({
 			paddingLeft: '0px'
 		},200)
+		$('.setting-container').animate({
+			paddingLeft: '0px'
+		},200);
 		return false;
 	}
 	this.showSideMenu = function(){
@@ -463,7 +474,10 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 		}, 200);
 		$('.card-container').animate({
 			paddingLeft: '45px'
-		},200)
+		},200);
+		$('.setting-container').animate({
+			paddingLeft: '45px'
+		},200);
 		return true;
 	}
 }])

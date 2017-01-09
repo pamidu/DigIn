@@ -64,7 +64,7 @@
         <md-container flex layout="row">
             <md-input-container flex="50">
                 <label>Group by {{selectedChart.initObj.groupByField}}</label>
-                <md-select ng-model="selectedChart.initObj.timeAttribute">
+                <md-select ng-model="selectedChart.initObj.timeAttribute" ng-change="changeMetricTrendType()">
                     <md-option value="year">
                         Year
                     </md-option>
@@ -74,7 +74,7 @@
                     <md-option value="quarter">
                         Quarter
                     </md-option>
-                    <md-option value="daily">
+                    <md-option value="day">
                         Daily
                     </md-option>
                 </md-select>
@@ -82,7 +82,7 @@
             <md-input-container flex="50">
                 <label>Time Attribute</label>
                 <md-select ng-model="selectedChart.initObj.groupByField">
-                    <md-option ng-repeat="column in commonData.columns" value="{{column}}"  ng-if=" column.type == 'datetime' 
+                    <md-option ng-repeat="column in commonData.columns" value="{{column.filedName}}"  ng-if=" column.type == 'datetime' 
                      || column.type == 'DATETIME'
                      || column.type == 'DATE'
                      || column.type == 'TIMESTAMP'" >
@@ -143,7 +143,7 @@
             </md-input-container>
         </md-container>
         <md-container>
-            <md-button class="md-raised md-primary right" ng-click="applySettings()" ng-disabled="eventHndler.isLoadingChart">
+            <md-button class="md-raised md-primary right" ng-click="applyMetricSettings()" ng-disabled="eventHndler.isLoadingChart">
                 Apply
             </md-button>
             <md-button class="md-raised md-primary right" ng-click="resetSettings()" ng-disabled="eventHndler.isLoadingChart">

@@ -1339,6 +1339,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Theme":
                     $scope.openTheme();
                     break;
+				case "User Assistance":
+                    $state.go('home.user_assistance');
                 case "Share":
                     $rootScope.currentView = "Share";
                     $scope.Share();

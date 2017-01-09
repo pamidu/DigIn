@@ -1,0 +1,95 @@
+ <style>
+md-steppers-content-wrapper{
+	max-width:960px;
+	margin: 0 auto;
+}
+.checkboxdemoSelectAll .demo-legend {
+  color: #3F51B5; }
+.fieldset {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px
+}
+.all-checkboxes {
+  padding-left: 30px;
+ }
+</style>
+<div class="setting-card-header">
+	<h2 md-colors="{color:'{{$root.h1color}}-A700'}" style="margin-top: 45px;">Connect Source</h2>
+	<div class="setting-img-wrap" layout="row" layout-align="center center">
+		<img ng-src="views/user_assistance/connectSource/stats.png" />
+	</div>
+</div>
+ <md-steppers ng-init="$parent.connectSource_selected = 0" md-selected="$parent.connectSource_selected" md-stretch-steppers="always">
+  <md-step label="Connect Source" md-complete="$parent.connectSource_step1.completed" ng-disabled="$parent.connectSource_step1.disabled">
+	<md-content style="padding:20px">
+		<div layout="row" layout-align="center center" layout-wrap>
+			<md-card ng-repeat="source in $parent.sourceType"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  ng-click="selectSource(source.name)" md-colors="{background:'primary-800'}">
+				<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+					<span class="product_name" style="border-bottom: 1px solid #white;">{{source.name}}</span>
+				</div>
+				<div layout="row" layout-align="end end">
+					<img style="height:100px;width:100px" ng-src="{{source.icon}}"></img>
+				</div>
+			</md-card>
+		</div>
+	</md-content>
+  </md-step>
+  <md-step label="Table Selection" md-complete="$parent.connectSource_step2.completed" ng-disabled="$parent.connectSource_step2.disabled">
+	<md-content style="padding:20px;max-height:300px;">
+		<form name="step2" ng-submit="submitTableSelectStep()">
+			<input style="width: 200px;margin-bottom:10px;" placeholder="search table..." ng-model="searchTables" aria-label="false">
+			<md-radio-group ng-model="table" layout="row"  layout-align="start start" style="padding: 10px;border: 1px solid #ccc;border-radius: 4px;" layout-wrap aria-label="tables">
+				<md-radio-button value="{{table}}" style="padding: 10px;" ng-repeat="table in tables | filter:searchTables">{{table}}</md-radio-button>
+			</md-radio-group>
+			<div flex layout="row" layout-align="space-between center" class="side-margins">
+				<md-button ng-click="goToPreviousConnectSourceStep()" class="md-raised md-primary" aria-label="go to previous">Previous</md-button>
+				<md-button type="submit" ng-disabled="showBusyText" class="md-raised md-primary" aria-label="submit table">NEXT</md-button>
+			</div>
+		</form>
+	</md-content>
+  </md-step>
+  <md-step label="Schema" md-complete="$parent.connectSource_step3.completed" ng-disabled="$parent.connectSource_step3.disabled">
+	<md-content style="padding:20px">
+		<div layout="row" layout-wrap>
+		   <fieldset class="fieldset" flex>
+			  <legend class="demo-legend">Choose attributes </legend>
+			  <div layout="row" layout-wrap flex>
+			  <div flex-xs flex="100">
+				<md-checkbox aria-label="Select All" ng-model="selectAllAttributes" md-indeterminate="isIndeterminate()" ng-click="toggleAllAttributes()">
+				  <span ng-if="selectAllAttributes">Un-</span>Select All
+				</md-checkbox>
+			  </div>
+				<div class="all-checkboxes" flex="50" ng-repeat="item in attributes">
+				  <md-checkbox ng-checked="attributesExists(item)" ng-click="selectAttribute(item)" aria-label="choose attributes">
+				   {{ item }}
+				  </md-checkbox>
+				</div>
+			  </div>
+			</fieldset>
+			<div style="width:20px"></div>
+			 <fieldset class="fieldset" flex>
+			  <legend class="demo-legend">Choose measures </legend>
+			  <div layout="row" layout-wrap flex>
+			  <div flex-xs flex="100">
+				<md-checkbox aria-label="Select All" ng-model="selectAllMeasures" md-indeterminate="isIndeterminate()" ng-click="toggleAllMeasures()">
+				  <span ng-if="selectAllMeasures">Un-</span>Select All
+				</md-checkbox>
+			  </div>
+				<div class="all-checkboxes" flex="50" ng-repeat="item in measures">
+				  <md-checkbox ng-checked="measuresExists(item)" ng-click="selectMeasure(item)" aria-label="choose measures">
+				   {{ item }}
+				  </md-checkbox>
+				</div>
+			  </div>
+			</fieldset>
+			
+
+		</div>
+		<div flex layout="row" layout-align="space-between center" class="side-margins">
+			<md-button ng-click="goToPreviousConnectSourceStep()" class="md-raised md-primary" aria-label="go to previous">Previous</md-button>
+			<md-button ng-click="$parent.assist_selected = 2" ng-disabled="showBusyText" class="md-raised md-primary" aria-label="submit attributes">NEXT</md-button>
+		</div>
+	</md-content>
+  </md-step>
+
+</md-steppers>

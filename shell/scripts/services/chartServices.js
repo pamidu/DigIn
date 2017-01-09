@@ -7,7 +7,7 @@
 ////////////////////////////////
 
 // Services for chart functionalities
-routerApp.service('chartServices',function() {
+routerApp.service('chartServices',function($filter) {
 	// Apply colour settings for metric widget
 	this.applyMetricSettings = function(selectedChart) {
 	    if (typeof selectedChart.initObj.value != "number") var value = parseInt(selectedChart.initObj.value.replace(/,/g,''));
@@ -62,6 +62,34 @@ routerApp.service('chartServices',function() {
 	            selectedChart.initObj.color = "purple"
 	        }
 	    }
+	}
+
+	this.mapMetricTrendChart = function(selectedChart,namespace,trendValue){
+		var seriesData = [];
+        var tempArr = [];
+        trendValue = $filter('orderBy')(trendValue,selectedChart.initObj.groupByField);
+        angular.forEach(trendValue,function(key){
+            var utc = moment(key[selectedChart.initObj.groupByField]).utc().valueOf();
+            tempArr = [utc,key[namespace]];
+            seriesData.push(tempArr);
+        });
+        if (selectedChart.initObj.timeAttribute == 'quarter') {
+            units = [['month',[3]]];
+        } else {
+            units = [[selectedChart.initObj.timeAttribute,[1]]];
+        }
+        selectedChart.initObj.trendChart.series = [{
+            color: 'black',
+            data: seriesData,
+            dataGrouping: {
+                approximation: "sum",
+                enabled: true,
+                forced: true,
+                units: units
+            },
+            turboThreshold: 0,
+            cropThreshold: trendValue.length
+        }]
 	}
 
 })

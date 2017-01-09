@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($diginengine,filterService,chartServices){
+routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartServices){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -69,7 +69,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                     })
                     return;
                 }
-            });
+            },$rootScope.userSettings.query_limit);
         }
     };
 
@@ -205,7 +205,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                     widObj.syncState = true;
                     cb(widObj);
                 }
-            });
+            },$rootScope.userSettings.query_limit);
         }
     };
     
@@ -220,11 +220,14 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
             return val;
         }
 
-        function setValues(widObj,metricValue,targetValue) {
+        function setValues(widObj,metricValue,targetValue,trendValue) {
             widObj.widData.decValue = metricValue[0];
             widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
             widObj.selectedChart.initObj.value = widObj.widData.value;
             widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
+
+            key = widObj.commonSrc.actual[0].condition.toLowerCase() + "_" + widObj.commonSrc.actual[0].filedName;
+            chartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
             // Apply metric settings after filtering if target value is set
             if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
                 if (widObj.commonSrc.target.length == 1) {
@@ -234,52 +237,78 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                 chartServices.applyMetricSettings(widObj.selectedChart);
             }
         }
-        
+
+
         this.sync = function(q, cl, widObj, cb) {
             var targetRequest = false;
             var metricRequest = false;
+            var trendRequest = false;
             var targetSuccess = false;
             var metricSuccess = false;
-            var metricValue, targetValue;
+            var trendSuccess = false;
+            var metricValue, targetValue, trendValue;
             if (widObj.commonSrc.target.length == 1) {
                 cl.getExecQuery(widObj.selectedChart.initObj.targetQuery, widObj.commonSrc.src.id, function(res, status, targetQuery) {
                     if (status) {
                         targetRequest = true;
                         targetSuccess = true;
                         targetValue = res;
-                        if (targetRequest && metricRequest) {
-                            if (targetSuccess && metricSuccess) {
+                        if (targetRequest && metricRequest && trendRequest) {
+                            if (targetSuccess && metricSuccess && trendSuccess) {
                                 // call sync method
-                                setValues(widObj,metricValue,targetValue);
+                                setValues(widObj,metricValue,targetValue,trendValue);
                             }
+                            widObj.syncState = true;
+                            cb(widObj);
                         }
                     } else {
                         targetRequest = true;
                     }
-                });
+                },$rootScope.userSettings.query_limit);
             } else {
                 targetRequest = true;
                 targetSuccess = true;
             }
-            cl.getExecQuery(q,  widObj.commonSrc.src.id, function(res, status, query) {
+            cl.getExecQuery(q, widObj.commonSrc.src.id, function(res, status, query) {
                 if (status) {
                     metricRequest = true;
                     metricSuccess = true;
                     metricValue = res;
-                    if (targetRequest && metricRequest) {
-                        if (targetSuccess && metricSuccess) {
+                    if (targetRequest && metricRequest && trendRequest) {
+                        if (targetSuccess && metricSuccess && trendSuccess) {
                             // call sync method
-                            setValues(widObj,metricValue,targetValue);
+                            setValues(widObj,metricValue,targetValue,trendValue);
                         }
+                        widObj.syncState = true;
+                        cb(widObj);
                     }
 
                 } else {
                     metricRequest = true;
-                    metricSuccess = false;
                 }
-                widObj.syncState = true;
-                cb(widObj);
-            });
+            },$rootScope.userSettings.query_limit);
+            if(widObj.selectedChart.initObj.trendQuery != "") {
+                cl.getExecQuery(widObj.selectedChart.initObj.trendQuery,  widObj.commonSrc.src.id, function(res, status, query) {
+                    if (status) {
+                        trendRequest = true;
+                        trendSuccess = true;
+                        trendValue = res;
+                        if (targetRequest && metricRequest && trendRequest) {
+                            if (targetSuccess && metricSuccess && trendSuccess) {
+                                // call sync method
+                                setValues(widObj,metricValue,targetValue,trendValue);
+                            }
+                            widObj.syncState = true;
+                            cb(widObj);
+                        }
+                    } else {
+                        trendRequest = true;
+                    }
+                },$rootScope.userSettings.query_limit);
+            } else {
+                trendRequest = true;
+                trendSuccess = true;
+            }
         }
     };
     
@@ -746,7 +775,7 @@ routerApp.service('$qbuilder',function($diginengine,filterService,chartServices)
                 widObj.widData.summary = data;
                 widObj.syncState = true;
                 cb(widObj);                
-            }, widObj.limit);
+            }, $rootScope.userSettings.query_limit);
         }
     };
 

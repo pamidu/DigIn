@@ -4,7 +4,7 @@
 
 	<div layout="row" layout-align="space-between center">
 
-		<label>Total for Numerics:</label>
+		<label>Set Aggregation:</label>
 
 		<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.totForNumeric" layout="row" layout-align="space-between center">
 			   <md-radio-button value="true"> Enable </md-radio-button>
@@ -40,6 +40,7 @@
 			<th>Attribute</th>
 			<th>Display Name</th>
 			<th>Alignment</th>
+			<th>Aggregation</th>
 		</tr>
 
 		<tr ng-repeat="att in widget.widgetData.widData.tabularConfig.AllingArr">
@@ -56,6 +57,13 @@
 			    	</md-option>
 			    </md-select>
 		    </td>
+		    <td ng-hide="att.isString">
+		    	<md-select ng-model="att.Aggregation">
+			    	<md-option ng-value="agg" ng-repeat="agg in aggregationArr">
+			    		{{agg}}
+			    	</md-option>
+			    </md-select>
+		    </td>
 		</tr>
 
 		</table>
@@ -66,7 +74,7 @@
 		<label>Number of rows to display:</label>
 
 		<md-input-container style="margin-top: -19px;float: left;margin-left: 19px;width: 100px;" >
-            <input ng-model="limitTable"> 
+            <input ng-model="widget.widgetData.widData.tabularConfig.numOfRows"> 
          </md-input-container>
 	</div>
 
@@ -74,5 +82,4 @@
 	<md-button class="md-raised md-primary right" ng-click="generateTable()">
         Generate Table
     </md-button>
-    {{widget.widgetData.widData.tabularConfig.AllingArr}}
 </div>

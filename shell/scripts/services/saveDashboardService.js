@@ -217,6 +217,11 @@ var localThis = this;
             dataArray.push(series);
             widgets[j].widgetData.highchartsNG.series.data = [];
             break;
+          case 'Tabular':
+            var series = widgets[j].widgetData.widData.userList;
+            dataArray.push(series);
+            widgets[j].widgetData.widData.userList = [];
+            break;
         }
       }
       //if the widget is a temporary / new widget 
@@ -284,6 +289,9 @@ var localThis = this;
       case 'metric':
         $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.decValue = data[0];
         $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.value = data[1];
+        break;
+      case 'Tabular':
+        $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.userList= data[0];
         break;
     }
   }

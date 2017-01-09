@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <?php 
+/*
+////////////////////////////////
+// File : index.php
+// Owner  : Sajeetharan
+// Last changed date : 2017/01/06
+// Version : 3.1.0.2
+// Modified By : Sajeetharan
+////////////////////////////////
+*/
     //var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
      if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
@@ -16,6 +25,7 @@
         exit(); 
     }
 ?>
+
 <html ng-app="DuoDiginRt" ng-controller="NavCtrl">
 <head>
     <title>DigIn - Beyond BI</title>

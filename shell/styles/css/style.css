@@ -2215,7 +2215,7 @@ md-tab-content > div {
     width: 100%;
     min-height: 150px;
     text-align: center;
-    padding-top: 5px;
+    padding: 15px
 }
 
 .dragover {

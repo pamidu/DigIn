@@ -355,6 +355,9 @@
 <!-- md-steppers-->
 <script type="text/javascript" src="scripts/md-steppers.js"></script>
 
+<!-- user assistance-->
+<script src="views/user_assistance/user_assistanceCtrl.js"></script>
+
 <!-- zeroclipboard -->
 
 <script type="text/javascript" src="bower_components/angular-strap/dist/angular-strap.min.js"></script>

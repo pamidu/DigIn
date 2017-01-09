@@ -396,7 +396,7 @@
 
 		</md-sidenav>
 		
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce">
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce"><!--ng-intro-autostart="firstTime"-->
 			<div id="cssmenu">
 				<ul>
 					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->
@@ -420,6 +420,7 @@
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
 							<li ng-click="navigate($event,'Visualize Data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
+							<li ng-click="navigate($event,'User Assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>User Assistance</a></li>
 						</ul>
 					</li>
 					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')" id="step4">
@@ -544,6 +545,7 @@
 	<script src="views/widgets/blogging/RssFeeds/rssInitCtrl.js"></script>
 	<script src="views/widgets/blogging/Gnews/gnewsInitCtrl.js"></script>
 	
+	<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 	
 	<script src="views/widgets/custom/view_image/imInitCtrl.js"></script>
 	

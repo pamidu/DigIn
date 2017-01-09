@@ -398,7 +398,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 						if ( $scope.progressPercentage == 100 ) {
 							$scope.uploadPreLoader = true;
 						}
-						console.log('progress: ' + $scope.progressPercentage + '% ' + evt.config.data.filename);
+						//console.log('progress: ' + $scope.progressPercentage + '% ' + evt.config.data.filename);
 					});
 				}
 			}

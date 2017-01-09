@@ -13,6 +13,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.h1color = '';
 	colorManager.changeTheme('defaultDark');
 	
+	$scope.firstTime = true;
+
+	//Introduce
+	
 	$scope.share = function(index, type)
 	{
 		$timeout(function(){
@@ -213,7 +217,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				}, function(wantsFullScreen) {
 				  $scope.customFullscreen = (wantsFullScreen === true);
 			});
-		}else if(action == "createNewUser")
+		}else if(action == "User Assistance"){
+			location.href = '#/user_assistance';
+			
+		} else if(action == "createNewUser")
 		{
 			location.href = '#/createNewUser';
 		}else if(action == "shareDashboard")

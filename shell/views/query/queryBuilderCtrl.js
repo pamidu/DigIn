@@ -676,8 +676,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             min: 0,
                             gridLineWidth: 0,
                             title: {
-                              text: '',
-                              align: 'high'
+                              text: ''
                             },
                             labels:{
                               enabled:false//default is true
@@ -690,14 +689,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             enabled:true
                         },
                         plotOptions: {
-                            // series: {
-                            //     enableMouseTracking: false
-                            // },
-                            // line: {
-                            //     marker: {
-                            //         enabled: false
-                            //     }
-                            // }
+                            series: {
+                                enableMouseTracking: false
+                            },
+                            line: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
                         },
                         legend: {
                                     enabled: false
@@ -4970,13 +4969,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 var nameSpace = executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName;
                 chartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
                 chartServices.applyMetricSettings($scope.selectedChart);
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isToggleColumns = true;
-                $scope.eventHndler.isLoadingChart = false;
+                $scope.$apply(function(){
+                    $scope.isPendingRequest = false;
+                    $scope.eventHndler.isToggleColumns = true;
+                    $scope.eventHndler.isLoadingChart = false;
+                })
             } else {
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isToggleColumns = true;
-                $scope.eventHndler.isLoadingChart = false;
+                $scope.$apply(function(){
+                    $scope.isPendingRequest = false;
+                    $scope.eventHndler.isToggleColumns = true;
+                    $scope.eventHndler.isLoadingChart = false;
+                })
             }
         },$scope.selectedChart.initObj.groupByField);
     };

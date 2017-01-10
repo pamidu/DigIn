@@ -366,6 +366,72 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
         }
     }; 
 
+    var TABULAR = function(){
+
+
+        this.sync = function (q, cl, widObj, cb) {
+             cl.getExecQuery(widObj.widData.query, widObj.commonSrc.src.id, function(data, status) {
+
+                    //to get aggregations
+                    if(widObj.widData.tabularConfig.totForNumeric == "true" ){
+
+                        if(widObj.widData.tabularConfig.AllingArr.length > 0){
+
+                            var fieldArr=[];
+                            for(var i=0; i < widObj.widData.tabularConfig.AllingArr.length; i++ ){
+
+                                if(widObj.widData.tabularConfig.AllingArr[i].isString == false){
+                                    var obj = {
+                                        "agg": widObj.widData.tabularConfig.AllingArr[i].Aggregation,
+                                        "field": widObj.widData.tabularConfig.AllingArr[i].Attribute
+                                    };
+
+                                    fieldArr.push(obj);
+                                }
+                                    
+
+                            }
+
+                            cl.getAggData(widObj.commonSrc.src.tbl, fieldArr, 100, widObj.commonSrc.src.id, function(res, status, query) {
+                                   if(status == true){
+                                     
+                                      for(var i = 0; i < fieldArr.length ; i++)  {
+                                            var str = fieldArr[i].agg+"_"+fieldArr[i].field;
+                                            var obj = {
+                                                field : fieldArr[i].field,
+                                                aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
+                                                value : res[0][str]
+                                            }
+
+                                            for(var j=0; j < widObj.widData.tabularConfig.AllingArr.length; j++){
+
+                                                if(widObj.widData.tabularConfig.AllingArr[j].Attribute == fieldArr[i].field){
+
+                                                    widObj.widData.tabularConfig.AllingArr[j].Aggregation_value =  res[0][str];
+
+                                                }
+                                            }
+                                      
+                                      }
+
+                      
+                                    widObj.widData.userList = data;
+                                    widObj.syncState = true;
+                                    cb(widObj);
+                                   }
+                            });
+                        }
+                    }
+
+
+
+                    //--------------------------
+
+                 
+                });
+        }
+    }
+
 
     var FORECAST = function(){
         function mapResult(data,fObj,widObj){
@@ -705,7 +771,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
 
     var PIVOTSUMMARY = function(){
         this.sync = function(q, cl, widObj, cb){
-            cl.getExecQuery(q,  widObj.commonSrc.src.id, function(data, status) {
+            cl.l(q,  widObj.commonSrc.src.id, function(data, status) {
                 widObj.widData.summary = data;
                 widObj.syncState = true;
                 cb(widObj);                

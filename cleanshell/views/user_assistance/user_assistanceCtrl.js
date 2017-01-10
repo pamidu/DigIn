@@ -1,5 +1,13 @@
-DiginApp.controller('user_assistanceCtrl',[ '$scope','$mdDialog', '$mdThemingProvider', function ($scope,$mdDialog, $mdThemingProvider){
+DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog', function ($scope,$rootScope,$mdDialog){
 		$scope.$parent.currentView = "User Assistance";
+		var chartBackgroundColor = "";
+		
+		if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+		{
+			chartBackgroundColor = "rgb(48,48,48)";
+		}else{
+			chartBackgroundColor = "white";
+		}
 		
 		//initialize the forms
 		$scope.upload_step1 = {};
@@ -8,7 +16,6 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$mdDialog', '$mdThemingPro
 		$scope.upload_step2.disabled = true;
 		$scope.upload_step3 = {};
 		
-		console.log($mdTheming);
 		
 		//Upload Types
 		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
@@ -200,8 +207,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$mdDialog', '$mdThemingPro
 				  },
 				  chart: {
 					type: "bar",
-					backgroundColor: "green",
-					color: "white"
+					backgroundColor: chartBackgroundColor
 					
 					},
 
@@ -214,13 +220,5 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$mdDialog', '$mdThemingPro
 				  }]
 			});
 		}, 1000);
-			
-		
-		
-		
-		
-		
-		
-		
 		
 }])

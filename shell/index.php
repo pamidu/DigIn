@@ -5,7 +5,7 @@
 // File : index.php
 // Owner  : Sajeetharan
 // Last changed date : 2017/01/06
-// Version : 3.1.0.2
+// Version : 3.1.1.2
 // Modified By : Sajeetharan
 ////////////////////////////////
 */
@@ -216,6 +216,8 @@
 <script type="text/javascript" src="scripts/services/ShareWidgetService.js"></script>
 <script type="text/javascript" src="scripts/services/pouchDbServices.js"></script>
 <script type="text/javascript" src="scripts/services/saveDashboardService.js"></script>
+<script type="text/javascript" src="scripts/services/tabularService.js"></script>
+
 
 <!--  directives start  -->
 <script type="application/javascript" src="scripts/directives/commonData.js"></script>
@@ -354,6 +356,9 @@
 
 <!-- md-steppers-->
 <script type="text/javascript" src="scripts/md-steppers.js"></script>
+
+<!-- user assistance-->
+<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 
 <!-- zeroclipboard -->
 

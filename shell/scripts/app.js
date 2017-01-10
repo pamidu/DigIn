@@ -420,6 +420,12 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         controller: 'themeCtrl',
         templateUrl: "views/settings/theme/theme.html"
     })
+	.state('home.user_assistance', {
+		url: '/user_assistance',
+		templateUrl: 'views/user_assistance/user_assistance.html',
+		controller: 'user_assistanceCtrl',
+		controllerAs: 'vm'
+	})
     .state('home.datasourceSettings', {
         url: '/datasource-settings',
         controller: 'DatasourceSettingsCtrl',

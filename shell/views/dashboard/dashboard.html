@@ -97,7 +97,7 @@
                                 </md-menu-content>
                             </md-menu>
                             <md-button class="widget-button" ng-click="syncWidget(widget)"
-                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.initCtrl=='metricInit'">
+                                       ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.initCtrl=='metricInit' || widget.widgetData.selectedChart.chartType == 'Tabular' ">
                                 <i class="ti-reload blut-widget-icon"></i>
                                 <md-tooltip>sync</md-tooltip>
                             </md-button>

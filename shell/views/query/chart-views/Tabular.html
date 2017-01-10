@@ -77,7 +77,7 @@ tr .wrap{
   </thead>
   <tbody>
     <!-- angular.js default directive `ng-repeat` and default filters -->
-    <tr ng-repeat="user in widget.widgetData.widData.userList|filter:query|orderBy:sort|limitTo:limitTable:start as result  track by $index" ng-class="{error:isError(user)}">
+    <tr ng-repeat="user in widget.widgetData.widData.userList|filter:query|orderBy:sort|limitTo:widget.widgetData.widData.tabularConfig.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
       <td class="id">
 
       	<div class="cell-cursor-row-resize"></div>
@@ -94,6 +94,14 @@ tr .wrap{
        <!--td>{{user.profit}}</td>
        <td>{{user.order_priority}}</td>
        <td>{{user.sales}}</td-->
+    </tr>
+    <tr>
+      <td>
+        
+      </td>
+      <td ng-repeat="agg in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{agg.Alignment}}">
+          {{agg.Aggregation}} = {{ agg.Aggregation_value}}
+      </td>
     </tr>
   </tbody>
 </table>

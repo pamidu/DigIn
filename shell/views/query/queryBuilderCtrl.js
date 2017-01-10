@@ -3805,12 +3805,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.widget.widgetData.widData.tabularConfig = {
                     totForNumeric : "true",
                     defSortFeild : "",
-                    AscOrDec : "Ascending",
+                    AscOrDec : "ASC",
                     AllingArr: $scope.allingArr,
-                    numOfRows: 10,
-
-                AscOrDec : "ASC", //#ASC or DESC
-
+                    numOfRows: 10
+                }
         },
         getData: function() {
             $scope.eventHndler.isLoadingChart = true;

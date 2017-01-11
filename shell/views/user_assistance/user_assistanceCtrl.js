@@ -618,12 +618,24 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 				notifications.alertDialog("Sorry","Not connected yet");
 			}
 		}
-		
+		$scope.attributes = [];
+		$scope.measures = []
 		$scope.selectTable = function(fileOrFolder)
 		{
-			console.log(fileOrFolder);
+			console.log(fileOrFolder.schema);
+			for(var i = 1; i < fileOrFolder.schema.length; i++){
+				if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
+					$scope.measures.push(fileOrFolder.schema[i]);	
+				}
+				
+				if( fileOrFolder.schema[i].name != "_index_id" && fileOrFolder.schema[i].type != "integer" )
+				{
+					$scope.attributes.push(fileOrFolder.schema[i]);
+				}
+			}
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
+			
 		}		
 		
 		$scope.goToPreviousConnectSourceStep = function()
@@ -631,7 +643,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			--$scope.connectSource_selected;
 		}
 		
-		$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];
+		//$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];
 		$scope.selectAllAttributes = false;
 		$scope.selectedAttributes = [];
 		$scope.selectAttribute = function (item) {
@@ -658,7 +670,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			}
 		};
 		
-		$scope.measures = ['LocationID','CompanyID', 'BranchID','DeptID','StoreID','CityID','Country','PeriodID'];
+		//$scope.measures = ['LocationID','CompanyID', 'BranchID','DeptID','StoreID','CityID','Country','PeriodID'];
 		$scope.selectAllMeasures= false;
 		$scope.selectedMeasures= [];
 		$scope.selectMeasure = function (item) {

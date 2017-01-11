@@ -103,7 +103,7 @@ input
 			  </div>
 				<div class="all-checkboxes" flex="50" ng-repeat="item in attributes">
 				  <md-checkbox ng-checked="attributesExists(item)" ng-click="selectAttribute(item)" aria-label="choose attributes">
-				   {{ item }}
+				   {{ item.name }}
 				  </md-checkbox>
 				</div>
 			  </div>
@@ -119,7 +119,7 @@ input
 			  </div>
 				<div class="all-checkboxes" flex="50" ng-repeat="item in measures">
 				  <md-checkbox ng-checked="measuresExists(item)" ng-click="selectMeasure(item)" aria-label="choose measures">
-				   {{ item }}
+				   {{ item.name }}
 				  </md-checkbox>
 				</div>
 			  </div>

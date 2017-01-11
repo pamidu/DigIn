@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 <div class="digin-lgn-wrap animated" ng-controller="signup-ctrl">
     <toast></toast>
 
@@ -144,7 +137,7 @@
                                                        name="email" 
                                                        required 
                                                        ng-model="signUpUsr.email"
-                                                       placeholder="Username" ng-disabled={{freeze}} >
+                                                       placeholder="Username" ng-disabled={{freeze}}>
                                             </div>
                                             <div ng-show="frmDiginSignUp.email.$invalid && !frmDiginSignUp.email.$pristine"
                                             class="ng-message" ng-messages="frmDiginSignUp.email.$error">
@@ -166,12 +159,11 @@
                                                            ng-keyup="signUpUsr.cnfrPwd=''" 
                                                            ng-focus="signUpUsr.cnfrPwd=''" 
                                                            placeholder="password"  
-                                                           ng-minlength="6" ng-maxlength="32" password-strength-indicator >
- 
+                                                           ng-minlength="6" ng-maxlength="32"
+                                                           password-strength-indicator>
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"
-                                                class="ng-message"
-                                                     ng-messages="frmDiginSignUp.password.$error">
+                                                class="ng-message" ng-messages="frmDiginSignUp.password.$error">
                                                     <div ng-message="required">*</div>
 
                                                     <span class="error" ng-show="frmDiginSignUp.password.$error.minlength">
@@ -180,8 +172,14 @@
                                                     <span class="error" ng-show="frmDiginSignUp.password.$error.maxlength">
                                                         Maximum length for password can be 32 charactors. 
                                                     </span>
+                                                    
 
                                                 </div>
+                                                <div class="ng-message" ng-show="errorNote && !frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine">
+                                                    <span class="error">
+                                                        {{strenghtNote}}
+                                                    </span>
+                                                </div>    
                                             </div>
                                             
                                             <div class="text-domain-name full-name"
@@ -196,10 +194,9 @@
                                                            password-verify="signUpUsr.pwd"
                                                            placeholder="confirm password">
                                                 </div>
-                                                <div ng-show="frmDiginSignUp.cnfrmPwd.$invalid && !frmDiginSignUp.cnfrmPwd.$pristine" 
-                                                class="ng-message"
-                                                    
-                                                > Password does not match
+                                                <div ng-show="frmDiginSignUp.cnfrmPwd.$invalid && !frmDiginSignUp.cnfrmPwd.$pristine && !frmDiginSignUp.password.$error.minlength && !frmDiginSignUp.password.$error.maxlength && !errorNote" 
+                                                class="ng-message"> 
+                                                Password does not match
                                                 </div>
                                             </div>
 

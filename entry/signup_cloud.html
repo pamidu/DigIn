@@ -127,10 +127,11 @@
                                         </div>
                                         
                                     
+                                         <div class="form-inline">
                                             <div class="text-domain-name full-name p-t-20"
                                                  ng-class="{error:error.isPassword,'':!error.isPassword}">
-                                                <label for="password">Password</label>
-                                                <div>
+                                                <label for="password" data-tip="Must contain atleast 6 charactors including lower case & upper case, number and special charactors.">Password</label>
+                                                <div >
                                                     <input type="password" class="form-control"
                                                            id="password"
                                                            name="password"
@@ -138,25 +139,30 @@
                                                            ng-model="signUpUsr.pwd"
                                                            ng-keyup="signUpUsr.cnfrPwd=''" 
                                                            ng-focus="signUpUsr.cnfrPwd=''" 
-                                                           placeholder="password" 
-                                                           ng-minlength="6" ng-maxlength="32" password-strength-indicator>
+                                                           placeholder="password"  
+                                                           ng-minlength="6" ng-maxlength="32"
+                                                           password-strength-indicator>
                                                 </div>
-
                                                 <div ng-show="frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine"
-                                                class="ng-message"
-                                                     ng-messages="frmDiginSignUp.password.$error">
+                                                class="ng-message" ng-messages="frmDiginSignUp.password.$error">
                                                     <div ng-message="required">*</div>
+
                                                     <span class="error" ng-show="frmDiginSignUp.password.$error.minlength">
                                                         Password must contain atleast 6 charactors. 
                                                     </span>
                                                     <span class="error" ng-show="frmDiginSignUp.password.$error.maxlength">
                                                         Maximum length for password can be 32 charactors. 
                                                     </span>
+                                                    
 
                                                 </div>
+                                                <div class="ng-message" ng-show="errorNote && !frmDiginSignUp.password.$invalid && !frmDiginSignUp.password.$pristine">
+                                                    <span class="error">
+                                                        {{strenghtNote}}
+                                                    </span>
+                                                </div>    
                                             </div>
-
-
+                                            
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isRetypeCnfrm,'':!error.isRetypeCnfrm}">
                                                 <label for="cnfrmPwd">Confirm password</label>
@@ -169,11 +175,9 @@
                                                            password-verify="signUpUsr.pwd"
                                                            placeholder="confirm password">
                                                 </div>
-                                                <div ng-show="frmDiginSignUp.cnfrmPwd.$invalid && !frmDiginSignUp.cnfrmPwd.$pristine"
-                                                class="ng-message"
-                                                     ng-show=" frmDiginSignUp.cnfrmPwd.$invalid
-                                                     && !frmDiginSignUp.cnfrmPwd.$pristine"
-                                                > Password does not match
+                                                <div ng-show="frmDiginSignUp.cnfrmPwd.$invalid && !frmDiginSignUp.cnfrmPwd.$pristine && !frmDiginSignUp.password.$error.minlength && !frmDiginSignUp.password.$error.maxlength && !errorNote" 
+                                                class="ng-message"> 
+                                                Password does not match
                                                 </div>
                                             </div>
 
@@ -187,6 +191,7 @@
                                                 </div>
                                             </div>
 
+
                                             <!-- captcha -->
                                             <div class="captcha-box p-t-20">
                                                 <div class="g-recaptcha" data-sitekey="6LexsRwTAAAAAKoBvtryHzBDfQAvPa9DtFIVIK9w"></div>
@@ -196,6 +201,9 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+
 
                                 <div class="login-loading" ng-if="error.isLoading">
                                     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
@@ -210,8 +218,19 @@
                                     </a>
                                 </div>
 
+
+                                            
                             </div>
+                                    
+                                                               
+
                         </form>
+
+                                  
+
+
+
+
 
                     </div>
                 </div>

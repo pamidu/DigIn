@@ -695,6 +695,13 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 				$scope.selectedMeasures = $scope.measures.slice(0);
 			}
 		};
+		$scope.createWidget = function()
+		{
+			$scope.assist_selected = 2;
+			console.log($scope.selectedAttributes);
+			console.log($scope.selectedMeasures);
+		}
+	
 		
 		$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 		

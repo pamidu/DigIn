@@ -73,7 +73,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, chartServices, layoutManager) {
+routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, chartServices, layoutManager, tabularService) {
     if($rootScope.showHeader == true)
    {
     $rootScope.showHeader = layoutManager.showHeader();
@@ -3796,11 +3796,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
           $scope.selectedChart.chartType == "Tabular"
           $scope.allingArr = $scope.widget.widgetData.widData.tabularConfig.AllingArr;
           $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.widData.query;
+          $scope.widget.widgetData.widData.tabularService=tabularService;
         
         },
         changeType: function() {
             
                 $scope.allingArr=[];
+                $scope.widget.widgetData.widData.currentPage = 0;
+                $scope.widget.widgetData.widData.pageingArr= [];
+                $scope.widget.widgetData.widData.tabularService=tabularService;
                 $scope.widget.widgetData.widData.userList = [];
                 $scope.widget.widgetData.widData.tabularConfig = {
                     totForNumeric : "true",
@@ -3892,14 +3896,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                             var obj = {
                                                 field : fieldArr[i].field,
                                                 aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
-                                                value : res[0][str]
+                                                value : res[0][str] 
                                             }
 
                                             for(var j=0; j < $scope.widget.widgetData.widData.tabularConfig.AllingArr.length; j++){
 
                                                 if($scope.widget.widgetData.widData.tabularConfig.AllingArr[j].Attribute == fieldArr[i].field){
 
-                                                    $scope.widget.widgetData.widData.tabularConfig.AllingArr[j].Aggregation_value =  res[0][str];
+                                                    $scope.widget.widgetData.widData.tabularConfig.AllingArr[j].Aggregation_value = Math.round(res[0][str] * 100) / 100  ;
 
                                                 }
                                             }
@@ -3952,8 +3956,22 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
             $scope.eventHndler.isLoadingChart = false;
         },
-        removeCat: function() {
+        removeCat: function(c) {
             $scope.isPendingRequest = false;
+
+            var index = -1; 
+            for(var i=0; i < $scope.allingArr.length; i++){
+
+                if($scope.allingArr[i].Attribute == c.filedName){
+                    index =i;
+                    break;
+                }
+            }
+
+            if (index > -1) {
+                $scope.allingArr.splice(index, 1);
+
+            }
             if($scope.executeQryData.executeMeasures.length == 1 && $scope.executeQryData.executeColumns.length >= 1) {
                 //$scope.generateHierarchy();
             } else {
@@ -3963,6 +3981,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         },      
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/query/chart-views/Tabular.html";
+            widget.widgetData.TabularData =  $scope.summaryData;
             widget.widgetName = "Tabular";
             $scope.saveChart(widget);
 
@@ -3972,21 +3991,25 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
 
         if($scope.selectedChart.chartType == "Tabular"){
+
             if(newValue != oldValue){
 
-                $scope.allingArr.length =0;
-                for(var i=0; i< $scope.executeQryData.executeColumns.length; i++){
+               var addArr = [];
+               var delArr = [];
+
+               if(newValue.length > oldValue.length){
+
                     var Alignment = "left";
                     var isString = true;
-                    if($scope.executeQryData.executeColumns[i].dataType == "INTEGER" || $scope.executeQryData.executeColumns[i].dataType == "FLOAT")
+                    if(newValue[newValue.length-1].dataType == "INTEGER" || newValue[newValue.length-1].dataType == "FLOAT")
                     {
                         Alignment = "right";
                         isString = false;
                     }
 
                     var colObj = {
-                        "Attribute": $scope.executeQryData.executeColumns[i].filedName,
-                        "DislayName": $scope.executeQryData.executeColumns[i].filedName,
+                        "Attribute": newValue[newValue.length-1].filedName,
+                        "DislayName": newValue[newValue.length-1].filedName,
                         "Alignment": Alignment,
                         "isString" : isString,
                         "Aggregation":"sum",
@@ -3995,14 +4018,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     };
 
                     $scope.allingArr.push(colObj);
-                }
 
+               }
+
+                
             }
         }
        
 
 
     },true);
+
+
+ 
 
     $scope.start = 0;
     $scope.sort ='';
@@ -4024,8 +4052,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }else{
           $scope.sort=name.Attribute;
           $scope.orderByColumnName=name.Attribute;
-           $scope.OrderType='ASC';
-           $scope.sorting=true;
+          $scope.OrderType='ASC';
+          $scope.sorting=true;
         }
 
         $scope.generateTable();
@@ -4033,22 +4061,26 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
 
 
+
      $scope.generateTabular = function(){
         
-            $scope.widget.widgetData.widData.userList.length =0;
-            $scope.widget.widgetData.widData.userList = $scope.summaryData;
+            $scope.widget.widgetData.widData.tabularService.setPagination($scope.summaryData,$scope.widget.widgetData.widData);
+             $scope.eventHndler.isLoadingChart = false;
      };
 
-        $scope.generateTable=function(){
+    $scope.generateTable=function(){
 
-                if($scope.executeQryData.executeColumns.length>0){
-                    $scope.Tabular.getData();
-                }
-                else{
-                    privateFun.fireMessage('0','Please Select atleast one attribute to generate table ');
-                }
+            if($scope.executeQryData.executeColumns.length>0){
+                $scope.Tabular.getData();
+                $scope.eventHndler.isLoadingChart = true;
             }
+            else{
+                privateFun.fireMessage('0','Please Select atleast one attribute to generate table ');
+            }
+    }
 
+    
+    
 
 
      //-------------------------------------------------------------
@@ -4941,7 +4973,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         var index = arrObj.indexOf(c);
         if (index > -1) {
             arrObj.splice(index, 1);
+
+            if($scope.selectedChart.chartType != "Tabular")
             eval("$scope." + $scope.selectedChart.chartType + ".removeCat()");
+
+            if($scope.selectedChart.chartType == "Tabular")
+                eval("$scope." + $scope.selectedChart.chartType + ".removeCat(c)");
         }
     };
     // Remove the target field

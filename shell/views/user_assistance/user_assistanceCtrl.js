@@ -582,9 +582,10 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.connectSource_step2 = {};
 		
 		$scope.sourceType = [
-			{name: "Big Query", icon: "views/user_assistance/connectSource/bigquery.png"},
-			{name: "postgresql", icon: "views/user_assistance/connectSource/postgress.png"},
-			{name: "MSSQL", icon: "views/user_assistance/connectSource/mysql.png"}
+			{name: "Big Query", icon: "biq-query"},
+			//{name: "Postgre SQL", icon: "views/user_assistance/connectSource/postgress.png"},
+			{name: "Microsoft SQL", icon: "mssql"},
+			{name: "memsql", icon: "memsql"}
 		];
 		
 		//Submit one in Upload Source

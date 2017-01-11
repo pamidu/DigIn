@@ -129,6 +129,10 @@ class UserAuthorization {
         $invoker = new WsInvoker(SVC_AUTH_URL);
         $authObj = $invoker->post($regUrl, $regObj);
         $authDecoded = json_decode($authObj);
+
+        if(is_null($authDecoded)) {
+            echo '{"Success":false, "Message": "'.$authObj.'", "Data": {}}'; return;
+        }
         
         if(isset($authDecoded->Error) && $authDecoded->Error) {
             echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
@@ -172,6 +176,10 @@ class UserAuthorization {
         $invoker = new WsInvoker(SVC_AUTH_URL);
         $authObj = $invoker->post($regUrl, $regObj);
         $authDecoded = json_decode($authObj);
+
+        if(is_null($authDecoded)) {
+            echo '{"Success":false, "Message": "'.$authObj.'", "Data": {}}'; return;
+        }
         
         if(isset($authDecoded->Error) && $authDecoded->Error) {
             echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
@@ -185,6 +193,30 @@ class UserAuthorization {
                     echo '{"Success":false, "Message": "Error getting while creating the profile.", "Data": {}}'; return;
                 }
         }
+
+    }
+
+    public function OfflineTenantUserActivation($email) {
+
+        $activationUrl = "/userActivationByAdmin/";
+
+        if(empty($email) || is_null($email)) {
+            echo '{"Success":false, "Message": "Tenant user e-mail address required.", "Data": {}}'; return;
+        }
+
+        $activationUrl .= $email;
+        $requestheaders = getallheaders();
+
+        $invoker = new WsInvoker(SVC_AUTH_URL);
+        $invoker->addHeader('securityToken', $requestheaders["securityToken"]);
+        $authObj = $invoker->get($activationUrl);
+        $authDecoded = json_decode($authObj);
+
+        if($authDecoded) echo '{"Success":true, "Message": "'.$email.' successfully activated.", "Data": {}}';
+        else echo '{"Success":false, "Message": "user activation failed.", "Data": {}}';
+
+        return;
+
     }
 
     public function ForgotPassword($email) {
@@ -243,6 +275,9 @@ class UserAuthorization {
         });
         Flight::route("POST /offline/tenantuserregistration/@tenantid", function($tenantid) {
             $this->OfflineTenantUserRegistration($tenantid);
+        });
+        Flight::route("GET /offline/tenantuser/activation/@email", function($email) {
+            $this->OfflineTenantUserActivation($email);
         });
         Flight::route("GET /userauthorization/forgotpassword/@email", function($email) {
             $this->ForgotPassword($email);

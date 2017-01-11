@@ -216,7 +216,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.callUserInitialize=function(){
                 //$scope.data = {"db": "bigquery"}
 
-
+                    /*
                     if(dbType=="mssql"){
                         $scope.data = {"db": "mssql"}
                     }
@@ -225,9 +225,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                     else{
                         $scope.data = {"db": "bigquery"}
-                    }
+                    }*/
 
-
+                    $scope.data = {"db": dbType}
 
 
                     $http({
@@ -865,7 +865,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         "widgetIDs": []
                                     };
                                     //insert the new dashboard in to pouch DB
-                                    pouchDbServices.insertPouchDB(data.Result,null); 
+                                    pouchDbServices.insertPouchDB(data.Result,null,undefined,false); 
 
                                     var index = 0;
                                     for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {

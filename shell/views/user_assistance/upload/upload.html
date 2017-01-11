@@ -69,7 +69,7 @@ md-steppers-content-wrapper{
 	<md-content style="padding:20px">
 		<form name="step2" ng-submit="upload($event, stepData[1])">
 		  <div class="custom-file-upload" layout-align="center center">
-				<div ngf-drop="validate($files)" ngf-select="validate($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-allow-dir="true" ngf-pattern="'.csv'" accept=".csv" ng-disabled = "showBusyText || preloader || insertPreLoader || uploadPreLoader" flex layout = "column" layout-align="space-between center" >
+				<div ngf-drop="validate($files)" ngf-select="validate($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-allow-dir="true" ngf-pattern="'.csv'" accept=".csv" ng-disabled = "showBusyText || preloader || insertPreLoader || uploadPreLoader" flex layout = "column" layout-align="space-between center" ><!--ngf-multiple="true"-->
 					Drop files here or click to upload 
 					<div ng-show="preloader">
 						Uploading file.. {{progressPercentage}} % complete..
@@ -81,9 +81,9 @@ md-steppers-content-wrapper{
 
 				</div>
 				<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-				<div style="display:inline-flex;">
-					Files :
-					<div ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
+				<div ng-show="$parent.files.length != 0" style="padding: 16px 0px">
+					<b>Files :</b>
+					<div ng-repeat="f in $parent.files"> {{f.name}} {{f.$error}} {{f.$errorParam}}
 					</div>
 				</div>
 			</div>

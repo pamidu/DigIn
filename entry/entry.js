@@ -8,6 +8,10 @@ var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.rou
     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','ngCookies']);
 
 
+
+
+
+
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
         function ($httpProAvider, $stateProvider, $urlRouterProvider) {
@@ -68,9 +72,9 @@ routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
         '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','$cookies','$filter','apis_Path','auth_Path','include_Path','onsite',
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path,onsite) {
-
-
-
+    
+            
+    
             $scope.signindetails = {};
             $scope.isLoggedin = false;
             $scope.activated=false;
@@ -1129,6 +1133,8 @@ routerApp
     });
 
 
+
+
 // ------------------------------------------------------------------------
 //#signup controller
 routerApp
@@ -1137,14 +1143,59 @@ routerApp
         function ($scope, $http, $state, focus,
                   Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite,tenantId) {
 
-
-
-            //-----------------------------------------------------
+            //-------------test --
+            /*
+                $http({
+                    method: 'GET',
+                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .success(function(data){
+                    if(data.Result.length>0){
+                        var tenant=tenantId+'.'+Digin_Domain;
+                        $scope.tenantUsers=data.Result.usage+'.'+tenant.length;
+                        if($scope.tenantUsers>=$scope.licencedUsers){
+                            displayError('Number of licence users has been exceeded.');
+                        }
+                        else{
+                            $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
+                            $scope.registerUser();
+                        }
+                    }
+                    else{
+                        displayError('Tenant usage summary is fail.');
+                    }                   
+                }).error(function(error){
+                    console.log("error");
+                });
+        
+            */
+            //test end----------------------------------
+            
+            
+           //----------------Password strength validation-------------------------------------
             //$scope.minLengthMsg = false;
+            //$scope.strengthText="test";
+
+            $scope.$on('strength_text',function(ev,data){
+                $scope.strengthText=data;
+                if($scope.strengthText=="very weak1"){
+                    $scope.strenghtNote="Password must contain at least 1 number";
+                    $scope.errorNote=true;
+                }
+                else if($scope.strengthText=="very weak2"){
+                    $scope.strenghtNote="Password must contain at least 1 charactor";
+                    $scope.errorNote=true;
+                }
+                else
+                {
+                    $scope.errorNote=false;
+                    $scope.error.isPassword = false;
+                }
+            })
             //-----------------------------------------------------
-
-
-
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
@@ -1383,8 +1434,6 @@ routerApp
                                 $scope.regUrl='http://'+Digin_Domain+apis_Path+'authorization/userauthorization/userregistration';
                                 $scope.registerUser();
                             }
-
-
                     },
                 }
             })();
@@ -1501,41 +1550,53 @@ routerApp
                 })
 
             }
-                          
-    
+                
             //#get exist tenat users count
             $scope.checkTenantUsersCount=function(){
-                /*$http({
+/*
+                $http({
                     method: 'GET',
-                    url: "/auth/tenant/GetUsers/" + tenantId+Digin_Domain,
+                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 })
                 .success(function(data){
-                    $scope.tenantUsers=data;
-                    console.log(data);
-                    if($scope.licencedUsers==$scope.tenantUsers){
-                        displayError('Number of licence users has been exceeded.');
+                    if(data.Result.usage.length>0){
+                        $scope.tenantUsers=data.Result.usage.length;
+                        var tenant=tenantId+ '.' + Digin_Domain;
+                        var users=data.Result.usage[0][tenant];
+                        //var users=data.Result.usage[0]["testchamila4.dev.digin.io"]
+                        //$scope.tenantUsers=keys(users).length;
+                        if($scope.tenantUsers>=$scope.licencedUsers){
+                            displayError('Number of licence users has been exceeded.');
+                        }
+                        else{
+                            $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
+                            $scope.registerUser();
+                        }
                     }
                     else{
-                        mainFun.signUpUser();  
-                    }
+                        displayError('Tenant usage summary is fail.');
+                    }   
                 }).error(function(error){
                     console.log("error");
-                });*/
-
+                });
+*/
                 //#------------ remove whn recieve above method
+                
                 $scope.tenantUsers=0;
+                $scope.tenantUsers=data.Result.Usage.tenantId.length;
+
+
                     if($scope.licencedUsers==$scope.tenantUsers){
                         displayError('Number of licence users has been exceeded.');
                     }
-                    else{
-                        //mainFun.signUpUser();  
+                    else{ 
                         $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
                         $scope.registerUser();
                     }
-
+                
             }
                 
             $scope.submit = function () {
@@ -1568,6 +1629,11 @@ routerApp
                         return;
                     }
                     else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
+                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        $scope.error.isPassword = true;
+                        focus('password');
+                        return;
+                    }else if($scope.errorNote){
                         mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
                         $scope.error.isPassword = true;
                         focus('password');
@@ -1651,6 +1717,29 @@ routerApp
                 }
             };
 
+
+
+
+            //Password strength alert
+            $scope.showAlert = function(ev) {
+                $mdDialog.show(
+                  $mdDialog.alert()
+                    .parent(angular.element(document.querySelector('#popupContainer')))
+                    .clickOutsideToClose(true)
+                    .title('This is an alert title')
+                    .textContent('You can specify some description text in here.')
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+                    .targetEvent(ev)
+                );
+            };
+
+
+            
+
+
+
+
         }
     ]);
 
@@ -1698,10 +1787,9 @@ routerApp.directive('passwordVerify', function () {
 
 
 
-
 //Password Strength Directive - Start
+/*
 routerApp.directive('passwordStrengthIndicator',passwordStrengthIndicator);
-
 function passwordStrengthIndicator() {
     return {
         restrict: 'A',
@@ -1748,35 +1836,143 @@ function passwordStrengthIndicator() {
                     if (ngModel.$modelValue.length > 7 && c > 2) {
                         angular.forEach(strongest, function (el) {
                             el.style.backgroundColor = '#039FD3';
-                            scope.strengthText = "is very strong";
+                            scope.strengthText = "very strong";
+
                         });
                    
                     } else if (ngModel.$modelValue.length > 5 && c > 1) {
                         angular.forEach(strong, function (el) {
                             el.style.backgroundColor = '#72B209';
-                            scope.strengthText = "is strong";
+                            scope.strengthText = "strong";
 
                         });
                     } else if (ngModel.$modelValue.length > 3 && c > 0) {
                         angular.forEach(weak, function (el) {
                             el.style.backgroundColor = '#E09015';
-                            scope.strengthText = "is weak";
+                            scope.strengthText = "weak";
                         });
                     } else {
                         weakest.style.backgroundColor = '#D81414';
-                        scope.strengthText = "is very weak";
+                        scope.strengthText = "very weak";
                     }
+
+                    scope.$emit('strength_text',scope.strengthText);
                 }
             });
+
+            
 
             scope.$on('$destroy', function () {
                 return listener();
             });
         },
-        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>Password strength {{strengthText}}</md-tooltip></span>'
+        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>Password strength is {{strengthText}}</md-tooltip></span>'
     };
-}
+}*/
 //Password Strength Directive - End
 
 
 //#Pw strength directive test ------------------start-------
+routerApp.directive('passwordStrengthIndicator',passwordStrengthIndicator);
+function passwordStrengthIndicator() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        scope: {
+            ngModel: '='
+        },
+        link: function (scope, element, attrs, ngModel) {
+
+            scope.strengthText = "";
+
+            var strength = {
+                measureStrength: function (p) {
+                    var _passedMatches = 0;
+                    var _regex = /[$@&+#-/:-?{-~!^_`\[\]]/g;
+                    if (/[a-z]+/.test(p)) {
+                        _passedMatches = 1;
+                    }
+                    if (/[A-Z]+/.test(p)) {
+                        _passedMatches = 1;
+                    }
+                    if (/[0-9]+/.test(p)) {
+                       _passedMatches = 2;
+                    }
+                    if (/[a-z]+/.test(p) && /[0-9]+/.test(p)) {
+                        _passedMatches = 3;
+                    }
+                    if (/[A-Z]+/.test(p) && /[0-9]+/.test(p)) {
+                        _passedMatches = 3;
+                    }
+                    if (/[A-Z]+/.test(p) && /[a-z]+/.test(p) && /[0-9]+/.test(p)) {
+                        _passedMatches = 4;
+                    }
+                    if (/[A-Z]+/.test(p) && /[a-z]+/.test(p) && /[0-9]+/.test(p) && _regex.test(p)) {
+                        _passedMatches = 5;
+                    }
+                    //if (_regex.test(p)) {
+                    //    _passedMatches++;
+                    //}
+                    return _passedMatches;
+                }
+            };
+
+            var indicator = element.children();
+            var dots = Array.prototype.slice.call(indicator.children());
+            var weakest = dots.slice(-1)[0];
+            var weak = dots.slice(-2);
+            var strong = dots.slice(-3);
+            var strongest = dots.slice(-4);
+
+            element.after(indicator);
+
+            var listener = scope.$watch('ngModel', function (newValue) {
+                angular.forEach(dots, function (el) {
+                    el.style.backgroundColor = '#EDF0F3';
+                });
+                if (ngModel.$modelValue) {
+                    var c = strength.measureStrength(ngModel.$modelValue);
+                    if (ngModel.$modelValue.length > 7 && c > 4) {
+                        angular.forEach(strongest, function (el) {
+                            el.style.backgroundColor = '#039FD3';
+                            scope.strengthText = "very strong";
+                        });
+                    } else if (ngModel.$modelValue.length > 5 && c > 3) {
+                        angular.forEach(strong, function (el) {
+                            el.style.backgroundColor = '#72B209';
+                            scope.strengthText = "strong";
+                        });
+                    } else if (ngModel.$modelValue.length > 5 && c > 2) {
+                        angular.forEach(weak, function (el) {
+                            el.style.backgroundColor = '#E09015';
+                            scope.strengthText = "weak";
+                        });
+                    }
+                    else if (ngModel.$modelValue.length > 5 && c >1) {
+                        angular.forEach(weak, function (el) {
+                            el.style.backgroundColor = '#D81414';
+                            scope.strengthText = "very weak2";
+                        });
+                    }else if (ngModel.$modelValue.length > 5 && c >0) {
+                        angular.forEach(weak, function (el) {
+                            el.style.backgroundColor = '#D81414';
+                            scope.strengthText = "very weak1";
+                        });
+                    } else {
+                        weakest.style.backgroundColor = '#D81414';
+                        scope.strengthText = "very weak";
+                    }
+
+                    scope.$emit('strength_text',scope.strengthText);
+                }
+            });
+
+            
+
+            scope.$on('$destroy', function () {
+                return listener();
+            });
+        },
+        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>Password strength is {{strengthText}}</md-tooltip></span>'
+    };
+}

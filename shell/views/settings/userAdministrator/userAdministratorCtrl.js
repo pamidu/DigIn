@@ -367,6 +367,13 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
                     console.log(response);
                     $mdDialog.hide();
 					if(response.Success){
+							//#push status changes to sharableUsers array
+							for (var i = 0, len = $rootScope.sharableUsers.length; i<len; ++i) {
+								if ($rootScope.sharableUsers[i].Id == user.Id) {	
+									$rootScope.sharableUsers[i].Active=true;
+									i=len;
+								}
+							}						
 						displaySuccess(response.Message); 
 					}
 					else{
@@ -379,6 +386,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 			});
 		}				
 	}
+
 
 	$scope.getCatLetter=function(catName){
 		try{

@@ -51,7 +51,7 @@
                     }, $diginurls.diginengine + "GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public&datasource_config_id=" + MSSQLid);
                 },
                 getHighestLevel: function(tbl, fieldstr, id, cb) {
-                    if (database == "BigQuery") {
+                    if (database == "BigQuery" || database == "memsql") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
                         }, $diginurls.diginengine + "gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_id=" + id);
@@ -99,6 +99,13 @@
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}"  + "&datasource_id=" + id;
                         }
                     }
+                    if (database == "memsql") {
+                        if (!gb) {
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
+                        } else {
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}"  + "&datasource_id=" + id;
+                        }
+                    }
                     if (database == "MSSQL") {
                         var db = tbl.split(".");
                         if (gb === undefined) {
@@ -136,7 +143,7 @@
                     if (limit) limVal = limit;
                     if (database == 'MSSQL')
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_config_id=" + id;
-                    else if (database == 'BigQuery')
+                    else if (database == 'BigQuery' || database == "memsql")
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_id=" + id;
                     else 
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
@@ -152,7 +159,7 @@
 
                 getHierarchicalSummary: function(hObj,measure,aggData,tbl,id,cb) {
                     var query = "";
-                    if (database == "BigQuery") {
+                    if (database == "BigQuery" || database == "memsql") {
                         query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
                         getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database + "&datasource_id=" + id;
                     } else if ( database == "MSSQL") {

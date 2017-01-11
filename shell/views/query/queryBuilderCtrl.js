@@ -676,8 +676,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             min: 0,
                             gridLineWidth: 0,
                             title: {
-                              text: '',
-                              align: 'high'
+                              text: ''
                             },
                             labels:{
                               enabled:false//default is true
@@ -687,17 +686,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                           enabled: false
                         },
                         tooltip: {
-                            enabled:true
+                            enabled:false
                         },
                         plotOptions: {
-                            // series: {
-                            //     enableMouseTracking: false
-                            // },
-                            // line: {
-                            //     marker: {
-                            //         enabled: false
-                            //     }
-                            // }
+                            series: {
+                                enableMouseTracking: false
+                            },
+                            line: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
                         },
                         legend: {
                                     enabled: false
@@ -712,6 +711,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 groupByField: "",
                 timeAttribute: "",
                 trendQuery: "",
+                notificationConstant: "",
                 settingsView: 'views/query/settings-views/metricSettings.html',
                 notificationValue: "",
 				tooltip: ""
@@ -3779,6 +3779,17 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 color: $scope.selectedChart.initObj.color,
                 scalePosition: $scope.selectedChart.initObj.scalePosition
             };
+            if ($scope.selectedChart.initObj.notificationValue == "") {
+                if ($scope.selectedChart.initObj.targetQuery == "") {
+                    $scope.selectedChart.initObj.notificationValue = $scope.selectedChart.initObj.targetValue;
+                    $scope.selectedChart.initObj.notificationConstant = true;
+                } else {
+                    $scope.selectedChart.initObj.notificationValue = $scope.selectedChart.initObj.targetQuery;
+                    $scope.selectedChart.initObj.notificationConstant = false;
+                }
+            } else {
+                $scope.selectedChart.initObj.notificationConstant = true;
+            }
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
             widget.widgetName = "metric";
@@ -4952,10 +4963,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         //fill the series array
         angular.forEach(res, function(key) {
             serArr.forEach(function(ser) {
-                ser.data.push({
-                    name: key[cat].toString(),
-                    y: parseFloat(key[ser.name])
-                });
+                if (key[cat] !== null) {
+                    ser.data.push({
+                        name: key[cat].toString(),
+                        y: parseFloat(key[ser.name])
+                    });
+                } else {
+                    ser.data.push({
+                        name: 'null',
+                        y: parseFloat(key[ser.name])
+                    });
+                }
+
             });
         });
         cb(serArr);
@@ -5063,41 +5082,49 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             privateFun.fireMessage('0','Please select a colouring type.');
             return;
         }
-        if ($scope.selectedChart.initObj.timeAttribute == "") {
-            privateFun.fireMessage('0','Please select the time attribute for trend.');
-            return;
-        }
-        if ($scope.selectedChart.initObj.groupByField == "") {
-            privateFun.fireMessage('0','Please select group by attribute for trend.');
-            return;
-        }
-        var fieldArr = [{
-            field: executeQryData.executeActualField[0].filedName,
-            agg: executeQryData.executeActualField[0].condition
-        }];
-        var seriesData = [];
-        var tempArr = [];
-        var units;
         $scope.selectedChart.initObj.trendChart.series = [];
         $scope.selectedChart.initObj.trendQuery = "";
-        $scope.isPendingRequest = true;
-        $scope.eventHndler.isToggleColumns = false;
-        $scope.eventHndler.isLoadingChart = true;
-        $scope.client.getAggData($scope.sourceData.tbl, executeQryData.executeActualField, $scope.limit, $scope.sourceData.id, function(res, status, query) {
-            if (status) {
-                $scope.selectedChart.initObj.trendQuery = query;
-                var nameSpace = executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName;
-                chartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
-                chartServices.applyMetricSettings($scope.selectedChart);
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isToggleColumns = true;
-                $scope.eventHndler.isLoadingChart = false;
-            } else {
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isToggleColumns = true;
-                $scope.eventHndler.isLoadingChart = false;
+        if ($scope.selectedChart.initObj.groupByField.length > 0 ) {
+            if ($scope.selectedChart.initObj.timeAttribute == "") {
+                privateFun.fireMessage('0','Please select the time attribute for trend.');
+                return;
             }
-        },$scope.selectedChart.initObj.groupByField);
+            if ($scope.selectedChart.initObj.groupByField == "") {
+                privateFun.fireMessage('0','Please select group by attribute for trend.');
+                return;
+            }
+            var fieldArr = [{
+                field: executeQryData.executeActualField[0].filedName,
+                agg: executeQryData.executeActualField[0].condition
+            }];
+            var seriesData = [];
+            var tempArr = [];
+            var units;
+            $scope.isPendingRequest = true;
+            $scope.eventHndler.isToggleColumns = false;
+            $scope.eventHndler.isLoadingChart = true;
+            $scope.client.getAggData($scope.sourceData.tbl, executeQryData.executeActualField, $scope.limit, $scope.sourceData.id, function(res, status, query) {
+                if (status) {
+                    $scope.selectedChart.initObj.trendQuery = query;
+                    var nameSpace = executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName;
+                    chartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
+                    chartServices.applyMetricSettings($scope.selectedChart);
+                    $scope.$apply(function(){
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isToggleColumns = true;
+                        $scope.eventHndler.isLoadingChart = false;
+                    })
+                } else {
+                    $scope.$apply(function(){
+                        $scope.isPendingRequest = false;
+                        $scope.eventHndler.isToggleColumns = true;
+                        $scope.eventHndler.isLoadingChart = false;
+                    })
+                }
+            },$scope.selectedChart.initObj.groupByField);
+        } else {
+            chartServices.applyMetricSettings($scope.selectedChart);
+        }
     };
     // Reset metric chart settings
     $scope.resetSettings = function() {
@@ -5117,6 +5144,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.targetField = "";
         $scope.selectedChart.initObj.groupByField = "";
         $scope.selectedChart.initObj.timeAttribute = "";
+        $scope.selectedChart.initObj.notificationConstant = "";
         $scope.selectedChart.initObj.notificationValue = "";
         $scope.selectedChart.initObj.rangeSliderOptions = {
             minValue: 0,

@@ -582,34 +582,68 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.connectSource_step2 = {};
 		
 		$scope.sourceType = [
-			{name: "Big Query", icon: "views/user_assistance/connectSource/bigquery.png"},
-			{name: "postgresql", icon: "views/user_assistance/connectSource/postgress.png"},
-			{name: "MSSQL", icon: "views/user_assistance/connectSource/mysql.png"}
+			{name: "Big Query", icon: "biq-query"},
+			//{name: "Postgre SQL", icon: "views/user_assistance/connectSource/postgress.png"},
+			{name: "Microsoft SQL", icon: "mssql"},
+			{name: "memsql", icon: "memsql"}
 		];
-		
+		$scope.files = [];
+		$scope.folders = [];
 		//Submit one in Upload Source
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
-			$scope.connectSource_selected = 1;
-			$scope.connectSource_step1.completed = true;
+			if(type == "Big Query")
+			{
+				$diginengine.getClient("BigQuery").getTables(function(res, status) {
+					
+					if(status) {
+						$scope.connectSource_selected = 1;
+						$scope.connectSource_step1.completed = true;
+						console.log(res);
+						
+						for(var i = 0; i < res.length; i++){
+							if(res[i].upload_type == "csv-singlefile"){
+							  $scope.files.push(res[i]);
+							}else{
+							  $scope.folders.push(res[i]);
+							}
+						}
+					} else {
+						notifications.toast('0', 'Error occured. Please try again.');
+					}
+				});
+				
+			}else{
+				notifications.alertDialog("Sorry","Not connected yet");
+			}
 		}
-		
-		$scope.tables = ['Superstore', 'ar_customercatogories','ar_customerinfo','ar_invoicedetails','ar_invoiceheader','ar_returndetails','ar_returnheader','current_employee_names__salaries__and_position_titles','departments','inv_inventoryTransactions','inv_products','inv_storeinformation','overdata','sample'];
-		
+		$scope.attributes = [];
+		$scope.measures = []
+		$scope.selectTable = function(fileOrFolder)
+		{
+			console.log(fileOrFolder.schema);
+			for(var i = 1; i < fileOrFolder.schema.length; i++){
+				if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
+					$scope.measures.push(fileOrFolder.schema[i]);	
+				}
+				
+				if( fileOrFolder.schema[i].name != "_index_id" && fileOrFolder.schema[i].type != "integer" )
+				{
+					$scope.attributes.push(fileOrFolder.schema[i]);
+				}
+			}
+			$scope.connectSource_selected = 2;
+			$scope.connectSource_step2.completed = true;
+			
+		}		
 		
 		$scope.goToPreviousConnectSourceStep = function()
 		{
 			--$scope.connectSource_selected;
 		}
 		
-		$scope.submitTableSelectStep = function()
-		{
-			$scope.connectSource_selected = 2;
-			$scope.connectSource_step2.completed = true;
-		}
-		
-		$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];
+		//$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];
 		$scope.selectAllAttributes = false;
 		$scope.selectedAttributes = [];
 		$scope.selectAttribute = function (item) {
@@ -636,7 +670,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			}
 		};
 		
-		$scope.measures = ['LocationID','CompanyID', 'BranchID','DeptID','StoreID','CityID','Country','PeriodID'];
+		//$scope.measures = ['LocationID','CompanyID', 'BranchID','DeptID','StoreID','CityID','Country','PeriodID'];
 		$scope.selectAllMeasures= false;
 		$scope.selectedMeasures= [];
 		$scope.selectMeasure = function (item) {
@@ -661,6 +695,13 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 				$scope.selectedMeasures = $scope.measures.slice(0);
 			}
 		};
+		$scope.createWidget = function()
+		{
+			$scope.assist_selected = 2;
+			console.log($scope.selectedAttributes);
+			console.log($scope.selectedMeasures);
+		}
+	
 		
 		$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 		

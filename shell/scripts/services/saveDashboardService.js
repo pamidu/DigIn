@@ -100,43 +100,55 @@ var localThis = this;
       }
     })
     .success(function(response){
+
+      // send a call to the 
       //assign the id name type refresh interval to dashboard
-      var selectedPage = $rootScope.selectedPage;
-      $rootScope.dashboard.compID = response.Result;
-      dashboardObject.compID = response.Result;
-      $rootScope.dashboard.compName = dashboardName;
-      $rootScope.dashboard.compType = 'dashboard';
-      $rootScope.dashboard.refreshInterval = refreshInterval;
-      $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval;
-      // Insert data into pouchDb
-      if ($rootScope.dashboard.refreshInterval == '0'){
-        $interval.cancel($rootScope.interval);
-        $rootScope.interval = undefined;
-        $rootScope.refreshInterval == undefined;
+      if (response.Is_Success) {
+        var selectedPage = $rootScope.selectedPage;
+        $rootScope.dashboard.compID = response.Result;
+        dashboardObject.compID = response.Result;
+        $rootScope.dashboard.compName = dashboardName;
+        $rootScope.dashboard.compType = 'dashboard';
+        $rootScope.dashboard.refreshInterval = refreshInterval;
+        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval;
+        // Insert data into pouchDb
+        if ($rootScope.dashboard.refreshInterval == '0'){
+          $interval.cancel($rootScope.interval);
+          $rootScope.interval = undefined;
+          $rootScope.refreshInterval == undefined;
+        } else {
+          $interval.cancel($rootScope.interval);
+          $rootScope.interval = undefined;
+          $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+          $rootScope.refreshDashboard();
+        }
+        pouchDbServices.insertPouchDB(null,response.Result,function(){
+           localThis.IsSavingINprogress = false;
+        },true);
+        if (type == 'dashboard'){
+             setState(true,scope);
+        }
+        ngToast.create({
+          className: 'success',
+          content: 'Dashboard Saved Successfully',
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          dismissOnClick: true
+        });
       } else {
-        $interval.cancel($rootScope.interval);
-        $rootScope.interval = undefined;
-        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
-        $rootScope.refreshDashboard();
+          ngToast.create({
+            className: 'danger',
+            content: 'Failed Saving Dashboard. Please Try Again!',
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true
+          });
       }
-      pouchDbServices.insertPouchDB(null,response.Result,function(){
-         localThis.IsSavingINprogress = false;
-      }); 
-      if (type == 'dashboard'){
-           setState(true,scope);
-      }
-      ngToast.create({
-        className: 'success',
-        content: 'Dashboard Saved Successfully',
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        dismissOnClick: true
-      });
      
     })
     .error(function(error){
       // Insert data into pouchDb
-      pouchDbServices.insertPouchDB(dashboardObject,null);
+      pouchDbServices.insertPouchDB(dashboardObject,null,undefined,true);
       ngToast.create({
         className: 'danger',
         content: 'Failed Saving Dashboard. Please Try Again!',
@@ -155,6 +167,7 @@ var localThis = this;
     var widgetObject;
     var returnArray = [];
     var dynamicWidgets = [];
+    var metricObj = {};
     //get widgets here
     var widgetsArray = [];
     for (var j = 0; j < widgets.length; ++j) {

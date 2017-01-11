@@ -72,9 +72,9 @@ routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
         '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','$cookies','$filter','apis_Path','auth_Path','include_Path','onsite',
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path,onsite) {
-
-
-
+    
+            
+    
             $scope.signindetails = {};
             $scope.isLoggedin = false;
             $scope.activated=false;
@@ -1143,7 +1143,39 @@ routerApp
         function ($scope, $http, $state, focus,
                   Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite,tenantId) {
 
-            //----------------Password strength validation-------------------------------------
+            //-------------test --
+            /*
+                $http({
+                    method: 'GET',
+                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .success(function(data){
+                    if(data.Result.length>0){
+                        var tenant=tenantId+'.'+Digin_Domain;
+                        $scope.tenantUsers=data.Result.usage+'.'+tenant.length;
+                        if($scope.tenantUsers>=$scope.licencedUsers){
+                            displayError('Number of licence users has been exceeded.');
+                        }
+                        else{
+                            $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
+                            $scope.registerUser();
+                        }
+                    }
+                    else{
+                        displayError('Tenant usage summary is fail.');
+                    }                   
+                }).error(function(error){
+                    console.log("error");
+                });
+        
+            */
+            //test end----------------------------------
+            
+            
+           //----------------Password strength validation-------------------------------------
             //$scope.minLengthMsg = false;
             //$scope.strengthText="test";
 
@@ -1521,72 +1553,38 @@ routerApp
                 
             //#get exist tenat users count
             $scope.checkTenantUsersCount=function(){
-
-                var data={
-                            "Exception": null,
-                            "Result": {
-                                "usage": [{
-                                    "testchamila4.dev.digin.io": {
-                                        "a99b110495f94f2c99fa2ab9a80a0fa9": {
-                                            "users": 1.0
-                                        },
-                                        "c91d8b707e775153dcd860a9d678d278": {
-                                            "users": 1.0
-                                        },
-                                        "214f4dc3b95572e86e6e2d6d723e8f9e": {
-                                            "users": 1.0
-                                        },
-                                        "b48f39de210f6bff993bdc6ef7675f33": {
-                                            "users": 1.0
-                                        },
-                                        "84411bcd02fb8e9f24016033cf49262c": {
-                                            "users": 1.0
-                                        },
-                                        "d19e4cb46ae04791475b22ddf09001d9": {
-                                            "upload_bq": 1799127.0,
-                                            "storage_bq": 1799127.0,
-                                            "users": 1.0
-                                        },
-                                        "5ecd034a762e70ced6d6e55a4dc8aa9a": {
-                                            "users": 1.0
-                                        }
-                                    }
-                                }],
-                                "exceed_blocked": {
-                                    "storage": false,
-                                    "data": false,
-                                    "users": false
-                                }
-                            },
-                            "Is_Success": "True",
-                            "Custom_Message": "Usage data retrieved"
-                        };
-
-
-                /*$http({
+/*
+                $http({
                     method: 'GET',
-                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId,
+                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 })
                 .success(function(data){
-                    //get tenant user count from array
-
-                    $scope.tenantUsers=data;
-                    console.log(data);
-                    if($scope.tenantUsers>=$scope.licencedUsers){
-                        displayError('Number of licence users has been exceeded.');
+                    if(data.Result.usage.length>0){
+                        $scope.tenantUsers=data.Result.usage.length;
+                        var tenant=tenantId+ '.' + Digin_Domain;
+                        var users=data.Result.usage[0][tenant];
+                        //var users=data.Result.usage[0]["testchamila4.dev.digin.io"]
+                        //$scope.tenantUsers=keys(users).length;
+                        if($scope.tenantUsers>=$scope.licencedUsers){
+                            displayError('Number of licence users has been exceeded.');
+                        }
+                        else{
+                            $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
+                            $scope.registerUser();
+                        }
                     }
                     else{
-                        $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
-                        $scope.registerUser();
-                    }
+                        displayError('Tenant usage summary is fail.');
+                    }   
                 }).error(function(error){
                     console.log("error");
-                });*/
-
+                });
+*/
                 //#------------ remove whn recieve above method
+                
                 $scope.tenantUsers=0;
                 $scope.tenantUsers=data.Result.Usage.tenantId.length;
 

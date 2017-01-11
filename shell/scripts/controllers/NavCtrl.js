@@ -216,7 +216,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $scope.callUserInitialize=function(){
                 //$scope.data = {"db": "bigquery"}
 
-
+                    /*
                     if(dbType=="mssql"){
                         $scope.data = {"db": "mssql"}
                     }
@@ -225,9 +225,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                     else{
                         $scope.data = {"db": "bigquery"}
-                    }
+                    }*/
 
-
+                    $scope.data = {"db": dbType}
 
 
                     $http({

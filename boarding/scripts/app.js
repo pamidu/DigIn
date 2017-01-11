@@ -177,6 +177,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
         $scope.createDataSet = function (cb) {      
                 displayProgress('Initialising dataset...');
                 
+                /*
                 if(dbType=="mssql"){
                     $scope.data = {"db": "mssql"}
                 }
@@ -186,7 +187,10 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 else{
                     $scope.data = {"db": "bigquery"}
                 }
-                
+                */
+
+                $scope.data = {"db": dbType}
+
                 $http({
                         method: 'POST',
                         url: Digin_Engine_API+'set_init_user_settings',

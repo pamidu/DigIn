@@ -587,41 +587,28 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			{name: "Microsoft SQL", icon: "mssql"},
 			{name: "memsql", icon: "memsql"}
 		];
-		
+		$scope.files = [];
+		$scope.folders = [];
 		//Submit one in Upload Source
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
 			if(type == "Big Query")
 			{
-				$scope.connectSource_selected = 1;
-				$scope.connectSource_step1.completed = true;
-				 $scope.tables = [];
-				var type;
 				$diginengine.getClient("BigQuery").getTables(function(res, status) {
+					
 					if(status) {
+						$scope.connectSource_selected = 1;
+						$scope.connectSource_step1.completed = true;
 						console.log(res);
-						//$scope.allTables = res;
-						/*angular.forEach(res,function(key) {
-							if(key.upload_type == 'csv-directory') {
-								type = 'ti-folder';
-							} else {
-								type = 'ti-file';
-							}
-
-							if(key.shared_by == null){
-								isShared =false;
+						
+						for(var i = 0; i < res.length; i++){
+							if(res[i].upload_type == "csv-singlefile"){
+							  $scope.files.push(res[i]);
 							}else{
-								isShared = true
+							  $scope.folders.push(res[i]);
 							}
-
-							$scope.tables.push({
-								name: key.datasource_name,
-								type: type,
-								isShared : isShared
-							})
-						})*/
-						//callback($scope.tables, status);
+						}
 					} else {
 						notifications.toast('0', 'Error occured. Please try again.');
 					}
@@ -632,18 +619,16 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			}
 		}
 		
-		$scope.tables = ['Superstore', 'ar_customercatogories','ar_customerinfo','ar_invoicedetails','ar_invoiceheader','ar_returndetails','ar_returnheader','current_employee_names__salaries__and_position_titles','departments','inv_inventoryTransactions','inv_products','inv_storeinformation','overdata','sample'];
-		
+		$scope.selectTable = function(fileOrFolder)
+		{
+			console.log(fileOrFolder);
+			$scope.connectSource_selected = 2;
+			$scope.connectSource_step2.completed = true;
+		}		
 		
 		$scope.goToPreviousConnectSourceStep = function()
 		{
 			--$scope.connectSource_selected;
-		}
-		
-		$scope.submitTableSelectStep = function()
-		{
-			$scope.connectSource_selected = 2;
-			$scope.connectSource_step2.completed = true;
 		}
 		
 		$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];

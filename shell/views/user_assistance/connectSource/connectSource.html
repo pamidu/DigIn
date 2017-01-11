@@ -26,7 +26,6 @@ input
 	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	outline: none;
-	margin-top: 5px !important;
 
 }
 </style>
@@ -54,15 +53,39 @@ input
 	</md-content>
   </md-step>
   <md-step label="Table Selection" md-complete="$parent.connectSource_step2.completed" ng-disabled="$parent.connectSource_step2.disabled">
-	<md-content style="padding:20px;max-height:300px;">
-		<form name="step2" ng-submit="submitTableSelectStep()">
+	<md-content style="padding:20px;">
+		<form name="step2">
 			<input style="width: 200px;margin-bottom:10px;" placeholder="search table..." ng-model="searchTables" aria-label="false">
-			<md-radio-group ng-model="table" layout="row"  layout-align="start start" style="padding: 10px;border: 1px solid #ccc;border-radius: 4px;" layout-wrap aria-label="tables">
-				<md-radio-button value="{{table}}" style="padding: 10px;" ng-repeat="table in tables | filter:searchTables">{{table}}</md-radio-button>
-			</md-radio-group>
+			<!--md-radio-group ng-model="table" layout="row"  layout-align="start start" style="padding: 10px;border: 1px solid #ccc;border-radius: 4px;" layout-wrap aria-label="tables">
+				<md-radio-button value="{{table}}" style="padding: 10px;" ng-repeat="table in files | filter:searchTables">{{table.datasource_name}}</md-radio-button>
+			</md-radio-group-->
+			<div layout-gt-sm="row">								
+				<div flex>
+					<h2 style="margin:0">Files</h2>
+					<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+						<md-list-item class="md-3-line" ng-repeat="file in files | filter:searchTables" ng-click="selectTable(file)">
+							<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
+							<div class="md-list-item-text" layout="column" style="padding-left: 20px;">
+								<div layout="row"><h3>{{file.datasource_name}}</h3> <p style="padding-left:20px">({{file.created_datetime}})</p></div>
+							</div>
+						</md-list-item>  
+					</md-list>
+				</div>
+				<div flex>
+					<h2 style="margin:0">Folders</h2>
+					<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+						<md-list-item class="md-3-line" ng-repeat="folder in folders | filter:searchTables" ng-click="selectTable(folder)">
+							<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
+							<div class="md-list-item-text" layout="column" style="padding-left: 20px;">
+								<div layout="row"><h3>{{folder.datasource_name}}</h3> <p style="padding-left:20px">({{folder.created_datetime}})</p></div>
+							</div>
+						</md-list-item>  
+					</md-list>
+				</div>
+			</div>
 			<div flex layout="row" layout-align="space-between center" class="side-margins">
 				<md-button ng-click="goToPreviousConnectSourceStep()" class="md-raised md-primary" aria-label="go to previous">Previous</md-button>
-				<md-button type="submit" ng-disabled="showBusyText" class="md-raised md-primary" aria-label="submit table">NEXT</md-button>
+				<!--md-button type="submit" ng-disabled="showBusyText" class="md-raised md-primary" aria-label="submit table">NEXT</md-button-->
 			</div>
 		</form>
 	</md-content>

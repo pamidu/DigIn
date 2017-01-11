@@ -592,8 +592,44 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
-			$scope.connectSource_selected = 1;
-			$scope.connectSource_step1.completed = true;
+			if(type == "Big Query")
+			{
+				$scope.connectSource_selected = 1;
+				$scope.connectSource_step1.completed = true;
+				 $scope.tables = [];
+				var type;
+				$diginengine.getClient("BigQuery").getTables(function(res, status) {
+					if(status) {
+						console.log(res);
+						//$scope.allTables = res;
+						/*angular.forEach(res,function(key) {
+							if(key.upload_type == 'csv-directory') {
+								type = 'ti-folder';
+							} else {
+								type = 'ti-file';
+							}
+
+							if(key.shared_by == null){
+								isShared =false;
+							}else{
+								isShared = true
+							}
+
+							$scope.tables.push({
+								name: key.datasource_name,
+								type: type,
+								isShared : isShared
+							})
+						})*/
+						//callback($scope.tables, status);
+					} else {
+						notifications.toast('0', 'Error occured. Please try again.');
+					}
+				});
+				
+			}else{
+				notifications.alertDialog("Sorry","Not connected yet");
+			}
 		}
 		
 		$scope.tables = ['Superstore', 'ar_customercatogories','ar_customerinfo','ar_invoicedetails','ar_invoiceheader','ar_returndetails','ar_returnheader','current_employee_names__salaries__and_position_titles','departments','inv_inventoryTransactions','inv_products','inv_storeinformation','overdata','sample'];

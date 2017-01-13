@@ -3840,6 +3840,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         getData: function() {
             $scope.eventHndler.isLoadingChart = true;
             $scope.fieldArray = [];
+            $scope.fieldArrayMSSQL = [];
             //var fieldArrayLength = $scope.sourceData.fAttArr.length;
             var fieldArrayLength = $scope.executeQryData.executeColumns.length;
                 $scope.chartState = true;
@@ -3852,7 +3853,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
                 for (var i = 0; i < $scope.executeQryData.executeColumns.length; i++) {
                     $scope.fieldArray.push($scope.executeQryData.executeColumns[i].filedName);
+                    $scope.fieldArrayMSSQL.push('['+$scope.executeQryData.executeColumns[i].filedName+']');
                 }
+
 
                 $scope.widget.widgetData.widData.tabularConfig.defSortFeild=$scope.executeQryData.executeColumns[0].filedName;
 
@@ -3868,7 +3871,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     i++;
                 });
                 var db = $scope.sourceData.src;
-        
+
                 if($scope.sorting==undefined || $scope.sorting==''){
                     $scope.sorting=false;
                 }
@@ -3877,14 +3880,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     if (db == "BigQuery") {
                         var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
                     } else {
-                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
+                        $scope.widget.widgetData.widData.tabularConfig.defSortFeild='['+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+']';
+                        $scope.sourceData.tbl ='['+$scope.sourceData.tbl +']';
+                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " + $scope.sourceData.tbl.split(".")[0]+ "].["+$scope.sourceData.tbl.split(".")[1] + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
                     }
                 }
                 else{
                     if (db == "BigQuery") {
                         var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
                     } else {
-                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $scope.sourceData.tbl + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
+                        $scope.sourceData.tbl.split(".")[0].
+                        $scope.orderByColumnName='['+$scope.orderByColumnName+']';
+                        $scope.sourceData.tbl ='['+$scope.sourceData.tbl +']';
+                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " + $scope.sourceData.tbl.split(".")[0] +"].["+ $scope.sourceData.tbl.split(".")[1] + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
                     }
                 }
 
@@ -4011,46 +4019,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
 
-    // $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
-
-    //     if($scope.selectedChart.chartType == "Tabular"){
-
-    //         if(newValue != oldValue){
-
-    //            var addArr = [];
-    //            var delArr = [];
-
-    //            if(newValue.length > oldValue.length){
-
-    //                 var Alignment = "left";
-    //                 var isString = true;
-    //                 if(newValue[newValue.length-1].dataType == "INTEGER" || newValue[newValue.length-1].dataType == "FLOAT")
-    //                 {
-    //                     Alignment = "right";
-    //                     isString = false;
-    //                 }
-
-    //                 var colObj = {
-    //                     "Attribute": newValue[newValue.length-1].filedName,
-    //                     "DislayName": newValue[newValue.length-1].filedName,
-    //                     "Alignment": Alignment,
-    //                     "isString" : isString,
-    //                     "Aggregation":"sum",
-    //                     "Aggregation_value":0
-
-    //                 };
-
-    //                 $scope.allingArr.push(colObj);
-
-    //            }
-
-                
-    //         }
-    //     }
-       
-
-
-    // },true);
 
  
 

@@ -11,7 +11,7 @@ angular.module('configuration', [])
 .constant('Digin_ObjStore', 'http://digin.duoworld.com:3000')
 //#for loggin process
 .constant('IsLocal', true)
-.constant('Local_Shell_Path', 'http://localhost:8081/DigIn/shell')
+.constant('Local_Shell_Path', 'http://localhost:8080/DigIn/shell')
 .constant('report_Widget_Iframe', 'http://dev.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
 //#apis folder path inside the html folder ** NOTE : if apis folder in -->html/apis/ then apis_path--> '/apis/'
 .constant('apis_Path', '/apis/')
@@ -20,7 +20,7 @@ angular.module('configuration', [])
 //#for onsite implementation (Note : for on prem  version onsite=true, for cloud version onsite=false)
 .constant('onsite', true)   
 .constant('tenantId','test514')
-.constant('version','V3.2.0.9')
+.constant('version','V3.2.1.3')
 //#Database type --> mssql, postgresql,bigquery,mysql
 .constant('dbType', 'mssql')
 //#Database type for csv/excel upload

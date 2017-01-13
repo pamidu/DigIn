@@ -309,7 +309,7 @@
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
-                    $http.get(reqUrl + '&SecurityToken=' + '3f16bcdc3a533284bc39d432dd1a3926' + '&Domain=' + Digin_Domain, {
+                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=' + Digin_Domain, {
                         headers: {}
                     }).
                     success(function(data, status, headers, config) {
@@ -323,7 +323,7 @@
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);
 
-                wData.rUrl = wData.rUrl + "&SecurityToken=" + '3f16bcdc3a533284bc39d432dd1a3926' + "&Domain=" + Digin_Domain;
+                wData.rUrl = wData.rUrl + "&SecurityToken=" + getCookie("securityToken") + "&Domain=" + Digin_Domain;
                 w.postMessage(JSON.stringify(wData));
                 w.addEventListener('message', function(event) {
                     if (event.data.state) {

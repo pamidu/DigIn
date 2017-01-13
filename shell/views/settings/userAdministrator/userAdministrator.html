@@ -92,7 +92,7 @@
 										</md-button-->
 										
 
-										<md-button ng-if="!user.Active" style="font-size: 10px;color:grey; min-width: 30px;" aria-label="status" ng-click="acivateUser($event, user)" disabled="!tabVisible">
+										<md-button ng-if="!user.Active" style="font-size: 10px;color:grey; min-width: 30px;" aria-label="status" ng-click="acivateUser($event, user)" ng-disabled="tabVisible">
 											<img src="views/settings/userAdministrator/yellow.png"/>
 										</md-button>
 										

@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartServices){
+routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartServices,tabularService){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -417,6 +417,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
                                       }
 
                       
+                                    tabularService.setPagination(data,widObj.widData);
                                     widObj.widData.userList = data;
                                     widObj.syncState = true;
                                     cb(widObj);

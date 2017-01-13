@@ -78,7 +78,8 @@ md-list-item, md-list-item .md-list-item-inner
 	</div>
 	<div layout="column" flex-gt-sm="65">
 		<div layout="column" layout-align="center center">
-			<div id="highchart-container" style="margin:10px">Select a series and a category to create a simple bar chart</div>
+			<highchart flex config="highcharts"></highchart>
+			<!--<div id="highchart-container" style="margin:10px">Select a series and a category to create a simple bar chart</div>-->
 			<md-progress-circular ng-show="showBarChartLoading" class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>
 		</div>
 		<div flex layout="row" layout-align="end end" class="side-margins">

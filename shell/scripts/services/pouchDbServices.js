@@ -45,7 +45,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                             dashboard_name: dashboard.compName,
                                             widget_name: widget.widgetName,
                                             dbname:widget.widgetData.commonSrc.src.src,
-                                            datasource_config_id:widget.widgetData.commonSrc.src.id,
+                                            datasource_id:widget.widgetData.commonSrc.src.id,
                                             widget_id:widget.widgetID
                                           }
                                           metricArray.push(metricObj);
@@ -53,6 +53,22 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                       }
                                     });
                                   });
+                                  if (metricArray.length > 0) {
+                                    $http({
+                                      method: 'POST',                  
+                                      url: 'http://192.168.0.30:8080/'+'store_notification_details',
+                                      data: angular.fromJson(CircularJSON.stringify(metricArray)),
+                                      headers: {  
+                                        'Content-Type': 'application/json',
+                                        'SecurityToken':userInfo.SecurityToken
+                                      }
+                                    }).success(function(response){
+
+                                    })
+                                    .error(function(error){
+
+                                    })
+                                  }
                                 }
                                 if(dashboard.pages[index].widgets.length == 0)
                                   settoPouch(dashboard,true,cb);

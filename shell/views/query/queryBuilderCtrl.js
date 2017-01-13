@@ -663,7 +663,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             labels:{
                               enabled:false//default is true
                             },
-                           lineWidth: 0,
+                           lineWidth: 1,
                            minorGridLineWidth: 0,
                            lineColor: 'transparent',
                            minorTickLength: 0,
@@ -674,7 +674,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         },
                         yAxis: {
                             min: 0,
-                            gridLineWidth: 0,
+                            gridLineWidth: 1,
                             title: {
                               text: ''
                             },
@@ -5066,6 +5066,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.isPendingRequest = true;
             $scope.eventHndler.isToggleColumns = false;
             $scope.eventHndler.isLoadingChart = true;
+            // apply design mode filters to metric
+            var filterArray = [];
+            var filterStr = "";
+            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
+            if (filterArray.length > 0) {
+                filterStr = filterArray.join( ' And ');
+            }
             $scope.client.getAggData($scope.sourceData.tbl, executeQryData.executeActualField, $scope.limit, $scope.sourceData.id, function(res, status, query) {
                 if (status) {
                     $scope.selectedChart.initObj.trendQuery = query;
@@ -5084,7 +5091,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.eventHndler.isLoadingChart = false;
                     })
                 }
-            },$scope.selectedChart.initObj.groupByField);
+            },$scope.selectedChart.initObj.groupByField,filterStr);
         } else {
             chartServices.applyMetricSettings($scope.selectedChart);
         }

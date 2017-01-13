@@ -16,7 +16,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.uploadedFiles = [];
     $scope.datasource_id = '';
     $scope.selectedFolder = "";
-    $scope.client = $diginengine.getClient("BigQuery");
+    $scope.client = $diginengine.getClient(dbUploadType);
     $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","TIMESTAMP","DATE","TIME","DATETIME"];
 
     //start of page one Folder name configuring

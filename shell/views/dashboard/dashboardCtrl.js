@@ -608,7 +608,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 targetRequest = true;
                 targetSuccess = true;
             }
-            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, undefined, widget.widgetData.commonSrc.src.id, function(res, status, query) {
+            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.actual, undefined, widget.widgetData.commonSrc.src.id, function(res, status, query) {
                 if (status) {
                     metricRequest = true;
                     metricSuccess = true;

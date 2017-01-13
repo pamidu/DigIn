@@ -17,6 +17,9 @@ drb >> dynamically report builder
     display: none!important
 }
 
+fieldset{
+	border: none;
+} 
 
 md-option
 {
@@ -596,7 +599,6 @@ v-pane-content
 
 .digin-gb-b {
     display: block;
-    padding-top: 9px;
     height: 55px;
     width: 100%;
 }

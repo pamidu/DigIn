@@ -1,6 +1,13 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
     Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window,apis_Path, include_Path,onsite,version) {
-
+	
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+	}else{
+		$('md-tabs-wrapper').css('background-color',"white", 'important');
+	}
+	
     if(onsite){
         $scope.tabVisible=false;
         $scope.version=version;

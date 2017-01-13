@@ -115,8 +115,8 @@
         <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 </head>
 <body layout="column" ng-cloak>
-    <div ui-view layout="column" id="mainContainer" style="height: 100%" md-theme="{{$root.theme}}">
-    </div>
+    <md-content style="height: 100%;background:transparent" ui-view layout="column" id="mainContainer" md-theme="{{$root.theme}}">
+    </md-content>
 </body>
 <!--  new changes  -->
 <!-- search end -->

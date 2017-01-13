@@ -778,7 +778,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
                 widObj.widData.summary = data;
                 widObj.syncState = true;
                 cb(widObj);                
-            }, $rootScope.userSettings.query_limit);
+            });
         }
     };
 

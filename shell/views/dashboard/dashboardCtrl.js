@@ -379,7 +379,8 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (widget.widgetData.commonSrc.src.src == "BigQuery") {
                             query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
                         } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
-                            query = "SELECT [" + key.filter.name + "] FROM " + widget.widgetData.commonSrc.src.tbl + " GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
+                            var db = tbl.split(".");
+                            query = "SELECT [" + key.filter.name + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
                         }
                         $scope.client.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status){
                             if (status) {

@@ -658,14 +658,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             chart: {
                             backgroundColor: 'transparent'
                         },
-                        useHighStocks: true,
+                        //useHighStocks: true,
                         xAxis: {
+                            showEmpty: false,
+                            lineWidth: 1,
+                            lineColor: 'black',
                             labels:{
                               enabled:false//default is true
                             },
-                           lineWidth: 1,
                            minorGridLineWidth: 0,
-                           lineColor: 'transparent',
                            minorTickLength: 0,
                            tickLength: 0
                         },
@@ -673,8 +674,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                  enabled: false
                         },
                         yAxis: {
+                            showEmpty: false,
+                            lineWidth: 1,
+                            lineColor: 'black',
                             min: 0,
-                            gridLineWidth: 1,
+                            gridLineWidth: 0,
                             title: {
                               text: ''
                             },
@@ -701,6 +705,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         legend: {
                                     enabled: false
                         }
+                        },
+                        size: {
+                            height: null,
+                            width:null
                         },
                         series: [],
                         title: {
@@ -3662,6 +3670,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 width: 300,
                 height: 220
             };
+            $scope.widget.widgetData.selectedChart.initObj.trendChart.size.height = null;
+            $scope.widget.widgetData.selectedChart.initObj.trendChart.size.width = null;
             $scope.selectedChart.initObj = $scope.widget.widgetData.selectedChart.initObj;
         },
         changeType: function() {
@@ -3790,6 +3800,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             } else {
                 $scope.selectedChart.initObj.notificationConstant = true;
             }
+            $scope.selectedChart.initObj.trendChart.size.height = 300;
+            $scope.selectedChart.initObj.trendChart.size.width = 150;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
             widget.widgetName = "metric";
@@ -3999,47 +4011,46 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
 
-    $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
+    // $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
 
-        if($scope.selectedChart.chartType == "Tabular"){
+    //     if($scope.selectedChart.chartType == "Tabular"){
 
-            if(newValue != oldValue){
+    //         if(newValue != oldValue){
 
-               var addArr = [];
-               var delArr = [];
+    //            var addArr = [];
+    //            var delArr = [];
 
-               if(newValue.length > oldValue.length){
+    //            if(newValue.length > oldValue.length){
 
-                    var Alignment = "left";
-                    var isString = true;
-                    if(newValue[newValue.length-1].dataType == "INTEGER" || newValue[newValue.length-1].dataType == "FLOAT")
-                    {
-                        Alignment = "right";
-                        isString = false;
-                    }
+    //                 var Alignment = "left";
+    //                 var isString = true;
+    //                 if(newValue[newValue.length-1].dataType == "INTEGER" || newValue[newValue.length-1].dataType == "FLOAT")
+    //                 {
+    //                     Alignment = "right";
+    //                     isString = false;
+    //                 }
 
-                    var colObj = {
-                        "Attribute": newValue[newValue.length-1].filedName,
-                        "DislayName": newValue[newValue.length-1].filedName,
-                        "Alignment": Alignment,
-                        "isString" : isString,
-                        "Aggregation":"sum",
-                        "Aggregation_value":0
+    //                 var colObj = {
+    //                     "Attribute": newValue[newValue.length-1].filedName,
+    //                     "DislayName": newValue[newValue.length-1].filedName,
+    //                     "Alignment": Alignment,
+    //                     "isString" : isString,
+    //                     "Aggregation":"sum",
+    //                     "Aggregation_value":0
 
-                    };
+    //                 };
 
-                    $scope.allingArr.push(colObj);
+    //                 $scope.allingArr.push(colObj);
 
-               }
+    //            }
 
                 
-            }
-        }
+    //         }
+    //     }
        
 
 
-    },true);
-
+    // },true);
 
  
 
@@ -4917,11 +4928,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             cat = $scope.executeQryData.executeColumns[0].filedName;
                         }
                     }
-                    angular.forEach($scope.executeQryData.executeMeasures, function(val) {
-                        $scope.executeQryData.executeColumns.push({
-                            filedName: val.filedName
-                        });
-                    });
+                    // angular.forEach($scope.executeQryData.executeMeasures, function(val) {
+                    //     $scope.executeQryData.executeColumns.push({
+                    //         filedName: val.filedName
+                    //     });
+                    // });
                     eval("$scope." + $scope.selectedChart.chartType + ".executeQuery(cat, res, query)");
                 } else {
                     //alert('request failed');

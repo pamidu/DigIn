@@ -865,7 +865,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         "widgetIDs": []
                                     };
                                     //insert the new dashboard in to pouch DB
-                                    pouchDbServices.insertPouchDB(data.Result,null,undefined,false); 
+                                    pouchDbServices.insertPouchDB(data.Result,null,undefined); 
 
                                     var index = 0;
                                     for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {

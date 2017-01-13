@@ -11,8 +11,7 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
 
     var thisService = this;
 
-     this.insertPouchDB = function(dashboardObject,dashboardId,cb,isSave){
-      console.log(isSave);
+     this.insertPouchDB = function(dashboardObject,dashboardId,cb){
           if ( typeof($rootScope.page_id) != "undefined" || $rootScope.page_id != ""){
                 thisService.tempRootscopePageId = $rootScope.page_id;
           }
@@ -29,47 +28,6 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                 var count=0;
                                 var index=0;
                                 var metricArray = [];
-                                if (isSave) {
-                                  //create metric widget array
-                                  angular.forEach(dashboard.pages, function(page){
-                                    angular.forEach(page.widgets,function(widget){
-                                      if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                                        if (widget.widgetData.selectedChart.chartType == "metric") {
-                                          metricObj = {};
-                                          metricObj = {
-                                            notification_id: null,
-                                            actual_value: widget.widgetData.commonSrc.query,
-                                            target_value: widget.widgetData.selectedChart.initObj.notificationValue,
-                                            trigger_type: widget.widgetData.selectedChart.initObj.targetRange,
-                                            is_tv_constant: widget.widgetData.selectedChart.initObj.notificationConstant,
-                                            dashboard_name: dashboard.compName,
-                                            widget_name: widget.widgetName,
-                                            dbname:widget.widgetData.commonSrc.src.src,
-                                            datasource_id:widget.widgetData.commonSrc.src.id,
-                                            widget_id:widget.widgetID
-                                          }
-                                          metricArray.push(metricObj);
-                                        }
-                                      }
-                                    });
-                                  });
-                                  if (metricArray.length > 0) {
-                                    $http({
-                                      method: 'POST',                  
-                                      url: 'http://192.168.0.30:8080/'+'store_notification_details',
-                                      data: angular.fromJson(CircularJSON.stringify(metricArray)),
-                                      headers: {  
-                                        'Content-Type': 'application/json',
-                                        'SecurityToken':userInfo.SecurityToken
-                                      }
-                                    }).success(function(response){
-
-                                    })
-                                    .error(function(error){
-
-                                    })
-                                  }
-                                }
                                 if(dashboard.pages[index].widgets.length == 0)
                                   settoPouch(dashboard,true,cb);
 

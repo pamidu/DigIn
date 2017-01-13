@@ -1825,6 +1825,13 @@
                    		scope.widget.widgetData.highchartsNG.size.height = y-50;
 						scope.widget.widgetData.highchartsNG.size.width = w-10;
                    	}
+
+                   	if (scope.widget.widgetData.commonSrc !== undefined){
+                   		if(scope.widget.widgetData.selectedChart.chartType=="metric"){
+                   			scope.widget.widgetData.selectedChart.initObj.trendChart.size.height = y-50;
+                   			scope.widget.widgetData.selectedChart.initObj.trendChart.size.width = (w/2)-10;
+                   		}
+                   	}
                   					
 					var oldRow = item.row,
 					oldCol = item.col,

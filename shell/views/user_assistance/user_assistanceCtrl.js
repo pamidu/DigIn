@@ -619,9 +619,11 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			}
 		}
 		$scope.attributes = [];
-		$scope.measures = []
+		$scope.measures = [];
+		$scope.selectedFile = {};
 		$scope.selectTable = function(fileOrFolder)
 		{
+			$scope.selectedFile = fileOrFolder;
 			console.log(fileOrFolder.schema);
 			for(var i = 1; i < fileOrFolder.schema.length; i++){
 				if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
@@ -671,6 +673,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		};
 		
 		//$scope.measures = ['LocationID','CompanyID', 'BranchID','DeptID','StoreID','CityID','Country','PeriodID'];
+		$scope.showBarChartLoading = false;
 		$scope.selectAllMeasures= false;
 		$scope.selectedMeasures= [];
 		$scope.selectMeasure = function (item) {
@@ -705,14 +708,6 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		
 		$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 		
-		$scope.series = [
-							{click: false,filedName: 'PO',id:0,type:'integer'},
-							{click: false,filedName: 'QUANTITY',id:0,type:'integer'},
-							{click: false,filedName: 'AMOUNT',id:0,type:'integer'}
-						];
-							
-		$scope.category = [	"CITY","PROVINCE","COUNTRY","ITEM","ITEMGROUP","QUANTITY","AMOUNT"];
-		
 		$scope.selectedSeries = [];
 		$scope.selectedCategory = [];
 		
@@ -722,18 +717,63 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			pushObj.aggType = aggregation;
 			
 			$scope.selectedSeries.push(pushObj);
-			console.log($scope.series[0]);
-			console.log($scope.selectedSeries[0]);
+			if($scope.selectedCategory.length > 0)
+			{
+				getSeriesAndCategories()
+			}
 		}
 		
 		$scope.pushCateory = function(index, item)
 		{
-			console.log(item);
 			$scope.selectedCategory.push(item);
+			if($scope.selectedSeries.length > 0)
+			{
+				getSeriesAndCategories()
+			}
 		}
 		
-		setTimeout(function(){
-			Highcharts.chart('container', {
+		$scope.removeFromSeries = function(index)
+		{
+			$scope.selectedSeries.splice(index, 1);
+		}
+		
+		$scope.removeFromCategory = function(index)
+		{
+			$scope.selectedCategory.splice(index, 1);
+		}
+		
+		
+		function getSeriesAndCategories()
+		{
+			var fieldArr = [];
+			for(var i = 0; i < $scope.selectedSeries.length; i++){
+				fieldArr.push({
+						field: $scope.selectedSeries[i].name,
+						agg: $scope.selectedSeries[i].aggType
+					});
+			}
+
+		$scope.showBarChartLoading = true;
+		$scope.client.getAggData($scope.selectedFile.datasource_name, fieldArr, 100, $scope.selectedFile.datasource_id, function(res, status, query) {
+				if (status) {
+					console.log(res);
+					var categories = [];
+					var series = [];
+					for(var i = 0; i < res.length; i++){
+						categories.push(res[i][$scope.selectedCategory[0].name]);
+						series.push(res[i][$scope.selectedSeries[0].aggType.toLowerCase()+"_"+$scope.selectedSeries[0].name]);
+					}
+					createChart(categories, series);
+				}else{
+					console.log(res);
+				}
+			},[$scope.selectedCategory[0].name]);
+		}
+		
+		function createChart(categories, series)
+		{
+			$scope.showBarChartLoading = false;
+			Highcharts.chart('highchart-container', {
 				  title: {
 					text: 'Sales'
 				  },
@@ -744,14 +784,33 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 					},
 
 				  xAxis: {
-					categories: ['Sep', 'Oct', 'Nov', 'Dec']
+					categories: categories
 				  },
 
 				  series: [{
-					data: [8750.0, 11650.0, 6970.0, 21755.0]
+					data: series
 				  }]
 			});
-		}, 1000);
+		};
 		
+		$scope.createWidgetFinish = function()
+		{
+			//alert("create");
+			$scope.bar.saveWidget($scope.widget);
+		}
+		
+		$scope.saveWidget =  function(widget) {
+
+			$scope.highchartsNG.options.exporting.sourceHeight = 400;
+			$scope.highchartsNG.options.exporting.sourceWidth = 600;
+            
+            widget.widgetData.highchartsNG = $scope.highchartsNG;
+            widget.widgetData.widData['drilled'] = $scope.isDrilled;
+            if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;
+            widget.widgetName = "highcharts";
+            widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+            widget.widgetData.initCtrl = "elasticInit";
+            $scope.saveChart(widget);
+        }
 		
 }])

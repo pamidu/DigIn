@@ -42,7 +42,7 @@
     <meta name="google-signin-client_id"
           content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
     <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/> 
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/> 
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"> 
     <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">

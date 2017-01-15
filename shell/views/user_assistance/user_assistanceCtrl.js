@@ -642,6 +642,8 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		
 		$scope.goToPreviousConnectSourceStep = function()
 		{
+			$scope.attributes = [];
+			$scope.measures = [];
 			--$scope.connectSource_selected;
 		}
 		

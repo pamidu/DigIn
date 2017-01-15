@@ -29,7 +29,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		//Upload Types
 		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
 		
-		$scope.disableFolerName = function(type)
+		$scope.disableFolderName = function(type)
 		{
 			$scope.selectedPath = type;
 			$scope.submitCurrentStep($scope.stepData[0]);
@@ -40,10 +40,10 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.newCollection = false;
 
 		$scope.goto = function() {
-
-				$scope.step1.$setUntouched();
-				$scope.step1.$setPristine();
+				//$scope.step1.$setUntouched();
+				//$scope.step1.$setPristine();
 				$scope.newCollection = !$scope.newCollection;
+				console.log($scope.newCollection);
 			}
 			//end of page one Folder name configuring
 
@@ -173,7 +173,6 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 			// Validation for file name
 			if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
-				console.log($scope.folderName);
 				if ($scope.folderName === undefined) {
 					notifications.toast('0','Folder name should not contain spaces and special characters.');
 					$location.hash('report-top');
@@ -502,76 +501,6 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			$scope.assist_selected = 1;
 		}
 		
-		/*
-		//initialize the forms
-		$scope.upload_step1 = {};
-		$scope.upload_step1.completed = true;
-		$scope.upload_step2 = {};
-		$scope.upload_step2.disabled = true;
-		$scope.upload_step3 = {};
-		
-		
-		//Upload Types
-		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
-		
-		//Submit one in Upload Source
-		$scope.disableFolerName = function(type)
-		{
-			if(type == "File")
-			{
-				$scope.upload_step2.disabled = true;
-			}else{
-				$scope.upload_step2.disabled = false;
-			}
-			$scope.upload_selected = 1;
-			$scope.upload_step1.completed = true;
-		}
-		
-		//start of page one Folder name configuring
-		$scope.currentNavItem = 'page1';
-		$scope.newCollection = false;
-
-		$scope.goto = function() {
-
-			$scope.folderForm.$setUntouched();
-			$scope.folderForm.$setPristine();
-			$scope.newCollection = !$scope.newCollection;
-		}
-		//end of page one Folder name configuring
-		
-		//Submit two in Upload Source
-		$scope.submitFolderStep = function()
-		{
-			$scope.upload_selected = 2;
-			$scope.upload_step2.completed = true;	
-		}
-		
-		//Submit three in Upload Source
-		$scope.submitUploadDetails = function()
-		{
-			$scope.upload_selected = 3;
-			$scope.upload_step3.completed = true;	
-			//$scope.upload_step2.completed = true;	
-		}
-		
-		//Go To Previous Upload Source Step
-		$scope.goToPreviousUploadSourceStep = function()
-		{
-			--$scope.upload_selected;
-		}
-		
-		//Submit four in Upload Source
-		$scope.goToNext = function()
-		{
-			console.log("next");
-			$scope.assist_selected = 1;
-		}
-		*/
-		
-		
-		
-		
-		
 		
 		
 		//Connect Source		
@@ -595,9 +524,11 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			//alert(type);
 			if(type == "Big Query")
 			{
+				$scope.showBusyText = true;
 				$diginengine.getClient("BigQuery").getTables(function(res, status) {
 					
 					if(status) {
+						$scope.showBusyText = false;
 						$scope.connectSource_selected = 1;
 						$scope.connectSource_step1.completed = true;
 						console.log(res);
@@ -644,6 +575,8 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		{
 			$scope.attributes = [];
 			$scope.measures = [];
+			$scope.selectedAttributes = [];
+			$scope.selectedMeasures = [];
 			--$scope.connectSource_selected;
 		}
 		

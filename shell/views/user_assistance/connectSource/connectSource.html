@@ -35,7 +35,7 @@ input
 		<img ng-src="views/user_assistance/connectSource/stats.png" />
 	</div>
 </div>
- <md-steppers ng-init="$parent.connectSource_selected = 0" md-selected="$parent.connectSource_selected" md-stretch-steppers="always">
+ <md-steppers ng-init="$parent.connectSource_selected = 0" md-selected="$parent.connectSource_selected" md-stretch-steppers="always" md-busy-text="'Retrieving your files and folders'" md-busy="showBusyText">
   <md-step label="Connect Source" md-complete="$parent.connectSource_step1.completed" ng-disabled="$parent.connectSource_step1.disabled">
 	<md-content style="padding:20px">
 		<div layout="row" layout-align="center center" layout-wrap>

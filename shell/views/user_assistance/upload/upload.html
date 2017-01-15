@@ -17,7 +17,7 @@ md-steppers-content-wrapper{
   <md-step label="Select Type" md-complete="stepData[0].data.completed" ng-disabled="stepProgress < 1">
 	<md-content style="padding:20px">
 		<div layout="row" layout-align="center center" layout-wrap>
-			<md-card ng-repeat="type in $parent.uploadTypes"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  ng-click="disableFolerName(type.name)"  md-colors="{background:'primary-800'}">
+			<md-card ng-repeat="type in $parent.uploadTypes"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  ng-click="disableFolderName(type.name)"  md-colors="{background:'primary-800'}">
 				<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
 					<span class="product_name" style="border-bottom: 1px solid #white;">Upload {{type.name}}</span>
 				</div>
@@ -41,7 +41,7 @@ md-steppers-content-wrapper{
 				<div flex class="side-margins" style="padding-top: 30px;">
 					<md-input-container class="md-block" flex-gt-sm="90">
 						<span>Folder Name:</span>
-						<input required name="folderName" ng-model="$parent.folderName" ng-disabled="newCollection" aria-label="folder name" ng-pattern='/^\w+$/'>
+						<input required name="folderName" ng-model="$parent.folderName" ng-disabled="$parent.newCollection" aria-label="folder name" ng-pattern='/^\w+$/'>
 						<div ng-messages="step1.folderName.$error">
 							<div ng-message="required">This is required.</div>
 							<div ng-message="pattern">Invalid Folder Name.</div>

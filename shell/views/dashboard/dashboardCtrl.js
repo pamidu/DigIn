@@ -1399,8 +1399,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         $scope.setShowWidgetSettings = function(widget) {
               if(widget.widgetData.selectedChart.chartType == "Tabular"){
                 widget.widgetData.widData.tabularService=tabularService;
-                widget.widgetData.widData.tabularService.tabularNavigate('Next',widget)
-                //widget.widgetData.widData.tabularService.setPagination(widget.widgetData.widData.userList,widget.widgetData.widData);
+                widget.widgetData.widData.tabularService.tabularNavigate('Next',widget,true);
             }
             widget.showWidgetSettings = false;
         }

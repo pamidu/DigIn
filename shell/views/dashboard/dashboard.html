@@ -16,7 +16,7 @@
                         <span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
                         <div layout="row" layout-align="end center" >
 
-                            <md-button class="widget-button" ng-if="showDataView(widget)" ng-click="shareWidget($event,widget)" style="margin-top: 0px;">
+                            <md-button class="widget-button" ng-if="showDataView(widget)" ng-click="shareWidget($event,widget)" style="margin-top: 0px;" ng-show="widget.widgetData.selectedChart.chartType != 'Tabular'">
                                 <i class="ti-sharethis blut-widget-icon"></i>
                                 <md-tooltip >share</md-tooltip>
                             </md-button>

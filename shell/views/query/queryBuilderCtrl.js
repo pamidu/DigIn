@@ -4017,7 +4017,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         },      
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/query/chart-views/Tabular.html";
-            widget.widgetData.TabularData =  $scope.summaryData;
             widget.widgetName = "Tabular";
             $scope.saveChart(widget);
 

@@ -1,4 +1,4 @@
-routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll){
+routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state){
 		$scope.$parent.currentView = "User Assistance";
 		var chartBackgroundColor = "";
 		
@@ -29,7 +29,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		//Upload Types
 		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
 		
-		$scope.disableFolerName = function(type)
+		$scope.disableFolderName = function(type)
 		{
 			$scope.selectedPath = type;
 			$scope.submitCurrentStep($scope.stepData[0]);
@@ -40,10 +40,10 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.newCollection = false;
 
 		$scope.goto = function() {
-
-				$scope.step1.$setUntouched();
-				$scope.step1.$setPristine();
+				//$scope.step1.$setUntouched();
+				//$scope.step1.$setPristine();
 				$scope.newCollection = !$scope.newCollection;
+				console.log($scope.newCollection);
 			}
 			//end of page one Folder name configuring
 
@@ -173,7 +173,6 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 			// Validation for file name
 			if ($scope.selectedPath == "Folder" && uploadFlag == false && $scope.selectedStep == 1) {
-				console.log($scope.folderName);
 				if ($scope.folderName === undefined) {
 					notifications.toast('0','Folder name should not contain spaces and special characters.');
 					$location.hash('report-top');
@@ -502,76 +501,6 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			$scope.assist_selected = 1;
 		}
 		
-		/*
-		//initialize the forms
-		$scope.upload_step1 = {};
-		$scope.upload_step1.completed = true;
-		$scope.upload_step2 = {};
-		$scope.upload_step2.disabled = true;
-		$scope.upload_step3 = {};
-		
-		
-		//Upload Types
-		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
-		
-		//Submit one in Upload Source
-		$scope.disableFolerName = function(type)
-		{
-			if(type == "File")
-			{
-				$scope.upload_step2.disabled = true;
-			}else{
-				$scope.upload_step2.disabled = false;
-			}
-			$scope.upload_selected = 1;
-			$scope.upload_step1.completed = true;
-		}
-		
-		//start of page one Folder name configuring
-		$scope.currentNavItem = 'page1';
-		$scope.newCollection = false;
-
-		$scope.goto = function() {
-
-			$scope.folderForm.$setUntouched();
-			$scope.folderForm.$setPristine();
-			$scope.newCollection = !$scope.newCollection;
-		}
-		//end of page one Folder name configuring
-		
-		//Submit two in Upload Source
-		$scope.submitFolderStep = function()
-		{
-			$scope.upload_selected = 2;
-			$scope.upload_step2.completed = true;	
-		}
-		
-		//Submit three in Upload Source
-		$scope.submitUploadDetails = function()
-		{
-			$scope.upload_selected = 3;
-			$scope.upload_step3.completed = true;	
-			//$scope.upload_step2.completed = true;	
-		}
-		
-		//Go To Previous Upload Source Step
-		$scope.goToPreviousUploadSourceStep = function()
-		{
-			--$scope.upload_selected;
-		}
-		
-		//Submit four in Upload Source
-		$scope.goToNext = function()
-		{
-			console.log("next");
-			$scope.assist_selected = 1;
-		}
-		*/
-		
-		
-		
-		
-		
 		
 		
 		//Connect Source		
@@ -595,9 +524,11 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 			//alert(type);
 			if(type == "Big Query")
 			{
+				$scope.showBusyText = true;
 				$diginengine.getClient("BigQuery").getTables(function(res, status) {
 					
 					if(status) {
+						$scope.showBusyText = false;
 						$scope.connectSource_selected = 1;
 						$scope.connectSource_step1.completed = true;
 						console.log(res);
@@ -642,6 +573,10 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		
 		$scope.goToPreviousConnectSourceStep = function()
 		{
+			$scope.attributes = [];
+			$scope.measures = [];
+			$scope.selectedAttributes = [];
+			$scope.selectedMeasures = [];
 			--$scope.connectSource_selected;
 		}
 		
@@ -769,48 +704,77 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 				}
 			},[$scope.selectedCategory[0].name]);
 		}
-		
+		$scope.highcharts = "";
 		function createChart(categories, series)
 		{
-			$scope.showBarChartLoading = false;
-			Highcharts.chart('highchart-container', {
-				  title: {
-					text: 'Sales'
-				  },
-				  chart: {
-					type: "bar",
-					backgroundColor: chartBackgroundColor
-					
+			$scope.$apply(function() {
+				$scope.showBarChartLoading = false;
+				$scope.highcharts = {
+					options: {
+						  chart: {
+							type: "bar",
+							backgroundColor: chartBackgroundColor
+							
+							}
 					},
-
-				  xAxis: {
-					categories: categories
-				  },
-
-				  series: [{
-					data: series
-				  }]
-			});
+						  xAxis: {
+							categories: categories
+						  },
+					  series: [{
+						data: series
+					  }],
+					title: {
+					text: 'Sales'
+					}
+				};
+			})
 		};
 		
+		var widget = {};
+		widget.widgetData = {};
+		widget.widgetData.widData = {};
 		$scope.createWidgetFinish = function()
 		{
 			//alert("create");
-			$scope.bar.saveWidget($scope.widget);
+			$scope.saveWidget(widget);
 		}
 		
 		$scope.saveWidget =  function(widget) {
 
-			$scope.highchartsNG.options.exporting.sourceHeight = 400;
-			$scope.highchartsNG.options.exporting.sourceWidth = 600;
-            
-            widget.widgetData.highchartsNG = $scope.highchartsNG;
-            widget.widgetData.widData['drilled'] = $scope.isDrilled;
-            if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;
+            widget.widgetData.highchartsNG = $scope.highcharts;
+            widget.widgetData.widData['drilled'] = false;
+            widget.widgetData.widData['drillConf'] = undefined;
             widget.widgetName = "highcharts";
-            widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
+            widget.widgetData.widView = "views/common-data-src/res-views/SimpleHighChart.html";
             widget.widgetData.initCtrl = "elasticInit";
             $scope.saveChart(widget);
         }
+		
+		$scope.saveChart =  function(widget) {
+			var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets;
+
+			if (widget.widgetID == null) { // new widget, so a temp id is assigned
+				widget.widgetID = "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10);
+			}
+			widget.widgetData.highchartsNG["size"] = {
+				width: 313,
+				height: 260
+			};
+			widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
+			widget.widgetData.dataView = "views/ViewData.html";
+			//widget.widgetData.widView = 'views/query/chart-views/highcharts.html'
+			widget.widgetData["selectedChart"] = $scope.selectedChart;
+			widget.sizeX = 6;
+			widget.sizeY = 21;
+			var objIndex = getRootObjectById(widget.widgetID, widgets);
+			if (objIndex == null) { //new widget
+				widgets.push(widget);
+			}
+			setTimeout(function() {
+				$rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+				$state.go('home.Dashboards');
+			}, 1000);
+		}
+		
 		
 }])

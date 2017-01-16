@@ -35,7 +35,7 @@ input
 		<img ng-src="views/user_assistance/connectSource/stats.png" />
 	</div>
 </div>
- <md-steppers ng-init="$parent.connectSource_selected = 0" md-selected="$parent.connectSource_selected" md-stretch-steppers="always">
+ <md-steppers ng-init="$parent.connectSource_selected = 0" md-selected="$parent.connectSource_selected" md-stretch-steppers="always" md-busy-text="'Retrieving your files and folders'" md-busy="showBusyText">
   <md-step label="Connect Source" md-complete="$parent.connectSource_step1.completed" ng-disabled="$parent.connectSource_step1.disabled">
 	<md-content style="padding:20px">
 		<div layout="row" layout-align="center center" layout-wrap>
@@ -61,26 +61,30 @@ input
 			</md-radio-group-->
 			<div layout-gt-sm="row">								
 				<div flex>
-					<h2 style="margin:0">Files</h2>
-					<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-						<md-list-item class="md-3-line" ng-repeat="file in files | filter:searchTables" ng-click="selectTable(file)">
-							<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
-							<div class="md-list-item-text" layout="column" style="padding-left: 20px;">
-								<div layout="row"><h3>{{file.datasource_name}}</h3> <p style="padding-left:20px">({{file.created_datetime}})</p></div>
-							</div>
-						</md-list-item>  
-					</md-list>
+					<fieldset class="fieldset">
+						<legend class="demo-legend">Files </legend>
+						<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+							<md-list-item class="md-3-line" ng-repeat="file in files | filter:searchTables" ng-click="selectTable(file)">
+								<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
+								<div class="md-list-item-text" layout="column" style="padding-left: 20px;">
+									<div layout="row"><h3>{{file.datasource_name}}</h3> <p style="padding-left:20px">({{file.created_datetime}})</p></div>
+								</div>
+							</md-list-item>  
+						</md-list>
+					</fieldset>
 				</div>
 				<div flex>
-					<h2 style="margin:0">Folders</h2>
-					<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-						<md-list-item class="md-3-line" ng-repeat="folder in folders | filter:searchTables" ng-click="selectTable(folder)">
-							<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
-							<div class="md-list-item-text" layout="column" style="padding-left: 20px;">
-								<div layout="row"><h3>{{folder.datasource_name}}</h3> <p style="padding-left:20px">({{folder.created_datetime}})</p></div>
-							</div>
-						</md-list-item>  
-					</md-list>
+					<fieldset class="fieldset">
+						<legend class="demo-legend">Folders </legend>
+						<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+							<md-list-item class="md-3-line" ng-repeat="folder in folders | filter:searchTables" ng-click="selectTable(folder)">
+								<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
+								<div class="md-list-item-text" layout="column" style="padding-left: 20px;">
+									<div layout="row"><h3>{{folder.datasource_name}}</h3> <p style="padding-left:20px">({{folder.created_datetime}})</p></div>
+								</div>
+							</md-list-item>  
+						</md-list>
+					</fieldset>
 				</div>
 			</div>
 			<div flex layout="row" layout-align="space-between center" class="side-margins">

@@ -2875,7 +2875,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     }
                 }
                 var fieldstr = fieldArray.toString();
-                if (database == "BigQuery") {
+                if (database == "BigQuery" || database =="memsql") {
                     var query = $diginurls.diginengine + "generateboxplot?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldstr + "]}]&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
                 } else if (database == "MSSQL") {
                     var db = tbl.split(".");
@@ -3065,7 +3065,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             var database = $scope.sourceData.src;
             var tbl = $scope.sourceData.tbl;
             var id = $scope.sourceData.id;
-            if (database == "BigQuery") {
+            if (database == "BigQuery" || database =="memsql") {
                 var query = $diginurls.diginengine + "generatebubble?&table=[" + $diginurls.getNamespace() + "." + tbl + "]&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "postgresql") {
                 var query = $diginurls.diginengine + "generatebubble?&table=" + tbl + "&&x=" + x + "&&y=" + y + "&&c=" + c + "&&s=" + s + "&dbtype=" + database;
@@ -4019,8 +4019,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
 
-
- 
 
     $scope.start = 0;
     $scope.sort ='';

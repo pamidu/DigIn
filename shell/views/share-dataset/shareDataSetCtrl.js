@@ -1,10 +1,11 @@
 routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications,apis_Path){
 
-  $scope.$parent.currentView = "Data Set Share";
-
+  $scope.$parent.currentView = "Share Dataset";
+	$scope.step1 = {};
     $scope.goToNextStep = function()
     {
         $scope.selected = 1;
+		$scope.step1.completed = true;
     }
  
     $scope.files = [];

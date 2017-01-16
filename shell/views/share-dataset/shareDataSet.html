@@ -1,257 +1,19 @@
 <style>
-
-.widget-header
-{
-	background: white;
-    padding: 0px 10px 0px 10px;
-}
-
-.widget-button
-{
-	color: #02b5e2;
-}
-.widget-button:hover
-{
-	color: #f9a525;
-}
-
-.md-tab.md-disabled
-{
-	opacity: 1;
-	background: white !important;
-	color: black !important;
-}
-
-.md-menu {
-    padding: 0px
-}
-
-/* common styles */
-.padding-5 {
-    padding: 5px;
-}
-
-.padding-10 {
-    padding: 10px;
-}
-
-.margin-bottom-5 {
-    margin-bottom: 5px;
-}
-
-.margin-bottom-2 {
-    margin-bottom: 2px;
-}
-
-/****** start wordpress, twitter, rss widgets custom css *****/
-
-/* common classes*/
-.data-container1 {
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 500;
-    width: 100%;
-    padding-left: 8px;
-    padding-bottom: 8px;
-	font-size: 12px;
-}
-
-.data-slot1 {
-    padding: 8px;
-}
-
-.data-slot2 {
-    text-align: left;
-}
-
-.data-slot3 {
-    border-radius: 5px;
-}
-
-.data-field1 {
-    border-radius: 4px 0px 0px 4px;
-    width: 80%;
-    padding: 8px;
-}
-
-.data-field2 {
-    border-radius: 4px 0px 0px 4px;
-    width: 50%;
-    padding: 8px;
-}
-
-.data-field3 {
-    border-radius: 4px 0px 0px 4px;
-    width: 30%;
-    padding: 8px;
-}
-
-.data-item1 {
-    border-radius: 0px 4px 4px 0px;
-    width: 70%;
-    padding: 8px;
-}
-
-.data-item2 {
-    border-radius: 0px 4px 4px 0px;
-    width: 20%;
-    padding: 8px;
-}
-
-.data-item3 {
-    border-radius: 0px 4px 4px 0px;
-    padding: 8px;
-}
-
-.data-item4 {
-    border-radius: 0px 4px 4px 0px;
-    width: 50%;
-    padding: 8px;
-}
-
-.custom-avatar1 {
-    max-width: 100%;
-    height: auto;
-    border-radius: 50%;
-    box-sizing: content-box;
-}
-
-.custom-avatar2 {
-    max-width: 80%;
-    height: auto;
-    border-radius: 10%;
-    box-sizing: content-box;
-}
-
-.widget-header {
-    font-size: 28px;
-    margin-left: 10px;
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 200;
-}
-
-/* twitter */
-
-.font-twitter-blue {
-    color: #55acee;
-}
-
-.background-twitter-grey {
-    color: white;
-    background-color: #292F33;
-}
-
-.background-twitter-blue {
-    color: white;
-    background-color: #55acee;
-}
-
-.background-digin-blue {
-    color: white;
-    background-color: #026689;
-}
-
-/* wordpress */
-.font-wp-grey {
-    color: #464646;
-}
-
-.background-wp-grey {
-    color: white;
-    background-color: #464646;
-}
-
-.background-wp-orange {
-    color: white;
-    background-color: #d54e21;
-}
-
-.background-wp-blue {
-    color: white;
-    background-color: #21759b;
-}
-
-/* rss */
-.background-rss-orange {
-    color: white;
-    background-color: #f26522;
-}
-
-.background-rss-dark-orange {
-    color: white;
-    background-color: #BB450E;
-}
-
-.background-rss-grey {
-    color: white;
-    background-color: #181818;
-}
-
-/**** end wordpress, twitter, rss widgets custom css *****/
-
-.links
-{
-	text-decoration:none;
-	color: #428bca;
-}
-
-.align-left
-{
-    text-align: left;
-	color: white;
-	font-size:20px;
-	line-height:30px;
-}
-
-.pricePlanCard
- {
-	width: 250px;
-	margin: 20px;
-	margin-top: 0px;
-	outline:none;
-	padding: 0px;
-	margin-top: 10px;
- }
- 
- .paymentCard
- {
-	width:280px;
-	height:170px;
- }
- 
- p{
-	margin: 4px;
- }
- 
- .redExpiryContainer
- {
-	background:#ff5252;
- }
- 
- .greenExpiryContainer
- {
-	background:#4CAF50;
- }
- .smallMdButton
- {
-    line-height: 30px;
-    min-height: 30px;
-  }
   md-steppers-wrapper
   {
 		width: 60%;
 		margin: 0 auto;
   }
   .checkboxdemoSelectAll .demo-legend {
-  color: #3F51B5; }
-.fieldset {
-    border: 1px solid rgb(204, 204, 204);
-    border-radius: 4px
-}
+	color: #3F51B5; 
+  }
+	.fieldset {
+		border: 1px solid rgb(204, 204, 204);
+		border-radius: 4px
+	}
 
 </style>
 
-
-	
 <div class="card-container" layout-padding>
 	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 		<md-content>
@@ -260,7 +22,7 @@
 			</div>
 
 			<div class="setting-card-header">
-				<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Data Set Share</h2>
+				<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Share Dataset</h2>
 				<div class="setting-img-wrap" layout="row" layout-align="center center">
 					<img ng-src="views/share-dataset/sharing.png" />
 				</div>
@@ -327,7 +89,8 @@
 								</md-content>
 								<md-step-actions layout="row">
 									<div flex layout="row" layout-align="end top">
-										 <md-button class="md-raised md-primary" ng-click="goToNextStep()">Next</md-button>
+										 <md-button class="md-raised md-primary" ng-click="goToNextStep()" ng-disabled="(selectedFiles.length == 0 && selectedFolders.length == 0)" >Share</md-button>
+																														
 									</div>
 								</md-step-actions>
 							</md-step-body>
@@ -408,14 +171,12 @@
 
 								</md-content>
 								<md-step-actions layout="row">
-									<div flex layout="row" layout-align="end top">
+									<div flex layout="row" layout-align="space-between center">
 										<md-button class="md-raised md-primary" ng-click="selected = 0">Prev</md-button>
 										<md-button class="md-raised md-primary" ng-click="shareDataSet()">Share</md-button>
 									</div>
 								</md-step-actions>
 							</md-step-body>
-
-					
 						</md-step>
 					</md-steppers>
 			</md-stepper-card-content>

@@ -67,6 +67,7 @@
 	max-width:960px;
 	border-radius: 8px;
 	background: white;
+	padding: 0;
 }
 .layout-whiteframe > md-content {
     width: 100%;

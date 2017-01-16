@@ -53,5 +53,13 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
     }
 
+    this.executeQuery=function(){
+
+    }
+
+    this.getAggregate=function(){
+        
+    }
+
 
 });

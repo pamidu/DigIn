@@ -1,440 +1,188 @@
 <style>
-
-.widget-header
-{
-	background: white;
-    padding: 0px 10px 0px 10px;
-}
-
-.widget-button
-{
-	color: #02b5e2;
-}
-.widget-button:hover
-{
-	color: #f9a525;
-}
-
-.md-tab.md-disabled
-{
-	opacity: 1;
-	background: white !important;
-	color: black !important;
-}
-
-.md-menu {
-    padding: 0px
-}
-
-/* common styles */
-.padding-5 {
-    padding: 5px;
-}
-
-.padding-10 {
-    padding: 10px;
-}
-
-.margin-bottom-5 {
-    margin-bottom: 5px;
-}
-
-.margin-bottom-2 {
-    margin-bottom: 2px;
-}
-
-/****** start wordpress, twitter, rss widgets custom css *****/
-
-/* common classes*/
-.data-container1 {
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 500;
-    width: 100%;
-    padding-left: 8px;
-    padding-bottom: 8px;
-	font-size: 12px;
-}
-
-.data-slot1 {
-    padding: 8px;
-}
-
-.data-slot2 {
-    text-align: left;
-}
-
-.data-slot3 {
-    border-radius: 5px;
-}
-
-.data-field1 {
-    border-radius: 4px 0px 0px 4px;
-    width: 80%;
-    padding: 8px;
-}
-
-.data-field2 {
-    border-radius: 4px 0px 0px 4px;
-    width: 50%;
-    padding: 8px;
-}
-
-.data-field3 {
-    border-radius: 4px 0px 0px 4px;
-    width: 30%;
-    padding: 8px;
-}
-
-.data-item1 {
-    border-radius: 0px 4px 4px 0px;
-    width: 70%;
-    padding: 8px;
-}
-
-.data-item2 {
-    border-radius: 0px 4px 4px 0px;
-    width: 20%;
-    padding: 8px;
-}
-
-.data-item3 {
-    border-radius: 0px 4px 4px 0px;
-    padding: 8px;
-}
-
-.data-item4 {
-    border-radius: 0px 4px 4px 0px;
-    width: 50%;
-    padding: 8px;
-}
-
-.custom-avatar1 {
-    max-width: 100%;
-    height: auto;
-    border-radius: 50%;
-    box-sizing: content-box;
-}
-
-.custom-avatar2 {
-    max-width: 80%;
-    height: auto;
-    border-radius: 10%;
-    box-sizing: content-box;
-}
-
-.widget-header {
-    font-size: 28px;
-    margin-left: 10px;
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 200;
-}
-
-/* twitter */
-
-.font-twitter-blue {
-    color: #55acee;
-}
-
-.background-twitter-grey {
-    color: white;
-    background-color: #292F33;
-}
-
-.background-twitter-blue {
-    color: white;
-    background-color: #55acee;
-}
-
-.background-digin-blue {
-    color: white;
-    background-color: #026689;
-}
-
-/* wordpress */
-.font-wp-grey {
-    color: #464646;
-}
-
-.background-wp-grey {
-    color: white;
-    background-color: #464646;
-}
-
-.background-wp-orange {
-    color: white;
-    background-color: #d54e21;
-}
-
-.background-wp-blue {
-    color: white;
-    background-color: #21759b;
-}
-
-/* rss */
-.background-rss-orange {
-    color: white;
-    background-color: #f26522;
-}
-
-.background-rss-dark-orange {
-    color: white;
-    background-color: #BB450E;
-}
-
-.background-rss-grey {
-    color: white;
-    background-color: #181818;
-}
-
-/**** end wordpress, twitter, rss widgets custom css *****/
-
-.links
-{
-	text-decoration:none;
-	color: #428bca;
-}
-
-.align-left
-{
-    text-align: left;
-	color: white;
-	font-size:20px;
-	line-height:30px;
-}
-
-.pricePlanCard
- {
-	width: 250px;
-	margin: 20px;
-	margin-top: 0px;
-	outline:none;
-	padding: 0px;
-	margin-top: 10px;
- }
- 
- .paymentCard
- {
-	width:280px;
-	height:170px;
- }
- 
- p{
-	margin: 4px;
- }
- 
- .redExpiryContainer
- {
-	background:#ff5252;
- }
- 
- .greenExpiryContainer
- {
-	background:#4CAF50;
- }
- .smallMdButton
- {
-    line-height: 30px;
-    min-height: 30px;
-  }
   md-steppers-wrapper
   {
 		width: 60%;
 		margin: 0 auto;
+  }
+  .checkboxdemoSelectAll .demo-legend {
+	color: #3F51B5; 
+  }
+	.fieldset {
+		border: 1px solid rgb(204, 204, 204);
+		border-radius: 4px
 	}
 
 </style>
 
+<div class="card-container" layout-padding>
+	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+		<md-content>
+			<div layout="row" layout-align="end end">
+				<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="route('back')"></md-button>
+			</div>
 
-	
-		<div class="setup-wrapper animated fadeIn">
-
-					<div class="setting-wrap">
-
-					<md-content>
-
-						<form name="editForm" ng-submit="submit()">
-								<div layout="row" layout-align="end end">
-									<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="route('back')"></md-button>
-								</div>
-									
-								<div class="setting-card-header">
-									<h2>Data Set Share</h2>
-								</div>
-								
-							<md-stepper-card-content class="md-no-padding" style>
-								<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selected" md-stretch-steppers="always">
-									<md-step label="Select Files & Folders" md-complete="step1.completed" ng-disabled="step1.disabled">
-										<md-step-body>
-											<md-content>
-											 <div layout-gt-sm="row" class="md-padding">
-																	
-												<div flex>
-
-													<div layout="row" layout-align="space-between end">
-														<h2 style="margin:0">Files</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;" ng-if="files.length">
-											              <span ng-if="isChecked()" >Un-</span>Select All files 
-											            </md-checkbox>
-													</div>
-
-													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "openFileShareDetails(file,isfile)">
-
-											  
-															<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
-															  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-																<div layout="row"><h3>{{file.datasource_name}}</h3>
-																<p style="padding-left:20px">({{getDate(file.created_datetime)}})</p></div>
-																<h4>{{getUserName(file.created_user)}}</h4>
-																
-															  </div>
-
-															
-															<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)" ng-show="{{!file.shared_by}}"></md-checkbox>
-
-															<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="file.shared_by"/>
-															
-
-														</md-list-item>  
-
-													</md-list>
-
-												</div>
-
-												<div flex>
-													
-
-													<div layout="row" layout-align="space-between end">
-														<h2 style="margin:0">Folders</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style=" margin-right: 30px;"
-														ng-if="files.length">
-											              <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
-											            </md-checkbox>
-													</div>
-
-													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click = "openFileShareDetails(folder,isFolder)">
-
-											  
-														<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-																<div layout="row"><h3>{{folder.datasource_name}}</h3>
-																<p style="padding-left:20px">({{getDate(folder.created_datetime)}})</p></div>
-																<h4>{{getUserName(folder.created_user)}}</h4>
-																
-														</div>
-
-														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)" ng-show="{{!folder.shared_by}}"></md-checkbox>
-
-														<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="folder.shared_by"/>
-
-
-														</md-list-item>  
-													</md-list>
-												</div>
-
-
+			<div class="setting-card-header">
+				<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Share Dataset</h2>
+				<div class="setting-img-wrap" layout="row" layout-align="center center">
+					<img ng-src="views/share-dataset/sharing.png" />
+				</div>
+			</div>
+						
+			<md-stepper-card-content class="md-no-padding" style>
+				<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selected" md-stretch-steppers="always">
+					<md-step label="Select Files & Folders" md-complete="step1.completed" ng-disabled="step1.disabled">
+						<md-step-body>
+							<md-content>
+								 <div layout-gt-sm="row" class="md-padding">				
+									<div flex>
+										<fieldset class="fieldset">
+											<legend class="demo-legend">Files </legend>
+											<div layout="row" layout-align="space-between end">
+												<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin:10px 0px 0px 19px" ng-if="files.length">
+												  <span ng-if="isChecked()" >Un-</span>Select All files 
+												</md-checkbox>
 											</div>
 
-											</md-content>
-											<md-step-actions layout="row">
-												<div flex layout="row" layout-align="end top">
-													 <md-button class="md-raised md-primary" ng-click="goToNextStep()">Next</md-button>
-												</div>
-											</md-step-actions>
-										</md-step-body>
-									</md-step>
-									<md-step label="Users" md-complete="step2.completed" ng-disabled="step2.disabled">
-										<md-step-body>
-											<md-content>
-											 <div layout-gt-sm="row" class="md-padding">
-																	
-												<div flex>
-													 <div layout="row" layout-align="space-between center">
-														 <h2 style="margin:0">Users</h2>
-														 <div layout="row" style="margin-right:42px">
-															<p style="margin-right: 10px;color:#aba8a5">Read</p>
-															<md-divider></md-divider>
-															<p style="padding-left: 5px;color:#aba8a5">Write</p>
-															
-														 </div>
-													 </div>
+											<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+												<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "openFileShareDetails(file,isfile)">
+													<md-checkbox style="z-index: 9999;margin-right: 5px;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)" ng-show="{{!file.shared_by}}"></md-checkbox>
+									  
+													<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
+													  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+														<div layout="row"><h3>{{file.datasource_name}}</h3>
+														<p style="padding-left:20px">({{getDate(file.created_datetime)}})</p></div>
+														<h4>{{getUserName(file.created_user)}}</h4>
+														
+													  </div>
 
-													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='user in users'>
+													<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="file.shared_by"/>
+												</md-list-item>  
+											</md-list>
+										</fieldset>
 
-											  
-														<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-															<div layout="row">
-																	<h3>{{user.Name}}</h3>
-																</div>
-																<h4>{{user.Id}}</h4>
-														  </div>
-														 <div layout="row" style="margin-right:48px">
-															 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(user, selectedUsersRead)" ng-click="toggleUsersRead(user, selectedUsersRead,selectedUsersWrite)"></md-checkbox>
-															 <md-divider></md-divider>
-															 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 20px;" aria-label="write" ng-checked="existsUsersWrite(user, selectedUsersWrite)" ng-click="toggleUsersWrite(user, selectedUsersWrite,selectedUsersRead)"></md-checkbox>
-														 </div>
+									</div>
 
-														</md-list-item>  
-													</md-list>
-
-
-												</div>
-												<div flex>
-													<div layout="row" layout-align="space-between center">
-														 <h2 style="margin:0">Groups</h2>
-														 <div layout="row" style="margin-right:42px">
-															<p style="margin-right: 10px;color:#aba8a5">Read</p>
-															<md-divider></md-divider>
-															<p style="padding-left: 5px;color:#aba8a5">Write</p>
-															
-														 </div>
-													 </div>
-
-													<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='group in groups'ng-click="null">
-
-											  
-														<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
-														  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-															<h3>{{group.Name}}</h3>
-															
-														  </div>
-
-														<div layout="row" style="margin-right:48px">
-															 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(group, selectedGroupRead)" ng-click="toggleUsersRead(group, selectedGroupRead,selectedGroupWrite)"></md-checkbox>
-															 <md-divider></md-divider>
-															 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 20px;" aria-label="write" ng-checked="existsUsersWrite(group, selectedGroupWrite)" ng-click="toggleUsersWrite(group, selectedGroupWrite,selectedGroupRead)"></md-checkbox>
-														 </div>
-
-
-
-														</md-list-item>  
-													</md-list>
-												</div>
-
-
+									<div flex>
+										
+										<fieldset class="fieldset">
+											<legend class="demo-legend">Folders </legend>
+											<div layout="row" layout-align="space-between end">
+												<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style="margin:10px 0px 0px 19px" ng-if="folders.length">
+												  <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
+												</md-checkbox>
 											</div>
+											<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+												<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click = "openFileShareDetails(folder,isFolder)">
+													<md-checkbox style="z-index: 9999;margin-right: 5px;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)" ng-show="{{!folder.shared_by}}"></md-checkbox>
+													<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
+													  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+															<div layout="row"><h3>{{folder.datasource_name}}</h3>
+															<p style="padding-left:20px">({{getDate(folder.created_datetime)}})</p></div>
+															<h4>{{getUserName(folder.created_user)}}</h4>
+													</div>
+													<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="folder.shared_by"/>
+												</md-list-item>  
+											</md-list>
+										</fieldset>
+									</div>
+								</div>
+								</md-content>
+								<md-step-actions layout="row">
+									<div flex layout="row" layout-align="end top">
+										 <md-button class="md-raised md-primary" ng-click="goToNextStep()" ng-disabled="(selectedFiles.length == 0 && selectedFolders.length == 0)" >Share</md-button>
+																														
+									</div>
+								</md-step-actions>
+							</md-step-body>
+						</md-step>
+						<md-step label="Users" md-complete="step2.completed" ng-disabled="step2.disabled">
+							<md-step-body>
+								<md-content>
+								 <div layout-gt-sm="row" class="md-padding">
+														
+									<div flex>
+										 <div layout="row" layout-align="space-between center">
+											 <h2 style="margin:0">Users</h2>
+											 <div layout="row" style="margin-right:42px">
+												<p style="margin-right: 10px;color:#aba8a5">Read</p>
+												<md-divider></md-divider>
+												<p style="padding-left: 5px;color:#aba8a5">Write</p>
+												
+											 </div>
+										 </div>
 
-											</md-content>
-											<md-step-actions layout="row">
-												<div flex layout="row" layout-align="end top">
-													<md-button class="md-raised md-primary" ng-click="selected = 0">Prev</md-button>
-													<md-button class="md-raised md-primary" ng-click="shareDataSet()">Share</md-button>
-												</div>
-											</md-step-actions>
-										</md-step-body>
+										<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+											<md-list-item class="md-3-line" ng-repeat='user in users'>
 
-								
-									</md-step>
-								</md-steppers>
-							</md-stepper-card-content>
-						</form>
-					</md-content>
+								  
+											<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
+											  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+												<div layout="row">
+														<h3>{{user.Name}}</h3>
+													</div>
+													<h4>{{user.Id}}</h4>
+											  </div>
+											 <div layout="row" style="margin-right:48px">
+												 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(user, selectedUsersRead)" ng-click="toggleUsersRead(user, selectedUsersRead,selectedUsersWrite)"></md-checkbox>
+												 <md-divider></md-divider>
+												 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 20px;" aria-label="write" ng-checked="existsUsersWrite(user, selectedUsersWrite)" ng-click="toggleUsersWrite(user, selectedUsersWrite,selectedUsersRead)"></md-checkbox>
+											 </div>
 
-			</div>
-			</div>
+											</md-list-item>  
+										</md-list>
+
+
+									</div>
+									<div flex>
+										<div layout="row" layout-align="space-between center">
+											 <h2 style="margin:0">Groups</h2>
+											 <div layout="row" style="margin-right:42px">
+												<p style="margin-right: 10px;color:#aba8a5">Read</p>
+												<md-divider></md-divider>
+												<p style="padding-left: 5px;color:#aba8a5">Write</p>
+												
+											 </div>
+										 </div>
+
+										<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+											<md-list-item class="md-3-line" ng-repeat='group in groups'ng-click="null">
+
+								  
+											<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
+											  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+												<h3>{{group.Name}}</h3>
+												
+											  </div>
+
+											<div layout="row" style="margin-right:48px">
+												 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(group, selectedGroupRead)" ng-click="toggleUsersRead(group, selectedGroupRead,selectedGroupWrite)"></md-checkbox>
+												 <md-divider></md-divider>
+												 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 20px;" aria-label="write" ng-checked="existsUsersWrite(group, selectedGroupWrite)" ng-click="toggleUsersWrite(group, selectedGroupWrite,selectedGroupRead)"></md-checkbox>
+											 </div>
+
+
+
+											</md-list-item>  
+										</md-list>
+									</div>
+
+
+								</div>
+
+								</md-content>
+								<md-step-actions layout="row">
+									<div flex layout="row" layout-align="space-between center">
+										<md-button class="md-raised md-primary" ng-click="selected = 0">Prev</md-button>
+										<md-button class="md-raised md-primary" ng-click="shareDataSet()">Share</md-button>
+									</div>
+								</md-step-actions>
+							</md-step-body>
+						</md-step>
+					</md-steppers>
+			</md-stepper-card-content>
+		</md-content>
+	</md-whiteframe> 
+</div>
+
 
 

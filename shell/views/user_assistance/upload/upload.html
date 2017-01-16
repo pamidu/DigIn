@@ -6,11 +6,38 @@ md-steppers-content-wrapper{
 ._md-nav-button {
     width: 100% !important;
 }
+div.slide-up {
+  height:60px;
+  overflow:hidden;
+  position: absolute;
+  left: 3%;
+  width: 300px;
+
+}
+div.slide-up p {
+  animation: 4s slide-up;
+  margin-top:0%;
+}
+
+@keyframes slide-up {
+  from {
+    margin-top: 100%;
+    height: 300%; 
+  }
+
+  to {
+    margin-top: 0%;
+    height: 100%;
+  }
+}
 </style>
 <div class="setting-card-header">
 	<h2 md-colors="{color:'{{$root.h1color}}-A700'}" style="margin-top: 45px;">Upload Source</h2>
 	<div class="setting-img-wrap" layout="row" layout-align="center center">
 		<img ng-src="views/user_assistance/upload/magic-wand.png" />
+		<div class="slide-up">
+		<p>Welcome to Digin, This wizard will guild you through the process of uploading a Excel (CSV) </p>
+		</div>
 	</div>
 </div>
  <md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep" md-busy-text="stepData[currentStep].busyText" md-busy="showBusyText">

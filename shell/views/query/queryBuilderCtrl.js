@@ -1074,6 +1074,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 if (!isFoundCnd) {
                     var seriesArr = $scope.executeQryData.executeMeasures;
                     $scope.Tabular.selectAttribute(column.filedName);
+                    $scope.addAtributeToTabular(column);
                     
                 }     
 
@@ -3950,7 +3951,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             },undefined,undefined);
                         }
                     }
-
+                    else{
+                                    $scope.summaryData = data;
+                                    $scope.generateTabular();
+                                    $scope.eventHndler.isLoadingChart = false;
+                    }
 
 
                     //--------------------------
@@ -4069,8 +4074,31 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
     }
 
-    
-    
+        $scope.addAtributeToTabular = function(att){
+
+                        var Alignment = "left";
+                        var isString = true;
+                        if(att.type == "INTEGER" || att.type == "FLOAT")
+                        {
+                            Alignment = "right";
+                            isString = false;
+                        }
+
+                        var colObj = {
+                            "Attribute": att.filedName,
+                            "DislayName": att.filedName,
+                            "Alignment": Alignment,
+                            "isString" : isString,
+                            "Aggregation":"sum",
+                            "Aggregation_value":0
+
+                        };
+
+                        $scope.allingArr.push(colObj);
+
+            
+        }
+        
 
 
      //-------------------------------------------------------------

@@ -1,5 +1,5 @@
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','chartServices', 'layoutManager',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,chartServices, layoutManager) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','chartServices', 'layoutManager','tabularService',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,chartServices, layoutManager,tabularService) {
         
         $rootScope.showSideMenu = layoutManager.hideSideMenu();
         if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
@@ -1397,6 +1397,11 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
 
         $scope.setShowWidgetSettings = function(widget) {
+              if(widget.widgetData.selectedChart.chartType == "Tabular"){
+                widget.widgetData.widData.tabularService=tabularService;
+                widget.widgetData.widData.tabularService.tabularNavigate('Next',widget)
+                //widget.widgetData.widData.tabularService.setPagination(widget.widgetData.widData.userList,widget.widgetData.widData);
+            }
             widget.showWidgetSettings = false;
         }
 

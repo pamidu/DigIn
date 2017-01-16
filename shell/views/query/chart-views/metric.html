@@ -9,14 +9,12 @@
 	<div flex="50" layout="column" layout-align='center start'>
 		<div ng-show="selectedChart.initObj.value">
 			<div flex style="padding:10px;">
-
 				<div layout="column" flex>
 					<text style="font-size:35px;font-weight: 700;letter-spacing: 1px;" ng-if="selectedChart.initObj.scalePosition==='front'">{{selectedChart.initObj.scale}}&nbsp;{{selectedChart.initObj.value}}</text>
 					<text style="font-size:30px;font-weight: 700;letter-spacing: 1px;" ng-if="selectedChart.initObj.scalePosition==='back'">{{selectedChart.initObj.value}}&nbsp;{{selectedChart.initObj.scale}}</text>
 					<text style="font-size:15px">Actual Value</text>
 				</div>
 			</div>
-
 		</div>
 		<div ng-show="selectedChart.initObj.targetValueString">
 			<div flex style="padding:10px;">

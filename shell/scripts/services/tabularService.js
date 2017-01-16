@@ -103,5 +103,13 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         },100,offset);
     }
 
+    this.executeQuery=function(){
+
+    }
+
+    this.getAggregate=function(){
+        
+    }
+
 
 });

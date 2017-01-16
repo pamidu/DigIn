@@ -1,243 +1,6 @@
 <style>
-
-.widget-header
-{
-	background: white;
-    padding: 0px 10px 0px 10px;
-}
-
-.widget-button
-{
-	color: #02b5e2;
-}
-.widget-button:hover
-{
-	color: #f9a525;
-}
-
-.md-tab.md-disabled
-{
-	opacity: 1;
-	background: white !important;
-	color: black !important;
-}
-
-.md-menu {
-    padding: 0px
-}
-
-/* common styles */
-.padding-5 {
-    padding: 5px;
-}
-
-.padding-10 {
-    padding: 10px;
-}
-
-.margin-bottom-5 {
-    margin-bottom: 5px;
-}
-
-.margin-bottom-2 {
-    margin-bottom: 2px;
-}
-
-/****** start wordpress, twitter, rss widgets custom css *****/
-
-/* common classes*/
-.data-container1 {
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 500;
-    width: 100%;
-    padding-left: 8px;
-    padding-bottom: 8px;
-	font-size: 12px;
-}
-
-.data-slot1 {
-    padding: 8px;
-}
-
-.data-slot2 {
-    text-align: left;
-}
-
-.data-slot3 {
-    border-radius: 5px;
-}
-
-.data-field1 {
-    border-radius: 4px 0px 0px 4px;
-    width: 80%;
-    padding: 8px;
-}
-
-.data-field2 {
-    border-radius: 4px 0px 0px 4px;
-    width: 50%;
-    padding: 8px;
-}
-
-.data-field3 {
-    border-radius: 4px 0px 0px 4px;
-    width: 30%;
-    padding: 8px;
-}
-
-.data-item1 {
-    border-radius: 0px 4px 4px 0px;
-    width: 70%;
-    padding: 8px;
-}
-
-.data-item2 {
-    border-radius: 0px 4px 4px 0px;
-    width: 20%;
-    padding: 8px;
-}
-
-.data-item3 {
-    border-radius: 0px 4px 4px 0px;
-    padding: 8px;
-}
-
-.data-item4 {
-    border-radius: 0px 4px 4px 0px;
-    width: 50%;
-    padding: 8px;
-}
-
-.custom-avatar1 {
-    max-width: 100%;
-    height: auto;
-    border-radius: 50%;
-    box-sizing: content-box;
-}
-
-.custom-avatar2 {
-    max-width: 80%;
-    height: auto;
-    border-radius: 10%;
-    box-sizing: content-box;
-}
-
-.widget-header {
-    font-size: 28px;
-    margin-left: 10px;
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 200;
-}
-
-/* twitter */
-
-.font-twitter-blue {
-    color: #55acee;
-}
-
-.background-twitter-grey {
-    color: white;
-    background-color: #292F33;
-}
-
-.background-twitter-blue {
-    color: white;
-    background-color: #55acee;
-}
-
-.background-digin-blue {
-    color: white;
-    background-color: #026689;
-}
-
-/* wordpress */
-.font-wp-grey {
-    color: #464646;
-}
-
-.background-wp-grey {
-    color: white;
-    background-color: #464646;
-}
-
-.background-wp-orange {
-    color: white;
-    background-color: #d54e21;
-}
-
-.background-wp-blue {
-    color: white;
-    background-color: #21759b;
-}
-
-/* rss */
-.background-rss-orange {
-    color: white;
-    background-color: #f26522;
-}
-
-.background-rss-dark-orange {
-    color: white;
-    background-color: #BB450E;
-}
-
-.background-rss-grey {
-    color: white;
-    background-color: #181818;
-}
-
-/**** end wordpress, twitter, rss widgets custom css *****/
-
-.links
-{
-	text-decoration:none;
-	color: #428bca;
-}
-
-.align-left
-{
-    text-align: left;
-	color: white;
-	font-size:20px;
-	line-height:30px;
-}
-
-.pricePlanCard
- {
-	width: 250px;
-	margin: 20px;
-	margin-top: 0px;
-	outline:none;
-	padding: 0px;
-	margin-top: 10px;
- }
- 
- .paymentCard
- {
-	width:280px;
-	height:170px;
- }
- 
- p{
-	margin: 4px;
- }
- 
- .redExpiryContainer
- {
-	background:#ff5252;
- }
- 
- .greenExpiryContainer
- {
-	background:#4CAF50;
- }
- .smallMdButton
- {
-    line-height: 30px;
-    min-height: 30px;
-  }
-  md-steppers-wrapper
-  {
+	md-steppers-wrapper
+	{
 		width: 60%;
 		margin: 0 auto;
 	}
@@ -246,175 +9,170 @@
 
 <footer style="width:100%;right:0px;bottom:0px;position:fixed;">
 	<md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
-	  <md-tab id="tab1" md-on-select="selectPage($index)">
-		<md-tab-label layout="row" layout="space-between center">
-			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>System Settings</span>
-			<span flex></span>
-		</md-tab-label>
-		<md-tab-body>
-		<md-content class="card-container animated fadeIn">
-
-				
-						<div layout="row" layout-align="end end">
-							<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
-						</div>
-
-						<div class="setting-card-header">
-							<h5>System Setting</h5>
-							<div class="setting-img-wrap">
-								<img src="styles/css/images/setting/user_settings.png"/>
-							</div>
-						</div>
-						
-						<div layout="row" layout-align="start start">
-						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Settings</div>
-						</div>
-
-						<form name="frmNewUser" autocomplete="off">
-				
-							
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Cache Lifetime (Sec)</label>
-								<input ng-model="cacheLifetime" type="number" class="form-control" step="1" min="0" flex/>
-							</div>
-							<!--div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Number of Widgets</label>
-								<md-select ng-model="noOfWidget">
-									<md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}
-									</md-option>
-								</md-select>
-							</div-->
-
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Request Limit</label>
-								<md-select ng-model="reqLimit">
-									<md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}
-									</md-option>
-								</md-select>
-							</div>
-
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<md-checkbox ng-model="components">
-									Save Dashboard Automatically
-								</md-checkbox>
-							</div>				
-							
-							<div layout="row" layout-align="center center" style="margin-top:20px;">
-								<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="updateSettings()">
-									Update Settings
-								</button>
-							</div>
-						</form>
-							
-						<div layout="row" layout-align="start start">
-						<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Cache</div>
-						</div>
-						
-						<form name="frmNewUser" autocomplete="off">
-							<div layout="column" flex style="padding: 10px 10px 10px 10px;">
-								<label>Clear Cache</label>
-								<md-select ng-model="clearDetail">
-									<md-select-label>{{ clearDetail.name }}</md-select-label>
-									<md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">
-										{{clearDetail.name}}
-									</md-option>
-								</md-select>
-							</div>
-							<div layout="row" layout-align="center center" style="margin-top:20px;">
-								<button type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-click="clearCache()">
-									Clear Cache
-								</button>
-							</div>
-						</form>
-
-			</md-content>
-		</md-tab-body>
-	  </md-tab>
-	  	  <md-tab label="add page">
-		<md-tab-label layout="row" layout="space-between center">
-			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
-				Data Set Settings
-			</span>
-		</md-tab-label>
+		<md-tab id="tab1" md-on-select="selectPage($index)">
+			<md-tab-label layout="row" layout="space-between center">
+				<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>System Settings</span>
+				<span flex></span>
+			</md-tab-label>
 			<md-tab-body>
-			<div class="setup-wrapper animated fadeIn">
+				<div class="card-container" layout-padding>
+					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+						<md-content>
+					
+							<div layout="row" layout-align="end end">
+								<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}"  aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
+							</div>
 
-						<div class="setting-wrap">
+							<div class="setting-card-header">
+								<h2 md-colors="{color:'{{$root.h1color}}-A700'}">System Settings</h2>
+								<div class="setting-img-wrap" layout="row" layout-align="center center">
+									<img ng-src="views/settings/systemSettings/user_settings.png" />
+								</div>
+							</div>
+							
+							<div layout="row" layout-align="start start">
+								<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Settings</div>
+							</div>
 
+							<form name="frmNewUser" autocomplete="off">
+					
+								<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+									<label>Cache Lifetime (Sec)</label>
+									<input ng-model="cacheLifetime" type="number" class="form-control" step="1" min="0" flex/>
+								</div>
+								<!--div layout="column" flex style="padding: 10px 10px 10px 10px;">
+									<label>Number of Widgets</label>
+									<md-select ng-model="noOfWidget">
+										<md-option ng-value="topping.name" ng-repeat="topping in toppings">{{topping.name}}
+										</md-option>
+									</md-select>
+								</div-->
+
+								<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+									<label>Request Limit</label>
+									<md-select ng-model="reqLimit">
+										<md-option ng-value="request.name" ng-repeat="request in requests">{{request.name}}
+										</md-option>
+									</md-select>
+								</div>
+
+								<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+									<md-checkbox ng-model="components">
+										Save Dashboard Automatically
+									</md-checkbox>
+								</div>				
+								
+								<div layout="row" layout-align="center center" style="margin-top:20px;">
+									<md-button type="button" class="md-raised md-primary"  ng-click="updateSettings()">Update Settings</md-button>
+								</div>
+							</form>
+								
+							<div layout="row" layout-align="start start">
+								<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Cache</div>
+							</div>
+							
+							<form name="frmNewUser" autocomplete="off">
+								<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+									<label>Clear Cache</label>
+									<md-select ng-model="clearDetail">
+										<md-select-label>{{ clearDetail.name }}</md-select-label>
+										<md-option ng-value="clearDetail.name" ng-repeat="clearDetail in clearDetails">
+											{{clearDetail.name}}
+										</md-option>
+									</md-select>
+								</div>
+								<div layout="row" layout-align="center center" style="margin-top:20px;">
+									<md-button type="button" class="md-raised md-primary"  ng-click="clearCache()">Delete</md-button>
+								</div>
+							</form>
+						</md-content>
+					</md-whiteframe>
+				</div>
+			</md-tab-body>
+		</md-tab>
+		<md-tab label="add page">
+			<md-tab-label layout="row" layout="space-between center">
+				<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
+					Data Set Settings
+				</span>
+			</md-tab-label>
+			<md-tab-body>
+				<div class="card-container" layout-padding>
+					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 						<md-content>
 							<div layout="row" layout-align="end end">
 								<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="route('back')"></md-button>
 							</div>
 								
 							<div class="setting-card-header">
-								<h2>Data Set Settings</h2>
+								<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Dataset Settings</h2>
+								<div class="setting-img-wrap" layout="row" layout-align="center center">
+									<img ng-src="views/settings/systemSettings/user_settings.png" />
+								</div>
 							</div>
 
-								<md-content>
-											 <div layout-gt-sm="row" class="md-padding">
-																	
-												<div flex>
-
-													<div layout="row" layout-align="space-between end">
-														<h2 style="margin:0">Files</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 40px;">
-											              <span ng-if="isChecked()">Un-</span>Select All files 
-											            </md-checkbox>
-													</div>
-
-													<md-list ng-cloak flex style="max-height:375px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "null">
-
-											  
-															<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
-															  <div class="md-list-item-text" layout="column" style="padding-left:20px">
-																<div layout="row"><h3>{{file.datasource_name}}</h3>
-																<p style="padding-left:20px">({{getDate(file.created_datetime)}})</p></div>
-																<h4>{{getUserName(file.created_user)}}</h4>
-																
-															  </div>
-
-															
-															<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)"></md-checkbox>
-															<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="file.shared_by"/>
-
-														</md-list-item>  
-													</md-list>
-
-												</div>
-
-												<div flex>
+							
+							<div layout-gt-sm="row" class="md-padding">
 													
+								<div flex>
+									<fieldset class="fieldset">
+										<legend class="demo-legend">Files </legend>
+										<div layout="row" layout-align="space-between end">
+											<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()"  style="margin:10px 0px 0px 19px">
+											  <span ng-if="isChecked()">Un-</span>Select All files 
+											</md-checkbox>
+										</div>
 
-													<div layout="row" layout-align="space-between end">
-														<h2 style="margin:0">Folders</h2>
-														<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style="margin-left: 10px;">
-											              <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
-											            </md-checkbox>
-													</div>
+										<md-list ng-cloak flex style="max-height:375px;overflow:scroll">
+											<md-list-item class="md-3-line" ng-repeat='file in files' ng-click = "null">
 
-													<md-list ng-cloak flex style="max-height:375px;overflow:scroll">
-														<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click="showInsideFolder(folder)">
+												<md-checkbox style="z-index: 9999;margin-right: 5px;" ng-checked="exists(file, selectedFiles)" ng-click="toggle(file, selectedFiles)"></md-checkbox>
+												<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 50px;" alt="{{item.who}}" />
+												  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+													<div layout="row"><h3>{{file.datasource_name}}</h3>
+													<p style="padding-left:20px">({{getDate(file.created_datetime)}})</p></div>
+													<h4>{{getUserName(file.created_user)}}</h4>
+													
+												  </div>
+												<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="file.shared_by"/>
 
-														<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
-														 <div class="md-list-item-text" layout="column" style="padding-left:20px">
-																<div layout="row"><h3>{{folder.datasource_name}}</h3>
-																<p style="padding-left:20px">({{getDate(folder.created_datetime)}})</p></div>
-																<h4>{{getUserName(folder.created_user)}}</h4>
-														</div>
-														<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)"></md-checkbox>
-														<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="folder.shared_by"/>
-														</md-list-item>  
-													</md-list>
+											</md-list-item>  
+										</md-list>
+									</fieldset>
+								</div>
+
+								<div flex>
+									
+									<fieldset class="fieldset">
+										<legend class="demo-legend">Folders </legend>
+										<div layout="row" layout-align="space-between end">
+											<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style="margin:10px 0px 0px 19px">
+											  <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
+											</md-checkbox>
+										</div>
+
+										<md-list ng-cloak flex style="max-height:375px;overflow:scroll">
+											<md-list-item class="md-3-line" ng-repeat='folder in folders'ng-click="showInsideFolder(folder)">
+												<md-checkbox style="z-index: 9999;margin-right: 5px;" ng-checked="existsFolder(folder, selectedFolders)" ng-click="toggleFolder(folder, selectedFolders)"></md-checkbox>
+												<img ng-src="views/settings/systemSettings/folder.png" style="width: 50px;" alt="{{item.who}}" />
+												 <div class="md-list-item-text" layout="column" style="padding-left:20px">
+														<div layout="row"><h3>{{folder.datasource_name}}</h3>
+														<p style="padding-left:20px">({{getDate(folder.created_datetime)}})</p></div>
+														<h4>{{getUserName(folder.created_user)}}</h4>
 												</div>
-											</div>
-								</md-content>
-								<md-button  class="md-raised" style="float: right;"  ng-click="DeleteFilesFolders()">Delete</md-button>
+												<img ng-src="views/settings/systemSettings/sharing.png" style="width: 30px;" alt="{{item.who}}" ng-if="folder.shared_by"/>
+											</md-list-item>  
+										</md-list>
+									</fieldset>
+								</div>
+							</div>
+							
+							<md-button  class="md-raised md-primary" style="float: right;"  ng-click="DeleteFilesFolders()" ng-disabled="(selectedFiles.length == 0 && selectedFolders.length == 0)">Delete</md-button>
+						</md-content>
+					</md-whiteframe>
 				</div>
-				</div>
-
 			</md-tab-body>
-	  </md-tab>
+		</md-tab>
 	</md-tabs>
 
 </footer>

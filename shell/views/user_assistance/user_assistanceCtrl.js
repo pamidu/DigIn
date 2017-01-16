@@ -541,6 +541,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 							}
 						}
 					} else {
+						$scope.showBusyText = false;
 						notifications.toast('0', 'Error occured. Please try again.');
 					}
 				});

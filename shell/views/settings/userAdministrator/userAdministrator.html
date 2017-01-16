@@ -67,8 +67,9 @@
 				</md-button>
 			</div>
 			
-			<div class="setup-wrapper  animated fadeIn">
-				<div class="setting-wrap" style="max-width:960px;margin:0 auto;padding-bottom:10px; margin-top: 20px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
+			<div class="card-container" layout-padding>
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+					<md-content>
 						<div layout="row" layout-align="end end">
 							<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
 						</div>
@@ -136,7 +137,9 @@
 
 					</form>
 
-				<div>
+			
+				</md-content>
+				</md-whiteframe>
 			</div>
 		</md-tab-body>
 	  </md-tab>
@@ -149,12 +152,9 @@
 			</span>
 		</md-tab-label>
 		<md-tab-body>
-		<!--CARD CONTAINER START-->
-			<div class="card-container">
-				<!--WHITEFRAME START-->
-				<div class="setup-wrapper  animated fadeIn">
-					<div class="setting-wrap" style="max-width:960px;margin:0 auto;padding-bottom:10px; margin-top: 20px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
-
+			<div class="card-container" layout-padding>
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+					<md-content>
 						<form name="editForm"  md-theme="default" ng-submit="submit()">
 							<div layout="row" layout-align="end end">
 								<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('welcome')"></md-button>
@@ -206,11 +206,10 @@
 							</div>
 							
 						</form>
-					</div>
-				</div>
-				<!--WHITEFRAME END-->
+		
+					</md-content>
+				</md-whiteframe>
 			</div>
-			<!--CARD CONTAINER END-->
 		</md-tab-body>
 	  </md-tab>
 

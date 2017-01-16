@@ -3842,21 +3842,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.eventHndler.isLoadingChart = true;
             $scope.fieldArray = [];
             $scope.fieldArrayMSSQL = [];
-            //var fieldArrayLength = $scope.sourceData.fAttArr.length;
+
             var fieldArrayLength = $scope.executeQryData.executeColumns.length;
                 $scope.chartState = true;
-                //for (var i = 0; i < $scope.sourceData.fMeaArr.length; i++) {
-                //    $scope.fieldArray.push($scope.sourceData.fMeaArr[i].name);
-                //}
-                //for (var i = 0; i < $scope.sourceData.fAttArr.length; i++) {
-                //    $scope.fieldArray.push($scope.sourceData.fAttArr[i].name);
-                //}
-
                 for (var i = 0; i < $scope.executeQryData.executeColumns.length; i++) {
                     $scope.fieldArray.push($scope.executeQryData.executeColumns[i].filedName);
                     $scope.fieldArrayMSSQL.push('['+$scope.executeQryData.executeColumns[i].filedName+']');
                 }
-
 
                 $scope.widget.widgetData.widData.tabularConfig.defSortFeild=$scope.executeQryData.executeColumns[0].filedName;
 
@@ -3881,26 +3873,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     if (db == "BigQuery") {
                         var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
                     } else {
-                        $scope.widget.widgetData.widData.tabularConfig.defSortFeild='['+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+']';
-                        $scope.sourceData.tbl ='['+$scope.sourceData.tbl +']';
-                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " + $scope.sourceData.tbl.split(".")[0]+ "].["+$scope.sourceData.tbl.split(".")[1] + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
+                        var defSortFeild='['+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+']';
+                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " +"["+ $scope.sourceData.tbl.split(".")[0]+ "].["+$scope.sourceData.tbl.split(".")[1] +"]"+ " ORDER BY "+defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
                     }
                 }
                 else{
                     if (db == "BigQuery") {
                         var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
                     } else {
-                        $scope.sourceData.tbl.split(".")[0].
-                        $scope.orderByColumnName='['+$scope.orderByColumnName+']';
-                        $scope.sourceData.tbl ='['+$scope.sourceData.tbl +']';
-                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " + $scope.sourceData.tbl.split(".")[0] +"].["+ $scope.sourceData.tbl.split(".")[1] + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
+                        var orderByColumnName='['+$scope.orderByColumnName+']';
+                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " + "["+ $scope.sourceData.tbl.split(".")[0] +"].["+ $scope.sourceData.tbl.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+$scope.OrderType;
                     }
                 }
 
-                console.log("query", query);
+                //console.log("query", query);
                 $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
 
-                    //to get aggregations
+                    //#to get aggregations
                     if($scope.widget.widgetData.widData.tabularConfig.totForNumeric == "true" ){
 
                         if($scope.widget.widgetData.widData.tabularConfig.AllingArr.length > 0){

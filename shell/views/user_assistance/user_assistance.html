@@ -1,7 +1,13 @@
-<!--CARD CONTAINER START-->
+<style>
+#mainStepper > md-steppers-wrapper > md-steppers-canvas > md-pagination-wrapper > md-step-item > md-step-label-wrapper > span{
+	font-size: 16px;
+    font-weight: 700;
+}
 
+</style>
+<!--CARD CONTAINER START-->
 <div class="setting-container">
-	 <md-steppers md-dynamic-height ng-init="assist_selected = 0" md-selected="assist_selected" md-stretch-steppers="always">
+	 <md-steppers id="mainStepper" md-dynamic-height ng-init="assist_selected = 0" md-selected="assist_selected" md-stretch-steppers="always">
 	  <md-step label="Upload Source" md-complete="assist_step1.completed" ng-disabled="assist_step1.disabled">
 		<md-content>
 		  <div ng-include="'views/user_assistance/upload/upload.html'"></div>

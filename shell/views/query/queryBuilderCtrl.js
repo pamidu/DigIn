@@ -3224,7 +3224,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }                
             }
 
-            if (database == "BigQuery") {
+            if (database == "BigQuery" || database == "memsql") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
                 var db = tbl.split(".");
@@ -3800,7 +3800,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             } else {
                 $scope.selectedChart.initObj.notificationConstant = true;
             }
-            $scope.selectedChart.initObj.trendChart.size.height = 300;
+            $scope.selectedChart.initObj.trendChart.size.height = 250;
             $scope.selectedChart.initObj.trendChart.size.width = 150;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";
@@ -4013,6 +4013,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/query/chart-views/Tabular.html";
             widget.widgetData.TabularData =  $scope.summaryData;
+            widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "Tabular";
             $scope.saveChart(widget);
 

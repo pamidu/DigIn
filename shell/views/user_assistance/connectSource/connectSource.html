@@ -32,7 +32,18 @@ input
 <div class="setting-card-header">
 	<h2 md-colors="{color:'{{$root.h1color}}-A700'}" style="margin-top: 45px;">Connect Source</h2>
 	<div class="setting-img-wrap" layout="row" layout-align="center center">
-		<img ng-src="views/user_assistance/connectSource/stats.png" />
+		<div style="height:120px">
+			<img hide-sm hide-xs ng-src="views/user_assistance/connectSource/stats.png" />
+		</div>
+		<div class="slide-up" ng-show="$parent.connectSource_selected == 0">
+			<p>Select the source you uploaded the excel file.</p>
+		</div>
+		<div class="slide-up" ng-show="$parent.connectSource_selected == 1">
+			<p>Please choose your file or folder</p>
+		</div>
+		<div class="slide-up" ng-show="$parent.connectSource_selected == 2">
+			<p>Select the attributes and measures, This will help you to create your first bar-chart.</p>
+		</div>
 	</div>
 </div>
  <md-steppers ng-init="$parent.connectSource_selected = 0" md-selected="$parent.connectSource_selected" md-stretch-steppers="always" md-busy-text="'Retrieving your files and folders'" md-busy="showBusyText">

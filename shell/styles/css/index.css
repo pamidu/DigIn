@@ -73,3 +73,11 @@
     width: 100%;
     border-radius: 8px;
 }
+
+.checkboxdemoSelectAll .demo-legend {
+	color: #3F51B5; 
+}
+.fieldset {
+	border: 1px solid rgb(204, 204, 204);
+	border-radius: 4px
+}

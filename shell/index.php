@@ -54,6 +54,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/css/index.css">
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
+	<link rel="stylesheet" type="text/css" href="styles/css/layout.css">
     <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">
     <!-- nv.d3.css commented for testing pursoses -->
     <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->
@@ -286,12 +287,10 @@
 <script type="text/javascript" src="scripts/controllers/widgetCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/CommonDataSrcCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
-<script type="text/javascript" src="scripts/controllers/sharedashboardgroupsCtrl.js"></script>
 
 
 <!-- Material Icons -->
-<script type="text/javascript"
-        src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
 <script type="text/javascript" src="scripts/vendor/layout.js"></script>
 <!-- svg to canvas -->
 <script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
@@ -330,7 +329,15 @@
 <script src="views/settings/datasourceSettings/datasourceSettingsCtrl.js"></script>
 <script src="views/settings/datasourceSettings/datasourceFactory.js"></script>
 
-<script src="views/share-dataset/showFileShareDetailsCtrl.js"></script>
+<!-- ShareDashboard settings -->
+<script type="text/javascript" src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
+
+<!-- ShareDashboard settings -->
+<script type="text/javascript" src="views/settings/datasetShare/datasetShareCtrl.js"></script>
+
+<!-- Switch Tenant -->
+<script type="text/javascript" src="views/settings/switchTenant/switchTenantCtrl.js"></script>
+
 <script src="views/share-dataset/shareDataSetCtrl.js"></script>
 <script src="scripts/charts/d3Force.js"></script>  
 <script src="scripts/charts/sunBurst.js"></script> 

@@ -410,7 +410,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
     }).state('home.sharedashboard', {
         url: '/sharedashboard',
         controller: 'sharedashboardgroupsCtrl',
-        templateUrl: "views/sharedashboard.html",
+        templateUrl: "views/settings/dashboardShare/sharedashboard.html",
         data: {
             requireLogin: true
         }
@@ -434,10 +434,10 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             requireLogin: true
             }
     })
-    .state('home.shareDataset', {
-        url: '/shareDataset',
-        controller: 'shareDataSetCtrl',
-        templateUrl: "views/share-dataset/shareDataSet.html"
+    .state('home.datasetShare', {
+        url: '/datasetShare',
+        controller: 'datasetShareCtrl',
+        templateUrl: "views/settings/datasetShare/datasetShare.html"
     });
     
 

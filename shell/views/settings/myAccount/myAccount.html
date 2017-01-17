@@ -1,186 +1,4 @@
 <style>
-.widget-header {
-    background: white;
-    padding: 0px 10px 0px 10px;
-}
-
-.widget-button {
-    color: #02b5e2;
-}
-
-.widget-button:hover {
-    color: #f9a525;
-}
-
-.md-tab.md-disabled {
-    opacity: 1;
-    background: white !important;
-    color: black !important;
-}
-
-.md-menu {
-    padding: 0px
-}
-/* common styles */
-
-.padding-5 {
-    padding: 5px;
-}
-
-.padding-10 {
-    padding: 10px;
-}
-
-.margin-bottom-5 {
-    margin-bottom: 5px;
-}
-
-.margin-bottom-2 {
-    margin-bottom: 2px;
-}
-/****** start wordpress, twitter, rss widgets custom css *****/
-/* common classes*/
-
-.data-container1 {
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 500;
-    width: 100%;
-    padding-left: 8px;
-    padding-bottom: 8px;
-    font-size: 12px;
-}
-
-.data-slot1 {
-    padding: 8px;
-}
-
-.data-slot2 {
-    text-align: left;
-}
-
-.data-slot3 {
-    border-radius: 5px;
-}
-
-.data-field1 {
-    border-radius: 4px 0px 0px 4px;
-    width: 80%;
-    padding: 8px;
-}
-
-.data-field2 {
-    border-radius: 4px 0px 0px 4px;
-    width: 50%;
-    padding: 8px;
-}
-
-.data-field3 {
-    border-radius: 4px 0px 0px 4px;
-    width: 30%;
-    padding: 8px;
-}
-
-.data-item1 {
-    border-radius: 0px 4px 4px 0px;
-    width: 70%;
-    padding: 8px;
-}
-
-.data-item2 {
-    border-radius: 0px 4px 4px 0px;
-    width: 20%;
-    padding: 8px;
-}
-
-.data-item3 {
-    border-radius: 0px 4px 4px 0px;
-    padding: 8px;
-}
-
-.data-item4 {
-    border-radius: 0px 4px 4px 0px;
-    width: 50%;
-    padding: 8px;
-}
-
-.custom-avatar1 {
-    max-width: 100%;
-    height: auto;
-    border-radius: 50%;
-    box-sizing: content-box;
-}
-
-.custom-avatar2 {
-    max-width: 80%;
-    height: auto;
-    border-radius: 10%;
-    box-sizing: content-box;
-}
-
-.widget-header {
-    font-size: 28px;
-    margin-left: 10px;
-    font-family: 'Ek Mukta', sans-serif;
-    font-weight: 200;
-}
-/* twitter */
-
-.font-twitter-blue {
-    color: #55acee;
-}
-
-.background-twitter-grey {
-    color: white;
-    background-color: #292F33;
-}
-
-.background-twitter-blue {
-    color: white;
-    background-color: #55acee;
-}
-
-.background-digin-blue {
-    color: white;
-    background-color: #026689;
-}
-/* wordpress */
-
-.font-wp-grey {
-    color: #464646;
-}
-
-.background-wp-grey {
-    color: white;
-    background-color: #464646;
-}
-
-.background-wp-orange {
-    color: white;
-    background-color: #d54e21;
-}
-
-.background-wp-blue {
-    color: white;
-    background-color: #21759b;
-}
-/* rss */
-
-.background-rss-orange {
-    color: white;
-    background-color: #f26522;
-}
-
-.background-rss-dark-orange {
-    color: white;
-    background-color: #BB450E;
-}
-
-.background-rss-grey {
-    color: white;
-    background-color: #181818;
-}
-/**** end wordpress, twitter, rss widgets custom css *****/
-
 .links {
     text-decoration: none;
     color: #428bca;
@@ -339,146 +157,151 @@ p {
                 <span flex></span>
             </md-tab-label>
             <md-tab-body>
-                <div class="card-container card-top" layout-padding init="intProfile()">
-                    <div class="setting-wrap" style="max-width:960px;margin:0 auto;padding-bottom:10px; box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)">
-                        <div layout="row" layout-align="end end">
-                            <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="closeWindow()"></md-button>
-                        </div>
-                        <div ng-show="selectImage" align="center">
-                            <!-- selectImage-->
-                            <div>
-                                <input type="file" id="fileInput" custom-on-change="handleFileSelect" />
-                            </div>
-                            <div class="cropArea" align="center">
-                                <img-crop class="cropArea" image="myImage" result-image="myCroppedImage" area-type="circle">
-                                </img-crop>
-                            </div>
-                            <br>
-                            <div>Cropped Image:</div>
-                            <div align="center">
-                                <!-- <img ng-src="{{myCroppedImage}}"/> -->
-                                <img ng-src="{{myCroppedImage}}" class="img-circle">
-                            </div>
-                            <md-button class="setup-button md-raised md-primary" ng-click="cancelImage()">
-                                <span class="setup-font-theme">Cancel</span>
-                            </md-button>
-                            <md-button class="setup-button md-raised md-primary" ng-click="saveImage()">
-                                <span class="setup-font-theme">Save Image</span>
-                            </md-button>
-                        </div>
-                        <!-- ------------ -->
-                        <div ng-show="selectProfile">
-                            <div class="setting-card-header">
-                                <h5>Profile Settings</h5>
-                                <div class="setting-img-wrap">
-                                    <!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
-             -->
-                                    <img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()" ng-disabled="editModeOn">
-                                    <!-- <div ng-show="selectProfile">  
-                                        <div align="center">
-                                            <img ng-src="{{profile_pic}}" class="img-circle">
-                                        </div>
-                                    </div>     -->
-                                    <md-tooltip md-direction="bottom">
-                                        <md-tooltip md-direction="bottom">
-                                            Upload Profile Picture
-                                        </md-tooltip>
-                                        </img>
-                                </div>
-                            </div>
-                            <form name="frmProfile" autocomplete="off" ng-submit="profile.changeUserProfile()">
-                                <div layout="row" layout-align="start start">
-                                    <div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Public Details</div>
-                                </div>
-                                <div layout="row" style="padding:0px 10px 0px 10px">
-                                    <div flex>
-                                        <label>Name</label>
-                                        <!--id="txtName" -->
-                                        <input type="text" class="form-control" ng-model="name" name="txtName" ng-disabled="editModeOn" ng-pattern="/^[a-zA-Z0-9]/" ng-required="true">
-                                        <div ng-messages="frmProfile.txtName.$error" role="alert">
-                                            <div ng-message="required" style="color:red">
-                                                User name is required.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div flex style="padding-left: 5px;">
-                                        <label>Company </label>
-                                        <input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-trim="false" readonly>
-<!--                                         <div ng-messages="frmProfile.txtCompany.$error" role="alert">
-                                            <div ng-message="required" style="color:red">
-                                                Company name is required.
-                                            </div>
-                                        </div> -->
-                                    </div>
-                                </div>
-                                <div layout="row" style="padding:0px 10px 0px 10px">
-                                    <div flex="60">
-                                        <label>Email </label>
-                                        <input type="text" id="txtEmail" ng-model="user.email" ng-disabled="editModeOn" class="form-control" readonly>
-                                    </div>
-                                    <div flex="40" style="padding-left: 5px;">
-                                        <label>Contact No </label>
-                                        <input type="text" id="txtContactNo" name="txtContactNo" ng-model="user.contactNo" ng-disabled="editModeOn" class="form-control" valid-number  ng-trim="true">
-                                        <!--div ng-messages="frmProfile.txtContactNo.$error" role="alert">
-                                            <div ng-message="required" style="color:red">
-                                                Contact number is required.
-                                            </div>
-                                        </div-->                            
-                                    </div>
-                                </div>
-                                <!-- address details -->
-                                <!--div layout="row" style="padding:0px 10px 0px 10px">
-                                    <div flex="40">
-                                        <label>Billing Address </label>
-                                        <input type="text"
-                                               id="txtStreet"
-                                               ng-model="user.street"
-                                               ng-disabled="editModeOn"
-                                               class="form-control">
-                                    </div>
-                                    
-                                
-                                    <div flex="40" style="padding-left: 5px;">
-                                        <label>Country</label>
-                                            <md-select ng-model="user.country" style="border: 1px solid #d0d0d0;height: 40px;"  ng-disabled="editModeOn">
-                                                 <md-option ng-value="Country.name" ng-repeat="Country in allCountries" ng-selected="{{ Country.name === user.country ? 'true' : 'false' }}">
-                                                    {{Country.name}}
-                                                 </md-option>
-                                            </md-select>
-                                    </div>
-                                        
-                                    <div flex="20" style="padding-left: 5px;">
-                                        <label>ZIP Code</label>
-                                        <input type="text"
-                                               id="txtZip"
-                                               ng-model="user.zip"
-                                               ng-disabled="editModeOn"
-                                               class="form-control">
-                                    </div>
-                                </div-->
-                                <div layout="row" layout-align="center center">
-                                    <div ng-click="profile.clickEdit()" type="button" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-if="editModeOn == true">
-                                        Edit Profile
-                                    </div>
-                                    <button type="submit" class="blut-edit-btn" style="margin:10px 10px 10px 10px" ng-if="editModeOn == false">
-                                        Save Changes
-                                    </button>
-                                </div>
-                            </form>
-                            <form name="frmNewUser" autocomplete="off">
-                                <div layout="row" layout-align="start start">
-                                    <div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Security</div>
-                                </div>
-                                <div layout="row" layout-align="start start" style="margin:10px;">
-                                    <button type="button" class="btn btn-default" ng-click="profile.changePassword($event)">
-                                        Change Password
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- end -->
+				<div class="card-container" init="intProfile()">
+					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+						<md-content>
+							<div layout="row" layout-align="end end">
+								<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="closeWindow()"></md-button>
+							</div>
+							<div ng-show="selectImage" align="center">
+								<!-- selectImage-->
+								<div>
+									<input type="file" id="fileInput" custom-on-change="handleFileSelect" />
+								</div>
+								<div class="cropArea" align="center">
+									<img-crop class="cropArea" image="myImage" result-image="myCroppedImage" area-type="circle">
+									</img-crop>
+								</div>
+								<br>
+								<div>Cropped Image:</div>
+								<div align="center">
+									<!-- <img ng-src="{{myCroppedImage}}"/> -->
+									<img ng-src="{{myCroppedImage}}" class="img-circle">
+								</div>
+								<md-button class="setup-button md-raised md-primary" ng-click="cancelImage()">
+									<span class="setup-font-theme">Cancel</span>
+								</md-button>
+								<md-button class="setup-button md-raised md-primary" ng-click="saveImage()">
+									<span class="setup-font-theme">Save Image</span>
+								</md-button>
+							</div>
+							<!-- ------------ -->
+							<div ng-show="selectProfile">
+								<div class="setting-card-header">
+									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">User Profile</h2>
+									<div class="setting-img-wrap">
+										<!-- <img src="styles/css/images/signup-user.png" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()">
+				 -->
+										<img src="{{profile_pic}}" class="img-circle" style="cursor:pointer;    width: 150px;outline:none;" ng-click="profile.uploadProfilePicture()" ng-disabled="editModeOn">
+										<!-- <div ng-show="selectProfile">  
+											<div align="center">
+												<img ng-src="{{profile_pic}}" class="img-circle">
+											</div>
+										</div>     -->
+										<md-tooltip md-direction="bottom">
+											<md-tooltip md-direction="bottom">
+												Upload Profile Picture
+											</md-tooltip>
+											</img>
+									</div>
+								</div>
+								<form name="frmProfile" autocomplete="off" ng-submit="profile.changeUserProfile()">
+									<!--div layout="row" layout-align="start start">
+										<div style="padding:10px;background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">Public Details</div>
+									</div-->
+									<div layout="row" layout-align="start start">
+										<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Profile details</div>
+									</div>
+									<div layout="row" style="padding:0px 10px 0px 10px">
+										<div flex>
+											<label>Name</label>
+											<!--id="txtName" -->
+											<input type="text" class="form-control" ng-model="name" name="txtName" ng-disabled="editModeOn" ng-pattern="/^[a-zA-Z0-9]/" ng-required="true">
+											<div ng-messages="frmProfile.txtName.$error" role="alert">
+												<div ng-message="required" style="color:red">
+													User name is required.
+												</div>
+											</div>
+										</div>
+										<div flex style="padding-left: 5px;">
+											<label>Company </label>
+											<input type="text" id="txtCompany" name="txtCompany" ng-model="company" ng-disabled="editModeOn" class="form-control" ng-pattern="/^[a-zA-Z0-9]/" ng-trim="false" readonly>
+	<!--                                         <div ng-messages="frmProfile.txtCompany.$error" role="alert">
+												<div ng-message="required" style="color:red">
+													Company name is required.
+												</div>
+											</div> -->
+										</div>
+									</div>
+									<div layout="row" style="padding:0px 10px 0px 10px">
+										<div flex="60">
+											<label>Email </label>
+											<input type="text" id="txtEmail" ng-model="user.email" ng-disabled="editModeOn" class="form-control" readonly>
+										</div>
+										<div flex="40" style="padding-left: 5px;">
+											<label>Contact No </label>
+											<input type="text" id="txtContactNo" name="txtContactNo" ng-model="user.contactNo" ng-disabled="editModeOn" class="form-control" valid-number  ng-trim="true">
+											<!--div ng-messages="frmProfile.txtContactNo.$error" role="alert">
+												<div ng-message="required" style="color:red">
+													Contact number is required.
+												</div>
+											</div-->                            
+										</div>
+									</div>
+									<!-- address details -->
+									<!--div layout="row" style="padding:0px 10px 0px 10px">
+										<div flex="40">
+											<label>Billing Address </label>
+											<input type="text"
+												   id="txtStreet"
+												   ng-model="user.street"
+												   ng-disabled="editModeOn"
+												   class="form-control">
+										</div>
+										
+									
+										<div flex="40" style="padding-left: 5px;">
+											<label>Country</label>
+												<md-select ng-model="user.country" style="border: 1px solid #d0d0d0;height: 40px;"  ng-disabled="editModeOn">
+													 <md-option ng-value="Country.name" ng-repeat="Country in allCountries" ng-selected="{{ Country.name === user.country ? 'true' : 'false' }}">
+														{{Country.name}}
+													 </md-option>
+												</md-select>
+										</div>
+											
+										<div flex="20" style="padding-left: 5px;">
+											<label>ZIP Code</label>
+											<input type="text"
+												   id="txtZip"
+												   ng-model="user.zip"
+												   ng-disabled="editModeOn"
+												   class="form-control">
+										</div>
+									</div-->
+									<div layout="row" layout-align="center center">
+										<md-button class="md-raised md-primary" style="width:100px;" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == true">
+											<span style="text-transform:none">Edit Profile</span>
+										</md-button>
+										<md-button class="md-raised md-primary" style="width:100px;" type="submit" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
+											<span style="text-transform:none">Save Changes</span>
+										</md-button>
+									</div>
+								</form>
+								<form name="frmNewUser" autocomplete="off">
+									<div layout="row" layout-align="start start">
+										<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Security</div>
+									</div>
+									<div layout="row" layout-align="start start" layout-margin >
+										<md-button class="md-raised" ng-disabled="submitted" type="button" ng-click="profile.changePassword($event)">
+											<i class="ti-lock"></i><span style="padding-left:10px;text-transform:none">Change Password</span>
+										</md-button>
+									</div>
+								</form>
+							</div>
+						</md-content>
+                  </md-whiteframe> 
+				</div>
             </md-tab-body>
         </md-tab>
 

@@ -1,6 +1,7 @@
 routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDialog, notifications, profile, $http, Upload,
     Digin_Domain, Digin_Tenant, $location, Digin_Engine_API, $apps, ProfileService, paymentGateway, paymentGatewaySvc, $stateParams,userAdminFactory,$timeout,pouchDB,$window,apis_Path, include_Path,onsite,version) {
 	
+	$scope.$parent.currentView = "Settings";
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
 		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
@@ -17,8 +18,6 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     }
 
     var vm = this;
-
-    $scope.$parent.currentView = "Settings";
     vm.selectedPage = $stateParams.pageNo;
     console.log(vm.selectedPage);
     

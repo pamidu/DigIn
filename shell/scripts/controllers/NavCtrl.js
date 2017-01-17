@@ -1047,6 +1047,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             $mdDialog.hide();
                         })
                         .error(function (error) {
+							$scope.componentsLoaded = true;
 
                             ngToast.create({
                                 className: 'success',
@@ -1055,6 +1056,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 verticalPosition: 'top',
                                 dismissOnClick: true
                             });
+					
                             //fetch all saved dashboards from pouchdb
                             var db = $rootScope.db;
                             db.allDocs({
@@ -1425,8 +1427,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             case "switch tenant": 
                     $mdDialog.show({
-                      controller: "tenantCtrl",
-                      templateUrl: 'views/settings/switchTenant.html',
+                      controller: "switchTenantCtrl",
+                      templateUrl: 'views/settings/switchTenant/switchTenant.html',
                       parent: angular.element(document.body),
                       targetEvent: ev,
                       clickOutsideToClose:false
@@ -1913,7 +1915,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     element: '#socialMedia',
                     intro: 'Dig deep in to your social media pages',
                     position: 'right'
-                }, {
+                },
+				{
+                    element: '#shareSocial',
+                    intro: 'Share your Dashboards on Social Media',
+                    position: 'right'
+                },{
                     element: '#settings',
                     intro: 'Configure the settings related to the system and users',
                     position: 'right'
@@ -1929,6 +1936,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, {
                     element: '#save',
                     intro: 'Save the Dashboard'
+                }, {
+                    element: '#share',
+                    intro: 'Share your dashboard or datasets'
                 }, {
                     element: '#notifications',
                     intro: 'Checkout the latest notifications here'
@@ -2085,41 +2095,3 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
 
  }]);
-
- routerApp.controller('tenantCtrl',['$scope','$mdDialog','$http','Digin_Tenant','auth_Path', function ($scope,$mdDialog,$http,Digin_Tenant,auth_Path) {
-
-    //$http.get(Digin_Tenant + '/tenant/GetTenants/' + '15430a361f730ec5ea2d79f60d0fa78e')
-    $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))
-    .success(function (response) {
-        $scope.tennants = response;
-    });
-
-    $scope.cancel = function() {
-    $mdDialog.cancel();
-    };
-
-    $scope.submit = function()
-    {
-
-    }
-
-    $scope.showConfirmation = function (tennant, event) {
-        var confirm = $mdDialog.confirm()
-            .title('Do you want to switching to ' + tennant)
-            .targetEvent(event)
-            .ok('Yes!')
-            .cancel('No!');
-        $mdDialog.show(confirm).then(function () {
-            $scope.status = 'Yes';
-            window.open("http://" + tennant + "/#/home");
-        }, function () {
-            $scope.status = 'No';
-        });
-    };
-    $scope.close = function () {
-        $mdDialog.cancel();
-    };
-
-
-
-}])

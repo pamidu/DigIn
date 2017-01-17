@@ -10,11 +10,10 @@
 				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 					<md-content>
 						<div layout="row" layout-align="end end">
-							<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" 
-							ng-click="goHome()"></md-button>
+							<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="goHome()"></md-button>
 						</div>
 						<div class="setting-card-header">
-							<h2>Database Connections</h2>
+							<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Database Connections</h2>
 							<div class="setting-img-wrap">
 								<img src="views/settings/datasourceSettings/database.png"/>
 							</div>
@@ -64,9 +63,7 @@
 								<md-step label="Connection Settings" md-complete="stepData[1].data.completed">
 									<md-step-body>
 										<div layout="row" layout-align="start start">
-											<div class="p10" style="background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">
-											Details
-											</div>
+											<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Connection Details</div>
 										</div>
 										<div flex layout="row">
 											<div flex layout="column" class="p10" flex="50">
@@ -89,9 +86,7 @@
 											</div>									
 										</div>									
 										<div flex layout = "row" layout-align="center center">
-											<button type="button" class="blut-edit-btn" class="p10" ng-click="submitUserDetails()" ng-disabled="testStatus || submitLogin">
-												Get all databases
-											</button>
+											<md-button type="button" class="md-raised md-primary"  ng-click="submitUserDetails()" ng-disabled="testStatus || submitLogin">Get all databases</md-button>
 										</div>
 										<div layout="row" layout-align="center center" ng-show="submitLogin">
 											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
@@ -132,27 +127,21 @@
 											</md-radio-group>
 										</div>
 										<div flex layout = "row" layout-align="center center" ng-show="loginStatus">
-											<button type="button" class="blut-edit-btn" class="p10" ng-click="testConnection()" ng-disabled="testStatus || testRequest">
-												Test Connection
-											</button>
+											<md-button type="button" class="md-raised md-primary"  ng-click="testConnection()" ng-disabled="testStatus || testRequest">Test Connection</md-button>
 										</div>
 										<div layout="row" layout-align="center center" ng-show="testRequest">
 											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
 											</md-progress-circular>
 										</div>
 										<div flex layout = "row" layout-align="center center" ng-show="loginStatus">
-											<button type="button" class="blut-edit-btn" class="p10" ng-click="saveConnection()">
-												Save Connection
-											</button>
+											<md-button type="button" class="md-raised md-primary"  ng-click="saveConnection()">Save Connection</md-button>
 										</div>
 										<div layout="row" layout-align="center center" ng-show="saveRequest">
 											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
 											</md-progress-circular>
 										</div>
 										<div flex layout="row" layout-align="space-between center" class="side-margins">
-											<md-button ng-click="moveToPreviousStep()" class="md-raised next-btn">
-												Previous
-											</md-button>
+											<md-button ng-click="moveToPreviousStep()" class="md-raised next-btn">Previous</md-button>
 										</div>
 									</md-step-body>
 								</md-step>
@@ -164,14 +153,10 @@
 											</div>
 										</div>
 										<div flex layout = "row" layout-align="center center" ng-show="testStatus">
-											<button type="button" class="blut-edit-btn" class="p10" ng-click="createConnection()">
-												Create New Connection
-											</button>
+											<md-button type="button" class="md-raised md-primary"  ng-click="createConnection()">Create New Connection</md-button>	
 										</div>
 										<div flex layout = "row" layout-align="center center" ng-show="testStatus">
-											<button type="button" class="blut-edit-btn" class="p10" ng-click="goHome()">
-												Finish
-											</button>
+											<md-button type="button" class="md-raised md-primary"  ng-click="goHome()">Finish</md-button>
 										</div>		                            
 									</md-step-body>
 								</md-step>

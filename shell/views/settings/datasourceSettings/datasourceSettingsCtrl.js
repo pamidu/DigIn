@@ -1,4 +1,6 @@
 routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory', function ($scope,$state,$rootScope,notifications,datasourceFactory) {
+	
+	$scope.$parent.currentView = "Datasource Settings";
 	//Theme config for md-tabs-wrapper
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{

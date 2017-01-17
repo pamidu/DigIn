@@ -54,6 +54,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/css/index.css">
     <link rel="stylesheet" type="text/css" href="styles/css/style.css">
     <link rel="stylesheet" type="text/css" href="styles/css/admin1.css">
+	<link rel="stylesheet" type="text/css" href="styles/css/layout.css">
     <link rel="stylesheet" type="text/css" href="styles/css/common-data-src.css">
     <!-- nv.d3.css commented for testing pursoses -->
     <!-- <link rel="stylesheet" href="styles/css/nv.d3.css"> -->

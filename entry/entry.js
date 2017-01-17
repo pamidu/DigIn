@@ -1556,7 +1556,8 @@ routerApp
 /*
                 $http({
                     method: 'GET',
-                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
+                    //url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
+                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id=testchamila4.dev.digin.io",
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -1565,8 +1566,10 @@ routerApp
                     if(data.Result.usage.length>0){
                         $scope.tenantUsers=data.Result.usage.length;
                         var tenant=tenantId+ '.' + Digin_Domain;
+                        tenant="testchamila4.dev.digin.io";
                         var users=data.Result.usage[0][tenant];
-                        //var users=data.Result.usage[0]["testchamila4.dev.digin.io"]
+                        $scope.tenantUsers=Object.keys(users).length;
+                        //var users=data.Result.usage0]["testchamila4.dev.digin.io"]
                         //$scope.tenantUsers=keys(users).length;
                         if($scope.tenantUsers>=$scope.licencedUsers){
                             displayError('Number of licence users has been exceeded.');

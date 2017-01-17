@@ -3840,7 +3840,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
         },
         getData: function() {
+
+            $rootScope.isChangeSort=false;    
             $scope.eventHndler.isLoadingChart = true;
+            $scope.sorting=false;
+            $scope.orderByColumnName=$scope.executeQryData.executeColumns[0].filedName;
+
+            $rootScope.dataSource=$scope.sourceData;
+
+            tabularService.executeQuery($scope.executeQryData.executeColumns, $scope.widget.widgetData,$scope.sourceData,$scope.sorting,$scope.OrderType,$scope.orderByColumnName,$scope.limit, function(query){
+                 $scope.eventHndler.isLoadingChart = false;
+                 $scope.dataToBeBind.receivedQuery = query;
+                 $scope.widget.widgetData.widData.query = query;
+            });
+
+            /*$scope.eventHndler.isLoadingChart = true;
             $scope.fieldArray = [];
             $scope.fieldArrayMSSQL = [];
 
@@ -3887,10 +3901,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     }
                 }
 
-                //console.log("query", query);
                 $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
 
-                    //#to get aggregations
+                    
                     if($scope.widget.widgetData.widData.tabularConfig.totForNumeric == "true" ){
 
                         if($scope.widget.widgetData.widData.tabularConfig.AllingArr.length > 0){
@@ -3946,15 +3959,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                     $scope.generateTabular();
                                     $scope.eventHndler.isLoadingChart = false;
                     }
-
-
-                    //--------------------------
-
                  
                 }, $scope.initRequestLimit.value);
 
                $scope.dataToBeBind.receivedQuery = query;
                $scope.widget.widgetData.widData.query = query;
+               */
             
         }, 
         selectAttribute : function(fieldName) {

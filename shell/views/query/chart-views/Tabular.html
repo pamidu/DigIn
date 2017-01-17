@@ -66,7 +66,8 @@ tr .wrap{
     <tr>
       <td></td>
       <!-- changeSort is change $scope.sort -->
-      <td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr">
+      <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
+      <td ng-click="widget.widgetData.widData.tabularService.changeSort(x,widget)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr">
         <div class="cell-cursor-col-resize"></div>
         {{x.DislayName}}
         <!-- sort key indicator example -->

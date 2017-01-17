@@ -992,7 +992,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     })
                         .success(function (data) {
 							$scope.componentsLoaded = true;
-                            console.log("data getAllDashboards", data);
 
                             $scope.dashboards = [];
 
@@ -1026,7 +1025,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log(err);
                             }).then(function (data) {
                                 angular.forEach(data.rows, function (row) {
-                                    console.log(typeof(row.doc.dashboard));
                                     //var records = CircularJSON.parse(row.doc.dashboard);
                                     var records = row.doc.dashboard;
                                     var isAvailble = false;
@@ -1042,7 +1040,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         );
                                     }
                                 });
-                                console.log($scope.dashboards);
                             });
                             $mdDialog.hide();
                         })

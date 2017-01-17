@@ -1,4 +1,4 @@
-routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Digin_Domain,$diginengine){
+routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Digin_Domain,$diginengine,$diginurls){
 
 
     var thisService = this;
@@ -30,8 +30,9 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
             }
 
-            widData.userList = widData.pageingArr[widData.currentPage].pageEle;
-            widData.selectedPage = widData.pageingArr[widData.currentPage].pageLable;
+            widData.userList = widData.pageingArr[0].pageEle;
+            widData.selectedPage = widData.pageingArr[0].pageLable;
+            widData.currentPage=0;
 
 
 	}
@@ -103,13 +104,36 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         },100,offset);
     }
 
-    this.executeQuery=function(){
+    this.getExecQueryFilterArr = function(widget,filterStr){
 
-    }
 
-    this.getAggregate=function(){
+        var fieldArray = [];
+        var FilterQuery = "";
+
+        if(widget.widgetData.commonSrc.src.src == "BigQuery"){
+            for(var i=0; i < widget.widgetData.widData.tabularConfig.AllingArr.length; i++){
+
+                fieldArray.push(widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute);
+            }
+
         
+            FilterQuery = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " WHERE "+ filterStr +" ORDER BY "+widget.widgetData.widData.tabularConfig.defSortFeild+" "+widget.widgetData.widData.tabularConfig.AscOrDec;
+
+        }
+        else{
+            for(var i=0; i < widget.widgetData.widData.tabularConfig.AllingArr.length; i++){
+
+                fieldArray.push('['+widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute+']');
+            }
+
+            var defSortFeild='['+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+']';
+            FilterQuery = "SELECT " + fieldArray.toString() + " FROM " +"["+ widget.widgetData.commonSrc.src.tbl.split(".")[0]+ "].["+widget.widgetData.commonSrc.src.tbl.split(".")[1] +"]" + " WHERE " + filterStr + " ORDER BY "+widget.widgetData.widData.tabularConfig.defSortFeild+" "+widget.widgetData.widData.tabularConfig.AscOrDec;
+        }
+
+       return FilterQuery;
     }
 
 
 });
+
+

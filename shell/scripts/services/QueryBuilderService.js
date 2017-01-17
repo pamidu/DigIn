@@ -418,13 +418,18 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
 
                       
                                     tabularService.setPagination(data,widObj.widData);
-                                    widObj.widData.userList = data;
                                     widObj.syncState = true;
                                     cb(widObj);
                                    }
                             });
                         }
                     }
+                    else{
+                        tabularService.setPagination(data,widObj.widData);
+                        widObj.syncState = true;
+                        cb(widObj);
+                    }
+                    
 
 
 

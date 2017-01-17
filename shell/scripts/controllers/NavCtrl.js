@@ -1915,7 +1915,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     element: '#socialMedia',
                     intro: 'Dig deep in to your social media pages',
                     position: 'right'
-                }, {
+                },
+				{
+                    element: '#shareSocial',
+                    intro: 'Share your Dashboards on Social Media',
+                    position: 'right'
+                },{
                     element: '#settings',
                     intro: 'Configure the settings related to the system and users',
                     position: 'right'
@@ -1931,6 +1936,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, {
                     element: '#save',
                     intro: 'Save the Dashboard'
+                }, {
+                    element: '#share',
+                    intro: 'Share your dashboard or datasets'
                 }, {
                     element: '#notifications',
                     intro: 'Checkout the latest notifications here'

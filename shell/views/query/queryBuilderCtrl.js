@@ -3225,6 +3225,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }                
             }
 
+          
             if (database == "BigQuery" || database == "memsql") {
                 var query = $diginurls.diginengine + "generatehist?q=[{'[" + $diginurls.getNamespace() + "." + tbl + "]':[" + fieldArray.toString() + "]}]&bins=&dbtype=" + database + "&datasource_config_id=&datasource_id=" + id;
             } else if (database == "MSSQL") {
@@ -4006,7 +4007,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         },      
         saveWidget: function(widget) {
             widget.widgetData.widView = "views/query/chart-views/Tabular.html";
-            widget.widgetData.TabularData =  $scope.summaryData;
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "Tabular";
             $scope.saveChart(widget);

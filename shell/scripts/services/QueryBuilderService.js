@@ -3,8 +3,8 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
         widProt = new Widget(widType);
-        widProt.sync(widgetData, cb);
-    }
+        widProt.sync(widgetData, cb)
+;    }
 
 
     var colors = ['#82b8d7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
@@ -431,7 +431,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
                     //--------------------------
 
                  
-                });
+                },100);
         }
     }
 

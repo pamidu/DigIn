@@ -943,12 +943,6 @@ md-card md-card-content.card-warning {
     overflow-x: auto;
 }
 
-:root {
-    --red: #b00;
-    --fb-theme-col: #00BFA5;
-    --fullwidth: 100%;
-}
-
 .input-fb-search {
     margin: 40px 25px;
     width: 100%;

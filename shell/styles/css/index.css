@@ -45,31 +45,10 @@
 	font-size: 13px;
 }
 
-.card-container
-{
-	padding-top:70px;
-	padding-left:45px;
-	-webkit-animation: fadeIn .8s forwards;
-	animation: fadeIn .8s forwards;
+.checkboxdemoSelectAll .demo-legend {
+	color: #3F51B5; 
 }
-
-.setting-container
-{
-	padding-top:45px;
-	padding-left:45px;
-	-webkit-animation: fadeIn .8s forwards;
-	animation: fadeIn .8s forwards;
-}
-
-.layout-whiteframe
-{
-	margin:0 auto;
-	max-width:960px;
-	border-radius: 8px;
-	background: white;
-	padding: 0;
-}
-.layout-whiteframe > md-content {
-    width: 100%;
-    border-radius: 8px;
+.fieldset {
+	border: 1px solid rgb(204, 204, 204);
+	border-radius: 4px
 }

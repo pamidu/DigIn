@@ -146,14 +146,18 @@
 
                 },
 
-                getExecQuery: function(qStr, id, cb, limit) {
+                getExecQuery: function(qStr, id, cb, limit,offset) {
                     var wSrc = "scripts/webworkers/webWorker.js";
                     var limVal = undefined;
-                    if (limit) limVal = limit;
+                    var offVal = 0;
+                    if (limit) 
+                        limVal = limit;
+                    if (offset) 
+                        offVal = offset;
                     if (database == 'MSSQL')
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_config_id=" + id;
                     else if (database == 'BigQuery' || database == "memsql")
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id;
                     else 
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
 

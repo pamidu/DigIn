@@ -2,6 +2,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
 
     var thisService = this;
+    var dataSource;
 	this.setPagination = function(summaryData,widData){
 
 			widData.userList.length =0;
@@ -69,7 +70,17 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         var cl = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
         var offset = widget.widgetData.widData.pageingArr.length * widget.widgetData.widData.tabularConfig.numOfRows;
 
-        cl.getExecQuery(widget.widgetData.widData.query, widget.widgetData.commonSrc.src.id, function(data, status) {
+        var query ="";
+
+        if(typeof widget.widgetData.filterStr == undefined || widget.widgetData.filterStr == ""){
+            query = widget.widgetData.widData.query;
+        }else{
+            query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
+        }
+
+
+
+        cl.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status) {
             if(status){
 
                 var pageCount = parseInt(widget.widgetData.widData.pageingArr.length) + data.length/widget.widgetData.widData.tabularConfig.numOfRows;
@@ -104,20 +115,32 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         },100,offset);
     }
 
-    this.getExecQueryFilterArr = function(widget,filterStr){
+    this.getExecQueryFilterArr = function(widget,filterStr,sortFeild){
 
 
         var fieldArray = [];
         var FilterQuery = "";
+        var dataBaseEng ="";
+        var table = "";
 
-        if(widget.widgetData.commonSrc.src.src == "BigQuery"){
+        if(typeof widget.widgetData.commonSrc == "undefined"){
+            dataEng = thisService.dataSource.src;
+            table = thisService.dataSource.tbl;
+        }else{
+            dataEng = widget.widgetData.commonSrc.src.src;
+            table = widget.widgetData.commonSrc.src.tbl;
+        }
+
+        
+
+        if( dataEng == "BigQuery"){
             for(var i=0; i < widget.widgetData.widData.tabularConfig.AllingArr.length; i++){
 
                 fieldArray.push(widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute);
             }
 
         
-            FilterQuery = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " WHERE "+ filterStr +" ORDER BY "+widget.widgetData.widData.tabularConfig.defSortFeild+" "+widget.widgetData.widData.tabularConfig.AscOrDec;
+            FilterQuery = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + table + " WHERE "+ filterStr +" ORDER BY "+sortFeild+" "+widget.widgetData.widData.tabularConfig.AscOrDec;
 
         }
         else{
@@ -126,15 +149,15 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                 fieldArray.push('['+widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute+']');
             }
 
-            var defSortFeild='['+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+']';
-            FilterQuery = "SELECT " + fieldArray.toString() + " FROM " +"["+ widget.widgetData.commonSrc.src.tbl.split(".")[0]+ "].["+widget.widgetData.commonSrc.src.tbl.split(".")[1] +"]" + " WHERE " + filterStr + " ORDER BY "+widget.widgetData.widData.tabularConfig.defSortFeild+" "+widget.widgetData.widData.tabularConfig.AscOrDec;
+            var defSortFeild='['+widget.widgetData.widData.tabularConfig.defSortFeild+']';
+            FilterQuery = "SELECT " + fieldArray.toString() + " FROM " +"["+ table.split(".")[0]+ "].["+table.split(".")[1] +"]" + " WHERE " + filterStr + " ORDER BY "+"["+sortFeild+"]"+" "+widget.widgetData.widData.tabularConfig.AscOrDec;
         }
 
        return FilterQuery;
     }
 
 
-    this.executeQuery=function(executeColumns, widgetData,sourceData,sorting,OrderType,orderByColumnName,limit,cb){  
+    this.executeQuery=function(executeColumns, widgetData,sourceData,sorting,OrderType,orderByColumnName,limit,widget,cb){  
 
             var changeSort=false;
             if($rootScope.isChangeSort==true){
@@ -162,9 +185,15 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                     }
                 }
                 
+                if(typeof widget.widgetData.widData.tabularConfig.defSortFeild == "undefined" || widget.widgetData.widData.tabularConfig.defSortFeild == ""){
 
-                var defSortFeild=executeColumns[0].filedName;
+                    widget.widgetData.widData.tabularConfig.defSortFeild = executeColumns[0].Attribute;
+                }
+                
+                if(typeof widget.widgetData.widData.tabularConfig.defSortFeild == "undefined" || widget.widgetData.widData.tabularConfig.defSortFeild == ""){
 
+                    widget.widgetData.widData.tabularConfig.defSortFeild = executeColumns[0].filedName;
+                }
                 var parameter;
                 var i = 0;
 
@@ -188,20 +217,51 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                     sorting=false;
                 }
 
+
                 if(!sorting){
                     if (db == "BigQuery") {
-                        var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.tbl + " ORDER BY "+defSortFeild+" "+widgetData.widData.tabularConfig.AscOrDec;
+
+                        if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
+                            var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.tbl + " ORDER BY "+widget.widgetData.widData.tabularConfig.defSortFeild+" "+widgetData.widData.tabularConfig.AscOrDec;
+                        }
+                        else{
+                            var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,defSortFeild);
+                        }
                     } else {
-                        var defSortFeild='['+defSortFeild+']';
-                        var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.tbl.split(".")[0]+ "].["+sourceData.tbl.split(".")[1] +"]"+ " ORDER BY "+defSortFeild+" "+widgetData.widData.tabularConfig.AscOrDec;
+                           
+
+                          if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
+                              var defSortFeild='['+widget.widgetData.widData.tabularConfig.defSortFeild+']';
+                              var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.tbl.split(".")[0]+ "].["+sourceData.tbl.split(".")[1] +"]"+ " ORDER BY "+defSortFeild+" "+widgetData.widData.tabularConfig.AscOrDec;
+                                
+                            }
+                            else{
+                                 var defSortFeild = widget.widgetData.widData.tabularConfig.defSortFeild;
+                                var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,defSortFeild);
+                            }
                     }
                 }
                 else{
                     if (db == "BigQuery") {
-                        var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.tbl + " ORDER BY "+orderByColumnName+" "+OrderType;
+
+                        if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
+                              var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.tbl + " ORDER BY "+orderByColumnName+" "+OrderType;
+                        }
+                        else{
+                            var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
+                        }
                     } else {
-                        var orderByColumnName='['+orderByColumnName+']';
-                        var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.tbl.split(".")[0] +"].["+ sourceData.tbl.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+OrderType;
+                       
+
+                        if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
+                             var orderByColumnName='['+orderByColumnName+']';
+                            var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.tbl.split(".")[0] +"].["+ sourceData.tbl.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+OrderType;
+                                 
+                            }
+                            else{
+                                var orderByColumnName = orderByColumnName;
+                                var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
+                            }
                     }
                 }
 
@@ -233,7 +293,15 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                                        if(status == true){
                                          
                                           for(var i = 0; i < fieldArr.length ; i++)  {
-                                                var str = fieldArr[i].agg+"_"+fieldArr[i].field;
+                                                var str = (fieldArr[i].agg+"_"+fieldArr[i].field).toString();
+
+                                                var splitArr = str.split(" ")
+                                                str="";
+                                                for(var a=0; a < splitArr.length ; a++){
+
+                                                    str = str + splitArr[a]; 
+                                                }
+                                                
                                                 var obj = {
                                                     field : fieldArr[i].field,
                                                     aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
@@ -257,7 +325,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                                         cb(query);
 
                                        }
-                                },undefined,undefined);
+                                },undefined,widget.widgetData.filterStr);
                             }
                             else{
                                 $rootScope.summaryData = data;
@@ -273,7 +341,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                     } 
 
         
-                },  limit);
+                },  100);
 
     }
 
@@ -281,7 +349,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         //alert("change Sort....");
 
         $rootScope.isChangeSort=true;
-
+        widget.widgetData.syncState = false;
         if($rootScope.sort==name.Attribute){
           $rootScope.sort='-'+name.Attribute;
           $rootScope.orderByColumnName=name.Attribute;
@@ -306,8 +374,9 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         }
         
         this.executeQuery(widget.widgetData.widData.tabularConfig.AllingArr, widget.widgetData,sourceData,
-            $rootScope.sorting,$rootScope.OrderType,name.Attribute,100, function(query){
+            $rootScope.sorting,$rootScope.OrderType,name.Attribute,100,widget, function(query){
             var query=query;
+            widget.widgetData.syncState = true;
             //$scope.eventHndler.isLoadingChart = false;
             //$scope.dataToBeBind.receivedQuery = query;
             //$scope.widget.widgetData.widData.query = query;

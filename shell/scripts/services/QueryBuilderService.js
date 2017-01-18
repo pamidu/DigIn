@@ -370,14 +370,13 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
 
     var TABULAR = function(){
 
-
         this.sync = function (q, cl, widObj, cb) {
              cl.getExecQuery(widObj.widData.query, widObj.commonSrc.src.id, function(data, status) {
 
                     //to get aggregations
                     if(widObj.widData.tabularConfig.totForNumeric == "true" ){
 
-                        if(widObj.widData.tabularConfig.AllingArr.length > 0){
+                        
 
                             var fieldArr=[];
                             for(var i=0; i < widObj.widData.tabularConfig.AllingArr.length; i++ ){
@@ -393,12 +392,21 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
                                     
 
                             }
-
+                        if(fieldArr.length > 0){
                             cl.getAggData(widObj.commonSrc.src.tbl, fieldArr, 100, widObj.commonSrc.src.id, function(res, status, query) {
                                    if(status == true){
                                      
                                       for(var i = 0; i < fieldArr.length ; i++)  {
                                             var str = fieldArr[i].agg+"_"+fieldArr[i].field;
+
+                                            var splitArr = str.split(" ")
+                                            str="";
+                                        
+                                            for(var a=0; a < splitArr.length ; a++){
+
+                                                str = str + splitArr[a]; 
+                                            }
+                                            
                                             var obj = {
                                                 field : fieldArr[i].field,
                                                 aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
@@ -422,6 +430,11 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
                                     cb(widObj);
                                    }
                             });
+                        }
+                        else{
+                                tabularService.setPagination(data,widObj.widData);
+                                widObj.syncState = true;
+                                cb(widObj);
                         }
                     }
                     else{

@@ -364,7 +364,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 			$mdDialog.show(confirm).then(function() {
 				$http({
 	                method: 'GET',
-					url: 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuser/activation/'+user.Id,
+					url: apis_Path+'authorization/offline/tenantuser/activation/'+user.Id,
 	                headers: {
 	                    'securityToken': getCookie('securityToken')
 	                }

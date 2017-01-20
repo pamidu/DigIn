@@ -1,4 +1,4 @@
-var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary','md-steppers','ngMessages' ,'uiMicrokernel', 'gridster','highcharts-ng','uiGmapgoogle-maps', 'vAccordion','ngCroppie','stripe-payment-tools','angular-intro']);
+var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary','md-steppers','ngMessages' ,'uiMicrokernel', 'gridster','highcharts-ng','uiGmapgoogle-maps', 'vAccordion','ngCroppie','stripe-payment-tools','angular-intro','ngFileUpload','configuration', 'diginServiceHandler']);
 
 DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider) {
 

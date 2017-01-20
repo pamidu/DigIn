@@ -1,7 +1,13 @@
-<!--CARD CONTAINER START-->
+<style>
+#mainStepper > md-steppers-wrapper > md-steppers-canvas > md-pagination-wrapper > md-step-item > md-step-label-wrapper > span{
+	font-size: 16px;
+    font-weight: 700;
+}
 
+</style>
+<!--CARD CONTAINER START-->
 <div class="setting-container">
-	 <md-steppers md-dynamic-height ng-init="assist_selected = 0" md-selected="assist_selected" md-stretch-steppers="always">
+	 <md-steppers id="mainStepper" md-dynamic-height ng-init="assist_selected = 0" md-selected="assist_selected" md-stretch-steppers="always">
 	  <md-step label="Upload Source" md-complete="assist_step1.completed" ng-disabled="assist_step1.disabled">
 		<md-content>
 		  <div ng-include="'views/user_assistance/upload/upload.html'"></div>
@@ -10,24 +16,11 @@
 	  <md-step label="Connect Source" md-complete="assist_step2.completed" ng-disabled="assist_step2.disabled">
 		<md-content>
 		  <div ng-include="'views/user_assistance/connectSource/connectSource.html'"></div>
-		  <!--md-button class="md-raised md-primary" ng-click="assist_selected = 0">PREV</md-button>
-		  <md-button class="md-raised md-primary" ng-click="assist_step1.completed = true">Complete Step 1</md-button>
-		  <md-button class="md-raised md-primary" ng-click="assist_selected = 2">NEXT</md-button-->
 		</md-content>
 	  </md-step>
 	  <md-step label="Create Widget" md-complete="assist_step3.completed" ng-disabled="assist_step3.disabled">
 		<md-content>
 		  <div ng-include="'views/user_assistance/createWidget/createWidget.html'"></div>
-		  <!--md-button class="md-raised md-primary" ng-click="assist_selected = 0">PREV</md-button>
-		  <md-button class="md-raised md-primary" ng-click="assist_step2.completed = true">Complete Step 2</md-button>
-		  <md-button class="md-raised md-primary" ng-click="assist_selected = 3">NEXT</md-button-->
-		</md-content>
-	  </md-step>
-	  <md-step label="Finish" md-complete="assist_step3.completed" ng-disabled="assist_step3.disabled">
-		<md-content>
-		  <h1>
-		  Finish
-		  </h1>
 		</md-content>
 	  </md-step>
 	</md-steppers>

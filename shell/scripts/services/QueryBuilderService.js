@@ -371,6 +371,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
     var TABULAR = function(){
 
         this.sync = function (q, cl, widObj, cb) {
+            widObj.widData.sort ="";
              cl.getExecQuery(widObj.widData.query, widObj.commonSrc.src.id, function(data, status) {
 
                     //to get aggregations

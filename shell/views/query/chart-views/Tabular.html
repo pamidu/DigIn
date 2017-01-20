@@ -71,8 +71,8 @@ tr .wrap{
         <div class="cell-cursor-col-resize"></div>
         {{x.DislayName}}
         <!-- sort key indicator example -->
-        <span ng-show="sort=='{{x.Attribute}}'">▲</span>
-        <span ng-show="sort=='-{{x.Attribute}}'">▼</span>
+        <span ng-show="widget.widgetData.widData.sort=='{{x.Attribute}}'">▲</span>
+        <span ng-show="widget.widgetData.widData.sort=='-{{x.Attribute}}'">▼</span>
       </td>
     </tr>
   </thead>
@@ -109,10 +109,16 @@ tr .wrap{
   </tbody>
 </table>
 
-  <div style="width: 200px;margin-left: auto;margin-right: auto;margin-top: 5px;">
+  <div style="width: 400px;margin-left: auto;margin-right: auto;margin-top: 5px;" layout="row"  layout-align="center center">
+
       <span>{{widget.widgetData.widData.selectedPage}}</span>
-      <button  ng-click="widget.widgetData.widData.tabularService.tabularNavigate('Prev',widget,false)">Prev</button>
-      <button ng-click="widget.widgetData.widData.tabularService.tabularNavigate('Next',widget,false)">Next</button>
+
+      <md-button class="md-primary"  ng-disabled="widget.widgetData.widData.currentPage <= 0" 
+      ng-click="widget.widgetData.widData.tabularService.tabularNavigate('Prev',widget,false)">Prev</md-button>
+
+      <md-button class="md-primary" ng-disabled="widget.widgetData.widData.isNext"
+      ng-click="widget.widgetData.widData.tabularService.tabularNavigate('Next',widget,false)">Next</md-button>
+
   </div>
 
 	</div>

@@ -3839,7 +3839,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     AllingArr: $scope.allingArr,
                     numOfRows: 10
                 }
-                $rootScope.sort ='';
+                $scope.widget.widgetData.widData.sort ='';
                 tabularService.dataSource = $scope.sourceData;
 
         },
@@ -3915,6 +3915,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             widget.widgetData.widView = "views/query/chart-views/Tabular.html";
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "Tabular";
+            tabularService.dataSource = "";
             $scope.saveChart(widget);
 
         }
@@ -3922,7 +3923,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
 
     $scope.start = 0;
-    
     $scope.query = "";
     $scope.userList=[];
     $scope.allingments = ["left","right","center"];

@@ -71,7 +71,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         var offset = widget.widgetData.widData.pageingArr.length * widget.widgetData.widData.tabularConfig.numOfRows;
 
         var query ="";
-
+        widget.widgetData.widData.isNext = true;
         if(typeof widget.widgetData.filterStr == undefined || widget.widgetData.filterStr == ""){
             query = widget.widgetData.widData.query;
         }else{
@@ -82,6 +82,19 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
         cl.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status) {
             if(status){
+
+                if(widget.widgetData.widData.pageingArr[widget.widgetData.widData.pageingArr.length-1].pageEle.length != widget.widgetData.widData.tabularConfig.numOfRows){
+                    
+                    var lastpage = widget.widgetData.widData.pageingArr.length-1;
+                    var page = widget.widgetData.widData.pageingArr[lastpage].pageEle;
+                    var max = widget.widgetData.widData.tabularConfig.numOfRows - widget.widgetData.widData.pageingArr[lastpage].pageEle.length;
+                    var dataArr = data.slice(0,max)
+
+                    for(var i = 0 ; i < dataArr.length; i++ ){
+                        page.push(dataArr[i]);
+                    }
+                }
+
 
                 var pageCount = parseInt(widget.widgetData.widData.pageingArr.length) + data.length/widget.widgetData.widData.tabularConfig.numOfRows;
 
@@ -108,6 +121,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                 }
 
                 widget.widgetData.widData.currentPage++;
+                widget.widgetData.widData.isNext = false;
                 widget.widgetData.widData.userList = widget.widgetData.widData.pageingArr[widget.widgetData.widData.currentPage].pageEle;
                 widget.widgetData.widData.selectedPage = widget.widgetData.widData.pageingArr[widget.widgetData.widData.currentPage].pageLable;
 
@@ -350,16 +364,16 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
         $rootScope.isChangeSort=true;
         widget.widgetData.syncState = false;
-        if($rootScope.sort==name.Attribute){
-          $rootScope.sort='-'+name.Attribute;
+        if(widget.widgetData.widData.sort==name.Attribute){
+          widget.widgetData.widData.sort='-'+name.Attribute;
           $rootScope.orderByColumnName=name.Attribute;
           $rootScope.OrderType='DESC';
           $rootScope.sorting=true;
-        }else if($rootScope.sort=='-'+name.Attribute){
-          $rootScope.sort='';
+        }else if(widget.widgetData.widData.sort.sort=='-'+name.Attribute){
+          widget.widgetData.widData.sort.sort='';
           $rootScope.sorting=false;
         }else{
-          $rootScope.sort=name.Attribute;
+          widget.widgetData.widData.sort=name.Attribute;
           $rootScope.orderByColumnName=name.Attribute;
           $rootScope.OrderType='ASC';
           $rootScope.sorting=true;

@@ -1,265 +1,13 @@
-<style>
-	/* Starter CSS for Flyout Menu */
-	#cssmenu{
-		height: 100%;
-		margin-left: -3px !important;
-	}
-
-	#cssmenu,
-	#cssmenu ul,
-	#cssmenu ul li,
-	#cssmenu ul ul {
-	  list-style: none;
-	  margin: 0;
-	  padding: 0;
-	  border: 0;
-	}
-	#cssmenu ul {
-	  position: relative;
-	  z-index: 597;
-	  float: left;
-	  width:45px;
-	}
-	#cssmenu ul li {
-	  float: left;
-	  min-height: 1px;
-	  line-height: 1em;
-	  vertical-align: middle;
-	  outline: none;
-	}
-	#cssmenu ul li.hover,
-	#cssmenu ul li:hover {
-	  position: relative;
-	  z-index: 599;
-	  cursor: pointer;
-	}
-	#cssmenu ul ul {
-	  margin-top: 1px;
-	  visibility: hidden;
-	  position: absolute;
-	  top: 1px;
-	  left: 99%;
-	  z-index: 598;
-	  width: 100%;
-	}
-	#cssmenu ul ul li {
-	  float: none;
-	}
-	#cssmenu ul ul ul {
-	  top: 1px;
-	  left: 99%;
-	}
-	#cssmenu ul li:hover > ul {
-	  visibility: visible;
-	}
-	#cssmenu ul li {
-	  float: none;
-	}
-	#cssmenu ul ul li {
-	  font-weight: normal;
-	}
-	/* Custom CSS Styles */
-	#cssmenu {
-	  font-size: 15px;
-	}
-	#cssmenu ul a,
-	#cssmenu ul a:link,
-	#cssmenu ul a:visited {
-	  display: block;
-	  /*color: #02b5e2;*/
-	  text-decoration: none;
-	  font-weight: 300;
-	}
-	#cssmenu > ul {
-	  float: none;
-	}
-	#cssmenu > ul > li {
-	  border-left: 3px solid #8b8b8b;
-	}
-	#cssmenu > ul > li > a {
-	  padding: 10px 10px;
-	}
-
-	/*#cssmenu > ul > li:hover {
-	  background: #f6f6f6;
-	}*/
-	/* Sub Menu */
-	#cssmenu ul ul a:link,
-	#cssmenu ul ul a:visited {
-	  font-weight: 400;
-	  font-size: 14px;
-	}
-	#cssmenu ul ul {
-	  width: 225px;
-	  background: none;
-	  border-left: 20px solid transparent;
-	}
-	#cssmenu ul ul a {
-	  padding: 8px 0;
-	  border-bottom: 1px solid #eeeeee;
-	}
-	#cssmenu ul ul li {
-	  padding: 0 20px;
-	  background: #fff;
-	  font-size: 15px;
-	}
-	#cssmenu ul ul li:last-child {
-	  border-bottom: 0px solid #565656;
-	}
-	#cssmenu ul ul li:first-child {
-	  padding-top: 10px;
-	}
-	#cssmenu ul ul li:last-child > a {
-	  border-bottom: none;
-	}
-	#cssmenu ul ul li:first-child:after {
-	  content: '';
-	  display: block;
-	  width: 0;
-	  height: 0;
-	  position: absolute;
-	  left: -20px;
-	  top: 13px;
-	  border-left: 10px solid transparent;
-	  border-right: 10px solid #fff;
-	  border-bottom: 10px solid transparent;
-	  border-top: 10px solid transparent;
-	}
-	#cssmenu ul ul li.dark:first-child:after {
-	  border-right: 10px solid rgb(48,48,48);
-	}
-	#cssmenu ul ul li a.dark{
-		border-bottom: 1px solid #565656;
-	}
-
-	.cssmenu-heading{
-		text-align: center;
-		font-size: 18px;
-		font-weight: 700 !important;
-		letter-spacing: 1px;
-		cursor:default;
-	}
-
-	/* Dropdown Button */
-	.dropbtn {
-		/*background-color: #f9a525;
-		color: white;*/
-		padding: 4px;
-		border-radius: 100%;
-		font-size: 10px;
-		border: none;
-		cursor: pointer;
-		height: 22px;
-		width: 22px;
-		outline: none;
-	    padding-top: 6px;
-	}
-
-	/* The container <div> - needed to position the dropdown content */
-	.dropdown {
-		position: fixed;
-		display: inline-block;
-		z-index:600;
-		right: 12px;
-		top:14px;
-	}
-
-	/* Dropdown Content (Hidden by Default) */
-	.dropdown-content {
-		display: none;
-		position: absolute;
-		background-color: #f9f9f9;
-		min-width: 160px;
-		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		z-index:600;
-		right: 0px;
-		cursor: pointer;
-		overflow: inherit;
-		
-	}
-
-	/* Links inside the dropdown */
-	.dropdown-content a {
-		opacity:0.7;
-		padding: 12px 16px;
-		text-decoration: none;
-		display: block;
-		z-index:600;
-	}
-
-	/* Change color of dropdown links on hover */
-	.dropdown-content a:hover {opacity:1}
-
-	/* Show the dropdown menu on hover */
-	.dropdown:hover .dropdown-content {
-		display: block;
-		z-index:600;
-	}
-
-	/* Change the background color of the dropdown button when the dropdown content is shown */
-	.dropdown:hover .dropbtn {
-		/*background-color: #3e8e41;*/
-	}
-	
-	.sub-menu-icon
-	{
-		margin-right:10px;
-		font-size:18px;
-	}
-	
-	.fadeHeaderToggle {
-			  -webkit-transition: top linear 0.2s;
-			  transition: top linear 0.2s;
-			  top: 45px;
-			}
-			.fadeHeaderToggle.ng-hide {
-			  top: 30px;
-			}
-			.fadeHeaderToggle.ng-hide-add,
-			.fadeHeaderToggle.ng-hide-remove {
-			  display: block!important;
-			}
-			
-			.fadeSideMenuToggle {
-			  -webkit-transition: left linear 0.2s;
-			  transition: left linear 0.2s;
-			  left: -2px;
-			  overflow: inherit;
-			}
-			.fadeSideMenuToggle.ng-hide {
-			  left: -20px;
-			}
-			.fadeSideMenuToggle.ng-hide-add,
-			.fadeSideMenuToggle.ng-hide-remove {
-			  display: block!important;
-			}
-			
-			.blut-search-toggle  {
-	width: 45px;
-	height: 20px;
-	text-align: center;
-	margin-left: calc(50% - 48px);
-	padding-top: 1px;
-	cursor: pointer;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	outline: none !important;
-	position: absolute;
-	top: 45px;
-	box-shadow: 0 1px 0px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
-	overflow:inherit;
-}
-</style>
-
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
 
         <md-toolbar style="min-height: 45px;height:45px;">
             <div layout="row" layout-align="space-between center">
 
                 <h1 class="md-toolbar-tools" style="color:white">Notifications</h1>
-                <!--md-button class="md-icon-button"  ng-click="openNotifications()">
-                    <ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
-                </md-button-->
+				<div layout="row">
+					<i class="ti-volume" style="margin-top: 20px;margin-right: 8px;"> </i>
+					<md-switch ng-model="notificationAudio" aria-label="Switch 1"></md-switch>
+				</div>
             </div>
         </md-toolbar>
         <md-content style="overflow-y:scroll;height:calc(100% - 130px);padding:0" ng-if="notifications.length >= 1">
@@ -386,17 +134,14 @@
 						<i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate('Save')">
+					<div class="blut-header-icon" ng-click="navigate('Save')"  id="save">
 						<i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
-					<!--div class="blut-header-icon" ng-click="navigate('Share Dashboards')">
-						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
-						<md-tooltip md-direction="bottom">Share Dashboard</md-tooltip>
-					</div-->
-					<md-menu md-position-mode="target-right target" >
+					<md-menu md-position-mode="target-right target" id="share">
 					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
 						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
+						<md-tooltip md-direction="bottom">Share</md-tooltip>
 					  </div>
 					  <md-content>
 						<md-menu-item ng-if="$root.dashboard.compID">
@@ -416,9 +161,6 @@
 					  </md-content>
 					</md-menu>
 					
-					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
-						<i class="ti-help-alt"></i>
-					</div-->
 					<div class="blut-header-icon" ng-click="openNotifications()" aria-label="notifications" id="notifications">
 						<i class="ti-bell hover-color" md-colors="{color:'primary'}"></i>
 						<div md-colors="{background:'accent'}"  style="width:15px;height:15px;border-radius:16px;color:white;margin-top:-30px;margin-left:15px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
@@ -474,7 +216,7 @@
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
 							<li ng-click="navigate('Data Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
-							<li ng-click="navigate('User Assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>User Assistance</a></li>
+							<li ng-click="navigate('User Assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
 							<!--li ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li-->
 						</ul>
 					</li>
@@ -489,7 +231,7 @@
 						 
 						</ul>
 					</li>
-					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub" id="settings"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share"></i></a>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub" id="shareSocial"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Share</a></li>
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
@@ -499,7 +241,7 @@
 							<li><a class="hover-color" md-colors="{color:'primary'}" ng-click="goTORout('Email')"><i class="ti-email sub-menu-icon"></i>Email</a></li>
 						</ul>
 					</li>
-					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings"></i></a>
+					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub" id="settings"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Settings</a></li>
 							<li ng-click="goTORout('home.userAdministrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administration</a></li>

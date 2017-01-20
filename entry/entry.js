@@ -1457,7 +1457,7 @@ routerApp
                             $scope.error.isLoading = false;
                             $mdDialog.hide();
 
-                            if (data.Success === false) {
+                            if (data.Success == false) {
                                 if(data.Message=="Already Registered."){
                                     mainFun.fireMsg('0','This user name is already registered, please try again!');
                                 }else{
@@ -1465,6 +1465,7 @@ routerApp
                                 }                               
                             }
                             else{
+                                $scope.initUserForOnsite();
                                 $mdDialog.hide();
                                 $state.go('registered'); 
                             }    
@@ -1520,6 +1521,21 @@ routerApp
             };
 
 
+            $scope.initUserForOnsite=function(){
+                $http({
+                    url: Digin_Engine_API+'onsite_user_save',
+                    method: "POST",
+                    data: angular.toJson({"tenant":tenantId+'.'+Digin_Domain}),
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .success(function(response) {
+                    console.log(response);
+                }).error(function(error) {
+                    console.log(error);
+                })
+            }
+
+
             //#offline licencing process
              $scope.checkLicence = function() {
                 $scope.licencedUsers=1;
@@ -1553,7 +1569,7 @@ routerApp
                 
             //#get exist tenat users count
             $scope.checkTenantUsersCount=function(){
-/*
+
                 $http({
                     method: 'GET',
                     url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
@@ -1565,8 +1581,10 @@ routerApp
                     if(data.Result.usage.length>0){
                         $scope.tenantUsers=data.Result.usage.length;
                         var tenant=tenantId+ '.' + Digin_Domain;
+                        //tenant="testchamila4.dev.digin.io";
                         var users=data.Result.usage[0][tenant];
-                        //var users=data.Result.usage[0]["testchamila4.dev.digin.io"]
+                        $scope.tenantUsers=Object.keys(users).length;
+                        //var users=data.Result.usage0]["testchamila4.dev.digin.io"]
                         //$scope.tenantUsers=keys(users).length;
                         if($scope.tenantUsers>=$scope.licencedUsers){
                             displayError('Number of licence users has been exceeded.');
@@ -1582,9 +1600,9 @@ routerApp
                 }).error(function(error){
                     console.log("error");
                 });
-*/
-                //#------------ remove whn recieve above method
-                
+
+                //#------------ remove whn receieved above method
+                /*
                 $scope.tenantUsers=0;
                 $scope.tenantUsers=data.Result.Usage.tenantId.length;
 
@@ -1596,7 +1614,7 @@ routerApp
                         $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
                         $scope.registerUser();
                     }
-                
+                */
             }
                 
             $scope.submit = function () {

@@ -379,7 +379,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (widget.widgetData.commonSrc.src.src == "BigQuery") {
                             query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
                         } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
-                            var db = tbl.split(".");
+                            var db = widget.widgetData.commonSrc.src.tbl.split(".");
                             query = "SELECT [" + key.filter.name + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
                         }
                         $scope.client.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status){
@@ -537,6 +537,84 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     });
 
 
+            }else if (widget.widgetData.selectedChart.chart == "Tabular") {
+
+
+                var filterQuerry =  tabularService.getExecQueryFilterArr(widget,filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
+
+                $scope.client.getExecQuery(filterQuerry, widget.widgetData.commonSrc.src.id, function(data, status) {
+                    if(status == true){
+                    if(widget.widgetData.widData.tabularConfig.totForNumeric == "true" ){
+                     
+                            var fieldArr=[];
+                                for(var i=0; i < widget.widgetData.widData.tabularConfig.AllingArr.length; i++ ){
+
+                                    if(widget.widgetData.widData.tabularConfig.AllingArr[i].isString == false){
+                                        var obj = {
+                                            "agg": widget.widgetData.widData.tabularConfig.AllingArr[i].Aggregation,
+                                            "field": widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute
+                                        };
+
+                                        fieldArr.push(obj);
+                                    }
+                                        
+
+                                } 
+                           if(fieldArr.length > 0){
+                            $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, fieldArr, limit, widget.widgetData.commonSrc.src.id, function(res, statusa, query) { 
+                                if(statusa == true){
+                                    for(var i = 0; i < fieldArr.length ; i++)  {
+                                        var str = (fieldArr[i].agg+"_"+fieldArr[i].field).toString();
+
+                                        var splitArr = str.split(" ")
+                                        str="";
+
+                                        for(var a=0; a < splitArr.length ; a++){
+
+                                            str = str + splitArr[a]; 
+                                        }
+
+                                        var obj = {
+                                            field : fieldArr[i].field,
+                                            aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
+                                            value : res[0][str]
+                                        }
+
+                                        for(var j=0; j < widget.widgetData.widData.tabularConfig.AllingArr.length; j++){
+
+                                            if(widget.widgetData.widData.tabularConfig.AllingArr[j].Attribute == fieldArr[i].field){
+
+                                                widget.widgetData.widData.tabularConfig.AllingArr[j].Aggregation_value =  res[0][str];
+
+                                            }
+                                        }
+                                          
+                                    }
+
+                                    widget.widgetData.syncState = true;
+                                    tabularService.setPagination(data,widget.widgetData.widData);
+                                    widget.widgetData.filteredState = true;
+                                    widget.widgetData.filterStr = filterStr;
+                                }
+                            },undefined,filterStr);
+
+                        }
+                        else{
+                            widget.widgetData.syncState = true;
+                            tabularService.setPagination(data,widget.widgetData.widData);
+                            widget.widgetData.filteredState = true;
+                            widget.widgetData.filterStr = filterStr;
+                        }
+                    }
+                    else{
+                        widget.widgetData.syncState = true;
+                        tabularService.setPagination(data,widget.widgetData.widData);
+                        widget.widgetData.filteredState = true;
+                        widget.widgetData.filterStr = filterStr;
+                    }
+                    }
+                 },100);
+              
             }
             else {
                 $scope.client.getAggData(widget.widgetData.commonSrc.src.tbl, widget.widgetData.commonSrc.mea, limit, widget.widgetData.commonSrc.src.id, function(res, status, query) {
@@ -699,6 +777,12 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                 }
             } 
             else if(widget.widgetData.selectedChart.chart == "forecast"){
+                widget.widgetData.filteredState = false;
+                widget.widgetData.filterStr = "";
+                $scope.syncWidget(widget);
+
+            }
+            else if(widget.widgetData.selectedChart.chart == "Tabular"){
                 widget.widgetData.filteredState = false;
                 widget.widgetData.filterStr = "";
                 $scope.syncWidget(widget);

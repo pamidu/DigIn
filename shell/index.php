@@ -31,7 +31,6 @@
     <title>DigIn - Beyond BI</title>
     <link rel="shortcut icon" href="./styles/css/images/innerlogo.ico" type="image/png">
     <link rel="stylesheet" href="styles/css/commonstyle.css">
-    <link rel="stylesheet" href="styles/css/login.css">    <!--  new changes  -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
@@ -39,12 +38,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google-signin-client_id"
-          content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="259839742765-nq163rith421537lnfjt5dor1gr8c3jn.apps.googleusercontent.com">
     <link rel="shortcut icon" href="styles/css/images/innerlogo.ico">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/> 
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"> 
-    <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
+    <!--link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css"-->
     <link rel="stylesheet" type="text/css" href="styles/css/directive_library.css">
     <link rel="stylesheet" type="text/css" href="styles/css/pivot.css"/>
     <!-- angular gridster -->
@@ -75,7 +73,6 @@
         -- widget style
         -- ng tag input
         -->
-    <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/fonts/digin-main/digin-main.css" type='text/css'/>
     <link rel="stylesheet" href="bower_components/angular-ui/angular-ui-select2/select2.min.css" type="text/css"/>
     <link rel="stylesheet" href="bower_components/angular-ui/anuglar-bootstrap-datepicker/angular-bootstrap-datepicker.css" type="text/css"/>
@@ -92,9 +89,9 @@
     <link rel="stylesheet" href="bower_components/v-accordion/v-accordion.min.css" type='text/css'/>
     <link rel="stylesheet" href="styles/css/customer-1.0.css" type='text/css'/>  
     <link rel="stylesheet" href="styles/css/md-steppers.css" type="text/css"/>
-    <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
+    <!--link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>   
+    <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'-->   
     <link rel="stylesheet" href="styles/css/cellCursor.css" type='text/css'/>
     <!-- image crop -->
     <link rel="stylesheet" href="bower_components/imgcrop/ng-img-crop.css"/> 
@@ -121,22 +118,21 @@
 </body>
 <!--  new changes  -->
 <!-- search end -->
-<script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
-<!--script type="text/javascript" src='scripts/vendor/jquery.js'></script-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!--script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
+<script type="text/javascript" src='scripts/vendor/jquery.js'></script-->
+<script type="text/javascript" src="scripts/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
 <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
-<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<!--script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script-->
 <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
-<script src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <!-- <script src="http://code.highcharts.com/highcharts.js"></script>  -->
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
@@ -147,20 +143,19 @@
 <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 <script type="text/javascript" src="scripts/config.js"></script>
-<script type="text/javascript" src="bower_components/hammerjs/hammer.js"></script>
-<script type="text/javascript" src="scripts/vendor/oauth.js"></script>
-<script type="text/javascript" src="scripts/vendor/zoom.js"></script>
-<script type="text/javascript" src="scripts/vendor/global-vendors.js"></script>
+<!--script type="text/javascript" src="scripts/vendor/oauth.js"></script>
+<!--script type="text/javascript" src="scripts/vendor/zoom.js"></script>
+<script type="text/javascript" src="scripts/vendor/global-vendors.js"></script-->
 <script type="text/javascript" src="scripts/vendor/angular-socialshare.min.js"></script>
-<script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script>
+<!--script type="text/javascript" src="scripts/vendor/angular-css-injector.js"></script-->
 <script type="text/javascript" src="bower_components/notification/ng-Toast/ngToast.min.js"></script>
 <script type="text/javascript" src="bower_components/v-accordion/v-accordion.min.js"></script>
-<script type="text/javascript" src="bower_components/ngSlimscroll/src/js/ngSlimscroll.js"></script>
+<!--script type="text/javascript" src="bower_components/ngSlimscroll/src/js/ngSlimscroll.js"></script-->
 <!-- image crop -->
 <script type="text/javascript" src="bower_components/imgcrop/ng-img-crop.js"></script>
 <script src="bower_components/tag-input/ng-tags-input.min.js"></script>
 <script src="bower_components/cell-cursor-develop/cellCursor.js"></script>
-<!-- codemirror -->
+<!-- codemirror>
 <script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
 <script type="text/javascript" src="bower_components/codemirror/addon/display/placeholder.js"></script>
 <!-- canvastoblob -->
@@ -171,15 +166,14 @@
 <script type="text/javascript" src="bower_components/angular-moment/angular-moment.min.js"></script>
 <!-- angular slider -->
 <script type="text/javascript" src="bower_components/angular-slider/rzslider.min.js"></script>
-<script type="text/javascript" src="bower_components/anuglar-drag-drop/drag/dragdrop.js"></script>
+<!--script type="text/javascript" src="bower_components/anuglar-drag-drop/drag/dragdrop.js"></script>
 <script type="text/javascript" src="bower_components/anuglar-drag-drop/ngDraggable.js"></script>
-<script type="text/javascript" src="bower_components/anuglar-drag-drop/ui-sortable-angular.js"></script>
+<script type="text/javascript" src="bower_components/anuglar-drag-drop/ui-sortable-angular.js"></script-->
 <script type="text/javascript" src="scripts/directives/calendar.js"></script>
 <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/gcal.js"></script>
 <!-- filesaver -->
-<script type="text/javascript"
-        src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script>
 <!-- PouchDB -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
@@ -188,10 +182,8 @@
 <script type="text/javascript" src="scripts/custom/utility.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
 <script type="text/javascript" src="scripts/controllers/welcomePageCtrl.js"></script>
-<script type="text/javascript" src="scripts/controllers/SignUpMain.js"></script>
-<script type="text/javascript" src="scripts/controllers/sourceAlgorithm/sourceAlgorithmCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/help/videoCtrl.js"></script>
-<script type="text/javascript" src="scripts/controllers/data-source/dataSourceCtrl.js"></script>
+<!--script type="text/javascript" src="scripts/controllers/data-source/dataSourceCtrl.js"></script-->
 <!--download pdf-->
 <script src="https://rawgit.com/exupero/saveSvgAsPng/gh-pages/saveSvgAsPng.js"></script>
 <script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script>
@@ -203,7 +195,6 @@
 
 
 <!-- services start -->
-<script type="text/javascript" src="scripts/services/DynamicRealTimeVis.js"></script>
 <script type="text/javascript" src="scripts/services/ObjectStoreService.js"></script>
 <script type="application/javascript" src="scripts/services/CommonDataService.js"></script>
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
@@ -240,11 +231,9 @@
 <script type="text/javascript" src="scripts/directives/plumbItem.js"></script>
 <script type="text/javascript" src="scripts/directives/postRender.js"></script>
 <script type="text/javascript" src="scripts/directives/accordion.js"></script>
-<script type="text/javascript" src="scripts/controllers/chartSettingsCtrl.js"></script>
 <script type="text/javascript" src="scripts/directives/resizeable.js"></script>
-<script type="text/javascript" src="scripts/directives/droppable.js"></script>
-<script type="text/javascript" src="scripts/directives/draggable.js"></script>
-<script type="text/javascript" src="scripts/directives/validNumber.js"></script>
+<!--script type="text/javascript" src="scripts/directives/droppable.js"></script>
+<script type="text/javascript" src="scripts/directives/draggable.js"></script-->
 <script type="text/javascript" src="scripts/directives/directivelibrary.js"></script>
 
 <script type="text/javascript" src="scripts/services/ReportService.js"></script>
@@ -289,9 +278,9 @@
 <script type="text/javascript" src="scripts/controllers/ExcelCtrl.js"></script>
 
 
-<!-- Material Icons -->
+<!-- Material Icons>
 <script type="text/javascript" src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
-<script type="text/javascript" src="scripts/vendor/layout.js"></script>
+<script type="text/javascript" src="scripts/vendor/layout.js"></script-->
 <!-- svg to canvas -->
 <script type="text/javascript" src="scripts/vendor/pleasure.js"></script>
  
@@ -344,7 +333,7 @@
 <script type="text/javascript" src="scripts/directives/queryBuilderDirective.js"></script>
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
-<script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
+<!--script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script-->
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/vendor/digin-gridster.js"></script>
@@ -419,14 +408,7 @@
     script += '.js"><' + '/script>';
     document.write(script);
 </script>
-<script>
-    $(document).ready(function () {
-        Layout.init();
-        $('#pagePreLoader').show();
-        $('#content1').css("visibility", "hidden");
-        $('#getReport').css("visibility", "hidden");
-    });
-</script>
+
 <!--  new changes  -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>

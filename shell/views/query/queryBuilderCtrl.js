@@ -3822,6 +3822,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
           $scope.allingArr = $scope.widget.widgetData.widData.tabularConfig.AllingArr;
           $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.widData.query;
           $scope.widget.widgetData.widData.tabularService=tabularService;
+
         
         },
         changeType: function() {
@@ -3838,123 +3839,28 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     AllingArr: $scope.allingArr,
                     numOfRows: 10
                 }
+                $scope.widget.widgetData.widData.sort ='';
+                tabularService.dataSource = $scope.sourceData;
+
         },
         getData: function() {
+
+            $rootScope.isChangeSort=false;    
             $scope.eventHndler.isLoadingChart = true;
-            $scope.fieldArray = [];
-            $scope.fieldArrayMSSQL = [];
+            $scope.sorting=false;
+            $scope.orderByColumnName=$scope.executeQryData.executeColumns[0].filedName;
 
-            var fieldArrayLength = $scope.executeQryData.executeColumns.length;
-                $scope.chartState = true;
-                for (var i = 0; i < $scope.executeQryData.executeColumns.length; i++) {
-                    $scope.fieldArray.push($scope.executeQryData.executeColumns[i].filedName);
-                    $scope.fieldArrayMSSQL.push('['+$scope.executeQryData.executeColumns[i].filedName+']');
-                }
+            $rootScope.dataSource=$scope.sourceData;
 
-                $scope.widget.widgetData.widData.tabularConfig.defSortFeild=$scope.executeQryData.executeColumns[0].filedName;
+            tabularService.executeQuery($scope.executeQryData.executeColumns, $scope.widget.widgetData,$scope.sourceData,$scope.sorting,$scope.OrderType,$scope.orderByColumnName,$scope.limit,$scope.widget, function(query){
+                 $scope.eventHndler.isLoadingChart = false;
+                 $scope.dataToBeBind.receivedQuery = query;
+                 $scope.widget.widgetData.widData.query = query;
+                 $scope.widget.widgetData.filteredState = false;
+                 $scope.widget.widgetData.filterStr = "";
 
-                console.log($scope.fieldArray);
-                var parameter;
-                var i = 0;
-                $scope.fieldArray.forEach(function(entry) {
-                    if (i == 0) {
-                        parameter = entry
-                    } else {
-                        parameter += "," + entry;
-                    }
-                    i++;
-                });
-                var db = $scope.sourceData.src;
+            });
 
-                if($scope.sorting==undefined || $scope.sorting==''){
-                    $scope.sorting=false;
-                }
-
-                if(!$scope.sorting){
-                    if (db == "BigQuery") {
-                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
-                    } else {
-                        var defSortFeild='['+$scope.widget.widgetData.widData.tabularConfig.defSortFeild+']';
-                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " +"["+ $scope.sourceData.tbl.split(".")[0]+ "].["+$scope.sourceData.tbl.split(".")[1] +"]"+ " ORDER BY "+defSortFeild+" "+$scope.widget.widgetData.widData.tabularConfig.AscOrDec;
-                    }
-                }
-                else{
-                    if (db == "BigQuery") {
-                        var query = "SELECT " + $scope.fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + $scope.sourceData.tbl + " ORDER BY "+$scope.orderByColumnName+" "+$scope.OrderType;
-                    } else {
-                        var orderByColumnName='['+$scope.orderByColumnName+']';
-                        var query = "SELECT " + $scope.fieldArrayMSSQL.toString() + " FROM " + "["+ $scope.sourceData.tbl.split(".")[0] +"].["+ $scope.sourceData.tbl.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+$scope.OrderType;
-                    }
-                }
-
-                //console.log("query", query);
-                $scope.client.getExecQuery(query, $scope.sourceData.id, function(data, status) {
-
-                    //#to get aggregations
-                    if($scope.widget.widgetData.widData.tabularConfig.totForNumeric == "true" ){
-
-                        if($scope.widget.widgetData.widData.tabularConfig.AllingArr.length > 0){
-
-                            var fieldArr=[];
-                            for(var i=0; i < $scope.widget.widgetData.widData.tabularConfig.AllingArr.length; i++ ){
-
-                                if($scope.widget.widgetData.widData.tabularConfig.AllingArr[i].isString == false){
-                                    var obj = {
-                                        "agg": $scope.widget.widgetData.widData.tabularConfig.AllingArr[i].Aggregation,
-                                        "field": $scope.widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute
-                                    };
-
-                                    fieldArr.push(obj);
-                                }
-                                    
-
-                            }
-
-                            $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
-                                   if(status == true){
-                                     
-                                      for(var i = 0; i < fieldArr.length ; i++)  {
-                                            var str = fieldArr[i].agg+"_"+fieldArr[i].field;
-                                            var obj = {
-                                                field : fieldArr[i].field,
-                                                aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
-                                                value : res[0][str] 
-                                            }
-
-                                            for(var j=0; j < $scope.widget.widgetData.widData.tabularConfig.AllingArr.length; j++){
-
-                                                if($scope.widget.widgetData.widData.tabularConfig.AllingArr[j].Attribute == fieldArr[i].field){
-
-                                                    $scope.widget.widgetData.widData.tabularConfig.AllingArr[j].Aggregation_value = Math.round(res[0][str] * 100) / 100  ;
-
-                                                }
-                                            }
-                                      
-                                      }
-
-                                    $scope.widget.widgetData.widData.Aggquery =query;
-                                    $scope.summaryData = data;
-                                    $scope.generateTabular();
-                                    $scope.eventHndler.isLoadingChart = false;
-
-                                   }
-                            },undefined,undefined);
-                        }
-                    }
-                    else{
-                                    $scope.summaryData = data;
-                                    $scope.generateTabular();
-                                    $scope.eventHndler.isLoadingChart = false;
-                    }
-
-
-                    //--------------------------
-
-                 
-                }, $scope.initRequestLimit.value);
-
-               $scope.dataToBeBind.receivedQuery = query;
-               $scope.widget.widgetData.widData.query = query;
             
         }, 
         selectAttribute : function(fieldName) {
@@ -4009,6 +3915,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             widget.widgetData.widView = "views/query/chart-views/Tabular.html";
             widget.widgetData.initCtrl = "elasticInit";
             widget.widgetName = "Tabular";
+            tabularService.dataSource = "";
             $scope.saveChart(widget);
 
         }
@@ -4016,39 +3923,15 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
 
     $scope.start = 0;
-    $scope.sort ='';
     $scope.query = "";
     $scope.userList=[];
     $scope.allingments = ["left","right","center"];
     $scope.aggregationArr = ["sum","avg","count","min","max"];
- 
-    $scope.changeSort = function(name){
-        //$scope.cc.deselect();
-        if($scope.sort==name.Attribute){
-          $scope.sort='-'+name.Attribute;
-          $scope.orderByColumnName=name.Attribute;
-          $scope.OrderType='DESC';
-          $scope.sorting=true;
-        }else if($scope.sort=='-'+name.Attribute){
-          $scope.sort='';
-          $scope.sorting=false;
-        }else{
-          $scope.sort=name.Attribute;
-          $scope.orderByColumnName=name.Attribute;
-          $scope.OrderType='ASC';
-          $scope.sorting=true;
-        }
-
-        $scope.generateTable();
-
-    };
-
-
 
      $scope.generateTabular = function(){
         
             $scope.widget.widgetData.widData.tabularService.setPagination($scope.summaryData,$scope.widget.widgetData.widData);
-             $scope.eventHndler.isLoadingChart = false;
+            $scope.eventHndler.isLoadingChart = false;
      };
 
     $scope.generateTable=function(){
@@ -4066,7 +3949,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
                         var Alignment = "left";
                         var isString = true;
-                        if(att.type == "INTEGER" || att.type == "FLOAT")
+                        if(att.type == "INTEGER" || att.type == "FLOAT" ||
+                            att.type.toUpperCase() == "TINYINT"  || att.type.toUpperCase() == "SMALLINT" ||
+                            att.type.toUpperCase() == "INT" || att.type.toUpperCase() == "BIGINT" ||
+                            att.type.toUpperCase() == "NUMERIC" || att.type.toUpperCase() == "DECIMAL" ||
+                            att.type.toUpperCase() == "FLOAT" || att.type.toUpperCase() == "REAL" ||
+                            att.type.toUpperCase() == "SMALLMONEY" || att.type.toUpperCase() == "MONEY")
                         {
                             Alignment = "right";
                             isString = false;

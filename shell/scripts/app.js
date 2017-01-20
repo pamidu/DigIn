@@ -9,8 +9,7 @@ var routerApp = angular.module('DuoDiginRt', [
     '720kb.socialshare',
     'ngStorage',
     'configuration',
-    'directivelibrary',
-    'ngMdIcons',    
+    'directivelibrary',   
     'gridster',
     'ui.calendar',
     'mgcrea.ngStrap',
@@ -33,7 +32,6 @@ var routerApp = angular.module('DuoDiginRt', [
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
     "ngTagsInput",
     'pouchdb',
-    'jkuri.slimscroll',
     'rzModule',
 	'md-steppers',
     'stripe-payment-tools',
@@ -730,24 +728,6 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
     };
 
 
-}])
-
-routerApp.controller('userprofileWidgetController', ['$scope','ProfileService', function ($scope,ProfileService) {
-
-   $scope.userDetails = ProfileService.UserDataArr;
-
-    (function () {
-        var menu_trigger = $("[data-card-menu]");
-        var back_trigger = $("[data-card-back]");
-
-        menu_trigger.click(function () {
-            $(".card, body").toggleClass("show-menu");
-        });
-
-        back_trigger.click(function () {
-            $(".card, body").toggleClass("show-menu");
-        });
-    })();
 }])
 
 routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {

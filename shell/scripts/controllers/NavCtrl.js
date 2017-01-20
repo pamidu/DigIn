@@ -992,7 +992,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     })
                         .success(function (data) {
 							$scope.componentsLoaded = true;
-                            console.log("data getAllDashboards", data);
 
                             $scope.dashboards = [];
 
@@ -1026,7 +1025,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 console.log(err);
                             }).then(function (data) {
                                 angular.forEach(data.rows, function (row) {
-                                    console.log(typeof(row.doc.dashboard));
                                     //var records = CircularJSON.parse(row.doc.dashboard);
                                     var records = row.doc.dashboard;
                                     var isAvailble = false;
@@ -1042,7 +1040,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         );
                                     }
                                 });
-                                console.log($scope.dashboards);
                             });
                             $mdDialog.hide();
                         })
@@ -1915,7 +1912,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     element: '#socialMedia',
                     intro: 'Dig deep in to your social media pages',
                     position: 'right'
-                }, {
+                },
+				{
+                    element: '#shareSocial',
+                    intro: 'Share your Dashboards on Social Media',
+                    position: 'right'
+                },{
                     element: '#settings',
                     intro: 'Configure the settings related to the system and users',
                     position: 'right'
@@ -1931,6 +1933,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }, {
                     element: '#save',
                     intro: 'Save the Dashboard'
+                }, {
+                    element: '#share',
+                    intro: 'Share your dashboard or datasets'
                 }, {
                     element: '#notifications',
                     intro: 'Checkout the latest notifications here'

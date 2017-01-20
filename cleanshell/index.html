@@ -420,7 +420,7 @@
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
 							<li ng-click="navigate($event,'Visualize Data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
-							<li ng-click="navigate($event,'User Assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>User Assistance</a></li>
+							<li ng-click="navigate($event,'User Assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
 						</ul>
 					</li>
 					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')" id="step4">
@@ -485,6 +485,7 @@
 	<script src="bower_components/angular-material/angular-material.min.js"></script>
 	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
 	<script src="js/angular-simple-logger.min.js"></script>
 	<script src="js/angular-google-maps.min.js"></script>
 	
@@ -492,7 +493,9 @@
     <script src="js/angular-gridster.min.js"></script>
 	<script src="js/uimicrokernel.js"></script>
 
-	
+	<script src="js/config.js"></script>
+	<script src="js/services/diginservicehandler.js"></script>
+	<script src="js/services/utility.js"></script>
 	<script src="js/directivelibrary.js"></script>
 	<script src="js/md-steppers.js"></script>
 	<script src="js/highcharts.js"></script>

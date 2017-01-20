@@ -96,3 +96,19 @@ md-chips-wrap{
 }
 /*contact chips end*/
 
+.drop-box {
+    border: 2px dashed #DDD;
+    width: 100%;
+    min-height: 150px;
+    text-align: center;
+    padding: 15px;
+}
+
+.table-card{
+	padding: 20px;
+}
+
+.table-striped{
+	width: 100%;
+	text-align: left;
+}

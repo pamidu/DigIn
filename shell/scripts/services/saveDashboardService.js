@@ -4,6 +4,90 @@ this.IsSavingINprogress = false;
 var localThis = this;
 
   this.saveDashboard = function(dashboardName,refreshInterval,type,scope) {
+    var metricArray = [];
+    //save metric chart for notifications
+    //create metric widget array
+    angular.forEach($rootScope.dashboard.pages, function(page){
+      angular.forEach(page.widgets,function(widget){
+        var notification_id = "";
+        if (typeof(widget.widgetData.commonSrc) != "undefined") {
+          if (widget.widgetData.selectedChart.chartType == "metric") {
+            metricObj = {};
+            metricObj = {
+              notification_id: null,
+              actual_value: widget.widgetData.commonSrc.query,
+              target_value: widget.widgetData.selectedChart.initObj.notificationValue,
+              trigger_type: widget.widgetData.selectedChart.initObj.targetRange,
+              is_tv_constant: widget.widgetData.selectedChart.initObj.notificationConstant,
+              dashboard_name: $rootScope.dashboard.compName,
+              widget_name: widget.widgetName,
+              dbname:widget.widgetData.commonSrc.src.src,
+              datasource_id:widget.widgetData.commonSrc.src.id,
+              widget_id:widget.widgetID,
+              page_id:widget.pageID
+            }
+            if (widget.notification_id === undefined) {
+              notification_id = null
+            } else {
+              notification_id = widget.notification_id
+            }
+            metricObj["notification_id"] = notification_id;
+            metricArray.push(metricObj);
+          }
+        }
+      });
+    });
+    // metric chart notification settings
+    if (metricArray.length > 0) {
+      var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
+      $http({
+        method: 'POST',                  
+        url: 'http://192.168.0.30:8080/'+'store_notification_details',
+        data: angular.fromJson(CircularJSON.stringify(metricArray)),
+        headers: {  
+          'Content-Type': 'application/json',
+          'SecurityToken':userInfo.SecurityToken
+        }
+      }).success(function(response){
+        if(response.Is_Success){
+          angular.forEach($rootScope.dashboard.pages, function(page){
+            angular.forEach(page.widgets,function(widget){
+              angular.forEach(response.Result,function(row){
+                if(row.widget_id == widget.widgetID && row.page_id == widget.pageID){
+                  widget.notification_id = row.notification_id;
+                }
+              });
+            });
+          });
+          saveDashboardFun(dashboardName,refreshInterval,type,scope);
+        } else {
+          ngToast.create({
+            className: 'danger',
+            content: 'Error in saving metric KPI notifications.',
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true
+          });
+          saveDashboardFun(dashboardName,refreshInterval,type,scope);
+        }
+      })
+      .error(function(error){
+        ngToast.create({
+          className: 'danger',
+          content: 'Error in saving metric KPI notifications.',
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          dismissOnClick: true
+        });
+        saveDashboardFun(dashboardName,refreshInterval,type,scope);
+      })
+    } else {
+      saveDashboardFun(dashboardName,refreshInterval,type,scope);
+    }
+
+  }
+
+  var saveDashboardFun = function(dashboardName,refreshInterval,type,scope) {
     localThis.IsSavingINprogress =true;
     var pagesArray = [];
     var dynamicPages = [];
@@ -100,82 +184,7 @@ var localThis = this;
       }
     })
     .success(function(response){
-      // send a call to the 
-      var metricArray = [];
       if (response.Is_Success) {
-        //save metric chart for notifications
-        //create metric widget array
-        angular.forEach($rootScope.dashboard.pages, function(page){
-          angular.forEach(page.widgets,function(widget){
-            var notification_id = "";
-            if (typeof(widget.widgetData.commonSrc) != "undefined") {
-              if (widget.widgetData.selectedChart.chartType == "metric") {
-                metricObj = {};
-                metricObj = {
-                  notification_id: null,
-                  actual_value: widget.widgetData.commonSrc.query,
-                  target_value: widget.widgetData.selectedChart.initObj.notificationValue,
-                  trigger_type: widget.widgetData.selectedChart.initObj.targetRange,
-                  is_tv_constant: widget.widgetData.selectedChart.initObj.notificationConstant,
-                  dashboard_name: $rootScope.dashboard.compName,
-                  widget_name: widget.widgetName,
-                  dbname:widget.widgetData.commonSrc.src.src,
-                  datasource_id:widget.widgetData.commonSrc.src.id,
-                  widget_id:widget.widgetID,
-                  page_id:widget.pageID
-                }
-                if (widget.notification_id === undefined) {
-                  notification_id = null
-                } else {
-                  notification_id = widget.notification_id
-                }
-                metricObj["notification_id"] = notification_id;
-                metricArray.push(metricObj);
-              }
-            }
-          });
-        });
-        // metric chart notification settings
-        if (metricArray.length > 0) {
-          $http({
-            method: 'POST',                  
-            url: 'http://192.168.0.30:8080/'+'store_notification_details',
-            data: angular.fromJson(CircularJSON.stringify(metricArray)),
-            headers: {  
-              'Content-Type': 'application/json',
-              'SecurityToken':userInfo.SecurityToken
-            }
-          }).success(function(response){
-            if(response.Is_Success){
-              angular.forEach($rootScope.dashboard.pages, function(page){
-                angular.forEach(page.widgets,function(widget){
-                  angular.forEach(response.Result,function(row){
-                    if(row.widget_id == widget.widgetID && row.page_id == widget.pageID){
-                      widget.notification_id = row.notification_id;
-                    }
-                  });
-                });
-              });
-            } else {
-              ngToast.create({
-                className: 'danger',
-                content: 'Error in saving metric KPI notifications.',
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                dismissOnClick: true
-              });
-            }
-          })
-          .error(function(error){
-            ngToast.create({
-              className: 'danger',
-              content: 'Error in saving metric KPI notifications.',
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              dismissOnClick: true
-            });
-          })
-        }
         //assign the id name type refresh interval to dashboard
         var selectedPage = $rootScope.selectedPage;
         $rootScope.dashboard.compID = response.Result;
@@ -233,7 +242,6 @@ var localThis = this;
         setState(false,scope);
       }
     });
-
   }
 
   var setWidgets = function(widgets,i) {
@@ -334,6 +342,9 @@ var localThis = this;
           row: widgets[j].row,
           col: widgets[j].col
         }
+      }
+      if ($rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType == "metric") {
+        widgetObject["notification_id"] = $rootScope.dashboard.pages[i].widgets[j].notification_id;
       }
       widgetsArray.push(widgetObject);
       dynamicWidgets.push({

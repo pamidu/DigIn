@@ -155,6 +155,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.chartWrapStyle = {
         height: 'calc(63vh)'
     };
+    $scope.notificationValue = "";
     $scope.isPendingRequest = false;
     $scope.dataToBeBind = {};
     $scope.dataToBeBind.receivedQuery = "";
@@ -3791,7 +3792,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 color: $scope.selectedChart.initObj.color,
                 scalePosition: $scope.selectedChart.initObj.scalePosition
             };
-            if ($scope.selectedChart.initObj.notificationValue == "") {
+            if ($scope.notificationValue == "") {
                 if ($scope.selectedChart.initObj.targetQuery == "") {
                     $scope.selectedChart.initObj.notificationValue = $scope.selectedChart.initObj.targetValue;
                     $scope.selectedChart.initObj.notificationConstant = true;
@@ -5036,6 +5037,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.timeAttribute = "";
         $scope.selectedChart.initObj.notificationConstant = "";
         $scope.selectedChart.initObj.notificationValue = "";
+        $scope.notificationValue = "";
         $scope.selectedChart.initObj.rangeSliderOptions = {
             minValue: 0,
             maxValue: 300,

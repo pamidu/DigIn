@@ -97,7 +97,7 @@
         <md-input-container layout="column">
             <div>
                 <label>Notification Trigger Value</label>
-                <input type="number" ng-model="selectedChart.initObj.notificationValue">
+                <input type="number" ng-model="notificationValue" ng-change="selectedChart.initObj.notificationValue = notificationValue">
             </div>
         </md-input-container>
     </md-container>

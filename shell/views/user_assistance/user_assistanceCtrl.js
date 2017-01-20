@@ -1,4 +1,4 @@
-routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state){
+routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbUploadType', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbUploadType){
 		$scope.$parent.currentView = "User Assistance";
 		var chartBackgroundColor = "";
 		
@@ -24,7 +24,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.uploadedFiles = [];
 		$scope.datasource_id = '';
 		$scope.selectedFolder = "";
-		$scope.client = $diginengine.getClient("BigQuery");
+		$scope.client = $diginengine.getClient(dbUploadType);
 		$scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","TIMESTAMP","DATE","TIME","DATETIME"];
 		//Upload Types
 		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
@@ -431,7 +431,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 					},
 					data: {
 						schema: JSON.stringify($scope.schema),
-						db: 'BigQuery',
+						db: dbUploadType,
 						SecurityToken: userInfo.SecurityToken,
 						filename: $scope.files[i].name,
 						folder_name: $scope.folderName.toLowerCase(),

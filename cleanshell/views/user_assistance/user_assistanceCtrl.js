@@ -1,4 +1,4 @@
-DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state){
+DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbUploadType', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbUploadType){
 		$scope.$parent.currentView = "User Assistance";
 		var chartBackgroundColor = "";
 		
@@ -24,7 +24,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.uploadedFiles = [];
 		$scope.datasource_id = '';
 		$scope.selectedFolder = "";
-		$scope.client = $diginengine.getClient("BigQuery");
+		$scope.client = $diginengine.getClient(dbUploadType);
 		$scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","TIMESTAMP","DATE","TIME","DATETIME"];
 		//Upload Types
 		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
@@ -300,7 +300,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 						return;
 					};
 				},
-				templateUrl: 'views/widgets/excelFileUpload/excelUploadConfirm.html',
+				templateUrl: 'dialogs/confirm/excelUploadConfirm.html',
 				parent: angular.element(document.body)
 			});
 		}
@@ -431,7 +431,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 					},
 					data: {
 						schema: JSON.stringify($scope.schema),
-						db: 'BigQuery',
+						db: dbUploadType,
 						SecurityToken: userInfo.SecurityToken,
 						filename: $scope.files[i].name,
 						folder_name: $scope.folderName.toLowerCase(),
@@ -522,10 +522,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
-			if(type == "Big Query")
+			if(type == "Big Query" || type == "memsql")
 			{
 				$scope.showBusyText = true;
-				$diginengine.getClient("BigQuery").getTables(function(res, status) {
+				$diginengine.getClient(type).getTables(function(res, status) {
 					
 					if(status) {
 						$scope.showBusyText = false;

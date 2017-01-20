@@ -100,7 +100,7 @@
                         }
                     });
 
-                    var wSrc = "scripts/webworkers/webWorker.js";
+                    var wSrc = "js/services/webWorker.js";
                     if (database == "BigQuery") {
                         if (!gb) {
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
@@ -147,7 +147,7 @@
                 },
 
                 getExecQuery: function(qStr, id, cb, limit,offset) {
-                    var wSrc = "scripts/webworkers/webWorker.js";
+                    var wSrc = "js/services/webWorker.js";
                     var limVal = undefined;
                     var offVal = 0;
                     if (limit) 

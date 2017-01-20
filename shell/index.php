@@ -134,7 +134,7 @@
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
-<!--script src="http://code.highcharts.com/highcharts.js"></script--> 
+<!-- <script src="http://code.highcharts.com/highcharts.js"></script>  -->
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>

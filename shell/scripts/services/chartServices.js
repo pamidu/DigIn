@@ -67,7 +67,6 @@ routerApp.service('chartServices',function($filter) {
 	this.mapMetricTrendChart = function(selectedChart,namespace,trendValue){
 		var seriesData = [];
         var tempArr = [];
-        trendValue = $filter('orderBy')(trendValue,selectedChart.initObj.groupByField);
         angular.forEach(trendValue,function(key){
             var utc = moment(key[selectedChart.initObj.groupByField]).utc().valueOf();
             tempArr = [utc,key[namespace]];

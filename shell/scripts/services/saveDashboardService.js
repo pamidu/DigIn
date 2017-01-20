@@ -29,7 +29,7 @@ var localThis = this;
       }
 
       //if the page is a temporary / new page 
-      if($rootScope.dashboard.pages[i].pageID.substr(0, 4) == "temp" && $rootScope.online ){
+      if($rootScope.dashboard.pages[i].pageID.toString().substr(0, 4) == "temp" && $rootScope.online ){
         pageObject = {
           "widgets": widgetsArray,
           "pageID": null,
@@ -129,11 +129,13 @@ var localThis = this;
                 } else {
                   notification_id = widget.notification_id
                 }
+                metricObj["notification_id"] = notification_id;
                 metricArray.push(metricObj);
               }
             }
           });
         });
+        // metric chart notification settings
         if (metricArray.length > 0) {
           $http({
             method: 'POST',                  
@@ -144,7 +146,25 @@ var localThis = this;
               'SecurityToken':userInfo.SecurityToken
             }
           }).success(function(response){
-
+            if(response.Is_Success){
+              angular.forEach($rootScope.dashboard.pages, function(page){
+                angular.forEach(page.widgets,function(widget){
+                  angular.forEach(response.Result,function(row){
+                    if(row.widget_id == widget.widgetID && row.page_id == widget.pageID){
+                      widget.notification_id = row.notification_id;
+                    }
+                  });
+                });
+              });
+            } else {
+              ngToast.create({
+                className: 'danger',
+                content: 'Error in saving metric KPI notifications.',
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                dismissOnClick: true
+              });
+            }
           })
           .error(function(error){
             ngToast.create({
@@ -293,7 +313,7 @@ var localThis = this;
         }
       }
       //if the widget is a temporary / new widget 
-      if($rootScope.dashboard.pages[i].widgets[j].widgetID.substr(0, 4) == "temp" && $rootScope.online){
+      if($rootScope.dashboard.pages[i].widgets[j].widgetID.toString().substr(0, 4) == "temp" && $rootScope.online){
         widgetObject = {
           "widgetID": null,
           "widgetName": widgets[j].widgetName,

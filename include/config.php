@@ -14,8 +14,8 @@ define("APPICON_PATH", "/var/www/html/devportal/appicons");
         //define("THUMB_PATH", BASE_PATH . "/thumbnails");
 define("SVC_OS_URL", "http://digin.duoworld.com:3000");
 define("SVC_OS_BULK_URL", "http://prod.auth.digin.io/transfer");
-define("SVC_AUTH_URL", "http://digin.duoworld.com:3048");
-define("SVC_CEB_URL", "http://digin.duoworld.com:3500");
+define("SVC_AUTH_URL", "http://dev.auth.digin.io:3048");
+define("SVC_CEB_URL", "http://dev.auth.digin.io:3500");
 define("SVC_SMOOTHFLOW_URL", "http://smoothflow.io");
 
 define("Digin_Domain", "dev.digin.io");

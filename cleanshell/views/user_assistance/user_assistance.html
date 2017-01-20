@@ -9,17 +9,17 @@
 <div class="setting-container">
 	 <md-steppers id="mainStepper" md-dynamic-height ng-init="assist_selected = 0" md-selected="assist_selected" md-stretch-steppers="always">
 	  <md-step label="Upload Source" md-complete="assist_step1.completed" ng-disabled="assist_step1.disabled">
-		<md-content>
+		<md-content class="md-whiteframe-2dp layout-whiteframe" style="margin-bottom: 20px;">
 		  <div ng-include="'views/user_assistance/upload/upload.html'"></div>
 		</md-content>
 	  </md-step>
 	  <md-step label="Connect Source" md-complete="assist_step2.completed" ng-disabled="assist_step2.disabled">
-		<md-content>
+		<md-content class="md-whiteframe-2dp layout-whiteframe" style="margin-bottom: 20px;">
 		  <div ng-include="'views/user_assistance/connectSource/connectSource.html'"></div>
 		</md-content>
 	  </md-step>
 	  <md-step label="Create Widget" md-complete="assist_step3.completed" ng-disabled="assist_step3.disabled">
-		<md-content>
+		<md-content class="md-whiteframe-2dp layout-whiteframe" style="margin-bottom: 20px;">
 		  <div ng-include="'views/user_assistance/createWidget/createWidget.html'"></div>
 		</md-content>
 	  </md-step>

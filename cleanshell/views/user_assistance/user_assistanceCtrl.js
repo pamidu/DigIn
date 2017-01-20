@@ -300,7 +300,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 						return;
 					};
 				},
-				templateUrl: 'views/widgets/excelFileUpload/excelUploadConfirm.html',
+				templateUrl: 'dialogs/confirm/excelUploadConfirm.html',
 				parent: angular.element(document.body)
 			});
 		}
@@ -522,10 +522,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
-			if(type == "Big Query")
+			if(type == "Big Query" || type == "memsql")
 			{
 				$scope.showBusyText = true;
-				$diginengine.getClient("BigQuery").getTables(function(res, status) {
+				$diginengine.getClient(type).getTables(function(res, status) {
 					
 					if(status) {
 						$scope.showBusyText = false;

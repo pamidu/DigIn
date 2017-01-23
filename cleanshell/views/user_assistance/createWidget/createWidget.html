@@ -15,14 +15,14 @@ md-list-item, md-list-item .md-list-item-inner
 			<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 				<h2>Series</h2>
 				<md-menu md-position-mode="target-right target" style="margin-top:10px">
-				  <md-button class="md-fab md-mini" ng-click="$mdOpenMenu($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+				  <md-button class="md-fab md-mini" ng-click="$mdOpenMenu($event)" style="width:36px;height:30px;line-height:30px" aria-label="add aggregations"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
 				  <md-menu-content width="4" style="padding:10px">
 					<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
 					<v-accordion class="vAccordion--default">
 
-					  <v-pane ng-repeat="(key, value) in series">
+					  <v-pane ng-repeat="(key, value) in selectedMeasures">
 						<v-pane-header>
-						  {{ value.filedName }}
+						  {{ value.name }}
 						</v-pane-header>
 
 						<v-pane-content>
@@ -39,11 +39,11 @@ md-list-item, md-list-item .md-list-item-inner
 				</md-menu>
 			</div>
 			<div style="padding:0px 10px">
-				<md-divider></md-divider>
+				<md-divider style="padding:2px"></md-divider>
 				<md-list>
-					<md-list-item class="secondary-button-padding" ng-repeat="item in selectedSeries" style="border: 1px solid rgba(255,255,255,0.12);border-radius: 3px;margin-bottom:4px">
-						<p>{{item.filedName}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
-						<md-button class="md-icon-button md-secondary" ng-click="removeFromSeries($event, index)"><span class="ti-close"></span></md-button>
+					<md-list-item class="secondary-button-padding" ng-repeat="item in selectedSeries" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+						<p>{{item.name}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
+						<md-button class="md-icon-button md-secondary" ng-click="removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
 					</md-list-item>
 				</md-list>
 			</div>
@@ -58,25 +58,32 @@ md-list-item, md-list-item .md-list-item-inner
 				  <md-menu-content width="4" style="padding:10px">
 					<span style="font-size: 14px;font-weight: 800;">Select any Category/ Categories</span><br/>
 					<md-list>
-						<md-list-item class="secondary-button-padding" ng-repeat="item in category" ng-click="pushCateory($index,item)">
-							<p>{{item}}</p>
+						<md-list-item class="secondary-button-padding" ng-repeat="item in selectedAttributes" ng-click="pushCateory($index,item)">
+							<p>{{item.name}}</p>
 						</md-list-item>
 					</md-list>
 				  </md-menu-content>
 				</md-menu>
 			</div>
 			<div style="padding:0px 10px">
-				<md-divider></md-divider>
+				<md-divider style="padding:2px"></md-divider>
 				<md-list>
-					<md-list-item class="secondary-button-padding" ng-repeat="item in selectedCategory" style="border: 1px solid rgba(255,255,255,0.12);border-radius: 3px;margin-bottom:4px">
-						<p>{{item}}</p>
-						<md-button class="md-icon-button md-secondary" ng-click="removeFromCategory($event, index)"><span class="ti-close"></span></md-button>
+					<md-list-item class="secondary-button-padding" ng-repeat="item in selectedCategory" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+						<p>{{item.name}}</p>
+						<md-button class="md-icon-button md-secondary" ng-click="removeFromCategory($index)" aria-label="remove from category"><span class="ti-close"></span></md-button>
 					</md-list-item>
 				</md-list>
 			</div>
 		</div>
 	</div>
-	<div layout="column" layout-align="center center" flex>
-		<div id="container" style="margin:10px">Placeholder for chart</div>
+	<div layout="column" flex-gt-sm="65">
+		<div layout="column" layout-align="center center">
+			<highchart flex config="highcharts"></highchart>
+			<!--<div id="highchart-container" style="margin:10px">Select a series and a category to create a simple bar chart</div>-->
+			<md-progress-circular ng-show="showBarChartLoading" class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>
+		</div>
+		<div flex layout="row" layout-align="end end" class="side-margins">
+			<md-button class="md-raised md-primary" aria-label="upload" ng-click="createWidgetFinish()" ng-disabled="showBarChartLoading || selectedCategory.length == 0 || selectedSeries.length == 0">Create Widget</md-button>
+		</div>
 	</div>
 </div>

@@ -120,7 +120,7 @@
 <!-- search end -->
 <!--script type="text/javascript" src="scripts/vendor/prefixfree.min.js"></script>
 <script type="text/javascript" src='scripts/vendor/jquery.js'></script-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
@@ -134,7 +134,7 @@
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script src="https://code.highcharts.com/stock/highstock.js"></script>
-<!--script src="http://code.highcharts.com/highcharts.js"></script--> 
+<!-- <script src="http://code.highcharts.com/highcharts.js"></script>  -->
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>

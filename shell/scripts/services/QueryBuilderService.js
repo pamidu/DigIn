@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartServices,tabularService){
+routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metricChartServices,tabularService){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -228,7 +228,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
             if (trendValue !== undefined)
             {
                 key = widObj.commonSrc.actual[0].condition.toLowerCase() + "_" + widObj.commonSrc.actual[0].filedName;
-                chartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
+                metricChartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
             }
             // Apply metric settings after filtering if target value is set
             if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
@@ -236,7 +236,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,chartS
                     widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
                     widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
                 }
-                chartServices.applyMetricSettings(widObj.selectedChart);
+                metricChartServices.applyMetricSettings(widObj.selectedChart);
             }
         }
 

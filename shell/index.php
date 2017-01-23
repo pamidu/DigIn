@@ -200,7 +200,7 @@
 <script type="application/javascript" src="scripts/services/fbGraphServices.js"></script>
 <script type="text/javascript" src="scripts/factories/socialMedia/twitterService.js"></script>
 <script type="text/javascript" src="scripts/services/filterService.js"></script>
-<script type="text/javascript" src="scripts/services/chartServices.js"></script>
+<script type="text/javascript" src="scripts/services/metricChartServices.js"></script>
 <script type="text/javascript" src="scripts/services/QueryBuilderService.js"></script>
 
 <!-- services end -->

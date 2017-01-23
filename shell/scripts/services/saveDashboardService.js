@@ -42,7 +42,7 @@ var localThis = this;
       var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
       $http({
         method: 'POST',                  
-        url: 'http://192.168.0.30:8080/'+'store_notification_details',
+        url: Digin_Engine_API + 'store_notification_details',
         data: angular.fromJson(CircularJSON.stringify(metricArray)),
         headers: {  
           'Content-Type': 'application/json',

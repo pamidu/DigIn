@@ -1,5 +1,5 @@
 angular.module('configuration', [])
-.constant('Digin_Engine_API', 'http://dev.digin.io:1929/')
+.constant('Digin_Engine_API', 'http://dev.digin.io/DigInEngine/')
 .constant('Digin_Engine_API_Namespace', 'Demo')
 .constant('Digin_Tomcat_Base', 'http://dev.digin.io:9897/')
 .constant('Digin_Domain', 'dev.digin.io')
@@ -21,7 +21,5 @@ angular.module('configuration', [])
 .constant('onsite', true)   
 .constant('tenantId','test514')
 .constant('version','V3.2.1.3')
-//#Database type --> mssql, postgresql,bigquery,mysql
-.constant('dbType', 'mssql')
-//#Database type for csv/excel upload
-.constant('dbUploadType', 'memsql')
+//#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
+.constant('dbType', 'memsql')

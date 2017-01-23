@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', 'dbUploadType', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast, dbUploadType) {
+routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', 'dbType', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast, dbType) {
 
 
     $scope.files = []; //Files imported array
@@ -16,7 +16,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
     $scope.uploadedFiles = [];
     $scope.datasource_id = '';
     $scope.selectedFolder = "";
-    $scope.client = $diginengine.getClient(dbUploadType);
+    $scope.client = $diginengine.getClient(dbType);
     $scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","TIMESTAMP","DATE","TIME","DATETIME"];
 
     //start of page one Folder name configuring
@@ -415,7 +415,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 },
                 data: {
                     schema: JSON.stringify($scope.schema),
-                    db: dbUploadType,
+                    db: dbType,
                     SecurityToken: userInfo.SecurityToken,
                     filename: $scope.files[i].name,
                     folder_name: $scope.folderName.toLowerCase(),

@@ -73,7 +73,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, chartServices, layoutManager, tabularService) {
+routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, metricChartServices, layoutManager, tabularService) {
     if($rootScope.showHeader == true)
    {
     $rootScope.showHeader = layoutManager.showHeader();
@@ -4998,8 +4998,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 if (status) {
                     $scope.selectedChart.initObj.trendQuery = query;
                     var nameSpace = executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName;
-                    chartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
-                    chartServices.applyMetricSettings($scope.selectedChart);
+                    metricChartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
+                    metricChartServices.applyMetricSettings($scope.selectedChart);
                     $scope.$apply(function(){
                         $scope.isPendingRequest = false;
                         $scope.eventHndler.isToggleColumns = true;
@@ -5014,7 +5014,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
             },$scope.selectedChart.initObj.groupByField,filterStr);
         } else {
-            chartServices.applyMetricSettings($scope.selectedChart);
+            metricChartServices.applyMetricSettings($scope.selectedChart);
         }
     };
     // Reset metric chart settings

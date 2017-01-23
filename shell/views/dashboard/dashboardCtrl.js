@@ -1,5 +1,5 @@
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','chartServices', 'layoutManager','tabularService',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,chartServices, layoutManager,tabularService) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','metricChartServices', 'layoutManager','tabularService',
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,metricChartServices, layoutManager,tabularService) {
         
         $rootScope.showSideMenu = layoutManager.hideSideMenu();
         if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
@@ -722,7 +722,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
                     widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
                 }
-                chartServices.applyMetricSettings(widObj.selectedChart);
+                metricChartServices.applyMetricSettings(widObj.selectedChart);
             }
             $scope.$apply();
         }

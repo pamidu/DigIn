@@ -1,5 +1,5 @@
 ////////////////////////////////
-// File : chartServices
+// File : metricChartServices
 // Owner  : Dilani
 // Last changed date : 2017/01/03
 // Version : 3.1.0.2
@@ -7,7 +7,7 @@
 ////////////////////////////////
 
 // Services for chart functionalities
-routerApp.service('chartServices',function($filter) {
+routerApp.service('metricChartServices',function($filter) {
 	// Apply colour settings for metric widget
 	this.applyMetricSettings = function(selectedChart) {
 	    if (typeof selectedChart.initObj.value != "number") var value = parseInt(selectedChart.initObj.value.replace(/,/g,''));

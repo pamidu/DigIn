@@ -147,7 +147,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
         
 
-        if( dataEng == "BigQuery"){
+        if( dataEng == "BigQuery" || dataEng == "memsql"){
             for(var i=0; i < widget.widgetData.widData.tabularConfig.AllingArr.length; i++){
 
                 fieldArray.push(widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute);
@@ -233,7 +233,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
 
                 if(!sorting){
-                    if (db == "BigQuery") {
+                    if (db == "BigQuery" || db == "memsql") {
 
                         if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
                             var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.tbl + " ORDER BY "+widget.widgetData.widData.tabularConfig.defSortFeild+" "+widgetData.widData.tabularConfig.AscOrDec;
@@ -256,7 +256,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
                     }
                 }
                 else{
-                    if (db == "BigQuery") {
+                    if (db == "BigQuery" || db == "memsql") {
 
                         if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
                               var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.tbl + " ORDER BY "+orderByColumnName+" "+OrderType;

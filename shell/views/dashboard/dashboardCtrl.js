@@ -376,7 +376,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     //call service if the expanded dropdownaccordion is expanded
                     if (key.values === undefined) {
                         key.sync = true;
-                        if (widget.widgetData.commonSrc.src.src == "BigQuery") {
+                        if (widget.widgetData.commonSrc.src.src == "BigQuery" || widget.widgetData.commonSrc.src.src == "memsql" ) {
                             query = "SELECT " + key.filter.name + " FROM " + $diginurls.getNamespace() + "." + widget.widgetData.commonSrc.src.tbl + " GROUP BY " + key.filter.name;
                         } else if (widget.widgetData.commonSrc.src.src == "MSSQL") {
                             var db = widget.widgetData.commonSrc.src.tbl.split(".");
@@ -539,7 +539,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
             }else if (widget.widgetData.selectedChart.chart == "Tabular") {
 
-
+                widget.widgetData.widData.sort ="";
                 var filterQuerry =  tabularService.getExecQueryFilterArr(widget,filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
 
                 $scope.client.getExecQuery(filterQuerry, widget.widgetData.commonSrc.src.id, function(data, status) {

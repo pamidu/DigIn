@@ -90,18 +90,30 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 	.state('visualize_data', {
 		url: '/visualize_data',
 		templateUrl: 'views/data_source/visualize_data/visualize_data.html',
-		controller: 'visualize_dataCtrl',
+		controller: 'user_assistanceCtrl',
 		controllerAs: 'vm'
 	})
 	.state('upload_source', {
 		url: '/upload_source',
-		templateUrl: 'views/data_source/upload_source/upload_source.html'
+		templateUrl: 'views/data_source/upload_source/upload_source.html',
+		controller: 'user_assistanceCtrl'
 	})
 	.state('user_assistance', {
 		url: '/user_assistance',
 		templateUrl: 'views/user_assistance/user_assistance.html',
 		controller: 'user_assistanceCtrl',
 		controllerAs: 'vm'
+	})
+	
+	.state('query_builder', {
+		url: '/query_builder',
+		templateUrl: 'views/query_builder/query_builder.html',
+		controller: 'query_builderCtrl',
+		 params: {
+			'selectedAttributes': [],
+			'selectedMeasures': [],
+			'selectedFile': {}
+		  }
 	})
 	
 	.state('systemSettings', {

@@ -1,3 +1,10 @@
+ <style>
+md-steppers-content-wrapper{
+	max-width:960px;
+	margin: 0 auto;
+}
+</style>
+
 <!--CARD CONTAINER START-->
 <div class="card-container">
 	<!--WHITEFRAME START-->
@@ -5,117 +12,145 @@
 
 		<md-content>
 
-			<form name="editForm"  md-theme="default" ng-submit="profile.changeUserProfile()">
 				<div layout="row" layout-align="end end">
-					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
+					<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('back')"></md-button>
 				</div>
 					
 				<div class="setting-card-header">
-					<h2>Upload Source</h2>
+					<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Upload Source</h2>
 					<div class="setting-img-wrap" layout="row" layout-align="center center">
-						<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
-							<md-tooltip md-direction="bottom">
-								Upload Profile Picture
-							</md-tooltip>
-						</img>
-
+						<div style="height:120px">
+							<img hide-sm hide-xs ng-src="views/user_assistance/upload/magic-wand.png" />
+						</div>
+						<div class="slide-up">
+							<p>Welcome to <b>Digin</b>, This wizard will guild you through the process of uploading an Excel (CSV) file, using that file to create a basic <i>bar-chart</i> and later adding it to your dashboard.</p>
+						</div>
 					</div>
 				</div>
-				
-				
-				<!--Input Elements Start-->
-				<div layout="row" layout-align="start start">
-					<div class="section-title">Profile details</div>
-				</div>
-				
-				<div layout-gt-sm="row" class="side-margins">
-					<md-input-container class="md-block" flex-gt-sm>
-						<span>Full Name</span>
-						<input required type="text" name="name" ng-model="user.name"  ng-disabled="!editModeOn" aria-label="name"/>
-						<div ng-messages="editForm.name.$error" role="alert">
-						  <div ng-message-exp="['required']">
-								Full name is required
-						  </div>
+				<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep" md-busy-text="stepData[currentStep].busyText" md-busy="showBusyText">
+			  <md-step label="Select Type" md-complete="stepData[0].data.completed" ng-disabled="stepProgress < 1">
+				<md-content style="padding:20px">
+					<div layout="row" layout-align="center center" layout-wrap>
+						<md-card ng-repeat="type in uploadTypes"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  ng-click="disableFolderName(type.name)"  md-colors="{background:'primary-800'}">
+							<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+								<span class="product_name" style="border-bottom: 1px solid #white;">Upload {{type.name}}</span>
+							</div>
+							<div layout="row" layout-align="end end">
+								<i class="{{type.icon}}" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>
+							</div>
+						</md-card>
+					</div>
+				</md-content>
+			  </md-step>
+			  <md-step label="Folder Name" md-complete="stepData[0].data.completed" ng-disabled="stepProgress < 1">
+				<md-content style="padding:20px">
+					 <form name="step1" ng-submit="submitCurrentStep(stepData[0])">
+						<div layout-gt-sm="row">
+							<md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" flex>
+								<md-nav-item md-nav-click="goto('page1')" name="page1" flex>New Collection</md-nav-item>
+								<md-nav-item md-nav-click="goto('page2')" name="page2" flex>Exisiting Collection</md-nav-item>
+							</md-nav-bar>
 						</div>
-					</md-input-container>
-					<md-input-container class="md-block" flex-gt-sm>
-						<span>Company</span>
-						<input type="text" name="company" ng-model="user.company" ng-disabled="!editModeOn"  aria-label="company"/>					
-					</md-input-container>
-
-				</div>
-				
-				<div layout-gt-sm="row" class="side-margins">
-					<md-input-container class="md-block" flex-gt-sm="60">
-						<span>Email</span>
-						<input required type="email" name="email" ng-model="user.email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-disabled="true"  aria-label="email"/>
-						<div ng-messages="editForm.email.$error" role="alert">
-						  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-							Please enter a valid Email
-						  </div>
+						<div layout="row" class="side-margins">
+							<div flex class="side-margins" style="padding-top: 30px;">
+								<md-input-container class="md-block" flex-gt-sm="90">
+									<span>Folder Name:</span>
+									<input required name="folderName" ng-model="folderName" ng-disabled="newCollection" aria-label="folder name" ng-pattern='/^\w+$/'>
+									<div ng-messages="step1.folderName.$error">
+										<div ng-message="required">This is required.</div>
+										<div ng-message="pattern">Invalid Folder Name.</div>
+									</div>
+								</md-input-container>
+							</div>
+						   
+							<div flex class="side-margins" style="padding-top: 30px;overflow-x: scroll;max-height: 200px;">
+								<md-content>
+									<md-radio-group class="effect-radio-group" ng-model="selectedFolder" aria-label="folder or file">
+										<md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder"> {{folder.name}}  </md-radio-button>
+									</md-radio-group>
+								</md-content>
+							</div>
+							
 						</div>
-					</md-input-container>
-					<md-input-container class="md-block" flex-gt-sm>
-						<span>Contact no</span>
-						<input required type="text" name="contactNo" ng-model="user.contactNo" ng-pattern="/^[0-9 ]*$/" ng-disabled="!editModeOn"  aria-label="contact no"/>
-						<div ng-messages="editForm.contactNo.$error" role="alert">
-						  <div ng-message-exp="['required', 'pattern']">
-								Enter a valid contact number
-						  </div>
+						<div flex layout="row" layout-align="space-between center" class="side-margins">
+							<md-button ng-click="moveToPreviousStep()" class="md-raised md-primary" aria-label="go to previous">Previous</md-button>
+							<md-button type="submit" ng-disabled="showBusyText" class="md-raised md-primary" aria-label="sumbit folder">NEXT</md-button>
 						</div>
-					</md-input-container>
+					</form>
+				</md-content>
+			  </md-step>
+			  <md-step label="Upload" md-complete="stepData[1].data.completed" ng-disabled="stepProgress < 2">
+				<md-content style="padding:20px">
+					<form name="step2" ng-submit="upload($event, stepData[1])">
+					  <div class="custom-file-upload" layout-align="center center">
+							<div ngf-drop="validate($files)" ngf-select="validate($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-allow-dir="true" ngf-pattern="'.csv'" accept=".csv" ng-disabled = "showBusyText || preloader || insertPreLoader || uploadPreLoader" flex layout = "column" layout-align="space-between center" ><!--ngf-multiple="true"-->
+								Drop files here or click to upload 
+								<div ng-show="preloader">
+									Uploading file.. {{progressPercentage}} % complete..
+									<md-progress-linear md-mode="determinate" value="{{progressPercentage}}" style="width: 300px;"></md-progress-linear>
+								</div>
+								<svg class="circular-loader" height="50" width="50" ng-show="insertPreLoader">
+									<circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
+								</svg>                                
 
-				</div>
-				<div layout-gt-sm="row" class="side-margins">
-					<md-input-container class="md-block" flex-gt-sm="50">
-						<span>Billing Address</span>
-						<input required type="text" name="street" ng-model="user.street" ng-disabled="!editModeOn"  aria-label="billing address"/>
-						<div ng-messages="editForm.street.$error" role="alert">
-						  <div ng-message-exp="['required']">
-							Please enter a Billing Address
-						  </div>
+							</div>
+							<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+							<div ng-show="files.length != 0" style="padding: 16px 0px">
+								<b>Files :</b>
+								<div ng-repeat="f in files"> {{f.name}} {{f.$error}} {{f.$errorParam}}
+								</div>
+							</div>
 						</div>
-					</md-input-container>
-					<md-input-container class="md-block" flex-gt-sm="30">
-						<span>Country</span>
-						<input required type="text" name="country" ng-model="user.country" ng-disabled="!editModeOn"  aria-label="country"/>
-						<div ng-messages="editForm.country.$error" role="alert">
-						  <div ng-message-exp="['required']">
-							Country is required
-						  </div>
+						<md-card class="table-card" ng-repeat="eachfile in schemaCollection track by $index">
+							<h2> Edit Schema {{$index +1}} </h2>
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Field Name</th>
+										<th>Field Type</th>
+									</tr>
+									<md-divider></md-divider>
+									<tbody>
+										<tr ng-repeat="val in schema track by $index">
+											<td> {{val.name}} </td>
+											<td>
+												<md-select ng-model="val.type" ng-disabled="isExist || showBusyText || preloader || insertPreLoader || uploadPreLoader" aria-label="select data type">
+													<md-option ng-repeat="type in fieldTypeObj" value="{{type}}">
+														{{type}}
+													</md-option>
+												</md-select>   
+											</td>
+											<md-divider></md-divider>
+										</tr>
+										<md-divider></md-divider>
+									</tbody>
+							</table>
+						
+						</md-card>
+
+						<div flex layout="row" layout-align="space-between center" class="side-margins">
+							<md-button class="md-raised md-primary" ng-click="moveToPreviousStep()" ng-disabled="showBusyText || preloader || insertPreLoader || uploadPreLoader" aria-label="go to previous">PREV</md-button>
+							<svg class="circular-loader" height="50" width="50" ng-show="uploadPreLoader">
+								<circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
+							</svg>
+							<md-button class="md-raised md-primary" ng-click="UploadWithUpdate(stepData[1])" ng-disabled="showBusyText || preloader || insertPreLoader || uploadPreLoader" aria-label="upload">NEXT</md-button>
 						</div>
-					</md-input-container>
-					<md-input-container class="md-block" flex-gt-sm>
-						<span>Zip Code</span>
-						<input type="text" name="zip" ng-model="user.zip" ng-disabled="!editModeOn"  aria-label="zip"/>
-					</md-input-container>
-
-				</div>
-
-				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
-					<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
-						<span style="text-transform:none">Edit Profile</span>
-					</md-button>
-					<md-button class="md-raised md-primary" style="min-width:60px;width:60px;background:#FF5252" type="button" ng-click="profile.cancel()"  aria-label="cancel" ng-if="editModeOn == true">
-						<span style="text-transform:none">Cancel</span>
-					</md-button>
-					<md-button class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit" aria-label="save" ng-if="editModeOn == true">
-						<span style="text-transform:none">Save Profile</span>
-					</md-button>
-				</div>
-				
-				<div layout="row" layout-align="start start">
-					<div class="section-title">Security</div>
-				</div>
-				<div layout="row" layout-align="start start" layout-margin >
-					<md-button class="md-raised" ng-disabled="submitted" type="button" ng-click="profile.changePassword($event)">
-						<i class="ti-lock"></i><span style="padding-left:10px;text-transform:none">Change Password</span>
-					</md-button>
-				</div>
-		
-
-			</form>
-
+					</form>
+				</md-content>
+			  </md-step>
+			  <md-step label="Finish" md-complete="stepData[2].data.completed" ng-disabled="stepProgress < 3">
+				<md-content>
+					<form name="step2">
+						<div layout="column" layout-align="center center" style="min-height: 200px">
+							<h4>{{files.length}} successfully uploaded</h4>
+							<md-button class="md-primary md-raised next-btn" ng-click="uploadAnother()" aria-label="procced">Upload Another</md-button>
+						</div>
+						<br/>
+					</form>
+				</md-content>
+			  </md-step>
+			</md-steppers>
+							
 		</md-content>
 
 	</md-whiteframe><br/>

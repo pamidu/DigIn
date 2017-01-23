@@ -1,4 +1,4 @@
-routerApp.controller('datasetShareCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications,apis_Path){
+routerApp.controller('datasetShareCtrl',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications,apis_Path,dbType){
 
   $scope.$parent.currentView = "Share Dataset";
 	$scope.step1 = {};
@@ -29,7 +29,7 @@ routerApp.controller('datasetShareCtrl',function ($scope,$rootScope,$mdDialog,no
       $scope.selectedFiles = [];
       $scope.selectedFolders = [];
 
-       $http.get(Digin_Engine_API+'GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
+       $http.get(Digin_Engine_API+'GetTables?db='+dbType+'&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
                 for(var i = 0; i < result.data.Result.length; i++){
                     if(result.data.Result[i].upload_type == "csv-singlefile"){

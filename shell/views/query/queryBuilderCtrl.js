@@ -4930,6 +4930,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     //metric decimal change
     $scope.changeDecimals = function() {
         $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+        $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
     };
     $scope.changeMetricTrendType = function() {
         var units;

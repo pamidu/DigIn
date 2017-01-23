@@ -221,7 +221,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
         }
 
         function setValues(widObj,metricValue,targetValue,trendValue) {
-            widObj.widData.decValue = metricValue[0];
+            widObj.widData.decValue = setMeasureData(metricValue[0]);
             widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
             widObj.selectedChart.initObj.value = widObj.widData.value;
             widObj.selectedChart.initObj.decValue = widObj.widData.decValue;

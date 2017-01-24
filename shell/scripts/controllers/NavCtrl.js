@@ -92,13 +92,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                                 var tempDashboard = angular.copy($rootScope.dashboard);
                                                 angular.forEach(tempDashboard.pages,function(page){
                                                     //remove if the page is temporary
-                                                    if (page.pageID.substr(0,4) == "temp"){
+                                                    if (page.pageID.toString().substr(0,4) == "temp"){
                                                         tempDashboard.pages.splice(tempDashboard.pages.indexOf(page), 1);
                                                     }
                                                     if (tempDashboard.pages.indexOf(page) > 0){
                                                         //remove temporary widgets in each page
                                                         angular.forEach(page.widgets,function(widget){
-                                                            if (widget.widgetID.substr(0, 4) == "temp"){
+                                                            if (widget.widgetID.toString().substr(0, 4) == "temp") {
                                                                 page.widgets.splice(page.widgets.indexOf(widget), 1);
                                                             }
                                                         });

@@ -28,10 +28,10 @@ var localThis = this;
               prefix_position: widget.widgetData.widData.scalePosition,
               page_id:widget.pageID
             }
-            if (widget.notification_id === undefined) {
+            if (widget.widgetData.notification_id === undefined) {
               notification_id = null
             } else {
-              notification_id = widget.notification_id
+              notification_id = widget.widgetData.notification_id
             }
             metricObj["notification_id"] = notification_id;
             metricArray.push(metricObj);
@@ -44,7 +44,7 @@ var localThis = this;
       var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
       $http({
         method: 'POST',                  
-        url: Digin_Engine_API + 'store_notification_details',
+        url: Digin_Engine_API + 'process_notifications',
         data: angular.fromJson(CircularJSON.stringify(metricArray)),
         headers: {  
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ var localThis = this;
             angular.forEach(page.widgets,function(widget){
               angular.forEach(response.Result,function(row){
                 if(row.widget_id == widget.widgetID && row.page_id == widget.pageID){
-                  widget.notification_id = row.notification_id;
+                  widget.widgetData.notification_id = row.notification_id;
                 }
               });
             });
@@ -344,9 +344,6 @@ var localThis = this;
           row: widgets[j].row,
           col: widgets[j].col
         }
-      }
-      if ($rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.chartType == "metric") {
-        widgetObject["notification_id"] = $rootScope.dashboard.pages[i].widgets[j].notification_id;
       }
       widgetsArray.push(widgetObject);
       dynamicWidgets.push({

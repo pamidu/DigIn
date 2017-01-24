@@ -383,7 +383,11 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 $mdDialog.hide();
                 vm.enableNextStep();
                 vm.enableNextStep();
-            }   
+            } 
+            else{
+                $mdDialog.hide();
+                vm.enableNextStep();
+            }
         })
         .error(function(data) {
             console.log(data);

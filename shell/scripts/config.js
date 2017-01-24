@@ -22,4 +22,4 @@ angular.module('configuration', [])
 .constant('tenantId','test514')
 .constant('version','V3.2.1.3')
 //#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
-.constant('dbType', 'memsql')
+.constant('dbType', 'bigquery')

@@ -66,6 +66,7 @@
     <!-- Add IntroJs styles -->
     <link href="styles/css/introjs.css" rel="stylesheet">
     <link href="styles/css/widgetSettings.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/fonts/font-awesome/font-awesome.min.css" type='text/css'/>
     <!-- damith
         -- web font
         -- google font

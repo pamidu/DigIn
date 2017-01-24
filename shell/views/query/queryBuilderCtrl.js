@@ -723,7 +723,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 notificationConstant: "",
                 settingsView: 'views/query/settings-views/metricSettings.html',
                 notificationValue: "",
-				tooltip: ""
+				tooltip: "Widget that allows you to visualize Key Performance Indicators along with notifications."
             }, {
                 id: 'ct15',
                 icon: 'fa fa-tasks',
@@ -810,7 +810,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 view: 'views/query/chart-views/Tabular.html',
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/Tabularsettings.html',
-                tooltip: "A visualization to plot analyse the data on the gographical map"
+                tooltip: "Widget that allows you to visualize data in  tabular manner."
             }
 
         ]

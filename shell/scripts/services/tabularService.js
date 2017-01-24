@@ -67,7 +67,19 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
 
     this.getNextDataSet = function(widget){
 
-        var cl = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
+        var dataEng = "";
+        var dataID = "";
+
+        if(typeof widget.widgetData.commonSrc == "undefined"){
+            dataEng = thisService.dataSource.src;
+            dataID = thisService.dataSource.id;
+        }else{
+            dataEng = widget.widgetData.commonSrc.src.src;
+            dataID = widget.widgetData.commonSrc.src.id;
+        }
+
+
+        var cl = $diginengine.getClient(dataEng);
         var offset = widget.widgetData.widData.pageingArr.length * widget.widgetData.widData.tabularConfig.numOfRows;
 
         var query ="";
@@ -78,9 +90,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
             query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
         }
 
-
-
-        cl.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status) {
+        cl.getExecQuery(query, dataID, function(data, status) {
             if(status){
 
                 if(widget.widgetData.widData.pageingArr[widget.widgetData.widData.pageingArr.length-1].pageEle.length != widget.widgetData.widData.tabularConfig.numOfRows){
@@ -136,6 +146,7 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
         var FilterQuery = "";
         var dataBaseEng ="";
         var table = "";
+        var dataEng = "";
 
         if(typeof widget.widgetData.commonSrc == "undefined"){
             dataEng = thisService.dataSource.src;

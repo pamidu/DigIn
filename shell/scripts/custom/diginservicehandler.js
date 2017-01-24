@@ -155,7 +155,7 @@
                     if (offset) 
                         offVal = offset;
                     if (database == 'MSSQL')
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_config_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal + "&datasource_config_id=" + id;
                     else if (database == 'BigQuery' || database == "memsql")
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id;
                     else 

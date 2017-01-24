@@ -1,40 +1,47 @@
+<style>
+.tabular-space
+{
+    padding: 0px !important;
+    margin: 0px !important;
+    padding-right: 10px !important;
+}
+</style>
 <div layout="column">
 
-	<label>Data Settings</label>
+	<h4>Data Settings</h4>
 
-	<div layout="row" layout-align="space-between center">
+	<div layout="row"  style="margin-top:20px">
 
-		<label>Set Aggregation:</label>
+		<label><b>Set Aggregation:</b></label>
 
-		<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.totForNumeric" layout="row" layout-align="space-between center">
+		<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.totForNumeric" layout="row"  style="float: left;margin-left:50px">
 			   <md-radio-button value="true"> Enable </md-radio-button>
 			   <md-radio-button value="false"> Disable </md-radio-button>
 		</md-radio-group>
 
 	</div>
 
-	<div layout="row" layout-align="space-between center">
-		<label>Default Sort Field:</label>
+	<div layout="row" style="margin-top:20px">
+		<label style="margin-top: 10px"><b>Default Sort Field:</b></label>
 
-		<div layout="column" layout-align="space-between center">
+		<div layout="column" style="float: left;margin-left:50px">
 
 			  <md-select ng-model="widget.widgetData.widData.tabularConfig.defSortFeild">
 			    <md-option ng-value="user.Attribute" ng-repeat="user in widget.widgetData.widData.tabularConfig.AllingArr">{{ user.Attribute }}</md-option>
 			  </md-select>
 
-			<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.AscOrDec" layout="row" >
-			   <md-radio-button value="Ascending"> Ascending </md-radio-button>
-			   <md-radio-button value="Descending"> Descending </md-radio-button>
+			<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.AscOrDec" layout="row" style="margin-top:20px">
+			   <md-radio-button value="ASC"> Ascending </md-radio-button>
+			   <md-radio-button value="DESC"> Descending </md-radio-button>
 			</md-radio-group>
 			
 		</div>
-		
 	</div>
 
-	<div>
-		<label>Display name and Allingment</label>
+	<div style="margin-top:20px">
+		<label><b>Display name and alignment </b></label>
 
-		<table>
+		 <table style="margin-top:20px">
 
 		<tr>
 			<th>Attribute</th>
@@ -44,21 +51,21 @@
 		</tr>
 
 		<tr ng-repeat="att in widget.widgetData.widData.tabularConfig.AllingArr">
-		    <td>{{att.Attribute}}</td>
-		    <td>
-		    	<md-input-container>
+		    <td class="tabular-space">{{att.Attribute}}</td>
+		    <td class="tabular-space">
+		    	<md-input-container class="tabular-space" style="margin-top: 24px !important;">
         			<input ng-model="att.DislayName">
       			</md-input-container>
 		    </td>
-		    <td>
-		    	<md-select ng-model="att.Alignment">
+		    <td class="tabular-space">
+		    	<md-select ng-model="att.Alignment" class="tabular-space">
 			    	<md-option ng-value="aling" ng-repeat="aling in allingments">
 			    		{{aling}}
 			    	</md-option>
 			    </md-select>
 		    </td>
-		    <td ng-hide="att.isString">
-		    	<md-select ng-model="att.Aggregation">
+		    <td ng-hide="att.isString" class="tabular-space">
+		    	<md-select ng-model="att.Aggregation" class="tabular-space">
 			    	<md-option ng-value="agg" ng-repeat="agg in aggregationArr">
 			    		{{agg}}
 			    	</md-option>
@@ -67,13 +74,52 @@
 		</tr>
 
 		</table>
+<!--div layout="row" layout-align="space-between center" style="margin-top:20px">
+			
+			<div>Attribute</div>
+			<div>Display Name</div>
+			<div>Alignment</div>
+			<div>Aggregation</div>
+
+		</div>
+
+		<div layout="row" layout-align="space-between center" ng-repeat="att in widget.widgetData.widData.tabularConfig.AllingArr" style="margin-top:20px">
+
+			<div>{{att.Attribute}}</div>
+
+			<div>
+				<md-input-container>
+        			<input ng-model="att.DislayName">
+      			</md-input-container>
+			</div>
+
+			<div>
+				<md-select ng-model="att.Alignment">
+			    	<md-option ng-value="aling" ng-repeat="aling in allingments">
+			    		{{aling}}
+			    	</md-option>
+			    </md-select>
+			</div>
+
+			<div ng-hide="att.isString">
+				<md-select ng-model="att.Aggregation">
+			    	<md-option ng-value="agg" ng-repeat="agg in aggregationArr">
+			    		{{agg}}
+			    	</md-option>
+			    </md-select>
+			</div>
+
+		</div-->
+
+
+
 
 	</div>
 
-	<div layout="row" layout-align="">
-		<label>Number of rows to display:</label>
+	<div layout="row" layout-align="" style="margin-top:20px">
+		<label><b>Number of rows to display:</b></label>
 
-		<md-input-container style="margin-top: -19px;float: left;margin-left: 19px;width: 100px;" >
+		<md-input-container style="margin-top: -19px;float: left;margin-left: 19px;width: 200px;" >
             <input ng-model="widget.widgetData.widData.tabularConfig.numOfRows"> 
          </md-input-container>
 	</div>

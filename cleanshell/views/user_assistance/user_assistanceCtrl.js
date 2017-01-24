@@ -516,21 +516,23 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.connectSource_step2 = {};
 		
 		$scope.sourceType = [
-			{name: "Big Query", icon: "biq-query"},
+			{name: "BigQuery", icon: "biq-query"},
 			//{name: "Postgre SQL", icon: "views/user_assistance/connectSource/postgress.png"},
 			{name: "Microsoft SQL", icon: "mssql"},
 			{name: "memsql", icon: "memsql"}
 		];
 		$scope.files = [];
 		$scope.folders = [];
+		$scope.selectedDB = "";
 		//Submit one in Upload Source
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
-			if(type == "Big Query" || type == "memsql")
+			if(type == "BigQuery" || type == "memsql")
 			{
+				$scope.selectedDB = type;
 				$scope.showBusyText = true;
-				$diginengine.getClient(type.replace(/\s/g, '')).getTables(function(res, status) {
+				$diginengine.getClient(type).getTables(function(res, status) {
 					
 					if(status) {
 						$scope.showBusyText = false;
@@ -649,7 +651,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		//only used in Visualze Data View
 		$scope.goToCreateWidgetState = function()
 		{
-			$state.go('query_builder', { 'selectedAttributes':$scope.selectedAttributes, 'selectedMeasures':$scope.selectedMeasures, 'selectedFile':$scope.selectedFile});
+			$state.go('query_builder', { 'selectedAttributes':$scope.selectedAttributes, 'selectedMeasures':$scope.selectedMeasures, 'selectedFile':$scope.selectedFile, 'selectedDB': $scope.selectedDB});
 		}
 	
 		

@@ -112,7 +112,8 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		 params: {
 			'selectedAttributes': [],
 			'selectedMeasures': [],
-			'selectedFile': {}
+			'selectedFile': {},
+			'selectedDB' : {}
 		  }
 	})
 	

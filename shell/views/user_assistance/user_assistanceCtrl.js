@@ -511,7 +511,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.connectSource_step2 = {};
 		
 		$scope.sourceType = [
-			{name: "Big Query", icon: "biq-query"},
+			{name: "BigQuery", icon: "biq-query"},
 			//{name: "Postgre SQL", icon: "views/user_assistance/connectSource/postgress.png"},
 			{name: "Microsoft SQL", icon: "mssql"},
 			{name: "memsql", icon: "memsql"}
@@ -522,10 +522,10 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.selectSource = function(type)
 		{
 			//alert(type);
-			if(type == "Big Query")
+			if(type == "BigQuery" || type == "memsql")
 			{
 				$scope.showBusyText = true;
-				$diginengine.getClient("BigQuery").getTables(function(res, status) {
+				$diginengine.getClient(type).getTables(function(res, status) {
 					
 					if(status) {
 						$scope.showBusyText = false;

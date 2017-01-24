@@ -24,6 +24,8 @@ var localThis = this;
               dbname:widget.widgetData.commonSrc.src.src,
               datasource_id:widget.widgetData.commonSrc.src.id,
               widget_id:widget.widgetID,
+              prefix: widget.widgetData.widData.scale,
+              prefix_position: widget.widgetData.widData.scalePosition,
               page_id:widget.pageID
             }
             if (widget.notification_id === undefined) {

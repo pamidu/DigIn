@@ -501,6 +501,11 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.assist_selected = 1;
 		}
 		
+		$scope.uploadAnother = function()
+		{
+			$state.reload();
+		}
+		
 		
 		
 		//Connect Source		
@@ -639,6 +644,12 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.assist_selected = 2;
 			console.log($scope.selectedAttributes);
 			console.log($scope.selectedMeasures);
+		}
+		
+		//only used in Visualze Data View
+		$scope.goToCreateWidgetState = function()
+		{
+			$state.go('query_builder', { 'selectedAttributes':$scope.selectedAttributes, 'selectedMeasures':$scope.selectedMeasures, 'selectedFile':$scope.selectedFile});
 		}
 	
 		

@@ -1,6 +1,6 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', 'layoutManager', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,layoutManager) {
 	
-	$rootScope.showSideMenu = layoutManager.hideSideMenu();
+	//$rootScope.showSideMenu = layoutManager.hideSideMenu();
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
 		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');

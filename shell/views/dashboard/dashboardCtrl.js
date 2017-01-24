@@ -338,6 +338,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                     case 'metric': // if type metric do not show data view option
                         showDataView = false;
                         break;
+                        case 'Tabular': // if type metric do not show data view option
+                        showDataView = false;
+                        break;
                     default: // for other dynamic visuals show data view option
                         if (widget.widgetData.dataCtrl != undefined) {
                             showDataView = true;

@@ -265,9 +265,9 @@ routerApp
                         }
                     }
                 }).error(function (data) {
-                    console.log(data);
+                    //console.log(data);
                     $mdDialog.hide();
-                    mainFun.fireMsg('0', data.Message);
+                    mainFun.fireMsg('0', 'Authorization Service responding an error.');
                 });
             };
 
@@ -1459,6 +1459,10 @@ routerApp
                                 }else{
                                     mainFun.fireMsg('0',data.Message);
                                 }                               
+                            }
+                            else if(data=="" || data==undefined|| data==null){
+                                $mdDialog.hide();
+                                 mainFun.fireMsg('0','Authorisation service responding an error.');
                             }
                             else{
                                 $scope.initUserForOnsite();

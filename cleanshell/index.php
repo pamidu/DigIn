@@ -539,6 +539,7 @@
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
 	
 	<!--for rss feeds>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>

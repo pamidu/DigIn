@@ -1,13 +1,20 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', 'layoutManager', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,layoutManager) {
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager', 'DiginServices', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager, DiginServices) {
 	
-	//$rootScope.showSideMenu = layoutManager.hideSideMenu();
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
 		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
 	}else{
 		$('md-tabs-wrapper').css('background-color',"white", 'important');
 	}
-
+	
+	$scope.dashboardId = $stateParams.id;
+	if(Object.keys($rootScope.currentDashboard).length === 0 && $scope.dashboardId)
+	{
+		DiginServices.getComponent($scope.dashboardId).then(function(data) {
+			//There is a samll problem that this runs twice, console.log to check
+			$rootScope.currentDashboard = data;
+		});
+	}
 	
 	//configuring gridster
 	$scope.gridsterOpts = {

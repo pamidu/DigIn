@@ -15,8 +15,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.firstTime = true;
 
-	//Introduce
-	
 	$scope.share = function(index, type)
 	{
 		$timeout(function(){
@@ -295,9 +293,8 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	function getDashboard(dashboardId)
 	{
 		DiginServices.getComponent(dashboardId).then(function(data) {
-			console.log($rootScope.currentDashboard);
 			$rootScope.currentDashboard = data;
-			location.href = '#/dashboard';
+			location.href = '#/dashboard?id='+dashboardId;
 		});
 	}
 	

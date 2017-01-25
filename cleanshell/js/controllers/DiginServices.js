@@ -1,4 +1,4 @@
- DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', function($rootScope,$http, $v6urls, $auth,notifications) {
+ DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain', function($rootScope,$http, $v6urls, $auth,notifications, Digin_Engine_API, Digin_Domain) {
 	var cache = {};
 	return {
         getUserSettings: function() {
@@ -13,7 +13,7 @@
 						 });
         },getDiginComponents: function() {
              //return the promise directly.
-             return $http.get("jsons/everything.json") //'http://prod.digin.io:1929/get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io'
+             return $http.get(Digin_Engine_API+'/get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -23,10 +23,9 @@
 						 });
         }, getComponent: function(dashboardId) {
              //return the promise directly.
-			 //console.log(dashboardId);
 			 notifications.startLoading("Getting Dashboard");
 			 
-                return $http.get("jsons/sampleDashboard4.json") //jsons/sampleDashboard4.json //'http://prod.digin.io:1929/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io'
+                return $http.get(Digin_Engine_API+'/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+ $auth.getSecurityToken()+'&Domain'+Digin_Domain)
                        .then(function(result) {
                             //resolve the promise as the data
 							notifications.finishLoading();

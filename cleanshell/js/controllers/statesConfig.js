@@ -16,7 +16,8 @@ var DiginApp = angular.module('DuoDiginRt',
 		'angular-intro',
 		'ngFileUpload',
 		'configuration',
-		'diginServiceHandler'
+		'diginServiceHandler',
+		'rzModule'
 	]
 );
 

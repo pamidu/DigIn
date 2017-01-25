@@ -40,6 +40,7 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/intro.js/minified/introjs.min.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/angularjs-slider/dist/rzslider.min.css">
 
 </head>
 <body ng-controller="NavCtrl as ctrl" layout="column">
@@ -537,6 +538,7 @@
 	<script type="text/javascript" src="js/ng-croppie.min.js"></script>
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
 	
 	<!--for rss feeds>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>

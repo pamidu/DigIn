@@ -28,6 +28,7 @@
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	
+	<!-- build:css css/styles.css-->
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/digin-main/digin-main.css">
 	<link rel="stylesheet" type="text/css" href="styles/themify/themify-icons.css">
@@ -41,6 +42,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/intro.js/minified/introjs.min.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angularjs-slider/dist/rzslider.min.css">
+	<!-- endbuild -->
 
 </head>
 <body ng-controller="NavCtrl as ctrl" layout="column">
@@ -503,6 +505,8 @@
 	</div>
 	<!--END OF APPLICATION CONTAINER-->
 	
+	
+	<!-- build:js js/script.js -->
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/lodash/dist/lodash.min.js"></script>
 	<script src="bower_components/angular/angular.min.js"></script>
@@ -592,6 +596,7 @@
 		preload.style.display = "none";
 	});
 	</script>
+	<!-- endbuild -->
 	
 </body>
 </html>

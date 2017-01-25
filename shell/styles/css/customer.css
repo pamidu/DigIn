@@ -72,6 +72,19 @@
     font-size: 30px;
 }
 
+.search-box
+{
+	padding: 4px;
+}
+
+.search-box > input
+{
+	color: white;
+    border: 2px solid white;
+    border-radius: 4px;
+	width: 200px;
+}
+
 /*margin style */
 .m-t-0 {
     margin-top: 0px !important;
@@ -352,6 +365,9 @@
     float: right !important;
 }
 
+.left {
+    float: left !important;
+}
 /* text box style -*/
 .form-control.form-white {
     background-color: #ffffff;
@@ -533,6 +549,9 @@
     line-height: 100%;
     background-color: #fff;
     overflow: hidden;
+    -webkit-box-shadow: -2px 7px 28px 0px rgba(0,0,0,0.20);
+    -moz-box-shadow:  -2px 7px 28px 0px rgba(0,0,0,0.20);
+    box-shadow: -2px 7px 28px 0px rgba(0,0,0,0.20);
 }
 
 .gridster-he {
@@ -720,10 +739,6 @@ ul.list-justified > li p {
     color: #777;
 }
 
-.last-icon {
-    border-right: 0px solid transparent !important;
-}
-
 .color-info {
     color: #619bf2;
 }
@@ -840,8 +855,8 @@ md-card md-card-content.card-warning {
 }
 
 #content1 {
-    overflow-x: hidden;
-    /*height: 100% !important;*/
+    /*overflow-x: hidden;
+    height: 100% !important;*/
 }
 
 .graph-map {
@@ -926,12 +941,6 @@ md-card md-card-content.card-warning {
 
 .load-page-wrap:hover {
     overflow-x: auto;
-}
-
-:root {
-    --red: #b00;
-    --fb-theme-col: #00BFA5;
-    --fullwidth: 100%;
 }
 
 .input-fb-search {
@@ -1286,7 +1295,7 @@ md-tab-content {
 
 /* dashboard widget */
 .dashboard-widget {
-    overflow: auto;
+    overflow: hidden;
 }
 
 /*widget current source view */
@@ -1547,19 +1556,24 @@ rzslider .rz-bubble {
 }
 
 rzslider {
-    margin: 46px 0 15px 0;
+    margin: 60px 0 15px 0;
 }
 
 rzslider .rz-pointer {
-    background-color: #F39A00;
+    background-color: #01717d;
+    width: 10px;
+}
+
+rzslider .rz-bar {
+    background: #0db9f0
 }
 
 rzslider .rz-pointer:after {
-    background: #06344A;
+    display: none;
 }
 
 rzslider .rz-bubble {
-    color: #F9FDFF;
+    color: #01717d;
 }
 
 .sf-border-left {
@@ -1619,7 +1633,7 @@ rzslider .rz-bubble {
 }
 
 .m-top-60 {
-    margin-top: 60px;
+    margin-top: 60px !important;
 }
 
 .sf-table-header {
@@ -1660,6 +1674,7 @@ ul.none-border > li {
     overflow: hidden;
     padding: 0;
     background: #fff;
+    z-index: 2000;
 }
 
 .slider-r-tab {
@@ -1707,7 +1722,7 @@ ul.none-border > li {
     right: 0;
     text-align: center;
     top: 0;
-    color: #F5F5F5
+    color: #cacaca;
 }
 
 .sliderActive {
@@ -1728,7 +1743,6 @@ ul.none-border > li {
 
 .slider-r-source {
     padding: 10px;
-    margin-top: 10px;
     width: 100%;
 }
 

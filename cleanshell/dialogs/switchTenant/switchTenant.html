@@ -1,0 +1,29 @@
+<md-dialog aria-label="Switch Tenant" md-theme="{{$root.theme}}">
+  <form>
+  <md-toolbar class="modal-header md-primary">
+    <div class="md-toolbar-tools">
+		<h2>Switch Tenant</h2>
+		<span flex></span>
+		<md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+		</md-button>
+    </div>
+  </md-toolbar>
+  <md-content style="max-width:800px;max-height:810px; ">
+	<div style="padding: 10px;">
+		<md-input-container class="md-block" flex-gt-sm>
+			<span>Search</span>
+			<input required type="text" name="search" ng-model="search" aria-label="name"/>
+		</md-input-container>
+	</div>
+
+	<md-divider></md-divider>
+		<md-list ng-cloak>
+		  <md-list-item ng-repeat="tenant in tenants | filter:search" ng-click="switch(tenant)">
+			<p> {{ tenant.Name }} </p>
+		  </md-list-item>
+		</md-list>
+  
+
+  </md-content>
+  </form>
+</md-dialog>

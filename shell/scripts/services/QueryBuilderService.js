@@ -1,15 +1,78 @@
-routerApp.service('$qbuilder',function($diginengine){
+routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metricChartServices,tabularService){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
         widProt = new Widget(widType);
-        widProt.sync(widgetData, cb);
-    }
-    
+        widProt.sync(widgetData, cb)
+;    }
+
+
+    var colors = ['#82b8d7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
+             '#FF9655', '#FFF263', '#6AF9C4']
+  
     var Widget = function(wid) {
         this.widget = wid;        
     };
-    
+
+    this.syncDrilledChart = function(obj,scope){
+        var chart = obj.highchartsNG.getHighcharts();
+        var cat = "";
+        var newObj = {};
+        var dataObj = [];
+        var flag = true;
+        if ( chart.options.customVar != obj.widData.drillConf.highestLvl ) {
+            if (typeof obj.commonSrc.src.src != 'undefined'){
+            var db = obj.commonSrc.src.src;}
+            var cl = $diginengine.getClient(db);
+            var series;
+            angular.forEach(obj.highchartsNG.series,function(key){
+                if(key.name == chart.series[0].name){
+                    series = key.origName;
+                }
+            })
+            cl.getExecQuery(obj.widData.drillConf.currentQuery,obj.commonSrc.src.id, function(res, status, query) {
+                if(status) {
+                    filterService.filterAggData(res,obj.commonSrc.src.filterFields);
+                    angular.forEach(obj.commonSrc.att, function(field){
+                        for(c in res[0]) {
+                            if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                                if (c == field.filedName) {
+                                    cat = c;
+                                }
+                            }
+                        }
+                    })
+                    angular.forEach(obj.widData.drillConf.drillOrdArr,function(elem){
+                        if(elem.name == cat) {
+                            if (elem.nextLevel === undefined) {
+                                flag = false;
+                            }
+                        }
+                    })
+                    angular.forEach(res,function(key){
+                        newObj = {};
+                        newObj = {
+                            name : key[cat],
+                            y:key[series],
+                            drilldown: flag
+                        }
+                        dataObj.push(newObj);
+                    })
+                    chart.series[0].setData(dataObj);
+                    scope.$apply(function(){
+                        obj.syncState = true;
+                    })
+                    return;
+                } else {
+                    scope.$apply(function(){
+                        obj.syncState = true;
+                    })
+                    return;
+                }
+            });
+        }
+    };
+
     Widget.prototype = {
         sync: function(wid, cb) {
             var q;
@@ -23,9 +86,9 @@ routerApp.service('$qbuilder',function($diginengine){
             return this.widget.sync(q,cl,wid, cb);
         }
     };
-    
+
     var HIGHCHARTS = function() {
-        function mapResult(cat, res, d, color, name, cb){
+        function mapResult(cat, res, d, color, name, origName, cb){
             var serArr = [];
             var i = 0;
             for(c in res[0]){
@@ -34,6 +97,7 @@ routerApp.service('$qbuilder',function($diginengine){
                         serArr.push({
                             temp: c,
                             name: name[i],
+                            origName: origName[i],
                             data: [],
                             color: color[i]
                         });
@@ -94,9 +158,11 @@ routerApp.service('$qbuilder',function($diginengine){
         }
         
         this.sync = function(q, cl, widObj, cb) {            
-            cl.getExecQuery(q, function(res, status, query){
+            cl.getExecQuery(q, widObj.commonSrc.src.id, function(res, status, query){
                 var cat = "";
+                var drilled;
                 if(status){
+                    filterService.filterAggData(res,widObj.commonSrc.src.filterFields);
                     for(c in res[0]){
                         if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                             if(typeof res[0][c] == "string") cat = c;
@@ -106,11 +172,14 @@ routerApp.service('$qbuilder',function($diginengine){
                     if(cat != ""){
                         var color = [];
                         var name = [];
+                        var origName = [];
                         for ( var i = 0; i < widObj.highchartsNG.series.length; i++){
                             color.push(widObj.highchartsNG.series[i].color);
                             name.push(widObj.highchartsNG.series[i].name);
+                            origName.push(widObj.highchartsNG.series[i].origName);
                         }
-                        mapResult(cat, res, widObj.widData.drilled, color, name, function(data){
+                        drilled = widObj.widData.drilled;
+                        mapResult(cat, res, drilled, color, name, origName, function(data){
                             widObj.highchartsNG.series = data;
                         });
                     }else{
@@ -123,7 +192,6 @@ routerApp.service('$qbuilder',function($diginengine){
                         widObj.highchartsNG.options.chart['events'] ={
                             drilldown: function (e) {                                
                                 if (!e.seriesOptions) {
-                                    console.log('drilled');
                                 }
                             },
                             click: function(){
@@ -133,13 +201,16 @@ routerApp.service('$qbuilder',function($diginengine){
                     }
                     widObj.syncState = true;
                     cb(widObj);
+                }else{
+                    widObj.syncState = true;
+                    cb(widObj);
                 }
             });
         }
     };
     
     var METRIC = function() {
-        function setMeasureData(res){
+        function setMeasureData(res) {
             var val = "";
             for (var c in res) {
                 if (Object.prototype.hasOwnProperty.call(res, c)) {
@@ -148,36 +219,146 @@ routerApp.service('$qbuilder',function($diginengine){
             }
             return val;
         }
-        
-        this.sync = function(q, cl, widObj, cb) {
-            cl.getExecQuery(q, function(res, status, query){
-                if(status){
-                    widObj.widData.decValue = res[0];
-                    widObj.widData.value = convertDecimals(setMeasureData(res[0]),parseInt(widObj.widData.dec)).toLocaleString();
+
+        function setValues(widObj,metricValue,targetValue,trendValue) {
+            widObj.widData.decValue = setMeasureData(metricValue[0]);
+            widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
+            widObj.selectedChart.initObj.value = widObj.widData.value;
+            widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
+            if (trendValue !== undefined)
+            {
+                key = widObj.commonSrc.actual[0].condition.toLowerCase() + "_" + widObj.commonSrc.actual[0].filedName;
+                metricChartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
+            }
+            // Apply metric settings after filtering if target value is set
+            if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
+                if (widObj.commonSrc.target.length == 1) {
+                    widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
+                    widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
                 }
-                widObj.syncState = true;
-                cb(widObj);
+                metricChartServices.applyMetricSettings(widObj.selectedChart);
+            }
+        }
+
+
+        this.sync = function(q, cl, widObj, cb) {
+            var targetRequest = false;
+            var metricRequest = false;
+            var trendRequest = false;
+            var targetSuccess = false;
+            var metricSuccess = false;
+            var trendSuccess = false;
+            var metricValue, targetValue, trendValue;
+            if (widObj.commonSrc.target.length == 1) {
+                cl.getExecQuery(widObj.selectedChart.initObj.targetQuery, widObj.commonSrc.src.id, function(res, status, targetQuery) {
+                    if (status) {
+                        targetRequest = true;
+                        targetSuccess = true;
+                        targetValue = res;
+                        if (targetRequest && metricRequest && trendRequest) {
+                            if (targetSuccess && metricSuccess && trendSuccess) {
+                                // call sync method
+                                setValues(widObj,metricValue,targetValue,trendValue);
+                            }
+                            widObj.syncState = true;
+                            cb(widObj);
+                        }
+                    } else {
+                        targetRequest = true;
+                    }
+                });
+            } else {
+                targetRequest = true;
+                targetSuccess = true;
+            }
+            cl.getExecQuery(q, widObj.commonSrc.src.id, function(res, status, query) {
+                if (status) {
+                    metricRequest = true;
+                    metricSuccess = true;
+                    metricValue = res;
+                    if (targetRequest && metricRequest && trendRequest) {
+                        if (targetSuccess && metricSuccess && trendSuccess) {
+                            // call sync method
+                            setValues(widObj,metricValue,targetValue,trendValue);
+                        }
+                        widObj.syncState = true;
+                        cb(widObj);
+                    }
+
+                } else {
+                    metricRequest = true;
+                }
             });
+            if(widObj.selectedChart.initObj.trendQuery != "") {
+                cl.getExecQuery(widObj.selectedChart.initObj.trendQuery,  widObj.commonSrc.src.id, function(res, status, query) {
+                    if (status) {
+                        trendRequest = true;
+                        trendSuccess = true;
+                        trendValue = res;
+                        if (targetRequest && metricRequest && trendRequest) {
+                            if (targetSuccess && metricSuccess && trendSuccess) {
+                                // call sync method
+                                setValues(widObj,metricValue,targetValue,trendValue);
+                            }
+                            widObj.syncState = true;
+                            cb(widObj);
+                        }
+                    } else {
+                        trendRequest = true;
+                    }
+                });
+            } else {
+                trendRequest = true;
+                trendSuccess = true;
+            }
         }
     };
     
-    var D3SUNBURST = function(){
-
+    var D3SUNBURST = function() {
         this.sync = function(q, cl, widObj, cb) {
-            cl.getHierarchicalSummary(q, function(data, status) {
-                if (status){
-                    widObj.widData.children = data.children;
-                    }
-                widObj.syncState = true;                    
-                cb(widObj);
-            });
+            var fieldArray = [];
+            var table = widObj.commonSrc.src.tbl;
+            var id = widObj.commonSrc.src.id;
+            var hObj= {};
+            angular.forEach(widObj.commonSrc.att,function(attribute){
+                fieldArray.push("'"+ attribute.filedName +"'");
+            })
+            cl.getHighestLevel(table,fieldArray.toString(),id,function(data,status){
+                if(status) {
+                    var measure = widObj.commonSrc.mea[0].filedName;
+                    var agg = widObj.commonSrc.mea[0].condition;
+                    data.forEach(function(entry) {
+                        hObj[entry.value] = entry.level;
+                    });
+                    cl.getHierarchicalSummary(hObj,measure,agg,table, id, function(data, status) {
+                        if (status) {
+                            widObj.widData.data = data.children;
+                            }
+                        widObj.syncState = true;                    
+                        cb(widObj);
+                    });                    
+                }
+            })
         }
     }; 
 
     var D3HIERARCHY = function(){
 
         this.sync = function(q, cl, widObj, cb) {
-            cl.getHierarchicalSummary(q, function(data, status) {
+            cl.getHierarchicalSummary(q, widObj.commonSrc.src.id, function(data, status) {
+                if (status){
+                    widObj.widData.data = data.children;
+                    }
+                widObj.syncState = true;
+                cb(widObj);
+            });
+        }
+    }; 
+
+   var MAP = function(){
+
+        this.sync = function(q, cl, widObj, cb) {
+            cl.getHierarchicalSummary(q, widObj.commonSrc.src.id, function(data, status) {
                 if (status){
                     widObj.widData.children = data.children;
                     }
@@ -187,33 +368,308 @@ routerApp.service('$qbuilder',function($diginengine){
         }
     }; 
 
+    var TABULAR = function(){
+
+        this.sync = function (q, cl, widObj, cb) {
+            widObj.widData.sort ="";
+             cl.getExecQuery(widObj.widData.query, widObj.commonSrc.src.id, function(data, status) {
+
+                    //to get aggregations
+                    if(widObj.widData.tabularConfig.totForNumeric == "true" ){
+
+                        
+
+                            var fieldArr=[];
+                            for(var i=0; i < widObj.widData.tabularConfig.AllingArr.length; i++ ){
+
+                                if(widObj.widData.tabularConfig.AllingArr[i].isString == false){
+                                    var obj = {
+                                        "agg": widObj.widData.tabularConfig.AllingArr[i].Aggregation,
+                                        "field": widObj.widData.tabularConfig.AllingArr[i].Attribute
+                                    };
+
+                                    fieldArr.push(obj);
+                                }
+                                    
+
+                            }
+                        if(fieldArr.length > 0){
+                            cl.getAggData(widObj.commonSrc.src.tbl, fieldArr, 100, widObj.commonSrc.src.id, function(res, status, query) {
+                                   if(status == true){
+                                     
+                                      for(var i = 0; i < fieldArr.length ; i++)  {
+                                            var str = fieldArr[i].agg+"_"+fieldArr[i].field;
+
+                                            var splitArr = str.split(" ")
+                                            str="";
+                                        
+                                            for(var a=0; a < splitArr.length ; a++){
+
+                                                str = str + splitArr[a]; 
+                                            }
+                                            
+                                            var obj = {
+                                                field : fieldArr[i].field,
+                                                aggName: fieldArr[i].agg+"_"+fieldArr[i].field,
+                                                value : res[0][str]
+                                            }
+
+                                            for(var j=0; j < widObj.widData.tabularConfig.AllingArr.length; j++){
+
+                                                if(widObj.widData.tabularConfig.AllingArr[j].Attribute == fieldArr[i].field){
+
+                                                    widObj.widData.tabularConfig.AllingArr[j].Aggregation_value =  res[0][str];
+
+                                                }
+                                            }
+                                      
+                                      }
+
+                      
+                                    tabularService.setPagination(data,widObj.widData);
+                                    widObj.syncState = true;
+                                    cb(widObj);
+                                   }
+                            });
+                        }
+                        else{
+                                tabularService.setPagination(data,widObj.widData);
+                                widObj.syncState = true;
+                                cb(widObj);
+                        }
+                    }
+                    else{
+                        tabularService.setPagination(data,widObj.widData);
+                        widObj.syncState = true;
+                        cb(widObj);
+                    }
+                    
+
+
+
+                    //--------------------------
+
+                 
+                },100);
+        }
+    }
+
+
     var FORECAST = function(){
-        function mapResult(data){
-            var serArr = [];
-            var catArr = [];
-            var dataArray = [];
-            data.forecast = data.forecast.slice(data.actual.length);
-            serArr.push({
-                data: data.actual.concat(data.forecast),
-                zoneAxis: 'x',
-                zones: [{
-                    value: data.actual.length - 1
-                }, {
-                    dashStyle: 'dash'
-                }]                    
-            })
-            catArr = data.time;            
-            dataArray[0] = catArr;
-            dataArray[1] = serArr
+        function mapResult(data,fObj,widObj){
+                    var forcastArr =[];
+                    var serArr = [];
+                    var catArr = [];
+                 if(fObj.forecastAtt == ""){
+
+                                if(fObj.showActual == false){
+                                    var a = data.data.forecast.length - fObj.fcast_days;
+                                    for(var i =a ; i< data.data.forecast.length; i++){
+                                        forcastArr.push(data.data.forecast[i]);
+                                    }
+                                    data.data.forecast = forcastArr;
+                                    serArr.push({
+                                        data: data.data.actual.concat(data.data.forecast),
+                                        zoneAxis: 'x',
+                                        color: colors[0],
+                                        zones: [{
+                                            value: data.data.actual.length - 1
+                                        }, {
+                                            dashStyle: 'dash'
+                                        }]
+                                    })
+                                }else{
+                                    serArr.push({
+                                            name: 'Actual',
+                                            data: data.data.actual,
+                                            color: colors[0],
+                                    })
+
+                                    serArr.push({
+                                        name: 'Forcasted',
+                                        data: data.data.forecast,
+                                        dashStyle: 'dash',
+                                        color: colors[1],
+                                    })
+                                }
+
+                                catArr = data.data.time;
+                            }else{
+                                if(fObj.showActual == false){
+                                        Object.keys(data.data).forEach(function(key) {
+
+                                            forcastArr =[];
+
+                                            var obj = data.data[key];
+                                            var a = obj.forecast.length - fObj.fcast_days;
+
+                                            for(var i =a ; i < obj.forecast.length; i++){
+                                                forcastArr.push(obj.forecast[i]);
+                                            }
+                                            obj.forecast = forcastArr;
+                                            serArr.push({
+                                                name: key,
+                                                data: obj.actual.concat(obj.forecast),
+                                                zoneAxis: 'x',
+                                                zones: [{
+                                                    value: obj.actual.length - 1
+                                                }, {
+                                                    dashStyle: 'dash'
+                                                }]
+                                            })
+
+                                            catArr = obj.time;
+                                        });
+
+                                }else{
+                                       Object.keys(data.data).forEach(function(key) {
+
+                                            var obj = data.data[key];
+                                          
+
+                                            serArr.push({
+                                            name: 'Actual  '+key,
+                                            data: obj.actual,
+                                            })
+
+                                            serArr.push({
+                                                name: 'Forcasted  '+key,
+                                                data: obj.forecast,
+                                                dashStyle: 'dash'
+                                            })
+
+                                            catArr = obj.time;
+                                        });
+                                }
+                            }
+
+
+
+            if(typeof serArr != "undefined"){
+                  serArr.forEach(function(key) {
+                     if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                   });
+            }
+
+
+            var  dataArray =[];
+            if(widObj.isVisual == true){
+            // ---------------------------------------------------------------------------------    
+                var startdate = formattedDate(widObj.Vstart, widObj.foreCastObj.interval);
+                var enddate = formattedDate(widObj.Vend, widObj.foreCastObj.interval);
+                var xAxisLen = catArr.length;
+
+                var startInd = -1;
+                var endInd = -1;
+                var cat = [];
+                var data = [];
+                for (var i = 0; i <= xAxisLen; i++) {
+
+                    var date;
+                    if(widObj.foreCastObj.interval == "Yearly"){
+                        date = catArr[i] + "-01-01";
+                    }else if(widObj.foreCastObj.interval == "Monthly"){
+                        date = catArr[i] + "-01";
+                    }else if(widObj.foreCastObj.interval == "Daily"){
+                        date = catArr[i];
+                    }
+
+
+                    var x = new Date(startdate);
+                    var y = new Date(date);
+                    var z = new Date(enddate);
+                    if (x <= y && y <= z) {
+                        if (startInd == -1) {
+                            startInd = i;
+                        }
+
+                        cat.push(catArr[i]);
+
+                        if (i == xAxisLen - 1)
+                            endInd = i;
+
+                    } else if (startInd > -1) {
+                        if (endInd == -1) {
+                            endInd = i;
+                        }
+                    }
+                }
+
+                var seriesLen = serArr.length;
+
+                for (var i = 0; i < seriesLen; i++) {
+                    data = [];
+                    var endIndex = startInd+cat.length;
+                    for (var j = startInd; j < endIndex; j++) {
+                        data.push(serArr[i].data[j]);
+                    }
+
+                    if (data.length > 0) {
+                        serArr[i].data = data;
+                        if(fObj.showActual != true){
+                            serArr[i].zones[0].value = cat.length - fObj.fcast_days-1;
+                        }else{
+                             if(i%2 == 0 ){
+                                var tempArr = [];
+                                for(var indtemp=0 ; indtemp <= cat.length - fObj.fcast_days;indtemp++){
+                                    tempArr.push(serArr[i].data[indtemp]);
+                                }
+
+                                serArr[i].data =tempArr;
+                            }
+                        }
+                    }
+                }
+
+                if (cat.length > 0) {
+                        dataArray[1] = cat;
+                }
+              
+                dataArray[0] = serArr;
+                
+            }else{
+                
+                dataArray[0] = serArr;
+                dataArray[1] = catArr;
+            }
+                
             return dataArray;        
         }
 
+
+
+         var getAllDays = function (startdate,enddate) {
+            var s = new Date(startdate);
+            var e = new Date(enddate);
+            var a = [];
+            
+            while(s < e) {
+                a.push(getFormattedDate(s));
+                s = new Date(s.setDate(
+                    s.getDate() + 1
+                ))
+            }
+            
+            return a;
+        };
+
+        var getFormattedDate = function (date) {
+              var year = date.getFullYear();
+              var month = (1 + date.getMonth()).toString();
+              month = month.length > 1 ? month : '0' + month;
+              var day = date.getDate().toString();
+              day = day.length > 1 ? day : '0' + day;
+              return year +  '-' + month + '-' + day;
+        }
+
         this.sync = function(q, cl, widObj, cb){
-            cl.getForcast(widObj.foreCastObj, function(data, status){
+            cl.getForcast(widObj.foreCastObj,widObj,widObj.filterStr,widObj.commonSrc.src.id, function(data, status){
                 if (status){
-                    dataArray = mapResult(data);
-                    widObj.highchartsNG.series = dataArray[1];
-                    widObj.highchartsNG.xAxis.categories = dataArray[0];                    
+                    dataArray = mapResult(data,widObj.foreCastObj,widObj);
+                    widObj.highchartsNG.series = dataArray[0];
+                    widObj.highchartsNG.xAxis.categories = dataArray[1]; 
+                    widObj.minDate =  data.act_min_date;
+                    widObj.maxDate =  data.act_max_date;                     
                 }
                 widObj.syncState = true;
                 cb(widObj);
@@ -221,6 +677,42 @@ routerApp.service('$qbuilder',function($diginengine){
         }
     };
 
+    var formattedDate = function (date,format) {
+
+        var date;
+        if(format ==  "Monthly"){
+            var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = '01',
+                year = d.getFullYear();
+
+            if (month.length < 2) month = month;
+            if (day.length < 2) day = day;
+
+            date =  [year, month, day].join('-');
+
+        }else if(format==  "Yearly"){
+             var d = new Date(date || Date.now()),
+                month = '01' ,
+                day = '01',
+                year = d.getFullYear();
+
+                date = [year, month, day].join('-');
+
+        }else if(format == "Daily"){
+             var d = new Date(date || Date.now()),
+                month = '' + (d.getMonth() + 1),
+                day = d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month ="0" +month;
+            if (day.length < 2) day = "0"+day;
+
+            date =  [year, month, day].join('-');
+        } 
+
+        return date;
+    }
 
     var BOXPLOT = function(){
 
@@ -275,7 +767,6 @@ routerApp.service('$qbuilder',function($diginengine){
             var histogramPlotcat = [];
             var histogramPlotData = [];
             for ( var key in data){
-                console.log(data[key]);
                 histogramPlotData.push(parseFloat(data[key][0]));
                 var category = data[key].splice(0, 1);
                 histogramPlotcat.push(data[key]);
@@ -302,11 +793,11 @@ routerApp.service('$qbuilder',function($diginengine){
 
     var PIVOTSUMMARY = function(){
         this.sync = function(q, cl, widObj, cb){
-            cl.getExecQuery(q, function(data, status) {
+            cl.l(q,  widObj.commonSrc.src.id, function(data, status) {
                 widObj.widData.summary = data;
                 widObj.syncState = true;
                 cb(widObj);                
-            }, widObj.limit);
+            });
         }
     };
 
@@ -364,7 +855,5 @@ routerApp.service('$qbuilder',function($diginengine){
         }
 
     }
-
-
 
 });

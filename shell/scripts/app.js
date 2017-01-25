@@ -9,9 +9,7 @@ var routerApp = angular.module('DuoDiginRt', [
     '720kb.socialshare',
     'ngStorage',
     'configuration',
-    'directivelibrary',
-    'ngMdIcons',
-    'FBAngular',
+    'directivelibrary',   
     'gridster',
     'ui.calendar',
     'mgcrea.ngStrap',
@@ -33,7 +31,12 @@ var routerApp = angular.module('DuoDiginRt', [
     "com.2fdevs.videogular.plugins.controls",
     "info.vietnamcode.nampnq.videogular.plugins.youtube",
     "ngTagsInput",
-    'pouchdb'
+    'pouchdb',
+    'rzModule',
+	'md-steppers',
+    'stripe-payment-tools',
+	'angular-intro',
+    'cellCursor'
 ]);
 
 routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$urlRouterProvider", "lkGoogleSettingsProvider", function ($mdThemingProvider, $httpProvider, $stateProvider, $urlRouterProvider, lkGoogleSettingsProvider) {
@@ -57,33 +60,36 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         console.log(firstLogin2);
         */
         
-        if (localStorage.getItem("initialLogin") == undefined) {
-
-            localStorage.setItem("initialLogin", false);
-            state = 'welcome';
+        if (localStorage.getItem('initialLogin') == undefined) {
+            //localStorage.setItem('initialLogin', false);
+            state = "welcome";
+        }
+        else if(localStorage.getItem('initialLogin') == "false"){
+           state = "home";
         }
         else {
-            state = 'welcome';
+             state = "welcome";
         }
 
         return state;
     });
 
     $stateProvider
-        .state("login", {
-            url: "/login",
-            controller: "LoginCtrl",
-            templateUrl: "views/partial-login.html",
-            data: {
-                requireLogin: false
-            }
-        })
-        .state("signup", {
+        
+        /*.state("signup", {
             url: "/signup",
             controller: "signUpCtrl",
             templateUrl: "views/signup.html",
             data: {
                 requireLogin: false
+            }
+        })*/
+        .state("signup", {
+            url: "/home",
+            controller: "NavCtrl",
+            templateUrl: "views/partial-home.html",
+            data: {
+                requireLogin: true
             }
         })
         .state("welcome", {
@@ -96,7 +102,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         })
         .state("home", {
             url: "/home",
-            controller: "NavCtrl",
             templateUrl: "views/partial-home.html",
             data: {
                 requireLogin: true,
@@ -121,7 +126,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         })
         .state("home.group", {
             url: "/settings-group",
-            controller: "dashboardSetupCtrl",
+            controller: "userGroupsCtrl",
             templateUrl: "views/settings/group.html",
             data: {
                 requireLogin: true
@@ -151,6 +156,35 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
                 requireLogin: true
             }
         })
+		.state("home.userAdministrator", {
+            url: "/settings-userAdministrator",
+            controller: "userAdministratorCtrl",
+            templateUrl: "views/settings/userAdministrator/userAdministrator.html",
+            controllerAs: 'vm'
+        })
+		.state("home.excelFileUpload", {
+            url: "/excelFileUpload",
+            controller: "excelFileUploadCtrl",
+            templateUrl: "views/widgets/excelFileUpload/excelFileUpload.html",
+            controllerAs: 'vm'
+        })
+		.state("home.myAccount", {
+            url: "/myAccount",
+            controller: "myAccountCtrl",
+            templateUrl: "views/settings/myAccount/myAccount.html",
+            controllerAs: 'vm',
+			 params: {
+				'pageNo': '0'
+			  }
+        })
+		
+		.state('home.addaLaCarte', {
+			url: '/addaLaCarte',
+			templateUrl: 'views/settings/myAccount/addaLaCarte.html',
+			controller: 'addaLaCarteCtrl',
+			controllerAs: 'vm'
+		})
+		
         .state("home.userProfile", {
             url: "/settings-userProfile",
             controller: "dashboardSetupCtrl",
@@ -170,7 +204,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state('home.Dashboards', {
             url: "/Dashboards",
             controller: 'DashboardCtrl',
-            templateUrl: "views/charts.html",
+            templateUrl: "views/dashboard/dashboard.html",
             data: {
                 requireLogin: true
             }
@@ -352,11 +386,58 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             }
         }).state('home.welcomeSearch', {
         url: '/welcome-search',
-        templateUrl: "views/help/welcomeSearchBar.html",
+        templateUrl: "views/home/home.html",
+        controller: "homeCtrl",
         data: {
             requireLogin: true
         }
+    }).state('home.profileSetting', {
+        url: '/user-profile?user',
+		controller: 'userProfileCtrl',
+        templateUrl: "views/profile-settings/user-profile-view.html",
+        data: {
+            requireLogin: true
+        }
+    }).state('home.systemSettings', {
+        url: '/systemSettings',
+        controller: 'systemSettingsCtrl',
+        templateUrl: "views/settings/systemSettings/systemSettings.html",
+        data: {
+            requireLogin: true
+        }
+    }).state('home.sharedashboard', {
+        url: '/sharedashboard',
+        controller: 'sharedashboardgroupsCtrl',
+        templateUrl: "views/settings/dashboardShare/sharedashboard.html",
+        data: {
+            requireLogin: true
+        }
+    })
+	.state('home.themes', {
+        url: '/themes',
+        controller: 'themeCtrl',
+        templateUrl: "views/settings/theme/theme.html"
+    })
+	.state('home.user_assistance', {
+		url: '/user_assistance',
+		templateUrl: 'views/user_assistance/user_assistance.html',
+		controller: 'user_assistanceCtrl',
+		controllerAs: 'vm'
+	})
+    .state('home.datasourceSettings', {
+        url: '/datasource-settings',
+        controller: 'DatasourceSettingsCtrl',
+        templateUrl: 'views/settings/datasourceSettings/datasourceSettings.html',
+        data: {
+            requireLogin: true
+            }
+    })
+    .state('home.datasetShare', {
+        url: '/datasetShare',
+        controller: 'datasetShareCtrl',
+        templateUrl: "views/settings/datasetShare/datasetShare.html"
     });
+    
 
     lkGoogleSettingsProvider.configure({
         apiKey: 'AIzaSyA9fv9lYQdt1XV6wooFtItxYlMF8Y9t1ao',
@@ -364,46 +445,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         scope: ['https://www.googleapis.com/auth/drive']
     });
 
-    var customPrimary = {
-        '50': '#10cefd', '100': '#02c2f2', '200': '#02aed9', '300': '#019ac0',
-        '400': '#0185a6', '500': '#01718D', '600': '#015d74', '700': '#01485a',
-        '800': '#003441', '900': '#002028', 'A100': '#29d3fd', 'A200': '#43d8fe',
-        'A400': '#5cdefe', 'A700': '#000c0e'
-    };
-
-    $mdThemingProvider
-        .definePalette('customPrimary',
-            customPrimary);
-
-    var customAccent = {
-        '50': '#4285F4', '100': '#4285F4', '200': '#4285F4', '300': '#4285F4',
-        '400': '#4285F4', '500': '#4285F4', '600': '#4285F4', '700': '#4285F4',
-        '800': '#4285F4', '900': '#4285F4', 'A100': '#4285F4', 'A200': '#4285F4',
-        'A400': '#4285F4', 'A700': '#4285F4'
-    };
-
-    $mdThemingProvider
-        .definePalette('customAccent',
-            customAccent);
-
-    var customBackground = {
-        '50': '#ffffff', '100': '#ffffff', '200': '#ffffff', '300': '#ffffff',
-        '400': '#ffffff', '500': '#FFF', '600': '#f2f2f2', '700': '#e6e6e6',
-        '800': '#d9d9d9', '900': '#cccccc', 'A100': '#ffffff', 'A200': '#ffffff',
-        'A400': '#ffffff', 'A700': '#bfbfbf'
-    };
-
-    $mdThemingProvider
-        .definePalette('customBackground',
-            customBackground);
-
-    $mdThemingProvider.theme('default')
-        .primaryPalette('customPrimary')
-        .accentPalette('customAccent')
-        .warnPalette('red')
-        .backgroundPalette('customBackground')
-
-    $mdThemingProvider.alwaysWatchTheme(true);
 }]);
 
 routerApp.run(function ($rootScope, $auth, $state, $csContainer, $window) {
@@ -687,24 +728,6 @@ routerApp.controller('weatherWidgetController', ['$scope', '$http', '$mdDialog',
     };
 
 
-}])
-
-routerApp.controller('userprofileWidgetController', ['$scope','ProfileService', function ($scope,ProfileService) {
-
-   $scope.userDetails = ProfileService.UserDataArr;
-
-    (function () {
-        var menu_trigger = $("[data-card-menu]");
-        var back_trigger = $("[data-card-back]");
-
-        menu_trigger.click(function () {
-            $(".card, body").toggleClass("show-menu");
-        });
-
-        back_trigger.click(function () {
-            $(".card, body").toggleClass("show-menu");
-        });
-    })();
 }])
 
 routerApp.service('VideosService', ['$window', '$rootScope', '$log', function ($window, $rootScope, $log) {
@@ -1041,11 +1064,49 @@ routerApp.service('generatePDF3', function ($timeout, $pdfString) {
         doc.addHTML(htmlElement, config.tableLeft, config.tableTop, options, function () {
             var pdfName = config.title.toString() + '.pdf';
             doc.text(config.titleLeft, config.titleTop, config.title);
+            //doc.save(pdfName);
             var output = doc.output('datauristring')
             $pdfString.savePdf(output);
+
+            var file = base64ToBlob(output.replace('data:application/pdf;base64,',''), 'image/png');
+
         });
     };
 });
+
+
+function base64ToBlob( base64, type ) {
+    var bytes = atob( base64 ), len = bytes.length;
+    var buffer = new ArrayBuffer( len ), view = new Uint8Array( buffer );
+    for ( var i=0 ; i < len ; i++ )
+      view[i] = bytes.charCodeAt(i) & 0xff;
+    return new Blob( [ buffer ], { type: type } );
+}       
+
+//#conver dataURL into base64
+/*
+function base64ToBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var bytesLength = byteCharacters.length;
+    var slicesCount = Math.ceil(bytesLength / sliceSize);
+    var byteArrays = new Array(slicesCount);
+
+    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+        var begin = sliceIndex * sliceSize;
+        var end = Math.min(begin + sliceSize, bytesLength);
+
+        var bytes = new Array(end - begin);
+        for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+        }
+        byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: contentType });
+};
+*/
+
 
 routerApp.factory("$pdfString", function () {
     var base64Pdf;
@@ -1293,3 +1354,14 @@ window.addEventListener("beforeunload", function (e) {
 });
 */  
 
+
+/*
+window.onunload = function (e) {
+
+    //#Expire existing cookies
+    document.cookie = 'authData=; Path=/;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'securityToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'tenantData=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';  
+};
+
+*/

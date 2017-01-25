@@ -1,11 +1,11 @@
 routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdUtil',
-    '$timeout', '$rootScope', '$mdDialog', '$objectstore', '$state', '$http',
+    '$timeout', '$rootScope', '$mdDialog', '$mdMenu', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter','ProfileService', 'pouchDB','Fullscreen',
-    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog, $objectstore, $state,
-              $http, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter,ProfileService, pouchDB, Fullscreen) {
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB',  '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType',
+    function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog,$mdMenu, $objectstore, $state,
+              $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path,dbType) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -13,248 +13,346 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             var sessionInfo = $helpers.getCookie('securityToken');
             // if(sessionInfo==null) location.href = 'index.php';
         }
-
-        $scope.username = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
-        var baseUrl = "http://" + window.location.hostname;
-
-        var db = new pouchDB('dashboard');
-
-        $scope.adjustUI = function () {
-
-            if ($scope.headerbarPinned) {
-                $('#content1').css("top", "40px");
-                $('#content1').css("height", "calc(100vh - 40px)");
-                $('.h_iframe').css("height", "calc(100vh - 40px)");
-                $('.main-headbar-slide').css("transform", "translateY(0)");
-                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }
-            else {
-                $('#content1').css("top", "0px");
-                $('#content1').css("height", "calc(100vh)");
-                $('.h_iframe').css("height", "calc(100vh)");
-                $('.main-headbar-slide').css("transform", "translateY(-40px)");
-                $('#mainHeadbar:hover > .main-headbar > .main-headbar-slide').css("transform", "translateY(0)");
-            }
-        }
-        // hides and shows the dashboard tabs
-        $scope.showTabs = function (boolean) {
-
-            if (boolean) {//show tabs
-                console.log("show tabs");
-                $("md-tabs > md-tabs-wrapper").children().show();
-            } else {//hide tabs
-                console.log("hide tabs");
-                $("md-tabs > md-tabs-wrapper").children().hide();
-            }
-        };
+		$rootScope.sharableUsers = [];
+		$rootScope.sharableGroups = [];
+        $scope.firstName = JSON.parse(decodeURIComponent(getCookie('authData'))).Username;  
+        var interval;
+		
+		//Theming
+		$rootScope.lightOrDark = '';
+		$rootScope.currentColor = '';
+		$rootScope.h1color = '';
+		colorManager.changeTheme('default');
 
 
          //#Added by Chamila
         //#to get session detail for logged user
-        $http.get(Digin_Tenant+'/GetSession/'+getCookie('securityToken')+'/Nil')
+        $http.get(auth_Path+'GetSession/' + getCookie('securityToken') + '/Nil')
             .success(function (data) {
                 console.log(data);
                 $rootScope.SessionDetail = data;
+                var pouchdbName = data.UserID + data.Domain;
+                console.log(pouchdbName);
+         
+                $rootScope.db  = new pouchDB(pouchdbName);
+                $scope.getSearchPanelDetails(); 
             }).error(function () {
-                //alert("Oops! There was a problem retrieving the groups");
-            });
+            //alert("Oops! There was a problem retrieving the groups");
+        });
 
         //#to get tenant ID for logged user
-        $http.get(Digin_Tenant+'/tenant/GetTenants/'+getCookie('securityToken'))
+         $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))
             .success(function (data) {
                 console.log(data);
                 $rootScope.TenantID = data[0].TenantID;
+                $rootScope.TenantName=data[0].Name;
             }).error(function () {
-                //alert("Oops! There was a problem retrieving the groups");
+            //alert("Oops! There was a problem retrieving the groups");
         });
 
-
+        $scope.checkIslocal = function(){
+            if(IsLocal == true){
+                $rootScope.db  = new pouchDB("Dashboards");
+                $scope.getSearchPanelDetails(); 
+            }
+        }
+        
+            
         //#get user profile       
-        //var baseUrl = "http://" + $rootScope.TenantID;
         var baseUrl = "http://" + window.location.hostname;
-
         //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-        $http.get('http://omalduosoftwarecom.prod.digin.io/apis/profile/userprofile/omal@duosoftware.com')
-            .success(function(response){
+        $http.get(baseUrl+apis_Path+'profile/userprofile/'+$scope.firstName)
+            .success(function (response) {
                 console.log(response);
-                $rootScope.profile_Det=response;
+                $rootScope.profile_Det = response;
                 ProfileService.InitProfileData(response);
-            }).error(function(error){   
-                //fireMsg('0', '<strong>Error : </strong>Please try again...!');
-            });     
+            }).error(function (error) {
+            //fireMsg('0', '<strong>Error : </strong>Please try again...!');
+        });
 
-
-        //initially hiding the tabs
-        $scope.showTabs(true);
-
+        $rootScope.refreshDashboard = function() {
+            $rootScope.interval = $interval(function() {
+                var count = 0;
+                if ($state.current.name == "home.Dashboards") {
+                    if ($rootScope.dashboard !== undefined) {
+                        if ($rootScope.dashboard.refreshInterval !== undefined || $rootScope.dashboard.refreshInterval !== null) {
+                            //sync chart widgets
+                            var index = $rootScope.selectedPageIndx;
+                            if ($rootScope.dashboard.pages[index]["isSeen"]) {
+                                for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
+                                    count++;
+                                    var widget = $rootScope.dashboard.pages[index].widgets[i];
+                                    if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                        //Clear the filter indication when the chart is re-set
+                                        widget.widgetData.filteredState = false;
+                                        filterService.clearFilters(widget);
+                                        $qbuilder.sync(widget.widgetData, function (data) {
+                                            if (count == $rootScope.dashboard.pages[index].widgets.length) {
+                                                // save dashboard to pouch db
+                                                var tempDashboard = angular.copy($rootScope.dashboard);
+                                                angular.forEach(tempDashboard.pages,function(page){
+                                                    //remove if the page is temporary
+                                                    if (page.pageID.toString().substr(0,4) == "temp"){
+                                                        tempDashboard.pages.splice(tempDashboard.pages.indexOf(page), 1);
+                                                    }
+                                                    if (tempDashboard.pages.indexOf(page) > 0){
+                                                        //remove temporary widgets in each page
+                                                        angular.forEach(page.widgets,function(widget){
+                                                            if (widget.widgetID.toString().substr(0, 4) == "temp") {
+                                                                page.widgets.splice(page.widgets.indexOf(widget), 1);
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                pouchDbServices.pageSync(tempDashboard);
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },$rootScope.refreshInterval);
+        }
         //#set initial logo as Digin logo
         $scope.imageUrl = "styles/css/images/DiginLogo.png";
-        //$rootScope.myImage="styles/css/images/setting/user100x100.png";
-        $rootScope.myCroppedImage="styles/css/images/setting/user100x100.png";
-         $rootScope.profile_pic="styles/css/images/setting/user100x100.png";
-        // if($scope.imageUrl==""){
-        //      $scope.imageUrl = "styles/css/images/DiginLogo.png";
-        // }
-        // else{
+        $rootScope.myCroppedImage = "styles/css/images/signup-user.png";
+        $rootScope.profile_pic = "styles/css/images/signup-user.png";
+
         var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
         var res = userInfo.Username.replace("@", "_");
         var NameSpace = res.replace(".", "_");
 
-        var logoPath = Digin_Engine_API.split(":")[0] + ":" + Digin_Engine_API.split(":")[1];
-        //console.log(logPath);
-
         $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
             .success(function (data) {
-                $rootScope.image = logoPath + data.Result.logo_path;
-                //$rootScope.myimage = logoPath + data.Result.dp_path;
-                //$rootScope.myCroppedImage = logoPath + data.Result.dp_path;
-                $rootScope.profile_pic=data.Result.dp_path;
-                $rootScope.userSettings=data.Result;
-                ProfileService.UserDataArr.BannerPicture = 'http://'+NameSpace+'.'+'prod.digin.io'+data.Result.dp_path;
-                //$rootScope.image = "http://192.168.2.33/user_data/9c42d3c4661182ca872b3b6878aa0429/logos/hnb.png";
-                //$scope.imageUrl = "styles/css/images/DiginLogo.png";
-                
-                if(data.Result.logo_path==undefined)
-                {
-                    $rootScope.image = "styles/css/images/DiginLogo.png";
-                    //$rootScope.myImage="styles/css/images/setting/user100x100.png";
-                    $rootScope.myCroppedImage="styles/css/images/setting/user100x100.png";
-                    $rootScope.profile_pic="styles/css/images/setting/user100x100.png";
+                if(data.Custom_Message=="No user settings saved for given user and domain")   {
+                     $scope.callUserInitialize();
                 }
-                else
-                {
-                   $rootScope.image = logoPath + data.Result.logo_path;
-                   //$rootScope.myImage=logoPath + data.Result.dp_path;
-                   //$rootScope.myCroppedImage=logoPath + data.Result.dp_path;
-                   $rootScope.profile_pic=logoPath + data.Result.dp_path;
+                else{
+                    $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
+                    $rootScope.profile_pic = data.Result.dp_path;
+                    if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
+                        data.Result.components = {
+                            saveExplicit : false,
+                            dashboardId : null
+                        };
+                        data.Result.components = JSON.stringify(data.Result.components);
+                    }
+                    $rootScope.userSettings = data.Result;
+                    ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
+                    ProfileService.widget_limit = data.Result.widget_limit;
+                    $rootScope.onsiteDate=data.Result.created_date_time;
+
+                    if($rootScope.onsiteDate==undefined){
+                        $rootScope.onsiteDate=new Date();
+                    }
+
+                    if (data.Result.logo_path == undefined) {
+                        $rootScope.image = "styles/css/images/DiginLogo.png";
+                        $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
+                        $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    }
+                    else {
+                        $rootScope.image = 'http://' + Digin_Domain  + data.Result.logo_path;
+                        $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                    }
+
+                    $scope.getURL();
+                    $scope.imageUrl = $rootScope.image;
+                    $scope.profile_picURL = $rootScope.profile_pic;
+
+                    //if user has a default dashboard open it 
+
+                    var obj = JSON.parse($rootScope.userSettings.components);
+
+                    if(obj.dashboardId != null){
+
+                        //check wether this defauld dashboard is allreday in pauch 
+                            var db = $rootScope.db;
+                            var count =0;
+                            db.allDocs({
+                                include_docs: true,
+                                attachments: true
+                            }).catch(function (err) {
+                                console.log(err);
+                            }).then(function (data) {
+                                if(data.rows.length > 0){
+                                        angular.forEach(data.rows, function (row) {
+                                        count++;
+                                        if(row.doc.dashboard.compID == obj.dashboardId){
+                                            var dashboardObj = {
+                                                "dashboardID" : obj.dashboardId,
+                                                "dashboardName" : row.doc.dashboard.compName,
+                                                "pouchID" : row.id
+                                            };
+
+                                            $rootScope.goDashboard(dashboardObj);
+
+                                        }
+                                        else if(count == data.rows.length){
+                                            $scope.getDashboard(obj.dashboardId);
+                                        }
+                                    });
+                                }else{
+                                     $scope.getDashboard(obj.dashboardId);
+                                }
+                                
+                                console.log($scope.dashboards);
+                            });
+                        //--------------------------------------------------------
+                    
+                        $rootScope.data.defaultDashboard=obj.dashboardId;
+                    }
                 }
-                
-                $scope.getURL();
-                $scope.imageUrl = $rootScope.image;
-                $scope.profile_picURL = $rootScope.profile_pic;
             })
             .error(function (data) {
                 $scope.imageUrl = "styles/css/images/DiginLogo.png";
-                //$scope.myimageUrl = "styles/css/images/setting/user100x100.png";
-                //$scope.myCroppedImageUrl = "styles/css/images/setting/user100x100.png";
                 $scope.profile_pic = "styles/css/images/setting/user100x100.png";
                 $scope.getURL();
             });
 
 
-        //value for jquery of search panel overlay
-        var $windowHeight = $(window).height(),
-            $windowWidth = $(window).width(),
-            $startingPoint = $('.starting-point');
-        // Calculate the diameter of search panel overlay
-        var diameterValue = (Math.sqrt(Math.pow($windowHeight, 2) + Math.pow($windowWidth, 2)) * 2);
-        $startingPoint.children('span').css({
-            height: diameterValue + 'px',
-            width: diameterValue + 'px',
-            top: -(diameterValue / 2) + 'px',
-            left: -(diameterValue / 2) + 'px'
-        });
-        //get sidebar data from menu.json 
-        getJSONData($http, 'menu', function (data) {
+            $scope.callUserInitialize=function(){
+                //$scope.data = {"db": "bigquery"}
 
-            localStorage.setItem("sidebarData", JSON.stringify(data));
-            $scope.sidebarItems = data;
-        });
-        // headerbar 
-        $scope.headerbarPinned = false;
+                    /*
+                    if(dbType=="mssql"){
+                        $scope.data = {"db": "mssql"}
+                    }
+                    else if(dbType=="bigquery"){
+                        $scope.data = {"db": "bigquery"}
+                    }
+                    else{
+                        $scope.data = {"db": "bigquery"}
+                    }*/
 
-        $scope.pinHeaderbar = function (state) {
-            $scope.headerbarPinned = state;
-        }
+                    $scope.data = {"db": dbType}
 
-          //close open pages and go to home
-        $scope.mainclose = function(ev){
-            
+
+                    $http({
+                        method: 'POST',
+                        url: Digin_Engine_API+'set_init_user_settings',
+                        data: angular.toJson($scope.data),
+                        headers: {
+                            'SecurityToken': userInfo.SecurityToken
+                        }
+                    })
+                    .success(function (response) {
+                        $scope.callUserSettings();
+                    })
+                    .error(function (error) {
+                            
+                    });
+            }
+
+
+            $scope.callUserSettings=function(){
+                $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain)
+                .success(function (data) {
+
+                    $rootScope.image ='http://' + Digin_Domain +  data.Result.logo_path;
+                    $rootScope.profile_pic = data.Result.dp_path;
+                    if (data.Result.components==null || data.Result.components=="true" || data.Result.components=="false"){
+                        data.Result.components = {
+                            saveExplicit : false,
+                            dashboardId : null
+                        };
+                        data.Result.components = JSON.stringify(data.Result.components);
+                    }
+                    $rootScope.userSettings = data.Result;
+                    ProfileService.UserDataArr.BannerPicture = 'http://' + Digin_Domain + data.Result.dp_path;
+                    ProfileService.widget_limit = data.Result.widget_limit;
+
+
+                    if (data.Result.logo_path == undefined) {
+                        $rootScope.image = "styles/css/images/DiginLogo.png";
+                        $rootScope.myCroppedImage = "styles/css/images/setting/user100x100.png";
+                        $rootScope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    }
+                    else {
+                        $rootScope.image = 'http://' + Digin_Domain  + data.Result.logo_path;
+                        $rootScope.profile_pic = 'http://' + Digin_Domain + data.Result.dp_path;
+                    }
+
+                    $scope.getURL();
+                    $scope.imageUrl = $rootScope.image;
+                    $scope.profile_picURL = $rootScope.profile_pic;
+
+                    //if user has a default dashboard open it 
+
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    if(obj.dashboardId != null){
+                        $scope.getDashboard(obj.dashboardId);
+                        $rootScope.data.defaultDashboard=obj.dashboardId;
+                    }
+                })
+                .error(function (data) {
+                    $scope.imageUrl = "styles/css/images/DiginLogo.png";
+                    $scope.profile_pic = "styles/css/images/setting/user100x100.png";
+                    $scope.getURL();
+                });
+            }
+			
+
+        //close open pages and go to home
+        $scope.mainclose = function (ev) {
+            setTimeout(function(){ $mdDialog.hide(); }, 3000);
             $mdDialog.show({
 
-                    controller: function goHomeCtrl($scope, $mdDialog) {
+                controller: function goHomeCtrl($scope, $mdDialog) {
 
-                        $scope.goHome = function () {
-                       
-                       $mdDialog.cancel();
-                         $state.go('home.welcomeSearch');
-                            $scope.createuuid = function () {
+                    $scope.goHome = function () {
 
-                                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                        $rootScope.currentView = "Home";
+                        $mdDialog.cancel();
+                        $state.go('home.welcomeSearch');
+                        $scope.createuuid = function () {
 
-                            }
-                            
-                            $rootScope.dashboard = [];
-                            $rootScope.dashboard ={
+                            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 
-                                "pages" : null,
-                                "compClass": null,
-                                "compType": null,
-                                "compCategory": null,
-                                "compID": null,
-                                "compName": null,
-                                "refreshInterval": null,
-                            }
-
-                            $rootScope.dashboard.pages=[];
-                            var page = {
-                                        "widgets": [],
-                                        "pageID": "temp" + $scope.createuuid(),
-                                        "pageName": "DEFAULT",
-                                        "pageData": null
-                                    }
-                                $rootScope.dashboard.pages.push(page);
-                          
                         }
 
-                        $scope.cancel = function () {
-                            $mdDialog.cancel();
-                            homeState = false;
-                        };
+                        $rootScope.page_id = "";
+                        $rootScope.dashboard = [];
+                        $rootScope.dashboard = {
+
+                            "pages": null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
+                        }
+
+                        $rootScope.dashboard.pages = [];
+                        var page = {
+                            "widgets": [],
+                            "pageID": "temp" + $scope.createuuid(),
+                            "pageName": "DEFAULT",
+                            "pageData": null
+                        }
+                        $rootScope.dashboard.pages.push(page);
+
+                    }
+
+                    $scope.cancel = function () {
+                        $mdDialog.cancel();
+                        homeState = false;
+                    };
 
 
-                    },
-                    templateUrl: 'views/goHome.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                  
-                })
-                     
+                },
+                templateUrl: 'views/goHome.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+
+            })
+
         }
 
-        //shows user profile in a dialog box
-        $scope.showUserProfile = function (ev) {
-            $mdDialog.show({
-                    templateUrl: 'templates/profileDialogTemplate.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    //controller start
-                    controller: function showProfileController($rootScope, $scope, $mdDialog) {
-                        //var userInfo = $auth.getSession();
-
-                        var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-                        $scope.user = {
-                            name: $rootScope.profile_Det.Name,  
-                            email:$rootScope.profile_Det.Email, 
-                            address: $rootScope.profile_Det.BillingAddress,
-                            mobile: $rootScope.profile_Det.PhoneNumber,
-                            profile_pic: $rootScope.profile_pic,
-                            company :$rootScope.profile_Det.Company
-
-                        };
-                        $scope.close = function () {
-                            $mdDialog.cancel();
-                        };
-                    }
-                    //controller end
-                })
-                .then(function (answer) {
-                }, function () {
-                });
-        };
-        
         //shows tennant dialog box
         $scope.showTennant = function (ev) {
 
@@ -275,7 +373,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
                     $rootScope.username = userInfo.Username;
-                    $http.get(Digin_Tenant + '/tenant/GetTenants/' + userInfo.SecurityToken)
+                    $http.get(auth_Path+'tenant/GetTenants/' + userInfo.SecurityToken)
                         .success(function (response) {
                             $scope.tennants = response;
                         });
@@ -292,7 +390,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             $scope.status = 'Yes';
                             //window.location = "http://"+tennant;
                             //window.open("http://" + tennant);
-                            window.open("http://" + tennant+"/#/home");
+                            window.open("http://" + tennant + "/#/home");
                         }, function () {
                             //alert('No!');
                             $scope.status = 'No';
@@ -310,7 +408,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         $scope.dashboards = [];
-        $scope.reports = [];
+        $rootScope.reports = [];
         $scope.analyzers = [];
         $scope.favoriteDashboards = [];
         $scope.favoriteReports = [];
@@ -357,11 +455,11 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
         $rootScope.dashboards_toNameChk = $scope.dashboards;
         $scope.originalDashboardsList = $scope.dashboards;
-        $scope.originalReportssList = $scope.reports;
+        $scope.originalReportssList = $rootScope.reports;
 
         $scope.updateFilteredList = function () {
             $scope.dashboards = $filter("filter")($scope.originalDashboardsList, $scope.searchText);
-            $scope.reports = $filter("filter")($scope.originalReportssList, $scope.searchText);
+            $rootScope.reports = $filter("filter")($scope.originalReportssList, $scope.searchText);
         };
 
         //change dates range in likes
@@ -481,26 +579,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         //On click report Event
         $scope.goReport = function (report) {
             // --- Add by Gevindu on 5/23/2016 - DUODIGIN-509
-            $mdSidenav('right')
-                .close()
-                .then(function () {
-                    $log.debug('right sidepanel closed');
-                });
-            //----------
-            $scope.showTabs(false);
-            //closing the overlay
-            $(".overlay").removeClass("overlay-search active");
-            $(".nav-search").removeClass("active");
-            $(".search-layer").removeClass("activating active");
-            // console.log(report);
             $state.go('home.DynamicallyReportBuilder', {'reportNme': report});
+			$rootScope.currentView ="Reports || "+report;
         }
 
         //Function to Delete Dashbord
-        $scope.DeleteDashBoard = function () {
+        $scope.DeleteDashBoard = function (dashboard) {
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             $scope.Det = [{
-                "comp_id": $rootScope.dboard.dashboardID,
+                "comp_id": dashboard.dashboardID,
                 "permanent_delete": false
             }];
 
@@ -513,7 +600,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
                 .success(function (response) {
-                    privateFun.getAllDashboards();
+                    var db = $rootScope.db;
+                    db.get($rootScope.page_id, function (err, doc) {
+                        if (err) {
+                        }
+                        else {
+                            db.remove(doc)
+                            .catch(function (err) {
+                                //fail silently
+                            });                            
+                        }
+                    });
+                    privateFun.getAllDashboards();                    
                     ngToast.create({
                         className: 'success',
                         content: "Dashbord deleted successfully...!",
@@ -545,26 +643,154 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             $rootScope.dboard = dashboard;
         }
 
+        $scope.deleteDashBoard = function(dashboard,ev){
+            var confirm = $mdDialog.confirm()
+                  .title('Delete Dashboard')
+                  .textContent('Do you want to delete this dashboard...?')
+                  .ariaLabel('Lucky day')
+                  .targetEvent(ev)
+                  .ok('yes')
+                  .cancel('no');
+                    $mdDialog.show(confirm).then(function() {
+                      $scope.DeleteDashBoard(dashboard);
+                    }, function() {
+                      
+            });
 
-        $scope.goDashboard = function (dashboard) {
+        }
+
+        //-------------- setup default dashboard ---------
+        $rootScope.data = {
+          defaultDashboard : '',
+        };
+
+
+
+        $scope.setDefaultDashboard = function(ev,dashboard) {
+           //alert($rootScope.data.defaultDashboard);
+
+           var confirm = $mdDialog.confirm()
+          .title('Set a default dashboard')
+          .textContent('Would you like to set '+dashboard.dashboardName+' as your default dashboard?')
+          .ariaLabel('')
+          .targetEvent(ev)
+          .ok('Yes')
+          .cancel('No');
+
+            $mdDialog.show(confirm).then(function() {
+
+              //set the user settings object
+               //#chk undefined values
+            var dp_name="";
+            var logo_name="";
+            var components; var userRole; var cacheLifetime; var widgetLimit; var themeConfig; var queryLimit;
+
+            if($rootScope.userSettings.components==undefined){components=0;}  else {components=$rootScope.userSettings.components}
+            if($rootScope.userSettings.user_role==undefined)  {userRole="";}  else {userRole=$rootScope.userSettings.user_role}
+            if($rootScope.userSettings.cache_lifetime==undefined){cacheLifetime=0;}else{cacheLifetime=$rootScope.userSettings.cache_lifetime}
+            if($rootScope.userSettings.widget_limit==undefined){widgetLimit=0;}else {widgetLimit=$rootScope.userSettings.widget_limit}
+            if($rootScope.userSettings.query_limit==undefined){queryLimit=0;} else{queryLimit=$rootScope.userSettings.query_limit}
+            if($rootScope.userSettings.dp_path==undefined) {dp_name="";}else{dp_name=$rootScope.userSettings.dp_path.split("/").pop();}
+            if($rootScope.userSettings.logo_path==undefined){logo_name="";} else{logo_name=$rootScope.userSettings.logo_path.split("/").pop();}
+            if($rootScope.userSettings.theme_config==undefined){themeConfig="";} else{themeConfig=$rootScope.userSettings.theme_config} 
+
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+
+            var obj = JSON.parse($rootScope.userSettings.components);
+            var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+
+            var components ={
+                "saveExplicit" : obj.saveExplicit,
+                "dashboardId"  : dashboard.dashboardID
+            };
+
+            var userSettings = {
+                "email": userInfo.Email,
+                "components": JSON.stringify(components),
+                "user_role":userRole,
+                "cache_lifetime":cacheLifetime,
+                "widget_limit": widgetLimit,
+                "query_limit": queryLimit,
+                "logo_name": logo_name,
+                "dp_name" : dp_name,
+                "theme_config": themeConfig
+            } 
+              //send request to set the default dashboard 
+               
+              
+              $http({
+                    method: 'POST',
+                    url: Digin_Engine_API + 'store_user_settings/',
+                    data: angular.toJson(userSettings),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'SecurityToken': userInfo.SecurityToken
+                        //'Domain': Digin_Domain
+                    }
+                })
+                .success(function (response) {
+                    //alert("Success...!");
+                    ngToast.create({
+                                className: 'success',
+                                content: "You have successfully set up a default dashboard",
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                    });
+
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    var components ={
+                        "saveExplicit" : obj.saveExplicit,
+                        "dashboardId"  : dashboard.dashboardID
+                    };
+                    $rootScope.userSettings.components=JSON.stringify(components);
+                    $rootScope.data.defaultDashboard=dashboard.dashboardID;
+                    
+                })
+                .error(function (error) {
+                });
+
+
+            }, function() {
+                //if there is no defalt dashboard already set make it null, if not take it from rootscope and set it 
+                    var obj = JSON.parse($rootScope.userSettings.components);
+                    $rootScope.data.defaultDashboard=obj.dashboardId;
+             
+            });
+
+        };
+        //-------------------------------------------------
+        
+
+        
+
+        $rootScope.goDashboard = function (dashboard) {
+
+            if(saveDashboardService.IsSavingINprogress == true){
+                return;
+            }
+
+            $rootScope.currentView = "Dashboards || " + dashboard.dashboardName;
+            //$scope.openSearchBar();
             console.log($scope.dashboards);
             console.log("dash item", dashboard);
             $rootScope.page_id = "";
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
-            if ( typeof(dashboard.dashboardID) == "undefined" ){
-                db.get( dashboard.pouchID , function(err, doc){
-                    if (err){
+            if(typeof(dashboard.pouchID) != "undefined"){
+                   var db = $rootScope.db;
+                   db.get(dashboard.pouchID, function (err, doc) {
+                    if (err) {
                         ngToast.create({
                             className: 'danger',
                             content: 'Failed retrieving Dashboard Details. Please try again!',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true
-                        });                        
-                       }                        
+                        });
+                    }
                     else {
-                        var dashboard = CircularJSON.parse(doc.dashboard);
+                        var dashboard = doc.dashboard;
                         $rootScope.dashboard = dashboard;
                         $rootScope.page_id = doc._id;
                         //deletions attribute is missing from dashboard
@@ -575,101 +801,132 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "widgetIDs": []
                         };
                         $rootScope.selectedPageIndx = 0;
-                        $rootScope.selectedPage = 1;                        
-                        ngToast.create({
-                            className: 'success',
-                            content: 'Retrieved dashboards from localStorage',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });   
-                    }
-                });  $state.go('home.Dashboards');              
-            }
-            else {
-                if ( typeof(dashboard.pouchID) != "undefined" ){
-                    $rootScope.page_id = dashboard.pouchID;
-                }
-
-            $http({
-                method: 'GET',
-                url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboard.dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
-            })
-                .success(function (data) {
-
-                    if (data.Is_Success) {
-
-                        console.log("$scope.dashboardObject", $scope.dashboardObject);
-                        $rootScope.dashboard = data.Result;
-                        //deletions attribute is missing from dashboard
-                        //so adding that attribute with all arrays inside empty
-                        $rootScope.dashboard["deletions"] = {
-                            "componentIDs": [],
-                            "pageIDs": [],
-                            "widgetIDs": []
-                        };
-                        $rootScope.selectedPageIndx = 0;
                         $rootScope.selectedPage = 1;
 
-                        var index = 0;
-                        console.log($rootScope.dashboard.pages[index].widgets);
-                        for ( var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++){
-                            $rootScope.dashboard.pages[index]["isSeen"] = true;
-                            var widget = $rootScope.dashboard.pages[index].widgets[i];
-                            console.log('syncing...');
+                        for (var i = 0; i < $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length; i++) {
+                            var widget = $rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets[i];
                             if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                                widget.widgetData.syncState = false;
-                                //widget.widgetData.syncState = false;
-                                if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst"){
-                                    $qbuilder.sync(widget.widgetData, function (data) {
-                                        //widget.widgetData.syncState = true; 
-                                        // if (typeof widget.widgetData.widData.drilled != "undefined" && widget.widgetData.widData.drilled)
-                                        //     $qbuilder.widInit();
-                                        //widget.widgetData.syncState = true;                                    
-                                    });
-
-                                }
+                                widget.widgetData.syncState = true;
+                                $scope.$apply();
                             }
                         }
-                        ngToast.create({
-                            className: 'success',
-                            content: data.Custom_Message,
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });                        
+                        if ($rootScope.dashboard.refreshInterval == '0') {
+                            $interval.cancel($rootScope.interval);
+                            $rootScope.interval = undefined;
+                            $rootScope.refreshInterval == undefined;
 
-                        $state.go('home.Dashboards');
+                        } else {
+                            $interval.cancel($rootScope.interval);
+                            $rootScope.interval = undefined;
+                            $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                            $rootScope.refreshDashboard();                            
+                        }
                     }
-                    else {
+                });
+                $state.go('home.Dashboards');
+            }else{
+                 $scope.getDashboard(dashboard.dashboardID);
+            }
+
+
+            $(".overlay").removeClass("overlay-search active");
+            $(".nav-search").removeClass("active");
+            $(".search-layer").removeClass("activating active");
+
+        }
+
+    $scope.getDashboard = function(dashboardID){
+             $http({
+                    method: 'GET',
+                    url: Digin_Engine_API + 'get_component_by_comp_id?comp_id=' + dashboardID + '&SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
+                })
+                    .success(function (data) {
+
+                        if (data.Is_Success ) {
+
+                            if(data.Result != null ){
+                                console.log("$scope.dashboardObject", $scope.dashboardObject);
+                                    $rootScope.dashboard = data.Result;
+                                    //deletions attribute is missing from dashboard
+                                    //so adding that attribute with all arrays inside empty
+                                    $rootScope.dashboard["deletions"] = {
+                                        "componentIDs": [],
+                                        "pageIDs": [],
+                                        "widgetIDs": []
+                                    };
+                                    $rootScope.selectedPageIndx = 0;
+                                    $rootScope.selectedPage = 1;
+
+
+                                    //set deletioins
+                                    data.Result["deletions"] = {
+                                        "componentIDs": [],
+                                        "pageIDs": [],
+                                        "widgetIDs": []
+                                    };
+                                    //insert the new dashboard in to pouch DB
+                                    pouchDbServices.insertPouchDB(data.Result,null,undefined); 
+
+                                    var index = 0;
+                                    for (var i = 0; i < $rootScope.dashboard.pages[index].widgets.length; i++) {
+                                        $rootScope.dashboard.pages[index]["isSeen"] = true;
+                                        var widget = $rootScope.dashboard.pages[index].widgets[i];
+                                        console.log('syncing...');
+                                        if (typeof(widget.widgetData.commonSrc) != "undefined") {
+                                            widget.widgetData.syncState = false;
+                                            //Clear the filter indication when the chart is re-set
+                                            widget.widgetData.filteredState = false;
+                                            filterService.clearFilters(widget);                                    
+                                            if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+                                                $qbuilder.sync(widget.widgetData, function (data) {
+                                                    widget.widgetData.syncState = true;
+                                                });
+                                            }
+                                        }
+                                    }
+                                    if ($rootScope.dashboard.refreshInterval == '0') {
+                                        $interval.cancel($rootScope.interval);
+                                        $rootScope.interval = undefined;
+                                        $rootScope.refreshInterval == undefined;
+
+                                    } else {
+                                        $interval.cancel($rootScope.interval);
+                                        $rootScope.interval = undefined;
+                                        $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
+                                        $rootScope.refreshDashboard();                            
+                                    }
+                                    $state.go('home.Dashboards');
+                                    $rootScope.currentView = dashboard.dashboardName; 
+                            }
+                           
+                        }
+                        else {
+
+                            ngToast.create({
+                                className: 'danger',
+                                content: data.Custom_Message,
+                                horizontalPosition: 'center',
+                                verticalPosition: 'top',
+                                dismissOnClick: true
+                            });
+                            $mdDialog.hide();
+                        }
+                        console.log("data goDashboard", data);
+                    })
+                    .error(function (error) {
 
                         ngToast.create({
                             className: 'danger',
-                            content: data.Custom_Message,
+                            content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
                             horizontalPosition: 'center',
                             verticalPosition: 'top',
                             dismissOnClick: true
                         });
-                        $mdDialog.hide();
-                    }
-                    console.log("data goDashboard", data);
-                })
-                .error(function (error) {
-
-                    ngToast.create({
-                        className: 'danger',
-                        content: 'Failed retrieving Dashboard Details. Please refresh page to load data!',
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        dismissOnClick: true
+                        $mdDialog.hide()
                     });
-                    $mdDialog.hide()
-                });
-            }   
-            $(".overlay").removeClass("overlay-search active");
-            $(".nav-search").removeClass("active");
-            $(".search-layer").removeClass("activating active");
         }
+
+
         $scope.goAnalyzer = function (report) {
             $scope.showTabs(false);
             //closing the overlay
@@ -681,6 +938,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 param: report
             });
         }
+
         $scope.savePentaho = function (ev, dashboard) {
             $mdDialog.show({
                 controller: 'savePentahoCtrl',
@@ -693,7 +951,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             })
         }
-        
+
         // update damith
         // get all reports details
         var privateFun = (function () {
@@ -719,30 +977,32 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 }
             };//end
 
+
             return {
                 getAllDashboards: function () {
-
+					$scope.componentsLoaded = false;
                     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
                     $scope.dashboards = [];
-                    $scope.reports = [];
+                    $rootScope.reports = [];
                     $http({
                         method: 'GET',
 
                         url: Digin_Engine_API + 'get_all_components?SecurityToken=' + userInfo.SecurityToken + '&Domain=' + Digin_Domain
                     })
                         .success(function (data) {
-
-                            console.log("data getAllDashboards", data);
+							$scope.componentsLoaded = true;
 
                             $scope.dashboards = [];
 
                             // seperate reports and dashboards
                             for (var i = 0; i < data.Result.length; i++) {
-                                if ( data.Result[i].compType == "Report"){
-                                    $scope.reports.push(
-                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder'}
+                                if (data.Result[i].compType == "Report") {
+                                    $rootScope.reports.push(
+                                        {splitName: data.Result[i].compName, path: '/dynamically-report-builder', reportId: data.Result[i].compID}
                                     );
+
+                                    DashboardService.reports = $rootScope.reports;
                                 }
                                 else {
 
@@ -754,109 +1014,105 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                                 }
                             }
-
-                            ngToast.create({
-                                className: 'success',
-                                content: 'Retrieved Dashboard Details!',
-                                horizontalPosition: 'center',
-                                verticalPosition: 'top',
-                                dismissOnClick: true
-                            });
+                            
+                          
                             //fetch all saved dashboards from pouchdb
+                            var db = $rootScope.db;
                             db.allDocs({
                                 include_docs: true,
                                 attachments: true
-                              }).catch(function (err) {
+                            }).catch(function (err) {
                                 console.log(err);
-                              }).then(function (data) {                       
+                            }).then(function (data) {
                                 angular.forEach(data.rows, function (row) {
-                                    console.log(typeof(row.doc.dashboard));
                                     //var records = CircularJSON.parse(row.doc.dashboard);
                                     var records = row.doc.dashboard;
                                     var isAvailble = false;
-                                    for ( var i = 0; i < $scope.dashboards.length; i++){
-                                        if ( $scope.dashboards[i].dashboardID == records.compID){
+                                    for (var i = 0; i < $scope.dashboards.length; i++) {
+                                        if ($scope.dashboards[i].dashboardID == records.compID) {
                                             isAvailble = true;
-                                            $scope.dashboards[i]["pouchID"] =  row.doc._id;
+                                            $scope.dashboards[i]["pouchID"] = row.doc._id;
                                         }
                                     }
-                                    if ( isAvailble == false ){
+                                    if (isAvailble == false) {
                                         $scope.dashboards.push(
                                             {pouchID: row.doc._id, dashboardName: records.compName}
-                                        );                                
-                                    }                            
-                                    });
-                                console.log($scope.dashboards);
-                              });                            
+                                        );
+                                    }
+                                });
+                            });
                             $mdDialog.hide();
                         })
                         .error(function (error) {
+							$scope.componentsLoaded = true;
 
                             ngToast.create({
                                 className: 'success',
-                                content: 'Retrieved Dashboard Details from localStorage!',
+                                content: 'Retrieved dashboard details from localStorage!',
                                 horizontalPosition: 'center',
                                 verticalPosition: 'top',
                                 dismissOnClick: true
                             });
+					
                             //fetch all saved dashboards from pouchdb
+                            var db = $rootScope.db;
                             db.allDocs({
                                 include_docs: true,
                                 attachments: true
-                              }).catch(function (err) {
+                            }).catch(function (err) {
                                 console.log(err);
-                              }).then(function (data) {                       
+                            }).then(function (data) {
                                 angular.forEach(data.rows, function (row) {
                                     console.log(typeof(row.doc.dashboard));
                                     //var records = CircularJSON.parse(row.doc.dashboard);
                                     var records = row.doc.dashboard;
                                     $scope.dashboards.push(
-                                            {pouchID: row.doc._id, dashboardName: records.compName}
-                                        );                                                           
-                                    });
+                                        {pouchID: row.doc._id, dashboardName: records.compName}
+                                    );
+                                });
                                 console.log($scope.dashboards);
-                              });                            
+                            });
                             $mdDialog.hide()
                         });
 
                     $scope.confirmWin = false;
                     $scope.listWin = true;
                 },
-                getAllReports: function () {
-                    getSession();
-                    startReportService();
-                    dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
-                        if (data.Is_Success) {
-                            for (var i = 0; i < data.Result.length; i++) {
-                                $scope.reports.push(
-                                    {splitName: data.Result[i], path: '/dynamically-report-builder'}
-                                );
-                            }
-                        }
-                    }).error(function (respose) {
-                        console.log('error request getAllReports...');
-                    });
-                },
+                // getAllReports: function () {
+                //     getSession();
+                //     startReportService();
+                //     dynamicallyReportSrv.getAllReports(reqParameter).success(function (data) {
+                //         if (data.Is_Success) {
+                //             for (var i = 0; i < data.Result.length; i++) {
+                //                 $rootScope.reports.push(
+                //                     {splitName: data.Result[i], path: '/dynamically-report-builder'}
+                //                 );
+                //             }
+                //         }
+                //     }).error(function (respose) {
+                //         console.log('error request getAllReports...');
+                //     });
+                // },
 
 
-
-                getTenantID :function(){
-                    $http.get(Digin_Tenant+'/tenant/GetTenants/'+getCookie('securityToken'))
-                    .success(function (data) {
-                        console.log(data);
-                        $rootScope.TenantID = data[0].TenantID;
-                    }).error(function () {
+                getTenantID: function () {
+                $http.get(auth_Path+'tenant/GetTenants/' + getCookie('securityToken'))
+                        .success(function (data) {
+                            console.log(data);
+                            $rootScope.TenantID = data[0].TenantID;
+                        }).error(function () {
                         //alert("Oops! There was a problem retrieving the groups");
                     });
                 },
 
                 //#added by chamila
+				/*
                 //#to retrive all users and groups
                 getAllSharableObj: function () {
                     var baseUrl = "http://" + window.location.hostname;
                     //var baseUrl = "http://" + $rootScope.TenantID;
-                    $scope.domain=JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
-                    //baseUrl="http://"+$scope.domain;
+                    $scope.domain = JSON.parse(decodeURIComponent(getCookie('authData'))).Domain;
+                    //$http.get("http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects")
                     $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
                         .success(function (data) {
                             console.log(data);
@@ -879,17 +1135,20 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             console.log($rootScope.sharableObjs);
                             console.log($rootScope.sharableUsers);
                             console.log($rootScope.sharableGroups);
-                    
+
                         }).error(function () {
                         //alert("Oops! There was a problem retrieving the User");
                     });
 
                     //-----------
+                    
+
                     $http.get(baseUrl + "/apis/usercommon/getAllGroups")
+                    //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
                         .success(function (data) {
                             console.log(data);
                             $rootScope.sharableGroupsDtls = [];
-
+                            $rootScope.groups= [];
                             for (var i = 0; i < data.length; i++) {
                                 $scope.users = [];  //$scope.userNames=[];
                                 for (var j = 0; j < data[i].users.length; j++) {
@@ -904,6 +1163,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     groupname: data[i].groupname,
                                     users: $scope.users
                                 });
+
+                                 $rootScope.groups.push({
+                                    groupId: data[i].groupId,
+                                    groupname: data[i].groupname,
+                                    users: $scope.users
+                                });
+
                             }
                             console.log($rootScope.sharableGroupsDtls);
 
@@ -911,78 +1177,84 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         //alert("Oops! There was a problem retrieving the groups");
                     });
                 }
+				*/
             }
         }());
 
-        $scope.getSharableUsers=function(){
+        $scope.getSharableUsers = function () {
             var baseUrl = "http://" + window.location.hostname;
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getSharableObjects')
+            $http.get(baseUrl + apis_Path+"usercommon/getSharableObjects")
+                .success(function (data) {
+                    console.log(data);
+                    $rootScope.sharableObjs = [];
+                    $rootScope.sharableUsers = [];
+                    $rootScope.sharableGroups = [];
+                    $rootScope.groups = [];
 
-                    $http.get(baseUrl + "/apis/usercommon/getSharableObjects")
-                        .success(function (data) {
-                            console.log(data);
-                            $rootScope.sharableObjs = [];
-                            $rootScope.sharableUsers = [];
-                            $rootScope.sharableGroups = [];
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Type == "User") {
+                            //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                            $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                            $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
+                        }
+                        else if (data[i].Type == "Group") {
+                            //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
+                            $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
+                            $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
+                        }
+                    }
+                    console.log($rootScope.sharableObjs);
+                    console.log($rootScope.sharableUsers);
+                    console.log($rootScope.sharableGroups);
 
-                            for (var i = 0; i < data.length; i++) {
-                                if (data[i].Type == "User") {
-                                    //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
-                                    $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                                    $rootScope.sharableUsers.push({Id: data[i].Id, Name: data[i].Name});
-                                }
-                                else if (data[i].Type == "Group") {
-                                    //$scope.sharableObjs.push({groupId: data[i].Id, groupname: data[i].Name});
-                                    $rootScope.sharableObjs.push({id: data[i].Id, name: data[i].Name});
-                                    $rootScope.sharableGroups.push({groupId: data[i].Id, groupname: data[i].Name});
-                                }
-                            }
-                            console.log($rootScope.sharableObjs);
-                            console.log($rootScope.sharableUsers);
-                            console.log($rootScope.sharableGroups);
-                    
-                        }).error(function () {
-                        //alert("Oops! There was a problem retrieving the User");
-                    });
+                }).error(function () {
+                //alert("Oops! There was a problem retrieving the User");
+            });
 
-                    //-----------
-                    $http.get(baseUrl + "/apis/usercommon/getAllGroups")
-                        .success(function (data) {
-                            console.log(data);
-                            $rootScope.sharableGroupsDtls = [];
+            //-----------
+            //$http.get('http://omalduosoftwarecom.prod.digin.io/apis/usercommon/getAllGroups')
+            $http.get(baseUrl + apis_Path+"usercommon/getAllGroups")
+                .success(function (data) {
+                    console.log(data);
+                    $rootScope.sharableGroupsDtls = [];
+                    $rootScope.groups= [];
+                    for (var i = 0; i < data.length; i++) {
+                        $scope.users = [];  //$scope.userNames=[];
+                        for (var j = 0; j < data[i].users.length; j++) {
+                            $scope.users.push({
+                                Id: data[i].users[j].Id,
+                                Name: data[i].users[j].Name,
+                                mainTitle: data[i].users[j].mainTitle
+                            });
+                        }
+                        $rootScope.sharableGroupsDtls.push({
+                            groupId: data[i].groupId,
+                            groupname: data[i].groupname,
+                            users: $scope.users
+                        });
+                        $rootScope.groups.push({
+                            groupId: data[i].groupId,
+                            groupname: data[i].groupname,
+                            users: $scope.users
+                        });
+                    }
+                    console.log($rootScope.sharableGroupsDtls);
 
-                            for (var i = 0; i < data.length; i++) {
-                                $scope.users = [];  //$scope.userNames=[];
-                                for (var j = 0; j < data[i].users.length; j++) {
-                                    $scope.users.push({
-                                        Id: data[i].users[j].Id,
-                                        Name: data[i].users[j].Name,
-                                        mainTitle: data[i].users[j].mainTitle
-                                    });
-                                }
-                                $rootScope.sharableGroupsDtls.push({
-                                    groupId: data[i].groupId,
-                                    groupname: data[i].groupname,
-                                    users: $scope.users
-                                });
-                            }
-                            console.log($rootScope.sharableGroupsDtls);
-
-                        }).error(function () {
-                        //alert("Oops! There was a problem retrieving the groups");
-                    });
+                }).error(function () {
+                //alert("Oops! There was a problem retrieving the groups");
+            });
         }
-
-        
 
 
         $rootScope.privateFun = privateFun;
         $scope.getSearchPanelDetails = function () {
             privateFun.getTenantID();
             privateFun.getAllDashboards();
-            privateFun.getAllReports();
+            //privateFun.getAllReports();
             $scope.getAnalyzerDetails();
-            privateFun.getAllSharableObj();
-            
+            //privateFun.getAllSharableObj();
+
         }
 
         $scope.getDashboardDetails = function () {
@@ -1002,41 +1274,31 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         };
 
         //navigate
+        
         $scope.navigate = function (routeName, ev) {
 
-            var widgetLimit = 6;
+            var widgetLimit = ProfileService.widget_limit;
             var selectedPage = $rootScope.selectedPage;
             var pageCount = $rootScope.dashboard.pages.length;
-            var pageWidgetCount = $rootScope.dashboard.pages[selectedPage - 1].widgets.length;
+            
             switch (routeName) {
                 case "home":
                     $scope.goHomeDialog(ev);
+                    $rootScope.page_id = "";
                     break;
                 case "Add Page":
-                    $scope.currentView = "Dashboard";
+                    $rootScope.currentView = "Dashboard";
                     $scope.showAddNewPage(ev);
                     $state.go('home.Dashboards');
                     break;
                 case "Social Media Analytics":
-                    $scope.currentView = "Social Analysis";
+                    $rootScope.currentView = "Social Analysis";
                     $scope.showAddSocialAnalysis(ev);
                     break;
                 case "Add Widgets":
-                    if (pageWidgetCount < widgetLimit) {
-                        $scope.currentView = "Dashboard";
-                        $scope.showAddNewWidgets(ev);
-                        $state.go("home.Dashboards");
-                    }
-                    else {//give message widget limit exceeded
-                        ngToast.dismiss();
-                        ngToast.create({
-                            className: 'danger',
-                            content: 'maximum widget limit exceeded',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
-                    }
+                    $rootScope.currentView = "Dashboard";
+                    $scope.showAddNewWidgets(ev);
+                    $state.go("home.Dashboards");
                     break;
                 case "Reports":
                     $scope.showReports(ev);
@@ -1049,7 +1311,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     $state.go('home.' + routeName);
                     break;
                 case "Data Source":
-                    if (pageWidgetCount < widgetLimit) {
                         $rootScope.currentView = "CommonData";
                         //open sidepanel if it is closed
                         if (!$mdSidenav('right').isOpen()) {
@@ -1057,24 +1318,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 $log.debug("toggle right is done");
                             });
                         }
-                    }
-                    else {//give message maximum widget limit exceeded
-                        ngToast.dismiss();
-                        ngToast.create({
-                            className: 'danger',
-                            content: 'maximum widget limit exceeded',
-                            horizontalPosition: 'center',
-                            verticalPosition: 'top',
-                            dismissOnClick: true
-                        });
-                    }
                     break;
                 case "Sales Forecast && Prediction":
                     $scope.showSalesForecastPrediction(ev);
                     break;
                 case "Logout":
                     var confirm = $mdDialog.confirm()
-                        .title('Do you want to logout ?')
+                        .title('Are you sure you want to logout?')
                         .targetEvent(event)
                         .ok('Yes!')
                         .cancel('No!');
@@ -1088,16 +1338,18 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Theme":
                     $scope.openTheme();
                     break;
+				case "User Assistance":
+                    $state.go('home.user_assistance');
                 case "Share":
-                    $scope.currentView = "Share";
+                    $rootScope.currentView = "Share";
                     $scope.Share();
                     break;
                 case "Export":
-                    $scope.currentView = "Export";
+                    $rootScope.currentView = "Export";
                     $scope.Export();
                     break;
                 case "Help":
-                    $scope.currentView = "Help";
+                    $rootScope.currentView = "Help";
                     //user guide
                     setTimeout(function () {
                         var intro;
@@ -1122,13 +1374,30 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     }
                     break;
                 case "Settings":
-                    $scope.currentView = "Settings";
-                    $state.go('home.Settings');
+                    $rootScope.currentView = "Settings";
+                    // $state.go('home.Settings');
                     break;
                 case "TV Mode":
-                    $scope.currentView = "TV Mode";
-                    if (Fullscreen.isEnabled()) Fullscreen.cancel();
-                    else Fullscreen.all();
+                      //Start of Navigate TVMode
+                       if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+                          (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                        if (document.documentElement.requestFullScreen) {  
+                          document.documentElement.requestFullScreen();  
+                        } else if (document.documentElement.mozRequestFullScreen) {  
+                          document.documentElement.mozRequestFullScreen();  
+                        } else if (document.documentElement.webkitRequestFullScreen) {  
+                          document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+                        }  
+                         } else {  
+                        if (document.cancelFullScreen) {  
+                          document.cancelFullScreen();  
+                        } else if (document.mozCancelFullScreen) {  
+                          document.mozCancelFullScreen();  
+                        } else if (document.webkitCancelFullScreen) {  
+                          document.webkitCancelFullScreen();  
+                        }  
+                         }
+                    //End of Navigate TVMode
                     break;
                 case "Clear Widgets":
                     $scope.clearAllWidgets(ev);
@@ -1136,12 +1405,77 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 case "Common Source Algorithm":
                     $state.go("home.commonSrcAlgorithm");
                     break;
-                default:
-                    $state.go("home");
+				case "my account":
+                    $state.go("home.myAccount");
                     break;
+                case "invite":    
+
+                    $mdDialog.show({
+                      controller: "inviteUserCtrl",
+                      templateUrl: 'views/settings/user.html',
+                      parent: angular.element(document.body),
+                      targetEvent: ev,
+                      clickOutsideToClose:false
+                    })
+                    .then(function(answer) {                        
+                    });
+                    
+                break;
+
+            case "switch tenant": 
+                    $mdDialog.show({
+                      controller: "switchTenantCtrl",
+                      templateUrl: 'views/settings/switchTenant/switchTenant.html',
+                      parent: angular.element(document.body),
+                      targetEvent: ev,
+                      clickOutsideToClose:false
+                    })
+                    .then(function(answer) {
+                    });
+                    break;
+			case "share": 
+                   console.log(ev)
+				    $timeout(function(){
+						$mdMenu.hide();
+					},200);
+					$state.go("home."+ev);
+                    break;
+            case "share":
+                if($rootScope.dashboard.compID != null)
+                    $state.go("home.sharedashboard");
+                else{
+                        ngToast.dismiss();
+                        ngToast.create({
+                            className: 'danger',
+                            content: 'Dashboard should be saved in order to share the widget',
+                            horizontalPosition: 'center',
+                            verticalPosition: 'top',
+                            dismissOnClick: true
+                        });
+                }
+                break;
+            default:
+                $state.go("home");
+                break;
             }
         };
-        //navigate functions start
+
+
+        
+        $scope.openNotifications = function()
+        {
+            $mdSidenav('notifications').toggle().then(function () {
+                $log.debug("toggle right is done");
+            });
+        }
+
+        $scope.openSearchBar = function()
+        {
+            $mdSidenav('searchBar').toggle().then(function () {
+                $log.debug("toggle left is done");
+            });        
+        }
+        
         $scope.goHomeDialog = function (ev) {
 
             $mdDialog.show({
@@ -1152,16 +1486,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         $mdDialog.hide();
                         homeState = true;
 
-                          $scope.createuuid = function () {
+                        $scope.createuuid = function () {
                             return Math.floor((1 + Math.random()) * 0x10000)
                                 .toString(16)
                                 .substring(1);
                         }
                         $rootScope.dashboard = [];
                         $rootScope.page_id = "";
-                        $rootScope.dashboard ={
+                        $rootScope.dashboard = {
 
-                            "pages" : null,
+                            "pages": null,
                             "compClass": null,
                             "compType": null,
                             "compCategory": null,
@@ -1170,16 +1504,16 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "refreshInterval": null,
                         }
 
-                        $rootScope.dashboard.pages=[];
+                        $rootScope.dashboard.pages = [];
                         var page = {
-                                    "widgets": [],
-                                    "pageID": "temp" + $scope.createuuid(),
-                                    "pageName": "DEFAULT",
-                                    "pageData": null
-                                }
+                            "widgets": [],
+                            "pageID": "temp" + $scope.createuuid(),
+                            "pageName": "DEFAULT",
+                            "pageData": null
+                        }
                         $rootScope.dashboard.pages.push(page);
-                        
-                        
+
+
                     }
                     $scope.cancel = function () {
                         $mdDialog.cancel();
@@ -1194,7 +1528,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }).then(function (homeState) {
                 if (homeState) {
                     $scope.showTabs(true);
-                    $scope.currentView = "Home";
+                    $rootScope.currentView = "Home";
                     $state.go('home');
                 }
             });
@@ -1210,7 +1544,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                         var numOfPages = $rootScope.dashboard.pages.length;
 
-                      
 
                         if (numOfPages == 1) {
                             $scope.message = numOfPages + " page"
@@ -1228,15 +1561,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                             var noDuplicate = true;
                             //to check weather the newpage is allready exist 
-                            $rootScope.dashboard.pages.forEach(function(key){
-                                if(key.pageName.toUpperCase() == $scope.title.toUpperCase() ){
-                                    noDuplicate = false;
+                            $rootScope.dashboard.pages.forEach(function (key) {
+                                if (key.pageName.toUpperCase() == $scope.title.toUpperCase()) {
+                                        noDuplicate = false;
                                 }
                             });
 
                             //adding temp infront of id for a new / temp page till it gets saved in backend
                             //after saved in backend it will be assigned a different id
-                            if ($scope.title && noDuplicate) { 
+                            if ($scope.title && noDuplicate) {
                                 var page = {
                                     "widgets": [],
                                     "pageID": "temp" + $scope.createuuid(),
@@ -1258,7 +1591,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             }
                             else {
 
-                                if(noDuplicate){
+                                if (noDuplicate) {
                                     ngToast.create({
                                         className: 'danger',
                                         content: 'Please fill the name field',
@@ -1267,9 +1600,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                         dismissOnClick: true
                                     });
                                 }
-                                else{
+                                else {
 
-                                     ngToast.create({
+                                    ngToast.create({
                                         className: 'danger',
                                         content: 'you cant duplicate the page name',
                                         horizontalPosition: 'center',
@@ -1278,7 +1611,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     });
                                 }
 
-                              
+
                             }
                         };
                         $scope.close = function () {
@@ -1350,16 +1683,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
                 });
         };
-        $scope.openTheme = function (ev) {
 
-            $mdDialog.show({
-                controller: 'ThemeCtrl',
-                templateUrl: 'views/change-theme.html',
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                resolve: {}
-            });
-        };
         $scope.Share = function (ev) {
 
             $mdDialog.show({
@@ -1385,53 +1709,54 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 controller: 'saveCtrl',
                 // templateUrl: 'views/dashboard-save.html',
                 //template has been directly added here as it is needed for offline dashboard saving feature
-                template: 
-                    '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
-                      '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
-                          '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
-                            '<img ng-src="styles/css/images/DiginLogo.png" class="digin-image">' +
-                          '</div>' +
-                          '<div class="dialog-title">SAVE DASHBOARD</div>' +
-                          '<md-button class="buttonMinwidth38 b-r-0" ng-click="close();">' +
-                            '<ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>' +
-                          '</md-button>' +
-                      '</md-toolbar>' +
-                      '<md-content class="dialog-content-1" layout-padding>' +
-                                '<div layout="row" layout-align="start start">' +
-                                    '<p style="font-size:large">Dashboard Details</p>' +
-                                '</div>' +
-                                '<div layout="row" flex layout-wrap>' +
-                                    '<md-input-container flex="100">' +
-                                        '<label>Name</label>' +
-                                        '<input ng-model="dashboardName" name="dashboardName">' +
-                                    '</md-input-container>' +
-                                    '<md-input-container flex="100">' +
-                                        '<label>Refresh Interval</label>' +
-                                        '<md-select ng-model="refreshInterval" name="refreshInterval">' +
-                                            '<md-option value="30" ng-selected>30 Seconds</md-option>' +
-                                            '<md-option value="60">1 minute</md-option>' +
-                                            '<md-option value="120">2 minutes</md-option>' +
-                                            '<md-option value="300">5 minutes</md-option>' +
-                                        '</md-select>' +
-                                    '</md-input-container>' +
-                                '</div>' +
-                                '<div class="md-actions" layout="row">' +
-                                     '<span flex></span>' +
-                                    '<div class="dashbord-save-loader" ng-if="isLoadingDashBoardSave">' +
-                                        '<svg class="circular-loader" height="50" width="50">' +
-                                                '<circle class="path" cx="25" cy="25.2" r="19.9"' +
-                                                        'fill="none" stroke-width="6" stroke-miterlimit="10"/>' +
-                                        '</svg>' +
-                                    '</div>' + 
-                                    '<md-button class="btn-dialog b-r-0" ng-if="isButtonDashBoardSave" ng-click="saveDashboard()">' +
-                                        'Save' +
-                                    '</md-button>' +
-                                    '<md-button class="btn-dialog b-r-0" ng-click="close()">' +
-                                        'Cancel' +
-                                    '</md-button>' +
-                                '</div>' +
-                      '</md-content>' +
-                    '</md-dialog>',            
+                template: '<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">' +
+                '<md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">' +
+                '<div layout="row" layout-align="center center" class="digin-logo-wrapper2">' +
+                '<img ng-src="styles/css/images/DiginLogo.png" class="digin-image">' +
+                '</div>' +
+                '<div class="dialog-title">SAVE DASHBOARD</div>' +
+                '<md-button class="buttonMinwidth38 b-r-0" ng-click="close();">' +
+                '<ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>' +
+                '</md-button>' +
+                '</md-toolbar>' +
+                '<md-content class="dialog-content-1" layout-padding>' +
+                '<div layout="row" layout-align="start start">' +
+                '<p style="font-size:large">Dashboard Details</p>' +
+                '</div>' +
+                '<div layout="row" flex layout-wrap>' +
+                '<md-input-container flex="100">' +
+                '<label>Name</label>' +
+                '<input ng-model="dashboardName" name="dashboardName">' +
+                '</md-input-container>' +
+                '<md-input-container flex="100">' +
+                '<label>Refresh Interval</label>' +
+                '<md-select ng-model="refreshInterval" name="refreshInterval">' +
+                '<md-option value="30" ng-selected>30 Seconds</md-option>' +
+                '<md-option value="60">1 minute</md-option>' +
+                '<md-option value="120">2 minutes</md-option>' +
+                '<md-option value="300">5 minutes</md-option>' +
+                '<md-option value="3600">60 minutes</md-option>' +
+                '<md-option value="0">No Refresh</md-option>' +
+                '</md-select>' +
+                '</md-input-container>' +
+                '</div>' +
+                '<div class="md-actions" layout="row">' +
+                '<span flex></span>' +
+                '<div class="dashbord-save-loader" ng-if="isLoadingDashBoardSave">' +
+                '<svg class="circular-loader" height="50" width="50">' +
+                '<circle class="path" cx="25" cy="25.2" r="19.9"' +
+                'fill="none" stroke-width="6" stroke-miterlimit="10"/>' +
+                '</svg>' +
+                '</div>' +
+                '<md-button class="btn-dialog b-r-0" ng-if="isButtonDashBoardSave" ng-click="saveDashboard()">' +
+                'Save' +
+                '</md-button>' +
+                '<md-button class="btn-dialog b-r-0" ng-click="close()">' +
+                'Cancel' +
+                '</md-button>' +
+                '</div>' +
+                '</md-content>' +
+                '</md-dialog>',
                 targetEvent: ev,
                 resolve: {
                     widget: function () {
@@ -1461,40 +1786,39 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 
             $scope.renameNew = function () {
 
-                    var noDuplicate = true;
-                                //to check weather the newpage is allready exist 
-                    $rootScope.dashboard.pages.forEach(function(key){
-                        if(key.pageName.toUpperCase() == $scope.existPageName.toUpperCase() ){
-                            if(key.pageID != $rootScope.dashboard.pages[$rootScope.selectedPage-1].pageID)
+                var noDuplicate = true;
+                //to check weather the newpage is allready exist
+                $rootScope.dashboard.pages.forEach(function (key) {
+                    if (key.pageName.toUpperCase() == $scope.existPageName.toUpperCase()) {
+                        if(key.pageID != $rootScope.dashboard.pages[$rootScope.selectedPage-1].pageID)
                                 noDuplicate = false;
-                        }
-                    });
-
-                    if(noDuplicate){
-                        console.log($rootScope);
-                        var selectedIndex = $rootScope.selectedPage - 1;
-                        $rootScope.dashboard.pages[selectedIndex].pageName = $scope.existPageName;
-                        $mdDialog.hide();
                     }
-                    else{
+                });
 
-                          ngToast.create({
-                                        className: 'danger',
-                                        content: 'you cant duplicate the page name',
-                                        horizontalPosition: 'center',
-                                        verticalPosition: 'top',
-                                        dismissOnClick: true
-                           });
-                    }
+                if (noDuplicate) {
+                    console.log($rootScope);
+                    var selectedIndex = $rootScope.selectedPage - 1;
+                    $rootScope.dashboard.pages[selectedIndex].pageName = $scope.existPageName;
+                    $mdDialog.hide();
                 }
-                    
-               
-            };
-        
+                else {
+
+                    ngToast.create({
+                        className: 'danger',
+                        content: 'you cant duplicate the page name',
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        dismissOnClick: true
+                    });
+                }
+            }
+
+
+        };
 
 
         $scope.clearAllWidgets = function (ev) {
-
+            setTimeout(function(){  $mdDialog.hide(); }, 3000);
             $mdDialog.show({
                 controller: function clearWidgetsCtrl($scope, $mdDialog) {
                     $scope.clear = function () {
@@ -1504,9 +1828,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                 .substring(1);
                         }
                         $rootScope.dashboard = [];
-                        $rootScope.dashboard ={
+                        $rootScope.dashboard = {
 
-                            "pages" : null,
+                            "pages": null,
                             "compClass": null,
                             "compType": null,
                             "compCategory": null,
@@ -1515,13 +1839,13 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "refreshInterval": null,
                         }
 
-                        $rootScope.dashboard.pages=[];
+                        $rootScope.dashboard.pages = [];
                         var page = {
-                                    "widgets": [],
-                                    "pageID": "temp" + $scope.createuuid(),
-                                    "pageName": "DEFAULT",
-                                    "pageData": null
-                                }
+                            "widgets": [],
+                            "pageID": "temp" + $scope.createuuid(),
+                            "pageName": "DEFAULT",
+                            "pageData": null
+                        }
                         $rootScope.dashboard.pages.push(page);
 
                         $mdDialog.hide();
@@ -1538,7 +1862,6 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             });
         };
         //navigate functions end
-
 
         // help 
         setTimeout(function () {
@@ -1567,63 +1890,55 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 console.log(targetElement);
             };
 
-            $scope.IntroOptions = {
-                steps: [{
-                    element: document.querySelectorAll('.main-headbar')[0],
-                    intro: "<strong> This is the main head bar area. Hover over the blue line to bring it down</strong>",
-                    position: 'bottom'
-                }, {
-                    element: document.querySelector('#getReport'),
-                    intro: "<strong>This is the side navigation panel</strong>",
+			$scope.IntroOptions = {
+                 steps:[
+				{
+					element: '#addPage',
+					intro: "Create your dashboard with Add page, add many pages as you want and make them a storyboard",
+					position: 'right'
+				}, {
+                    element: '#reports',
+                    intro: 'Create your static, adhoc reports and publish them here',
                     position: 'right'
                 }, {
-                    element: document.querySelectorAll('#getReport > md-list > md-item:nth-child(2) > a > md-item-content')[0],
-                    intro: '<strong>Use this to create new dashboards</strong>',
+                    element: '#datasource',
+                    intro: 'Pick  your correct datasource and visualize them in various ways',
                     position: 'right'
                 }, {
-                    element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[1],
-                    intro: '<strong>Use this to access reports</strong>',
+                    element: '#addWidgets',
+                    intro: 'Create your customized widgets and add it to the dashboard',
                     position: 'right'
                 }, {
-                    element: document.querySelectorAll('md-item-content.sidebar-btn.md-ink-ripple')[2],
-                    intro: '<strong>Realtime tool is a handy tool for data analysis </strong>',
+                    element: '#socialMedia',
+                    intro: 'Dig deep in to your social media pages',
+                    position: 'right'
+                },
+				{
+                    element: '#shareSocial',
+                    intro: 'Share your Dashboards on Social Media',
+                    position: 'right'
+                },{
+                    element: '#settings',
+                    intro: 'Configure the settings related to the system and users',
                     position: 'right'
                 }, {
-                    element: document.querySelectorAll('md-list md-item > a > md-item-content')[4],
-                    intro: '<strong>This is the Digin P Stack feature</strong>',
-                    position: 'right'
+                    element: '#home',
+                    intro: 'Go to <strong>Home</strong> page'
                 }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[5],
-                    intro: '<strong>D3plugins is a tool to create D3 visualizations</strong>',
-                    position: 'right'
+                    element: '#fullscreen',
+                    intro: 'Toggle Fullscreen'
                 }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[6],
-                    intro: '<strong>Use this to add widgets to your dashbaord</strong>',
-                    position: 'right'
+                    element: '#clearWidgets',
+                    intro: 'Clear widgets in the screen'
                 }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[7],
-                    intro: '<strong>Settings feature can be used to create users and to add/remove features</strong>',
-                    position: 'right'
+                    element: '#save',
+                    intro: 'Save the Dashboard'
                 }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[8],
-                    intro: '<strong>Save feature is to save Dashboards</strong>',
-                    position: 'right'
+                    element: '#share',
+                    intro: 'Share your dashboard or datasets'
                 }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[9],
-                    intro: '<strong>Give a nice look to the app with your desired theme</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[10],
-                    intro: '<strong>Share using most popular social media and email</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[11],
-                    intro: '<strong>Export your widget in any format</strong>',
-                    position: 'right'
-                }, {
-                    element: document.querySelectorAll('md-list > md-item > a > md-item-content')[12],
-                    intro: '<strong>Switch between browser view and Full Screen mode</strong>',
-                    position: 'right'
+                    element: '#notifications',
+                    intro: 'Checkout the latest notifications here'
                 }],
                 showStepNumbers: false,
                 exitOnOverlayClick: true,
@@ -1633,17 +1948,147 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 skipLabel: 'EXIT',
                 doneLabel: 'DONE'
             };
-
+			
             $scope.ShouldAutoStart = true;
 
         }, 1000);
-    }
+        //update code dilshan
+        //new ui changes
+		
+		//Start of layoutManager
+		$rootScope.showHeader = true;
+		$rootScope.showSideMenu = true;
+		
+		$scope.topMenuToggle = function()
+		{	
+			if($rootScope.showHeader == true)
+			{
+				$rootScope.showHeader = layoutManager.hideHeader();
+			}else{
+				$rootScope.showHeader = layoutManager.showHeader();
+			}
+		}
+		
+		$scope.leftMenuToggle = function()
+		{
+			if($scope.showSideMenu == true)
+			{
+				$rootScope.showSideMenu = layoutManager.hideSideMenu();
+			}else{
+				$rootScope.showSideMenu = layoutManager.showSideMenu();
+			}
+		}
+		//End of layoutManager
+
+
+        $scope.toggelDownSearch = function (status) {
+            if ($scope.searchLayerStatus) {
+                layoutManager.toggleSearchLayer($scope.searchLayerStatus);
+            } else {
+                layoutManager.toggleSearchLayer($scope.searchLayerStatus);
+            }
+
+        };
+        
+        var settingsSub = [
+                                {name: "New user",icon: "ti-user", link: "home.createUser"},
+                                //{name: "Share", icon: "ti-share", link: "home.share"},
+                                {name: "User settings",icon: "ti-pencil",link: "home.userSettings"},
+                                {name: "Account settings",icon: "ti-settings",link: "home.account"},
+                                {name: "Groups",icon: "ti-settings",link: "home.group"}
+                            ];
+         var shareSub = [
+                            {name: "Facebook", icon: "ti-facebook",provider: "facebook"},
+                            {name: "Google+", icon: "ti-google", provider: "google+"},
+                            {name: "Twitter", icon: "ti-twitter-alt", provider: "twitter"},
+                            {name: "Linkedin", icon: "ti-linkedin", provider: "linkedin"},
+                           // {name: "Pinterest", icon: "ti-pinterest-alt", provider: "pinterest"},
+                            //{name: "Tumbler", icon: "ti-tumblr", provider: "tumbler"},
+                            {name: "Email", icon: "ti-email"}
+                        ];
+        var socialMediaSub =    [
+                                    {name: "Facebook", icon: "ti-facebook", link: "home.social-graph-fb"},
+                                    {name: "Twitter", icon: "ti-twitter-alt", link: "home.SocialGraphTwitter"}
+                                ];
+        var reportsSub =    [
+                                { name: "Report Development", icon: "ti-filter", link: "home.ReportsDev"},
+                                { name: "Published Reports", icon: "ti-notepad", link: "home.Reports"}
+                            ];
+        
+        $scope.subMenu = (function () {
+            return {
+                view: function (subMenuTitle) {
+                    //get sidebar data from menu.json
+                   $scope.currentSubMenu = [
+                            {"header": ''},
+                            {"data": ''}
+                        ];
+                    $scope.currentSubMenu.header = subMenuTitle;
+
+                    $scope.currentItem = subMenuTitle;
+                   /* if(subMenuTitle == "Reports")
+                    {
+                        $scope.currentItem = ;
+                    }else if(subMenuTitle == "Social Media")
+                    {
+                        $scope.currentSubMenu.data = socialMediaSub;
+                    }else if(subMenuTitle == "Share")
+                    {
+                        $scope.currentSubMenu.data = shareSub;
+                    }else if(subMenuTitle == "Settings")
+                    {
+                        $scope.currentSubMenu.data = settingsSub;
+                    }*/
+                },
+                close: function () {
+                    $scope.isEnableSubMenu = false;
+                }
+            }
+        })();
+
+
+        //menu mouse hover
+        $scope.menuMouseHover = function (item) {
+            if (item.type == "sub-menu") {
+                $scope.isEnableSubMenu = true;
+                 $scope.currentTitle = item.title;
+                $scope.subMenu.view(item.menuName)
+            }
+            if (item.type == "menu") {
+                $scope.isEnableSubMenu = false;
+            }
+        };
+        $scope.menuMouseLeave = function (item) {
+            $scope.isEnableSubMenu = false;
+        }
+
+        //search bar option
+        $scope.isSarchScorllBar = false;
+
+        $scope.goTORout = function(menu){
+
+           console.log(menu);
+           //if(menu.name ==  "Email")
+        if(menu ==  "Email")
+           {
+                    //console.log("email");
+
+                    $mdDialog.show({
+                      controller: "emailCtrl",
+                      templateUrl: 'views/loginEmail.html',
+                      parent: angular.element(document.body),
+                      clickOutsideToClose:true
+                    })
+                    .then(function(answer) {
+                    })
+
+           }else{
+               //$state.go(menu.link);
+               $state.go(menu);
+           }
+
+        }
 
 
 
-
-
-]);
-
-
-
+ }]);

@@ -1,0 +1,16 @@
+<md-content layout-margin flex>
+  <div layout="column">
+    <div class="span8">
+      <md-button  ng-click="changeView('agendaDay', 'myCalendar')">
+                                   AgendaDay
+      </md-button>
+      <md-button  ng-click="changeView('agendaWeek', 'myCalendar')">
+                                   AgendaWeek
+      </md-button> 
+      <md-button  ng-click="changeView('month', 'myCalendar')">
+                                   Month
+      </md-button>
+      <div class="calendar" ng-model="widget.widData"  calendar="myCalendar" ui-calendar="uiConfig.calendar"></div>
+    </div>
+  </div>
+</md-content>

@@ -2,17 +2,17 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.10.1
+ * v1.1.1
  */
 (function( window, angular, undefined ){
 "use strict";
 
 /**
- * @private
  * @ngdoc module
  * @name material.components.switch
  */
 
+MdSwitch.$inject = ["mdCheckboxDirective", "$mdUtil", "$mdConstant", "$parse", "$$rAF", "$mdGesture", "$timeout"];
 angular.module('material.components.switch', [
   'material.core',
   'material.components.checkbox'
@@ -20,7 +20,6 @@ angular.module('material.components.switch', [
   .directive('mdSwitch', MdSwitch);
 
 /**
- * @private
  * @ngdoc directive
  * @module material.components.switch
  * @name mdSwitch
@@ -37,6 +36,7 @@ angular.module('material.components.switch', [
  * @param {expression=} ng-true-value The value to which the expression should be set when selected.
  * @param {expression=} ng-false-value The value to which the expression should be set when not selected.
  * @param {string=} ng-change Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {expression=} ng-disabled En/Disable based on the expression.
  * @param {boolean=} md-no-ink Use of attribute indicates use of ripple ink effects.
  * @param {string=} aria-label Publish the button label used by screen-readers for accessibility. Defaults to the switch's text.
  *
@@ -56,12 +56,12 @@ angular.module('material.components.switch', [
  *
  * </hljs>
  */
-function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConstant, $parse, $$rAF, $mdGesture) {
+function MdSwitch(mdCheckboxDirective, $mdUtil, $mdConstant, $parse, $$rAF, $mdGesture, $timeout) {
   var checkboxDirective = mdCheckboxDirective[0];
 
   return {
     restrict: 'E',
-    priority:210, // Run before ngAria
+    priority: 210, // Run before ngAria
     transclude: true,
     template:
       '<div class="md-container">' +
@@ -70,20 +70,26 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
           '<div class="md-thumb" md-ink-ripple md-ink-ripple-checkbox></div>' +
         '</div>'+
       '</div>' +
-      '<div ng-transclude class="md-label">' +
-      '</div>',
+      '<div ng-transclude class="md-label"></div>',
     require: '?ngModel',
-    compile: compile
+    compile: mdSwitchCompile
   };
 
-  function compile(element, attr) {
-    var checkboxLink = checkboxDirective.compile(element, attr);
-    // no transition on initial load
+  function mdSwitchCompile(element, attr) {
+    var checkboxLink = checkboxDirective.compile(element, attr).post;
+    // No transition on initial load.
     element.addClass('md-dragging');
 
     return function (scope, element, attr, ngModel) {
       ngModel = ngModel || $mdUtil.fakeNgModel();
-      var disabledGetter = $parse(attr.ngDisabled);
+
+      var disabledGetter = null;
+      if (attr.disabled != null) {
+        disabledGetter = function() { return true; };
+      } else if (attr.ngDisabled) {
+        disabledGetter = $parse(attr.ngDisabled);
+      }
+
       var thumbContainer = angular.element(element[0].querySelector('.md-thumb-container'));
       var switchContainer = angular.element(element[0].querySelector('.md-container'));
 
@@ -94,7 +100,7 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
       checkboxLink(scope, element, attr, ngModel);
 
-      if (angular.isDefined(attr.ngDisabled)) {
+      if (disabledGetter) {
         scope.$watch(disabledGetter, function(isDisabled) {
           element.attr('tabindex', isDisabled ? -1 : 0);
         });
@@ -109,15 +115,12 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
       var drag;
       function onDragStart(ev) {
-        // Don't go if ng-disabled===true
-        if (disabledGetter(scope)) return;
+        // Don't go if the switch is disabled.
+        if (disabledGetter && disabledGetter(scope)) return;
         ev.stopPropagation();
 
         element.addClass('md-dragging');
-        drag = {
-          width: thumbContainer.prop('offsetWidth')
-        };
-        element.removeClass('transition');
+        drag = {width: thumbContainer.prop('offsetWidth')};
       }
 
       function onDrag(ev) {
@@ -150,6 +153,12 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
           applyModelValue(!ngModel.$viewValue);
         }
         drag = null;
+
+        // Wait for incoming mouse click
+        scope.skipToggle = true;
+        $timeout(function() {
+          scope.skipToggle = false;
+        }, 1);
       }
 
       function applyModelValue(newValue) {
@@ -164,6 +173,5 @@ function MdSwitch(mdCheckboxDirective, $mdTheming, $mdUtil, $document, $mdConsta
 
 
 }
-MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document", "$mdConstant", "$parse", "$$rAF", "$mdGesture"];
 
 })(window, window.angular);

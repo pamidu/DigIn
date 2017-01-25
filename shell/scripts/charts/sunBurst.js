@@ -6,16 +6,16 @@ routerApp.directive('sunburstChart', function() {
             chartData : '='
         },
         link: function(scope, elem, attrs) {
-            
+
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue){
-                    scope.drawSunburstSummary(newValue.data,newValue.id);
+                    scope.drawSunburstSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
                 }
             });
-            
-            scope.drawSunburstSummary = function(rootData,divID){
-                var width = 500,
-                        height = 500,
+
+            scope.drawSunburstSummary = function(rootData,divID,attribute,decimal){
+                var width = 300,
+                        height = 290,
                         radius = Math.min(width, height) / 2;
 
                     var x = d3.scale.linear()
@@ -25,13 +25,12 @@ routerApp.directive('sunburstChart', function() {
                         .range([0, radius]);
 
                     var color = d3.scale.category10();
-                    console.log("s", elem)
                     
                     var divid = "#" + divID;
                     d3.select(divid).selectAll("*").remove();
                     
                     svg = d3.select(divid)
-                        .append("svg").attr("viewBox", "0 0  500 600")
+                        .append("svg").attr("viewBox", "0 0  300  300")
                         .attr("width", '100%')
                         .attr("height", '100%')
                         .append("g")
@@ -69,7 +68,23 @@ routerApp.directive('sunburstChart', function() {
                         .style("fill", function(d) {
                             return color((d.children ? d : d.parent).name);
                         })
-                        .style("stroke", "#fff")
+                        .style("stroke", function(d) {
+                            var hex = color((d.children ? d : d.parent).name);
+                            // validate hex string
+                            hex = String(hex).replace(/[^0-9a-f]/gi, '');
+                            if (hex.length < 6) {
+                                hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+                            }
+                            lum = 0.8;
+                            // convert to decimal and change luminosity
+                            var rgb = "#", c, i;
+                            for (i = 0; i < 3; i++) {
+                                c = parseInt(hex.substr(i*2,2), 16);
+                                c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+                                rgb += ("00"+c).substr(c.length);
+                            }
+                            return rgb;                            
+                        })
                         .on("click", click)
                         /*The following two '.on' attributes for tooltip*/
                         .on("mouseover", function(d) {
@@ -77,22 +92,21 @@ routerApp.directive('sunburstChart', function() {
                                 .duration(200)
                                 .style("opacity", .9);
                             var sizeStr = "";
-                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b> Count: " + d.size + "</b>";
+                            if (typeof d.size != 'undefined') sizeStr = "<br/> <b>" + attribute + ":"  + d.size.toFixed(decimal) + "</b>";
                             div.html(d.name + sizeStr)
                                 .style("left", 100 + "px")
                                 .style("top", 300 + "px");
 
                         })
                         .on("mousemove", function(d) {
-                            div.style("top", (d3.event.pageY-10)+"px")
-                                .style("left", (d3.event.pageX+10)+"px");
+                            div.style("top", (d3.event.pageY)+"px")
+                                .style("left", (d3.event.pageX)+"px");
                         })
                         .on("mouseout", function(d) {
                             div.transition()
                                 .duration(500)
                                 .style("opacity", 0);
                         });
-
                     //.append("text")
                     var text = g.append("text")
                         .attr("x", function(d) {
@@ -107,17 +121,31 @@ routerApp.directive('sunburstChart', function() {
                               return d.name;
 
                         })
-                        .style("fill", "white");
+                        .style("fill", function(d) {
+                            var angle = computeArcSize(d);
+                            if (angle < 0.1){
+                                return "none";
+                            }else {
+                                return "#008080";
+                            }
+                        });
 
                     function computeTextRotation(d) {
                         var angle = x(d.x + d.dx / 2) - Math.PI / 2;
                         return angle / Math.PI * 180;
                     }
 
+                    function computeArcSize(d) {
+                        var startAngle = Math.max(0, Math.min(2 * Math.PI, x(d.x)));
+                        var endAngle = Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx)));                            
+                        var angle =  endAngle - startAngle;
+                        return angle;                        
+                    }
+
                     function click(d) {
                             // fade out all text elements
                             if (d.size !== undefined) {
-                                d.size += 100;
+                                // d.size += 100;
                             };
                             text.transition().attr("opacity", 0);
 
@@ -127,8 +155,7 @@ routerApp.directive('sunburstChart', function() {
                                 .each("end", function(e, i) {
                                     // check if the animated element's data e lies within the visible angle span given in d
                                     if (e.x >= d.x && e.x < (d.x + d.dx)) {
-                                        console.log("saa")
-                                            // get a selection of the associated text element
+                                        // get a selection of the associated text element
                                         var arcText = d3.select(this.parentNode).select("text");
                                         // fade in the text element and recalculate positions
                                         arcText.transition().duration(750)
@@ -138,6 +165,14 @@ routerApp.directive('sunburstChart', function() {
                                             })
                                             .attr("x", function(d) {
                                                 return y(d.y);
+                                            })
+                                            .style("fill",function(d){
+                                                var angle = computeArcSize(d);
+                                                if (angle < 0.06){
+                                                    return "none";
+                                                }else {
+                                                    return "#008080";
+                                                }                                                
                                             });
                                     }
                                 });
@@ -187,7 +222,7 @@ routerApp.directive('sunburstChart', function() {
             };
             
             if(typeof scope.chartData != "undefined"){
-                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id);
+                scope.drawSunburstSummary(scope.chartData.data, scope.chartData.id, scope.chartData.attribute, scope.chartData.dec);
             }
             
 

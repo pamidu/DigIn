@@ -3,9 +3,9 @@
 require_once (ROOT_PATH ."/include/duoapi/objectstoreproxy.php");
 
 class LoginRequest {
-	public $Username;
-	public $Password;
-	public $Domian;
+    public $Username;
+    public $Password;
+    public $Domian;
 }
 
 class UserRegistrationRequest {
@@ -28,7 +28,7 @@ class UserProfile {
 
 class UserAuthorization {
 
-	public function Login() {
+    public function Login() {
 
         $loginData = Flight::request()->data;
 
@@ -43,12 +43,12 @@ class UserAuthorization {
             echo '{"Success":false, "Message": "Password is required.", "Data": {}}'; return;
         }
 
-    	$fullhost = strtolower($_SERVER['HTTP_HOST']);
-    	$loginObj->Domian = $fullhost;
+        $fullhost = strtolower($_SERVER['HTTP_HOST']);
+        $loginObj->Domian = $fullhost;
 
-    	$loginUrl = "/Login/" . trim($loginObj->Username) . "/" . trim($loginObj->Password) . "/" . $loginObj->Domian;
-	$requestheaders = getallheaders();
-    	// curl request goes here.
+        $loginUrl = "/Login/" . trim($loginObj->Username) . "/" . trim($loginObj->Password) . "/" . $loginObj->Domian;
+        $requestheaders = getallheaders();
+        // curl request goes here.
         $invoker = new WsInvoker(SVC_AUTH_URL);
         $invoker->addHeader('User-Agent', $requestheaders["User-Agent"]);
         $invoker->addHeader('PHP', '101');
@@ -57,23 +57,23 @@ class UserAuthorization {
         $authDecoded = json_decode($authObj);
         
         if(isset($authDecoded->Error) && $authDecoded->Error) {
-		echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
+        echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
         }
         
         if(isset($authDecoded->SecurityToken) && isset($authDecoded->UserID)) {
-    		if (!isset($_SESSION))
-    			session_start();
+            if (!isset($_SESSION))
+                session_start();
                 //setcookie('securityToken', $authDecoded->SecurityToken, time() + 86400, "/", $fullhost);
                 //setcookie('authData', $authObj, time() + 86400, "/", $fullhost);
                 $_SESSION['securityToken'] = $authDecoded->SecurityToken;
-                $_SESSION['userObject'] = $authDecoded;	
+                $_SESSION['userObject'] = $authDecoded; 
                 
                 echo '{"Success":true, "Message": "You have successfully logged in", "Data": {"SecurityToken": "'. $authDecoded->SecurityToken .'","AuthData": '.$authObj.'}}'; return;
         }
-	}
+    }
 
-	public function UserRegistration() {
-		$regData = Flight::request()->data;
+    public function UserRegistration() {
+        $regData = Flight::request()->data;
         $regObj = new UserRegistrationRequest();
         $regUrl = "/UserRegistation/";
 
@@ -95,18 +95,129 @@ class UserAuthorization {
         $authDecoded = json_decode($authObj);
         
         if(isset($authDecoded->Error) && $authDecoded->Error) {
-		echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
+            echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
         }
 
-    	if(isset($authDecoded->UserID)) { 
-        	$isCreated = $this->createProfile($regObj);
+        if(isset($authDecoded->UserID)) { 
+            $isCreated = $this->createProfile($regObj);
                 if($isCreated) {
                     echo '{"Success":true, "Message": "You have successfully registed.", "Data": {}}'; return;
                 }else {
                     echo '{"Success":false, "Message": "Error getting while creating the profile.", "Data": {}}'; return;
                 }
-	}
-	}
+        }
+    }
+
+    public function OfflineUserRegistration() {
+        $regData = Flight::request()->data;
+        $regObj = new UserRegistrationRequest();
+        $regUrl = "/InvitedUserRegistration/";
+
+        foreach ($regObj as $key => $value) {
+            if(!isset($regData->$key)) {
+                echo '{"Success":false, "Message": "Request payload should contains '. $key .' property.", "Data": {}}'; return;
+            }
+            if(!$regData->$key) {
+                echo '{"Success":false, "Message": "' . $key .'" property is empty or null.", "Data": {}}'; return;
+            }
+        }
+
+        DuoWorldCommon::mapToObject($regData, $regObj);
+
+        $regObj->Active = false;
+
+        $invoker = new WsInvoker(SVC_AUTH_URL);
+        $authObj = $invoker->post($regUrl, $regObj);
+        $authDecoded = json_decode($authObj);
+
+        if(is_null($authDecoded)) {
+            echo '{"Success":false, "Message": "'.$authObj.'", "Data": {}}'; return;
+        }
+        
+        if(isset($authDecoded->Error) && $authDecoded->Error) {
+            echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
+        }
+
+        if(isset($authDecoded->UserID)) { 
+            $isCreated = $this->createProfile($regObj);
+                if($isCreated) {
+                    echo '{"Success":true, "Message": "You have successfully registed.", "Data": {}}'; return;
+                }else {
+                    echo '{"Success":false, "Message": "Error getting while creating the profile.", "Data": {}}'; return;
+                }
+        }
+
+    }
+
+    public function OfflineTenantUserRegistration($tenantid) {
+        $regData = Flight::request()->data;
+        $regObj = new UserRegistrationRequest();
+        $regUrl = "/RegisterTenantUserWithTenant/";
+
+        if(empty($tenantid) || is_null($tenantid)) {
+            echo '{"Success":false, "Message": "Invalid tenant id.", "Data": {}}'; return;
+        }
+
+        $regUrl .= $tenantid;
+
+        foreach ($regObj as $key => $value) {
+            if(!isset($regData->$key)) {
+                echo '{"Success":false, "Message": "Request payload should contains '. $key .' property.", "Data": {}}'; return;
+            }
+            if(!$regData->$key) {
+                echo '{"Success":false, "Message": "' . $key .'" property is empty or null.", "Data": {}}'; return;
+            }
+        }
+
+        DuoWorldCommon::mapToObject($regData, $regObj);
+
+        $regObj->Active = false;
+
+        $invoker = new WsInvoker(SVC_AUTH_URL);
+        $authObj = $invoker->post($regUrl, $regObj);
+        $authDecoded = json_decode($authObj);
+
+        if(is_null($authDecoded)) {
+            echo '{"Success":false, "Message": "'.$authObj.'", "Data": {}}'; return;
+        }
+        
+        if(isset($authDecoded->Error) && $authDecoded->Error) {
+            echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
+        }
+
+        if(isset($authDecoded->UserID)) { 
+            $isCreated = $this->createProfile($regObj);
+                if($isCreated) {
+                    echo '{"Success":true, "Message": "You have successfully registed.", "Data": {}}'; return;
+                }else {
+                    echo '{"Success":false, "Message": "Error getting while creating the profile.", "Data": {}}'; return;
+                }
+        }
+
+    }
+
+    public function OfflineTenantUserActivation($email) {
+
+        $activationUrl = "/userActivationByAdmin/";
+
+        if(empty($email) || is_null($email)) {
+            echo '{"Success":false, "Message": "Tenant user e-mail address required.", "Data": {}}'; return;
+        }
+
+        $activationUrl .= $email;
+        $requestheaders = getallheaders();
+
+        $invoker = new WsInvoker(SVC_AUTH_URL);
+        $invoker->addHeader('securityToken', $requestheaders["securityToken"]);
+        $authObj = $invoker->get($activationUrl);
+        $authDecoded = json_decode($authObj);
+
+        if($authDecoded) echo '{"Success":true, "Message": "'.$email.' successfully activated.", "Data": {}}';
+        else echo '{"Success":false, "Message": "user activation failed.", "Data": {}}';
+
+        return;
+
+    }
 
     public function ForgotPassword($email) {
         //Email validation
@@ -128,7 +239,7 @@ class UserAuthorization {
     }
 
     private function createProfile($user) {
-	$isCreated = true;
+        $isCreated = true;
         $profile = new UserProfile();
 
         foreach ($profile as $key => $value) {
@@ -152,17 +263,26 @@ class UserAuthorization {
         return $isCreated;
     }
 
-	function __construct() {
-		Flight::route("POST /userauthorization/login", function() {
-			$this->Login();
-		});
-	        Flight::route("POST /userauthorization/userregistration", function() {
-	            $this->UserRegistration();
-	        });
-	        Flight::route("GET /userauthorization/forgotpassword/@email", function($email) {
-	            $this->ForgotPassword($email);
-	        });
-	}
+    function __construct() {
+        Flight::route("POST /userauthorization/login", function() {
+            $this->Login();
+        });
+        Flight::route("POST /userauthorization/userregistration", function() {
+            $this->UserRegistration();
+        });
+        Flight::route("POST /offline/userregistration", function() {
+            $this->OfflineUserRegistration();
+        });
+        Flight::route("POST /offline/tenantuserregistration/@tenantid", function($tenantid) {
+            $this->OfflineTenantUserRegistration($tenantid);
+        });
+        Flight::route("GET /offline/tenantuser/activation/@email", function($email) {
+            $this->OfflineTenantUserActivation($email);
+        });
+        Flight::route("GET /userauthorization/forgotpassword/@email", function($email) {
+            $this->ForgotPassword($email);
+        });
+    }
 
 }
 

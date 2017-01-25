@@ -1,0 +1,35 @@
+<md-dialog aria-label="Configure wordpress" ng-cloak>
+  <form name="editForm" ng-submit="finish()">
+  <md-toolbar class="modal-header">
+    <div class="md-toolbar-tools">
+       <div layout="row" layout-align="center center">
+		<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+		<h2>Fetch RSS Feeds</h2>
+	  </div>
+      <span flex></span>
+      <md-button class="md-icon-button icon-cancel" ng-click="cancel()" aria-label="Close">
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div class="md-dialog-content">
+		<md-input-container class="md-block" flex-gt-sm>
+			<span>RSS Feeds URL</span>
+			<input required type="text" name="rssAddress" ng-model="rssAddress" aria-label="url" />
+			<div ng-messages="editForm.rssAddress.$error" role="alert">
+			  <div ng-message-exp="['required']">
+					A RSS feed URL required
+			  </div>
+			</div>
+		</md-input-container>
+		<span>http://rss.cnn.com/rss/cnn_topstories.rss</span>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button type="submit" aria-label="change">
+      Fetch
+    </md-button>
+  </md-dialog-actions>
+  </form>
+</md-dialog>

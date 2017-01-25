@@ -1,0 +1,54 @@
+<md-dialog style="min-width:400px" plumb-item>
+    <md-toolbar>
+        <div class="md-toolbar-tools" flex layout="row">
+            <div flex="10">
+                <md-icon class="ion-wrench"></md-icon>
+            </div>
+            <div flex="80">
+                <h3>Configuration</h3>
+            </div>
+            <div flex="10"> 
+                <md-button class="widget-button" ng-click="cancel()" aria-label="Close" layout-wrap>
+                            <ng-md-icon icon="close" style="fill:white" size="20" layout="column" layout-align="center center" flex></ng-md-icon>
+                </md-button> 
+            </div>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+<!--
+       <div layout="column" ng-show="fieldSelection">
+         <md-chips ng-model="widget.commonSrcConfig.fields" readonly="false"></md-chips>
+         <md-button  ng-click="getData()"  aria-label="Close" layout-wrap>
+             Next
+         </md-button> 
+       </div>
+-->
+       <div>
+         <md-content class="md-padding">
+            <div layout="column">
+              <md-input-container flex>
+                    <label>Chart Label</label>
+                    <input name="sizeX" placeholder="label" ng-model="widget.widName">
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Series Name</label>
+                    <input name="sizeX" placeholder="label" ng-model="ser.name">
+                </md-input-container>
+                <md-select ng-model="ser.type" placeholder="Select a chart type" flex>
+                  <md-optgroup label="Chart type">
+                    <md-option ng-value="chartType.type" ng-repeat="chartType in chartTypes">{{chartType.name}}</md-option>
+                  </md-optgroup>
+                </md-select>
+                <md-input-container>
+                  <label>Color</label>
+                  <input ng-model="ser.color">
+                </md-input-container>
+               <md-input-container flex>
+                   <md-button class="md-raised" ng-click="buildQueriedChart(widget)">Build Chart</md-button>
+               </md-input-container>
+            </div>
+        </md-content>
+       </div>
+      
+    </md-dialog-content>
+</md-dialog>

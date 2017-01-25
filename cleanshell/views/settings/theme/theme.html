@@ -1,0 +1,31 @@
+<div class="card-container" layout-padding>
+	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Main Themes </h1>
+	<div layout="row" layout-align="center start" layout-wrap>
+		<md-card ng-repeat="color in themeColor" class="product_card" ng-click="mainTheme(color)" style="background:{{color.backgroundColor}}">
+			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+				<span class="product_name" style="color:{{color.color}}">{{color.name}}</span>
+			</div>
+			<div layout="row" layout-align="center center">
+				<img src="views/settings/theme/palette/{{color.imageUrl}}" style="width:243px;height216px" />
+			</div>
+		</md-card>
+	</div>
+    <h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Themes </h1>
+	<div layout="row" layout-align="center start" layout-wrap>
+		<md-card ng-repeat="color in palette" class="product_card" ng-click="changeTheme(color)">
+			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+				<span class="product_name">{{color.name}}</span>
+			</div>
+			<div layout="row" layout-align="center center">
+				<img src="views/settings/theme/palette/{{color.imageUrl}}" style="width:243px;height216px" />
+			</div>
+		</md-card>
+	</div>
+	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Zoom Level </h1>
+	<div layout="row" layout-align="start start" style="margin-left:20px">
+		<md-button class="md-rasied" ng-click="reduceFontSize()" style="font-size:22px">-</md-button>
+		<center style="width:70px;font-size:30px">{{zoomLevel}}</center>
+		<md-button class="md-rasied" ng-click="increaseFontSize()" style="font-size:22px">+</md-button>
+
+	</div>
+</div>

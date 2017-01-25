@@ -1,0 +1,151 @@
+<div class="setup-wrapper  animated fadeIn">
+	<div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
+    </div>
+		<div layout="row" layout-align="center start" style="margin-top:50px" layout-wrap>
+		<div layout="column">
+			<md-card class="product_card" style="width:490px;height:205px;background:#2795d8" layout="row" layout-align="center center" ng-click="openLogoUploadWindow()">
+				<img src="{{userSetingsUrl}}" style="width:190px;height:190px;background:white;border-radius:4px"/>
+				<md-tooltip md-direction="bottom">Upload Company Image</md-tooltip>
+			</md-card>
+			<md-card class="product_card" style="width:490px;">
+				<div layout="row" style="border-bottom: 1px solid #dddddd">
+					<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-pie-chart" style="color:#1b7b97;font-size: 30px;padding-top: 28px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">DASHBOARDS</text>
+							<text style="font-size:50px">{{usageDetails.dashboard}}</text>
+						</div>
+					</div>
+					<div layout="row" flex style="padding:10px">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-bar-chart" style="color:#13b6b3;font-size: 30px;padding-top: 26px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">REPORTS</text>
+							<text style="font-size:50px">{{usageDetails.report_count}} 1</text>
+						</div>
+					</div>
+				</div>
+				<div layout="row" style="border-bottom: 1px solid #dddddd">
+					<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-user" style="color:#4caf50;font-size: 30px;padding-top: 23px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">ACCOUNT HOLDER</text>
+							<text style="font-size:20px;font-size: 20px;padding-top: 10px;">{{$root.profile_Det.Name}}</text>
+						</div>
+					</div>
+					<div layout="row" flex style="padding:10px">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="icon-group" style="color:#f9a525;font-size: 36px;padding-top: 33px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">TOTAL USERS</text>
+							<text style="font-size:50px">50</text>
+						</div>
+					</div>
+				</div>
+				<div layout="row">
+					<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-download" style="color:#1b7b97;font-size: 30px;padding-top: 23px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">BANDWIDTH</text>
+							<text style="font-size:20px;font-size: 20px;padding-top: 10px;">{{usageDetails.totalBytesProcessed / 1000}} mb</text>
+						</div>
+					</div>
+					<div layout="row" flex style="padding:10px">
+						<div layout="row" layout-align="start center" flex="30">
+							<i class="ti-upload" style="color:#13b6b3;font-size: 36px;padding-top: 33px;" flex="30"></i>
+						</div>
+
+						<div layout="column" flex>
+							<text style="font-weight:700;color:#9e9e9e;font-size:15px">UPLOADS</text>
+							<text style="font-size:20px;padding-top: 10px;">{{usageDetails.totalBytesBilled / 1000}} mb</text>
+						</div>
+					</div>
+				</div>
+
+			</md-card>
+		</div>
+		<!--md-card class="product_card" style="padding: 10px">
+			    <div id="container" style="margin:10px">Placeholder for chart</div>
+		</md-card-->
+		
+	</div>
+
+        <!--div class="setting-wrap">
+            <div layout="row" layout-align="end end">
+				<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('back')"></md-button>
+			</div>
+			
+            <div class="setting-card-header">
+                <h5>Account Information</h5>
+                <div class="setting-img-wrap">
+                    <img ng-src="{{userSetingsUrl}}" style="width:128px;height:128px" />
+                </div>
+				<span style="font-size:24px;color:#3c8db8">Account Holder: {{username}}</span>
+            </div>
+			
+			
+			
+      
+            <div class="setting-tab-wrap">
+
+				<div layout="column" layout-align="center center">
+
+						<md-button ng-click="openLogoUploadWindow()">
+							<i class="fa fa-file-image-o" style="color:#f9a626"></i>
+							&nbsp;&nbsp;
+							<span style="color:#f9a626;font-weight:700;font-size: 18px;letter-spacing: 1px;">Upload Logo</span>
+						</md-button>
+				   
+						<span class="setup-font-theme">
+							Please select a image from a location inorder to update account logo
+						</span>
+				   
+
+
+	
+						<div layout="column">
+							<label id="dislab">Theme configuration (Pick two colors)</label>
+
+							<div layout="column" class="setup-color-container">
+								<div layout="row" ng-repeat="colors in chunkedColorArr">
+									<div class="setup-color-stripes" ng-repeat="color in colors"
+										 ng-click="onClickColorTab(color.value)"
+										 style="background-color:{{color.value}}"></div>
+								</div>
+							</div>
+						</div>
+
+						<div layout="row">
+							<md-switch ng-model="headerbar" aria-label="switch-headerbar">
+								Headerbar {{headerbar ? 'ON' : 'OFF'}}
+							</md-switch>
+
+						</div>
+
+						<md-button ng-click="updateAccount()">
+							<span style="color:#f9a626;font-weight:700;font-size: 18px;letter-spacing: 1px;">Account Update</span>
+						</md-button>
+
+			  
+			</div>
+        </div>
+     </div-->
+ </div>
+
+
+
+

@@ -1,0 +1,172 @@
+<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+	<md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
+	  <md-tab id="tab1" md-on-select="selectPage($index)">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Datasource Settings</span>
+			<span flex></span>
+		</md-tab-label>
+		<md-tab-body>
+			<div class="card-container" layout-padding ng-init="getAllconnections()">
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+					<md-content>
+						<div layout="row" layout-align="end end">
+							<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="goHome()"></md-button>
+						</div>
+						<div class="setting-card-header">
+							<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Database Connections</h2>
+							<div class="setting-img-wrap">
+								<img src="views/settings/datasourceSettings/database.png"/>
+							</div>
+						</div>
+						<md-stepper-card-content class="md-no-padding">
+							<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep">
+								<md-step label="Existing Connections" md-complete="stepData[0].data.completed">
+									<md-step-body>
+										<div layout="row" layout-wrap flex >					            
+											<md-card flex="30" ng-repeat="connection in existingConnections">
+												<md-card-content layout="column" flex>
+														<div layout="column" flex layout-align="end end" class="blut-datasource-view" >
+															<i class= "ti-pencil pull-left" ng-click="editConnection(connection)"></i>
+															<md-tooltip md-direction="right">
+																Edit Connection
+															</md-tooltip>
+														</div>
+														<div layout="row" flex>
+															<div><b> Connection Name: </b></div>
+															<div> {{connection.connection_name}} </div>
+														</div>
+														<div layout="row" flex>
+															<div><b> Connection Type: </b></div>
+															<div> {{connection.connection_type}} </div>
+														</div>
+														<div layout="row" flex>
+															<div><b> Database Name: </b></div>
+															<div> {{connection.database_name}} </div>
+														</div>
+												</md-card-content>
+											</md-card>
+										</div>
+										<div class="digin-cmds-source h-inherit" ng-show="connectionStatus && connectionNotAvailable">
+											<div class="error-wrap error m-50 h-inherit">
+												<span> No Connections</span>
+											</div>
+										</div>
+										<div layout="row" layout-align="center center" ng-hide="connectionStatus">
+											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+											</md-progress-circular>
+										</div>
+										<div flex layout = "row" layout-align="center center">
+											<md-button type="button" class="md-raised md-primary"  ng-click="createConnection()">Create New Connection</md-button>											
+										</div>
+									</md-step-body>
+								</md-step>
+								<md-step label="Connection Settings" md-complete="stepData[1].data.completed">
+									<md-step-body>
+										<div layout="row" layout-align="start start">
+											<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Connection Details</div>
+										</div>
+										<div flex layout="row">
+											<div flex layout="column" class="p10" flex="50">
+												<label>Host</label>
+												<input class="form-control" flex ng-model="host" ng-disabled="testStatus" />
+											</div>
+											<div flex layout="column" class="p10" flex="50">
+												<label>Port Number</label>
+												<input class="form-control" flex ng-model="port" ng-disabled="testStatus"/>
+											</div>
+										</div>
+										<div flex layout="row">
+											<div flex layout="column" class="p10" flex="50">
+												<label>User Name</label>
+												<input class="form-control" flex ng-model="userName" ng-disabled="testStatus"/>
+											</div>
+											<div flex layout="column" class="p10" flex="50">
+												<label>Password</label>
+												<input type="Password" class="form-control" flex ng-model="password" ng-disabled="testStatus"/>
+											</div>									
+										</div>									
+										<div flex layout = "row" layout-align="center center">
+											<md-button type="button" class="md-raised md-primary"  ng-click="submitUserDetails()" ng-disabled="testStatus || submitLogin">Get all databases</md-button>
+										</div>
+										<div layout="row" layout-align="center center" ng-show="submitLogin">
+											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+											</md-progress-circular>
+										</div>
+										<div layout="row" layout-align="start start" ng-show="loginStatus">
+											<div class="p10" style="background:rgb(212, 212, 212) !important;color:#f9a624;font-weight:700">
+												{{action}} Connection Settings
+											</div>
+										</div>
+										<div flex layout="row">
+											<div layout="column" flex class="p10" ng-show="loginStatus" flex="50">
+												<label>Database Type</label>
+												<md-select ng-model="databaseType" ng-disabled="testStatus">
+													<md-option ng-value="MSSQL">MSSQL</md-option>
+												</md-select>
+											</div>
+											<div layout="column" flex class="p10" ng-show="loginStatus" flex="50">
+												<label>Database Name</label>
+												<md-select ng-model="databaseName" ng-disabled="testStatus">
+													<md-option ng-repeat="db in dbNames | orderBy:'db' " ng-value="db">{{db}}</md-option>
+												</md-select>
+											</div>
+										</div>
+										<div layout="column" class="p10" ng-show="loginStatus">
+											<label>Connection Name</label>
+											<input class="form-control" ng-model="connName" flex ng-disabled="testStatus"/>
+										</div>
+										<div layout="column" class="p10" ng-show="loginStatus">
+											<label> Authentication Type </label>
+											<md-radio-group  flex layout="column" ng-model="authType" ng-disabled="testStatus">
+												<md-radio-button value="windows" class="md-primary left">
+													Use windows authentication
+												</md-radio-button>
+												<md-radio-button value="sql" class="md-primary left">
+													Use SQL Server authentication
+												</md-radio-button>
+											</md-radio-group>
+										</div>
+										<div flex layout = "row" layout-align="center center" ng-show="loginStatus">
+											<md-button type="button" class="md-raised md-primary"  ng-click="testConnection()" ng-disabled="testStatus || testRequest">Test Connection</md-button>
+										</div>
+										<div layout="row" layout-align="center center" ng-show="testRequest">
+											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+											</md-progress-circular>
+										</div>
+										<div flex layout = "row" layout-align="center center" ng-show="loginStatus">
+											<md-button type="button" class="md-raised md-primary"  ng-click="saveConnection()">Save Connection</md-button>
+										</div>
+										<div layout="row" layout-align="center center" ng-show="saveRequest">
+											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+											</md-progress-circular>
+										</div>
+										<div flex layout="row" layout-align="space-between center" class="side-margins">
+											<md-button ng-click="moveToPreviousStep()" class="md-raised next-btn">Previous</md-button>
+										</div>
+									</md-step-body>
+								</md-step>
+								<md-step label="Finish" md-complete="stepData[2].data.completed" ng-disabled="stepProgress < 3">
+									<md-step-body>
+										<div class="digin-cmds-source h-inherit" ng-show="testStatus">
+											<div class="error-wrap error m-50 h-inherit">
+												<span> Connection saved! </span>
+											</div>
+										</div>
+										<div flex layout = "row" layout-align="center center" ng-show="testStatus">
+											<md-button type="button" class="md-raised md-primary"  ng-click="createConnection()">Create New Connection</md-button>	
+										</div>
+										<div flex layout = "row" layout-align="center center" ng-show="testStatus">
+											<md-button type="button" class="md-raised md-primary"  ng-click="goHome()">Finish</md-button>
+										</div>		                            
+									</md-step-body>
+								</md-step>
+							</md-steppers>
+						</md-stepper-card-content>
+					</md-content>
+				</md-whiteframe>
+			</div>
+		</md-tab-body>
+	  </md-tab>
+	</md-tabs>
+
+</footer>

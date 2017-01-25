@@ -1,3 +1,12 @@
+
+////////////////////////////////
+// File : diginServicehandler.js
+// Owner  : Dilani
+// Last changed date : 2017/01/10
+// Version : 3.1.0.3
+// Modified By : Dilani
+/////////////////////////////////
+
 'use strict';
 (function(dsh) {
     function getHost() {
@@ -8,7 +17,7 @@
     }
 
     function getNamespace() {
-          var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
+        var authdata=JSON.parse(decodeURIComponent(getCookie('authData')));        
         var namespace = authdata.Email.replace('@', '_');
         var namespace = authdata.Email.replace(/[@.]/g, '_');
         return namespace;
@@ -24,23 +33,43 @@
                         cb(data, status);
                     }, $diginurls.diginengine + "GetTables?dataSetName=" + getNamespace() + "&db=" + database);
                 },
-
+                getFolders: function(f_name,cb) {
+                    var url_string = "get_system_directories?folder_type=data_source_folder";
+                    if (f_name){
+                        url_string += "&folder_name="+f_name;
+                    } else{
+                        url_string += "&folder_name=";
+                    }
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + url_string);
+                },
+                getConnectionTables: function(id,cb) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "GetTables?db=mssql&datasource_config_id=" + id);
+                },
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
                     }, $diginurls.diginengine + "GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public");
                 },
-                getHighestLevel: function(tbl, fieldstr, cb) {
-                    if (database == "BigQuery") {
+                getMSSQLFields: function(tbl, MSSQLid, cb) {
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, $diginurls.diginengine + "GetFields?dataSetName=" + getNamespace() + "&tableName=" + tbl + "&db=" + database + "&schema=public&datasource_config_id=" + MSSQLid);
+                },
+                getHighestLevel: function(tbl, fieldstr, id, cb) {
+                    if (database == "BigQuery" || database == "memsql") {
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=[" + getNamespace() + "." + tbl + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_id=" + id);
                     }
                     if (database == "MSSQL") {
-
+                        var db = tbl.split(".");
                         $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status);
-                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=[" + db[0] + '].[' + db[1] + "]&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
                     }
                     if (database == "postgresql") {
 
@@ -50,26 +79,48 @@
                     }
 
                 },
-                getAggData: function(tbl, aggObjArr, cb, gb, con) {
+                getAggData: function(tbl, aggObjArr, limit, id, cb, gb, con) {
                     var strField = "";
-
+                    if (con !== undefined) {
+                        con = con.replace(/&/g , "%26");                        
+                    }
                     aggObjArr.forEach(function(key) {
-                        strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";
+                        if (database == "MSSQL") {
+                            if (key.field !== undefined){
+                                strField += "[%27[" + key.field + "]%27,%27" + key.agg + "%27],";                            
+                            } else{
+                                strField += "[%27[" + key.filedName + "]%27,%27" + key.condition + "%27],";
+                            }
+                        } else {
+                            if (key.field !== undefined){
+                                strField += "[%27" + key.field + "%27,%27" + key.agg + "%27],";                            
+                            } else{
+                                strField += "[%27" + key.filedName + "%27,%27" + key.condition + "%27],";
+                            }
+                        }
                     });
 
                     var wSrc = "scripts/webworkers/webWorker.js";
                     if (database == "BigQuery") {
                         if (!gb) {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}";
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}" ;
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}"  + "&datasource_id=" + id;
+                        }
+                    }
+                    if (database == "memsql") {
+                        if (!gb) {
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
+                        } else {
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}"  + "&datasource_id=" + id;
                         }
                     }
                     if (database == "MSSQL") {
+                        var db = tbl.split(".");
                         if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + gb + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         }
                     }
                     if (database == "postgresql") {
@@ -83,6 +134,7 @@
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";
                     if (con) params += "&cons=" + con;
+                    if (limit) params += "&limit=" + limit;
                     var reqUrl = $diginurls.diginengine + "aggregatefields?" + params;
                     var wData = {
                         rUrl: reqUrl,
@@ -94,11 +146,20 @@
 
                 },
 
-                getExecQuery: function(qStr, cb, limit) {
+                getExecQuery: function(qStr, id, cb, limit,offset) {
                     var wSrc = "scripts/webworkers/webWorker.js";
-                    var limVal = 1000;
-                    if (limit) limVal = limit;
-                    var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
+                    var limVal = undefined;
+                    var offVal = 0;
+                    if (limit) 
+                        limVal = limit;
+                    if (offset) 
+                        offVal = offset;
+                    if (database == 'MSSQL')
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal + "&datasource_config_id=" + id;
+                    else if (database == 'BigQuery' || database == "memsql")
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id;
+                    else 
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
 
                     var wData = {
                         rUrl: reqUrl,
@@ -109,10 +170,22 @@
                     });
                 },
 
-                getHierarchicalSummary: function(query, cb) {
-                        $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
-                        }, query);
+                getHierarchicalSummary: function(hObj,measure,aggData,tbl,id,cb) {
+                    var query = "";
+                    if (database == "BigQuery" || database == "memsql") {
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
+                        getNamespace() + "." + tbl + "] &measure=" + measure + "&agg=" + aggData + "&id=19&db=" + database + "&datasource_id=" + id;
+                    } else if ( database == "MSSQL") {
+                        var db = tbl.split(".");
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=[" + 
+                        db[0] + '].[' + db[1] + "]&measure=[" + measure + "]&agg=" + aggData + "&db=" + database + "&datasource_config_id=" + id;
+                    } else {
+                        query = $diginurls.diginengine + "hierarchicalsummary?h=" + JSON.stringify(hObj) + "&tablename=" + 
+                        tbl + "&measure=" + measure + "&agg=" + aggData + "&db=" + database;
+                    }
+                    $servicehelpers.httpSend("get", function(data, status, msg) {
+                        cb(data, status);
+                    }, query);
                 },
 
                 generateboxplot: function(query, cb) {
@@ -134,40 +207,95 @@
                     }, query);
                 },
 
-                getForcast: function(fObj, cb, gb) {
+                getForcast: function(fObj,widget,filters,id, cb, gb) {
+
+                    //check filters for undefine 
+                    if(typeof filters == "undefined"){
+                        filters ="";
+                    }
+
+
+                    function formattedDate(date) {
+
+                            var d = new Date(date || Date.now()),
+                                month = '' + (d.getMonth() + 1),
+                                day = '' + d.getDate(),
+                                year = d.getFullYear();
+
+                            if (month.length < 2) month = "0"+ month;
+                            if (day.length < 2) day ="0"+   day;
+
+                            return [year,month, day].join('-');
+                    }
+
+            
+                    var endDate,startdate;
+                    if (new Date(fObj.enddate) > new Date(fObj.startdate)){
+                        endDate = "'"+formattedDate(fObj.enddate)+"'" ;
+                        startdate = "'"+formattedDate(fObj.startdate)+"'";
+                        
+                    }
+                    else{
+                        endDate = "";
+                        startdate = "";
+                    }
+                    
+
                     if(database == "BigQuery")
                     {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
+                            cb(data, status,fObj);
                         }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
                         "&alpha=" + fObj.a +
                         "&beta=" + fObj.b +
                         "&gamma=" + fObj.g +
                         "&n_predict=" + fObj.fcast_days +
-                        "&table=[" + getNamespace() + "." + fObj.tbl + 
+                        "&table=[" + widget.namespace + "." + fObj.tbl + 
                         "]&date_field=" + fObj.date_field +
                         "&f_field=" + fObj.f_field +
                         "&period=" + fObj.interval +
                         "&len_season=" + fObj.len_season +
-                        "&dbtype=" + database);
+                        "&start_date=" + startdate +
+                        "&end_date=" + endDate +
+                        "&group_by=" + fObj.forecastAtt +
+                        "&filter="+filters+
+                        "&dbtype=" + database+
+                        "&datasource_config_id="+ ""+
+                        "&datasource_id="+ id);
                       }
                       else
                       {
+
+                        var group_by ="";
+                        if(fObj.forecastAtt != ""){
+                             group_by = "["+fObj.forecastAtt+"]";
+                        }
+
+                        var str = fObj.tbl;
+                        var res = str.split(".");
+                        var tableName = "["+res[0]+"]."+"["+res[1]+"]";
+
                           $servicehelpers.httpSend("get", function(data, status, msg) {
-                            cb(data, status);
+                            cb(data, status,fObj);
                         }, $diginurls.diginengine + "forecast?model=" + fObj.mod +
                         "&method=" + fObj.method +
                         "&alpha=" + fObj.a +
                         "&beta=" + fObj.b +
                         "&gamma=" + fObj.g +
                         "&n_predict=" + fObj.fcast_days +
-                        "&table= "+ fObj.tbl +
-                        "&date_field=" + fObj.date_field +
-                        "&f_field=" + fObj.f_field +
-                        "&period=" + fObj.interval +
+                        "&table= "+ tableName+
+                        "&date_field=[" + fObj.date_field +
+                        "]&f_field=[" + fObj.f_field +
+                        "]&period=" + fObj.interval +
                         "&len_season=" + fObj.len_season +
-                        "&dbtype=" + database);
+                        "&start_date=" + startdate +
+                        "&end_date=" + endDate +
+                        "&group_by=" + group_by +
+                        "&filter="+filters+
+                        "&dbtype=" + database+
+                        "&datasource_config_id="+id +
+                        "&datasource_id="+ id);
                       }
 
                 }
@@ -204,7 +332,7 @@
                 w.addEventListener('message', function(event) {
                     if (event.data.state) {
                         var res = JSON.parse(event.data.res);
-                        res.Is_Success ? cb(res.Result, event.data.state, res.Custom_Message) : cb(res.Custom_Message, event.data.state, "");
+                        res.Is_Success ? cb(res.Result, res.Is_Success, res.Custom_Message) : cb(res.Custom_Message, res.Is_Success, "");
                     } else {
                         if (typeof res != "undefined")
                             cb(res.Custom_Message, event.data.state, "");

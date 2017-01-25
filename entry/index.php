@@ -1,3 +1,28 @@
+<?php
+    if (isset($_GET["r"]))
+    {
+        $_SESSION['r']=$_GET["r"];
+    }
+
+    if(isset($_COOKIE['securityToken']))   
+    {
+         if(isset($_SESSION['r']))
+         {
+              header("Location: ".$_SESSION['r']."?securityToken=".$_COOKIE["securityToken"]);
+              session_unset('r');
+              exit();
+         }
+         else
+         {
+              //header("location: /Digin"); //Use for local *Note: Local digin folder path
+              header("location: /"); //use for live 
+              exit();
+         }
+    }
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en" ng-app="digin-entry">
 <head>
@@ -45,6 +70,12 @@
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
+
+<!-- PouchDB >
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
+<script src="https://cdn.jsdelivr.net/angular.pouchdb/4.3.0/angular-pouchdb.min.js"></script-->
+
+<script src="bower_components/angular/angular-cookies.min.js"></script>
 
 <!-- #js -->
 <!-- <script type="text/javascript" src="assets/js/config.js"></script>

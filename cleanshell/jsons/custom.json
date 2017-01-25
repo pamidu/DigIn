@@ -1,0 +1,66 @@
+{
+	"Exception": null,
+	"Result": {
+		"compName": "custom",
+		"compCategory": null,
+		"compID": "1472549760419",
+		"compClass": null,
+		"pages": [{
+			"pageName": "DEFAULT",
+			"pageData": null,
+			"pageID": "1472549760430",
+			"widgets": [{
+				"widgetID": "1472557971421",
+				"pageID": "1472549760430",
+				"widgetData": {
+					"widEnc": {},
+					"externalDataURL": "",
+					"chartStack": [{
+						"id": "",
+						"title": "No"
+					}, {
+						"id": "normal",
+						"title": "Normal"
+					}, {
+						"id": "percent",
+						"title": "Percent"
+					}],
+					"widCsc": {},
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": 30,
+					"widCsv": {},
+					"top": "0px",
+					"d3plugin": "",
+					"width": "370px",
+					"widAexc": {},
+					"divider": false,
+					"syncState": true,
+					"widData": {},
+					"widName": "Orders",
+					"highchartsNG": null,
+					"widAque": {},
+					"mheight": "100%",
+					"uniqueType": "Orders",
+					"widView": "views/widgets/custom/google_maps/mapView.html",
+					"widDec": {},
+					"widAna": {},
+					"type": "Custom",
+					"expanded": true,
+					"widIm": {},
+					"left": "0px"
+				},
+				"widgetName": "Map",
+				"col": 0,
+				"sizeX": 7,
+				"sizeY": 9,
+				"row": 0
+			}]
+		}],
+		"refreshInterval": 30,
+		"compType": "dashboard"
+	},
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

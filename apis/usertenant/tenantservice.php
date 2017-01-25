@@ -81,7 +81,7 @@ class TenantService {
 
         if($tenantDecoded) {
             if(isset($tenantDecoded->TenantID)) {
-                $this->installApps($tenantDecoded->TenantID);
+                //$this->installApps($tenantDecoded->TenantID);
                 echo '{"Success":true, "Message": "' . $tenantDecoded->TenantID . ' is successfully created.", "Data":' . $tenantObj . '}'; return; 
             }else {
                 echo '{"Success":false, "Message": "' . $tenantObj . '", "Data": {}}'; return;    

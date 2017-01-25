@@ -1,38 +1,154 @@
-<div ng-show="selectedChart.chartType == 'metric'" class="chart-config-wrap">                            
-    <md-input-container flex>
-        <label>Label text</label>
-        <input ng-model="selectedChart.initObj.label">
-    </md-input-container>
-    <md-input-container>
-        <label>Scale</label>
-        <input ng-model="selectedChart.initObj.scale">
-        <!--Drop down giving options to position the scale-->
-<!--
-            <md-select ng-model="selectedChart.initObj.scale">
-          <md-option ng-repeat="s in metricObj.scales" value="{{s.val}}">
-            {{s.name}}
-          </md-option>
-        </md-select>
--->
-    </md-input-container>
-    <md-input-container>
-            <label>Position</label>
-            <md-select ng-change="changePosition()" ng-model="selectedChart.initObj.scalePosition">
-                <md-option ng-repeat="position in metricObj.scalePositions" value="{{position}}">
-                    {{position}}
-                </md-option>
-            </md-select>
-    </md-input-container>
-    <md-input-container>
-        <label>colour</label>
-        <input type="text" ng-model="selectedChart.initObj.color" placeholder="enter a color">
-    </md-input-container>    
-    <md-input-container>
-        <label>Decimals</label>
-            <md-select ng-change="changeDecimals()" ng-model="selectedChart.initObj.dec">
-          <md-option ng-repeat="d in metricObj.decimals" value="{{d}}">
-            {{d}}
-          </md-option>
-        </md-select>
-    </md-input-container>
+<!-- ////////////////////////////////
+// File : metricSettings
+// Owner  : Dilani
+// Last changed date : 2017/01/03
+// Version : 3.1.0.2
+// Modified By : Dilani
+//////////////////////////////// -->
+
+<div ng-show="selectedChart.chartType == 'metric'" class="chart-config-wrap">
+    <md-container>
+        <label class="chart-settings-labels">Basic Settings</label>
+        <br>
+        <md-container flex layout="row">
+<!--             <md-input-container flex="50">
+                <label>Label text</label>
+                <input ng-model="selectedChart.initObj.label">
+            </md-input-container> -->
+            <md-input-container flex="100">
+                <label>Scale</label>
+                <input ng-model="selectedChart.initObj.scale">
+            </md-input-container>
+        </md-container>
+        <md-container flex layout="row">
+            <md-input-container flex="50">
+                    <label>Position</label>
+                    <md-select ng-change="changePosition()" ng-model="selectedChart.initObj.scalePosition">
+                        <md-option ng-repeat="position in metricObj.scalePositions" value="{{position}}">
+                            {{position}}
+                        </md-option>
+                    </md-select>
+            </md-input-container>
+    <!--         <md-input-container>
+                <label>colour</label>
+                <input type="text" ng-model="selectedChart.initObj.color" placeholder="enter a color">
+            </md-input-container>  -->   
+            <md-input-container flex="50">
+                <label>Decimals</label>
+                <md-select ng-change="changeDecimals()" ng-model="selectedChart.initObj.dec">
+                    <md-option ng-repeat="d in metricObj.decimals" value="{{d}}">
+                        {{d}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </md-container>
+    </md-container>
+    <md-container>
+        <label class="chart-settings-labels">Data Settings</label>
+        <br>
+        <md-container flex layout="row">
+            <md-input-container flex="50">
+                <label>Actual Value</label>
+                <input ng-model="selectedChart.initObj.value" ng-disabled="true">
+            </md-input-container>
+            <md-input-container flex="50">
+                <label>Target Value</label>
+                <input type="number" ng-model="selectedChart.initObj.targetValue"
+                    ng-change="changeTargetValue()" ng-disabled="executeQryData.executeTargetField.length == 1">
+            </md-input-container>
+        </md-container>
+    </md-container>
+    <md-container>
+        <label class="chart-settings-labels">Trend Settings</label>
+        <br>
+        <md-container flex layout="row">
+            <md-input-container flex="50">
+                <label>Group by {{selectedChart.initObj.groupByField}}</label>
+                <md-select ng-model="selectedChart.initObj.timeAttribute" ng-change="changeMetricTrendType()">
+                    <md-option value="year">
+                        Year
+                    </md-option>
+                    <md-option value="month">
+                        Month
+                    </md-option>
+                    <md-option value="quarter">
+                        Quarter
+                    </md-option>
+                    <md-option value="day">
+                        Daily
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex="50">
+                <label>Time Attribute</label>
+                <md-select ng-model="selectedChart.initObj.groupByField">
+                    <md-option ng-repeat="column in commonData.columns" value="{{column.filedName}}"  ng-if=" column.type == 'datetime' 
+                     || column.type == 'DATETIME'
+                     || column.type == 'DATE'
+                     || column.type == 'TIMESTAMP'" >
+                        {{ ::column.filedName }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </md-container>
+    </md-container>
+    <md-container>
+        <label class="chart-settings-labels">Notification Settings</label>
+        <md-input-container layout="column">
+            <div>
+                <label>Notification Trigger Value</label>
+                <input type="number" ng-model="notificationValue" ng-change="selectedChart.initObj.notificationValue = notificationValue">
+            </div>
+        </md-input-container>
+    </md-container>
+    <md-container>
+        <label class="chart-settings-labels">Visualization Settings</label>
+        <br>
+        <md-container flex layout="column">
+            <md-input-container flex layout="row">
+                <div flex="30">
+                    <label>Colouring Type</label>
+                </div>
+                <div  flex="70" layout="column">
+                    <md-radio-group  flex layout="column" ng-model="selectedChart.initObj.targetRange">
+                        <md-radio-button value="high" class="md-primary left">
+                            Higher is better
+                        </md-radio-button>
+                        <md-radio-button value="low" class="md-primary left">
+                            Lower is better
+                        </md-radio-button>                        
+                    </md-radio-group>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Colour Ranges</label>
+                <rzslider rz-slider-model="selectedChart.initObj.rangeSliderOptions.minValue" rz-slider-high="selectedChart.initObj.rangeSliderOptions.maxValue" rz-slider-options="selectedChart.initObj.rangeSliderOptions.options">
+                </rzslider>
+            </md-input-container>
+            <md-input-container flex layout="row">
+                <div flex="30">
+                    <label>Color Theme</label>
+                </div>
+                <md-radio-group  flex="70" layout="column" ng-model="selectedChart.initObj.colorTheme">
+                    <md-radio-button value="rog" class="md-primary left">
+                        Red, Orange, Green
+                    </md-radio-button>
+                    <md-radio-button value="cgy" class="md-primary left">
+                        Cyan, Green, Yellow-Green
+                    </md-radio-button>
+                    <md-radio-button value="opg" class="md-primary left">
+                        Orange, Purple, Green
+                    </md-radio-button>
+                </md-radio-group>
+            </md-input-container>
+        </md-container>
+        <md-container>
+            <md-button class="md-raised md-primary right" ng-click="applyMetricSettings()" ng-disabled="eventHndler.isLoadingChart">
+                Apply
+            </md-button>
+            <md-button class="md-raised md-primary right" ng-click="resetSettings()" ng-disabled="eventHndler.isLoadingChart">
+                Reset
+            </md-button>
+        </md-container>
+    </md-container>
 </div>

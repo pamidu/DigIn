@@ -1,0 +1,35 @@
+<md-dialog aria-label="Add Page" ng-cloak>
+  <form name="editForm" ng-submit="addPage()">
+  <md-toolbar class="modal-header">
+    <div class="md-toolbar-tools">
+       <div layout="row" layout-align="center center">
+		<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+		<h2>Configure Time Format</h2>
+	  </div>
+      <span flex></span>
+      <md-button class="md-icon-button icon-cancel" ng-click="cancel()" aria-label="Close">
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div class="md-dialog-content">
+		<md-input-container  class="md-block" flex-gt-sm>
+			<span>Date Format</span>
+			<md-select flex="100" layout="row" ng-model="format" ng-change="clockComponentformatChange(format)" aria-label="date formats">
+				<md-option ng-repeat="item in formats" value="{{item.format}}">{{item.name}}
+				</md-option>
+			</md-select>
+		</md-input-container>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button type="submit" aria-label="change">
+      change
+    </md-button>
+  </md-dialog-actions>
+  </form>
+</md-dialog>
+
+
+

@@ -1,0 +1,75 @@
+<style>
+.product_card {
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  display: inline-block;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product_card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product_card:hover {
+  -webkit-transform: scale(1.03, 1.03);
+  transform: scale(1.03, 1.03);
+}
+
+.product_card:hover::after {
+    opacity: 1;
+}
+
+.product_name
+{
+	color: #797979;
+	font-size: 20px;
+	padding-bottom:10px
+}
+
+.product_description
+{
+	color: #797979;
+	font-size: 13px;
+}
+
+</style>
+
+<div class="setup-wrapper animated fadeIn">
+    <div layout="row" class="setting-close pull-right" ng-click="route('back')">
+        <md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="More" style="margin-top: 10px !important;" ng-click="route('welcome')"></md-button>
+    </div>
+	
+
+	<div layout="row" layout-align="center center" layout-wrap style="margin-top:50px;">
+		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card" class="make-it-fast">
+			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;margin-bottom:5px;">
+				<span class="product_name" style="border-bottom: 1px solid #cdcdcd;">{{dashboard.dashboardName}}</span>
+				<span></span>
+			</div>
+
+			<div layout="row" layout-align="center center">
+				<!-- <img ng-src="grid.png" style="width:50%"/> -->
+			</div>
+			<div layout="row" flex>
+				<md-button ng-click="viewSharedListWindow(dashboard.dashboardID,dashboard.dashboardName)" flex><span style="color:#afb6bcfont-weight:700;font-size: 13px;letter-spacing: 1px;"> Shared List</span></md-button>
+				<md-button ng-click="loadShareWindow(dashboard.dashboardID,dashboard.dashboardName)" flex> <span style="color:#f9a626;font-weight:700;font-size: 16px;letter-spacing: 1px;">Share</span></md-button>
+			</div>
+		</md-card>
+	</div>
+</div>
+
+<div style="color: #D0D0D0;bottom: 20px;right: 20px;position: fixed; z-index: -1;font-size: 60px;">Share Dashboards</div>

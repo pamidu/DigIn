@@ -1,0 +1,69 @@
+<md-dialog aria-label="Invite User" plumb-item class="dialog-1 b-r-0">
+  <form md-theme="default" name="editForm" ng-submit="editForm.$valid && submit()">
+  <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+        <img ng-src="styles/css/images/DiginLogo.png" class="digin-image">
+      </div>  
+      <div class="dialog-title">Upload Profile Picture aa</div>         
+      <md-button class="buttonMinwidth38 b-r-0" aria-label="cancel" ng-click="cancel();">      
+        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
+      </md-button>            
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <div class="md-dialog-content">
+
+    </div>
+	
+
+sfsdgsg
+
+            <div>  
+                <div align="center">
+                    <img ng-src="{{profile_pic}}" class="img-circle">
+                </div>
+            </div>    
+
+           <div align="center"><!-- selectImage-->
+                <div><input type="file" id="fileInput" /></div>
+                <div class="cropArea" align="center">
+                    <img-crop class="cropArea"  image="myImage" result-image="myCroppedImage" area-type="circle" >
+                    </img-crop>
+                </div>
+
+                <br>
+
+                <div>Cropped Image:</div>               
+                <div align="center">
+                    <!-- <img ng-src="{{myCroppedImage}}"/> -->
+                    <img ng-src="{{myCroppedImage}}" class="img-circle">
+                </div>
+
+                <md-button class="setup-button md-raised md-primary" ng-click="cancelImage()">
+                    <span class="setup-font-theme">Cancel</span>
+                </md-button> 
+
+                <md-button class="setup-button md-raised md-primary" ng-click="saveImage()">
+                    <span class="setup-font-theme">Save Image</span>
+                </md-button>
+
+            </div>
+
+
+
+
+
+
+
+
+
+	<div class="md-actions" layout="row">
+			<span flex></span>
+			<md-button class="btn-dialog b-r-0" aria-label="upload" type="submit">
+				Upload
+			</md-button>
+	</div>
+	  
+  </md-dialog-content>
+
+  </form>
+</md-dialog>

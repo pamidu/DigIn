@@ -1,0 +1,81 @@
+<style>
+	md-steppers-wrapper
+	{
+		width: 60%;
+		margin: 0 auto;
+	}
+</style>
+
+<div class="card-container" layout-padding>
+	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+		<md-content>
+			<form name="editForm" ng-submit="submit()">
+				<div layout="row" layout-align="end end">
+					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="closeReort()"></md-button>
+				</div>
+						
+				<div class="setting-card-header">
+					<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Share Dashboard : {{dashboard.compName}}</h2>
+					<div class="setting-img-wrap" layout="row" layout-align="center center">
+						<img ng-src="views/settings/systemSettings/sharing.png" />
+					</div>
+				</div>
+
+				<div layout-gt-sm="row" class="md-padding">
+										
+					<div flex>
+						<fieldset class="fieldset">
+							<legend class="demo-legend">Users </legend>
+							 <div layout="row" layout-align="space-between center">
+								<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin:10px 0px 0px 19px">
+									<span ng-if="isChecked()">Un-</span>Select All
+								</md-checkbox>
+							 </div>
+
+						<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+							<md-list-item class="md-3-line" ng-repeat="user in users" ng-click="null">
+								<md-checkbox ng-checked="exists(user, selected)" ng-click="toggle(user, selected)" style="z-index: 9999;margin-right: 5px;"></md-checkbox>
+				  
+								<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
+								<div class="md-list-item-text" layout="column" style="padding-left:20px">
+									<div layout="row">
+											<h3>{{user.Name}}</h3>
+										</div>
+										<h4>{{user.Id}}</h4>
+								</div>
+							</md-list-item>  
+						</md-list>
+
+						</fieldset>
+					</div>
+					<div flex>
+						<fieldset class="fieldset">
+							<legend class="demo-legend">Groups </legend>
+							<div layout="row" layout-align="space-between center">
+								<md-checkbox aria-label="Select All" ng-checked="isCheckedGroup()" md-indeterminate="isIndeterminateGroup()" ng-click="toggleAllGroup()" style="margin:10px 0px 0px 19px">
+									<span ng-if="isCheckedGroup()">Un-</span>Select All
+								</md-checkbox>
+							 </div>
+
+							<md-list ng-cloak flex style="max-height:300px;overflow:scroll">
+								<md-list-item class="md-3-line" ng-repeat='group in groups' ng-click="null">
+									<md-checkbox ng-checked="existsGroup(group, selectedgroups)" ng-click="toggleGroup(group, selectedgroups)" style="z-index: 9999;margin-right: 5px;"></md-checkbox>
+									<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
+									<div class="md-list-item-text" layout="column" style="padding-left:20px">
+										<h3>{{group.Name}}</h3>
+									</div>
+								</md-list-item>  
+							</md-list>
+						</fieldset>
+					</div>
+				</div>
+				<div layout="row" layout-align="end center" style="margin-right:20px">
+					<md-button class="md-raised md-primary" aria-label="Add Group" ng-click="getArray()">
+						<span style="color:white">Share</span>
+					</md-button>
+				</div>
+			</form>
+		</md-content>
+	</md-whiteframe> 
+</div>
+

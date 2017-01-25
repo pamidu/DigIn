@@ -1,7 +1,5 @@
 <?php
-
 //include ("include/config.php");
-
 function createSessionDmian(){
 	$Host = strtolower($_SERVER['HTTP_HOST']);
 	//echo "$authURI";
@@ -15,10 +13,10 @@ function createSessionDmian(){
 			$_SESSION['userObject']=$obj;
 			echo "string 1";
 			//setcookie('authData')
-			if(!isset($_COOKIE['authData'])){
-				echo "cookie not set";
-				$obj=getSession($_COOKIE['securityToken'],$Host);
-				var_dump($obj);
+			//if(!isset($_COOKIE['authData'])){
+			    echo "cookie not set";
+			    $obj=getSession($_COOKIE['securityToken'],$Host);
+			    var_dump($obj);
 			    if( isset($obj) && $obj->SecurityToken!=""){
 			    	echo "set....1";
 			    	$_SESSION[$Host]=$obj;
@@ -30,9 +28,9 @@ function createSessionDmian(){
 			    {
 			    	return false;
 			    }
-			}else{
-				return true;
-			}
+			//}else{
+				//return true;
+			//}
 		}else{
 			return false;
 		}	
@@ -42,7 +40,6 @@ function createSessionDmian(){
 		return false;
 	}
 }
-
 function getSession($securityToken,$domain){
 	$ch=curl_init();
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -52,14 +49,12 @@ function getSession($securityToken,$domain){
 	if($domain==""){
 		$domain="Nil";
 	}
-
 	curl_setopt($ch, CURLOPT_URL, SVC_AUTH_URL.'/GetSession/'.$securityToken.'/'.$domain.'');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$data = curl_exec($ch);
 	$obj = json_decode($data);
 	return $obj;
 }
-
 function INTS(){
 	if(isset($_COOKIE["securityToken"])){
 		$data=getSession($_COOKIE["securityToken"],"");
@@ -88,8 +83,6 @@ function INTS(){
 		}
 	}
 }
-
-
 function getURI(){
 			if(!isset($_COOKIE["securityToken"])){
 				header("Location: s.php?r=index.php");
@@ -126,9 +119,6 @@ function getURI(){
 				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				    $data = curl_exec($ch);
 				    $obj = json_decode($data);
-					
-					//echo $obj; echo "Chamila Tenant Obj"; exit();
-					
 				    if(isset($obj))
 				    {
 				    	if($obj->TenantID!=""){
@@ -154,11 +144,8 @@ function getURI(){
 		    				header("Location: boarding/");
 		    				exit();
 		    		}
-
-
 		    		
 		    	}else{
-
 		    		$ch=curl_init();
 		    		curl_setopt($ch, CURLOPT_URL, SVC_AUTH_URL.'/tenant/GetTenant/'.$serchfild);
 				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -176,14 +163,10 @@ function getURI(){
 		    			}
 		    		}
 		    	}	
-
 		    }else{
 		    	//include("t.php");
 		    }
 		    // header("Location: payapi/shell.php");
 		    header("Location: boarding/");
 }
-
-
-
 ?>

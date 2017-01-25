@@ -1,3 +1,5 @@
+
+<!--
 <md-dialog plumb-item style="min-width:400px">
       <md-toolbar>
                 <div class="md-toolbar-tools"  flex  layout="row">
@@ -9,26 +11,16 @@
                                  <span> Email Share </span>
                               </h3>
                       </div>                           
-                      <div flex="10">
-                             <md-button ng-click="closeDialog()"  aria-label="Close" layout-wrap>
+                      <div flex="10"> 
+                             <md-button ng-click="closeDialog()" styl="background-color: #D33F3F;"   aria-label="Close" layout-wrap >
                                    <md-icon class="ion-close"></md-icon>
                             </md-button>
                       </div>
                 </div>
       </md-toolbar>
 
-
       <form name="frmMail" autocomplete="off">
 
-      <!-- <md-content ng-init="html2canvas()" layout-margin>              
-                    <md-button id="btnAddImage" 
-                        ng-click="generateSnapshot()" aria-label="Done">Add Image</md-button>
-                    <div  id="canvasTest"></div>              
-      </md-content> -->
-
-           
-          <!--collect mail sending detail-->
-           <!-- <div ng-show="sendMailState" class="md-padding" layout="row" layout-align="center center"> -->
             <div class="md-padding" layout="row" layout-align="center center">
                 <div layout="column" class="setup-info-container" flex="100">
                   <div class="txt-box"
@@ -68,15 +60,79 @@
                     </span>
                     <md-button class="setup-button md-raised md-primary" ng-click="sendMail(false)"><span class="setup-font-theme">Send Email</span></md-button>
                 </div>
-            </div>
-     
-
-      <!-- <md-content class="md-actions" layout="row" layout-margin>    
-          <md-button id="btnSent" ng-click="getMailDetail(true)"> SEND</md-button> 
-      </md-conte nt>-->
+            </div> 
     </form>
 </md-dialog>
 
+-->
+
+
+
+<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">
+  
+    <md-toolbar class="tlbar-1" layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="center center" class="digin-logo-wrapper2">
+        <img ng-src="styles/css/images/email.png" class="digin-image">
+      </div>  
+      <div class="dialog-title">Dashboard - Email Share</div>         
+      <md-button class="buttonMinwidth38 b-r-0" ng-click="closeDialog()">      
+        <ng-md-icon icon="close" style="fill:white" size="24" layout="row"></ng-md-icon>   
+      </md-button>            
+  </md-toolbar>
+
+  <form name="frmMail" autocomplete="off">
+            <div class="md-padding" layout="row" layout-align="center center">
+                <div layout="column" class="setup-info-container" flex="100">
+                  <div class="txt-box">
+                    <label for="email">To : </label>
+                      <div>
+                        <input type="text" class="form-control"
+                        ng-model="emailTo"
+                        placeholder="jane.doe@example.com"/>
+                      </div>
+                  </div>
+                  </br>
+
+                  <div class="txt-box">
+                    <label for="email">Cc : </label>
+                      <div>
+                        <input type="text" class="form-control"
+                        ng-model="emailCc"
+                        placeholder="jane.doe@example.com"/>
+                      </div>
+                  </div>
+                  </br> 
+                  <div class="txt-box" ng-class="">
+                    <label for="text">Subject : </label>
+                      <div>
+                        <input type="text" class="form-control"
+                        ng-model="emailSubject"
+                        placeholder="shared a link with u ....">
+                      </div>
+                  </div>
+                  </br> 
+                   <div class="txt-box" ng-class="">
+                    <label for="text">Body : </label>
+                      <div>
+                        <textarea rows="4" cols="50" type="text" class="form-control" 
+                        ng-model="emailBody"
+                        placeholder="shared a link with u ...."/>
+                      </div>
+                    
+                  </div>
+                    <div class="md-actions" layout="row">
+                        <span flex></span>
+                        <md-button class="btn-dialog b-r-0" ng-click="sendEmail()">
+                           Send
+                        </md-button>
+                        <md-button class="btn-dialog b-r-0" ng-click="close()">
+                            Cancel
+                        </md-button>
+                    </div>
+                </div> 
+            </div> 
+    </form>
+</md-dialog>
 
 
       

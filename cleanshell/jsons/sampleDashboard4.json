@@ -1,0 +1,141 @@
+{
+	"Exception": null,
+	"Result": {
+		"compName": "high",
+		"compCategory": null,
+		"compID": "1471264410316",
+		"compClass": null,
+		"pages": [{
+			"pageName": "new",
+			"pageData": null,
+			"pageID": "1471264884473",
+			"widgets": [{
+				"widgetID": "1472483327872",
+				"pageID": "1471264884473",
+				"widgetData": {
+					"externalDataURL": "",
+					"dataView": "views/ViewData.html",
+					"height": "300px",
+					"seriesname": "",
+					"dataname": "",
+					"id": "2f08",
+					"d3plugin": "",
+					"width": "370px",
+					"type": "Visualization",
+					"syncState": true,
+					"widData": {},
+					"initCtrl": "commonSrcInit",
+					"dataCtrl": "widgetSettingsDataCtrl",
+					"highchartsNG": {
+						"title": {
+							"text": ""
+						},
+						 "series": [{
+							"data": [
+								[42, 38, 20]
+							]
+						}],
+						"yAxis": {
+							"lineWidth": 1,
+							"title": {
+								"text": "Sales"
+							}
+						},
+						"legend": {
+							"enabled": false
+						},
+						"credits": {
+							"enabled": false
+						},
+						"xAxis": {
+							"title": {
+								"text": "Order_Quantity"
+							}
+						},
+						"options": {
+							"chart": {
+								"width": null,
+								"height": 367,
+								"type": "bubble",
+								"events": {},
+								"zoomType": "xy"
+							},
+							"tooltip": {
+								"pointFormat": "{point.xName} : {point.x}</br>{point.yName} : {point.y}</br>{point.zName} : {point.z}",
+								"useHTML": true
+							},
+							"exporting": {
+								"sourceHeight": 400,
+								"sourceWidth": 600,
+								"chartOptions": {
+									"title": {}
+								}
+							}
+						},
+						"size": {
+							"width": 370.29166666666663,
+							"height": 309
+						}
+					},
+					"uniqueType": "Dynamic Visuals",
+					"initTemplate": "",
+					"mheight": "100%",
+					"widView": "views/widgets/highcharts/bubble.html",
+					"selectedChart": {
+						"initObj": {},
+						"name": "bubble",
+						"selected": true,
+						"chart": "bubble",
+						"chartType": "bubble",
+						"icon": "ti-panel",
+						"settingsView": "views/query/settings-views/highchartsSettings.html",
+						"id": "ct17",
+						"view": "views/query/chart-views/bubble.html"
+					},
+					"divider": false,
+					"expanded": true,
+					"commonSrc": {
+						"src": {
+							"src": "BigQuery",
+							"fAttArr": [{
+								"isRemove": false,
+								"dataType": "STRING",
+								"id": "7",
+								"name": "Ship_Mode"
+							}],
+							"tbl": "superstore",
+							"fMeaArr": [{
+								"isRemove": false,
+								"dataType": "INTEGER",
+								"id": "4",
+								"name": "Order_Quantity"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "5",
+								"name": "Sales"
+							}, {
+								"isRemove": false,
+								"dataType": "FLOAT",
+								"id": "8",
+								"name": "Profit"
+							}]
+						},
+						"att": [],
+						"mea": [],
+						"query": "http://digin.io:1929/generatebubble?&table=[omal_duosoftware_com.superstore]&&x=Order_Quantity&&y=Sales&&c=Ship_Mode&&s=Profit&dbtype=BigQuery"
+					}
+				},
+				"widgetName": "bubble",
+				"col": 15,
+				"sizeX": 8,
+				"sizeY": 26,
+				"row": 0
+			}]
+		}],
+		"refreshInterval": 60,
+		"compType": "dashboard"
+	},
+	"Is_Success": true,
+	"Custom_Message": "Successful!"
+}

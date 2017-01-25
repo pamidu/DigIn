@@ -1,0 +1,204 @@
+.card-container
+{
+	padding-top:70px;
+	padding-left:45px;
+	-webkit-animation: fadeIn .8s forwards;
+	animation: fadeIn .8s forwards;
+}
+
+.setting-container
+{
+	padding-top:45px;
+	padding-left:45px;
+	-webkit-animation: fadeIn .8s forwards;
+	animation: fadeIn .8s forwards;
+}
+
+.layout-whiteframe
+{
+	margin:0 auto;
+	max-width:960px;
+	border-radius: 8px;
+}
+
+.layout-whiteframe > md-content
+{
+	width: 100%;
+	border-radius: 8px;
+}
+
+.section-title
+{
+	padding:10px;
+	font-weight:700;
+	letter-spacing: 1px;
+	margin: 10px 0px 5px 0px;
+	border-radius: 0px 4px 4px 0px;
+}
+
+.setting-card-header {
+    text-align: center;
+}
+.setting-card-header > h2
+{
+	margin-top: 0px;
+}
+
+.md-button.md-icon-button
+{
+	margin: 0px;
+}
+.side-margins
+{
+	margin: 0px 10px 0px 10px;
+}
+
+/*contact chips start*/
+
+.chipsdemoContactChips md-content.autocomplete {
+  min-height: 250px; }
+.chipsdemoContactChips .md-item-text.compact {
+  padding-top: 8px;
+  padding-bottom: 8px; }
+.chipsdemoContactChips .contact-item {
+  box-sizing: border-box; }
+  .chipsdemoContactChips .contact-item.selected {
+    opacity: 0.5; }
+    .chipsdemoContactChips .contact-item.selected h3 {
+      opacity: 0.5; }
+  .chipsdemoContactChips .contact-item .md-list-item-text {
+    padding: 14px 0; }
+    .chipsdemoContactChips .contact-item .md-list-item-text h3 {
+      margin: 0 !important;
+      padding: 0;
+      line-height: 1.2em !important; }
+    .chipsdemoContactChips .contact-item .md-list-item-text h3, .chipsdemoContactChips .contact-item .md-list-item-text p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+  @media (min-width: 900px) {
+    .chipsdemoContactChips .contact-item {
+      float: left;
+      width: 33%; } }
+.chipsdemoContactChips md-contact-chips {
+  margin-bottom: 10px; }
+
+.chipsdemoContactChips .fixedRows {
+  height: 250px;
+ }
+.chipsdemoContactChips .contact-item > img {
+     min-width: 40px; }
+	 
+md-chips-wrap{
+    border: 1px solid #ccc !important;
+    border-radius: 3px;
+    padding-left: 8px;	 
+}
+/*contact chips end*/
+
+.drop-box {
+    border: 2px dashed #DDD;
+    width: 100%;
+    min-height: 150px;
+    text-align: center;
+    padding: 15px;
+}
+
+.table-card{
+	padding: 20px;
+}
+
+.table-striped{
+	width: 100%;
+	text-align: left;
+}
+
+/*Start of Paging Tabs*/
+#pagingTabs md-tabs-wrapper
+{
+	/*background: #aba8a5 !important;*/
+	height: 40px !important;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas
+{
+	left: 45px !important;
+	max-height:40px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active, #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active span
+{
+	color: white !important;
+	-ms-transform: scale(1.1, 1.1); /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1); /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#pagingTabs md-tabs-content-wrapper
+{
+	height: calc(100vh - 40px);	
+	position: relative;
+
+}
+
+md-ink-bar
+{
+    height: 40px;
+    top: 0px;
+	z-index: -1 !important;
+	border-radius: 5px 5px 0px 0px;
+}
+
+md-tabs[md-align-tabs=bottom]
+{
+	padding-bottom: 40px !important;
+}
+/*End of Paging Tabs*/
+
+.checkboxdemoSelectAll .demo-legend 
+{
+	color: #3F51B5;
+}
+.fieldset 
+{
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px
+}
+.all-checkboxes 
+{
+	padding-left: 30px;
+}
+
+._md-nav-button {
+    width: 100% !important;
+}
+
+/*Start of Keyframe slide-up animation for tips - Used in User visualize data, Upload Source and User Assistance*/
+div.slide-up {
+  height:100px;
+  overflow:hidden;
+  position: absolute;
+  left: 3%;
+  width: 320px;
+
+}
+div.slide-up p {
+  animation: 3s slide-up;
+  margin-top:0%;
+  text-align: left;
+  font-size:15px;
+}
+
+@keyframes slide-up {
+  from {
+    margin-top: 100%;
+    height: 300%; 
+  }
+
+  to {
+    margin-top: 0%;
+    height: 100%;
+  }
+}
+/*End of Keyframe slide-up animation for tips - Used in User visualize data, Upload Source and User Assistance*/

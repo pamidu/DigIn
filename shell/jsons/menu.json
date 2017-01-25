@@ -1,59 +1,46 @@
-{  "d": [
-          {
-            "title": "Add Page",
-            "icon2": "description"
-          }, 
-          {
-            "title": "Reports",
-            "icon2": "assignment"
-          },  
-          {
-            "title": "RealTime",
-            "icon2": "access_time"
-          },
-          {
-            "title": "Data Source",
-            "icon2": "view_array"
-          },
-          {
-            "title": "Add Widgets",
-            "icon2": "queue"
-          },
-          {
-            "title": "Clear Widgets",
-            "icon2": "grid_off"
-          },
-          {
-            "title": "Social Media Analytics",
-            "icon2": "equalizer"
-          },
-          {
-            "title": "Save",
-            "icon2": "save"
-          },
-          {
-            "title": "Share",
-            "icon2": "share"
-          },
-          {
-            "title": "Settings",
-            "icon2": "settings"
-          },
-          {
-            "title": "TV Mode",
-            "icon2": "tv"
-          },
-          {
-            "title": "Common Source Algorithm",
-            "icon2": "accessibility"
-          },
-          {
-            "title": "Help",
-            "icon2": "help"
-          },
-          {
-            "title": "Logout",
-            "icon2": "close"
-          }
-        ]
+{
+  "d": [
+    {
+      "title": "Add Page",
+      "icon2": "icon-add-page",
+      "type": "menu",
+      "click":"Add Page",
+	  "id": "addPage"
+    },
+    {
+      "title": "Reports",
+      "icon2": "icon-report",
+      "type": "sub-menu",
+      "menuName":"Reports",
+	  "id": "reports"
+    },
+    {
+      "title": "Data Source",
+      "icon2": "icon-database",
+      "type": "menu",
+      "click":"Data Source",
+	  "id": "datasource"
+    },
+    {
+      "title": "Add Widgets",
+      "icon2": "icon-plugin",
+      "type": "menu",
+      "click":"Add Widgets",
+	  "id": "addWidgets"
+    },
+    {
+      "title": "Social Media",
+      "icon2": "icon-profile",
+      "type": "sub-menu",
+      "menuName":"Social Media",
+	  "id": "socialMedia"
+    },
+    {
+      "title": "Settings",
+      "icon2": "icon-settings",
+      "type": "sub-menu",
+      "menuName":"Settings",
+	  "id": "settings"
+    }
+  ]
 }

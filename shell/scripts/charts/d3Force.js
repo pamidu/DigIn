@@ -21,11 +21,14 @@ routerApp.directive('linearChart', function() {
 
             scope.$watch('chartData', function(newValue, oldValue) {
                 if (newValue) {
-                    scope.drawHierarchicalSummary(newValue.data,newValue.id);
+                    if (newValue.data != "")
+                        scope.drawHierarchicalSummary(newValue.data,newValue.id,newValue.attribute,newValue.dec);
+                    else
+                        $("#" + newValue.id).html("");
                 }
             });
 
-            scope.drawHierarchicalSummary = function(rootData,divID) {
+            scope.drawHierarchicalSummary = function(rootData,divID,attribute,decimal) {
                 var width = 400,
                     height = 320,
                     root;
@@ -42,7 +45,7 @@ routerApp.directive('linearChart', function() {
                 d3.select(divid).selectAll("*").remove();
 
                 svg = d3.select(divid)
-                    .append("svg").attr("viewBox", "0 0  490 490")
+                    .append("svg").attr("viewBox", "0 0  400 400")
                     .attr("width", '100%')
                     .attr("height", '100%');
 
@@ -50,25 +53,10 @@ routerApp.directive('linearChart', function() {
                     node = svg.selectAll(".node");
                 root = rootData;
                 update();
-                 startVis();
+               
                 console.log(svg);
                 scope.setSvg(svg[0][0].innerHTML);
-
-                function startVis() {
-                    console.log('start');
-
-
-                    //root = data;
-                    var nodes = flatten(root);
-                    nodes.forEach(function(d) {
-                        d._children = d.children;
-                        d.children = null;
-                    });
-                    update();
-                }
-
-               
-
+ 
                 function update() {
                     console.log(nodes)  
                     var nodes = flatten(root),                    
@@ -108,13 +96,14 @@ routerApp.directive('linearChart', function() {
 
                     nodeEnter.append("circle")
                         .attr("r", function(d) {
-                            return Math.sqrt(d.size) / 5 || 4.5;
+                            // return Math.sqrt(d.size) / 5 || 4.5;
+                            return 4.5;
                         });
 
                     nodeEnter.append("text")
                         .attr("dy", ".25em")
                         .text(function(d) {
-                            return d.name + ", Count: " + d.size;
+                            return attribute + ", " + d.name + ": " + d.size.toFixed(decimal);
                         });
 
                     node.select("circle")

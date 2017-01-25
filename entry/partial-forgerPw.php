@@ -40,7 +40,7 @@
                                     <span class="sr-only">Loading...</span>
                                 </div>
 
-                                <div layout="column" flex>
+                                <div layout="column" flex style="align:center">
                                     <div class="login-btn-wrap" ng-if="!error.isLoading">
                                         <a href="javascript:void(0  )"
                                            ng-click="onClickSignIn()" 

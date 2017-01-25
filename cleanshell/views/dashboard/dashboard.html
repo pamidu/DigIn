@@ -1,0 +1,393 @@
+<style>
+#pagingTabs md-tabs-wrapper
+{
+	/*background: #aba8a5 !important;*/
+	height: 40px !important;
+	box-shadow: rgb(136, 136, 136) 2px 0px 3px -2px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas
+{
+	left: 45px !important;
+	max-height:40px;
+}
+
+#pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active, #pagingTabs md-tabs-wrapper md-tabs-canvas md-pagination-wrapper .md-tab.md-active span
+{
+	color: white !important;
+	-ms-transform: scale(1.1, 1.1); /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1); /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#pagingTabs md-tabs-content-wrapper
+{
+	height: calc(100vh - 40px);	
+	position: relative;
+
+}
+
+md-ink-bar
+{
+    height: 40px;
+    top: 0px;
+	z-index: -1 !important;
+	border-radius: 5px 5px 0px 0px;
+}
+
+md-tabs[md-align-tabs=bottom]
+{
+	padding-bottom: 40px !important;
+}
+.widget-header
+{
+    padding: 0px 10px 0px 10px;
+}
+
+/*.widget-button
+{
+	color: #02b5e2;
+}*/
+
+
+.md-tab.md-disabled
+{
+	opacity: 1;
+	background: white !important;
+	color: black !important;
+}
+
+.md-menu {
+    padding: 0px
+}
+
+/* common styles */
+.padding-5 {
+    padding: 5px;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px;
+}
+
+/****** start wordpress, twitter, rss widgets custom css *****/
+
+/* common classes*/
+.data-container1 {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 500;
+    width: 100%;
+    padding-left: 8px;
+    padding-bottom: 8px;
+	font-size: 12px;
+}
+
+.data-slot1 {
+    padding: 8px;
+}
+
+.data-slot2 {
+    text-align: left;
+}
+
+.data-slot3 {
+    border-radius: 5px;
+}
+
+.data-field1 {
+    border-radius: 4px 0px 0px 4px;
+    width: 80%;
+    padding: 8px;
+}
+
+.data-field2 {
+    border-radius: 4px 0px 0px 4px;
+    width: 50%;
+    padding: 8px;
+}
+
+.data-field3 {
+    border-radius: 4px 0px 0px 4px;
+    width: 30%;
+    padding: 8px;
+}
+
+.data-item1 {
+    border-radius: 0px 4px 4px 0px;
+    width: 70%;
+    padding: 8px;
+}
+
+.data-item2 {
+    border-radius: 0px 4px 4px 0px;
+    width: 20%;
+    padding: 8px;
+}
+
+.data-item3 {
+    border-radius: 0px 4px 4px 0px;
+    padding: 8px;
+}
+
+.data-item4 {
+    border-radius: 0px 4px 4px 0px;
+    width: 50%;
+    padding: 8px;
+}
+
+.custom-avatar1 {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+
+.custom-avatar2 {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10%;
+    box-sizing: content-box;
+}
+
+.widget-header {
+    font-size: 28px;
+    margin-left: 10px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+}
+
+/* twitter */
+
+.font-twitter-blue {
+    color: #55acee;
+}
+
+.background-twitter-grey {
+    color: white;
+    background-color: #292F33;
+}
+
+.background-twitter-blue {
+    color: white;
+    background-color: #55acee;
+}
+
+.background-digin-blue {
+    color: white;
+    background-color: #026689;
+}
+
+/* wordpress */
+.font-wp-grey {
+    color: #464646;
+}
+
+.background-wp-grey {
+    color: white;
+    background-color: #464646;
+}
+
+.background-wp-orange {
+    color: white;
+    background-color: #d54e21;
+}
+
+.background-wp-blue {
+    color: white;
+    background-color: #21759b;
+}
+
+/* rss */
+.background-rss-orange {
+    color: white;
+    background-color: #f26522;
+}
+
+.background-rss-dark-orange {
+    color: white;
+    background-color: #BB450E;
+}
+
+.background-rss-grey {
+    color: white;
+    background-color: #181818;
+}
+
+/**** end wordpress, twitter, rss widgets custom css *****/
+
+.links
+{
+	text-decoration:none;
+	color: #428bca;
+}
+
+</style>
+
+<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary">
+	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
+		<md-tab-label layout="row" layout="space-between center">
+			<span md-colors="{color:'{{$root.h1color}}-A700'}" style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"  ng-dblclick="editPageName($event,page)" flex>{{page.pageName}}</span>
+			<span flex></span>
+			<i class="icon-cancel" style="font-size:10px;cursor:pointer;outline:none" ng-click="removePage($event, page);$event.stopPropagation()" flex></i>
+		</md-tab-label>
+		<md-tab-body>
+			<div class="setting-container">
+			<div gridster="gridsterOpts">
+	
+					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" style="padding-bottom: 49px !important;overflow:inherit">
+						<div class="widget-header" layout="row" layout-align="space-between center">
+							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
+							<div layout="row" layout-align="end center">
+							
+								<md-button class="md-icon-button ti-menu-alt" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)" ng-if="showDataViewBtn(widget)">
+									<md-tooltip>data</md-tooltip>
+								</md-button>
+								
+								<!--commentary common-->
+								<md-button class="md-icon-button ti-volume"  md-colors="{color:'primary'}" ng-click="widgetControls.commentary($event,widget)">
+									<md-tooltip>commentary</md-tooltip>
+								</md-button>
+								<!--commentary common-->
+								
+								<!--settings common-->
+								<md-button class="md-icon-button ti-settings"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
+									<md-tooltip >settings</md-tooltip>
+								</md-button>
+								<!--settings common-->
+								
+								
+								<md-menu md-position-mode="target-right target" ng-show="widget.widgetData.initCtrl=='elasticInit'">
+									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);" >
+										<md-tooltip >filter</md-tooltip>
+									</md-button>
+									  <md-menu-content width="4" >
+										<md-menu-item ng-repeat="item in [1, 2, 3]">
+										  <md-button ng-click="ctrl.announceClick($index)">
+											  <div layout="row" flex>
+												<p flex>Option {{item}}</p>
+											  </div>
+										  </md-button>
+										</md-menu-item>
+									  </md-menu-content>
+								</md-menu>
+								
+								<md-button class="md-icon-button ti-reload" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+									<md-tooltip>sync</md-tooltip>
+								</md-button>
+								
+								
+								<!--close common-->
+								<md-button class="md-icon-button ti-close" md-colors="{color:'primary'}" ng-click="widgetControls.removeWidget($event,widget)">
+									<md-tooltip >close</md-tooltip>
+								</md-button>
+								<!--close common-->
+							</div>
+						</div>
+						<md-divider></md-divider>
+						<!--div ng-init="widInit(widget)" class="digin-widget-content dashboard-widget"
+							 ng-slimscroll
+							 opacity="0.1"
+							 distance="5px"
+							 height="100%"
+							 width="100%"
+							 ng-mouseover="chatWidgetscrollEnabled = true"
+							 ng-mouseleave="chatWidgetscrollEnabled = false"
+							 enabled="{{ chatWidgetscrollEnabled }}"
+							 ng-style="{'height':widget.widgetData.mheight}" layout="row">
+							<div class="d3-btn-wrap" ng-if="widget.isD3chart">
+								<span class="fa fa-bars" id="d3-btn-stn" ng-click="d3chartBtnClick(widget)"></span>
+								<div class="d3-setting-wrap" ng-if="widget.d3chartBtn">
+									<div class="print-chart-wrap">Print chart</div>
+									<hr>
+									<div class="print-opt-wrap" ng-click="d3ImgDownload(widget)">Download PNG image</div>
+									<div class="print-opt-wrap">Download JPEG image</div>
+									<div class="print-opt-wrap">Download PDF document</div>
+								</div>
+							</div>
+
+					
+                       
+						</div-->
+						<!--div id="svg-container" style="display: none">
+						</div>
+
+						<canvas id="canvas" width="800" height="400" style="display: none">
+						</canvas>
+
+						<div id="png-container"></div-->
+						<div style="height:100%;width:100%" ng-init="startWidget(widget)" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include="widget.widgetData.widView">
+						</div>
+
+					</md-content>
+	
+			</div>
+			</div>
+		</md-tab-body>
+	  </md-tab>
+	  <md-tab label="add page">
+		<md-tab-label layout="row" layout="space-between center">
+			<span  md-colors="{color:'{{$root.h1color}}-A700'}" style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;font-weight: 700;" flex>
+				<i class="icon-add-page" style="padding-right:20px"></i>Add Page
+			</span>
+		</md-tab-label>
+		<md-tab-body>
+			<!--CARD CONTAINER START-->
+			<div class="card-container">
+				<!--WHITEFRAME START-->
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+					<md-content >
+
+						<form name="addPageFrom" ng-submit="addPage()">
+								
+							<div class="setting-card-header">
+								<h2 style="padding-top:40px !important">Add Page</h2>
+								<div class="setting-img-wrap">
+									<img src="views/dashboard/addPage.png"/>
+								</div>
+							</div>
+							
+							<div layout-gt-sm="row" class="side-margins">
+								<md-input-container class="md-block" flex-gt-sm>
+									<span>Page Name</span>
+									<input required type="text" name="fname" ng-model="fileName" aria-label="page name"/>
+									<div ng-messages="addPageFrom.fname.$error" role="alert">
+									  <div ng-message-exp="['required']">
+											Page name is required
+									  </div>
+									</div>
+								</md-input-container>
+							</div>
+							
+
+
+							<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+								<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;" ng-disabled="submitted" type="submit">
+									<span style="text-transform:none">Add Page</span>
+								</md-button>
+							</div>
+					
+
+						</form>
+
+					</md-content>
+
+				</md-whiteframe><br/>
+				<!--WHITEFRAME END-->
+			</div>
+			<!--CARD CONTAINER END-->
+
+		</md-tab-body>
+	  </md-tab>
+	</md-tabs>
+
+</footer>

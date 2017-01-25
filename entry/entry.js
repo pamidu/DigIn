@@ -1,12 +1,8 @@
 /**
  * Created by Damith on 6/10/2016.
  */
-// var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
-//     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
-
 var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','ngCookies']);
-
 
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",

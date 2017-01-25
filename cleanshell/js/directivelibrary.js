@@ -196,7 +196,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 	ToastinoService.prototype.startLoading = function(displayText) {
 		$mdDialog.show({
 		  template: 
-			'<md-dialog ng-cloak style="max-width:400px;">'+
+			'<md-dialog style="max-width:400px;">'+
 			'	<md-dialog-content style="padding:20px;">'+
 			'		<div layout="row" layout-align="start center">'+
 			'			<md-progress-circular class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>'+

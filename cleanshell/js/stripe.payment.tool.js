@@ -2,10 +2,9 @@
 	- Stripe Payemnt Tool -
 		Version 1.0.1
 */
+var stripePaymentModule = angular.module('stripe-payment-tools',[]);
 
-(function(spt) {
-
-	spt.directive('stripePayment', ['$window', function ($window) {
+	stripePaymentModule.directive('stripePayment', ['$window', function ($window) {
 		return {
 			restrict: 'A',
 			scope: {
@@ -67,7 +66,7 @@
 
 	}]);
 
-	spt.factory('paymentGateway', [function () {
+	stripePaymentModule.factory('paymentGateway', [function () {
 		
 		var stripeHandler = function() {
 			var config, handler, callback;
@@ -132,7 +131,7 @@
 
 	}]);
 
-})(angular.module('stripe-payment-tools', []));
+
 
 /* 
 	How to use

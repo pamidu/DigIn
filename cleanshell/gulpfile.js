@@ -36,9 +36,9 @@ gulp.task('minify-scripts', ['useref'], function(){
 })
 
 gulp.task('minify-css', ['useref'], function() {
-  return gulp.src('concat/css/styles.css')
+  return gulp.src('concat/styles/styles.css')
     .pipe(cleanCSS({compatibility: 'ie8'}))
-    .pipe(gulp.dest('dist/css'));
+    .pipe(gulp.dest('dist/styles'));
 });
 
 gulp.task('minify', ['useref','minify-scripts','minify-css'])

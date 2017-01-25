@@ -1,2 +1,4 @@
 cleanshell/bower_components/*
 cleanshell/node_modules/*
+cleanshell/concat/*
+cleanshell/dist/*

@@ -18,7 +18,7 @@ var directiveLibraryModule = angular.module('directivelibrary',[]);
      \/            \/                                  \//_____/                    \//_____/                \/             |__|    
 */
 
-directiveLibraryModule.factory('Toastino', function ($timeout) {
+directiveLibraryModule.factory('Toastino',['$timeout', function ($timeout) {
   var Toastino = function (classValue) {
     this.message = '';
     this.classValue = classValue;
@@ -79,9 +79,9 @@ directiveLibraryModule.factory('Toastino', function ($timeout) {
   Toastino.DISMISS = 'ts-dismiss';
 
   return Toastino;
-});
+}]);
 
-directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
+directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog', function(Toastino, $mdDialog) {
 
   var ToastinoService = function () {
     this.toastinoMessages = [];
@@ -213,7 +213,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 	}
 
   return new ToastinoService();
-});
+}]);
 
 directiveLibraryModule.directive('toastino', function () {
   return {

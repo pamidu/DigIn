@@ -7,6 +7,7 @@
 var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','ngCookies']);
 
+
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
         function ($httpProAvider, $stateProvider, $urlRouterProvider) {
@@ -120,7 +121,6 @@ routerApp
                 $scope.activatedemail=activatedemail;
             }*/
             //------------------------------------
-
             
             $scope.signup = function () {
                 $scope.isLoggedin = false;

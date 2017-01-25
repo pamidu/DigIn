@@ -321,12 +321,13 @@ routerApp
                     })
                     .success(function(response) {
                         $scope.subscriptionStatus = response.status;
-                        $scope.paymentStatus = response.response[0].status;
-                        $scope.createdDate=new Date(response.response[0].createdDate* 1000);
-                        $scope.currentPeriod=new Date(response.response[0].currentPeriod* 1000);
-                        $scope.currentPeriodEnd=new Date(response.response[0].currentPeriodEnd* 1000);
-                        $scope.existPackageInfo=response.response[0].otherInfo;
-                        
+                        if(response.reponse!="in-active"){
+                            $scope.paymentStatus = response.response[0].status;
+                            $scope.createdDate=new Date(response.response[0].createdDate* 1000);
+                            $scope.currentPeriod=new Date(response.response[0].currentPeriod* 1000);
+                            $scope.currentPeriodEnd=new Date(response.response[0].currentPeriodEnd* 1000);
+                            $scope.existPackageInfo=response.response[0].otherInfo;
+                        }  
                         cb(true);
                     }).error(function(error) {
                         console.log(response)
@@ -422,6 +423,10 @@ routerApp
                                     cb(true);   
                                 }                               
                             }
+                        }
+                        else{
+                            displayError("Subscription detail not found for this user inorder to authorize login, please check digin package detail...")
+                            $mdDialog.hide();
                         }
                     
                     })

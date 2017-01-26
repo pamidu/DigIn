@@ -55,7 +55,7 @@ var localThis = this;
           angular.forEach($rootScope.dashboard.pages, function(page){
             angular.forEach(page.widgets,function(widget){
               angular.forEach(response.Result,function(row){
-                if(row.widget_id == widget.widgetID && row.page_id == widget.pageID){
+                if(row.widget_id == widget.widgetID && row.page_id == page.pageID){
                   widget.widgetData.notification_id = row.notification_id;
                 }
               });

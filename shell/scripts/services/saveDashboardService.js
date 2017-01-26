@@ -26,7 +26,7 @@ var localThis = this;
               widget_id:widget.widgetID,
               prefix: widget.widgetData.widData.scale,
               prefix_position: widget.widgetData.widData.scalePosition,
-              page_id:widget.pageID
+              page_id:page.pageID
             }
             if (widget.widgetData.notification_id === undefined) {
               notification_id = null
@@ -60,6 +60,13 @@ var localThis = this;
                 }
               });
             });
+          });
+          ngToast.create({
+            className: 'success',
+            content: 'Dashboard Saved Successfully',
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            dismissOnClick: true
           });
           saveDashboardFun(dashboardName,refreshInterval,type,scope);
         } else {

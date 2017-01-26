@@ -158,7 +158,7 @@
 						<md-button class="md-raised md-primary" aria-label="upload" ng-click="createWidgetFinish()" ng-disabled="showBarChartLoading || selectedCategory.length == 0 || selectedSeries.length == 0">Create Widget</md-button>
 					</div-->
 				</div>
-				<div layout="column"  layout-align="start center" flex-gt-sm="10">
+				<div layout="column"  layout-align="start center" flex-gt-sm="10" ng-hide="settingsOpened">
 					<!--i class="ti-pie-chart" style="font-size:50px;padding: 20px;border-bottom: 1px solid #888;"></i-->
 					<md-menu md-position-mode="target-right target" style="padding: 20px;border-bottom: 1px solid #888;">
 					  <md-button class="" ng-click="$mdOpenMenu($event)" aria-label="Open Chart Types"><i class="ti-pie-chart" md-colors="{color:'accent-900'}" style="font-size:50px;"></i></md-button>
@@ -185,12 +185,30 @@
 					  </md-content>
 					</md-menu>
 					<md-divider></md-divider>
-					<md-button class="" ng-click="openSettings()" aria-label="open settings"><i class="ti-settings" md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;border-bottom: 1px solid #888;"></i></md-button>
+					<md-button class="" ng-click="openSettings()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;"><i class="ti-settings" md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>
 					<md-divider></md-divider>
-					<i class="ti-help" 	md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;border-bottom: 1px solid #888;"></i>
+					<md-button class="" ng-click="openSettings()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;"><i class="ti-help" 	md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>
 					<md-divider></md-divider>
-					<i class="ti-save" 	md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;border-bottom: 1px solid #888;"></i>
+					<md-button class="" ng-click="openSettings()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;"><i class="ti-save" 	md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>
 				</div>
+
+
+
+
+
+				<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-is-locked-open="settingsOpened"  style="width: 450px;" md-component-id="rightSettingsNav">
+					<div layout="row" layout-align="end center">
+						<md-button class="" ng-click="openSettings()" aria-label="cancel settings"><i style="padding-right: 10px;" class="ti-close"></i>Cancel</md-button>
+						<md-button class="" ng-click="saveSettings()" aria-label="save settings"><i style="padding-right: 10px;" class="ti-save"></i>Save</md-button>
+					</div>
+					<h1 class="md-toolbar-tools">Chart Settings</h1>
+					<md-content layout-padding>
+						
+					</md-content>
+
+				</md-sidenav>
+
+
 			</div>
 		</md-content>
 </div>

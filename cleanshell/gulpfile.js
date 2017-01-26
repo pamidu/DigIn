@@ -3,7 +3,8 @@ var gulp = require('gulp'),
 	cleanCSS = require('gulp-clean-css'),
 	htmlmin = require('gulp-htmlmin'),
 	templateCache = require('gulp-angular-templatecache'),
-	useref = require('gulp-useref');
+	useref = require('gulp-useref'),
+	refresh = require('gulp-refresh');
 	
 	
 gulp.task('minify-html', function(cb) {
@@ -87,8 +88,13 @@ gulp.task('minify', ['move','useref','minify-scripts','minify-css'])
     // .pipe(gulp.dest('dist'));
 // });
 
-gulp.task('watch', function(){
-	gulp.watch('js/**/*.js', ['scripts'])
+//gulp.task('watch', function(){
+//	gulp.watch('js/**/*.js', ['scripts'])
+//})
+
+gulp.task('watch', () => {
+  refresh.listen()
+  gulp.watch('src/*.scss', ['scss'])
 })
 
 

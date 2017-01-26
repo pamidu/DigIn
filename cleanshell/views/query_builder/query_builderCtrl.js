@@ -421,18 +421,24 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	{
 		$scope.tooltip = tip;
 	}
+	$scope.settingsOpened = false;
+	
+	$scope.openSettings = function()
+	{
+		$scope.settingsOpened = !$scope.settingsOpened;
+	}
 		
 		
 		
-		function getSeriesAndCategories()
-		{
-			var fieldArr = [];
-			for(var i = 0; i < $scope.selectedSeries.length; i++){
-				fieldArr.push({
-						field: $scope.selectedSeries[i].name,
-						agg: $scope.selectedSeries[i].aggType
-					});
-			}
+	function getSeriesAndCategories()
+	{
+		var fieldArr = [];
+		for(var i = 0; i < $scope.selectedSeries.length; i++){
+			fieldArr.push({
+					field: $scope.selectedSeries[i].name,
+					agg: $scope.selectedSeries[i].aggType
+				});
+	}
 
 		$scope.showBarChartLoading = true;
 		console.log($scope.selectedFile.datasource_name, fieldArr, 100, $scope.selectedFile.datasource_id);

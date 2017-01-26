@@ -313,7 +313,7 @@
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
-                    $http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=' + Digin_Domain, {
+                    /*$http.get(reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=' + Digin_Domain, {
                         headers: {}
                     }).
                     success(function(data, status, headers, config) {
@@ -321,7 +321,16 @@
                     }).
                     error(function(data, status, headers, config) {
                         cb(data, false, "");
-                    });
+                    });*/
+					$http({
+						  method: 'GET',
+						  url: reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=' + Digin_Domain
+					}).then(function successCallback(response) {
+						console.log(response);
+						(response.data.Is_Success) ? cb(response.data.Result, true, response.data.Custom_Message): cb(response.data.Custom_Message, false, "");
+					  }, function errorCallback(response) {
+						  cb(response.data, false, "");
+					  });
                 }
             },
             sendWorker: function(wSrc, wData, cb) {

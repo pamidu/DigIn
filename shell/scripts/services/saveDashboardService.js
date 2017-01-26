@@ -19,7 +19,7 @@ var localThis = this;
               target_value: widget.widgetData.selectedChart.initObj.notificationValue,
               trigger_type: widget.widgetData.selectedChart.initObj.targetRange,
               is_tv_constant: widget.widgetData.selectedChart.initObj.notificationConstant,
-              dashboard_name: $rootScope.dashboard.compName,
+              dashboard_name: dashboardName,
               widget_name: widget.widgetName,
               dbname:widget.widgetData.commonSrc.src.src,
               datasource_id:widget.widgetData.commonSrc.src.id,

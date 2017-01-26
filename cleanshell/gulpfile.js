@@ -30,9 +30,9 @@ gulp.task('useref', function (cb) {
 	
 	
 gulp.task('minify-scripts', ['useref'], function(){
-	gulp.src('concat/js/script.js')
+	gulp.src('concat/scripts/script.js')
 		.pipe(uglify())
-		.pipe(gulp.dest('dist/js'));
+		.pipe(gulp.dest('dist/scripts'));
 })
 
 gulp.task('minify-css', ['useref'], function() {
@@ -41,7 +41,39 @@ gulp.task('minify-css', ['useref'], function() {
     .pipe(gulp.dest('dist/styles'));
 });
 
-gulp.task('minify', ['useref','minify-scripts','minify-css'])
+gulp.task('moveIndex', ['useref'], function() {
+  gulp.src("concat/index.php")
+      .pipe(gulp.dest('dist'));
+});
+
+gulp.task('moveImages', ['useref'], function() {
+  gulp.src("images/**")
+      .pipe(gulp.dest('concat/images'));
+});
+
+gulp.task('moveViews', ['useref'], function() {
+  gulp.src("views/**")
+      .pipe(gulp.dest('concat/views'));
+});
+
+gulp.task('moveDiginFonts', ['useref'], function() {
+  gulp.src("styles/digin-main/**")
+      .pipe(gulp.dest('concat/styles'));
+});
+
+gulp.task('moveThemifyFonts', ['useref'], function() {
+  gulp.src("styles/themify/**")
+      .pipe(gulp.dest('concat/styles'));
+});
+
+gulp.task('moveSounds', ['useref'], function() {
+  gulp.src("sounds/**")
+      .pipe(gulp.dest('concat/sounds'));
+});
+
+gulp.task('move', [ 'moveSounds','moveThemifyFonts','moveDiginFonts','moveViews','moveImages','moveIndex'])
+
+gulp.task('minify', ['move','useref','minify-scripts','minify-css'])
 
 // gulp.task('concat-scripts', function() {
   // return gulp.src('min/js/**/*.js')

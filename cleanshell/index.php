@@ -28,7 +28,7 @@
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	
-	<!-- build:css css/styles.css-->
+	<!-- build:css styles/styles.css-->
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/digin-main/digin-main.css">
 	<link rel="stylesheet" type="text/css" href="styles/themify/themify-icons.css">
@@ -506,7 +506,7 @@
 	<!--END OF APPLICATION CONTAINER-->
 	
 	
-	<!-- build:js js/script.js -->
+	<!-- build:js scripts/script.js -->
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/lodash/dist/lodash.min.js"></script>
 	<script src="bower_components/angular/angular.min.js"></script>
@@ -588,7 +588,7 @@
 	
 	
 	<script src="views/widgets/custom/realTime/realTimeCtrl.js"></script>
-
+	<!-- endbuild -->
 	<!--Widgets Controllers-->
 	<script>
 	$(document).ready(function(){
@@ -596,7 +596,7 @@
 		preload.style.display = "none";
 	});
 	</script>
-	<!-- endbuild -->
+
 	
 </body>
 </html>

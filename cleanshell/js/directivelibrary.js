@@ -18,7 +18,7 @@ var directiveLibraryModule = angular.module('directivelibrary',[]);
      \/            \/                                  \//_____/                    \//_____/                \/             |__|    
 */
 
-directiveLibraryModule.factory('Toastino', function ($timeout) {
+directiveLibraryModule.factory('Toastino',['$timeout', function ($timeout) {
   var Toastino = function (classValue) {
     this.message = '';
     this.classValue = classValue;
@@ -79,9 +79,9 @@ directiveLibraryModule.factory('Toastino', function ($timeout) {
   Toastino.DISMISS = 'ts-dismiss';
 
   return Toastino;
-});
+}]);
 
-directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
+directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog', function(Toastino, $mdDialog) {
 
   var ToastinoService = function () {
     this.toastinoMessages = [];
@@ -196,7 +196,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 	ToastinoService.prototype.startLoading = function(displayText) {
 		$mdDialog.show({
 		  template: 
-			'<md-dialog ng-cloak style="max-width:400px;">'+
+			'<md-dialog style="max-width:400px;">'+
 			'	<md-dialog-content style="padding:20px;">'+
 			'		<div layout="row" layout-align="start center">'+
 			'			<md-progress-circular class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>'+
@@ -213,7 +213,7 @@ directiveLibraryModule.factory('notifications', function(Toastino, $mdDialog) {
 	}
 
   return new ToastinoService();
-});
+}]);
 
 directiveLibraryModule.directive('toastino', function () {
   return {

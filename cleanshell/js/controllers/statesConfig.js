@@ -1,9 +1,32 @@
-var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary','md-steppers','ngMessages' ,'uiMicrokernel', 'gridster','highcharts-ng','uiGmapgoogle-maps', 'vAccordion','ngCroppie','stripe-payment-tools','angular-intro','ngFileUpload','configuration', 'diginServiceHandler']);
+var DiginApp = angular.module('DuoDiginRt', 
+	[
+		'ngMaterial',
+		'ngAnimate',
+		'ui.router',
+		'directivelibrary',
+		'md-steppers',
+		'ngMessages',
+		'uiMicrokernel',
+		'gridster',
+		'highcharts-ng',
+		'uiGmapgoogle-maps',
+		'vAccordion',
+		'ngCroppie',
+		'stripe-payment-tools',
+		'angular-intro',
+		'ngFileUpload',
+		'configuration',
+		'diginServiceHandler',
+		'rzModule',
+		'pouchdb'
+	]
+);
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider) {
 
 	$urlRouterProvider.otherwise('/home');
-
+	$locationProvider.hashPrefix('');
+	
 	$stateProvider
 	
 	// HOME STATES AND NESTED VIEWS ========================================
@@ -83,7 +106,7 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		templateUrl: 'views/settings/userSettngs.html'
 	})
 	.state('dashboard', {
-		url: '/dashboard',
+		url: '/dashboard?id',
 		templateUrl: 'views/dashboard/dashboard.html',
 		controller: 'dashboardCtrl'
 	})
@@ -112,7 +135,8 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		 params: {
 			'selectedAttributes': [],
 			'selectedMeasures': [],
-			'selectedFile': {}
+			'selectedFile': {},
+			'selectedDB' : {}
 		  }
 	})
 	

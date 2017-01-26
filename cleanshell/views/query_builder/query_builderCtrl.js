@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbUploadType', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbUploadType){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType){
 		$scope.$parent.currentView = "Query Builder";
 		var chartBackgroundColor = "";
 		
@@ -12,8 +12,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.selectedAttributes = $stateParams.selectedAttributes;
 		$scope.selectedMeasures = $stateParams.selectedMeasures;
 		$scope.selectedFile = $stateParams.selectedFile;
+		$scope.selectedDB = $stateParams.selectedDB;
 		
-		$scope.client = $diginengine.getClient(dbUploadType);
+		$scope.client = $diginengine.getClient($scope.selectedDB);
 		
 		$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 		
@@ -139,7 +140,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "A line chart is represented by a series of datapoints connected with a straight line. Line charts are most often used to visualize data that changes over time"
             }, {
                 id: 'ct05',
-                icon: ' chart-diginSmooth_line',
+                icon: 'smoothline',
                 name: 'Smooth line ',
                 chart: 'spline',
                 selected: false,
@@ -150,7 +151,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: ""
             }, {
                 id: 'ct06',
-                icon: 'fa fa-area-chart',
+                icon: 'area',
                 name: 'area ',
                 chart: 'area',
                 selected: false,
@@ -161,7 +162,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "The area chart functions the same way as a line chart only it fills the area between the line and the threshold, which is 0 by default"
             }, {
                 id: 'ct07',
-                icon: 'chart-diginsmooth_area',
+                icon: 'smootharea',
                 name: 'Smooth area ',
                 chart: 'areaspline',
                 selected: false,
@@ -172,7 +173,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "The areaspline chart is the same as area, only the line is a spline instead of straight lines"
             }, {
                 id: 'ct08',
-                icon: 'chart-diginscatter',
+                icon: 'scatter',
                 name: 'scatter ',
                 chart: 'scatter',
                 selected: false,
@@ -183,7 +184,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "A scatter chart draw a single point for each point of data in a series without connecting them"
             }, {
                 id: 'ct9',
-                icon: 'chart-diginhierarchy-chart',
+                icon: 'hierarchy',
                 name: 'hierarchy',
                 chart: 'hierarchy',
                 selected: false,
@@ -196,7 +197,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
             }, {
                 id: 'ct10',
-                icon: 'chart-diginsunburst-chart',
+                icon: 'ti-shine',
                 name: 'sunburst',
                 chart: 'sunburst',
                 selected: false,
@@ -221,7 +222,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
             // }, 
             {
                 id: 'ct13',
-                icon: 'fa fa-sort-numeric-desc',
+                icon: 'metric',
                 name: 'metric',
                 chart: 'metric',
                 selected: false,
@@ -326,7 +327,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: ""
             }, {
                 id: 'ct15',
-                icon: 'fa fa-tasks',
+                icon: 'ti-layout-slider-alt',
                 name: 'boxplot',
                 chart: 'boxplot',
                 selected: false,
@@ -337,7 +338,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "A box plot is a convenient way of depicting groups of data through their five-number summaries: the smallest observation (sample minimum), lower quartile (Q1), median (Q2), upper quartile (Q3), and largest observation (sample maximum)"
             }, {
                 id: 'ct16',
-                icon: 'fa fa-bar-chart',
+                icon: 'histogram',
                 name: 'histogram',
                 chart: 'histogram',
                 selected: false,
@@ -348,7 +349,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: ""
             }, {
                 id: 'ct17',
-                icon: 'fa fa-circle',
+                icon: 'ti-flickr',
                 name: 'bubble',
                 chart: 'bubble',
                 selected: false,
@@ -381,7 +382,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				tooltip: "Funnel charts are a type of chart often used to visualize stages in a sales project, where the top are the initial stages with the most clients. The funnel narrows as more clients drop off"
             }, {
                 id: 'ct20',
-                icon: 'fa fa-caret-up',
+                icon: 'pyramid',
                 name: 'pyramid',
                 chart: 'pyramid',
                 selected: false,

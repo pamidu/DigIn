@@ -1,16 +1,8 @@
 /**
  * Created by Damith on 6/10/2016.
  */
-// var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'uiMicrokernel', 'configuration'
-//     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria']);
-
 var routerApp = angular.module('digin-entry', ['ngMaterial','ngAnimate', 'ui.router', 'configuration'
     , 'ngToast', 'ngSanitize', 'ngMessages','ngAria','ngCookies']);
-
-
-
-
-
 
 routerApp
     .config(["$httpProvider", "$stateProvider", "$urlRouterProvider",
@@ -125,7 +117,6 @@ routerApp
                 $scope.activatedemail=activatedemail;
             }*/
             //------------------------------------
-
             
             $scope.signup = function () {
                 $scope.isLoggedin = false;
@@ -274,9 +265,9 @@ routerApp
                         }
                     }
                 }).error(function (data) {
-                    console.log(data);
+                    //console.log(data);
                     $mdDialog.hide();
-                    mainFun.fireMsg('0', data.Message);
+                    mainFun.fireMsg('0', 'Authorization Service responding an error.');
                 });
             };
 
@@ -330,12 +321,13 @@ routerApp
                     })
                     .success(function(response) {
                         $scope.subscriptionStatus = response.status;
-                        $scope.paymentStatus = response.response[0].status;
-                        $scope.createdDate=new Date(response.response[0].createdDate* 1000);
-                        $scope.currentPeriod=new Date(response.response[0].currentPeriod* 1000);
-                        $scope.currentPeriodEnd=new Date(response.response[0].currentPeriodEnd* 1000);
-                        $scope.existPackageInfo=response.response[0].otherInfo;
-                        
+                        if(response.reponse!="in-active"){
+                            $scope.paymentStatus = response.response[0].status;
+                            $scope.createdDate=new Date(response.response[0].createdDate* 1000);
+                            $scope.currentPeriod=new Date(response.response[0].currentPeriod* 1000);
+                            $scope.currentPeriodEnd=new Date(response.response[0].currentPeriodEnd* 1000);
+                            $scope.existPackageInfo=response.response[0].otherInfo;
+                        }  
                         cb(true);
                     }).error(function(error) {
                         console.log(response)
@@ -431,6 +423,10 @@ routerApp
                                     cb(true);   
                                 }                               
                             }
+                        }
+                        else{
+                            displayError("Subscription detail not found for this user inorder to authorize login, please check digin package detail...")
+                            $mdDialog.hide();
                         }
                     
                     })
@@ -1463,6 +1459,10 @@ routerApp
                                 }else{
                                     mainFun.fireMsg('0',data.Message);
                                 }                               
+                            }
+                            else if(data=="" || data==undefined|| data==null){
+                                $mdDialog.hide();
+                                 mainFun.fireMsg('0','Authorisation service responding an error.');
                             }
                             else{
                                 $scope.initUserForOnsite();

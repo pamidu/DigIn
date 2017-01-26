@@ -160,8 +160,8 @@
 				</div>
 				<div layout="column"  layout-align="start center" flex-gt-sm="10" ng-hide="settingsOpened">
 					<!--i class="ti-pie-chart" style="font-size:50px;padding: 20px;border-bottom: 1px solid #888;"></i-->
-					<md-menu md-position-mode="target-right target" style="padding: 20px;border-bottom: 1px solid #888;">
-					  <md-button class="" ng-click="$mdOpenMenu($event)" aria-label="Open Chart Types"><i class="ti-pie-chart" md-colors="{color:'accent-900'}" style="font-size:50px;"></i></md-button>
+					<md-menu md-position-mode="target-right target" style="border-bottom: 1px solid #888;width: 100%;">
+					  <md-button class="" ng-click="$mdOpenMenu($event)" aria-label="Open Chart Types" style="height: 102px;width: 100%;"><i class="ti-pie-chart" md-colors="{color:'accent-900'}" style="font-size:50px;"></i></md-button>
 					  <md-content width="6" style="padding:10px;max-width:500px;">
 					  	<div layout="row" layout-align="center center" layout-wrap>
 							<md-card ng-repeat="chart in commonData.chartTypes" style="width:90px;height:80px" class="product_card" md-colors="{background:'primary-800'}" ng-mouseover="changeTip(chart.tooltip)">
@@ -196,14 +196,90 @@
 
 
 
-				<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-is-locked-open="settingsOpened"  style="width: 450px;" md-component-id="rightSettingsNav">
-					<div layout="row" layout-align="end center">
-						<md-button class="" ng-click="openSettings()" aria-label="cancel settings"><i style="padding-right: 10px;" class="ti-close"></i>Cancel</md-button>
-						<md-button class="" ng-click="saveSettings()" aria-label="save settings"><i style="padding-right: 10px;" class="ti-save"></i>Save</md-button>
+				<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-is-locked-open="settingsOpened"  style="width: 550px;" md-component-id="rightSettingsNav">
+					<div layout="row" layout-align="space-between center">
+						<h1 class="md-toolbar-tools">Chart Settings</h1>
+						<div layout-gt-sm="row">
+							<md-button class="" ng-click="openSettings()" aria-label="cancel settings"><i style="padding-right: 10px;" class="ti-close"></i>Cancel</md-button>
+							<md-button class="" ng-click="saveSettings()" aria-label="save settings"><i style="padding-right: 10px;" class="ti-save"></i>Save</md-button>
+						</div>
 					</div>
-					<h1 class="md-toolbar-tools">Chart Settings</h1>
+					<md-divider></md-divider>
 					<md-content layout-padding>
-						
+						<form>
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-sm>
+									<span>Widget Title</span>
+									<input required type="text" name="title" ng-model="widget.widgetData.widName" aria-label="name"/><!--md-colors="{background:'{{$root.h1color}}-section'}"-->
+									<div ng-messages="editForm.title.$error" role="alert">
+									  <div ng-message-exp="['required']">
+											Full name is required
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container class="md-block" flex-gt-sm>				
+								</md-input-container>
+
+							</div>
+							<div layout-gt-sm="row">
+								  <md-switch ng-model="isAutoDrill" aria-label="isAutoDrill" ng-change="toggleAutoDrilled(isAutoDrill)">
+									Automatic Drilldown : {{isAutoDrill}}
+								  </md-switch>
+								<md-input-container class="md-block" flex-gt-sm>				
+								</md-input-container>
+
+							</div>
+							<div layout-gt-sm="row">
+								<v-accordion class="vAccordion--default" flex style="border: 1px solid;padding: 10px;border-radius:4px">
+
+								  <v-pane ng-repeat="value in ['Sales']">
+									<v-pane-header>
+									  {{ value }}
+									</v-pane-header>
+
+									<v-pane-content>
+										<md-input-container class="md-block" flex-gt-sm>
+											<span>Name</span>
+											<input required type="text" name="title" ng-model="series.name" aria-label="name" ng-change="series.name = series.name.split(' ').join('')"/><!--md-colors="{background:'{{$root.h1color}}-section'}"-->
+											<div ng-messages="editForm.title.$error" role="alert">
+											  <div ng-message-exp="['required']">
+													Full name is required
+											  </div>
+											</div>
+										</md-input-container>
+										<div flex-gt-sm>
+											<span style="font-size:12px;">Select Tile Color</span>
+											</br>
+											<ng-color-picker selected='product.tileColor' colors="colors"></ng-color-picker>
+										</div>
+									</v-pane-content>
+								  </v-pane>
+
+								</v-accordion>
+
+							</div>
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-sm>
+									<span>Y Axis</span>
+									<input required type="text" name="title" ng-model="widget.widgetData.widName" aria-label="name"/><!--md-colors="{background:'{{$root.h1color}}-section'}"-->
+									<div ng-messages="editForm.title.$error" role="alert">
+									  <div ng-message-exp="['required']">
+											Full name is required
+									  </div>
+									</div>
+								</md-input-container>
+								<md-input-container class="md-block" flex-gt-sm>	
+									<span>X Axis</span>
+									<input required type="text" name="title" ng-model="widget.widgetData.widName" aria-label="name"/><!--md-colors="{background:'{{$root.h1color}}-section'}"-->
+									<div ng-messages="editForm.title.$error" role="alert">
+									  <div ng-message-exp="['required']">
+											Full name is required
+									  </div>
+									</div>								
+								</md-input-container>
+
+							</div>
+						</form>
 					</md-content>
 
 				</md-sidenav>

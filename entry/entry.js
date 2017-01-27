@@ -64,8 +64,7 @@ routerApp
     .controller("signin-ctrl", ['$scope', '$http', '$window', '$state',
         '$rootScope', 'focus', 'ngToast', 'Digin_Auth','Digin_Domain','$mdDialog','Local_Shell_Path','IsLocal','Digin_Engine_API','$location','Digin_Tenant','$cookies','$filter','apis_Path','auth_Path','include_Path','onsite',
         function ($scope, $http, $window, $state, $rootScope, focus, ngToast, Digin_Auth,Digin_Domain,$mdDialog,Local_Shell_Path,IsLocal,Digin_Engine_API,$location,Digin_Tenant,$cookies,$filter,apis_Path,auth_Path,include_Path,onsite) {
-    
-            
+           
     
             $scope.signindetails = {};
             $scope.isLoggedin = false;
@@ -1587,7 +1586,9 @@ routerApp
                         //var users=data.Result.usage0]["testchamila4.dev.digin.io"]
                         //$scope.tenantUsers=keys(users).length;
                         if($scope.tenantUsers>=$scope.licencedUsers){
-                            displayError('Number of licence users has been exceeded.');
+                            $mdDialog.hide();
+                            displayError('Number of licence users has been exceeded, please contact system administrator.');
+                            $scope.error.isLoading = false;
                         }
                         else{
                             $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
@@ -1595,7 +1596,9 @@ routerApp
                         }
                     }
                     else{
-                        displayError('Tenant usage summary is fail.');
+                        $mdDialog.hide();
+                        displayError('Tenant usage summary retriving is failed.');
+                        $scope.error.isLoading = false;
                     }   
                 }).error(function(error){
                     console.log("error");
@@ -1616,7 +1619,15 @@ routerApp
                     }
                 */
             }
-                
+        
+
+            //#pre-loader error
+            var displayError = function (message) {
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+            };
+
+
+
             $scope.submit = function () {
                 mainFun.validationClear();
 
@@ -1753,7 +1764,6 @@ routerApp
             };
 
 
-            
 
 
 

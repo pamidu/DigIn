@@ -1,17 +1,16 @@
 angular.module('configuration', [])
-.constant('Digin_Engine_API', 'http://dev.digin.io/DigInEngine/')
+.constant('Digin_Engine_API', 'http://dev.digin.io/DigInEngine/') //#Note : http://dev.digin.io/DigInEngine/
 .constant('Digin_Engine_API_Namespace', 'Demo')
-.constant('Digin_Tomcat_Base', 'http://dev.digin.io:9897/')
-.constant('Digin_Domain', 'dev.digin.io')
+.constant('Digin_Tomcat_Base', 'http://dev.digin.io:9897/') //#Note : http://dev.digin.io:9897/
+.constant('Digin_Domain', 'dev.digin.io') //# Note : dev.digin.io
 .constant('DevStudio', false)
-.constant('ReportDevelopment','http://prod.report.digin.io:5488/')
-.constant('Digin_LogoUploader', 'http://dev.digin.io:8080/')
-.constant('Digin_Auth', 'http://dev.digin.io/')
-.constant('Digin_Tenant', 'http://dev.auth.digin.io:3048')
-.constant('Digin_ObjStore', 'http://dev.auth.digin.io:3000')
+.constant('ReportDevelopment','http://prod.report.digin.io:5488/') //#Note : http://prod.report.digin.io:5488/
+.constant('Digin_Auth', 'http://dev.digin.io/') //# Note : http://dev.digin.io/
+.constant('Digin_Tenant', 'http://dev.auth.digin.io:3048') //#Note : http://dev.auth.digin.io:3048
+.constant('Digin_ObjStore', 'http://dev.auth.digin.io:3000') //#http://dev.auth.digin.io:3000
 //#for loggin process
-.constant('IsLocal', true)
-.constant('Local_Shell_Path', 'http://localhost:8081/DigIn/shell')
+.constant('IsLocal', true) //# true for local developmet only 
+.constant('Local_Shell_Path', 'http://localhost:8080/DigIn/shell') //#This is the shell path only for local usage
 .constant('report_Widget_Iframe', 'http://dev.digin.io/Reports/HourlyCallSummery_HBL/HourlyCallSummery_HBL.pdf')
 //#apis folder path inside the html folder ** NOTE : if apis folder in -->html/apis/ then apis_path--> '/apis/'
 .constant('apis_Path', '/apis/')
@@ -19,7 +18,7 @@ angular.module('configuration', [])
 .constant('include_Path', '/include/')
 //#for onsite implementation (Note : for on prem  version onsite=true, for cloud version onsite=false)
 .constant('onsite', true)   
-.constant('tenantId','test514')
+.constant('tenantId','test514') //#This is the tenant name which user going to register/login
 .constant('version','V3.2.1.3')
-//#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
+//#Database type --> mssql, postgresql,bigquery,mysql,memsql #Database type for csv/excel upload and initial dataset creation
 .constant('dbType', 'bigquery')

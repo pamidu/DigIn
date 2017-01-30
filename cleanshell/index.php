@@ -533,6 +533,7 @@
 	<script src="bower_components/highcharts/highstock.js"></script>
 	<!--script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script-->
 	<script src="js/highcharts-ng.js"></script>
+	<script src="js/digin-gridster.js"></script>
 	
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>

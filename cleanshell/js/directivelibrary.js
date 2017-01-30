@@ -548,3 +548,46 @@ directiveLibraryModule.directive('countdownn', ['Util', '$interval', function(Ut
 		}
 	};
 }]);
+
+directiveLibraryModule.provider('ngColorPickerConfig', function(){
+
+	var templateUrl = '<ul><li ng-repeat="color in colors" style="outline:0;cursor:pointer" ng-class="{selected: (color===selected)}" ng-click="pick(color)" ng-style="{\'background-color\':color};"></li></ul>';
+	var defaultColors =  [
+			'#1dd2af','#3498db','#9b59b6','#34495e','#27ae60','#2980b9','#8e44ad','#2c3e50','#f1c40f','#e67e22','#e74c3c','#95a5a6','#f39c12','#c0392b','#7f8c8d'
+		];
+	this.setTemplateUrl = function(url){
+		templateUrl = url;
+		return this;
+	};
+	this.setDefaultColors = function(colors){
+		defaultColors = colors;
+		return this;
+	};
+	this.$get = function(){
+		return {
+			templateUrl : templateUrl,
+			defaultColors: defaultColors
+		}
+	}
+})
+directiveLibraryModule.directive('ngColorPicker', ['ngColorPickerConfig',function(ngColorPickerConfig) {
+	
+	return {
+		scope: {
+			selected: '=',
+			customizedColors: '=colors'
+		},
+		restrict: 'AE',
+		template: ngColorPickerConfig.templateUrl,
+		link: function (scope, element, attr) {
+			scope.colors = scope.customizedColors || ngColorPickerConfig.defaultColors;
+			scope.selected = scope.selected || scope.colors[0];
+
+			scope.pick = function (color) {
+				scope.selected = color;
+			};
+
+		}
+	};
+
+}]);

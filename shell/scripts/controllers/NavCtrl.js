@@ -2,10 +2,10 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$mdMenu', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_LogoUploader', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB',  '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB',  '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType',
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog,$mdMenu, $objectstore, $state,
               $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_LogoUploader, Digin_Tenant, $filter, ProfileService, pouchDB, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path,dbType) {
+              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_Tenant, $filter, ProfileService, pouchDB, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path,dbType) {
 
         if (DevStudio) {
             $auth.checkSession();

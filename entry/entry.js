@@ -362,12 +362,54 @@ routerApp
                             //#Account may be free/deacticated/cancelled/
                                 if($scope.subscriptionStatus==true){
                                     //#Account deactivated
-                                    displayError("Your account has been deactivated...");
+                                    //displayError("Your account has been deactivated..., Please Activate your account.");
+                                    //$scope.proceedLogin(authData, Securitytoken);
+
+                                        var confirm = $mdDialog.confirm()
+                                        .title('Package subscription')
+                                        .textContent('Your account has been deactivated, please Activate your account. Do you wan to proceed?')
+                                        .ariaLabel('Lucky day')
+                                        //.targetEvent(ev)
+                                        .ok('Yes')
+                                        .cancel('No');
+                                        $mdDialog.show(confirm).then(function() {
+                                            //*Go to My Account
+                                            //*If agreed to subscribe, direct myAccount page
+                                            $scope.proceedLogin(authData, Securitytoken);
+                                            return; 
+                                        }, function() {
+                                            //*Exit
+                                            //*if not going to update Exit from system
+                                            $scope.process="logout";
+                                            return;
+                                        });     
                                 }
                                 else{
                                     if($scope.paymentStatus=="canceled"){
                                         //#Account deactivated
-                                        displayError("Your account has been cancelled ...");
+                                        //displayError("Your account has been cancelled ..., Please upgrade your account.");
+                                        //$scope.proceedLogin(authData, Securitytoken);
+
+                                        var confirm = $mdDialog.confirm()
+                                        .title('Package subscription')
+                                        .textContent('Your account has been cancelled, please upgrade your account.. Do you wan to proceed?')
+                                        .ariaLabel('Lucky day')
+                                        //.targetEvent(ev)
+                                        .ok('Yes')
+                                        .cancel('No');
+                                        $mdDialog.show(confirm).then(function() {
+                                            //*Go to My Account
+                                            //*If agreed to subscribe, direct myAccount page
+                                            $scope.proceedLogin(authData, Securitytoken);
+                                            return; 
+                                        }, function() {
+                                            //*Exit
+                                            //*if not going to update Exit from system
+                                            $scope.process="logout";
+                                            return;
+                                        });  
+
+
                                     }
                                     else{
                                         //#This is free user
@@ -424,7 +466,7 @@ routerApp
                             }
                         }
                         else{
-                            displayError("Subscription detail not found for this user inorder to authorize login, please check digin package detail...")
+                            displayError("Subscription detail not found for this user inorder to authorize login, please contact system administrator...")
                             $mdDialog.hide();
                         }
                     
@@ -451,7 +493,7 @@ routerApp
                                 $mdDialog.show(confirm).then(function() {
                                     //*Go to My Account
                                     //*If agreed to subscribe, direct myAccount page
-                                    mainFun.fireMsg(0, "direct only myAccount");
+                                    $scope.proceedLogin(authData, Securitytoken);
                                     return; 
                                 }, function() {
                                     //*Exit

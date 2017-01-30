@@ -45,7 +45,10 @@
   background-color: #fcd453;
   color: black;
 }
- 
+.nav-admin {
+  background-color: #B5BEB2;
+  color: black;
+}
  
 </style>
 
@@ -78,7 +81,7 @@
 
 						<md-list ng-cloak>
 							<!--md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText" ng-class=" user.Active?'nav-active':'nav-inactive'"-->
-							<md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText">
+							<md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText" ng-class="{{user.Id==tenantAdmin}}?'nav-admin':''">
 								<img ng-src="{{getCatLetter(user.Name)}}" err-src="{{getCatLetter(user.Name)}}" class="md-avatar" alt="{{user.Name}}" />
 								<div layout="row" flex>
 									<div><p style="font-weight:700; width:250px;"> {{ user.Name }} </p></div>

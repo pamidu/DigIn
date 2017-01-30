@@ -304,7 +304,22 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 				},function errorCallback(response) {
 					$rootScope.userLevel="";
 				});	
-        }/*,getTenant: function(tenantId) {
+        },getTenantAdmin: function() {
+				$http.get(auth_Path+'tenant/GetTenantAdmin/' +  $rootScope.TenantID, {	
+					headers: {'Securitytoken': getCookie('securityToken')}
+				})
+			   .then(function(result) {
+				   if(result.data==undefined || result.data=='' || result.data==null){
+					   $rootScope.tenantAdmin="";
+				   }
+				   else{
+					   $rootScope.tenantAdmin=result.data[0].Email;
+				   }
+				},function errorCallback(response) {
+					$rootScope.tenantAdmin="";
+				});	
+        }
+		/*,getTenant: function(tenantId) {
              return $http.get('/auth/tenant/GetTenant/' + tenantId, {
 					headers: {'Securitytoken': getCookie('securityToken')}
 				})

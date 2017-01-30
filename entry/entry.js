@@ -383,8 +383,6 @@ routerApp
                                             $scope.process="logout";
                                             return;
                                         });     
-
-
                                 }
                                 else{
                                     if($scope.paymentStatus=="canceled"){

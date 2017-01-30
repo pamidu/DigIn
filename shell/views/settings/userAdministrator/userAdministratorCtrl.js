@@ -16,6 +16,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
     }
 
 	userAdminFactory.getUserLevel();
+	userAdminFactory.getTenantAdmin();
 	$rootScope.totUsers=$rootScope.defaultUsers+$rootScope.extraUsers
 	
 	// fetch packagedetail

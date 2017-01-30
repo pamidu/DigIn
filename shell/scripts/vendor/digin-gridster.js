@@ -1828,7 +1828,7 @@
 
                    	if (scope.widget.widgetData.commonSrc !== undefined){
                    		if(scope.widget.widgetData.selectedChart.chartType=="metric"){
-                   			scope.widget.widgetData.selectedChart.initObj.trendChart.size.height = y-50;
+                   			scope.widget.widgetData.selectedChart.initObj.trendChart.size.height = y-120;
                    			scope.widget.widgetData.selectedChart.initObj.trendChart.size.width = (w/2)-10;
                    		}
                    	}

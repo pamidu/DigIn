@@ -3803,7 +3803,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             } else {
                 $scope.selectedChart.initObj.notificationConstant = true;
             }
-            $scope.selectedChart.initObj.trendChart.size.height = 250;
+            $scope.selectedChart.initObj.trendChart.size.height = 180;
             $scope.selectedChart.initObj.trendChart.size.width = 150;
             widget.widgetData.widName = $scope.widget.widgetData.widName;
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrcMetric.html";

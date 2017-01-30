@@ -10,28 +10,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
         $mdDialog, $rootScope, $http, Digin_Engine_API,
          $diginengine, ngToast, $window, $state, $csContainer, Upload, $timeout, Digin_Domain, $diginurls, saveDashboardService, datasourceFactory, notifications) {
 
-        $scope.datasources = [{
-            name: "MSSQL",
-            icon: "styles/icons/source/mssql.svg",
-            selected: false
-        }, {
-            name: "BigQuery",
-            icon: "styles/icons/source/biq-query.svg",
-            selected: false
-        }, {
-            name: "postgresql",
-            icon: "styles/icons/source/api.svg",
-            selected: false
-        }, {
-            name: "DuoStore",
-            icon: "styles/icons/source/duo-store.svg",
-            selected: false
-        }, {
-            name: "memsql",
-            icon: "styles/icons/source/memsql.svg",
-            selected: false
-        }];
-
         //ng-disabled model of save button
         $scope.pendingColumns = true;
         $scope.show = false;
@@ -131,6 +109,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
         var isBQInitial = true;
         var isMSSQLInitial = true;
 
+        $scope.initiateDatasources = function() {
+            $http.get('jsons/dbConfig.json').success(function(data) {
+                $scope.datasources = data;
+            }).error(function(error){
+            });
+        }
+
         $scope.generateDashboardName = function() {
             $rootScope.dashboard["compName"] = "temp_dashboard" + Math.floor(Math.random() * (100 - 10 + 1) + 10).toString();
             var noDuplicate = saveDashboardService.checkDashboardName($rootScope.dashboard.compName);
@@ -207,6 +192,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                     callback($scope.tables, status);
                                     localStorage.setItem("BigQueryTables", $scope.tables);
                                     commonUi.isDataLoading = false;
+                                    if(res.length < 1){
+                                        publicFun.fireMessage('1', 'Please upload a csv file');
+                                    }
                                 } else {
                                     commonUi.isDataLoading = false;
                                     publicFun.fireMessage('0', 'Error occured. Please try again.');
@@ -258,7 +246,11 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                     commonUi.isDataLoading = false;
                                     $scope.mssqlConnections = data.Result;
                                     $scope.mssqlConnections = $filter('orderBy')($scope.mssqlConnections,'connection_name');
-                                    notifications.toast('1',data.Custom_Message);
+                                    if ($scope.mssqlConnections.length > 0){
+                                        notifications.toast('1',data.Custom_Message);                                        
+                                    } else {
+                                        notifications.toast('1','Please create a new connection.');
+                                    }
                                 } else {
                                     commonUi.isDataLoading = false;
                                     commonUi.isServiceError = true;
@@ -676,105 +668,13 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                 }
                 onSelect.selected = true;
                 $scope.sourceUi.selectedSource = onSelect.name;
-                localStorage.setItem("lastSelectedSource", $scope.sourceUi.selectedSource);
 
-                if (onSelect.name == "CSV/Excel" || onSelect.name == "SpreadSheet") {
+                if (onSelect.name == "CSV Upload") {
                     // alert("csv excel or spreadsheet selected");
-                    commonUi.openFileUploadWindow(ev);
+                    // commonUi.openFileUploadWindow(ev);
+                    $mdSidenav('right').close();
+                    $state.go("home.excelFileUpload")
                 }
-            },
-            openFileUploadWindow: function(ev) {
-                if (typeof ev != "undefined" && ev.type == 'click') {
-                    $mdDialog.show({
-                            controller: function fileUploadCtrl($scope, $mdDialog, fileUpload, $http,$interval, Upload) {
-
-                                $scope.diginLogo = 'digin-logo-wrapper2';
-                                $scope.preloader = false;
-                                $scope.finish = function() {
-                                    $mdDialog.hide();
-                                }
-                                $scope.cancel = function() {
-                                        $mdDialog.cancel();
-                                }
-                                    /* file upload */
-                                // $scope.$watch('files', function() {
-                                //     $scope.upload($scope.files);
-                                // });
-                                $scope.$watch('file', function() {
-                                    if ($scope.file != null) {
-                                        $scope.files = [$scope.file];
-                                    }
-                                });
-                                $scope.log = '';
-
-                                $scope.upload = function(files, event) {
-
-                                    var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
-                                    
-                                    if (files && files.length) {
-                                        $scope.preloader = true;
-                                        $scope.determinateValue = 0;
-                                        promise = $interval(function() {
-                                                        $scope.determinateValue += 3;
-                                                }, 1000);
-                                        $scope.diginLogo = 'digin-logo-wrapper2 digin-sonar';
-                                        for (var i = 0; i < files.length; i++) {
-                                            var lim = i == 0 ? "" : "-" + i;
-                                           
-                                            //url:'http://192.168.0.34:8080/file_upload',
-
-                                            Upload.upload({
-                                                  url: Digin_Engine_API+'file_upload',
-                                                  headers: {
-                                                 'Content-Type': 'multipart/form-data',
-                                                  
-                                                  },           
-                                                  data: {
-                                                    file: files[i],
-                                                    db: 'BigQuery',
-                                                    SecurityToken: userInfo.SecurityToken,
-                                                    other_data: 'datasource'                                                    
-                                                 }
-                                                
-                                            }).success(function(data){                                                 
-                                                $interval.cancel(promise);
-
-                                                if(100-$scope.determinateValue > 0){
-
-                                                    promise = $interval(function() {
-                                                                $scope.determinateValue += 3;
-                                                                if ($scope.determinateValue > 110){
-                                                                        $interval.cancel(promise);
-                                                                        fireMsg('1', 'Successfully uploaded!Analyse your data by picking it on bigquery!');
-                                                                        $scope.preloader = false;
-                                                                        $scope.diginLogo = 'digin-logo-wrapper2';
-                                                                        $mdDialog.hide();
-                                                                        
-                                                                }
-                                                            }, 100);
-                                                }
-                                            }).error(function(data) {
-                                                fireMsg('0', 'There was an error while uploading data !');
-                                                $scope.preloader = false;
-                                                $scope.diginLogo = 'digin-logo-wrapper2';
-
-                                                $interval.cancel(promise);
-                                            });
-
-                                            files = [];
-
-                                        }
-                                    }
-                                };
-                            },
-                            templateUrl: 'views/fileUpload.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true,
-                            targetEvent: ev
-                        })
-                        .then(function(answer) {});
-                }
-
             },
             clearTblData: function() {
                 publicFun.clrTblSelectedObj($scope.sourceUi.tableData);
@@ -1234,10 +1134,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     default:
                         break;
                 }
-            }, openExcelFileUpload: function(ev) {
-				
-					$mdSidenav('right').close();
-					$state.go("home.excelFileUpload")
             }
         };
         $scope.commonUi = commonUi;
@@ -1256,11 +1152,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
             /* initialize tabs */
         $scope.initTabSource = function(ev) {
 
-            for (var i = 0; i < $scope.datasources.length; i++) {
-                if ($scope.datasources[i].name == localStorage.getItem("lastSelectedSource")) {
-                    $scope.commonUi.onClickSelectedSrc($scope.datasources[i], $scope.datasources, ev);
-                }
-            }
             for (var i = 0; i < $scope.sourceUi.tableData.length; i++) {
                 //console.log($scope.sourceUi.tableData[i]);
                 if ($scope.sourceUi.tableData[i].name == localStorage.getItem("lastSelectedTable")) {

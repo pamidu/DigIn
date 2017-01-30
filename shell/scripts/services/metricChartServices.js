@@ -11,8 +11,8 @@ routerApp.service('metricChartServices',function($filter) {
 	// Apply colour settings for metric widget
 	this.applyMetricSettings = function(selectedChart) {
 	    if (typeof selectedChart.initObj.value != "number") var value = parseInt(selectedChart.initObj.value.replace(/,/g,''));
-	    var highRange = selectedChart.initObj.targetValue * selectedChart.initObj.rangeSliderOptions.maxValue / 300;
-	    var lowerRange = selectedChart.initObj.targetValue * selectedChart.initObj.rangeSliderOptions.minValue / 300;
+	    var highRange = selectedChart.initObj.targetValue * selectedChart.initObj.rangeSliderOptions.maxValue / 100;
+	    var lowerRange = selectedChart.initObj.targetValue * selectedChart.initObj.rangeSliderOptions.minValue / 100;
 	    if (value <= lowerRange) {
 	        if (selectedChart.initObj.colorTheme == "rog") {
 	            if (selectedChart.initObj.targetRange == "high") {

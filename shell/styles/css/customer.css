@@ -1674,7 +1674,6 @@ ul.none-border > li {
     overflow: hidden;
     padding: 0;
     background: #fff;
-    /*z-index: 2000;*/
 }
 
 .slider-r-tab {

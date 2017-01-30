@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metricChartServices,tabularService){
+routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metricChartServices,tabularService,notifications){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -265,6 +265,11 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                         }
                     } else {
                         targetRequest = true;
+                        if (targetRequest && metricRequest && trendRequest) {
+                            notifications.toast('0','KPI widget could not sync correctly');
+                            widObj.syncState = true;
+                            cb(widObj);
+                        }
                     }
                 });
             } else {
@@ -287,6 +292,11 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
 
                 } else {
                     metricRequest = true;
+                    if (targetRequest && metricRequest && trendRequest) {
+                        notifications.toast('0','KPI widget could not sync correctly');
+                        widObj.syncState = true;
+                        cb(widObj);
+                    }
                 }
             });
             if(widObj.selectedChart.initObj.trendQuery != "") {
@@ -305,6 +315,11 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                         }
                     } else {
                         trendRequest = true;
+                        if (targetRequest && metricRequest && trendRequest) {
+                            notifications.toast('0','KPI widget could not sync correctly');
+                            widObj.syncState = true;
+                            cb(widObj);
+                        }
                     }
                 });
             } else {

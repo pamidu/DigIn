@@ -1,4 +1,4 @@
-routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory','apis_Path', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,apis_Path){
+routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', 'notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory','apis_Path', 'dbType', function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,apis_Path,dbType){
 
     $scope.$parent.currentView = "System Settings";
 
@@ -217,7 +217,7 @@ routerApp.controller('systemSettingsCtrl',[ '$scope','$rootScope','$mdDialog', '
         $scope.files =[];
         $scope.folders=[];
 
-         $http.get(Digin_Engine_API+'GetTables?db=BigQuery&SecurityToken='+userInfo.SecurityToken+'')
+         $http.get(Digin_Engine_API+'GetTables?db=' + dbType + '&SecurityToken='+userInfo.SecurityToken+'')
            .then(function(result) {
                 for(var i = 0; i < result.data.Result.length; i++){
                     if(result.data.Result[i].upload_type == "csv-singlefile"){

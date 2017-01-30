@@ -1431,7 +1431,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (widgets[i].widgetID == widget.widgetID) {
                             widgets.splice(i, 1);
                             //if removed widget is not a new widget push it
-                            if (widget.widgetID.substr(0, 4) != "temp") {
+                            if (widget.widgetID.toString().substr(0, 4) != "temp") {
                                 $rootScope.dashboard.deletions.widgetIDs.push(widget.widgetID);
                             }
                             console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);

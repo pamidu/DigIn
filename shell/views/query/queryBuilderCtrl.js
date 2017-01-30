@@ -3784,6 +3784,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.eventHndler.isLoadingChart = false;
         },
         saveWidget: function(widget) {
+            if ($scope.selectedChart.initObj.targetValue == "") {
+                privateFun.fireMessage('0','Please enter a target value or select a target value field.');
+                return;
+            }
             widget.widgetData.widData = {
                 decValue: $scope.selectedChart.initObj.decValue,
                 dec: $scope.selectedChart.initObj.dec,
@@ -4725,42 +4729,42 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     //#customer query design
     $scope.getExecuteAgg = function(query) {
-        //-- Gevindu on 5/23/2016 due to DUODIGIN-434 
-        var str = query;
-        var index;
-        var nameSpTbl;
-        var nameSpTblArr;
-        var regX = new RegExp("FROM|From|from");
-        var tables = $rootScope.tableData;
-        var isAtabl = false;
-        var db = $scope.sourceData.src;
-        var frmState = regX.exec(str);
-        var res = str.split(" ");
-        for (var i = 0; i < res.length; i++) {
-            if (res[i] == frmState) index = i + 1;
-        }
-        //-- Modified by Dilani on 24/06/2015 due to DUODIGIN-737
-        nameSpTbl = res[index];
-        if (db == "BigQuery") {
-            nameSpTblArr = nameSpTbl.split(".");
-            var nameSpace = nameSpTblArr[0];
-            var tabl = nameSpTblArr[1];
-        } else {
-            tabl = nameSpTbl;
-        }
-        for (var i = 0; i < tables.length; i++) {
-            if (tables[i].name.ignoreCase == tabl.ignoreCase) isAtabl = true;
-        }
-        var x = $diginurls.getNamespace();
-        if (db == "BigQuery") {
-            if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || !isAtabl) {
-                privateFun.fireMessage('0', "You're trying to query unauthorized namespace or a table!");
-                return;
+        if ($scope.sourceData.tbl != "") {
+            var str = query;
+            var index;
+            var nameSpTbl;
+            var nameSpTblArr;
+            var regX = new RegExp("FROM|From|from");
+            var tables = $rootScope.tableData;
+            var isAtabl = false;
+            var db = $scope.sourceData.src;
+            var frmState = regX.exec(str);
+            var res = str.split(" ");
+            for (var i = 0; i < res.length; i++) {
+                if (res[i] == frmState) index = i + 1;
             }
-        } else {
-            if (typeof query == "undefined" || !isAtabl) {
-                privateFun.fireMessage('0', "You're trying to query unauthorized namespace or a table!");
-                return;
+            nameSpTbl = res[index];
+            if (db == "BigQuery") {
+                nameSpTblArr = nameSpTbl.split(".");
+                var nameSpace = nameSpTblArr[0];
+                var tabl = nameSpTblArr[1];
+            } else {
+                tabl = nameSpTbl;
+            }
+            for (var i = 0; i < tables.length; i++) {
+                if (tables[i].name.ignoreCase == tabl.ignoreCase) isAtabl = true;
+            }
+            var x = $diginurls.getNamespace();
+            if (db == "BigQuery") {
+                if (typeof query == "undefined" || $diginurls.getNamespace() != nameSpace || !isAtabl) {
+                    privateFun.fireMessage('0', "You're trying to query unauthorized namespace or a table!");
+                    return;
+                }
+            } else {
+                if (typeof query == "undefined" || !isAtabl) {
+                    privateFun.fireMessage('0', "You're trying to query unauthorized namespace or a table!");
+                    return;
+                }
             }
         }
         //------ End
@@ -4886,7 +4890,43 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     // Remove the target field
     $scope.removeTarget = function(t) {
-        $scope.resetSettings();
+        $scope.executeQryData.executeTargetField = [];
+        // $scope.executeQryData.executeActualField = [];
+        // $scope.selectedChart.initObj.trendChart.series = [];
+        // $scope.selectedChart.initObj.decValue = "";
+        // $scope.selectedChart.initObj.value = "";
+        $scope.selectedChart.initObj.scale = "";
+        // $scope.selectedChart.initObj.dec = 2;
+        $scope.selectedChart.initObj.color = "white";
+        $scope.selectedChart.initObj.targetRange = "";
+        $scope.selectedChart.initObj.targetValue = "";
+        $scope.selectedChart.initObj.targetQuery = "";
+        // $scope.selectedChart.initObj.trendQuery = "";
+        $scope.selectedChart.initObj.targetValueString = "";
+        $scope.selectedChart.initObj.targetField = "";
+        // $scope.selectedChart.initObj.groupByField = "";
+        // $scope.selectedChart.initObj.timeAttribute = "";
+        // $scope.selectedChart.initObj.notificationConstant = "";
+        // $scope.selectedChart.initObj.notificationValue = "";
+        // $scope.notificationValue = "";
+        $scope.selectedChart.initObj.rangeSliderOptions = {
+            minValue: 0,
+            maxValue: 300,
+            options: {
+                floor: 0,
+                ceil: 300,
+                step: 1,
+                translate: function(value) {
+                  return value + '%';
+                }
+            }
+        };
+        $timeout(function () {
+            $scope.$broadcast('rzSliderForceRender');
+        },500);        
+        $scope.selectedChart.initObj.colorTheme = "";
+        $scope.selectedChart.initObj.lowerRange = 0;
+        $scope.selectedChart.initObj.higherRange = $scope.selectedChart.initObj.value;
     };
     // Remove the target field
     $scope.removeActual = function(t) {
@@ -4929,8 +4969,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     // ------------- Metric chart methods start ----------------------
     //metric decimal change
     $scope.changeDecimals = function() {
-        $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
-        $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+        if ($scope.selectedChart.initObj.decValue != "" && $scope.selectedChart.initObj.decValue !== undefined)
+            $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+        if ($scope.selectedChart.initObj.targetValue != "" && $scope.selectedChart.initObj.targetValue !== undefined)
+            $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
     };
     $scope.changeMetricTrendType = function() {
         var units;

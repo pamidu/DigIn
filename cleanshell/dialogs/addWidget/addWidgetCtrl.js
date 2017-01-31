@@ -126,10 +126,10 @@ DiginApp.controller('addWidgetCtrl', ['$scope', '$rootScope','$timeout', '$rootS
 
 			}
 				
-			var voices = window.speechSynthesis.getVoices();
+			/*var voices = window.speechSynthesis.getVoices();
 			var msg = new SpeechSynthesisUtterance('you are adding' + widget.title + ' widget');
 			msg.voice = voices[2];
-			window.speechSynthesis.speak(msg);
+			window.speechSynthesis.speak(msg);*/
 
 			var widgetObj =
 			{   

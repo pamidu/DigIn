@@ -78,7 +78,7 @@ routerApp.service('metricChartServices',function($filter) {
             units = [[selectedChart.initObj.timeAttribute,[1]]];
         }
         selectedChart.initObj.trendChart.series = [{
-            color: 'black',
+            color: '#ffffff',
             data: seriesData,
             dataGrouping: {
                 approximation: "sum",

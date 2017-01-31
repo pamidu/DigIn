@@ -663,7 +663,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         xAxis: {
                             showEmpty: false,
                             lineWidth: 1,
-                            lineColor: 'black',
+                            lineColor: 'white',
                             labels:{
                               enabled:false//default is true
                             },
@@ -677,7 +677,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         yAxis: {
                             showEmpty: false,
                             lineWidth: 1,
-                            lineColor: 'black',
+                            lineColor: 'white',
                             min: 0,
                             gridLineWidth: 0,
                             title: {

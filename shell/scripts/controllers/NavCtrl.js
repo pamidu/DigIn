@@ -1440,7 +1440,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 					},200);
 					$state.go("home."+ev);
                     break;
-            case "share":
+            case "sharedashboard":
                 if($rootScope.dashboard.compID != null)
                     $state.go("home.sharedashboard");
                 else{

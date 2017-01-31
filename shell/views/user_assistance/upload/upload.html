@@ -104,7 +104,7 @@ div.slide-up p {
 		<form name="step2" ng-submit="upload($event, stepData[1])">
 		  <div class="custom-file-upload" layout-align="center center">
 				<div ngf-drop="validate($files)" ngf-select="validate($files)" ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-allow-dir="true" ngf-pattern="'.csv'" accept=".csv" ng-disabled = "showBusyText || preloader || insertPreLoader || uploadPreLoader" flex layout = "column" layout-align="space-between center" ><!--ngf-multiple="true"-->
-					Drop files here or click to upload 
+					Drop a file here or click to upload 
 					<div ng-show="preloader">
 						Uploading file.. {{progressPercentage}} % complete..
 						<md-progress-linear md-mode="determinate" value="{{progressPercentage}}" style="width: 300px;"></md-progress-linear>

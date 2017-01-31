@@ -225,11 +225,6 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
             widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
             widObj.selectedChart.initObj.value = widObj.widData.value;
             widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
-            if (trendValue !== undefined)
-            {
-                key = widObj.commonSrc.actual[0].condition.toLowerCase() + "_" + widObj.commonSrc.actual[0].filedName;
-                metricChartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
-            }
             // Apply metric settings after filtering if target value is set
             if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
                 if (widObj.commonSrc.target.length == 1) {
@@ -237,6 +232,10 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                     widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
                 }
                 metricChartServices.applyMetricSettings(widObj.selectedChart);
+            }
+            if (trendValue !== undefined) {
+                key = widObj.commonSrc.actual[0].condition.toLowerCase() + "_" + widObj.commonSrc.actual[0].filedName;
+                metricChartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
             }
         }
 

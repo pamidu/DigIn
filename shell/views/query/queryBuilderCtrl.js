@@ -4891,24 +4891,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     // Remove the target field
     $scope.removeTarget = function(t) {
         $scope.executeQryData.executeTargetField = [];
-        // $scope.executeQryData.executeActualField = [];
-        // $scope.selectedChart.initObj.trendChart.series = [];
-        // $scope.selectedChart.initObj.decValue = "";
-        // $scope.selectedChart.initObj.value = "";
         $scope.selectedChart.initObj.scale = "";
-        // $scope.selectedChart.initObj.dec = 2;
         $scope.selectedChart.initObj.color = "white";
         $scope.selectedChart.initObj.targetRange = "";
         $scope.selectedChart.initObj.targetValue = "";
         $scope.selectedChart.initObj.targetQuery = "";
-        // $scope.selectedChart.initObj.trendQuery = "";
         $scope.selectedChart.initObj.targetValueString = "";
         $scope.selectedChart.initObj.targetField = "";
-        // $scope.selectedChart.initObj.groupByField = "";
-        // $scope.selectedChart.initObj.timeAttribute = "";
-        // $scope.selectedChart.initObj.notificationConstant = "";
-        // $scope.selectedChart.initObj.notificationValue = "";
-        // $scope.notificationValue = "";
         $scope.selectedChart.initObj.rangeSliderOptions = {
             minValue: 0,
             maxValue: 300,
@@ -4926,6 +4915,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         },500);        
         $scope.selectedChart.initObj.colorTheme = "";
         $scope.selectedChart.initObj.lowerRange = 0;
+        if ($scope.selectedChart.initObj.trendChart.series.length != 0){
+            $scope.selectedChart.initObj.trendChart.series[0].color = 'black';
+            $scope.selectedChart.initObj.trendChart.options.xAxis.lineColor = 'black';
+            $scope.selectedChart.initObj.trendChart.options.yAxis.lineColor = 'black';
+        }
         $scope.selectedChart.initObj.higherRange = $scope.selectedChart.initObj.value;
     };
     // Remove the target field
@@ -5041,8 +5035,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 if (status) {
                     $scope.selectedChart.initObj.trendQuery = query;
                     var nameSpace = executeQryData.executeActualField[0].condition.toLowerCase() + "_" + executeQryData.executeActualField[0].filedName;
-                    metricChartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
                     metricChartServices.applyMetricSettings($scope.selectedChart);
+                    metricChartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
                     $scope.$apply(function(){
                         $scope.isPendingRequest = false;
                         $scope.eventHndler.isToggleColumns = true;

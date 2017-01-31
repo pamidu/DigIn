@@ -9,6 +9,14 @@
 // Modified By : Sajeetharan
 ////////////////////////////////
 */
+
+	if(! empty($_SERVER['HTTP_USER_AGENT'])){
+		$useragent = $_SERVER['HTTP_USER_AGENT'];
+		if( preg_match('@(iPad|iPod|iPhone|Android|BlackBerry|SymbianOS|SCH-M\d+|Opera Mini|Windows CE|Nokia|SonyEricsson|webOS|PalmOS)@', $useragent) ){
+			header('Location: ../cleanshell/');
+		}
+	}
+
     //var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
      if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");

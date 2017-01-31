@@ -8,7 +8,7 @@
 
 <div layout="row" style="height:100%;" ng-style="{background:selectedChart.initObj.color}" >
 		<div layout="column" layout-align='center start' style="height:100%;" flex="50" 
-			ng-style=" {'color' : (background:selectedChart.initObj.color == 'white') ? 'black' : 'white' }" >
+			ng-style=" {'color' : (selectedChart.initObj.color == 'white') ? 'black' : 'white' }" >
 			<div ng-show="selectedChart.initObj.value">
 				<div flex style="padding:10px;">
 					<div layout="column" flex>

@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', 'dbType', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast, dbType) {
+routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', '$filter', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', 'dbType', function($scope, $mdDialog, $state, $http, $filter, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast, dbType) {
 
 
     $scope.files = []; //Files imported array
@@ -291,22 +291,22 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
 
     $scope.validateType = function(newType,currentType,index) {
         var oldTtype = $scope.originalSchema[index].type.toUpperCase();
-        if ( newType == "FLOAT" && oldTtype == "INTEGER" ) {
+        if ( newType == "INTEGER" && oldTtype == "FLOAT" ) {
             notifications.toast('0','Invalid data type conversion.');
             $scope.schema[index].type = currentType;
-        } else if ( newType == "STRING" && oldTtype == "INTEGER" ) {
+        } else if ( newType == "INTEGER" && oldTtype == "STRING" ) {
             notifications.toast('0','Invalid data type conversion.');
             $scope.schema[index].type = currentType;
-        } else if ( newType == "STRING" && oldTtype == "FLOAT" ) {
+        } else if ( newType == "FLOAT" && oldTtype == "STRING" ) {
             notifications.toast('0','Invalid data type conversion.');
             $scope.schema[index].type = currentType;
-        } else if ( newType == "FLOAT" && oldTtype == "DATE" ) {
-            notifications.toast('0','Invalid data type conversion.');
-            $scope.schema[index].type = currentType;
-        } else if ( newType == "DATE" && oldTtype == "TIME" ) {
+        } else if ( newType == "DATE" && oldTtype == "FLOAT" ) {
             notifications.toast('0','Invalid data type conversion.');
             $scope.schema[index].type = currentType;
         } else if ( newType == "TIME" && oldTtype == "DATE" ) {
+            notifications.toast('0','Invalid data type conversion.');
+            $scope.schema[index].type = currentType;
+        } else if ( newType == "DATE" && oldTtype == "TIME" ) {
             notifications.toast('0','Invalid data type conversion.');
             $scope.schema[index].type = currentType;
         }
@@ -354,7 +354,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 }).then(function (data) {
                     $scope.is_first_try = 'True';
                     if (data.data.Is_Success){
-                        $scope.schema = data.data.Result;
+                        $scope.schema = $filter('orderBy')(data.data.Result,'name');
                         $scope.originalSchema = angular.copy($scope.schema);
                         angular.forEach($scope.schema,function(key){
                             key.type = key.type.toUpperCase();

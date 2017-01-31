@@ -95,7 +95,11 @@ var localThis = this;
     }
 
   }
-
+  this.createuuid = function () {
+              return Math.floor((1 + Math.random()) * 0x10000)
+                  .toString(16)
+                  .substring(1);
+  }
   var saveDashboardFun = function(dashboardName,refreshInterval,type,scope) {
     localThis.IsSavingINprogress =true;
     var pagesArray = [];
@@ -216,10 +220,51 @@ var localThis = this;
         pouchDbServices.insertPouchDB(null,response.Result,function(){
            localThis.IsSavingINprogress = false;
         });
+
+         // var db = $rootScope.db;
+         //  db.get($rootScope.page_id, function (err, doc) {
+         //      if (err) {
+         //      }
+         //      else {
+         //          db.remove(doc)
+         //          .catch(function (err) {
+         //              //fail silently
+         //          });                            
+         //      }
+         //  });
+         //  $rootScope.privateFun.getAllDashboards();
+         //  $rootScope.page_id = "";
+         
+         //  $rootScope.dashboard = [];
+         //  $rootScope.page_id = "";
+         //  $rootScope.dashboard = {
+
+         //      "pages": null,
+         //      "compClass": null,
+         //      "compType": null,
+         //      "compCategory": null,
+         //      "compID": null,
+         //      "compName": null,
+         //      "refreshInterval": null,
+         //  }
+
+         //  $rootScope.dashboard.pages = [];
+         //  var page = {
+         //      "widgets": [],
+         //      "pageID": "temp" + localThis.createuuid(),
+         //      "pageName": "DEFAULT",
+         //      "pageData": null
+         //  }
+         //  $rootScope.dashboard.pages.push(page); 
+         //  $rootScope.currentView = "Home";
+         //  $state.go('home.welcomeSearch');
+         //  localThis.IsSavingINprogress = false;
+
         if (type == 'dashboard'){
              setState(true,scope);
         }
-        ngToast.create({
+
+      ngToast.create({
           className: 'success',
           content: 'Dashboard Saved Successfully',
           horizontalPosition: 'center',

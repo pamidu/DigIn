@@ -56,6 +56,10 @@ tr .wrap{
 #tabular-table{
   color: #34495e;
 }
+
+#tabular-table tbody{
+  font-size: 13px;
+}
 #tabular-table tr:nth-child(odd) {
   background-color: #ecf0f1;
 }
@@ -79,7 +83,7 @@ tr .wrap{
       <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
       <td ng-click="widget.widgetData.widData.tabularService.changeSort(x,widget)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr">
         <div class="cell-cursor-col-resize"></div>
-        <span>
+        <span style="font-size: 16px;">
           <b>{{x.DislayName}}</b>
         </span>
         <!-- sort key indicator example -->
@@ -104,7 +108,7 @@ tr .wrap{
    
       <td ng-repeat="agg in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{agg.Alignment}}">
           <span ng-hide="agg.isString || widget.widgetData.widData.tabularConfig.totForNumeric == 'false'">
-              {{agg.Aggregation}} = {{ agg.Aggregation_value}}
+              {{agg.Aggregation}} = {{widget.widgetData.widData.tabularService.numberWithCommas(agg.Aggregation_value)}}
           </span>
       </td>
     </tr>

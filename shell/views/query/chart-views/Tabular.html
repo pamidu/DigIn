@@ -53,23 +53,35 @@ tr .wrap{
   background-color: #677130;
   font-style: normal;
 }
+#tabular-table{
+  color: #34495e;
+}
+#tabular-table tr:nth-child(odd) {
+  background-color: #ecf0f1;
+}
+#tabular-table tr:nth-child(even) {
+  background-color: #d2edff;
+}
+
 </style>
 
 <md-content ng-show="widget.widgetData.syncState"  ng-hide="eventHndler.isLoadingChart" style="padding-top:20px;width:100%;height:100%">
 	<div  id="{{widget.widgetData.id}}">
-	<table class="table-data" style="float:left;width:100%;height:100%" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
+	<table id="tabular-table" class="table-data" style="float:left;width:100%;height:100%" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
   	cell-cursor-paste="cc.setSelectedCellValues($data)"
   	ng-keydown="keydown($event)"
   	ng-class="{dragable:dragable()}">
 		
 	<thead>
     <tr>
-      <td></td>
+      
       <!-- changeSort is change $scope.sort -->
       <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
       <td ng-click="widget.widgetData.widData.tabularService.changeSort(x,widget)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr">
         <div class="cell-cursor-col-resize"></div>
-        {{x.DislayName}}
+        <span>
+          <b>{{x.DislayName}}</b>
+        </span>
         <!-- sort key indicator example -->
         <span ng-show="widget.widgetData.widData.sort=='{{x.Attribute}}'">▲</span>
         <span ng-show="widget.widgetData.widData.sort=='-{{x.Attribute}}'">▼</span>
@@ -79,15 +91,7 @@ tr .wrap{
   <tbody>
     <!-- angular.js default directive `ng-repeat` and default filters -->
     <tr ng-repeat="user in widget.widgetData.widData.userList| limitTo:widget.widgetData.widData.tabularConfig.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
-      <td class="id">
-
-      	<div class="cell-cursor-row-resize"></div>
-        <!-- drag-drop handle -->
-        <span class="drag-handler"
-          cell-cursor-Drag="cc">=</span>
-        {{user.id}}
-
-      </td>
+     
       <td ng-repeat="y in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{y.Alignment}}">
       	  	{{user[y.Attribute]}}
       </td>
@@ -97,9 +101,7 @@ tr .wrap{
        <td>{{user.sales}}</td-->
     </tr>
     <tr>
-      <td>
-        
-      </td>
+   
       <td ng-repeat="agg in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{agg.Alignment}}">
           <span ng-hide="agg.isString || widget.widgetData.widData.tabularConfig.totForNumeric == 'false'">
               {{agg.Aggregation}} = {{ agg.Aggregation_value}}

@@ -18,7 +18,7 @@ angular.module('configuration', [])
 //#for onsite implementation (Note : for on prem  version onsite=true, for cloud version onsite=false)
 .constant('onsite', false)   
 .constant('tenantId','test514')
-.constant('version','V3.2.1.3')
+.constant('version','V3.2.1.4')
 //#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
 .constant('dbType', 'memsql')
 //# url for facebook app

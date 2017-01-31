@@ -29,6 +29,22 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		//Upload Types
 		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
 		
+		$scope.goHome = function(ev)
+		{
+			// Appending dialog to document.body to cover sidenav in docs app
+			var confirm = $mdDialog.confirm()
+				  .title('Skip Assistance')
+				  .textContent('Are you sure you want to skip this assistance?')
+				  .ariaLabel('skip')
+				  .targetEvent(ev)
+				  .ok('Please do it!')
+				  .cancel('Cancel');
+
+			$mdDialog.show(confirm).then(function() {
+				$state.go('home.welcomeSearch');
+			})
+		}
+		
 		$scope.disableFolderName = function(type)
 		{
 			$scope.selectedPath = type;

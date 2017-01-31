@@ -77,18 +77,37 @@ routerApp.service('metricChartServices',function($filter) {
         } else {
             units = [[selectedChart.initObj.timeAttribute,[1]]];
         }
-        selectedChart.initObj.trendChart.series = [{
-            color: '#ffffff',
-            data: seriesData,
-            dataGrouping: {
-                approximation: "sum",
-                enabled: true,
-                forced: true,
-                units: units
-            },
-            turboThreshold: 0,
-            cropThreshold: trendValue.length
-        }]
+        if (selectedChart.initObj.color == 'white') {
+	        selectedChart.initObj.trendChart.series = [{
+	            data: seriesData,
+	            color: 'black',
+	            dataGrouping: {
+	                approximation: "sum",
+	                enabled: true,
+	                forced: true,
+	                units: units
+	            },
+	            turboThreshold: 0,
+	            cropThreshold: trendValue.length
+	        }]
+	        selectedChart.initObj.trendChart.options.xAxis.lineColor = 'black';
+	        selectedChart.initObj.trendChart.options.yAxis.lineColor = 'black';
+        } else {
+	        selectedChart.initObj.trendChart.series = [{
+	            data: seriesData,
+	            color: 'white',
+	            dataGrouping: {
+	                approximation: "sum",
+	                enabled: true,
+	                forced: true,
+	                units: units
+	            },
+	            turboThreshold: 0,
+	            cropThreshold: trendValue.length
+	        }]
+	        selectedChart.initObj.trendChart.options.xAxis.lineColor = 'white';
+	        selectedChart.initObj.trendChart.options.yAxis.lineColor = 'white';
+        }
 	}
 
 })

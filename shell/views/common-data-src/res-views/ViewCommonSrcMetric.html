@@ -5,7 +5,8 @@
 // Version : 3.1.0.2
 // Modified By : Dilani
 //////////////////////////////// -->
-<div ng-style="{background:widget.widgetData.widData.color}" style="height:100%;width:100%;color:white;" ng-show="widget.widgetData.syncState">
+<div ng-style="{background:widget.widgetData.widData.color}" style="height:100%;width:100%;color:white;" ng-show="widget.widgetData.syncState"
+	 ng-style=" {'color' : (widget.widgetData.widData.color == 'white') ? 'black' : 'white' }" >
 	<div layout="row">
 		<div layout="row" flex style="padding:10px;">
 

@@ -140,6 +140,12 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		  }
 	})
 	
+	.state('facebook', {
+		url: '/facebook',
+		templateUrl: 'views/social/facebook/facebook.html',
+		controller: 'facebookCtrl'
+	})
+	
 	.state('systemSettings', {
 		url: '/systemSettings',
 		templateUrl: 'views/settings/systemSettings/systemSettings.html',

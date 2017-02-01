@@ -9,11 +9,11 @@
                             return result.data.Result;
                         },function errorCallback(response) {
 								console.log(response);
-								notifications.toast(0, "Falied to get Digin Components");
+								notifications.toast(0, "Falied to get User Settings");
 						 });
         },getDiginComponents: function() {
              //return the promise directly.
-             return $http.get(Digin_Engine_API+'/get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
+             return $http.get(Digin_Engine_API+'get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;

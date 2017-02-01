@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -13,8 +13,14 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.h1color = '';
 	colorManager.changeTheme('defaultDark');
 	
-	$scope.applyDark = false;
+	window.themeInfo = 'defaultDark';
 	
+	window.firefunction = function()
+	{
+		$state.go('home');
+	}
+	
+	$rootScope.applyDark = false;
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
 		//explicitly do something if the theme if dark
@@ -40,7 +46,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.topMenuToggle = function()
 	{	
-		if($scope.showHeader == true)
+		if($rootScope.showHeader == true)
 		{
 			$rootScope.showHeader = layoutManager.hideHeader();
 		}else{

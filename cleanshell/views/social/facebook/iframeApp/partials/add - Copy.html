@@ -1,0 +1,75 @@
+<!--CARD CONTAINER START-->
+<div class="card-container" style="padding:20px;">
+	<!--WHITEFRAME START-->
+	<md-whiteframe class="md-whiteframe-2dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="margin:0 auto;max-width:960px"> 
+
+		<md-content layout-padding style="width:100%">
+
+      <form name="editForm"  md-theme="default">
+		<!--clock radius='40' zone='Australia/Lindeman'></clock-->
+        <div layout-gt-sm="row">
+			<section-title title="Account Details"></section-title>
+		  <md-input-container class="md-block" flex-gt-sm>
+			<label>Client Name</label> <ng-md-icon icon="america" style="fill:#D1D1D1;height:100px;width:100px;" size="100px"></ng-md-icon>
+			<input required name="clientName" ng-model="content.clientName">
+			<div ng-messages="editForm.clientName.$error">
+			  <div ng-message="required">This is required.</div>
+			</div>
+		  </md-input-container>
+		  <md-input-container class="md-block" flex-gt-sm>
+			<label>Select Account Type</label>
+			<md-select ng-model="content.CardOrAccount">
+				<md-optgroup label="Select Account Type">
+				  <md-option  value="Card" flex >Card</md-option>
+				<md-option  value="Account" flex >Account</md-option>
+				</md-optgroup>
+			</md-select>
+		  </md-input-container>
+
+        </div>
+		<div layout-gt-sm="row">
+			<section-title></section-title>
+          <md-input-container class="md-block" flex-gt-sm>
+			<label>Client Email</label>
+			<input required type="email" name="clientEmail" ng-model="content.clientEmail"
+				   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+			<div ng-messages="editForm.clientEmail.$error" role="alert">
+			  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+				Your email must be between 10 and 100 characters long and look like an e-mail address.
+			  </div>
+			</div>
+		  </md-input-container>
+          <div class="md-block" flex-gt-sm>
+				<md-date-picker model="content.date" label="Pick a date"/>
+          </div>
+        </div>
+		<div layout="row" layout-align="end start" layout-margin ng-init="submitted=false" >
+			<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px; margin-left:20px !important" ng-disabled="submitted" type="button" ng-click="submit()">Submit</md-button>
+		</div>
+		
+
+      </form>
+
+  </md-content>
+		<!--FORM START-->
+		
+		
+
+	</md-whiteframe><br><br>
+	<!--WHITEFRAME END-->
+</div>
+<!--CARD CONTAINER END-->
+	
+<div  class="lock-size" layout="row">
+	<md-fab-speed-dial md-open="demo.isOpen" md-direction="up"
+	ng-class="demo.selectedMode" style="position:fixed;bottom:20px;right:20px;">
+	<md-fab-trigger>
+	<md-button aria-label="menu" class="md-fab " style="background-color:#db4437;" href="#/main/tabone">
+		<md-icon md-svg-src="/img/ic_visibility_24px.svg" style="width:30px;" ></md-icon>
+		<md-tooltip md-direction="left">View</md-tooltip>
+	</md-button>
+</md-fab-trigger>
+<md-fab-actions>
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</div> 

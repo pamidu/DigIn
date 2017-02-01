@@ -78,7 +78,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             },
             resizable: {
                 enabled: true,
-                handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw']
+                handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
+                  resize: function(event,$element,widget){
+                    if(widget.widgetName == "Map"){
+                        $rootScope.mapheight = $element.context.clientHeight - 50;
+                        $rootScope.mapWidth = $element.context.clientWidth ;
+
+                    }
+                }
             }
         };
 

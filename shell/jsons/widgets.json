@@ -32,7 +32,7 @@
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 8
         },{
             "title": "Map",
-            "icon": "styles/css/images/icons/dashboard.svg",
+            "icon": "styles/css/images/icons/worldwide.svg",
             "type": "General",
             "Description": "Time, Manage day to day work",
             "widView": "map_toBedeleted/tempMapView.html",

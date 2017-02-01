@@ -2,9 +2,9 @@
  note: some of the scope variables are initialized inside fbInterface
  */
 
-routerApp.controller('socialGraphCtrl', function ($scope,fbUrl) {
+routerApp.controller('socialGraphCtrl', function ($scope,$sce,fbUrl) {
 
-    $scope.fbUrl = fbUrl;
+    $scope.fbUrl = $sce.trustAsResourceUrl(fbUrl);
 });
 
 

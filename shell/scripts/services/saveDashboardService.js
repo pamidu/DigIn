@@ -358,9 +358,9 @@ var localThis = this;
             var decValue = widgets[j].widgetData.widData.decValue;
             var value = widgets[j].widgetData.widData.value;
             dataArray.push(decValue,value,series);
-            widgets[j].widgetData.widData.decValue = "";
-            widgets[j].widgetData.widData.value = "";
-            widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
+            // widgets[j].widgetData.widData.decValue = "";
+            // widgets[j].widgetData.widData.value = "";
+            // widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
             break;
           case 'highCharts':
             var series = widgets[j].widgetData.highchartsNG.series.data;

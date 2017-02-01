@@ -284,10 +284,10 @@
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
 					<md-menu md-position-mode="target-right target" >
-					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)""> <!--$mdOpenMenu($event)-->
 						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
 					  </div>
-					  <md-content>
+					  <md-menu-content ng-class="{'applyDarkBackground': $root.applyDark == true}" >
 						<md-menu-item>
 						  <md-button ng-click="share($index, 'dashboard')">
 							  <div layout="row" flex>
@@ -302,7 +302,7 @@
 							  </div>
 						  </md-button>
 						</md-menu-item>
-					  </md-content>
+					  </md-menu-content>
 					</md-menu>
 					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
 						<i class="ti-help-alt"></i>

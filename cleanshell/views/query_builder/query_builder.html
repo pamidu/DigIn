@@ -1,11 +1,3 @@
-<style>
-.applyDarkBackground
-{
-	background: rgb(48,48,48) !important;
-	color: white !important;
-}
-</style>
-
 <!--CARD CONTAINER START-->
 <div class="setting-container">
 		<md-content>
@@ -50,8 +42,8 @@
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>Series</h2>
 							<md-menu md-position-mode="target-right target" style="margin-top:10px">
-							  <md-button class="md-fab md-mini" ng-click="$mdOpenMenu($event)" style="width:36px;height:30px;line-height:30px" aria-label="add aggregations"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
-							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': applyDark == true}">
+							  <md-button class="md-fab md-mini" aria-label="series" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px" aria-label="add aggregations"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 								<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
 								<v-accordion class="vAccordion--default">
 
@@ -89,8 +81,8 @@
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>Category</h2>
 							<md-menu md-position-mode="target-right target" style="margin-top:10px">
-							  <md-button class="md-fab md-mini" ng-click="$mdOpenMenu($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
-							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': applyDark == true}">
+							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 								<span style="font-size: 14px;font-weight: 800;">Select any Category/ Categories</span><br/>
 								<md-list>
 									<md-list-item class="secondary-button-padding" ng-repeat="item in selectedAttributes" ng-click="pushCateory($index,item)">
@@ -114,9 +106,9 @@
 					<div layout="column" style="width:100%;max-height:300px;min-height:170px">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>Filter</h2>
-							<md-menu md-position-mode="target-right target" style="margin-top:10px" ng-class="{'applyDarkBackground': applyDark == true}">
-							  <md-button class="md-fab md-mini" ng-click="$mdOpenMenu($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
-							  <md-menu-content width="4" style="padding:10px">
+							<md-menu md-position-mode="target-right target" style="margin-top:10px">
+							  <md-button class="md-fab md-mini" aria-label="filter" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 								<span style="font-size: 14px;font-weight: 800;">Select any filter</span><br/>
 
 								<v-accordion class="vAccordion--default">
@@ -172,7 +164,7 @@
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
 								<span>Limit</span>
-								<md-select ng-model="initRequestLimit.value">
+								<md-select aria-label="limit" ng-model="initRequestLimit.value">
 									<md-option ng-repeat="limit in requestLimits" value="{{limit}}">
 										{{limit}}
 									</md-option>
@@ -191,10 +183,10 @@
 				
 
 				<md-menu style="width: 100%;text-align: center;">
-					  <md-button aria-label="Open phone interactions menu" class="" ng-click="$mdOpenMenu($event)" style="width:85%;height:102px;border-bottom: 1px solid #888;border-radius: 0;">
+					  <md-button aria-label="Open phone interactions menu" class="" ng-click="$mdMenu.open($event)" style="width:85%;height:102px;border-bottom: 1px solid #888;border-radius: 0;">
 						<i class="ti-pie-chart" md-colors="{color:'accent-900'}" style="font-size:50px;"></i>
 					  </md-button>
-					  <md-content width="6" style="padding:10px;max-width:500px;">
+					  <md-menu-content width="6" style="padding:10px;max-width:500px;max-height:600px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 						<div layout="row" layout-align="center center" layout-wrap>
 							<md-card ng-repeat="chart in commonData.chartTypes" style="width:90px;height:80px" class="product_card" md-colors="{background:'primary-800'}" ng-mouseover="changeTip(chart.tooltip)">
 								<div layout="row" layout-align="center center" style="padding-bottom:5px;">
@@ -216,7 +208,7 @@
 							</md-card>
 						</div>
 						<div style="padding:10px"><span ng-show="tooltip"><b>Tip:</b>&nbsp {{tooltip}}</span></div>
-					  </md-content>
+					  </md-menu-content>
 				</md-menu>
 				<md-divider></md-divider>
 				<md-button class="" ng-click="openSettings()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;border-radius: 0;"><i class="ti-settings" md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>

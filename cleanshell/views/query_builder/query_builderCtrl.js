@@ -2,13 +2,11 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.$parent.currentView = "Query Builder";
 		var chartBackgroundColor = "";
 		var chartFontColor = "";
-		$scope.applyDark = false;
 		
 		if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 		{
 			chartBackgroundColor = "rgb(48,48,48)";
 			chartFontColor = '#fff';
-			$scope.applyDark = true;
 		}else{
 			chartBackgroundColor = "white";
 		}

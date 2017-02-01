@@ -53,7 +53,7 @@ div.slide-up p {
 		<div layout="row" layout-align="center center" layout-wrap>
 			<md-card ng-repeat="type in $parent.uploadTypes"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  ng-click="disableFolderName(type.name)"  md-colors="{background:'primary-800'}">
 				<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
-					<span class="product_name" style="border-bottom: 1px solid #white;">Upload {{type.name}}</span>
+					<span class="product_name" style="border-bottom: 1px solid #white;">Upload <span ng-if="type.name == 'Folder'"> To </span>{{type.name}}</span>
 				</div>
 				<div layout="row" layout-align="end end">
 					<i class="{{type.icon}}" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>

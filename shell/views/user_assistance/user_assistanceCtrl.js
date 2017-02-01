@@ -27,7 +27,7 @@ routerApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','
 		$scope.client = $diginengine.getClient(dbType);
 		$scope.fieldTypeObj = ["STRING","BYTES","INTEGER","FLOAT","BOOLEAN","TIMESTAMP","DATE","TIME","DATETIME"];
 		//Upload Types
-		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"Folder",icon:"ti-folder"}];
+		$scope.uploadTypes = [{name:"File", icon:"ti-file"},{name:"To Folder",icon:"ti-folder"}];
 		
 		$scope.goHome = function(ev)
 		{

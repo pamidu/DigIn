@@ -245,7 +245,7 @@
 	<!--END OF PRELOADER-->
 	
 	<!--START OF APPLICATION CONTAINER-->
-	<div layout="column" ng-cloak md-theme="{{$root.theme}}">
+	<div id="themeStart" layout="column" ng-cloak md-theme="{{$root.theme}}">
 		<toastino></toastino>
 		<div class="blut-log-wrapper">
 			<div class="left-toggle-wrapper md-primary" md-colors="{background:'primary'}">
@@ -337,7 +337,7 @@
 				</div>
 			</div>
 			
-			<md-content class="blut-search-toggle  hover-color fadeHeaderToggle"  ng-show="headerToggleVisible || !showHeader" md-colors="{color:'primary'}" ng-click="topMenuToggle()">
+			<md-content class="blut-search-toggle  hover-color fadeHeaderToggle"  ng-show="headerToggleVisible || !showHeader" md-colors="{color:'primary'}" ng-click="topMenuToggle();topMenuToggle2()">
 				<span ng-if="!showHeader" class="ti-angle-down"></span>
 				<span ng-if="showHeader" class="ti-angle-up"></span>
 			</md-content>
@@ -458,7 +458,7 @@
 					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-profile"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Social Media</a></li>
-							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}" href="#/facebook"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
 						 
 						</ul>
 					</li>
@@ -553,7 +553,7 @@
 	</script-->
 
 
-	<script src="js/controllers/statesConfig.js"></script>
+	<script src="js/app.js"></script>
 	<script src="views/settings/theme/themingConfig.js"></script>
 	<script src="js/controllers/DiginServices.js"></script>
 	<script src="js/controllers/NavCtrl.js"></script>
@@ -572,6 +572,7 @@
 	<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
 	<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 	<script src="views/query_builder/query_builderCtrl.js"></script>
+	<script src="views/social/facebook/facebookCtrl.js"></script>
 
 	<!--Payment stripe-->
     <script src="https://checkout.stripe.com/checkout.js"></script>

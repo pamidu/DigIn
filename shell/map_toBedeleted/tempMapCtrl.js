@@ -3,10 +3,6 @@
 
    $scope.mydata = DB.getContinentData();
    $scope.mapconfigured = {};
-   $scope.display = function() {
-     alert($scope.mapconfigured);
-     console.log($scope.mapconfigured);
-   }
   });
 
 routerApp.directive('myMap', function(DB, $timeout) {
@@ -54,12 +50,28 @@ routerApp.directive('myMap', function(DB, $timeout) {
                        },
                        data: [{
                          'hc-key': 'lk',
-                          value: 4,
+                          value: 32,
+                          drilldown: true
+                       },
+                       {      
+                         'hc-key': 'in',
+                          value: 35,
+                          drilldown: true
+                       },
+                       {      
+                         'hc-key': 'ru',
+                          value: 10,
+                          drilldown: true
+                       },
+                       {      
+                         'hc-key': 'id',
+                          value: 23,
                           drilldown: true
                        }],
                        dataLabels: {
                          enabled: true,
                          formatter: function() {
+                          if(typeof this.point.value == 'number')
                            return this.point.value + '%';
                          }
                        }
@@ -70,76 +82,125 @@ routerApp.directive('myMap', function(DB, $timeout) {
                      chart.addSeriesAsDrilldown(e.point, {
                        mapData: Highcharts.maps['countries/lk/lk-all'],
                        joinBy: 'hc-key',
+                       name: e.point.name,
                        click: function() {
                          alert('Hello');
                        },
                        
-                       data: [{
-                           'hc-key': 'lk-kl',
-                           drilldown: true,
-                           value: 4
-                         }, {
-                           'hc-key': 'lk-ky',
-                           drilldown: true,
-                           value: 12
-                         }, {
-                           'hc-key': 'lk-mt',
-                           value: 25
-                         }
+                       data: [        
+                        {
+                            "hc-key": "lk-bc",
+                            "value": .5
+                        },
+                        {
+                            "hc-key": "lk-mb",
+                            "value": 9
+                        },
+                        {
+                            "hc-key": "lk-ja",
+                            "value": 12
+                        },
+                        {
+                            "hc-key": "lk-kl",
+                            "value": 7
+                        },
+                        {
+                            "hc-key": "lk-ky",
+                            "value": 9
+                        },
+                        {
+                            "hc-key": "lk-mt",
+                            "value": 8
+                        },
+                        {
+                            "hc-key": "lk-nw",
+                            "value": 4
+                        },
+                        {
+                            "hc-key": "lk-ap",
+                            "value": 9
+                        },
+                        {
+                            "hc-key": "lk-pr",
+                            "value": 8
+                        },
+                        {
+                            "hc-key": "lk-tc",
+                            "value": 5
+                        },
+                        {
+                            "hc-key": "lk-ad",
+                            "value": 10
+                        },
+                        {
+                            "hc-key": "lk-va",
+                            "value": 11
+                        },
+                        {
+                            "hc-key": "lk-mp",
+                            "value": 20
+                        },
+                        {
+                            "hc-key": "lk-kg",
+                            "value": 13
+                        },
+                        {
+                            "hc-key": "lk-px",
+                            "value": 14
+                        },
+                        {
+                            "hc-key": "lk-rn",
+                            "value": 10
+                        },
+                        {
+                            "hc-key": "lk-gl",
+                            "value": 17
+                        },
+                        {
+                            "hc-key": "lk-hb",
+                            "value": 19
+                        },
+                        {
+                            "hc-key": "lk-mh",
+                            "value": 5
+                        },
+                        {
+                            "hc-key": "lk-bd",
+                            "value": 19
+                        },
+                        {
+                            "hc-key": "lk-mj",
+                            "value": 2
+                        },
+                        {
+                            "hc-key": "lk-ke",
+                            "value": 8
+                        },
+                        {
+                            "hc-key": "lk-co",
+                            "value": 6
+                        },
+                        {
+                            "hc-key": "lk-gq",
+                            "value": 7
+                        },
+                        {
+                            "hc-key": "lk-kt",
+                            "value": 16
+                        }
 
                        ],
                        dataLabels: {
                          enabled: true,
                          formatter: function() {
-                           return this.point.value + '%';
-                         }
-                       }
-
-                     });
-                     break;
-                   case "Europe":
-                     chart.addSeriesAsDrilldown(e.point, {
-                       mapData: Highcharts.maps['custom/europe'],
-                       joinBy: 'hc-key',
-                       data: [{
-                         'hc-key': 'dk',
-                         value: 4
-                       }, {
-                         'hc-key': 'cz',
-                         value: 17
-                       }],
-                       dataLabels: {
-                         enabled: true,
-                         formatter: function() {
-                           return this.point.value + '%';
-                         }
-                       }
-
-                     });
-                     break;
-
-                   case "North America":
-                     chart.addSeriesAsDrilldown(e.point, {
-                       mapData: Highcharts.maps['custom/north-america'],
-                       joinBy: 'hc-key',
-                       data: [{
-                         'hc-key': 'us',
-                         value: 4
-                       }],
-                       dataLabels: {
-                         enabled: true,
-                         formatter: function() {
-                           return this.point.value + '%';
+                          if(typeof this.point.value == 'number')
+                           return this.point.value + 'K';
                          }
                        }
 
                      });
                      break;
                  }
-
-
-
-
                }
              }
            }
@@ -152,17 +213,12 @@ routerApp.directive('myMap', function(DB, $timeout) {
            }
          },
           credits: {
-                         enabled: false
-                     },
-
-         
-
-         
-
+            enabled: false
+          },
          colorAxis: {
            min: 0,
            minColor: '#fbe9e7',
-           maxColor: '#dd2c00'
+           maxColor: 'rgb(2, 181, 226)'
          },
 
          mapNavigation: {
@@ -178,7 +234,7 @@ routerApp.directive('myMap', function(DB, $timeout) {
                events: {
                  click: function() {
                    if (this.name) {
-                     // alert(this.name);
+
                    }
                  }
                }
@@ -193,13 +249,9 @@ routerApp.directive('myMap', function(DB, $timeout) {
            joinBy: 'hc-key',
            dataLabels: {
              enabled: true,
-             format: '{point.name}' + '<br />' + ' {point.value}'  
+             format: '{point.name}' + '<br />' + ' {point.value} %'  
            }
-         }],
-
-         
-
-
+         }]
        };
 
        // Instanciate the map
@@ -213,58 +265,39 @@ routerApp.directive('myMap', function(DB, $timeout) {
  });
 
  routerApp.factory('DB', function($http) {
-   var statesData = {
-     'us': [{
-       'code': 'us-ma',
-       value: 20
-     }, {
-       'code': 'us-ny',
-       value: 30
-     }, {
-       'code': 'us-tx',
-       value: 13
-     }]
-   };
    var mapConfig = {};
    var continentData = [{
        'hc-key': 'eu',
-       drilldown: true,
-       value: 10
+      // drilldown: true,
+       value: 20 
      },
-
      {
        'hc-key': 'as',
        drilldown: true,
-       value: 55
-     }, {
-       'hc-key': 'lk-all',
-       drilldown: true,
-       value: 55
+       value: 50
+     },
+     {
+       'hc-key': 'sa',
+      // drilldown: true,
+       value: 5
+     },
+     {
+       'hc-key': 'na',
+      // drilldown: true,
+       value: 18
+     },
+     {
+       'hc-key': 'oc',
+      // drilldown: true,
+       value: 7
+     },
+     {
+      'hc-key': 'af',
+      value: 1
      }
 
    ];
    
-   [{"drilldown":true,"code":"lk","value":7002.666666666667},{"drilldown":true,"code":"us","value":3076.5}]
-   var countryData = [{
-     'hc-key': 'lk',
-      value: 4,
-      drilldown: true
-   }];
-
-
-   var countiesData = {
-     'us-ny': [{
-       'code': 'us-ny-063',
-       value: 20
-     }, {
-       'code': 'us-ny-1192929391923',
-       value: 20
-     }],
-     'us-ma': [{
-       'code': 'us-ma-001',
-       value: 20
-     }, ]
-   };
 
 
    setMapConfig = function(val) {

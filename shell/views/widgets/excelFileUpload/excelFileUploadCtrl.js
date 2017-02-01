@@ -1,4 +1,4 @@
-routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', '$filter', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', 'dbType', function($scope, $mdDialog, $state, $http, $filter, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast, dbType) {
+routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$http', 'notifications', '$mdSidenav', 'Digin_Domain', 'Upload', 'Digin_Engine_API', '$diginurls', '$diginengine', '$location', '$anchorScroll', 'ngToast', 'dbType', function($scope, $mdDialog, $state, $http, notifications, $mdSidenav, Digin_Domain, Upload, Digin_Engine_API, $diginurls, $diginengine, $location, $anchorScroll, ngToast, dbType) {
 
 
     $scope.files = []; //Files imported array
@@ -354,7 +354,7 @@ routerApp.controller('excelFileUploadCtrl', ['$scope', '$mdDialog', '$state', '$
                 }).then(function (data) {
                     $scope.is_first_try = 'True';
                     if (data.data.Is_Success){
-                        $scope.schema = $filter('orderBy')(data.data.Result,'name');
+                        $scope.schema = data.data.Result;
                         $scope.originalSchema = angular.copy($scope.schema);
                         angular.forEach($scope.schema,function(key){
                             key.type = key.type.toUpperCase();

@@ -9,13 +9,15 @@ routerApp.directive('myMap', function(DB, $timeout) {
 
    return {
      restrict: 'E',
-     template: '<div class="chart"></div>',
+     template: '<div class="chart" style="width:{{width}} ; height:{{height}}"></div>',
      replace: true,
 
      scope: {
        mydata: '=',
        header: '=',
        mapconfigured: '=',
+       width: '@',
+       height:'@'
      },
      link: function(scope, elem, attrs) {
        var data = {
@@ -24,8 +26,25 @@ routerApp.directive('myMap', function(DB, $timeout) {
        };
        var small = $('#container').width();
 
+
+        scope.$watch("width",function (newValue,OldValue) {
+          if(newValue != OldValue){
+            var map = $('.chart').highcharts();
+         map.setSize(scope.width,scope.height)
+          }
+        });
+
+        scope.$watch("height",function (newValue,OldValue) {
+          if(newValue != OldValue){
+             var map = $('.chart').highcharts();
+         map.setSize(scope.width,scope.height)
+          }
+        });
+
        var mapConfig = {
          chart: {
+           width: scope.width,
+           height: scope.height,
            events: {
 
              drilldown: function(e) {
@@ -228,19 +247,19 @@ routerApp.directive('myMap', function(DB, $timeout) {
            }
          },
 
-         plotOptions: {
-           series: {
-             point: {
-               events: {
-                 click: function() {
-                   if (this.name) {
+         // plotOptions: {
+         //   series: {
+         //     point: {
+         //       events: {
+         //         click: function() {
+         //           if (this.name) {
 
-                   }
-                 }
-               }
-             }
-           }
-         },
+         //           }
+         //         }
+         //       }
+         //     }
+         //   }
+         // },
 
          series: [{
            name: 'World',
@@ -249,7 +268,7 @@ routerApp.directive('myMap', function(DB, $timeout) {
            joinBy: 'hc-key',
            dataLabels: {
              enabled: true,
-             format: '{point.name}' + '<br />' + ' {point.value} %'  
+             format: '{point.name}' + '<br />' //+ ' {point.value} %'  
            }
          }]
        };

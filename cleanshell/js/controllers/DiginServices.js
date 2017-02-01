@@ -3,7 +3,7 @@
 	return {
         getUserSettings: function() {
              //return the promise directly.
-             return $http.get('http://prod.digin.io:1929/get_user_settings?SecurityToken='+ $auth.getSecurityToken()+'&Domain=prod.digin.io')
+             return $http.get('http://prod.digin.io:1929/get_user_settings?SecurityToken='+$auth.getSecurityToken()+'&Domain=prod.digin.io')
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -13,7 +13,7 @@
 						 });
         },getDiginComponents: function() {
              //return the promise directly.
-             return $http.get(Digin_Engine_API+'get_all_components?SecurityToken='+ $auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
+             return $http.get(Digin_Engine_API+'get_all_components?SecurityToken='+$auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -25,7 +25,7 @@
              //return the promise directly.
 			 notifications.startLoading("Getting Dashboard");
 			 
-                return $http.get(Digin_Engine_API+'/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+ $auth.getSecurityToken()+'&Domain'+Digin_Domain)
+                return $http.get(Digin_Engine_API+'/get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+$auth.getSecurityToken()+'&Domain'+Digin_Domain)
                        .then(function(result) {
                             //resolve the promise as the data
 							notifications.finishLoading();

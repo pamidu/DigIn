@@ -6,7 +6,7 @@
 <!-- message
  <toast></toast> -->
 
-    <md-content layout="row">
+    <md-content layout="row" ng-init="initiateDatasources()">
         <div class="slider-r-tab">
             <ul class="list-panel icheck-inline">
                 <li class=""
@@ -73,7 +73,8 @@
 				<div flex class="digin-cmds-source">
 					<div ng-repeat="source in datasources"
 						 class="source-wrap icheck-inline hvr-outline-in "
-						 ng-click="commonUi.onClickSelectedSrc(source,datasources, $event)">
+						 ng-click="commonUi.onClickSelectedSrc(source,datasources, $event)"
+                         ng-show="{{source.display}}">
 						<img class="source-icon" ng-src="{{source.icon}}"
 							 alt="{{source.name}}">
 						<div class="source-wrap-footer">
@@ -84,7 +85,7 @@
 							<i class="fa fa-check-circle-o"></i>
 						</div>
 					</div>
-					<div class="source-wrap icheck-inline hvr-outline-in "
+<!-- 					<div class="source-wrap icheck-inline hvr-outline-in "
 						 ng-click="commonUi.openExcelFileUpload($event)">
 						<img class="source-icon" ng-src="styles/icons/source/xlsx.svg"
 							 alt="styles/icons/source/xlsx.svg">
@@ -95,7 +96,7 @@
 							 ng-class="source.selected==true?'selectedSource':'displayNone'">
 							<i class="fa fa-check-circle-o"></i>
 						</div>
-					</div>
+					</div> -->
 				</div>
                
             </div>
@@ -346,7 +347,7 @@
 
 </md-sidenav>
 <!-- </div> -->
-<md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 1500 !important;overflow: hidden;">
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp md-sidenav-right slider-r-wrap" md-component-id="filterMenu" style= "min-width: 700px !important; width: 50vw !important;max-width: 700px !important; z-index: 59 !important;overflow: hidden;">
     <md-toolbar class="" style="background:white">
         <div layout="row" layout-align="canter center" style="height: 85px;">
             <h1 class="md-toolbar-tools" style="width: 45%;color:black;font-family: Roboto;">

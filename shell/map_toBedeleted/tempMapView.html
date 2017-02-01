@@ -1,8 +1,8 @@
 
 
  
-  <md-content flex ng-controller="tempMapCtrl" style="width:100%;height:100%">
-    <my-map mapconfigured="mapconfigured" mydata="mydata" header="'Highmap Demo'"></my-map>
+  <md-content flex ng-controller="tempMapCtrl" >
+    <my-map mapconfigured="mapconfigured" width={{$root.mapWidth}} height={{$root.mapheight}} mydata="mydata" header="'Highmap Demo'"></my-map>
   </md-content>
 
 

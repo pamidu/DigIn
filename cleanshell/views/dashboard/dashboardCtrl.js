@@ -1,4 +1,4 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager', 'DiginServices', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager, DiginServices) {
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager', 'DiginServices' ,'$diginengine', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager, DiginServices, $diginengine) {
 	
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
@@ -200,6 +200,165 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	}
 	
 	$scope.widInit = function(widget) {
+		widget.isD3chart = false;
+            widget.d3chartBtn = false;
+            switch (widget.widgetName) {
+
+                case 'sunburst':
+                    widget.isD3chart = true;
+                    break;
+
+                case 'hierarchy':
+                    widget.isD3chart = true;
+                    break;
+
+            }
+
+            if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
+                var drillConf = widget.widgetData.widData.drillConf;
+                var client = $diginengine.getClient(drillConf.dataSrc);
+                widget.widgetData.highchartsNG.options['customVar'] = drillConf.highestLvl;
+                widget.widgetData.highchartsNG.options.chart['events'] = {
+                    drilldown: function(e) {
+
+                        if (!e.seriesOptions) {
+                            var srcTbl = drillConf.srcTbl,
+                                fields = drillConf.fields,
+                                drillOrdArr = drillConf.drillOrdArr,
+                                chart = this,
+                                clientObj = client,
+                                clickedPoint = e.point.name,
+                                nextLevel = "",
+                                highestLvl = this.options.customVar,
+                                drillObj = {},
+                                isLastLevel = false,
+                                selectedSeries = e.point.series.name,
+                                filterStr = "",
+                                origName = "",
+                                serName = "",
+                                tempArrStr = "",
+                                conStr = "";
+                                var limit;
+                                var level;
+                                var tempArray = [];
+                                var isDate;
+                            // var cat = [];
+                            for (i = 0; i < drillOrdArr.length; i++) {
+                                if (drillOrdArr[i].name == highestLvl) {
+                                    nextLevel = drillOrdArr[i].nextLevel;
+                                    drillOrdArr[i].clickedPoint = clickedPoint;
+                                    level = drillOrdArr[i].level;
+                                    if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
+                                }
+                            }
+                            chart.options.lang.drillUpText = " Back to " + highestLvl;
+                            // Show the loading label
+                            chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
+
+                            //aggregate method
+                            clientObj.getAggData(srcTbl, fields, limit, widget.widgetData.commonSrc.src.id, function(res, status, query) {
+                                angular.forEach( widget.widgetData.highchartsNG.series, function(series) {
+                                    if ( series.name == selectedSeries ) {
+                                        origName = series.origName;
+                                        serName = series.name;
+                                    }
+                                });
+                                drillConf["level"+(level+1)+"Query"] = query;
+                                widget.widgetData.widData.drillConf.currentQuery = query;
+                                if (status) {
+                                    for (var key in res[0]) {
+                                        if (Object.prototype.hasOwnProperty.call(res[0], key)) {
+                                            if (key != nextLevel && key == origName) {
+                                                drillObj = {
+                                                    name: serName,
+                                                    data: [],
+                                                    origName: key,
+                                                    turboThreshold: 0
+                                                };
+                                            }
+                                        }
+                                    }
+                                    if (res.length > 0 ) {
+                                        res.forEach(function(key) {
+                                            if (!isLastLevel) {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName]),
+                                                    drilldown: true
+                                                });
+                                            } else {
+                                                drillObj.data.push({
+                                                    name: key[nextLevel],
+                                                    y: parseFloat(key[drillObj.origName])
+                                                });
+                                            }
+                                        });
+                                        drillObj['cropThreshold'] = drillObj.data.length;
+                                    }
+                                    chart.addSeriesAsDrilldown(e.point, drillObj);
+
+                                } else {
+                                    notifications.toast('0','request failed due to :' + JSON.stringify(res));
+                                    e.preventDefault();
+                                }
+                                widget.widgetData.highchartsNG.xAxis["title"] = {
+                                    text: nextLevel
+                                };
+                                widget.widgetData.highchartsNG.yAxis["title"] = {
+                                    text: selectedSeries
+                                };                                
+                                chart.options.customVar = nextLevel;
+                                chart.hideLoading();
+                            }, nextLevel);
+                        }
+                    },
+                    drillup: function(e) {
+                        var chart = this;
+                        console.log(chart);
+                        console.log(chart.options.customVar);
+                        drillConf.drillOrdArr.forEach(function(key) {
+                        if (key.nextLevel && key.nextLevel == chart.options.customVar) {
+                            chart.options.customVar = key.name;
+                            widget.widgetData.highchartsNG.xAxis["title"] = {
+                                text: chart.options.customVar
+                            };                                                                        
+                            }
+                        });
+                        // set x and y axis titles (DUODIGIN-914)
+                        var flag = false;
+                        drillConf.drillOrdArr.forEach(function(key) {
+                            if (key.name == chart.options.customVar) {
+                                drillConf.currentQuery = drillConf["level" + key.level + "Query"];
+                            }
+                            if (chart.options.customVar == key.nextLevel) {
+                                chart.options.lang.drillUpText = " Back to " + key.name;
+                                flag = true;
+                            }
+                        });
+                        if (!flag) {
+                            widget.widgetData.highchartsNG.yAxis["title"] = {
+                                text: 'values'
+                            };
+                        }
+                    },
+                    beforePrint: function() {
+                        this.setTitle({
+                            text: this.options.exporting.chartOptions.title.text
+                        })
+                        this.heightPrev = this.chartHeight;
+                        this.widthPrev = this.chartWidth;
+                        if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
+                        this.setSize(800,600, false);
+                    },
+                    afterPrint: function() {
+                        this.setTitle({
+                            text: null
+                        })
+                        this.setSize(this.widthPrev,this.heightPrev, true);
+                        if (this.drilldownLevels.length != 0) this.showDrillUpButton();
+                    }                      
+                }
+            }
 		
 	}
 	

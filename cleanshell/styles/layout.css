@@ -202,3 +202,11 @@ div.slide-up p {
   }
 }
 /*End of Keyframe slide-up animation for tips - Used in User visualize data, Upload Source and User Assistance*/
+
+
+/*Manually apply dark theme for md-menu-content with ng-class if the theme is material dark*/
+.applyDarkBackground, .applyDarkBackground > md-menu-item
+{
+	background: rgb(48,48,48) !important;
+	color: white !important;
+}

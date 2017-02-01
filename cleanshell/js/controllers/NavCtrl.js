@@ -13,6 +13,16 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.h1color = '';
 	colorManager.changeTheme('defaultDark');
 	
+	$scope.applyDark = false;
+	
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		//explicitly do something if the theme if dark
+		$rootScope.applyDark = true;
+	}else{
+		//explicitly do something if the theme if light
+	}
+	
 	$scope.firstTime = true;
 
 	$scope.share = function(index, type)

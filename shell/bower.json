@@ -1,0 +1,10 @@
+{
+  "name": "shell",
+  "homepage": "https://github.com/DuoSoftware/Digin",
+  "authors": [
+    "Chamila <chamila@duosoftware.com>"
+  ],
+  "description": "",
+  "main": "index.php",
+  "license": "MIT"
+}

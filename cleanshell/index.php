@@ -525,7 +525,7 @@
     <script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
 	<script src="js/uimicrokernel.js"></script>
 
-	<script src="js/config.js"></script>
+	<script src="../shell/scripts/config.js"></script>
 	<script src="js/services/diginservicehandler.js"></script>
 	<script src="js/services/utility.js"></script>
 	<script src="js/directivelibrary.js"></script>

@@ -23,8 +23,8 @@
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
      }
      else{
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-01/Digin/include/config.php");
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-01/Digin/include/session.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
      }
     INTS();
     if(!isset($_COOKIE["securityToken"])){
@@ -378,7 +378,7 @@
 
 <script src="bower_components/google-map/lodash.min.js"></script>
 <script src="https://code.highcharts.com/maps/modules/map.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<!--script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script-->
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
  <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
  <script type="text/javascript" src="scripts/vendor/lk-all.js"></script>
@@ -439,10 +439,10 @@
 
 <!--temp map-->
 
-<script type="text/javascript" src="//code.highcharts.com/modules/drilldown.js"></script>
+<!--script type="text/javascript" src="//code.highcharts.com/modules/drilldown.js"></script-->
 <script type="text/javascript" src="//code.highcharts.com/maps/modules/map.js"></script>
 <script  type="text/javascript" src="//code.highcharts.com/maps/modules/data.js"></script>
-<script src="//code.highcharts.com/maps/modules/drilldown.js"></script>
+<!--script src="//code.highcharts.com/maps/modules/drilldown.js"></script-->
 <script src="//code.highcharts.com/mapdata/countries/us/us-all.js"></script>
 <script type="text/javascript" src="map_toBedeleted/world-continents.js"></script>
 <script src="//code.highcharts.com/mapdata/custom/asia.js"></script>

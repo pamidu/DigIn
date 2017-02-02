@@ -594,10 +594,8 @@
 	
 	<!--temp map-->
 
-	<script type="text/javascript" src="//code.highcharts.com/modules/drilldown.js"></script>
 	<script type="text/javascript" src="//code.highcharts.com/maps/modules/map.js"></script>
 	<script type="text/javascript" src="//code.highcharts.com/maps/modules/data.js"></script>
-	<script src="//code.highcharts.com/maps/modules/drilldown.js"></script>
 	<script src="//code.highcharts.com/mapdata/countries/us/us-all.js"></script>
 	<script type="text/javascript" src="map_toBedeleted/world-continents.js"></script>
 	<script src="//code.highcharts.com/mapdata/custom/asia.js"></script>

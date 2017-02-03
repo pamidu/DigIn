@@ -587,7 +587,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
         $scope.DeleteDashBoard = function (dashboard) {
             var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
             $scope.Det = [{
-                "comp_id": dashboard.dashboardID,
+                "comp_id": dashboard.dashboardID.toString(),
                 "permanent_delete": false
             }];
 

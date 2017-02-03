@@ -246,6 +246,15 @@
             "widView": "views/widgets/custom/realTime/nbsqaRealtime.html",
             "color": "#9C27B0",
             "sizeX": 4, "sizeY": 4, "row": 0, "col": 16
+        },
+		{
+            "title": "Map",
+            "icon": "styles/css/images/icons/worldwide.svg",
+            "type": "General",
+            "Description": "Time, Manage day to day work",
+            "widView": "map_toBedeleted/tempMapView.html",
+            "color": "#CDDC39",
+            "sizeX": 4, "sizeY": 4, "row": 0, "col": 8
         }
     ]
 }

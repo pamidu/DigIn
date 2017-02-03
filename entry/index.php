@@ -64,24 +64,9 @@
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
 <script type="text/javascript" src="bower_components/ngToast/dist/ngToast.min.js"></script>
-
-
-
-
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
-
-<!-- PouchDB >
-<!--script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
-<script src="https://cdn.jsdelivr.net/angular.pouchdb/4.3.0/angular-pouchdb.min.js"></script-->
-
+<script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
 <script src="bower_components/angular/angular-cookies.min.js"></script>
-
-<!-- #js -->
-<!-- <script type="text/javascript" src="assets/js/config.js"></script>
-<script type="text/javascript" src="assets/js/uimicrokernel.js"></script>  -->
-
-
 <script type="text/javascript" src="../shell/scripts/config.js"></script>
 <script type="text/javascript" src="entry.js"></script>
 

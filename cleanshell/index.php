@@ -525,7 +525,7 @@
     <script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
 	<script src="js/uimicrokernel.js"></script>
 
-	<script src="js/config.js"></script>
+	<script src="../shell/scripts/config.js"></script>
 	<script src="js/services/diginservicehandler.js"></script>
 	<script src="js/services/utility.js"></script>
 	<script src="js/directivelibrary.js"></script>
@@ -590,6 +590,24 @@
 	
 	
 	<script src="views/widgets/custom/realTime/realTimeCtrl.js"></script>
+	
+	
+	<!--temp map-->
+
+	<script type="text/javascript" src="//code.highcharts.com/maps/modules/map.js"></script>
+	<script type="text/javascript" src="//code.highcharts.com/maps/modules/data.js"></script>
+	<script src="//code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+	<script type="text/javascript" src="map_toBedeleted/world-continents.js"></script>
+	<script src="//code.highcharts.com/mapdata/custom/asia.js"></script>
+	<script src="//code.highcharts.com/modules/exporting.js"></script>
+	<script src="//code.highcharts.com/mapdata/custom/oceania.js"></script>
+	<script src="//code.highcharts.com/mapdata/custom/europe.js"></script>
+	<script type="text/javascript" src="map_toBedeleted/lk-all.js"></script>
+
+<script src="//code.highcharts.com/mapdata/custom/south-america.js"></script>
+
+<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
+	
 	<!-- endbuild -->
 	<!--Widgets Controllers-->
 	<script>

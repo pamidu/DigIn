@@ -31,7 +31,18 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		outerMargin: true,
 		draggable: {
 			handle: '.widget-header'
-		},
+		}, 
+		resizable: {
+			enabled: true,
+			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
+			  resize: function(event,$element,widget){
+				if(widget.widgetName == "Map"){
+					$rootScope.mapheight = $element.clientHeight - 50;
+					$rootScope.mapWidth = $element.clientWidth ;
+
+				}
+			}
+        },
 		mobileBreakPoint: 600, // width threshold to toggle mobile mode
 		mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
 		minColumns: 1, // minimum amount of columns the grid can scale down to

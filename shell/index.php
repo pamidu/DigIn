@@ -9,14 +9,6 @@
 // Modified By : Sajeetharan
 ////////////////////////////////
 */
-
-	if(! empty($_SERVER['HTTP_USER_AGENT'])){
-		$useragent = $_SERVER['HTTP_USER_AGENT'];
-		if( preg_match('@(iPad|iPod|iPhone|Android|BlackBerry|SymbianOS|SCH-M\d+|Opera Mini|Windows CE|Nokia|SonyEricsson|webOS|PalmOS)@', $useragent) ){
-			header('Location: ../cleanshell/');
-		}
-	}
-
     //var_dump($_SERVER['DOCUMENT_ROOT']) ; exit();
      if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
@@ -105,21 +97,24 @@
     <!-- image crop -->
     <link rel="stylesheet" href="bower_components/imgcrop/ng-img-crop.css"/> 
     <!-- <link href="http://vjs.zencdn.net/5.8.0/video-js.css" rel="stylesheet"> -->
-    <script type="text/javascript" src="//platform.linkedin.com/in.js">        
+    <!--script type="text/javascript" src="//platform.linkedin.com/in.js"-->  
+    <script type="text/javascript" src="scripts/otherLibraries/in.js"> 
         //api_key: 78itfewa96mm93   //2.33
         api_key: 816rs443i7o0rf
         authorize: true
         scope: r_basicprofile
         r_emailaddress
     </script>
-    <script src="https://apis.google.com/js/client.js"></script> 
+    <!--script src="https://apis.google.com/js/client.js"></script--> 
+    <script type="text/javascript" src="scripts/otherLibraries/client.js"></script>
     <style type="text/css">
         .ui-resizable {
             position: absolute !important;
         }
     </style>
      <!-- If you'd like to support IE8 -->
-        <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+        <!-- script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script-->
+        <script type="text/javascript" src="bower_components/video.js/dist/ie8/videojs-ie8.min.js"></script>
 </head>
 <body layout="column" ng-cloak>
     <md-content style="height: 100%;background:transparent" ui-view layout="column" id="mainContainer" md-theme="{{$root.theme}}">
@@ -132,24 +127,27 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript" src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-<script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
+<!--script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script-->
 <script type="text/javascript" src="scripts/vendor/jquery.jsPlumb-1.4.1-all-min.js"></script>
 <!--script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script-->
 <script type="text/javascript" src="scripts/vendor/twitteroauth.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
 <script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 <script type="text/javascript" src="bower_components/angular-aria/angular-aria.js"></script>
 <script type="text/javascript" src="bower_components/angular-material/angular-material.js"></script>
-<script src="https://code.highcharts.com/stock/highstock.js"></script>
+
+<script type="text/javascript" src="bower_components/highcharts/highstock.js"></script>
 <!-- <script src="http://code.highcharts.com/highcharts.js"></script>  -->
 <script type="text/javascript" src="scripts/vendor/highcharts-ng.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
+<script type="text/javascript" src="bower_components/highcharts/modules/exporting.js"></script>
+<script type="text/javascript" src="bower_components/highcharts/modules/drilldown.js"></script>
 <script type="text/javascript" src="scripts/vendor/google-picker.min.js"></script>
-<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+<!--script type="text/javascript" src="http://d3js.org/d3.v3.min.js"--></script>
+<script type="text/javascript" src="bower_components/d3/d3.min.js"></script>
+<script src="scripts/otherLibraries/dimple.v2.1.6.min.js"></script>
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 <script type="text/javascript" src="scripts/config.js"></script>
 <!--script type="text/javascript" src="scripts/vendor/oauth.js"></script>
@@ -180,22 +178,25 @@
 <script type="text/javascript" src="bower_components/anuglar-drag-drop/ui-sortable-angular.js"></script-->
 <script type="text/javascript" src="scripts/directives/calendar.js"></script>
 <script type="text/javascript" src="scripts/vendor/fullcalendar.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/gcal.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+<!-- script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/gcal.js"></script-->
 <!-- filesaver -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="bower_components/ngstorage/ngStorage.js"></script>
 <!-- PouchDB -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/5.4.5/pouchdb.js"></script>
-<script src="https://cdn.jsdelivr.net/angular.pouchdb/4.3.0/angular-pouchdb.min.js"></script>
+<script type="text/javascript" src="bower_components/pouchdb/dist/pouchdb.js"></script>
+<script type="text/javascript" src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
+
 <!-- html2canvas -->
 <script type="text/javascript" src="scripts/custom/utility.js"></script>
 <script type="text/javascript" src="scripts/app.js"></script>
 <script type="text/javascript" src="scripts/controllers/welcomePageCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/help/videoCtrl.js"></script>
 <!--script type="text/javascript" src="scripts/controllers/data-source/dataSourceCtrl.js"></script-->
+
 <!--download pdf-->
-<script src="https://rawgit.com/exupero/saveSvgAsPng/gh-pages/saveSvgAsPng.js"></script>
-<script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script>
+<script type="text/javascript" src="bower_components/saveSvgAsPng/saveSvgAsPng.js"></script>
+<script type="text/javascript" src="bower_components/jspdf/dist/jspdf.debug.js"></script>
 
 <script type="text/javascript" src="bower_components/pdf/canvas2image.js"></script>
 <script type="text/javascript" src="bower_components/pdf/base64.js"></script>
@@ -250,7 +251,7 @@
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/d3PluginCtrl.js"></script>
  
-<script src="https://code.highcharts.com/modules/funnel.js"></script>
+<script type="text/javascript" src="bower_components/highcharts/modules/funnel.js"></script>
 
 <script type="text/javascript" src="scripts/controllers/socialGraph/SocialAnalysisCtrl.js"></script>
 <script type="text/javascript" src="scripts/controllers/socialGraph/socialGraphFBCtrl.js"></script>
@@ -343,10 +344,10 @@
 <!--hight charts update damith -->
 <!-- // <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script> -->
 <!--script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script-->
-<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
 <!-- customize angular gridster -->
 <script type="text/javascript" src="scripts/vendor/digin-gridster.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <!-- intro -->
 <script src="scripts/intro.min.js"></script>
 <script src="scripts/angular-intro.min.js"></script>
@@ -374,30 +375,33 @@
 <script type="text/javascript" src="bower_components/zeroclipboard/ZeroClipboard.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-ui/angular-ui-select2/select2.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.3/ng-csv.min.js"></script>
+<script type="text/javascript" src="scripts/otherLibraries/ng-csv.min.js"></script>
 
 <script src="bower_components/google-map/lodash.min.js"></script>
-<script src="https://code.highcharts.com/maps/modules/map.js"></script>
-<script  type="text/javascript" src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<script type="text/javascript" src="bower_components/highcharts/modules/map.js"></script>
+
+<script  type="text/javascript" src="bower_components/highcharts/modules/drilldown.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
  <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
  <script type="text/javascript" src="scripts/vendor/lk-all.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
 <script  type="text/javascript" src="http://code.highcharts.com/mapdata/countries/us/us-all.js"></script> 
 <script type="text/javascript" src="bower_components/google-map/angular-simple-logger.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.3.3/angular-google-maps.min.js"></script-->
+<script type="text/javascript" src="bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
+
 <!-- marker clusterer -->
 <!-- angular google maps -->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
- 
-<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU&sensor=false'></script>
+<!--script type="text/javascript" src="https://www.google.com/jsapi"></script-->
+<script type="text/javascript" src="scripts/otherLibraries/jsapi.js"></script>
+<!--script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU&sensor=false'></script-->
  
 <!-- angular google plus -->
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
 <!-- angular at-table -->
 <script src="bower_components/at-table/dist/angular-table.js"></script>
  
-<script type="text/javascript">
+<!--script type="text/javascript">
     google.load('search', '1');
 </script>
 <script type="text/javascript">
@@ -419,40 +423,22 @@
 </script>
 
 <!--  new changes  -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular-messages.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
+
+<!--script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.15.0/TweenMax.min.js"></script-->
 <script type="text/javascript" src="scripts/loginBackground.js"></script>
 <!-- ng file upload -->
 <!-- <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.min.js"></script> --> <!-- for no html5 browsers support -->
 <script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
 
 <!-- video player -->
-<script src="http://static.videogular.com/scripts/videogular/latest/videogular.js"></script>
-<script src="http://static.videogular.com/scripts/controls/latest/vg-controls.js"></script>
-<script src="http://static.videogular.com/scripts/youtube/latest/youtube.js"></script>
+<script src="scripts/otherLibraries/videoPlayer/videogular.js"></script>
+<script src="scripts/otherLibraries/videoPlayer/vg-controls.js"></script>
+<script src="scripts/otherLibraries/videoPlayer/youtube.js"></script>
 
-<!-- payment gateway -->
-<script src="https://checkout.stripe.com/checkout.js"></script>
+<!-- payment gateway >
+<-- script src="https://checkout.stripe.com/checkout.js"--></script>
+ <script src="scripts/otherLibraries/checkout.js"></script>
 <script src="../boarding/scripts/stripe.payment.tool.js"></script>
-
-
-
-<!--temp map-->
-
-<script type="text/javascript" src="//code.highcharts.com/modules/drilldown.js"></script>
-<script type="text/javascript" src="//code.highcharts.com/maps/modules/map.js"></script>
-<script  type="text/javascript" src="//code.highcharts.com/maps/modules/data.js"></script>
-<script src="//code.highcharts.com/maps/modules/drilldown.js"></script>
-<script src="//code.highcharts.com/mapdata/countries/us/us-all.js"></script>
-<script type="text/javascript" src="map_toBedeleted/world-continents.js"></script>
-<script src="//code.highcharts.com/mapdata/custom/asia.js"></script>
-<script src="//code.highcharts.com/modules/exporting.js"></script>
-<script src="//code.highcharts.com/mapdata/custom/oceania.js"></script>
-<script src="//code.highcharts.com/mapdata/custom/europe.js"></script>
-<script type="text/javascript" src="map_toBedeleted/lk-all.js"></script>
-
-<script src="//code.highcharts.com/mapdata/custom/south-america.js"></script>
-
-<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
 
 </html>

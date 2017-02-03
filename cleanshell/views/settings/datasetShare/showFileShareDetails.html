@@ -1,0 +1,112 @@
+<md-dialog style="width:830px;height:500px">
+  <md-dialog-content layout="column">
+
+
+  	 <div layout="row" layout-align="space-between start" style="color: #1b7b97;border-bottom:1px solid #1b7b97;height: 40px;">
+              <span style="font-size: 20px;margin-top: 10px;margin-left: 8px;" flex="75">Share details of {{fileName}}</span>
+              
+              <div layout="column"   layout-align="end end">
+                  <md-button class="buttonMinwidth38 b-r-0" ng-click="closeDialog()">      
+                    <ng-md-icon icon="close"></ng-md-icon>   
+                  </md-button> 
+              </div>
+      </div>
+
+      <div layout="row">
+      	
+      	<div flex>
+			 <div layout="row" layout-align="space-between center">
+				 <h2 style="margin:0">Users</h2>
+
+				 <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-right: 30px;">
+	              <span ng-if="isChecked()">Un-</span>Select All Users 
+	            </md-checkbox>
+
+
+
+				 <!-- <div layout="row" style="margin-right:42px">
+					<p style="margin-right: 10px;color:#aba8a5">Read</p>
+					<md-divider></md-divider>
+					<p style="padding-left: 5px;color:#aba8a5">Write</p>
+					
+				 </div> -->
+
+			 </div>
+
+			<md-list ng-cloak flex style="max-height:380px;overflow:scroll" layout-align="space-between center">
+				<md-list-item class="md-3-line" ng-repeat='user in users' ng-click="null">
+
+	  
+				<img ng-src="views/settings/systemSettings/user.png" style="width: 50px;" alt="{{item.who}}" />
+				<div class="md-list-item-text" layout="column" style="padding-left:20px">
+					<h4>{{getUserName(user.user_id)}}</h4>
+					<h5>permission : <span style="color:rgb(2, 181, 226)">{{user.security_level}}</span> <h5>
+					
+				</div>
+
+
+				<div layout="row" style="margin-right:48px">
+
+				 	<md-checkbox class="md-secondary" style="z-index: 9999;"  ng-checked="exists(user, selectedUsers)" ng-click="toggle(user, selectedUsers)" ></md-checkbox>
+					 <!--  <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(user, selectedUsersRead)" ng-click="toggleUsersRead(user, selectedUsersRead,selectedUsersWrite)"></md-checkbox>
+					 <md-divider></md-divider>
+					 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 20px;" aria-label="write" ng-checked="existsUsersWrite(user, selectedUsersWrite)" ng-click="toggleUsersWrite(user, selectedUsersWrite,selectedUsersRead)"></md-checkbox> -->
+				 </div>
+
+				</md-list-item>  
+			</md-list>
+
+
+		</div>
+
+		<div flex>
+				<div layout="row" layout-align="space-between center">
+					 <h2 style="margin:0">Groups</h2>
+
+					 <md-checkbox aria-label="Select All" ng-checked="isCheckedGroup()" md-indeterminate="isIndeterminateGroup()" ng-click="toggleAllGroup()" style=" margin-right: 30px;">
+		              	<span ng-if="isCheckedGroup()">Un-</span>Select All Groups 
+		            </md-checkbox>
+
+					<!--  <div layout="row" style="margin-right:42px">
+						<p style="margin-right: 10px;color:#aba8a5">Read</p>
+						<md-divider></md-divider>
+						<p style="padding-left: 5px;color:#aba8a5">Write</p>
+						
+					 </div> -->
+				 </div>
+
+				<md-list ng-cloak flex style="max-height:380px;overflow:scroll">
+					<md-list-item class="md-3-line" ng-repeat='group in groups'ng-click="null">
+
+		  
+					<img ng-src="views/settings/systemSettings/groups.png" style="width: 50px;" alt="{{item.who}}" />
+					  <div class="md-list-item-text" layout="column" style="padding-left:20px">
+						<h4>{{getGroupName(group.user_group_id)}}</h4>
+						<h5>permission : <span style="color:rgb(2, 181, 226)">{{group.security_level}}</span> <h5>
+					  </div>
+
+					<div layout="row" style="margin-right:48px">
+						<md-checkbox class="md-secondary" style="z-index: 9999;" ng-checked="existsGroup(group, selectedgroups)" ng-click="toggleGroup(group, selectedgroups)"></md-checkbox>
+						<!--  <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 30px;" aria-label="read" ng-checked="existsUsersRead(group, selectedGroupRead)" ng-click="toggleUsersRead(group, selectedGroupRead,selectedGroupWrite)"></md-checkbox>
+						 <md-divider></md-divider>
+						 <md-checkbox class="md-secondary" style="z-index: 9999; margin-right: 20px;" aria-label="write" ng-checked="existsUsersWrite(group, selectedGroupWrite)" ng-click="toggleUsersWrite(group, selectedGroupWrite,selectedGroupRead)"></md-checkbox> -->
+					 </div>
+
+
+
+					</md-list-item>  
+				</md-list>
+			</div>
+
+
+      </div>
+
+      <div layout="column" layout-align="center end">
+      		<md-button  class="md-raised" ng-click="unShare()">Un-Share</md-button>
+      </div>
+    
+     
+
+
+    </md-dialog-content>
+</md-dialog>

@@ -275,28 +275,28 @@
 						<i class="icon-full-size hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Toggle Fullscreen</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate($event,'Clear Widgets')">
+					<div class="blut-header-icon" ng-click="navigate($event,'Clear Widgets')"  hide-sm hide-xs>
 						<i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate($event,'Save')">
+					<div class="blut-header-icon" ng-click="navigate($event,'Save')"  hide-sm hide-xs>
 						<i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
-					<md-menu md-position-mode="target-right target" >
+					<md-menu md-position-mode="target-right target"  hide-sm hide-xs>
 					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)""> <!--$mdOpenMenu($event)-->
 						<i class="ti-share hover-color" md-colors="{color:'primary'}"></i>
 					  </div>
 					  <md-menu-content ng-class="{'applyDarkBackground': $root.applyDark == true}" >
 						<md-menu-item>
-						  <md-button ng-click="share($index, 'dashboard')">
+						  <md-button ng-click="navigate($event, 'shareDashboard')">
 							  <div layout="row" flex>
 								<p flex>Share Dashboard</p>
 							  </div>
 						  </md-button>
 						</md-menu-item>
 						<md-menu-item>
-						  <md-button ng-click="share($index, 'dashboard')">
+						  <md-button ng-click="navigate($event, 'shareDataset')">
 							  <div layout="row" flex>
 								<p flex>Share Dataset</p>
 							  </div>
@@ -573,6 +573,8 @@
 	<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 	<script src="views/query_builder/query_builderCtrl.js"></script>
 	<script src="views/social/facebook/facebookCtrl.js"></script>
+	<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
+	<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
 
 	<!--Payment stripe-->
     <script src="https://checkout.stripe.com/checkout.js"></script>
@@ -603,10 +605,8 @@
 	<script src="//code.highcharts.com/mapdata/custom/oceania.js"></script>
 	<script src="//code.highcharts.com/mapdata/custom/europe.js"></script>
 	<script type="text/javascript" src="map_toBedeleted/lk-all.js"></script>
-
-<script src="//code.highcharts.com/mapdata/custom/south-america.js"></script>
-
-<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
+	<script src="//code.highcharts.com/mapdata/custom/south-america.js"></script>
+	<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
 	
 	<!-- endbuild -->
 	<!--Widgets Controllers-->

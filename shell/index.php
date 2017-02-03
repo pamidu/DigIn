@@ -23,8 +23,8 @@
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
      }
      else{
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-01/Digin/include/config.php");
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-01/Digin/include/session.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
      }
     INTS();
     if(!isset($_COOKIE["securityToken"])){

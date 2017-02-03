@@ -1375,7 +1375,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         if (pages[i].pageID == page.pageID) {
                             pages.splice(i, 1);
                             //if removed page is not a new page push it
-                            if (page.pageID.substr(0, 4) != "temp") {
+                            if (page.pageID.toString().substr(0, 4) != "temp") {
                                 $rootScope.dashboard.deletions.pageIDs.push(page.pageID);
                             }
                             console.log("$rootScope.dashboard.deletions", $rootScope.dashboard.deletions);

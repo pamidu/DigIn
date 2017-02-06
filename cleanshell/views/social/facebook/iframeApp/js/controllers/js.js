@@ -1,5 +1,4 @@
-angular
-.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary', 'ngMessages' ,'uiMicrokernel'])
+var DiginApp = angular.module('mainApp', ['ngMaterial', 'ngAnimate', 'ui.router', 'directivelibrary', 'ngMessages' ,'uiMicrokernel'])
 	
 	.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -23,12 +22,12 @@ angular
 
 }])
 
-.controller('AppCtrl', ['$scope', '$mdDialog', '$location', '$state', '$timeout', '$q','$http', 'uiInitilize', function ($scope, $mdDialog, $location, $state, $timeout, $q,$http, uiInitilize) {
+DiginApp.controller('AppCtrl', ['$scope', '$mdDialog', '$location', '$state', '$timeout', '$q','$http', 'uiInitilize', function ($scope, $mdDialog, $location, $state, $timeout, $q,$http, uiInitilize) {
 
 
 }])//END OF AppCtrl
 
-.controller('AddCtrl',['$scope', '$mdDialog', '$window', 'notifications', function ($scope, $mdDialog, $window, notifications) {
+DiginApp.controller('AddCtrl',['$scope', '$mdDialog', '$window', 'notifications', function ($scope, $mdDialog, $window, notifications) {
 	
 	//console.log(window.parent.document.getElementById('themeStart').getAttribute("md-theme"));
 	$scope.goToHome = function()
@@ -40,10 +39,14 @@ angular
 }])//END OF AddCtrl
 
 
-.controller('HomeCtrl',['$scope', '$mdDialog', '$window', 'notifications', function ($scope, $mdDialog, $window, notifications) {
+DiginApp.controller('HomeCtrl',['$scope','$rootScope', '$mdDialog', '$window', 'notifications','colorManager', function ($scope,$rootScope, $mdDialog, $window, notifications,colorManager) {
 	
 	//console.log(window.parent.document.getElementById('themeStart').getAttribute("md-theme"));
-	console.log(parent.themeInfo);
+	//console.log(parent.themeInfo);
+	$rootScope.lightOrDark = '';
+	$rootScope.currentColor = '';
+	$rootScope.h1color = '';
+	colorManager.changeTheme(parent.themeInfo);
 	
 	$scope.submit = function()
 	{

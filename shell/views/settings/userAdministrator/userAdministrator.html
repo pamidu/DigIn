@@ -94,17 +94,16 @@
 										<!--md-button ng-if="!tabVisible" md-font-icon="icon-home"  style="font-size: 15px;color:grey height:30px;" aria-label="update" ng-click="resetPassword($event, user)">
 										Reset Password
 										</md-button-->
-										
-
+		
 										<md-button ng-if="!user.Active" style="font-size: 10px;color:grey; min-width: 30px;" aria-label="status" ng-click="acivateUser($event, user)" ng-disabled="tabVisible">
 											<img src="views/settings/userAdministrator/yellow.png"/>
 										</md-button>
 										
-										<md-button ng-if="user.Active"" style="font-size: 10px;color:grey; min-width: 30px;" aria-label="status" ng-click="deacivateUser($event, user)" disabled>
+										<md-button ng-if="user.Active" style="font-size: 10px;color:grey; min-width: 30px;" aria-label="status" ng-click="deacivateUser($event, user)" disabled>
 											<img src="views/settings/userAdministrator/green.png"/>
-										</md-button>
-												
-													<div ng-if="!tabVisible" layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+										</md-button>	
+										
+													<div ng-if="!tabVisible && userLevel=='admin'" layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
 														<md-menu md-offset="0 -7">
 														  <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
 															<img src="views/settings/userAdministrator/menu.png"/>
@@ -113,17 +112,16 @@
 															<md-menu-item>															 
 																  <md-button ng-click="resetPassword($event, user)">
 																	Reset Password
-																  </md-button>
+																  </md-button>	 
 															</md-menu-item>
-															<md-menu-item>
+															<md-menu-item ng-if="loggedUser==user.Id?false:true">
 																  <md-button ng-click="removeUser($event, user)">
 																	Remove User
 																  </md-button>															  
 															</md-menu-item>
 														  </md-menu-content>
-														</md-menu>
-													</div>
-									
+														</md-menu>												
+													</div>																															
 								<md-divider ng-show="!$last"></md-divider>
 								
 							</md-list-item>

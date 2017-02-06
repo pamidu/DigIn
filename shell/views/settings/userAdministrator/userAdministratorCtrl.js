@@ -1,6 +1,9 @@
 routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','userAdminFactory', 'notifications','paymentGateway','$http','$state','Digin_Domain','Digin_Tenant','auth_Path','apis_Path','onsite', function ($scope,$rootScope,$mdDialog,userAdminFactory,notifications,paymentGateway,$http,$state,Digin_Domain,Digin_Tenant,auth_Path,apis_Path,onsite){
 	var vm = this;
 	
+	$rootScope.loggedUser=JSON.parse(decodeURIComponent(getCookie('authData'))).Username;
+	
+	
 	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 	{
 		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');

@@ -240,8 +240,8 @@ md-tabs[md-align-tabs=bottom]
 			<i class="icon-cancel" style="font-size:10px;cursor:pointer;outline:none" ng-click="removePage($event, page);$event.stopPropagation()" flex></i>
 		</md-tab-label>
 		<md-tab-body>
-			<div class="setting-container">
-			<div gridster="gridsterOpts">
+			<md-content class="setting-container" gridster="gridsterOpts" style="background:transparent">
+
 	
 					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" style="padding-bottom: 49px !important;overflow:inherit">
 						<div class="widget-header" layout="row" layout-align="space-between center">
@@ -329,8 +329,8 @@ md-tabs[md-align-tabs=bottom]
 
 					</md-content>
 	
-			</div>
-			</div>
+
+			</md-content>
 		</md-tab-body>
 	  </md-tab>
 	  <md-tab label="add page">

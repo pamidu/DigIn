@@ -8,12 +8,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
+	window.themeInfo = 'default';
+	$rootScope.theme = 'default';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
-	colorManager.changeTheme('defaultDark');
-	
-	window.themeInfo = 'defaultDark';
+	colorManager.changeTheme(window.themeInfo);
 	
 	window.firefunction = function()
 	{
@@ -253,6 +253,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}else if(action == 'theme')
 		{
 			location.href = '#/theme';
+		}else if(action == 'shareDashboard')
+		{
+			location.href = '#/shareDashboard';
+		}else if(action == 'shareDataset')
+		{
+			location.href = '#/shareDataset';
 		}
 		
 		

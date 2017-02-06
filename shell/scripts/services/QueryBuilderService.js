@@ -1,4 +1,4 @@
-routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metricChartServices,tabularService,notifications){
+routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterService,metricChartServices,tabularService,notifications){
     this.sync = function(widgetData, cb){        
         var chartType = widgetData.selectedChart.chartType;
         var widType = eval('new ' + chartType.toUpperCase() + '();');
@@ -69,7 +69,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                     })
                     return;
                 }
-            });
+            },$rootScope.userSettings.query_limit);
         }
     };
 
@@ -205,7 +205,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                     widObj.syncState = true;
                     cb(widObj);
                 }
-            });
+            },$rootScope.userSettings.query_limit);
         }
     };
     
@@ -270,7 +270,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                             cb(widObj);
                         }
                     }
-                });
+                },$rootScope.userSettings.query_limit);
             } else {
                 targetRequest = true;
                 targetSuccess = true;
@@ -297,7 +297,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                         cb(widObj);
                     }
                 }
-            });
+            },$rootScope.userSettings.query_limit);
             if(widObj.selectedChart.initObj.trendQuery != "") {
                 cl.getExecQuery(widObj.selectedChart.initObj.trendQuery,  widObj.commonSrc.src.id, function(res, status, query) {
                     if (status) {
@@ -320,7 +320,7 @@ routerApp.service('$qbuilder',function($filter,$diginengine,filterService,metric
                             cb(widObj);
                         }
                     }
-                });
+                },$rootScope.userSettings.query_limit);
             } else {
                 trendRequest = true;
                 trendSuccess = true;

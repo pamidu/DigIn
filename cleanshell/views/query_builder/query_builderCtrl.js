@@ -3,6 +3,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		var chartBackgroundColor = "";
 		var chartFontColor = "";
 		
+		$scope.viewPortHeight = "calc(100vh - 92px)";
+		$scope.$parent.topMenuToggle2 = function()
+		{
+			if($rootScope.showHeader == true)
+			{
+				$scope.viewPortHeight = "calc(100vh - 92px)";
+			}else{
+				$scope.viewPortHeight = "calc(100vh - 46px)";
+			}
+		}
+		
 		if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 		{
 			chartBackgroundColor = "rgb(48,48,48)";
@@ -17,9 +28,6 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.selectedDB = $stateParams.selectedDB;
 		
 		$scope.client = $diginengine.getClient($scope.selectedDB);
-		
-		console.log($(window).height());
-		$scope.windowHeight = $(window).height() - 92 + "px";
 		
 		$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 		$scope.limit = 100;

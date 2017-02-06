@@ -1,4 +1,4 @@
-app.config(['$mdThemingProvider', function($mdThemingProvider) {
+DiginApp.config(['$mdThemingProvider', function($mdThemingProvider) {
 
 	$mdThemingProvider.definePalette('customPrimary', {
         '50': '#66dffe',

@@ -152,6 +152,18 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		controller: 'systemSettingsCtrl',
 		controllerAs: 'vm'
 	})
+	
+	.state('sharedashboard', {
+        url: '/sharedashboard',
+        controller: 'sharedashboardgroupsCtrl',
+        templateUrl: "views/settings/dashboardShare/sharedashboard.html"
+    })
+	
+	.state('shareDataset', {
+        url: '/shareDataset',
+        controller: 'datasetShareCtrl',
+        templateUrl: "views/settings/datasetShare/datasetShare.html"
+    });
 
 
   GoogleMapApi.configure({

@@ -1514,11 +1514,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
-            //sync
-            widget.widgetData.syncState = false;
-            $qbuilder.sync(widget.widgetData, function (data) {
-                widget.widgetData.syncState = true;
-            });
+            if ($scope.selectedChart.chartType == "highCharts" || $scope.selectedChart.chartType == "metric") {
+                //sync
+                widget.widgetData.syncState = false;
+                $qbuilder.sync(widget.widgetData, function (data) {
+                    widget.widgetData.syncState = true;
+                });
+            }
             $state.go('home.Dashboards');
         }, 1000);
     };

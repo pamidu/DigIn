@@ -2,11 +2,11 @@
 
 routerApp.service('filterService',function(){
 
+    // filter only the selected fields from the result returned by the service
 	this.filterAggData = function(res,filterFields) {
         if (filterFields === undefined ){
             return;
         }
-		// filter only the selected fields from the result returned by the service
         if (filterFields.length > 0){
             for (c in res[0]) {
                  if (Object.prototype.hasOwnProperty.call(res[0], c)) {
@@ -98,7 +98,7 @@ routerApp.service('filterService',function(){
         }
     };
 
-    //create the 'cons' parameter of the request
+    //create the 'cons' parameter of the request - run time filters
     this.generateFilterParameters = function(filterParams,datasource){
         var filterArray = [];
         angular.forEach(filterParams,function(filter){
@@ -128,7 +128,7 @@ routerApp.service('filterService',function(){
         });
         return filterArray;        
     };
-
+    //create the 'cons' parameter of the request - design time filters
     this.generateDesginFilterParams = function(filterParams,datasource){
         var filterArray = [];
         angular.forEach(filterParams,function(filter){

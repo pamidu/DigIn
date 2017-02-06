@@ -113,13 +113,13 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
 
               //to get users
               for(var i=0; i<$scope.selected.length; i++){
-                var user ={"comp_id":dashboardId,"is_user":true,"id":$scope.selected[i].UserID,"security_level":"write"};
+                var user ={"comp_id":dashboardId.toString(),"is_user":true,"id":$scope.selected[i].UserID,"security_level":"write"};
                 idArr.push(user);
               }
 
               //to get groups
               for(var i=0; i<$scope.selectedgroups.length; i++){
-                var group ={"comp_id":dashboardId,"is_user":false,"id":$scope.selectedgroups[i].UserID,"security_level":"write"};
+                var group ={"comp_id":dashboardId.toString(),"is_user":false,"id":$scope.selectedgroups[i].UserID,"security_level":"write"};
                 idArr.push(group);
               }
 

@@ -73,7 +73,7 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, metricChartServices, layoutManager, tabularService) {
+routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, metricChartServices, layoutManager, tabularService, $qbuilder) {
     if($rootScope.showHeader == true)
    {
     $rootScope.showHeader = layoutManager.showHeader();
@@ -1514,6 +1514,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
             $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
+            if ($scope.selectedChart.chartType == "highCharts" || $scope.selectedChart.chartType == "metric") {
+                //sync
+                widget.widgetData.syncState = false;
+                $qbuilder.sync(widget.widgetData, function (data) {
+                    widget.widgetData.syncState = true;
+                });
+            }
             $state.go('home.Dashboards');
         }, 1000);
     };

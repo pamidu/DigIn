@@ -63,14 +63,18 @@
 		</md-tab-label>
 		<md-tab-body>
 		
-			<div layout="row" style="max-width:960px;margin: 0 auto;margin-bottom: 15px;margin-top:20px" ng-if="tabVisible">
-				<input placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important;box-shadow:0 2px 4px 0 rgba(0,0,0,.15) !important;margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
-				<md-button aria-label="Open demo menu" class="md-raised md-primary" style="border-radius: 0px 4px 4px 0px !important;background: #02b5e2;margin: 0px;" ng-click="enterInviteUser($event,searchText)">
-					<span style="text-transform:none">Add User</span>
-				</md-button>
-			</div>
 			
-			<div class="card-container" layout-padding>
+			
+			<div class="card-container" layout-padding >
+
+				<div layout="row" style="margin: 0 auto;margin-bottom: 10px; margin-top:20px" class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" ng-if="tabVisible">
+					<input placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important; margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
+					<md-button aria-label="Open demo menu" class="md-raised md-primary" style="border-radius: 0px 4px 4px 0px !important;background: #02b5e2;margin: 0px;" ng-click="enterInviteUser($event,searchText)">
+						<span style="text-transform:none">Add User</span>
+					</md-button>
+				</div>
+
+
 				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 					<md-content>
 						<div layout="row" layout-align="end end">

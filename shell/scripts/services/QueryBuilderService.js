@@ -130,7 +130,7 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
             cb(serArr);
         }
 
-        function setMeasureData(res,measureData){
+        function setMeasureData(res,measureData,drilled){
             var series = [];
             var i = 0;
             var cat = []
@@ -147,10 +147,18 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
 
             res.forEach(function (key) {
                 measureData.forEach(function(data){
-                    data.data.push({
-                        name: key[y],
-                        y: parseFloat(key[data.origName])
-                    });
+                    if (drilled){
+                        data.data.push({
+                            name: key[y],
+                            y: parseFloat(key[data.origName]),
+                            drilldown: true
+                        });
+                    } else{
+                        data.data.push({
+                            name: key[y],
+                            y: parseFloat(key[data.origName])
+                        });
+                    }
                 })
             })
 
@@ -184,7 +192,8 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
                         });
                     }else{
                         var measureData = widObj.highchartsNG.series;
-                        widObj.highchartsNG.series = setMeasureData(res,measureData);
+                        drilled = widObj.widData.drilled;
+                        widObj.highchartsNG.series = setMeasureData(res,measureData,drilled);
                     }
 
                     if(typeof widObj.widData.drilled != "undefined")

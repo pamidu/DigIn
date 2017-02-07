@@ -695,7 +695,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                         if ($rootScope.dashboard.pages.length > 0){
                             if ($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets.length > 0){
                                 angular.forEach($rootScope.dashboard.pages[$rootScope.selectedPage-1].widgets,function(widget){
-                                    if (widget.widgetID.substr(0, 4) == "temp") {
+                                    if (widget.widgetID.toString().substr(0, 4) == "temp") {
                                         saveFlag = true;
                                     }
                                 });

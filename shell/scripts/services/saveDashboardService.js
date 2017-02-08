@@ -358,14 +358,14 @@ var localThis = this;
             var decValue = widgets[j].widgetData.widData.decValue;
             var value = widgets[j].widgetData.widData.value;
             dataArray.push(decValue,value,series);
-            // widgets[j].widgetData.widData.decValue = "";
-            // widgets[j].widgetData.widData.value = "";
-            // widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
+            widgets[j].widgetData.widData.decValue = "";
+            widgets[j].widgetData.widData.value = "";
+            widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
             break;
           case 'highCharts':
-            var series = widgets[j].widgetData.highchartsNG.series.data;
+            var series = widgets[j].widgetData.highchartsNG.series[0].data;
             dataArray.push(series);
-            widgets[j].widgetData.highchartsNG.series.data = [];
+            widgets[j].widgetData.highchartsNG.series[0].data = [];
             break;
           case 'Tabular':
             var series = widgets[j].widgetData.widData.userList;
@@ -434,7 +434,7 @@ var localThis = this;
       case 'hierarchy':
         break;
       case 'highCharts':
-        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series.data = data[0];
+        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
         break;
       case 'metric':
         $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.decValue = data[0];

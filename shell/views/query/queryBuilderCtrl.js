@@ -164,9 +164,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.queryEditState = false;
     $scope.metricObj = {
         decimals: [0, 1, 2, 3, 4],
-        scalePositions: ["front", "back"]
+        scalePositions: ["front", "back"],
+        formats:["General","Thousand","Million","Billion"]
     };
-
 
     $scope.forecastAtts = [];
     $scope.forecastAtt = "";
@@ -3799,6 +3799,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 decValue: $scope.selectedChart.initObj.decValue,
                 dec: $scope.selectedChart.initObj.dec,
                 scale: $scope.selectedChart.initObj.scale,
+                format: $scope.selectedChart.initObj.format,
                 value: $scope.selectedChart.initObj.value,
                 color: $scope.selectedChart.initObj.color,
                 scalePosition: $scope.selectedChart.initObj.scalePosition
@@ -4975,6 +4976,32 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         if ($scope.selectedChart.initObj.targetValue != "" && $scope.selectedChart.initObj.targetValue !== undefined)
             $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
     };
+
+    $scope.changeFormat = function() {
+        if($scope.selectedChart.initObj.format=='Thousand'){
+            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000;
+            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000;
+        }else if($scope.selectedChart.initObj.format=='Million'){
+            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000000;
+            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000000;
+        }else if($scope.selectedChart.initObj.format=='Billion'){
+            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000000000;
+            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000000000;
+        }else{
+            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue;
+            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue;
+        }
+        $scope.changeDecimalsTemp();
+    };
+
+    $scope.changeDecimalsTemp = function() {
+        if ($scope.selectedChart.initObj.decValueTemp != "" && $scope.selectedChart.initObj.decValueTemp !== undefined)
+            $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValueTemp), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+        if ($scope.selectedChart.initObj.targetValueTemp != "" && $scope.selectedChart.initObj.targetValueTemp !== undefined)
+            $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValueTemp), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+    };
+
+
     $scope.changeMetricTrendType = function() {
         var units;
         if ($scope.selectedChart.initObj.trendChart.series.length != 0) {
@@ -5070,6 +5097,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.value = "";
         $scope.selectedChart.initObj.scale = "";
         $scope.selectedChart.initObj.dec = 2;
+        $scope.selectedChart.initObj.format = "General";
         $scope.selectedChart.initObj.color = "white";
         $scope.selectedChart.initObj.targetRange = "";
         $scope.selectedChart.initObj.targetValue = "";

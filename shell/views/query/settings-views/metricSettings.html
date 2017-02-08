@@ -42,6 +42,18 @@
                 </md-select>
             </md-input-container>
         </md-container>
+
+        <md-container flex layout="column">
+             <md-input-container flex="50">
+                <label>Formatting Value</label>
+                <md-select ng-change="changeFormat()" ng-model="selectedChart.initObj.format">
+                    <md-option ng-repeat="format in metricObj.formats" value="{{format}}">
+                        {{format}}
+                    </md-option>
+                </md-select>
+            </md-input-container>  
+        </md-container>    
+
     </md-container>
     <md-container>
         <label class="chart-settings-labels">Data Settings</label>

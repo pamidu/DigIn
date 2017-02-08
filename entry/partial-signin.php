@@ -5,7 +5,7 @@
        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
     }
     else{
-       require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+       require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-08/Digin/include/config.php");
     }
 
     if(onsite) {

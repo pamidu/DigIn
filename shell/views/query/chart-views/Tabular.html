@@ -97,7 +97,7 @@ tr .wrap{
     <tr ng-repeat="user in widget.widgetData.widData.userList| limitTo:widget.widgetData.widData.tabularConfig.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
      
       <td ng-repeat="y in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{y.Alignment}}">
-      	  	{{user[y.Attribute]}}
+      	  	{{widget.widgetData.widData.tabularService.numberWithCommas(user[y.Attribute])}}
       </td>
 
        <!--td>{{user.profit}}</td>

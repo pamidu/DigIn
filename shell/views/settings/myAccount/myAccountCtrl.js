@@ -2618,16 +2618,24 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
     //----------- Payment History Starts ---------------------------
     $scope.paymentLoading = false;
     $scope.ledgers = [];
+    $scope.intDate = moment(new Date()).format('YYYY-MM-D');
+    $scope.visualDate = {
+        startDate: $scope.intDate,
+        endDate: $scope.intDate,
+    };
+
     $scope.getPaymentHistory = function(){
         $scope.ledgers = [];
         //Date validations
-        if($scope.startDate === undefined || $scope.startDate == "" || $scope.endDate === undefined || $scope.endDate == "" )
+
+
+        if($scope.visualDate.startDate === undefined || $scope.visualDate.startDate == "" || $scope.visualDate.endDate === undefined || $scope.visualDate.endDate == "" )
         {
             notifications.toast('0','Please select a date range!');
             return;
         }
-        var startDate = moment($scope.startDate);
-        var endDate = moment($scope.endDate);        
+        var startDate = moment($scope.visualDate.startDate);
+        var endDate = moment($scope.visualDate.endDate);        
         if ( startDate > endDate)
         {
             notifications.toast('0','Please select a valid date range!');
@@ -2635,7 +2643,7 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
         }
         $scope.paymentLoading = true;
         // $http.get('http://192.168.2.61:8080/get_packages?get_type=ledger&SecurityToken=4ea0b4e5351ebb4df4fdf3cefe298106&start_date=2016-10-15%2000:00:00&end_date=2016-11-15%2000:00:00')
-        $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.startDate + ' 00:00:00' + '&end_date=' + $scope.endDate + ' 23:59:59')
+        $http.get(Digin_Engine_API + 'get_packages?get_type=ledger&SecurityToken=' + getCookie('securityToken') + '&start_date=' + $scope.visualDate.startDate + ' 00:00:00' + '&end_date=' + $scope.visualDate.endDate + ' 23:59:59')
             .success(function(data) {
                 if(data.Is_Success) {
                     var newObj = {};

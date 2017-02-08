@@ -164,9 +164,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.queryEditState = false;
     $scope.metricObj = {
         decimals: [0, 1, 2, 3, 4],
-        scalePositions: ["front", "back"]
+        scalePositions: ["front", "back"],
+        formats:['General',"Thousand","Million","Billion"]
     };
-
 
     $scope.forecastAtts = [];
     $scope.forecastAtt = "";
@@ -4974,6 +4974,18 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
         if ($scope.selectedChart.initObj.targetValue != "" && $scope.selectedChart.initObj.targetValue !== undefined)
             $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+    };
+
+    $scope.changeFormat = function() {
+        if($scope.selectedChart.initObj.format=='Thousand'){
+            $scope.formatSymbol='K';
+        }else if($scope.selectedChart.initObj.format=='Million'){
+            $scope.formatSymbol='M';
+        }else if($scope.selectedChart.initObj.format=='Billion'){
+            $scope.formatSymbol='B';
+        }else{
+            $scope.formatSymbol='';
+        }
     };
     $scope.changeMetricTrendType = function() {
         var units;

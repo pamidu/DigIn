@@ -13,5 +13,5 @@ define("SVC_CEB_URL", "http://dev.auth.digin.io:3500");  //#Note : http://dev.au
 define("Digin_Domain", "dev.digin.io"); //#Note : dev.digin.io
 define("Digin_Engine_API", "http://dev.digin.io/DigInEngine/"); //Note : http://dev.digin.io/DigInEngine/
 define("PAYMENT_GATWAY", "stripe"); 
-define("onsite", true); 
+define("onsite", false); 
 ?>

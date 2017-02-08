@@ -479,7 +479,7 @@ routerApp
                 $scope.getExpiry(function(data){
                     if(data){                        
                         if($scope.remainingDays>0){
-                            $scope.proceedLogin(authData, SecurityToken);
+                            $scope.proceedLogin(authData, authData.SecurityToken);
                         }
                         else{
                             //#trial period has been expired
@@ -493,7 +493,7 @@ routerApp
                                 $mdDialog.show(confirm).then(function() {
                                     //*Go to My Account
                                     //*If agreed to subscribe, direct myAccount page
-                                    $scope.proceedLogin(authData, Securitytoken);
+                                    $scope.proceedLogin(authData, authData.SecurityToken);
                                     return; 
                                 }, function() {
                                     //*Exit

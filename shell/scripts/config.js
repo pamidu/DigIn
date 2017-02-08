@@ -10,7 +10,7 @@ angular.module('configuration', [])
 .constant('Digin_ObjStore', 'http://dev.auth.digin.io:3000') //#http://dev.auth.digin.io:3000
 //#for loggin process
 .constant('IsLocal', true) //# true for local developmet only 
-.constant('Local_Shell_Path', 'http://localhost:8081/DigIn/shell') //#This is the shell path only for local usage
+.constant('Local_Shell_Path', 'http://localhost:8080/DigIn/shell') //#This is the shell path only for local usage
 //#apis folder path inside the html folder ** NOTE : if apis folder in -->html/apis/ then apis_path--> '/apis/'
 .constant('apis_Path', '/apis/')
 .constant('auth_Path', '/auth/')
@@ -22,7 +22,7 @@ angular.module('configuration', [])
 //#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
 .constant('dbType', 'memsql')
 //# url for facebook app
-.constant('fbUrl', 'http://localhost:8081/DigIn-FB/index.html')
+.constant('fbUrl', 'http://localhost:8080/DigIn-FB/index.html')
 
 //configure datasource connections in DigIn/shell/jsons/dbConfig.json
 // #set the 'display' parameter in each object to configure visibility

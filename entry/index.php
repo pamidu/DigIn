@@ -43,9 +43,9 @@
     <link rel="stylesheet" type="text/css" href="bower_components/ngToast/dist/ngToast.min.css">
 
     <!-- google font -->
-    <link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
+    <!--link href='https://fonts.googleapis.com/css?family=Ek+Mukta:200,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'-->
 
 
 </head>

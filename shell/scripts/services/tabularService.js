@@ -371,7 +371,11 @@ routerApp.service('tabularService',function($rootScope,$http,Digin_Engine_API,Di
     }
 
     this.numberWithCommas = function (x) {
-         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        if(!isNaN(x))
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        else
+            return x;
     }
 
     this.changeSort=function(name,widget){

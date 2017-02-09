@@ -447,4 +447,22 @@
  <script src="scripts/otherLibraries/checkout.js"></script>
 <script src="../boarding/scripts/stripe.payment.tool.js"></script>
 
+<!--temp map-->
+
+<!--script type="text/javascript" src="//code.highcharts.com/modules/drilldown.js"></script-->
+<script type="text/javascript" src="//code.highcharts.com/maps/modules/map.js"></script>
+<script  type="text/javascript" src="//code.highcharts.com/maps/modules/data.js"></script>
+<!--script src="//code.highcharts.com/maps/modules/drilldown.js"></script-->
+<script src="//code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+<script type="text/javascript" src="map_toBedeleted/world-continents.js"></script>
+<script src="//code.highcharts.com/mapdata/custom/asia.js"></script>
+<script src="//code.highcharts.com/modules/exporting.js"></script>
+<script src="//code.highcharts.com/mapdata/custom/oceania.js"></script>
+<script src="//code.highcharts.com/mapdata/custom/europe.js"></script>
+<script type="text/javascript" src="map_toBedeleted/lk-all.js"></script>
+
+<script src="//code.highcharts.com/mapdata/custom/south-america.js"></script>
+
+<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
+
 </html>

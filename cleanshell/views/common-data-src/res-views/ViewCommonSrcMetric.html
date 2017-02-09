@@ -12,10 +12,12 @@
 
 			<div layout="column" flex>
 				<text style="font-size:30px;font-weight: 700;letter-spacing: 1px;" ng-if="widget.widgetData.widData.scalePosition==='front'">
-					{{widget.widgetData.widData.scale}}&nbsp;{{widget.widgetData.widData.value}}
+					{{widget.widgetData.widData.scale}}
+					&nbsp;{{widget.widgetData.widData.value}}
 				</text>
 				<text style="font-size:30px;font-weight: 700;letter-spacing: 1px;" ng-if="widget.widgetData.widData.scalePosition==='back'">
-					{{widget.widgetData.widData.value}}&nbsp;{{widget.widgetData.widData.scale}}
+					{{widget.widgetData.widData.value}}
+					&nbsp;{{widget.widgetData.widData.scale}}
 				</text>
 				<text style="font-size:15px">Actual Value</text>
 			</div>
@@ -26,10 +28,12 @@
 		<div layout="row" flex style="padding:10px;">
 			<div layout="column" flex>
 				<text style="font-size:18px;font-weight: 700;letter-spacing: 1px;" ng-if="widget.widgetData.widData.scalePosition==='front'">
-					{{widget.widgetData.widData.scale}}&nbsp;{{widget.widgetData.selectedChart.initObj.targetValueString}}
+					{{widget.widgetData.widData.scale}}
+					&nbsp;{{widget.widgetData.selectedChart.initObj.targetValueString}}
 				</text>
 				<text style="font-size:18px;font-weight: 700;letter-spacing: 1px;" ng-if="widget.widgetData.widData.scalePosition==='back'">
-					{{widget.widgetData.selectedChart.initObj.targetValueString}}&nbsp;{{widget.widgetData.widData.scale}}
+					{{widget.widgetData.selectedChart.initObj.targetValueString}}
+					&nbsp;{{widget.widgetData.widData.scale}}
 				</text>
 				<text style="font-size:15px">Target Value</text>
 			</div>

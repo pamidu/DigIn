@@ -3725,6 +3725,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.$apply(function() {
                         $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
                         $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace],2).toLocaleString();
+                        $scope.selectedChart.initObj.targetValueDisplay = convertDecimals(res[0][nameSpace],2);
                     })
                 } else {
                     $scope.isPendingRequest = false;
@@ -4903,6 +4904,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.color = "white";
         $scope.selectedChart.initObj.targetRange = "";
         $scope.selectedChart.initObj.targetValue = "";
+        $scope.selectedChart.initObj.targetValueDisplay= ""; 
         $scope.selectedChart.initObj.targetQuery = "";
         $scope.selectedChart.initObj.targetValueString = "";
         $scope.selectedChart.initObj.targetField = "";
@@ -4971,10 +4973,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     // ------------- Metric chart methods start ----------------------
     //metric decimal change
     $scope.changeDecimals = function() {
-        if ($scope.selectedChart.initObj.decValue != "" && $scope.selectedChart.initObj.decValue !== undefined)
+
+        $scope.changeFormat();
+
+        /*if ($scope.selectedChart.initObj.decValue != "" && $scope.selectedChart.initObj.decValue !== undefined)
             $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
         if ($scope.selectedChart.initObj.targetValue != "" && $scope.selectedChart.initObj.targetValue !== undefined)
-            $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+            $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValue), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();*/
     };
 
     $scope.changeFormat = function() {
@@ -4997,8 +5002,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.changeDecimalsTemp = function() {
         if ($scope.selectedChart.initObj.decValueTemp != "" && $scope.selectedChart.initObj.decValueTemp !== undefined)
             $scope.selectedChart.initObj.value = convertDecimals(parseFloat($scope.selectedChart.initObj.decValueTemp), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
-        if ($scope.selectedChart.initObj.targetValueTemp != "" && $scope.selectedChart.initObj.targetValueTemp !== undefined)
+        if ($scope.selectedChart.initObj.targetValueTemp != "" && $scope.selectedChart.initObj.targetValueTemp !== undefined){
             $scope.selectedChart.initObj.targetValueString = convertDecimals(parseFloat($scope.selectedChart.initObj.targetValueTemp), parseInt($scope.selectedChart.initObj.dec)).toLocaleString();
+            $scope.selectedChart.initObj.targetValueDisplay=convertDecimals(parseFloat($scope.selectedChart.initObj.targetValueTemp), parseInt($scope.selectedChart.initObj.dec));
+        }
     };
 
 
@@ -5104,6 +5111,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.selectedChart.initObj.targetQuery = "";
         $scope.selectedChart.initObj.trendQuery = "";
         $scope.selectedChart.initObj.targetValueString = "";
+        $scope.selectedChart.initObj.targetValueDisplay= "";
         $scope.selectedChart.initObj.targetField = "";
         $scope.selectedChart.initObj.groupByField = "";
         $scope.selectedChart.initObj.timeAttribute = "";
@@ -5132,10 +5140,12 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     // convert target value integer to comma seperated value
     $scope.changeTargetValue = function() {
         if ($scope.selectedChart.initObj.targetValue != null) {
-            $scope.selectedChart.initObj.targetValueString = $scope.selectedChart.initObj.targetValue.toLocaleString();            
+            $scope.selectedChart.initObj.targetValueString = $scope.selectedChart.initObj.targetValue.toLocaleString();   
+            $scope.selectedChart.initObj.targetValueDisplay = $scope.selectedChart.initObj.targetValue;
         } else {
             $scope.selectedChart.initObj.targetValue = "";
             $scope.selectedChart.initObj.targetValueString = "";
+            $scope.selectedChart.initObj.targetValueDisplay="";
         }
     };
     // -------------------------- Metric chart methods ends --------------------------

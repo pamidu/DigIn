@@ -14,7 +14,11 @@
 					<div layout="column" flex>
 						<text   style="font-size:35px;font-weight: 700;letter-spacing: 1px;" 
 							    ng-if="selectedChart.initObj.scalePosition==='front'" >
-							   		{{selectedChart.initObj.scale}} &nbsp;{{selectedChart.initObj.value}} {{selectedChart.initObj.format}} 
+							   		{{selectedChart.initObj.scale}} 
+							   		&nbsp;{{selectedChart.initObj.value}} 
+							   		{{selectedChart.initObj.format=="Thousand"?"K":""}}
+						        	{{selectedChart.initObj.format=="Million"?"M":""}}
+						        	{{selectedChart.initObj.format=="Billion"?"B":""}} 
 						</text>
 						<text   style="font-size:30px;font-weight: 700;letter-spacing: 1px;" 
 						        ng-if="selectedChart.initObj.scalePosition==='back'" >

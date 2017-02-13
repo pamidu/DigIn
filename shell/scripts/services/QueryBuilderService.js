@@ -234,11 +234,37 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
             widObj.widData.value = convertDecimals(setMeasureData(metricValue[0]),parseInt(widObj.widData.dec)).toLocaleString();
             widObj.selectedChart.initObj.value = widObj.widData.value;
             widObj.selectedChart.initObj.decValue = widObj.widData.decValue;
+            
+            //Formatting values as per the selected numbering format
+            if(widObj.widData.format=='Thousand'){
+                widObj.selectedChart.initObj.value=convertDecimals(setMeasureData(widObj.widData.decValue/1000),parseInt(widObj.widData.dec)).toLocaleString();
+            }else if(widObj.widData.format=='Million'){
+                widObj.selectedChart.initObj.value=convertDecimals(setMeasureData(widObj.widData.decValue/1000000),parseInt(widObj.widData.dec)).toLocaleString();
+            }else if(widObj.widData.format=='Billion'){;
+                widObj.selectedChart.initObj.value=convertDecimals(setMeasureData(widObj.widData.decValue/1000000000),parseInt(widObj.widData.dec)).toLocaleString();
+            }else{
+                widObj.selectedChart.initObj.value = widObj.widData.value;
+            }   
+
+
             // Apply metric settings after filtering if target value is set
             if (widObj.selectedChart.initObj.targetValue != "" && widObj.selectedChart.initObj.targetValueString != "") {
                 if (widObj.commonSrc.target.length == 1) {
                     widObj.selectedChart.initObj.targetValue = setMeasureData(targetValue[0]);
                     widObj.selectedChart.initObj.targetValueString = convertDecimals(widObj.selectedChart.initObj.targetValue,2).toLocaleString();
+                   
+                 //Formatting values as per the selected numbering format
+                    if(widObj.widData.format=='Thousand'){
+                        widObj.selectedChart.initObj.targetValueString=convertDecimals(setMeasureData(widObj.selectedChart.initObj.targetValue/1000),parseInt(widObj.widData.dec)).toLocaleString();
+                    }else if(widObj.widData.format=='Million'){
+                        widObj.selectedChart.initObj.targetValueString=convertDecimals(setMeasureData(widObj.selectedChart.initObj.targetValue/1000000),parseInt(widObj.widData.dec)).toLocaleString();
+                    }else if(widObj.widData.format=='Billion'){;
+                        widObj.selectedChart.initObj.targetValueString=convertDecimals(setMeasureData(widObj.selectedChart.initObj.targetValue/1000000000),parseInt(widObj.widData.dec)).toLocaleString();
+                    }else{
+                        widObj.selectedChart.initObj.targetValueString = widObj.widData.value;
+                    }      
+
+
                 }
                 metricChartServices.applyMetricSettings(widObj.selectedChart);
             }
@@ -247,7 +273,6 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
                 metricChartServices.mapMetricTrendChart(widObj.selectedChart,key,trendValue);
             }
         }
-
 
         this.sync = function(q, cl, widObj, cb) {
             var targetRequest = false;

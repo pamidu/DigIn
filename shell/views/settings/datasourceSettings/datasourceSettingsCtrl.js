@@ -1,3 +1,11 @@
+////////////////////////////////
+// File : DatasourceSettingsCtrl
+// Owner  : Dilani Maheswaran
+// Last changed date : 2017/01/09
+// Version : 3.1.0.5
+// Modified By : Dilani Maheswaran
+////////////////////////////////
+
 routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory', function ($scope,$state,$rootScope,notifications,datasourceFactory) {
 	
 	$scope.$parent.currentView = "Datasource Settings";

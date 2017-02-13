@@ -432,6 +432,14 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
             requireLogin: true
             }
     })
+    .state('home.dashboardFilterSettings', {
+        url: '/dashboard-filter-settings',
+        controller: 'dashboardFilterSettingsCtrl',
+        templateUrl: "views/settings/dashboardFilterSettings/dashboardFilterSettings.html",
+        data: {
+            requireLogin: true
+        }
+    })
     .state('home.datasetShare', {
         url: '/datasetShare',
         controller: 'datasetShareCtrl',

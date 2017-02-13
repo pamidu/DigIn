@@ -21,8 +21,8 @@
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
      }
      else{
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-08/Digin/include/config.php");
-        require_once($_SERVER['DOCUMENT_ROOT'] . "/2017-02-08/Digin/include/session.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/session.php");
      }
     INTS();
     if(!isset($_COOKIE["securityToken"])){
@@ -334,6 +334,9 @@
 <script src="views/settings/datasourceSettings/datasourceSettingsCtrl.js"></script>
 <script src="views/settings/datasourceSettings/datasourceFactory.js"></script>
 
+<!-- Dashboard filter settings -->
+<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
+
 <!-- ShareDashboard settings -->
 <script type="text/javascript" src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 
@@ -447,4 +450,6 @@
  <script src="scripts/otherLibraries/checkout.js"></script>
 <script src="../boarding/scripts/stripe.payment.tool.js"></script>
 
+<!-- Temporary map -->
+<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
 </html>

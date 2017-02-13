@@ -1,0 +1,114 @@
+<!-- ////////////////////////////////
+// File : dashboardFilterSettingsCtrl
+// Owner  : Dilani Maheswaran
+// Last changed date : 2017/02/09
+// Version : 3.1.0.5
+// Modified By : Dilani Maheswaran
+//////////////////////////////// -->
+<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+	<md-tabs id="pagingTabs" md-selected="vm.selectedPage" md-align-tabs="bottom">
+		<md-tab id="tab1" md-on-select="selectPage($index)">
+			<md-tab-label layout="row" layout="space-between center">
+				<span  style="text-transform:none;padding-right:20px;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>Dashboard Filters</span>
+				<span flex></span>
+			</md-tab-label>
+			<md-tab-body>
+				<div class="card-container" layout-padding>
+					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+						<md-content>
+							<div layout="row" layout-align="end end">
+								<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="goHome()">
+								</md-button>
+							</div>
+							<div class="setting-card-header">
+								<h2 md-colors="{color:'{{$root.h1color}}-A700'}">
+									Dashboard Filters Settings
+								</h2>
+								<div class="setting-img-wrap">
+									<img src="views/settings/dashboardFilterSettings/dashboard.png"/>
+								</div>
+							</div>
+							<md-stepper-card-content class="md-no-padding">
+								<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep">
+								<md-step label="Filter type">
+									<md-step-body>
+										<div>
+				                            <div layout="row" layout-align="space-between center" class="side-margins">
+			                                    <md-radio-group ng-model="selectedPath" class="margin-10">
+			                                        <md-radio-button value="File" aria-label="Label 1"> Custom Filter </md-radio-button>
+			                                        <md-radio-button value="Folder"> Configure filters from dataset </md-radio-button>
+			                                    </md-radio-group>
+				                            </div>
+				                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+				                            	<span></span>
+				                                <md-button ng-disabled="showBusyText" class="md-raised md-primary" ng-click="incrementStep()">
+				                                	NEXT
+				                                </md-button>
+				                            </div>
+										</div>
+									</md-step-body>
+								</md-step>
+								<md-step label="Datasource">
+									<md-step-body>
+										<div>
+											<div layout="row" layout-align="space-around center">
+												<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}">
+													<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+														<span class="product_name" style="border-bottom: 1px solid #white;">Big Query</span>
+														<span><i class="ti-check"/></span>
+													</div>
+													<div layout="row" layout-align="end end">
+														<img ng-src="styles/icons/source/biq-query.svg" style="height: 100px;width: 100px;">
+													</div>
+												</md-card>
+												<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}">
+													<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+														<span class="product_name" style="border-bottom: 1px solid #white;">MSSQL</span>
+														<span><i class="ti-check"/></span>
+													</div>
+													<div layout="row" layout-align="end end">
+														<img ng-src="styles/icons/source/mssql.svg" style="height: 100px;width: 100px;">
+													</div>
+												</md-card>
+												<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}">
+													<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+														<span class="product_name" style="border-bottom: 1px solid #white;">MemSQL</span>
+														<span><i class="ti-check"/></span>
+													</div>
+													<div layout="row" layout-align="end end">
+														<img ng-src="styles/icons/source/memsql.svg" style="height: 100px;width: 100px;">
+													</div>
+												</md-card>
+											</div>
+				                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+				                                <md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+				                                <md-button ng-click="incrementStep()" class="md-raised md-primary">NEXT</md-button>
+				                            </div>
+										</div>
+									</md-step-body>
+								</md-step>
+								<md-step label="Table">
+									<md-step-body>
+										step 3
+									</md-step-body>
+								</md-step>
+								<md-step label="Field">
+									<md-step-body>
+										step 4
+									</md-step-body>
+								</md-step>
+								<md-step label="Finish">
+									<md-step-body>
+										step 5
+									</md-step-body>
+								</md-step>
+
+								</md-steppers>
+							</md-stepper-card-content>
+						</md-content>
+					</md-whiteframe>
+				</div>
+			</md-tab-body>
+		</md-tab>
+	</md-tabs>
+</footer>

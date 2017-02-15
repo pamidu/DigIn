@@ -22,7 +22,7 @@ angular.module('configuration', [])
 //#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
 .constant('dbType', 'memsql')
 //# url for facebook app
-.constant('fbUrl', 'http://localhost:8080/DigIn-FB/index.html')
+.constant('fbUrl', 'http://localhost:8081/DigIn-FB/index.html')
 
 //configure datasource connections in DigIn/shell/jsons/dbConfig.json
 // #set the 'display' parameter in each object to configure visibility

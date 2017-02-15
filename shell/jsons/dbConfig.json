@@ -24,6 +24,11 @@
     "selected": "false",
     "display": "true"
 },  {
+    "name": "Oracal",
+    "icon": "styles/icons/source/xlsx.svg",
+    "selected": "false",
+    "display": "true"
+},  {
     "name": "CSV Upload",
     "icon": "styles/icons/source/xlsx.svg",
     "selected": "false",

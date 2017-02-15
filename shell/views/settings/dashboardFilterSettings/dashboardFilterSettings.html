@@ -30,79 +30,182 @@
 							</div>
 							<md-stepper-card-content class="md-no-padding">
 								<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep">
-								<md-step label="Filter type">
-									<md-step-body>
-										<div>
-				                            <div layout="row" layout-align="space-between center" class="side-margins">
-			                                    <md-radio-group ng-model="selectedPath" class="margin-10">
-			                                        <md-radio-button value="File" aria-label="Label 1"> Custom Filter </md-radio-button>
-			                                        <md-radio-button value="Folder"> Configure filters from dataset </md-radio-button>
-			                                    </md-radio-group>
-				                            </div>
-				                            <div flex layout="row" layout-align="space-between center" class="side-margins">
-				                            	<span></span>
-				                                <md-button ng-disabled="showBusyText" class="md-raised md-primary" ng-click="incrementStep()">
-				                                	NEXT
-				                                </md-button>
-				                            </div>
-										</div>
-									</md-step-body>
-								</md-step>
-								<md-step label="Datasource">
-									<md-step-body>
-										<div>
-											<div layout="row" layout-align="space-around center">
-												<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}">
-													<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
-														<span class="product_name" style="border-bottom: 1px solid #white;">Big Query</span>
-														<span><i class="ti-check"/></span>
-													</div>
-													<div layout="row" layout-align="end end">
-														<img ng-src="styles/icons/source/biq-query.svg" style="height: 100px;width: 100px;">
-													</div>
-												</md-card>
-												<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}">
-													<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
-														<span class="product_name" style="border-bottom: 1px solid #white;">MSSQL</span>
-														<span><i class="ti-check"/></span>
-													</div>
-													<div layout="row" layout-align="end end">
-														<img ng-src="styles/icons/source/mssql.svg" style="height: 100px;width: 100px;">
-													</div>
-												</md-card>
-												<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}">
-													<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
-														<span class="product_name" style="border-bottom: 1px solid #white;">MemSQL</span>
-														<span><i class="ti-check"/></span>
-													</div>
-													<div layout="row" layout-align="end end">
-														<img ng-src="styles/icons/source/memsql.svg" style="height: 100px;width: 100px;">
-													</div>
-												</md-card>
+									<md-step label="Filter type">
+										<md-step-body>
+											<div>
+					                            <div layout="row" layout-align="space-between center" class="side-margins">
+				                                    <md-radio-group class="margin-10" ng-model="selectedFilterOption">
+				                                        <md-radio-button value="configure"> Configure filters from dataset  </md-radio-button>
+				                                        <md-radio-button value="custom" aria-label="Label 1"> Custom Filter </md-radio-button>
+				                                    </md-radio-group>
+					                            </div>
+					                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+					                            	<span></span>
+					                                <md-button ng-disabled="showBusyText" class="md-raised md-primary" ng-click="stepOne()">
+					                                	NEXT
+					                                </md-button>
+					                            </div>
 											</div>
+										</md-step-body>
+									</md-step>
+									<md-step label="Datasource">
+										<md-step-body>
+											<div>
+												<div layout="row" layout-align="space-around center">
+													<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}" ng-click="selectDatasource('bigquery')">
+														<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+															<span class="product_name" style="border-bottom: 1px solid #white;">BigQuery</span>
+															<span><i class="ti-check" ng-if=" selectedDatasource == 'bigquery' "/></span>
+														</div>
+														<div layout="row" layout-align="end end">
+															<img ng-src="styles/icons/source/biq-query.svg" style="height: 100px;width: 100px;">
+														</div>
+													</md-card>
+													<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}" ng-click="selectDatasource('mssql')">
+														<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+															<span class="product_name" style="border-bottom: 1px solid #white;">MSSQL</span>
+															<span><i class="ti-check" ng-if=" selectedDatasource == 'mssql' "/></span>
+														</div>
+														<div layout="row" layout-align="end end">
+															<img ng-src="styles/icons/source/mssql.svg" style="height: 100px;width: 100px;">
+														</div>
+													</md-card>
+													<md-card flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  md-colors="{background:'primary-800'}" ng-click="selectDatasource('memsql')">
+														<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+															<span class="product_name" style="border-bottom: 1px solid #white;">MemSQL</span>
+															<span><i class="ti-check" ng-if=" selectedDatasource == 'memsql' "/></span>
+														</div>
+														<div layout="row" layout-align="end end">
+															<img ng-src="styles/icons/source/memsql.svg" style="height: 100px;width: 100px;">
+														</div>
+													</md-card>
+												</div>
+					                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+					                                <md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+					                                <md-button ng-click="incrementStep()" class="md-raised md-primary">NEXT</md-button>
+					                            </div>
+											</div>
+										</md-step-body>
+									</md-step>
+									<md-step label="Table">
+										<md-step-body>
+											<md-content style="padding:20px">
+												<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+													<label>Search Table</label>
+													<input class="form-control" placeholder="search table..." ng-model="searchTables" flex/>
+												</div>
+											<input style="width: 200px;margin-bottom:10px;"  aria-label="false"/>
+												<div layout="row" layout-wrap>
+												   	<fieldset class="fieldset" flex>
+													  	<legend class="demo-legend">Choose table </legend>
+													  	<div layout="row" layout-wrap flex>
+													  		<md-radio-group layout="row" layout-wrap flex>
+																<div class="all-checkboxes" flex="50">
+															  		<md-radio-button class="m-top-10">
+															   			Item 1
+															  		</md-radio-button>
+																</div>
+																<div class="all-checkboxes" flex="50">
+															  		<md-radio-button class="m-top-10">
+															   			Item 2
+															  		</md-radio-button>
+																</div>
+																<div class="all-checkboxes" flex="50">
+															  		<md-radio-button class="m-top-10">
+															   			Item 3
+															  		</md-radio-button>
+																</div>
+															</md-radio-group>
+													  	</div>
+													</fieldset>
+												</div>
+					                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+					                                <md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+					                                <md-button ng-click="incrementStep()" class="md-raised md-primary">NEXT</md-button>
+					                            </div>
+											</md-content>
+										</md-step-body>
+									</md-step>
+									<md-step label="Field">
+										<md-step-body>
+											<md-content style="padding:20px">
+												<div layout="row" layout-wrap>
+												   	<fieldset class="fieldset" flex>
+													  	<legend class="demo-legend">Value field </legend>
+													  	<div layout="row" layout-wrap flex>
+													 		<div flex-xs flex="100">
+																<md-checkbox aria-label="Select All">
+														  			<span ng-if="selectAllAttributes">Un-</span>Select All
+																</md-checkbox>
+													  		</div>
+															<div class="all-checkboxes" flex="50">
+														  		<md-checkbox>
+														   			Item 1
+														  		</md-checkbox>
+															</div>
+															<div class="all-checkboxes" flex="50">
+														  		<md-checkbox>
+														   			Item 2
+														  		</md-checkbox>
+															</div>
+															<div class="all-checkboxes" flex="50">
+														  		<md-checkbox>
+														   			Item 3
+														  		</md-checkbox>
+															</div>
+													  	</div>
+													</fieldset>
+													<div style="width:20px"></div>
+													<fieldset class="fieldset" flex>
+														<legend class="demo-legend">Display Field </legend>
+													  	<div layout="row" layout-wrap flex>
+													  		<div flex-xs flex="100">
+																<md-checkbox aria-label="Select All" ng-model="selectAllMeasures" md-indeterminate="isIndeterminate()" ng-click="toggleAllMeasures()">
+														  			<span ng-if="selectAllMeasures">Un-</span>Select All
+																</md-checkbox>
+													  		</div>
+															<div class="all-checkboxes" flex="50">
+														  		<md-checkbox >
+														   			check one
+														  		</md-checkbox>
+															</div>
+															<div class="all-checkboxes" flex="50">
+														  		<md-checkbox>
+														   			check two
+														  		</md-checkbox>
+															</div>
+															<div class="all-checkboxes" flex="50">
+														  		<md-checkbox>
+														   			check three
+														  		</md-checkbox>
+															</div>
+													  	</div>
+													</fieldset>
+												</div>
+					                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+					                                <md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+					                                <md-button ng-click="incrementTwoStep()" class="md-raised md-primary">NEXT</md-button>
+					                            </div>
+											</md-content>
+										</md-step-body>
+									</md-step>
+									<md-step label="custom">
+										<md-step-body>
 				                            <div flex layout="row" layout-align="space-between center" class="side-margins">
-				                                <md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+				                                <md-button ng-click="GoToStepOne()" class="md-raised md-primary">Previous</md-button>
 				                                <md-button ng-click="incrementStep()" class="md-raised md-primary">NEXT</md-button>
 				                            </div>
-										</div>
-									</md-step-body>
-								</md-step>
-								<md-step label="Table">
-									<md-step-body>
-										step 3
-									</md-step-body>
-								</md-step>
-								<md-step label="Field">
-									<md-step-body>
-										step 4
-									</md-step-body>
-								</md-step>
-								<md-step label="Finish">
-									<md-step-body>
-										step 5
-									</md-step-body>
-								</md-step>
-
+										</md-step-body>
+									</md-step>
+									<md-step label="Finish">
+										<md-step-body>
+											<input style="width: 200px;margin-bottom:10px;" placeholder="Filter Name" aria-label="false"/>
+				                            <div flex layout="row" layout-align="space-between center" class="side-margins">
+				                                <md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+				                                <md-button ng-click="goHome()" class="md-raised md-primary">FINISH</md-button>
+				                            </div>
+										</md-step-body>
+									</md-step>
 								</md-steppers>
 							</md-stepper-card-content>
 						</md-content>

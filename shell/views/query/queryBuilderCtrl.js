@@ -3726,6 +3726,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.selectedChart.initObj.targetValue = res[0][nameSpace];
                         $scope.selectedChart.initObj.targetValueString = convertDecimals(res[0][nameSpace],2).toLocaleString();
                         $scope.selectedChart.initObj.targetValueDisplay = convertDecimals(res[0][nameSpace],2);
+
+                        $scope.changeFormat();
                     })
                 } else {
                     $scope.isPendingRequest = false;
@@ -3786,6 +3788,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.selectedChart.initObj.decValue = res[c];
                         var value = convertDecimals(parseFloat(res[c]), parseInt($scope.selectedChart.initObj.dec));
                         $scope.selectedChart.initObj.value = value.toLocaleString();
+                        $scope.changeFormat();
                     })
                 }
             }
@@ -4984,17 +4987,25 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
     $scope.changeFormat = function() {
         if($scope.selectedChart.initObj.format=='Thousand'){
-            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000;
-            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000;
+            if($scope.selectedChart.initObj.decValue!=undefined || $scope.selectedChart.initObj.decValue!="")
+                $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000;
+            if($scope.selectedChart.initObj.targetValue!=undefined || $scope.selectedChart.initObj.targetValue!="")
+                $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000;
         }else if($scope.selectedChart.initObj.format=='Million'){
-            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000000;
-            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000000;
+            if($scope.selectedChart.initObj.decValue!=undefined || $scope.selectedChart.initObj.decValue!="")
+                $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000000;
+            if($scope.selectedChart.initObj.targetValue!=undefined || $scope.selectedChart.initObj.targetValue!="")    
+                $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000000;
         }else if($scope.selectedChart.initObj.format=='Billion'){
-            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000000000;
-            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000000000;
+            if($scope.selectedChart.initObj.decValue!=undefined || $scope.selectedChart.initObj.decValue!="")
+                $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue/1000000000;
+            if($scope.selectedChart.initObj.targetValue!=undefined || $scope.selectedChart.initObj.targetValue!="") 
+                $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue/1000000000;
         }else{
-            $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue;
-            $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue;
+            if($scope.selectedChart.initObj.decValue!=undefined || $scope.selectedChart.initObj.decValue!="")
+                $scope.selectedChart.initObj.decValueTemp=$scope.selectedChart.initObj.decValue;
+            if($scope.selectedChart.initObj.targetValue!=undefined || $scope.selectedChart.initObj.targetValue!="")
+                $scope.selectedChart.initObj.targetValueTemp=$scope.selectedChart.initObj.targetValue;
         }
         $scope.changeDecimalsTemp();
     };

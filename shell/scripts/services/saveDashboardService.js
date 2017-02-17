@@ -354,18 +354,18 @@ var localThis = this;
             console.log("d3hierarchy");
             break;
           case 'metric':
-            var series = widgets[j].widgetData.selectedChart.initObj.trendChart.series;
-            var decValue = widgets[j].widgetData.widData.decValue;
-            var value = widgets[j].widgetData.widData.value;
-            dataArray.push(decValue,value,series);
-            widgets[j].widgetData.widData.decValue = "";
-            widgets[j].widgetData.widData.value = "";
-            widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
+            // var series = widgets[j].widgetData.selectedChart.initObj.trendChart.series;
+            // var decValue = widgets[j].widgetData.widData.decValue;
+            // var value = widgets[j].widgetData.widData.value;
+            // dataArray.push(decValue,value,series);
+            // widgets[j].widgetData.widData.decValue = "";
+            // widgets[j].widgetData.widData.value = "";
+            // widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
             break;
           case 'highCharts':
-            var series = widgets[j].widgetData.highchartsNG.series[0].data;
-            dataArray.push(series);
-            widgets[j].widgetData.highchartsNG.series[0].data = [];
+            // var series = widgets[j].widgetData.highchartsNG.series[0].data;
+            // dataArray.push(series);
+            // widgets[j].widgetData.highchartsNG.series[0].data = [];
             break;
           case 'Tabular':
             var series = widgets[j].widgetData.widData.userList;
@@ -434,12 +434,12 @@ var localThis = this;
       case 'hierarchy':
         break;
       case 'highCharts':
-        $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
+        // $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
         break;
       case 'metric':
-        $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.decValue = data[0];
-        $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.value = data[1];
-        $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.initObj.trendChart.series = data[2];
+        // $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.decValue = data[0];
+        // $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.value = data[1];
+        // $rootScope.dashboard.pages[i].widgets[j].widgetData.selectedChart.initObj.trendChart.series = data[2];
         break;
       case 'Tabular':
         $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.userList= data[0];
@@ -452,7 +452,7 @@ var localThis = this;
       scope.isLoadingDashBoardSave = false;
       scope.isButtonDashBoardSave=true;
       //$state.go('home.welcomeSearch'); 
-       $mdDialog.hide();     
+       $mdDialog.hide();
     } else {
       scope.isLoadingDashBoardSave = false;
       scope.isButtonDashBoardSave=true;

@@ -6,7 +6,9 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state',function($scope,$rootScope,$state){
+routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','datasourceFactory', 
+	function($scope,$rootScope,$state,$http,$diginengine,datasourceFactory)
+{
 
 
 	//Theme config for md-tabs-wrapper
@@ -18,7 +20,11 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 		$('md-tabs-wrapper').css('background-color',"white", 'important');
 	}
 	$scope.selectedFilterOption = "configure";
-	$scope.selectedDatasource = "bigquery";
+	$scope.selectedDatasource = "BigQuery";
+	$scope.datasources = [];
+	$scope.tables = [];
+	$scope.tableProgress = false;
+	$scope.displayNoneText = false;
 	$scope.stepData = [{
 	    step: 0,
 	    completed: false,
@@ -54,6 +60,23 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	}];
 	$scope.selectedStep = 0;
 
+    $scope.initiateDatasources = function()
+    {
+        $http.get('jsons/dbConfig.json').success(function(data) 
+        {
+        	angular.forEach(data,function(src,index)
+        	{
+        		if (src.name != 'DuoStore' && src.name != 'postgresql' && src.name != 'CSV Upload')
+        		{
+        			$scope.datasources.push(src);
+        		}
+        	})
+        }).error(function(error)
+        {
+        	console.log(error);
+        });
+    }
+
 	// route to home
 	$scope.goHome = function()
 	{
@@ -75,15 +98,44 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	{
 		$scope.selectedStep--;
 	}
+	//move 2 steps back
+	$scope.decrementTwoSteps = function()
+	{
+		$scope.selectedStep -= 2;
+	}
 	// next button at step one
 	$scope.stepOne = function()
 	{
 		if ($scope.selectedFilterOption == "custom")
 		{
-			$scope.selectedStep += 4;
+			$scope.selectedStep += 5;
 		} else
 		{
 			$scope.incrementStep();
+		}
+	}
+	// next button of step two
+	$scope.stepTwo = function()
+	{
+		if ($scope.selectedDatasource == 'MSSQL')
+		{
+			$scope.incrementStep();
+			$scope.getConnections();
+		} else 
+		{
+			$scope.incrementTwoStep();
+			$scope.getTables();
+		}
+	}
+
+	$scope.stepFourPrevious = function()
+	{
+		if ($scope.selectedDatasource == 'MSSQL')
+		{
+			$scope.decrementStep();
+		} else 
+		{
+			$scope.decrementTwoSteps();
 		}
 	}
 	// go to level one 
@@ -91,10 +143,42 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	{
 		$scope.selectedStep = 0;
 	}
-
+	//select datasource
 	$scope.selectDatasource = function(datasource)
 	{
 		$scope.selectedDatasource = datasource;	
+	}
+	//fetch tables 
+	$scope.getTables = function()
+	{
+		$scope.tableProgress = true;
+		$scope.client = $diginengine.getClient($scope.selectedDatasource);
+		$scope.client.getTables(function(res, status)
+		{
+			$scope.tableProgress = false;
+			if(status)
+			{
+				if($scope.tables.length == 0)
+				{
+					$scope.displayNoneText = true;
+				} else
+				{
+					$scope.tables=res;
+				}
+			}
+		});
+	}
+	// fetch connections
+	$scope.getConnections = function()
+	{
+		$scope.tableProgress = true;
+		datasourceFactory.getAllConnections(userInfo.SecurityToken).success(function(data)
+		{
+
+		}).error(function(data)
+		{
+
+		})
 	}
 
 }]);

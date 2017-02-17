@@ -54,8 +54,8 @@ class GetModifier{
 
 	public function byFiltering ($f){
 		$req = $this->osClient->getRequest();
-		$req->Query->Type = "filter";
-		//$req->Query->Type = "Query";
+		//$req->Query->Type = "filter";
+		$req->Query->Type = "Query";
 		$req->Query->Parameters = $f;
 		unset($req->Parameters);
 		unset($req->Objects);

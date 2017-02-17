@@ -4153,12 +4153,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     agg: key.condition
                 });
             });
+            
             // apply design mode filters
             var filterArray = [];
             filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
             if (filterArray.length > 0) {
                 var filterStr = filterArray.join( ' And ');
             }
+
             $scope.client.getAggData($scope.sourceData.tbl, fieldArr, $scope.limit, $scope.sourceData.id, function(res, status, query) {
                 if (status) {
                     if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0) {

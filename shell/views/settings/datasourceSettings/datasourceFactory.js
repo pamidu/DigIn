@@ -1,15 +1,16 @@
 routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
     return {
-    	getAllConnections: function(securityToken) {
+    	getAllConnections: function(securityToken,dbType) {
     		return $http({
     			method: 'GET',
     			url: Digin_Engine_API + 'get_datasource_config?SecurityToken=' + securityToken
+                    + '&connectiontype=' + dbType
     		})
     	},
     	/*
     		reqParam = {host:host name, username:user name, password:password, port:port}
     	*/
-    	getAllDatabases: function(securityToken,reqParam) {
+    	getAllDatabases: function(securityToken,reqParam,dbType) {
             return $http({
                 method: 'GET',
                 url: Digin_Engine_API + 'get_all_databases?' + 
@@ -17,10 +18,11 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
                 '&hostname=' + reqParam.host + 
                 '&port=' + reqParam.port +
                 '&username=' + reqParam.username + 
-                '&password=' + reqParam.password
+                '&password=' + reqParam.password +
+                '&db_type=' + dbType
             })
     	},
-        testConnection: function(securityToken,reqParam) {
+        testConnection: function(securityToken,reqParam,dbType) {
             return $http({
                 method: 'GET',
                 url: Digin_Engine_API + 'test_database_connection?' + 
@@ -29,7 +31,8 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
                 '&port=' + reqParam.port +
                 '&username=' + reqParam.username + 
                 '&password=' + reqParam.password + 
-                '&databasename=' + reqParam.databaseName
+                '&databasename=' + reqParam.databaseName+
+                '&db_type=' + dbType
             })
         },
         saveConnection: function(securityToken,reqParam) {

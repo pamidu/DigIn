@@ -71,7 +71,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		isSelected:false,
 		icon:'styles/icons/source/mssql.svg'
 	},{
-		type:"ORACAL",
+		type:"ORACLE",
 		isSelected:false,
 		icon:'styles/icons/source/mssql.svg'
 	},{
@@ -125,7 +125,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.getAllconnections = function()
 	{
 		$scope.connectionStatus = false;
-		datasourceFactory.getAllConnections(securityToken).success(function(data){
+		datasourceFactory.getAllConnections(securityToken,$scope.selectedSourceType).success(function(data){
 			if(data.Is_Success)
 			{	
 				$scope.connectionStatus = true;
@@ -164,7 +164,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	{
 		$scope.connectionID = connection.ds_config_id;
 		$scope.action="Edit";
-		if($scope.selectedStep == 0)
+		if($scope.selectedStep == 1)
 		{
 			$scope.incrementStep();
 		}
@@ -217,7 +217,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		$scope.loginStatus = false;
 		$scope.testStatus = false;
 		$scope.testRequest = false;
-		datasourceFactory.getAllDatabases(securityToken,reqParam).success(function(data){
+		datasourceFactory.getAllDatabases(securityToken,reqParam,$scope.selectedSourceType).success(function(data){
 			if(data.Is_Success)
 			{
 				if ($scope.action == "Create")
@@ -276,7 +276,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		}
 		$scope.testRequest = true;
 		$scope.testStatus = false;
-		datasourceFactory.testConnection(securityToken,reqParam).success(function(data){
+		datasourceFactory.testConnection(securityToken,reqParam,$scope.selectedSourceType).success(function(data){
 			if(data.Is_Success)
 			{
 				$scope.testRequest = false;
@@ -326,7 +326,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			if(res.Is_Success)
 			{
 				// Call getAllConnections to get the connections after saving 
-				datasourceFactory.getAllConnections(securityToken).success(function(data){
+				datasourceFactory.getAllConnections(securityToken,$scope.selectedSourceType).success(function(data){
 					if(data.Is_Success)
 					{	
 						$scope.saveRequest = false;

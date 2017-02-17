@@ -44,10 +44,10 @@
                         cb(data, status);
                     }, $diginurls.diginengine + url_string);
                 },
-                getConnectionTables: function(id,cb) {
+                getConnectionTables: function(id,db,cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "GetTables?db=mssql&datasource_config_id=" + id);
+                    }, $diginurls.diginengine + "GetTables?db="+db+"&datasource_config_id=" + id);
                 },
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {

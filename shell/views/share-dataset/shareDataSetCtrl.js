@@ -342,7 +342,7 @@ routerApp.controller('shareDataSetCtrl',function ($scope,$rootScope,$mdDialog,no
                   if(!$scope.isExist(readArray[j].UserID,selectedArray[i].shared_users) && !$scope.isShared(selectedArray[i].shared_by) && !$scope.isCurrntUser(selectedArray[i].created_tenant,readArray[j].UserID))
                   {
                     var obj = {
-                        "comp_id":selectedArray[i].datasource_id,
+                        "comp_id":(selectedArray[i].datasource_id).toString();,
                         "is_user":isUser,
                         "id":readArray[j].UserID,
                         "security_level":$scope.getPermition(readArray[j].Id,writeArr)

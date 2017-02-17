@@ -188,7 +188,7 @@
                         </svg>
                     </div>
                     <!-- table data -->
-                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search} | orderBy: 'name' " ng-hide="sourceUi.selectedSource == 'MSSQL' ">
+                    <ui ng-repeat="row in sourceUi.tableData | filter : {name: sourceUi.search} | orderBy: 'name' " ng-hide="sourceUi.selectedSource == 'MSSQL' | sourceUi.selectedSource == 'Oracal'">
                         <li class="col-sheet"
                             ng-click="commonUi.onSelectClassRow(row)"
                             ng-class="row.selected==true?'selectedRow':'unSelectedRow'"
@@ -204,7 +204,7 @@
                     </ui>
                     <v-accordion id="accordionDataSource" class="vAccordion--default" control="accordionA" 
                         onexpand="commonUi.onExpandConnection(index)"> 
-                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections" ng-show="sourceUi.selectedSource == 'MSSQL' ">
+                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections" ng-show="sourceUi.selectedSource == 'MSSQL' | sourceUi.selectedSource == 'Oracal' ">
                             <v-pane-header>
                                 <h5 class="font-weight-300 text-upper">{{ ::row.connection_name }}</h5>
                             </v-pane-header>

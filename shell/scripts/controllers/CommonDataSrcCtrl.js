@@ -241,11 +241,41 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                             var filesFlag = false;
                             var foldersFlag = false;
                             var flag;
-                            datasourceFactory.getAllConnections(userInfo.SecurityToken).success(function(data){
+                            datasourceFactory.getAllConnections(userInfo.SecurityToken,src).success(function(data){
                                 if(data.Is_Success) {
                                     commonUi.isDataLoading = false;
                                     $scope.mssqlConnections = data.Result;
                                     $scope.mssqlConnections = $filter('orderBy')($scope.mssqlConnections,'connection_name');
+                                    if ($scope.mssqlConnections.length > 0){
+                                        notifications.toast('1',data.Custom_Message);                                        
+                                    } else {
+                                        notifications.toast('1','Please create a new connection.');
+                                    }
+                                } else {
+                                    commonUi.isDataLoading = false;
+                                    commonUi.isServiceError = true;
+                                    notifications.toast('0',data.Custom_Message);
+                                }
+                            }).error(function(data){
+                                commonUi.isDataLoading = false;
+                                commonUi.isServiceError = true;
+                                notifications.toast('0','Request failed.Please try again.');
+                            })
+                        break;
+                        case "Oracle":
+
+                            $scope.sourceUi.tableData = [];
+                            $scope.tables = [];
+                            $scope.mssqlConnections = [];
+                            var filesFlag = false;
+                            var foldersFlag = false;
+                            var flag;
+
+                            datasourceFactory.getAllConnections(userInfo.SecurityToken,src).success(function(data){
+                                if(data.Is_Success) {
+                                    commonUi.isDataLoading = false;
+                                    $scope.mssqlConnections = data.Result;
+                                    //$scope.mssqlConnections = $filter('orderBy')($scope.mssqlConnections,'connection_name');
                                     if ($scope.mssqlConnections.length > 0){
                                         notifications.toast('1',data.Custom_Message);                                        
                                     } else {
@@ -817,7 +847,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     var client = $diginengine.getClient($scope.sourceUi.selectedSource);
                     $scope.datasourceId = $scope.mssqlConnections[index].ds_config_id;
                     //call method to retrieve the tables
-                    client.getConnectionTables($scope.datasourceId,function(data,status) {
+                    client.getConnectionTables($scope.datasourceId,$scope.sourceUi.selectedSource,function(data,status) {
                         if (status) {
                             data.sort();
                             $scope.isConnectionTablesLoading = false;

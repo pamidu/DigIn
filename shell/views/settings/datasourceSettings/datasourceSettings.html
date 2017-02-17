@@ -6,7 +6,7 @@
 			<span flex></span>
 		</md-tab-label>
 		<md-tab-body>
-			<div class="card-container" layout-padding ng-init="getAllconnections()">
+			<div class="card-container" layout-padding >
 				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 					<md-content>
 						<div layout="row" layout-align="end end">
@@ -18,11 +18,34 @@
 								<img src="views/settings/datasourceSettings/database.png"/>
 							</div>
 						</div>
+
 						<md-stepper-card-content class="md-no-padding">
 							<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep">
+
+								<md-step label="Select data source" md-complete="stepData[0].data.completed">
+									<md-step-body>
+									  <div layout="row" layout-align="space-around center" >
+									  	<div ng-repeat="source in datasources" ng-click="onSelectDataSource(source)">
+										  	<md-card class="product_card report_card"  md-colors="{background:'primary-800'}" style="width:200px">
+												<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+													<span class="product_name" style="border-bottom: 1px solid #white;">{{source.type}}</span>
+													<span ng-show="source.isSelected"><i class="ti-check"/></span>
+												</div>
+												<div layout="row" layout-align="end end">
+													<img ng-src="styles/icons/source/memsql.svg" style="height: 100px;width: 100px;">
+												</div>
+											</md-card>
+									  	</div>
+									  </div>
+
+								  	
+
+									</md-step-body>
+								</md-step>
+
 								<md-step label="Existing Connections" md-complete="stepData[0].data.completed">
 									<md-step-body>
-										<div layout="row" layout-wrap flex >					            
+										<div layout="row" layout-wrap flex>					            
 											<md-card flex="30" ng-repeat="connection in existingConnections">
 												<md-card-content layout="column" flex>
 														<div layout="column" flex layout-align="end end" class="blut-datasource-view" >
@@ -58,6 +81,9 @@
 										<div flex layout = "row" layout-align="center center">
 											<md-button type="button" class="md-raised md-primary"  ng-click="createConnection()">Create New Connection</md-button>											
 										</div>
+										<div flex layout="row" layout-align="space-between center" class="side-margins">
+										<md-button ng-click="moveToPreviousStep()" class="md-raised next-btn">Previous</md-button>
+									</div>
 									</md-step-body>
 								</md-step>
 								<md-step label="Connection Settings" md-complete="stepData[1].data.completed">

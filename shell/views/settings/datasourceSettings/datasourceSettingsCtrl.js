@@ -39,11 +39,18 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.saveRequest = false;
 	$scope.existingConnections = [];
 	$scope.stepData = [{
-	    step: 1,
+	    step: 0,
 	    completed: false,
 	    optional: false,
 	    data: {},
 	    busyText: "Proceeding to step 2"
+	},
+	{
+	    step: 1,
+	    completed: false,
+	    optional: false,
+	    data: {},
+	    busyText: "Proceeding to step 3"
 	}, {
 	    step: 2,
 	    completed: false,
@@ -58,6 +65,34 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	}];
 
 	var securityToken = JSON.parse(decodeURIComponent(getCookie('authData'))).SecurityToken;
+
+	$scope.datasources = [{
+		type:"MSSQL",
+		isSelected:false,
+		icon:'styles/icons/source/mssql.svg'
+	},{
+		type:"ORACAL",
+		isSelected:false,
+		icon:'styles/icons/source/mssql.svg'
+	},{
+		type:"HIVE",
+		isSelected:false,
+		icon:'styles/icons/source/mssql.svg'
+	}];
+
+	$scope.selectedSourceType;
+
+	$scope.onSelectDataSource = function(source){
+		for (i = 0; i < $scope.datasources.length; i++) {
+            $scope.datasources[i].isSelected = false;
+            if($scope.datasources[i].type == source.type ){
+            	$scope.datasources[i].isSelected = true;
+            	$scope.selectedSourceType = source.type;
+            	$scope.incrementStep();
+            	$scope.getAllconnections();
+            }
+        }
+	}
 
 	$scope.submitCurrentStep = function(stepData)
 	{
@@ -115,10 +150,10 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	{
 		$scope.connectionID = "";
 		$scope.action="Create";
-		if($scope.selectedStep == 0)
+		if($scope.selectedStep == 1)
 		{
 			$scope.incrementStep();
-		} else if ($scope.selectedStep == 2)
+		} else if ($scope.selectedStep == 3)
 		{
 			$scope.decrementStep();
 		}

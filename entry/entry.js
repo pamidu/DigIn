@@ -81,20 +81,15 @@ routerApp
 
 
             //-----activated user - Signin-----------
-            var activated = ($location.search()).activated;
-            //var activatedemail= ($location.search()).id;
-            //var activatedemail= Base64.decode(($location.search()).ox);
-            
+            var activated = ($location.search()).activated;         
             var activatedemail= decodeURIComponent($cookies.get('userName'));
-            //document.cookie = "userName=" + '' + "; path=/";
-            
+
             if(activatedemail=="undefined"){
                 activatedemail="";
                 $scope.activatedemail="";
             }
             else{
                  $scope.signindetails.Username=activatedemail;
-                 //$scope.activatedemail=activatedemail;
             }
 
           
@@ -106,16 +101,6 @@ routerApp
                 $scope.activated=true;
             }
             
-            //document.cookie = "userName=" + '' + "; path=/";
-            
-           /* $scope.activatedemail="";
-            if(activatedemail==undefined){
-                $scope.activatedemail="";
-            }
-            else{
-                $scope.activatedemail=activatedemail;
-            }*/
-            //------------------------------------
             
             $scope.signup = function () {
                 $scope.isLoggedin = false;
@@ -186,9 +171,6 @@ routerApp
             };
 
 
-
-
-            //'Username password incorrect' User name or password incorrect, please try again. 
             $scope.login = function () {
 
                 if ($scope.signindetails.Username == '' || angular.isUndefined($scope.signindetails.Username)) {
@@ -276,8 +258,7 @@ routerApp
             //------------check Customer START-------------------------------
             $scope.checkCustomer = function(Securitytoken, authData) {
                 $scope.checkCust = function (cb) {
-                    $http({ 
-                    //url :"http://prod.digin.io/include/duoapi/paymentgateway/getCustomerInformations",    
+                    $http({    
                     url: 'http://'+Digin_Domain+include_Path+"duoapi/paymentgateway/getCustomerInformations",
                     method: "POST",
                     headers: {'Content-Type': 'application/json',
@@ -286,7 +267,6 @@ routerApp
                         if (response.statusText == "OK") {
                                 console.log(response)
                                 $scope.custStatus = response.data.status;
-                                //$scope.custActive=response.data.data[0].active;
                                 cb(true);
                         }
                         else {
@@ -312,7 +292,6 @@ routerApp
             $scope.checkSubscription = function(Securitytoken,authData) {
                 $scope.checkStatus = function (cb) {
                     $http({
-                        //url :"http://prod.digin.io/include/duoapi/paymentgateway/checkSubscription", 
                         url: 'http://'+Digin_Domain+include_Path+"duoapi/paymentgateway/checkSubscription",
                         method: "POST",
                         headers: {'Content-Type': 'application/json',
@@ -867,137 +846,6 @@ routerApp
                     }
                 });
             };
-            //-***********************************************************************  
-        
-        
-        
-        
-        
-        
-        /*
-
-            //#get tenant token before user get login#//
-            $scope.checkUsage = function (SecurityToken) {
-                $http({
-                    method: 'GET',
-                    url: "/auth/tenant/GetTenants/" + SecurityToken,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .success(function(data){
-                    if(data[0].TenantID==null || data[0].TenantID==""){
-                        //*This is a new user so, can't see usage details yet
-                    }
-                    else{
-                        $http({method: 'GET', 
-                        url: '/auth/GetSession/'+SecurityToken+'/'+data[0].TenantID, 
-                        headers: {'Securitytoken':SecurityToken}
-                        })
-                        .success(function (response) {
-                            $scope.TenantSecToken=response.SecurityToken;  
-                            $scope.getUsageSummary(response.SecurityToken);      
-                        }).error(function (error) {
-                            console.log("error");
-                        });
-                    }
-                }).error(function(error){
-                    console.log("error");
-                });
-            }
-
-
-            //#get usage summary#//
-            $scope.getUsageSummary=function(SecurityToken){
-                $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + SecurityToken)
-                .success(function(data) {
-                    //#if user blocked 
-                     if(!data.Result.is_blocked){
-                     //#Do what will do if blocked
-                            var confirm = $mdDialog.confirm()
-                            .title('Update Account')
-                            .textContent('Currently your account have been blocked, please update user account')
-                            .ariaLabel('Lucky day')
-                            //.targetEvent(ev)
-                            .ok('Go to My Account')
-                            .cancel('Exit');
-                            $mdDialog.show(confirm).then(function() {
-                                //*Go to My Accoun
-                                //*If agreed to update direct myAccount 
-                                $scope.isContinue=true;
-                            }, function() {
-                                //*Exit
-                                //*if not going to update Exit system
-                                $scope.isContinue=false;
-                            });     
-                     }
-                     //#if user not blocked
-                     else{
-                        //*continue with user login 
-                     }
-                }).error(function() {
-                    console.log("error");
-                });
-            }
-            
-
-        */   
-
-
-
-
-            /*$scope.createDataSet = function (secToken) {
-                //displayProgress('Processing, please wait...!');
-                $scope.data = {"db": "bigquery"}
-
-                $http({
-                    method: 'POST',
-                    url: Digin_Engine_API+'set_init_user_settings',
-                    data: angular.toJson($scope.data),
-                    headers: {
-                        'SecurityToken': secToken
-                    }
-                })
-                .success(function (response) {
-                    if (response.Success == true) {
-                        //displaySuccess('Success...!');
-                        $mdDialog.hide();
-                        console.log(response.Message);
-                    }
-                    else {  
-                        //displayError('Data set creation fail');
-                        $mdDialog.hide();
-                        console.log(response.Message);
-                    }
-
-                })
-                .error(function (error) {
-                    //displayError('Data set creation fail');
-                    $mdDialog.hide();
-                    console.log(error);
-                });
-            };   */ 
-            
-            
-            /*
-            $scope.isDataSetNotExist=function (secToken, cb){
-                $http.get(Digin_Engine_API + 'get_user_settings?SecurityToken=' + secToken + '&Domain=' + Digin_Domain)
-                .success(function (res) {
-                    if(response.Is_Success==true && response.Custom_Message=='No user settings saved for given user and domain')     
-                    {
-                        cb(true);
-                    }
-                    else
-                    {
-                        
-                    }
-                })
-                .error(function (error) {
-                    cb(false);
-                });
-            };    
-            */
-
 
 
             $scope.isUserExist = function (email, cb) {
@@ -1078,13 +926,11 @@ routerApp
 
             $scope.sendMail=function(){
                 $http.get('http://'+Digin_Domain+apis_Path+'authorization/userauthorization/forgotpassword/'+$scope.email)
-                //http://digin.io/apis/authorization/userauthorization/forgotpassword/chamila@duosoftware.com
                 .success(function(response){
                     if(response.Success){
                         console.log(response);
                         $mdDialog.hide();
                         mainFun.fireMsg('1', "Successfully reset your password, please check your mail.");
-                        //displaySuccess('Succussfully reset your password, Please check your mail for new password...');
                         $scope.email='';
                         $state.go('signin');
                     }
@@ -1109,9 +955,6 @@ routerApp
                     mainFun.fireMsg('0','Error occurred while changing the password');
                 }
                 else{
-                    
-                    //document.cookie = "securityToken=" + ($location.search()).x + "; path=/";                 
-                    //document.cookie = "authData="+ encodeURIComponent("SecurityToken="+($location.search()).x+"Domain=pio.prod.digin.io") + "; path=/";           
                     if ($scope.newPassword === $scope.confirmNewPassword) {
                         $http.get(auth_Path+'ChangePassword/' + oid + '/' + encodeURIComponent($scope.newPassword))
                             .success(function (data) {
@@ -1132,18 +975,8 @@ routerApp
                     }
                 }
             }
-
-
-    
-
-
-
-
-
-
-
-
     }])
+
 
     .directive('keyEnter', function () {
         return function (scope, element, attrs) {
@@ -1157,6 +990,7 @@ routerApp
             });
         };
     })
+
 
     .factory('focus', function ($timeout, $window) {
         return function (id) {
@@ -1180,41 +1014,6 @@ routerApp
         function ($scope, $http, $state, focus,
                   Digin_Domain,Digin_Tenant, Digin_Engine_API, ngToast,$mdDialog,$location,$timeout,apis_Path,auth_Path,include_Path,onsite,tenantId) {
 
-            //-------------test --
-            /*
-                $http({
-                    method: 'GET',
-                    url: Digin_Engine_API + "get_usage_summary?SecurityToken=null&tenant_id="+tenantId+'.'+Digin_Domain,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .success(function(data){
-                    if(data.Result.length>0){
-                        var tenant=tenantId+'.'+Digin_Domain;
-                        $scope.tenantUsers=data.Result.usage+'.'+tenant.length;
-                        if($scope.tenantUsers>=$scope.licencedUsers){
-                            displayError('Number of licence users has been exceeded.');
-                        }
-                        else{
-                            $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
-                            $scope.registerUser();
-                        }
-                    }
-                    else{
-                        displayError('Tenant usage summary is fail.');
-                    }                   
-                }).error(function(error){
-                    console.log("error");
-                });
-        
-            */
-            //test end----------------------------------
-            
-            
-           //----------------Password strength validation-------------------------------------
-            //$scope.minLengthMsg = false;
-            //$scope.strengthText="test";
 
             $scope.$on('strength_text',function(ev,data){
                 $scope.strengthText=data;
@@ -1232,7 +1031,6 @@ routerApp
                     $scope.error.isPassword = false;
                 }
             })
-            //-----------------------------------------------------
 
             $scope.onClickSignIn = function () {
                 $scope.isLoggedin = false;
@@ -1388,7 +1186,6 @@ routerApp
                     },
 
                     
-
                     acceptRequest:function(email,token){
                         $http.get(apis_Path+'usertenant/tenant/request/accept/' + email + '/' + token, {
                             headers: {'Content-Type':'application/json'}
@@ -1396,18 +1193,7 @@ routerApp
                         .success(function (response) {
                             if (response.Success === true) {
                                 $mdDialog.hide();
-
-
                                 $state.go('registered');
-
-                                /*
-                                mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                $timeout(function () {
-                                       window.location = "http://"+Digin_Domain+"/entry";
-                                }, 5000);
-                                */
-
-                               
                             }
                             else
                             {
@@ -1426,8 +1212,6 @@ routerApp
                             "Name": fullname,
                             "Password": signUpUsr.pwd,
                             "ConfirmPassword": signUpUsr.cnfrPwd
-                            //,
-                            //"Domain": signUpUsr.firstName + "." + Digin_Domain
                         };
 
                         $scope.error.isLoading = true;
@@ -1450,7 +1234,6 @@ routerApp
                                     console.log(response);
                                     if(response.TenantID==null || response.TenantID==""){
                                         //#tenant not exist
-                                        //$scope.regUrl= Digin_Tenant+'/InvitedUserRegistration';
                                         $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/userregistration';
                                         $scope.registerUser();
                                     }
@@ -1458,7 +1241,6 @@ routerApp
                                     {
                                         //#tenant exist 
                                         //#not for first time registration-Onsite
-                                        //$scope.regUrl= Digin_Tenant+'/RegisterTenantUserWithTenant/'+tenantId+ '.' + Digin_Domain;
                                         $scope.checkLicence();
                                     }
                                     
@@ -1485,9 +1267,6 @@ routerApp
                             'Content-Type': 'application/json'
                         }
                     }).success(function (data, status) {
-                        //*Create Data Set
-                        //$scope.createDataSet(signUpUsr.email, signUpUsr.firstName);
-
                         $scope.error.isLoading = false;
 
                         if(onsite){
@@ -1512,9 +1291,6 @@ routerApp
                             }    
                         }
                         else{
-
-                            //$state.go('signin');
-
                             if (data.Success === false) {
                                 $mdDialog.hide();
                                 if(data.Message=="Already Registered."){
@@ -1530,14 +1306,7 @@ routerApp
                                 }
                                 else{
                                     $mdDialog.hide();
-                                    $state.go('registered');    
-
-                                    /*
-                                    mainFun.fireMsg('1', 'You account has been successfully created, please check your email to complete your registration!');
-                                    $timeout(function () {
-                                       window.location = "http://"+Digin_Domain+"/entry";
-                                    }, 5000);
-                                    */                                   
+                                    $state.go('registered');                                      
                                 }
                             }
                         }
@@ -1644,22 +1413,7 @@ routerApp
                     }   
                 }).error(function(error){
                     console.log("error");
-                });
-
-                //#------------ remove whn receieved above method
-                /*
-                $scope.tenantUsers=0;
-                $scope.tenantUsers=data.Result.Usage.tenantId.length;
-
-
-                    if($scope.licencedUsers==$scope.tenantUsers){
-                        displayError('Number of licence users has been exceeded.');
-                    }
-                    else{ 
-                        $scope.regUrl= 'http://'+Digin_Domain+apis_Path+'authorization/offline/tenantuserregistration/'+tenantId+ '.' + Digin_Domain;
-                        $scope.registerUser();
-                    }
-                */
+                }); 
             }
         
 
@@ -1856,92 +1610,6 @@ routerApp.directive('passwordVerify', function () {
 });
 
 
-
-//Password Strength Directive - Start
-/*
-routerApp.directive('passwordStrengthIndicator',passwordStrengthIndicator);
-function passwordStrengthIndicator() {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        scope: {
-            ngModel: '='
-        },
-        link: function (scope, element, attrs, ngModel) {
-
-            scope.strengthText = "";
-
-            var strength = {
-                measureStrength: function (p) {
-                    var _passedMatches = 0;
-                    var _regex = /[$@&+#-/:-?{-~!^_`\[\]]/g;
-                    if (/[a-z]+/.test(p)) {
-                        _passedMatches++;
-                    }
-                    if (/[A-Z]+/.test(p)) {
-                        _passedMatches++;
-                    }
-                    if (_regex.test(p)) {
-                        _passedMatches++;
-                    }
-                    return _passedMatches;
-                }
-            };
-
-            var indicator = element.children();
-            var dots = Array.prototype.slice.call(indicator.children());
-            var weakest = dots.slice(-1)[0];
-            var weak = dots.slice(-2);
-            var strong = dots.slice(-3);
-            var strongest = dots.slice(-4);
-
-            element.after(indicator);
-
-            var listener = scope.$watch('ngModel', function (newValue) {
-                angular.forEach(dots, function (el) {
-                    el.style.backgroundColor = '#EDF0F3';
-                });
-                if (ngModel.$modelValue) {
-                    var c = strength.measureStrength(ngModel.$modelValue);
-                    if (ngModel.$modelValue.length > 7 && c > 2) {
-                        angular.forEach(strongest, function (el) {
-                            el.style.backgroundColor = '#039FD3';
-                            scope.strengthText = "very strong";
-
-                        });
-                   
-                    } else if (ngModel.$modelValue.length > 5 && c > 1) {
-                        angular.forEach(strong, function (el) {
-                            el.style.backgroundColor = '#72B209';
-                            scope.strengthText = "strong";
-
-                        });
-                    } else if (ngModel.$modelValue.length > 3 && c > 0) {
-                        angular.forEach(weak, function (el) {
-                            el.style.backgroundColor = '#E09015';
-                            scope.strengthText = "weak";
-                        });
-                    } else {
-                        weakest.style.backgroundColor = '#D81414';
-                        scope.strengthText = "very weak";
-                    }
-
-                    scope.$emit('strength_text',scope.strengthText);
-                }
-            });
-
-            
-
-            scope.$on('$destroy', function () {
-                return listener();
-            });
-        },
-        template: '<span id="password-strength-indicator"><span></span><span></span><span></span><span></span><md-tooltip>Password strength is {{strengthText}}</md-tooltip></span>'
-    };
-}*/
-//Password Strength Directive - End
-
-
 //#Pw strength directive test ------------------start-------
 routerApp.directive('passwordStrengthIndicator',passwordStrengthIndicator);
 function passwordStrengthIndicator() {
@@ -2036,9 +1704,7 @@ function passwordStrengthIndicator() {
                     scope.$emit('strength_text',scope.strengthText);
                 }
             });
-
-            
-
+        
             scope.$on('$destroy', function () {
                 return listener();
             });

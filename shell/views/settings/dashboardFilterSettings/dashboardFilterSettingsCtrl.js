@@ -21,9 +21,17 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	}
 	$scope.selectedFilterOption = "configure";
 	$scope.selectedDatasource = "BigQuery";
+	$scope.selectionType = "single";
+	$scope.selectedTable = "";
+	$scope.selectedTableValue = "";
+	$scope.selectedValueField = "";
+	$scope.selectedDisplayField = "";
+	$scope.filterName = "";
+	$scope.fields = [];
 	$scope.datasources = [];
 	$scope.tables = [];
 	$scope.tableProgress = false;
+	$scope.ConnectionProgress = false;
 	$scope.displayNoneText = false;
 	$scope.stepData = [{
 	    step: 0,
@@ -127,6 +135,28 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			$scope.getTables();
 		}
 	}
+	//next button of step four
+	$scope.stepFour = function()
+	{
+		$scope.fields = [];
+		$scope.selectedTableValue = angular.fromJson($scope.selectedTable);
+		$scope.incrementStep();
+		if ($scope.selectedDatasource == 'MSSQL')
+		{
+			// $scope.getConnections();
+			$scope.getAllFields();
+		} else 
+		{
+			angular.forEach($scope.selectedTableValue.schema,function(schema){
+				if(schema.name != "_index_id")
+				{
+					$scope.fields.push({
+						name: schema.name
+					})
+				}
+			});
+		}
+	}
 
 	$scope.stepFourPrevious = function()
 	{
@@ -138,6 +168,19 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			$scope.decrementTwoSteps();
 		}
 	}
+
+	$scope.stepSevenPrevious = function()
+	{
+		if ($scope.selectedFilterOption == "custom")
+		{
+			$scope.decrementStep();
+		} else
+		{
+			$scope.decrementTwoSteps();
+		}
+
+	}
+
 	// go to level one 
 	$scope.GoToStepOne = function()
 	{
@@ -152,13 +195,15 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	$scope.getTables = function()
 	{
 		$scope.tableProgress = true;
+		$scope.selectedTableValue = "";
+		$scope.selectedTable = "";
 		$scope.client = $diginengine.getClient($scope.selectedDatasource);
 		$scope.client.getTables(function(res, status)
 		{
 			$scope.tableProgress = false;
 			if(status)
 			{
-				if($scope.tables.length == 0)
+				if(res.length == 0)
 				{
 					$scope.displayNoneText = true;
 				} else
@@ -171,8 +216,8 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// fetch connections
 	$scope.getConnections = function()
 	{
-		$scope.tableProgress = true;
-		datasourceFactory.getAllConnections(userInfo.SecurityToken).success(function(data)
+		$scope.ConnectionProgress = true;
+		datasourceFactory.getAllConnections(userInfo.SecurityToken,$scope.selectedDatasource).success(function(data)
 		{
 
 		}).error(function(data)

@@ -829,6 +829,24 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             }
         
         }
+		
+		$scope.widgetFullscreen = function(ev, widget)
+		{
+			$mdDialog.show({
+			  controller: 'fullscreenCtrl',
+			  templateUrl: 'views/dashboard/fullscreen.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true,
+			  locals: {widget: widget},
+			  fullscreen: true // Only for -xs, -sm breakpoints.
+			})
+			.then(function(answer) {
+			 // $scope.status = 'You said the information was "' + answer + '".';
+			}, function() {
+			  //$scope.status = 'You cancelled the dialog.';
+			});
+		}
 
         /*Summary:
          synchronizes data per widget
@@ -1517,3 +1535,21 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
 
     }
 ]);
+
+routerApp.controller('fullscreenCtrl', ['$scope', '$mdDialog', 'widget', function($scope, $mdDialog, widget) {
+
+	
+	$scope.widget = angular.copy(widget);
+	$scope.widget.widgetData.highchartsNG["size"] = {
+		width: document.documentElement.offsetWidth,
+		height: document.documentElement.offsetHeight - 65
+	};
+
+	console.log($scope.widget);
+	
+	$scope.cancel = function()
+	{
+		$mdDialog.cancel();
+	}
+	
+}]);

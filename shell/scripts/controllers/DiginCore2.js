@@ -463,7 +463,7 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
 
         $scope.saveDashboard = function() {
 
-            if(saveDashboardService.IsSavingINprogress == false){
+            // if(saveDashboardService.IsSavingINprogress == false){
 
                     if ($scope.dashboardName && $scope.refreshInterval) {
 
@@ -504,15 +504,15 @@ routerApp.controller('saveCtrl', ['$scope', '$qbuilder', '$http', '$objectstore'
                             dismissOnClick: true
                         });
                     }
-            }
-            else{
-                  ngToast.create({className: 'danger',
-                     content: 'Dashboard saving in progress, please try again later!',
-                     horizontalPosition: 'center',
-                     verticalPosition: 'top',
-                    dismissOnClick: true
-                 });
-              }
+            // }
+            // else{
+            //       ngToast.create({className: 'danger',
+            //          content: 'Dashboard saving in progress, please try again later!',
+            //          horizontalPosition: 'center',
+            //          verticalPosition: 'top',
+            //         dismissOnClick: true
+            //      });
+            //   }
         }
     }
 ]);

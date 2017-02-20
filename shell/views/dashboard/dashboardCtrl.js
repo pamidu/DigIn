@@ -392,6 +392,9 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             var db = widget.widgetData.commonSrc.src.tbl.split(".");
                             query = "SELECT [" + key.filter.name + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + key.filter.name + "] ORDER BY [" + key.filter.name + "]";
                         }
+                        else if (widget.widgetData.commonSrc.src.src == "hiveql"){
+                             query = "SELECT " + key.filter.name + " FROM "+ widget.widgetData.commonSrc.src.tbl +"  GROUP BY " + key.filter.name + " ORDER BY " + key.filter.name + "";
+                        }
                         $scope.client.getExecQuery(query, widget.widgetData.commonSrc.src.id, function(data, status){
                             if (status) {
                                 key["values"] = [];
@@ -1540,6 +1543,20 @@ routerApp.controller('fullscreenCtrl', ['$scope', '$mdDialog', 'widget', functio
 
 	
 	$scope.widget = angular.copy(widget);
+	if($scope.widget.widgetData.selectedChart.chartType == "d3sunburst") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||
+	{
+		$scope.widget.widgetData.widData.id = 'fullScreenChart';
+		$scope.widget.widView = "views/ViewHnbMonthFullscreen.html"
+		
+	}
+	
+	if($scope.widget.widgetData.selectedChart.chartType == "d3hierarchy") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||
+	{
+		$scope.widget.widgetData.widData.id = 'fullScreenChart';
+		$scope.widget.widView = "views/ViewHnbMonthFullscreen.html"
+		
+	}
+	
 	$scope.widget.widgetData.highchartsNG["size"] = {
 		width: document.documentElement.offsetWidth,
 		height: document.documentElement.offsetHeight - 65
@@ -1550,6 +1567,16 @@ routerApp.controller('fullscreenCtrl', ['$scope', '$mdDialog', 'widget', functio
 	$scope.cancel = function()
 	{
 		$mdDialog.cancel();
+	}
+	
+	$scope.onClickDownload = function() {
+
+		var svg = document.getElementById('d3Sunburst').childNodes[2].innerHTML;
+		var canvas = document.getElementById('canvas');
+		canvg(canvas, svg);
+		var dataURL = canvas.toDataURL('image/png');
+		var downloadBtn = document.getElementById('downloadImage');
+		downloadBtn.href = dataURL;
 	}
 	
 }]);

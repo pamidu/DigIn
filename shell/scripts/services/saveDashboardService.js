@@ -217,48 +217,48 @@ var localThis = this;
           $rootScope.refreshInterval = $rootScope.dashboard.refreshInterval * 1000;
           $rootScope.refreshDashboard();
         }
-        pouchDbServices.insertPouchDB(null,response.Result,function(){
-           localThis.IsSavingINprogress = false;
-        });
+        // pouchDbServices.insertPouchDB(null,response.Result,function(){
+        //    localThis.IsSavingINprogress = false;
+        // });
 
-         // var db = $rootScope.db;
-         //  db.get($rootScope.page_id, function (err, doc) {
-         //      if (err) {
-         //      }
-         //      else {
-         //          db.remove(doc)
-         //          .catch(function (err) {
-         //              //fail silently
-         //          });                            
-         //      }
-         //  });
-         //  $rootScope.privateFun.getAllDashboards();
-         //  $rootScope.page_id = "";
+         var db = $rootScope.db;
+          db.get($rootScope.page_id, function (err, doc) {
+              if (err) {
+              }
+              else {
+                  db.remove(doc)
+                  .catch(function (err) {
+                      //fail silently
+                  });                            
+              }
+          });
+          $rootScope.privateFun.getAllDashboards();
+          $rootScope.page_id = "";
          
-         //  $rootScope.dashboard = [];
-         //  $rootScope.page_id = "";
-         //  $rootScope.dashboard = {
+          $rootScope.dashboard = [];
+          $rootScope.page_id = "";
+          $rootScope.dashboard = {
 
-         //      "pages": null,
-         //      "compClass": null,
-         //      "compType": null,
-         //      "compCategory": null,
-         //      "compID": null,
-         //      "compName": null,
-         //      "refreshInterval": null,
-         //  }
+              "pages": null,
+              "compClass": null,
+              "compType": null,
+              "compCategory": null,
+              "compID": null,
+              "compName": null,
+              "refreshInterval": null,
+          }
 
-         //  $rootScope.dashboard.pages = [];
-         //  var page = {
-         //      "widgets": [],
-         //      "pageID": "temp" + localThis.createuuid(),
-         //      "pageName": "DEFAULT",
-         //      "pageData": null
-         //  }
-         //  $rootScope.dashboard.pages.push(page); 
-         //  $rootScope.currentView = "Home";
-         //  $state.go('home.welcomeSearch');
-         //  localThis.IsSavingINprogress = false;
+          $rootScope.dashboard.pages = [];
+          var page = {
+              "widgets": [],
+              "pageID": "temp" + localThis.createuuid(),
+              "pageName": "DEFAULT",
+              "pageData": null
+          }
+          $rootScope.dashboard.pages.push(page); 
+          $rootScope.currentView = "Home";
+          $state.go('home.welcomeSearch');
+          localThis.IsSavingINprogress = false;
 
         if (type == 'dashboard'){
              setState(true,scope);

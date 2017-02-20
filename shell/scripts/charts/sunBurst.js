@@ -14,8 +14,8 @@ routerApp.directive('sunburstChart', function() {
             });
 
             scope.drawSunburstSummary = function(rootData,divID,attribute,decimal){
-                var width = 300,
-                        height = 290,
+                var width = 270,
+                        height = 260,
                         radius = Math.min(width, height) / 2;
 
                     var x = d3.scale.linear()

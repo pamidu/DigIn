@@ -4226,16 +4226,20 @@ d3- charts image,pdf download
     position: absolute;
     right: 55px;
     margin-top: 12px;
-    top: 20px;
+    top: 38px;
     z-index: 100;
     text-align: left;
+	cursor: pointer;
 }
-
-.d3-btn-wrap:hover {
+.d3-btn-wrap >span{
+    outline: none;
+	color: #666666;
+}
+/*.d3-btn-wrap:hover {
     border: 1px solid gray;
     border-radius: 3px
     background-color: gray;
-}
+}*/
 
 .d3-setting-wrap {
     position: absolute;

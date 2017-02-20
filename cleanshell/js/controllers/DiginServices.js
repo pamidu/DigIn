@@ -1,15 +1,25 @@
- DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain', function($rootScope,$http, $v6urls, $auth,notifications, Digin_Engine_API, Digin_Domain) {
+DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $v6urls, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
 	var cache = {};
 	return {
         getUserSettings: function() {
              //return the promise directly.
-             return $http.get('http://prod.digin.io:1929/get_user_settings?SecurityToken='+$auth.getSecurityToken()+'&Domain=prod.digin.io')
+             return $http.get(Digin_Engine_API+'get_user_settings?SecurityToken='+$auth.getSecurityToken()+'&Domain='+Digin_Domain)
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
                         },function errorCallback(response) {
 								console.log(response);
 								notifications.toast(0, "Falied to get User Settings");
+						 });
+        },getSession: function() {
+             //return the promise directly.
+             return $http.get(auth_Path+'GetSession/' + getCookie('securityToken') + '/Nil')
+                       .then(function(result) {
+                            //resolve the promise as the data
+                            return result.data;
+                        },function errorCallback(response) {
+								console.log(response);
+								notifications.toast(0, "Falied to get Session");
 						 });
         },getDiginComponents: function() {
              //return the promise directly.

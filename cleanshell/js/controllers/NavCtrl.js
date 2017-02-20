@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -265,9 +265,29 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	}// End of Navigate
 	
 	$scope.getUserSettings = {};
-	DiginServices.getUserSettings().then(function(data) {
-		$scope.getUserSettings = data;
-    });
+	
+	(function (){
+
+		if(IsLocal == true){
+			console.log("is local");
+			$rootScope.db  = new pouchDB("Dashboards");
+			//$scope.getSearchPanelDetails(); 
+		}else{
+			console.log("not local");
+			
+			DiginServices.getUserSettings().then(function(data) {
+				console.log(data);
+				$scope.getUserSettings = data;
+			});
+			
+			DiginServices.getSession().then(function(data) {
+				var pouchdbName = data.UserID + data.Domain;
+				console.log(pouchdbName);
+				$rootScope.db  = new pouchDB(pouchdbName);
+			});
+		}
+	})();
+	
 	
 	$scope.dashboards = [];
 	$scope.reports = [];

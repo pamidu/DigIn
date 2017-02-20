@@ -26,7 +26,7 @@
 	<md-fab-speed-dial md-open="demo.isOpen" md-direction="up"
 	ng-class="demo.selectedMode" style="position:fixed;bottom:20px;right:20px;">
 	<md-fab-trigger>
-	<md-button aria-label="menu" class="md-fab " style="background-color:#db4437;" href="#/main/tabone">
+	<md-button aria-label="menu" class="md-fab " style="background-color:#db4437;" ng-click="openDialog($event)"><!--href="#/main/tabone"-->
 		<md-icon md-svg-src="/img/ic_visibility_24px.svg" style="width:30px;" ></md-icon>
 		<md-tooltip md-direction="left">View</md-tooltip>
 	</md-button>

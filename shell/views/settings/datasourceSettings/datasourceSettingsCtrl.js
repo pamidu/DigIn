@@ -75,19 +75,19 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		isSelected:false,
 		icon:'styles/icons/source/mssql.svg'
 	},{
-		type:"HIVE",
+		type:"hiveql",
 		isSelected:false,
 		icon:'styles/icons/source/mssql.svg'
 	}];
 
-	$scope.selectedSourceType;
+	$scope.onSelectDataBase;
 
 	$scope.onSelectDataSource = function(source){
 		for (i = 0; i < $scope.datasources.length; i++) {
             $scope.datasources[i].isSelected = false;
             if($scope.datasources[i].type == source.type ){
             	$scope.datasources[i].isSelected = true;
-            	$scope.selectedSourceType = source.type;
+            	$scope.onSelectDataBase = source.type;
             	$scope.incrementStep();
             	$scope.getAllconnections();
             }
@@ -125,7 +125,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.getAllconnections = function()
 	{
 		$scope.connectionStatus = false;
-		datasourceFactory.getAllConnections(securityToken,$scope.selectedSourceType).success(function(data){
+		datasourceFactory.getAllConnections(securityToken,$scope.onSelectDataBase).success(function(data){
 			if(data.Is_Success)
 			{	
 				$scope.connectionStatus = true;
@@ -218,7 +218,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		$scope.testStatus = false;
 		$scope.testRequest = false;
 
-		datasourceFactory.getAllDatabases(securityToken,reqParam,$scope.selectedSourceType).success(function(data){
+		datasourceFactory.getAllDatabases(securityToken,reqParam,$scope.onSelectDataBase).success(function(data){
 			if(data.Is_Success)
 			{
 				if ($scope.action == "Create")
@@ -278,7 +278,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		}
 		$scope.testRequest = true;
 		$scope.testStatus = false;
-		datasourceFactory.testConnection(securityToken,reqParam,$scope.selectedSourceType).success(function(data){
+		datasourceFactory.testConnection(securityToken,reqParam,$scope.onSelectDataBase).success(function(data){
 			if(data.Is_Success)
 			{
 				$scope.testRequest = false;
@@ -328,7 +328,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			if(res.Is_Success)
 			{
 				// Call getAllConnections to get the connections after saving 
-				datasourceFactory.getAllConnections(securityToken,$scope.selectedSourceType).success(function(data){
+				datasourceFactory.getAllConnections(securityToken,$scope.onSelectDataBase).success(function(data){
 					if(data.Is_Success)
 					{	
 						$scope.saveRequest = false;

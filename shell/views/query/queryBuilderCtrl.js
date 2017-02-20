@@ -1472,6 +1472,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         if (widget.widgetData.widName !== undefined && widget.widgetData.widName != "") {
             widget.widgetName = widget.widgetData.widName;
         }
+        
         widget.widgetData["commonSrc"] = {
             src: $scope.sourceData,
             mea: $scope.executeQryData.executeMeasures,

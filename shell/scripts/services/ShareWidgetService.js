@@ -6,8 +6,9 @@ routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_En
 
         var svgTag = "";
         var date = new Date().getTime();
-        var fileNamepng= widget.widgetName + date +".png";
-        var fileName = widget.widgetName + date +".svg";
+        var widType =  widget.widgetData.selectedChart.chartType.toLowerCase();
+        var fileNamepng= widType + date +".png";
+        var fileName = widType + date +".svg";
         var widgetName = "";
 
         if(typeof widget.widgetData.widName != "undefined"){
@@ -15,7 +16,9 @@ routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_En
             widgetName = widget.widgetData.widName;
         }
 
-        if(widget.widgetName=="highcharts" || widget.widgetName=="histogram"  || widget.widgetName=="forecast" || widget.widgetName=="boxplot"){
+
+
+        if(widType=="highcharts" || widType=="histogram"  || widType=="forecast" || widType=="boxplot"){
 
           var highchartsObj = angular.copy(widget.widgetData.highchartsNG);
 
@@ -35,7 +38,7 @@ routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_En
           var file = new File([svg], fileName, {type: "image/svg+xml"});
 
         }
-        else if(widget.widgetName=="hierarchy" || widget.widgetName=="sunburst"){
+        else if(widType=="hierarchy" || widType=="sunburst"){
           var id = "#" + widget.widgetData.widData.id;
           var element = $("" + id + "");
           
@@ -65,7 +68,7 @@ routerApp.service('ShareWidgetService',function(Upload,$rootScope,$http,Digin_En
           var file = new File([svgTag], fileName, {type: "image/svg+xml"});
            
 
-        }else if(widget.widgetName=="bubble"){
+        }else if(widType=="bubble"){
 
            var highchartsObj = angular.copy(widget.widgetData.highchartsNG);
            highchartsObj.title.text = widgetName;

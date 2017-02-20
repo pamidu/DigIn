@@ -68,21 +68,27 @@
 			}
 
 			.delay1 {
+				-webkit-animation-delay: .1s;
 				animation-delay: .1s;
 			}
 			.delay2 {
+				-webkit-animation-delay: .2s;
 				animation-delay: .2s;
 			}
 			.delay3 {
+				-webkit-animation-delay: .3s;
 				animation-delay: .3s;
 			}
 			.delay4 {
+				-webkit-animation-delay: .4s;
 				animation-delay: .4s;
 			}
 			.delay5 {
+				-webkit-animation-delay: .5s;
 				animation-delay: .5s;
 			}
 			.delay6 {
+				-webkit-animation-delay: .6s;
 				animation-delay: .6s;
 			}
 
@@ -500,7 +506,12 @@
 		<md-content style="background:transparent">
 			
 			<div ui-view></div>
-
+			<md-toast class="md-bottom md-right" style="position:fixed" ng-show="online == false">
+				<div class="md-toast-content fade-in-down alert-dismissible" layout="row" layout-align="space-between center">
+					<div style="width:15px;height:15px;background:#e24949;border-radius:100px; margin: 10px;"></div>
+					<span flex>You are offline, Please reconnect!</span>
+				</div>
+			</md-toast>
 		</md-content>
 	</div>
 	<!--END OF APPLICATION CONTAINER-->
@@ -544,6 +555,8 @@
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+	<!-- PouchDB -->
+	<script src="bower_components/pouchdb/dist/pouchdb.js"></script>
 	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
 	
 	<!--for rss feeds>

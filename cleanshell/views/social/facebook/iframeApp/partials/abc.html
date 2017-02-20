@@ -1,0 +1,25 @@
+<md-dialog aria-label="Switch Tenant">
+  <form>
+  <md-toolbar class="modal-header md-primary">
+    <div class="md-toolbar-tools">
+		<h2>WARNING - Replace File</h2>
+		<span flex></span>
+		<md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+		</md-button>
+    </div>
+  </md-toolbar>
+  <md-content layout-padding>
+            <p>Uploading the same file may duplicate data. <br/> Do you want to proceed?</p>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button class="btn-dialog b-r-0" ng-click="confirm()">
+                    Yes
+                </md-button>
+                <md-button class="btn-dialog b-r-0" ng-click="cancel()">
+                    No
+                </md-button>
+            </div>
+  </md-content>
+  </form>
+</md-dialog>
+

@@ -1540,6 +1540,20 @@ routerApp.controller('fullscreenCtrl', ['$scope', '$mdDialog', 'widget', functio
 
 	
 	$scope.widget = angular.copy(widget);
+	if($scope.widget.widgetData.selectedChart.chartType == "d3sunburst") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||
+	{
+		$scope.widget.widgetData.widData.id = 'fullScreenChart';
+		$scope.widget.widView = "views/ViewHnbMonthFullscreen.html"
+		
+	}
+	
+	if($scope.widget.widgetData.selectedChart.chartType == "d3hierarchy") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||
+	{
+		$scope.widget.widgetData.widData.id = 'fullScreenChart';
+		$scope.widget.widView = "views/ViewHnbMonthFullscreen.html"
+		
+	}
+	
 	$scope.widget.widgetData.highchartsNG["size"] = {
 		width: document.documentElement.offsetWidth,
 		height: document.documentElement.offsetHeight - 65
@@ -1550,6 +1564,16 @@ routerApp.controller('fullscreenCtrl', ['$scope', '$mdDialog', 'widget', functio
 	$scope.cancel = function()
 	{
 		$mdDialog.cancel();
+	}
+	
+	$scope.onClickDownload = function() {
+
+		var svg = document.getElementById('d3Sunburst').childNodes[2].innerHTML;
+		var canvas = document.getElementById('canvas');
+		canvg(canvas, svg);
+		var dataURL = canvas.toDataURL('image/png');
+		var downloadBtn = document.getElementById('downloadImage');
+		downloadBtn.href = dataURL;
 	}
 	
 }]);

@@ -50,8 +50,12 @@ md-dialog.md-dialog-fullscreen {
 			</canvas>
 
 			<div id="png-container"></div>
-			<div style="height:100%;width:100%" class="dashoard-Wrapper {{widget.widgetID}}"  id="d3Chart-wrap" ng-include="widget.widgetData.widView">
+			
+			<div style="height:100%;width:100%" class="dashoard-Wrapper {{widget.widgetID}}" ng-if="widget.widgetData.selectedChart.chartType != 'd3sunburst'" id="d3Chart-wrap" ng-include="widget.widgetData.widView">
 			</div>
+			<div style="height:100%;width:50%;margin-left:25%" ng-if="widget.widgetData.selectedChart.chartType == 'd3sunburst'" class="dashoard-Wrapper {{widget.widgetID}}"  id="d3Chart-wrap" ng-include="widget.widgetData.widView">
+			</div>
+		
 		   
 		</div>
 	  </md-dialog-content>

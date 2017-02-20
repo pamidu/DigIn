@@ -217,6 +217,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		$scope.loginStatus = false;
 		$scope.testStatus = false;
 		$scope.testRequest = false;
+
 		datasourceFactory.getAllDatabases(securityToken,reqParam,$scope.selectedSourceType).success(function(data){
 			if(data.Is_Success)
 			{
@@ -240,6 +241,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			$scope.submitLogin = false;
 			notifications.toast('0','Request failed.Please try again.');
 		});
+		
 	}
 
 	//Test the connection with the selected database name

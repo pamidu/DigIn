@@ -292,6 +292,34 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 notifications.toast('0','Request failed.Please try again.');
                             })
                         break;
+                        case "hiveql":
+                            $scope.sourceUi.tableData = [];
+                            $scope.tables = [];
+                            $scope.mssqlConnections = [];
+                            var filesFlag = false;
+                            var foldersFlag = false;
+                            var flag;
+                            datasourceFactory.getAllConnections(userInfo.SecurityToken,src).success(function(data){
+                                if(data.Is_Success) {
+                                    commonUi.isDataLoading = false;
+                                    $scope.mssqlConnections = data.Result;
+                                    //$scope.mssqlConnections = $filter('orderBy')($scope.mssqlConnections,'connection_name');
+                                    if ($scope.mssqlConnections.length > 0){
+                                        notifications.toast('1',data.Custom_Message);                                        
+                                    } else {
+                                        notifications.toast('1','Please create a new connection.');
+                                    }
+                                } else {
+                                    commonUi.isDataLoading = false;
+                                    commonUi.isServiceError = true;
+                                    notifications.toast('0',data.Custom_Message);
+                                }
+                            }).error(function(data){
+                                commonUi.isDataLoading = false;
+                                commonUi.isServiceError = true;
+                                notifications.toast('0','Request failed.Please try again.');
+                            })
+                        break;
                         default:
                             $scope.tables = [];
                             var filesFlag = false;
@@ -408,7 +436,20 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 callback(JSON.parse(BigQueryFieldsString), true);
                             }
                             break;
-
+                            case "hiveql":
+                            var saveName = "MSSQL" + tbl;
+                            if (localStorage.getItem(saveName) === null ||
+                                localStorage.getItem(saveName) === "undefined") {
+                                $scope.client.getMSSQLFields(tbl, $scope.datasourceId ,function(data, status) {
+                                    callback(data, status);
+                                    localStorage.setItem(saveName, JSON.stringify(data));
+                                });
+                            } else {
+                                var BigQueryFieldsString = localStorage.getItem(saveName);
+                                console.log(BigQueryFieldsString);
+                                callback(JSON.parse(BigQueryFieldsString), true);
+                            }
+                            break;
                         case "postgresql":
                             var saveName = "postgresql" + tbl;
                             if (localStorage.getItem(saveName) === null ||

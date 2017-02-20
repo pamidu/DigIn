@@ -28,6 +28,11 @@
     "icon": "styles/icons/source/xlsx.svg",
     "selected": "false",
     "display": "true"
+}, {
+    "name": "hiveql",
+    "icon": "styles/icons/source/xlsx.svg",
+    "selected": "false",
+    "display": "true"
 },  {
     "name": "CSV Upload",
     "icon": "styles/icons/source/xlsx.svg",

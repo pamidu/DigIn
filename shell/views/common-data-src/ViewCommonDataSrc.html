@@ -204,7 +204,7 @@
                     </ui>
                     <v-accordion id="accordionDataSource" class="vAccordion--default" control="accordionA" 
                         onexpand="commonUi.onExpandConnection(index)"> 
-                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections" ng-show="sourceUi.selectedSource == 'MSSQL' | sourceUi.selectedSource == 'Oracal' ">
+                        <v-pane class="v-pane" ng-repeat="row in mssqlConnections" ng-show="sourceUi.selectedSource == 'MSSQL' | sourceUi.selectedSource == 'Oracal' | sourceUi.selectedSource == 'hiveql' ">
                             <v-pane-header>
                                 <h5 class="font-weight-300 text-upper">{{ ::row.connection_name }}</h5>
                             </v-pane-header>

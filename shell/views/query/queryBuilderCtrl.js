@@ -92,10 +92,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             $scope.selectedChart = $scope.widget.widgetData.selectedChart;
             $scope.widget.widgetData.highchartsNG.size.height = null;
             $scope.widget.widgetData.highchartsNG.size.width = null;
+            $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.commonSrc.query;
             eval("$scope." + $scope.selectedChart.chartType + ".onInit(true)");
             $scope.executeQryData.executeMeasures = $scope.widget.widgetData.commonSrc.mea;
             $scope.executeQryData.executeColumns = $scope.widget.widgetData.commonSrc.att;
-            $scope.dataToBeBind.receivedQuery = $scope.widget.widgetData.commonSrc.query;
 
             if ($scope.selectedChart.chartType == 'forecast') {
                 $scope.executeQryData.executeForecastFilters = $scope.widget.widgetData.commonSrc.filter;    
@@ -1535,7 +1535,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     $scope.recordedColors[key.origName] = key.color;
                 });
                 $scope.isDrilled = $scope.widget.widgetData.widData.drilled;
-                if ($scope.isDrilled) $scope.drillDownConfig = $scope.widget.widgetData.widData.drillConf;
+                if ($scope.isDrilled) {
+                    $scope.drillDownQuery = $scope.dataToBeBind.receivedQuery;
+                    $scope.drillDownConfig = $scope.widget.widgetData.widData.drillConf;
+                }
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 delete $scope.highchartsNG.size;
             }
@@ -4580,6 +4583,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }            
                 if (status) {
                     var highestLevel = "";
+                    res = $filter('orderBy')(res, 'level');
                     for (i = 0; i < res.length; i++) {
                         if (typeof res[i + 1] != "undefined") {
                             drillOrderArr.push({

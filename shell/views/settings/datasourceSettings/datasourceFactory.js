@@ -19,7 +19,7 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
                 '&port=' + reqParam.port +
                 '&username=' + reqParam.username + 
                 '&password=' + reqParam.password +
-                '&db_type=' + dbType
+                '&db=' + dbType
             })
     	},
         testConnection: function(securityToken,reqParam,dbType) {

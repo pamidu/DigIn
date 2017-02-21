@@ -6,8 +6,8 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','datasourceFactory', 
-	function($scope,$rootScope,$state,$http,$diginengine,datasourceFactory)
+routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','datasourceFactory', 'notifications',
+	function($scope,$rootScope,$state,$http,$diginengine,datasourceFactory,notifications)
 {
 
 
@@ -27,46 +27,21 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	$scope.selectedValueField = "";
 	$scope.selectedDisplayField = "";
 	$scope.filterName = "";
+	$scope.datasourceId = "";
+	$scope.selectedConnection = "";
 	$scope.fields = [];
 	$scope.datasources = [];
 	$scope.tables = [];
+	$scope.customFields = [];
+	$scope.datasourceConnections = [];
 	$scope.tableProgress = false;
-	$scope.ConnectionProgress = false;
+	$scope.connectionProgress = false;
+	$scope.fieldsProgress = false;
 	$scope.displayNoneText = false;
-	$scope.stepData = [{
-	    step: 0,
-	    completed: false,
-	    optional: false,
-	    data: {},
-	    busyText: ""
-	}, {
-	    step: 1,
-	    completed: false,
-	    optional: false,
-	    data: {},
-	    busyText: ""
-	}, {
-	    step: 2,
-	    completed: false,
-	    optional: false,
-	    data: {}
-	}, {
-		step: 3,
-		completed: false,
-		optional: false,
-		data: {}
-	}, {
-		step: 4,
-		completed: false,
-		optional: false,
-		data: {}
-	}, {
-		step: 5,
-		completed: false,
-		optional: false,
-		data: {}
-	}];
+
 	$scope.selectedStep = 0;
+	var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+
 
     $scope.initiateDatasources = function()
     {
@@ -117,6 +92,10 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 		if ($scope.selectedFilterOption == "custom")
 		{
 			$scope.selectedStep += 5;
+			$scope.customFields.push({
+				actualValue : '',
+				displayValue: ''
+			})
 		} else
 		{
 			$scope.incrementStep();
@@ -125,7 +104,10 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// next button of step two
 	$scope.stepTwo = function()
 	{
-		if ($scope.selectedDatasource == 'MSSQL')
+		$scope.datasourceConnections = [];
+		$scope.tables = [];
+		$scope.client = $diginengine.getClient($scope.selectedDatasource);
+		if ($scope.selectedDatasource == 'MSSQL' || $scope.selectedDatasource == 'Oracle' || $scope.selectedDatasource == 'hiveql' )
 		{
 			$scope.incrementStep();
 			$scope.getConnections();
@@ -135,18 +117,39 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			$scope.getTables();
 		}
 	}
+	// next button of step three
+	$scope.stepThree = function()
+	{
+		if ( $scope.selectedConnection == '' || $scope.selectedConnection === undefined )
+		{
+			notifications.toast('0','Please select a connection');
+			return;
+		}
+		$scope.selectedConnectionValue = angular.fromJson($scope.selectedConnection);
+		$scope.datasourceId = $scope.selectedConnectionValue.ds_config_id;
+		$scope.incrementStep();
+		$scope.getConnectionTables();
+
+	}
 	//next button of step four
 	$scope.stepFour = function()
 	{
-		$scope.fields = [];
-		$scope.selectedTableValue = angular.fromJson($scope.selectedTable);
-		$scope.incrementStep();
-		if ($scope.selectedDatasource == 'MSSQL')
+		if( $scope.selectedTable == '' || $scope.selectedTable === undefined )
 		{
-			// $scope.getConnections();
+			notifications.toast('0','Please select a table');
+			return;
+		}
+		$scope.fields = [];
+		$scope.incrementStep();
+		if ($scope.selectedDatasource == 'MSSQL' || $scope.selectedDatasource == 'Oracle' || $scope.selectedDatasource == 'hiveql' )
+		{
+			$scope.selectedTableValue = angular.fromJson($scope.selectedTable).datasource_name;
 			$scope.getAllFields();
 		} else 
 		{
+			$scope.fieldsProgress = false;
+			$scope.selectedTableValue = angular.fromJson($scope.selectedTable);
+			$scope.datasourceId = $scope.selectedTableValue.datasource_id;
 			angular.forEach($scope.selectedTableValue.schema,function(schema){
 				if(schema.name != "_index_id")
 				{
@@ -157,10 +160,21 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			});
 		}
 	}
+	// next button of step five
+	$scope.stepFive = function()
+	{
+		//validation
+		if($scope.selectedValueField == '' || $scope.selectedDisplayField == '')
+		{
+			notifications.toast('0','Please select a value field and a display field.');
+			return;
+		}
+		$scope.incrementTwoStep();
+	}
 
 	$scope.stepFourPrevious = function()
 	{
-		if ($scope.selectedDatasource == 'MSSQL')
+		if ($scope.selectedDatasource == 'MSSQL' || $scope.selectedDatasource == 'Oracle' || $scope.selectedDatasource == 'hiveql')
 		{
 			$scope.decrementStep();
 		} else 
@@ -197,7 +211,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 		$scope.tableProgress = true;
 		$scope.selectedTableValue = "";
 		$scope.selectedTable = "";
-		$scope.client = $diginengine.getClient($scope.selectedDatasource);
+		$scope.tables = [];
 		$scope.client.getTables(function(res, status)
 		{
 			$scope.tableProgress = false;
@@ -216,14 +230,76 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// fetch connections
 	$scope.getConnections = function()
 	{
-		$scope.ConnectionProgress = true;
-		datasourceFactory.getAllConnections(userInfo.SecurityToken,$scope.selectedDatasource).success(function(data)
+		$scope.connectionProgress = true;
+		datasourceFactory.getAllConnections(userInfo.SecurityToken,$scope.selectedDatasource).success(function(res)
 		{
-
-		}).error(function(data)
+			$scope.connectionProgress = false;
+			if(res.Is_Success)
+			{
+				$scope.datasourceConnections = res.Result;
+			} else
+			{
+				$scope.datasourceConnections = [];
+			}
+		}).error(function(res)
 		{
-
+			$scope.connectionProgress = false;
+			$scope.datasourceConnections = [];
 		})
+	}
+	// fetch tables of a given connection
+	$scope.getConnectionTables = function()
+	{
+		$scope.tableProgress = true;
+		$scope.selectedTableValue = "";
+		$scope.selectedTable = "";
+		$scope.tables = [];
+		$scope.displayNoneText = false;
+		$scope.client.getConnectionTables($scope.datasourceId,$scope.selectedDatasource,function(data,status){
+			if(status)
+			{
+				$scope.tableProgress = false;
+				if(data.length == 0)
+				{
+					$scope.displayNoneText = true;
+				} else
+				{
+					data.sort();
+					angular.forEach(data,function(table){
+						$scope.tables.push({
+							datasource_name : table
+						});
+					});
+				}
+			} else 
+			{
+				$scope.tableProgress = false;
+
+			}
+		})
+	}
+	// fetch fields for a given table - mssql, hive and oracle
+	$scope.getAllFields = function()
+	{
+		$scope.fieldsProgress = true;
+        $scope.client.getMSSQLFields($scope.selectedTableValue, $scope.datasourceId ,function(data, status) {
+        	if(status)
+        	{
+        		data.sort();
+        		$scope.fieldsProgress = false;
+        		if(data.length > 0)
+        		{
+        			angular.forEach(data,function(field){
+	        			$scope.fields.push({
+							name: field.Fieldname
+						})
+        			})
+        		}
+        	} else
+        	{
+				$scope.fieldsProgress = false;
+        	}
+        });
 	}
 
 }]);

@@ -579,6 +579,7 @@
 	<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
 	<script src="dialogs/addPage/addPageCtrl.js"></script>
 	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
+	<script src="views/home/homeCtrl.js"></script>
 	<script src="views/settings/myAccount/myAccountCtrl.js"></script>
 	<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>

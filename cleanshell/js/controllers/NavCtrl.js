@@ -8,13 +8,13 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
-	window.themeInfo = 'defaultDark';
 	$rootScope.theme = 'defaultDark';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
-	colorManager.changeTheme(window.themeInfo);
+	colorManager.changeTheme($rootScope.theme);
 	
+	//call this function from an iFrame to close it and come home
 	window.firefunction = function()
 	{
 		$state.go('home');
@@ -239,7 +239,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
     });
 	
-	//This is a dashboard that is saved and can be reterived later
+	//This is a dashboard that is saved and can be reterived later, this is kept to check if the currentDashboard has been changed without saving the changes
 	$rootScope.selectedDashboard = {};
 	
 	//may or may not be saved

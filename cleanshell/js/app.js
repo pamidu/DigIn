@@ -33,7 +33,8 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
    
 	 .state('home', {
 		url: '/home',
-		templateUrl: 'views/home/home.html'
+		templateUrl: 'views/home/home.html',
+		controller: 'homeCtrl'
 	})
 	
 	.state('profile', {

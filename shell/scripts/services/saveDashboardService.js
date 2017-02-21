@@ -363,9 +363,9 @@ var localThis = this;
             // widgets[j].widgetData.selectedChart.initObj.trendChart.series = [];
             break;
           case 'highCharts':
-            // var series = widgets[j].widgetData.highchartsNG.series[0].data;
-            // dataArray.push(series);
-            // widgets[j].widgetData.highchartsNG.series[0].data = [];
+            var series = widgets[j].widgetData.highchartsNG.series[0].data;
+            dataArray.push(series);
+            widgets[j].widgetData.highchartsNG.series[0].data = [];
             break;
           case 'Tabular':
             var series = widgets[j].widgetData.widData.userList;
@@ -434,7 +434,7 @@ var localThis = this;
       case 'hierarchy':
         break;
       case 'highCharts':
-        // $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
+         $rootScope.dashboard.pages[i].widgets[j].widgetData.highchartsNG.series[0].data = data[0];
         break;
       case 'metric':
         // $rootScope.dashboard.pages[i].widgets[j].widgetData.widData.decValue = data[0];

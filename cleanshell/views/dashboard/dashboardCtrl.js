@@ -12,9 +12,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	{
 		DiginServices.getComponent($scope.dashboardId).then(function(data) {
 			//There is a samll problem that this runs twice, console.log to check
-			$rootScope.currentDashboard = data;
+			$rootScope.selectedPageIndex = 0;
+			$rootScope.currentDashboard = angular.copy(data);
+			$rootScope.selectedDashboard = angular.copy(data);
 		});
 	}
+	
+	var changed = false;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -30,12 +34,16 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		margins: [5, 5], // margins in between grid items
 		outerMargin: true,
 		draggable: {
-			handle: '.widget-header'
+			handle: '.widget-header',
+			drag: function(event, $element, widget) {
+				changed = true;
+			}, // optional callback fired when item is moved,
 		}, 
 		resizable: {
 			enabled: true,
 			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
 			  resize: function(event,$element,widget){
+				  changed = true;
 				if(widget.widgetName == "Map"){
 					$rootScope.mapheight = $element.clientHeight - 50;
 					$rootScope.mapWidth = $element.clientWidth ;
@@ -57,6 +65,17 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
 
 	};
+	
+	/*$scope.$watchCollection('currentDashboard', function(newValue, oldValue, scope) {
+		console.log(newValue);
+		console.log(oldValue);
+		if (angular.equals(oldValue, {}) && oldValue == newValue) {
+				//currentDashboard not changed
+		  }else{
+			  console.log("value is changed");
+			  changed = true;
+		  }
+	});*/
 /*
 	$scope.gridsterOpts = {
 		pushing: true,
@@ -131,23 +150,221 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	{
 		$rootScope.selectedPageIndex = $rootScope.currentDashboard.pages.length;
 		
-		$rootScope.currentDashboard.pages.push({
-				pageID:" 1470684542268",
+		$rootScope.currentDashboard.pages.push({				
+				pageID: "temp" + createuuid(),
 				pageName: $scope.fileName,
-				widgets: []
+				widgets: [],
+				pageData: null
 		})
 		
+		console.log($rootScope.currentDashboard);
 		$scope.addPageFrom.$setUntouched();
 		$scope.addPageFrom.$setPristine();
 		
 		$scope.fileName = "";
 	}
 	
+	$scope.$parent.navigate = function(ev,action)
+	{
+		var pageIndex = 0;	
+		try{
+			angular.forEach($scope.currentDashboard.pages, function(value, key) {
+				if($scope.currentDashboard.pages[pageIndex].widgets.length != $scope.selectedDashboard.pages[pageIndex].widgets.length)
+				{
+					changed = true;
+					console.log("changed");
+				}
+				pageIndex++;
+			});
+		}catch(exception)
+		{
+			changed = true;
+		}
+		
+		if(changed == false)
+		{
+			navigateTo(action);
+		}else{
+			$mdDialog.show({
+			  controller: saveChangesCtrl,
+			  templateUrl: 'views/dashboard/saveChanges/saveChanges.html',
+			  parent: angular.element(document.body),
+			  targetEvent: ev,
+			  clickOutsideToClose:true
+			})
+			.then(function(answer) {
+				if(answer == 'Yes')
+				{
+					alert("Changes saved");
+				}else if(answer == 'No')
+				{
+					navigateTo(action);
+				}
+			});
+		}
+	}
+	
+	function navigateTo(action)
+	{
+		if(action.charAt(0) == "#")
+		{
+			location.href = action;
+		}else if(action == "Switch Tenant")
+		{
+			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+			
+			 $mdDialog.show({
+			  controller: 'switchTenantCtrl',
+			  templateUrl: 'dialogs/switchTenant/switchTenant.html',
+			  parent: angular.element(document.body),
+			  clickOutsideToClose:true,
+			  targetEvent: ev,
+			  fullscreen: useFullScreen
+			});
+			
+			 $scope.$watch(function() {
+			  return $mdMedia('xs') || $mdMedia('sm');
+				}, function(wantsFullScreen) {
+				  $scope.customFullscreen = (wantsFullScreen === true);
+			});
+		}else if(action == "Logout")
+		{
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to logout?')
+				.targetEvent(event)
+				.ok('Yes!')
+				.cancel('No!');
+			$mdDialog.show(confirm).then(function () {
+				//$scope.status = 'Yes';
+				$window.location = "/logout.php";
+			}, function () {
+				//$scope.status = 'No';
+			});
+		}else if(action == "Create Dashboard")
+		{
+			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+			
+			 $mdDialog.show({
+			  controller: 'createDashboardCtrl',
+			  templateUrl: 'dialogs/createDashboard/createDashboard.html',
+			  parent: angular.element(document.body),
+			  clickOutsideToClose:true,
+			  targetEvent: ev,
+			  fullscreen: useFullScreen
+			}).then(function(answer) {
+				$rootScope.currentDashboard = {
+					compName: answer.dashboard,
+					compType: "dashboard",
+					compID: "dash" + createuuid(),
+					refreshInterval: 0, 
+					compClass: null,
+					compCategory: null,
+					pages: [{pageName: answer.page,
+                            pageID: "temp" + createuuid(),
+							widgets: [],
+							pageData: null}]     
+				};
+				console.log("empty dashboar created " + $rootScope.currentDashboard);
+				location.href = '#/visualize_data';
+				
+			});
+			
+			 $scope.$watch(function() {
+			  return $mdMedia('xs') || $mdMedia('sm');
+				}, function(wantsFullScreen) {
+				  $scope.customFullscreen = (wantsFullScreen === true);
+			});
+		}
+	}
+	
+	function saveChangesCtrl ($scope, $mdDialog) {
+		$scope.confirmReply = function(answer) {
+		  $mdDialog.hide(answer);
+		};
+	}
+	
+	
+	$scope.$on("$destroy", function(){
+        $scope.$parent.navigate = function(ev,action)
+		{
+			if(action.charAt(0) == "#")
+			{
+				location.href = action;
+			}else if(action == "Switch Tenant")
+			{
+				var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+				
+				 $mdDialog.show({
+				  controller: 'switchTenantCtrl',
+				  templateUrl: 'dialogs/switchTenant/switchTenant.html',
+				  parent: angular.element(document.body),
+				  clickOutsideToClose:true,
+				  targetEvent: ev,
+				  fullscreen: useFullScreen
+				});
+				
+				 $scope.$watch(function() {
+				  return $mdMedia('xs') || $mdMedia('sm');
+					}, function(wantsFullScreen) {
+					  $scope.customFullscreen = (wantsFullScreen === true);
+				});
+			}else if(action == "Logout")
+			{
+				var confirm = $mdDialog.confirm()
+					.title('Are you sure you want to logout?')
+					.targetEvent(event)
+					.ok('Yes!')
+					.cancel('No!');
+				$mdDialog.show(confirm).then(function () {
+					//$scope.status = 'Yes';
+					$window.location = "/logout.php";
+				}, function () {
+					//$scope.status = 'No';
+				});
+			}else if(action == "Create Dashboard")
+			{
+				var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+				
+				 $mdDialog.show({
+				  controller: 'createDashboardCtrl',
+				  templateUrl: 'dialogs/createDashboard/createDashboard.html',
+				  parent: angular.element(document.body),
+				  clickOutsideToClose:true,
+				  targetEvent: ev,
+				  fullscreen: useFullScreen
+				}).then(function(answer) {
+					$rootScope.currentDashboard = {
+						compName: answer.dashboard,
+						compType: "dashboard",
+						compID: "dash" + createuuid(),
+						refreshInterval: 0, 
+						compClass: null,
+						compCategory: null,
+						pages: [{pageName: answer.page,
+								pageID: "temp" + createuuid(),
+								widgets: [],
+								pageData: null}]     
+					};
+					console.log("empty dashboar created " + $rootScope.currentDashboard);
+					location.href = '#/visualize_data';
+					
+				});
+				
+				 $scope.$watch(function() {
+				  return $mdMedia('xs') || $mdMedia('sm');
+					}, function(wantsFullScreen) {
+					  $scope.customFullscreen = (wantsFullScreen === true);
+				});
+			}
+		}
+		$rootScope.currentDashboard = {};
+    });
+	
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {
 		return {
 			showData: function (ev, widget) {
-				console.log("showData");
+				
 			},
 			commentary: function (ev, widget){
 				console.log("commentary");

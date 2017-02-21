@@ -4,6 +4,10 @@
     display: none!important
 }
 
+body{
+	overflow-x: hidden;
+}
+
 /*scrollbar*/
 ::-webkit-scrollbar {
    /* width: 15px;*/

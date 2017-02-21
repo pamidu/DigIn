@@ -113,6 +113,10 @@ md-chips-wrap{
 	text-align: left;
 }
 
+.hint{
+	font-size: 12px;
+}
+
 /*Start of Paging Tabs*/
 #pagingTabs md-tabs-wrapper
 {

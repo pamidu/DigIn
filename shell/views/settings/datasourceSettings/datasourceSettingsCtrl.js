@@ -202,7 +202,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.submitUserDetails = function()
 	{
 		// validation
-		if ($scope.host == '' || $scope.username == '' || $scope.password == '' || $scope.port == '')
+		if ($scope.host == '' || $scope.username == '' || ($scope.password == '' && $scope.onSelectDataBase !='hiveql') || ($scope.port == '' && $scope.onSelectDataBase !='hiveql'))
 		{
 			notifications.toast('0', 'Please fill in all required fields.');
 			return;

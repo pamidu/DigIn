@@ -85,16 +85,19 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                     var widget = dashboard.pages[index].widgets[i];
                                     console.log('syncing...');
                                     if (typeof(widget.widgetData.commonSrc) != "undefined") {
-                                        widget.widgetData.syncState = false;
+
+                                        
                                         //Clear the filter indication when the chart is re-set
                                         widget.widgetData.filteredState = false;
                                         filterService.clearFilters(widget); 
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
                                             $qbuilder.sync(widget.widgetData, function (data) {
                                               count++;
+                                              widget.widgetData.syncState = true;
                                               if(dashboard.pages[0].widgets.length == count){
                                                   dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
                                                   settoPouch(dashboardJson,true,cb);
+                                                  $rootScope.dashboard = dashboard;
                                                }
                                               
                                             });

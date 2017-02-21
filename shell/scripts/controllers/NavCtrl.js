@@ -876,12 +876,12 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                             widget.widgetData.syncState = false;
                                             //Clear the filter indication when the chart is re-set
                                             widget.widgetData.filteredState = false;
-                                            filterService.clearFilters(widget);                                    
-                                            if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
-                                                $qbuilder.sync(widget.widgetData, function (data) {
-                                                    widget.widgetData.syncState = true;
-                                                });
-                                            }
+                                            //filterService.clearFilters(widget);                                    
+                                            // if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
+                                            //     $qbuilder.sync(widget.widgetData, function (data) {
+                                            //         widget.widgetData.syncState = true;
+                                            //     });
+                                            // }
                                         }
                                     }
                                     if ($rootScope.dashboard.refreshInterval == '0') {

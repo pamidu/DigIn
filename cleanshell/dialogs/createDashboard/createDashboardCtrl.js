@@ -5,9 +5,5 @@ DiginApp.controller('createDashboardCtrl',[ '$scope','$mdDialog', function ($sco
 	{
 		$mdDialog.hide($scope.content);
 	}
-	
-	$scope.cancel = function()
-	{
-		$mdDialog.cancel();
-	}
+
 }])

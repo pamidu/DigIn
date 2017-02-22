@@ -217,10 +217,59 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			  //End of Navigate TVMode
 		}else if(action == 'Clear Widgets')
 		{
-			console.log("Clear Widgets");
+			dialogService.confirmDialog(ev, "Clear Widgets","Are you sure you want to clear all Widgets?","yes", "no").then(function(answer) {
+				if(answer == 'yes')
+				{
+                        $rootScope.currentDashboard = [];
+						$rootScope.selectedDashboard = [];
+                        $rootScope.currentDashboard = {
+
+                            "pages": null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
+                        }
+
+                        $rootScope.currentDashboard.pages = [];
+                        var page = {
+                            "widgets": [],
+                            "pageID": "temp" + createuuid(),
+                            "pageName": "DEFAULT",
+                            "pageData": null
+                        }
+                        $rootScope.currentDashboard.pages.push(page);
+				}
+			});
 		}else if(action == 'Save')
 		{
-			console.log("Save");
+			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+			
+			 $mdDialog.show({
+			  controller: 'saveDashboardCtrl',
+			  templateUrl: 'dialogs/saveDashboard/saveDashboard.html',
+			  parent: angular.element(document.body),
+			  clickOutsideToClose:true,
+			  targetEvent: ev,
+			  fullscreen: useFullScreen
+			}).then(function(answer) {
+				console.log("save dashboard closed");
+				console.log(answer);
+				notifications.startLoading("Saving '"+answer.dashboardName+"' dashboard, Please wait...");
+				
+				$timeout(function(){
+					notifications.finishLoading();
+					notifications.toast(1,"Changes Successfully Saved");
+				}, 3000);
+			}); 
+			
+			 $scope.$watch(function() {
+			  return $mdMedia('xs') || $mdMedia('sm');
+				}, function(wantsFullScreen) {
+				  $scope.customFullscreen = (wantsFullScreen === true);
+			});
 		}else if(action == 'Notifications')
 		{
 			$mdSidenav('notifications').toggle();

@@ -1,10 +1,10 @@
-<md-dialog aria-label="Terms and Conditions"  plumb-item>
-  <form name="editForm" ng-submit="addPage()">
+<md-dialog aria-label="Save Dashboard"  plumb-item>
+  <form name="editForm" ng-submit="saveDashboard()">
   <md-toolbar class="modal-header">
     <div class="md-toolbar-tools">
        <div layout="row" layout-align="center center">
 		<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
-		<h2>Create New Dashboard</h2>
+		<h2>Save Dashboard</h2>
 	  </div>
       <span flex></span>
       <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
@@ -18,7 +18,7 @@
 		<div layout-align="start center">
 			<md-input-container class="md-block" flex-gt-sm>
 				<span>Dashboard Name</span>
-				<input required type="text" name="dashboard" ng-model="content.dashboard" aria-label="dashboard" />
+				<input required type="text" name="dashboard" ng-model="content.dashboardName" aria-label="dashboard" />
 				<div ng-messages="editForm.dashboard.$error" role="alert">
 				  <div ng-message-exp="['required']">
 						Enter a dashboard name
@@ -26,17 +26,19 @@
 				</div>
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
-				<span>Page Name</span>
-				<input required type="text" name="page" ng-model="content.page" aria-label="page" style="margin-bottom: 10px !important;" />
-				<div ng-messages="editForm.page.$error" role="alert">
-				  <div ng-message-exp="['required']">
-						Enter a page name
-				  </div>
-				</div>
-				<div class="hint">A dashboard may have multiple pages. Edit the name of the first page.</div>
+				<span>Refresh Intervel</span>
+				<md-select class="select" ng-model="content.refreshInterval" aria-label="refresh intervel">
+					<md-optgroup label="Select a Refresh Interval">
+						<md-option  value="60" flex >1 Minute</md-option>
+						<md-option  value="120" flex >2 Minutes</md-option>
+						<md-option  value="300" flex >5 Minutes</md-option>
+						<md-option  value="3600" flex >60 Minutes</md-option>
+						<md-option  value="0" flex >No Refresh</md-option>
+					</md-optgroup>
+				</md-select>
 			</md-input-container>
 		</div>
-		<md-button type="submit">Create</md-button>
+		<md-button type="submit">Save</md-button>
     </div>
 
 	

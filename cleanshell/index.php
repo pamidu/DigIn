@@ -580,6 +580,8 @@
 
 	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
 	<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
+	<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
+	<script src="dialogs/saveDashboard/saveDashboardService.js"></script>
 	<script src="dialogs/addPage/addPageCtrl.js"></script>
 	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
 	<script src="views/home/homeCtrl.js"></script>

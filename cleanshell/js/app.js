@@ -18,7 +18,8 @@ var DiginApp = angular.module('DuoDiginRt',
 		'configuration',
 		'diginServiceHandler',
 		'rzModule',
-		'pouchdb'
+		'pouchdb',
+		'cellCursor'
 	]
 );
 

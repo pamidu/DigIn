@@ -40,6 +40,7 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/cellCursor.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/intro.js/minified/introjs.min.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angularjs-slider/dist/rzslider.min.css">
 	<!-- endbuild -->
@@ -439,7 +440,7 @@
 					</li>
 					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'Create Dashboard')" id="step4">
 						<md-tooltip md-direction="right">Create Dashboard</md-tooltip>
-						<a class="hover-color" md-colors="{color:'primary'}"><i class="ti-layout" style="font-size: 20px;"></i></a>
+						<a class="hover-color" md-colors="{color:'primary'}"><i class="icon-add-page"></i></a>
 					</li>
 					<li style="height:50px;font-size:24px" class="active has-sub" id="step1"><a class="hover-color" md-colors="{color:'primary'}" ><i class="icon-report"></i></a>
 						<ul>
@@ -559,6 +560,8 @@
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+	<script src="js/cellCursor.js"></script>
+	
 	<!-- PouchDB -->
 	<script src="bower_components/pouchdb/dist/pouchdb.js"></script>
 	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
@@ -594,6 +597,8 @@
 	<script src="views/social/facebook/facebookCtrl.js"></script>
 	<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 	<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
+	
+	<script src="js/services/tabularService.js"></script>
 
 	<!--Payment stripe-->
     <script src="https://checkout.stripe.com/checkout.js"></script>

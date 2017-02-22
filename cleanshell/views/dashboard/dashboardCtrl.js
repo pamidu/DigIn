@@ -18,7 +18,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		});
 	}
 	
-	var changed = false;
+	//var changed = false;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -36,14 +36,14 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		draggable: {
 			handle: '.widget-header',
 			drag: function(event, $element, widget) {
-				changed = true;
+				$scope.$parent.changed = true;
 			}, // optional callback fired when item is moved,
 		}, 
 		resizable: {
 			enabled: true,
 			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
 			  resize: function(event,$element,widget){
-				  changed = true;
+				  $scope.$parent.changed = true;
 				if(widget.widgetName == "Map"){
 					$rootScope.mapheight = $element.clientHeight - 50;
 					$rootScope.mapWidth = $element.clientWidth ;
@@ -66,17 +66,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 
 	};
 	
-	/*$scope.$watchCollection('currentDashboard', function(newValue, oldValue, scope) {
-		console.log(newValue);
-		console.log(oldValue);
-		if (angular.equals(oldValue, {}) && oldValue == newValue) {
-				//currentDashboard not changed
-		  }else{
-			  console.log("value is changed");
-			  changed = true;
-		  }
-	});*/
-/*
+	/*
 	$scope.gridsterOpts = {
 		pushing: true,
 		floating: true,
@@ -164,201 +154,9 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		$scope.fileName = "";
 	}
 	
-	$scope.$parent.navigate = function(ev,action)
-	{
-		var pageIndex = 0;	
-		try{
-			angular.forEach($scope.currentDashboard.pages, function(value, key) {
-				if($scope.currentDashboard.pages[pageIndex].widgets.length != $scope.selectedDashboard.pages[pageIndex].widgets.length)
-				{
-					changed = true;
-					console.log("changed");
-				}
-				pageIndex++;
-			});
-		}catch(exception)
-		{
-			changed = true;
-		}
-		
-		if(changed == false)
-		{
-			navigateTo(action);
-		}else{
-			$mdDialog.show({
-			  controller: saveChangesCtrl,
-			  templateUrl: 'views/dashboard/saveChanges/saveChanges.html',
-			  parent: angular.element(document.body),
-			  targetEvent: ev,
-			  clickOutsideToClose:true
-			})
-			.then(function(answer) {
-				if(answer == 'Yes')
-				{
-					alert("Changes saved");
-				}else if(answer == 'No')
-				{
-					navigateTo(action);
-				}
-			});
-		}
-	}
-	
-	function navigateTo(action)
-	{
-		if(action.charAt(0) == "#")
-		{
-			location.href = action;
-		}else if(action == "Switch Tenant")
-		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-			
-			 $mdDialog.show({
-			  controller: 'switchTenantCtrl',
-			  templateUrl: 'dialogs/switchTenant/switchTenant.html',
-			  parent: angular.element(document.body),
-			  clickOutsideToClose:true,
-			  targetEvent: ev,
-			  fullscreen: useFullScreen
-			});
-			
-			 $scope.$watch(function() {
-			  return $mdMedia('xs') || $mdMedia('sm');
-				}, function(wantsFullScreen) {
-				  $scope.customFullscreen = (wantsFullScreen === true);
-			});
-		}else if(action == "Logout")
-		{
-			var confirm = $mdDialog.confirm()
-				.title('Are you sure you want to logout?')
-				.targetEvent(event)
-				.ok('Yes!')
-				.cancel('No!');
-			$mdDialog.show(confirm).then(function () {
-				//$scope.status = 'Yes';
-				$window.location = "/logout.php";
-			}, function () {
-				//$scope.status = 'No';
-			});
-		}else if(action == "Create Dashboard")
-		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-			
-			 $mdDialog.show({
-			  controller: 'createDashboardCtrl',
-			  templateUrl: 'dialogs/createDashboard/createDashboard.html',
-			  parent: angular.element(document.body),
-			  clickOutsideToClose:true,
-			  targetEvent: ev,
-			  fullscreen: useFullScreen
-			}).then(function(answer) {
-				$rootScope.currentDashboard = {
-					compName: answer.dashboard,
-					compType: "dashboard",
-					compID: "dash" + createuuid(),
-					refreshInterval: 0, 
-					compClass: null,
-					compCategory: null,
-					pages: [{pageName: answer.page,
-                            pageID: "temp" + createuuid(),
-							widgets: [],
-							pageData: null}]     
-				};
-				console.log("empty dashboar created " + $rootScope.currentDashboard);
-				location.href = '#/visualize_data';
-				
-			});
-			
-			 $scope.$watch(function() {
-			  return $mdMedia('xs') || $mdMedia('sm');
-				}, function(wantsFullScreen) {
-				  $scope.customFullscreen = (wantsFullScreen === true);
-			});
-		}
-	}
-	
-	function saveChangesCtrl ($scope, $mdDialog) {
-		$scope.confirmReply = function(answer) {
-		  $mdDialog.hide(answer);
-		};
-	}
-	
-	
 	$scope.$on("$destroy", function(){
-        $scope.$parent.navigate = function(ev,action)
-		{
-			if(action.charAt(0) == "#")
-			{
-				location.href = action;
-			}else if(action == "Switch Tenant")
-			{
-				var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-				
-				 $mdDialog.show({
-				  controller: 'switchTenantCtrl',
-				  templateUrl: 'dialogs/switchTenant/switchTenant.html',
-				  parent: angular.element(document.body),
-				  clickOutsideToClose:true,
-				  targetEvent: ev,
-				  fullscreen: useFullScreen
-				});
-				
-				 $scope.$watch(function() {
-				  return $mdMedia('xs') || $mdMedia('sm');
-					}, function(wantsFullScreen) {
-					  $scope.customFullscreen = (wantsFullScreen === true);
-				});
-			}else if(action == "Logout")
-			{
-				var confirm = $mdDialog.confirm()
-					.title('Are you sure you want to logout?')
-					.targetEvent(event)
-					.ok('Yes!')
-					.cancel('No!');
-				$mdDialog.show(confirm).then(function () {
-					//$scope.status = 'Yes';
-					$window.location = "/logout.php";
-				}, function () {
-					//$scope.status = 'No';
-				});
-			}else if(action == "Create Dashboard")
-			{
-				var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-				
-				 $mdDialog.show({
-				  controller: 'createDashboardCtrl',
-				  templateUrl: 'dialogs/createDashboard/createDashboard.html',
-				  parent: angular.element(document.body),
-				  clickOutsideToClose:true,
-				  targetEvent: ev,
-				  fullscreen: useFullScreen
-				}).then(function(answer) {
-					$rootScope.currentDashboard = {
-						compName: answer.dashboard,
-						compType: "dashboard",
-						compID: "dash" + createuuid(),
-						refreshInterval: 0, 
-						compClass: null,
-						compCategory: null,
-						pages: [{pageName: answer.page,
-								pageID: "temp" + createuuid(),
-								widgets: [],
-								pageData: null}]     
-					};
-					console.log("empty dashboar created " + $rootScope.currentDashboard);
-					location.href = '#/visualize_data';
-					
-				});
-				
-				 $scope.$watch(function() {
-				  return $mdMedia('xs') || $mdMedia('sm');
-					}, function(wantsFullScreen) {
-					  $scope.customFullscreen = (wantsFullScreen === true);
-				});
-			}
-		}
-		$rootScope.currentDashboard = {};
-    });
+		$scope.$parent.changed = false;
+	})
 	
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {

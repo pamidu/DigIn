@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -14,6 +14,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.h1color = '';
 	colorManager.changeTheme($rootScope.theme);
 	
+	//Check if the currentDashboard has been changed and not saved
+	$scope.changed = false;
+	
 	//call this function from an iFrame to close it and come home
 	window.firefunction = function()
 	{
@@ -27,16 +30,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		$rootScope.applyDark = true;
 	}else{
 		//explicitly do something if the theme if light
-	}
-	
-	$scope.firstTime = true;
-
-	$scope.share = function(index, type)
-	{
-		$timeout(function(){
-			$mdMenu.hide();
-		},200);
-		
 	}
 	
 	
@@ -68,6 +61,52 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	// Start of Navigate
 	$scope.navigate = function(ev,action)
 	{
+		//Only if the user is in the dashboard check if the currentDashboard has been changed and not saved.
+		if($state.current.name == "dashboard")
+		{
+			var pageIndex = 0;	
+			try{
+				angular.forEach($scope.currentDashboard.pages, function(value, key) {
+					if($scope.currentDashboard.pages[pageIndex].widgets.length != $scope.selectedDashboard.pages[pageIndex].widgets.length)
+					{
+						$scope.changed= true;
+						console.log("changed");
+					}
+					pageIndex++;
+				});
+			}catch(exception)
+			{
+				$scope.changed = true;
+			}
+			
+			if($scope.changed == false)
+			{
+				navigateTo(ev,action);
+			}else{
+				$mdDialog.show({
+				  controller: saveChangesCtrl,
+				  templateUrl: 'views/dashboard/saveChanges/saveChanges.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true
+				})
+				.then(function(answer) {
+					if(answer == 'Yes')
+					{
+						alert("Changes saved");
+					}else if(answer == 'No')
+					{
+						navigateTo(ev,action);
+					}
+				});
+			}
+		}else{
+			navigateTo(ev,action)
+		}
+		
+	}// End of Navigate
+	
+	function navigateTo(ev,action){
 		if(action.charAt(0) == "#")
 		{
 			location.href = action;
@@ -137,13 +176,23 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				  $scope.customFullscreen = (wantsFullScreen === true);
 			});
 		}
-		
-	}// End of Navigate
+	}
 	
+	function saveChangesCtrl ($scope, $mdDialog) {
+		$scope.confirmReply = function(answer) {
+		  $mdDialog.hide(answer);
+		};
+	}
+	
+	//Start of Perform
 	$scope.perform = function(ev,action)
 	{
 		if(action == "Search"){
 			$mdSidenav('searchBar').toggle();
+			
+		/*	dialogService.confirmDialog(ev, "Title","What is this","yes", "no").then(function(data) {
+				console.log(data);
+			});*/
 		}else if(action == "TV Mode")
 		{
 			//Start of Navigate TVMode
@@ -196,6 +245,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			});
 		}
 	}
+	//End of Perform
 	
 	$scope.getUserSettings = {};
 	

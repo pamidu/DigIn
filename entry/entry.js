@@ -196,6 +196,8 @@ routerApp
                 }).success(function (data) {
                     if (data.Success === true) {
                         
+                        //#removed due to backend development -START-------------------------
+                        /*
                         if(onsite){
                             $scope.authData=data.Data.AuthData;
                             $scope.token=data.Data.SecurityToken;
@@ -204,10 +206,13 @@ routerApp
                         }
                         else{
                             //#check whether user is blocked or not
-                            $scope.checkUsage(data.Data.SecurityToken,data.Data);
+                            $scope.checkUsage(data.Data.SecurityToken,data.Data);  
                         }
+                        */
+                        //#removed due to backend development -END-------------------------
+
+
                         
-                        /*
                         //#loggin direct to shell
                         if(IsLocal==false) { 
                             //#Added for live servers ------------------------------
@@ -219,7 +224,7 @@ routerApp
                              document.cookie = "authData=" + encodeURIComponent(JSON.stringify(data.Data.AuthData)) + "; path=/";
                              window.location.href = Local_Shell_Path; //#got from config.js in entry/assets/js/config.js  (ex:"http://localhost:8080/git/digin/shell")
                         }
-                        */
+                        
                         
                         
                     }

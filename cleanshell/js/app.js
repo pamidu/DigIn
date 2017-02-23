@@ -165,7 +165,13 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
         url: '/shareDataset',
         controller: 'datasetShareCtrl',
         templateUrl: "views/settings/datasetShare/datasetShare.html"
-    });
+    })
+	
+	.state('datasourceSettings',{
+		url: '/datasourceSettings',
+		controller: 'datasourceSettingsCtrl',
+		templateUrl: "views/data_source/data_source_settings/datasourceSettings.html"
+	})
 
 
   GoogleMapApi.configure({

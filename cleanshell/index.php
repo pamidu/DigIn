@@ -279,8 +279,9 @@
 						<md-tooltip md-direction="bottom">Go Home</md-tooltip>
 					</div>
 					<div class="blut-header-icon" ng-click="perform($event,'TV Mode')" hide-sm hide-xs>
-						<i class="icon-full-size hover-color" md-colors="{color:'primary'}"></i>
-						<md-tooltip md-direction="bottom">Toggle Fullscreen</md-tooltip>
+						<i ng-hide="fullscreenOn" class="icon-full-size hover-color" md-colors="{color:'primary'}"></i>
+						<svg style="cursor:pointer" ng-show="fullscreenOn" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" hight="10" width="22" x="22px" y="0px" viewBox="0 0 490.1 490.1" style="enable-background:new 0 0 490.1 490.1;" xml:space="preserve"><g><g><path md-colors="{fill:'primary'}" d="M296,80.85c0-6.8-5.5-12.3-12.3-12.3s-12.3,5.5-12.3,12.3v125.5c0,6.8,5.5,12.3,12.3,12.3h125.5c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3h-95.9l173-173c4.8-4.8,4.8-12.5,0-17.3s-12.5-4.8-17.3,0l-173,173L296,80.85L296,80.85z"/><path md-colors="{fill:'primary'}" d="M20.9,486.45l173.1-173v95.9c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-125.5c0-6.8-5.5-12.3-12.3-12.3H80.8c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.2,12.3,12.2h95.9l-173,173c-4.8,4.8-4.8,12.5,0,17.3c2.4,2.4,5.5,3.6,8.7,3.6S18.5,488.85,20.9,486.45z"/><path md-colors="{fill:'primary'}" d="M206.2,68.55c-6.8,0-12.3,5.5-12.3,12.3v95.9L20.9,3.65c-4.8-4.8-12.5-4.8-17.3,0s-4.8,12.5,0,17.3l173,173H80.8c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h125.5c6.8,0,12.3-5.5,12.3-12.3V80.85C218.5,74.05,213,68.55,206.2,68.55z"/><path md-colors="{fill:'primary'}" d="M421.5,283.85c0-6.8-5.5-12.3-12.3-12.3H283.8c-6.8,0-12.3,5.5-12.3,12.3v125.5c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-95.9l173,173c2.4,2.4,5.5,3.6,8.7,3.6s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-173-173h95.9C416,296.05,421.5,290.65,421.5,283.85z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+						<md-tooltip md-direction="bottom">Turn <span ng-hide="fullscreenOn">On</span><span ng-show="fullscreenOn">Off</span> Fullscreen</md-tooltip>
 					</div>
 					<div class="blut-header-icon" ng-click="perform($event,'Clear Widgets')"  hide-sm hide-xs>
 						<i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
@@ -460,6 +461,8 @@
 							<li ng-click="navigate($event,'#/visualize_data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li ng-click="navigate($event,'#/upload_source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
 							<li ng-click="navigate($event,'#/user_assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
+							<li ng-click="navigate($event,'#/datasourceSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings sub-menu-icon"></i>Datasource Settings</a></li>
+							
 						</ul>
 					</li>
 					<li class="has-sub" style="height:50px;font-size:24px" ng-click="perform($event,'AddWidget')" id="step4">
@@ -599,7 +602,8 @@
 	<script src="views/social/facebook/facebookCtrl.js"></script>
 	<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 	<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
-	
+	<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
+	<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
 	<script src="js/services/tabularService.js"></script>
 
 	<!--Payment stripe-->

@@ -184,6 +184,8 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		};
 	}
 	
+	$scope.fullscreenOn = false;
+	
 	//Start of Perform
 	$scope.perform = function(ev,action)
 	{
@@ -198,6 +200,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			//Start of Navigate TVMode
 			if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
 			   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+				   $scope.fullscreenOn = true;
 				if (document.documentElement.requestFullScreen) {  
 				  document.documentElement.requestFullScreen();  
 				} else if (document.documentElement.mozRequestFullScreen) {  
@@ -205,7 +208,8 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				} else if (document.documentElement.webkitRequestFullScreen) {  
 				  document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
 				}  
-			  } else {  
+			  } else {
+				  $scope.fullscreenOn = false;
 				if (document.cancelFullScreen) {  
 				  document.cancelFullScreen();  
 				} else if (document.mozCancelFullScreen) {  

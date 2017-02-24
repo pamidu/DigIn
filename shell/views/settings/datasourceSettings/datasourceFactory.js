@@ -32,7 +32,7 @@ routerApp.factory('datasourceFactory', function ($http, Digin_Engine_API) {
                 '&username=' + reqParam.username + 
                 '&password=' + reqParam.password + 
                 '&databasename=' + reqParam.databaseName+
-                '&db_type=' + dbType
+                '&db=' + dbType
             })
         },
         saveConnection: function(securityToken,reqParam) {

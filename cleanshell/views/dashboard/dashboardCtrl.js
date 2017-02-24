@@ -12,9 +12,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	{
 		DiginServices.getComponent($scope.dashboardId).then(function(data) {
 			//There is a samll problem that this runs twice, console.log to check
-			$rootScope.currentDashboard = data;
+			$rootScope.selectedPageIndex = 0;
+			$rootScope.currentDashboard = angular.copy(data);
+			$rootScope.selectedDashboard = angular.copy(data);
 		});
 	}
+	
+	//var changed = false;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -30,12 +34,16 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		margins: [5, 5], // margins in between grid items
 		outerMargin: true,
 		draggable: {
-			handle: '.widget-header'
+			handle: '.widget-header',
+			drag: function(event, $element, widget) {
+				$scope.$parent.changed = true;
+			}, // optional callback fired when item is moved,
 		}, 
 		resizable: {
 			enabled: true,
 			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
 			  resize: function(event,$element,widget){
+				  $scope.$parent.changed = true;
 				if(widget.widgetName == "Map"){
 					$rootScope.mapheight = $element.clientHeight - 50;
 					$rootScope.mapWidth = $element.clientWidth ;
@@ -57,7 +65,8 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
 
 	};
-/*
+	
+	/*
 	$scope.gridsterOpts = {
 		pushing: true,
 		floating: true,
@@ -131,23 +140,29 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	{
 		$rootScope.selectedPageIndex = $rootScope.currentDashboard.pages.length;
 		
-		$rootScope.currentDashboard.pages.push({
-				pageID:" 1470684542268",
+		$rootScope.currentDashboard.pages.push({				
+				pageID: "temp" + createuuid(),
 				pageName: $scope.fileName,
-				widgets: []
+				widgets: [],
+				pageData: null
 		})
 		
+		console.log($rootScope.currentDashboard);
 		$scope.addPageFrom.$setUntouched();
 		$scope.addPageFrom.$setPristine();
 		
 		$scope.fileName = "";
 	}
 	
+	$scope.$on("$destroy", function(){
+		$scope.$parent.changed = false;
+	})
+	
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {
 		return {
 			showData: function (ev, widget) {
-				console.log("showData");
+				
 			},
 			commentary: function (ev, widget){
 				console.log("commentary");

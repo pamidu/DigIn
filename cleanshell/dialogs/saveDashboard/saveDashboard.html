@@ -1,0 +1,53 @@
+<md-dialog aria-label="Save Dashboard"  plumb-item>
+  <form name="editForm" ng-submit="saveDashboard()">
+  <md-toolbar class="modal-header">
+    <div class="md-toolbar-tools">
+       <div layout="row" layout-align="center center">
+		<ng-md-icon icon="my_library_books" style="fill:white; padding-right: 20px;" size="24px"></ng-md-icon>
+		<h2>Save Dashboard</h2>
+	  </div>
+      <span flex></span>
+      <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="max-width:800px;max-height:810px;">
+	<div layout="row">
+  	<img src="dialogs/createDashboard/dashboard.jpg"  style="max-width: 600px;height: 360px;"  hide-sm hide-xs />
+    <div class="md-dialog-content" layout="column" layout-align="space-between center">
+		<div layout-align="start center">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Dashboard Name</span>
+				<input required type="text" name="dashboard" ng-model="content.dashboardName" aria-label="dashboard" />
+				<div ng-messages="editForm.dashboard.$error" role="alert">
+				  <div ng-message-exp="['required']">
+						Enter a dashboard name
+				  </div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Refresh Intervel</span>
+				<md-select class="select" ng-model="content.refreshInterval" aria-label="refresh intervel">
+					<md-optgroup label="Select a Refresh Interval">
+						<md-option  value="60" flex >1 Minute</md-option>
+						<md-option  value="120" flex >2 Minutes</md-option>
+						<md-option  value="300" flex >5 Minutes</md-option>
+						<md-option  value="3600" flex >60 Minutes</md-option>
+						<md-option  value="0" flex >No Refresh</md-option>
+					</md-optgroup>
+				</md-select>
+			</md-input-container>
+		</div>
+		<md-button type="submit">Save</md-button>
+    </div>
+
+	
+	</div>
+
+  </md-dialog-content>
+  <!--md-dialog-actions layout="row">
+    <span flex></span>
+
+  </md-dialog-actions-->
+  </form>
+</md-dialog>

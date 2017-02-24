@@ -369,6 +369,8 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 				$rootScope.theme = theme;
 				lighten();				
 			}
+			
+			window.themeInfo = $rootScope.theme;
 
 			var primaryColor = $mdColors.getThemeColor($rootScope.currentColor+'-primary-500');
 			var accentColor = $mdColors.getThemeColor($rootScope.currentColor+'-accent-500');
@@ -394,6 +396,7 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 
 			if(lightOrDark.theme == 'Dark')
 			{
+				
 				$rootScope.theme = $rootScope.currentColor + lightOrDark.theme;
 				$rootScope.lightOrDark = lightOrDark.theme;
 				darken();
@@ -402,6 +405,7 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 				$rootScope.lightOrDark = lightOrDark.theme;
 				lighten();
 			}
+			window.themeInfo = $rootScope.theme;
 		}
 		
 		function darken()

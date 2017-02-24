@@ -1,0 +1,22 @@
+<md-dialog aria-label="Terms and Conditions"  plumb-item>
+  <form name="editForm">
+  <md-dialog-content style="max-width:800px;max-height:810px; ">
+
+    <div class="md-dialog-content">
+		<h2 class="md-title" style="margin-top:0px">Unsaved Changes</h2>
+		<p>Save changes to '{{$root.currentDashboard.compName}}' Dashboard before leaving</p>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+	 <md-button type="button" ng-click="confirmReply('Yes')">
+      Yes
+    </md-button>
+	<md-button type="button" ng-click="confirmReply('No')">
+      No
+    </md-button>
+    <md-button type="button" ng-click="$root.cancel()">
+      Cancel
+    </md-button>
+  </md-dialog-actions>
+  </form>
+</md-dialog>

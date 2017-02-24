@@ -184,7 +184,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
 			controller: 'addaLaCarteCtrl',
 			controllerAs: 'vm'
 		})
-		
         .state("home.userProfile", {
             url: "/settings-userProfile",
             controller: "dashboardSetupCtrl",

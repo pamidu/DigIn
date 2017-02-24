@@ -24,7 +24,6 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.port = "";
 	$scope.userName = "";
 	$scope.password = "";
-	$scope.databaseType = "";
 	$scope.databaseName = "";
 	$scope.authType = "";
 	$scope.connName = "";
@@ -88,6 +87,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
             if($scope.datasources[i].type == source.type ){
             	$scope.datasources[i].isSelected = true;
             	$scope.onSelectDataBase = source.type;
+            	$scope.databaseType = source.type;
             	$scope.incrementStep();
             	$scope.getAllconnections();
             }
@@ -173,7 +173,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		$scope.port = connection.port;
 		$scope.userName = connection.user_name;
 		$scope.password = "";
-		$scope.databaseType = "MSSQL";
+		
 		$scope.databaseName = connection.database_name;
 		$scope.authType = 'sql';
 		$scope.connName = connection.connection_name;
@@ -185,7 +185,6 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 		$scope.port = "";
 		$scope.userName = "";
 		$scope.password = "";
-		$scope.databaseType = "";
 		$scope.databaseName = "";
 		$scope.authType = "";
 		$scope.connName = "";
@@ -202,7 +201,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.submitUserDetails = function()
 	{
 		// validation
-		if ($scope.host == '' || $scope.username == '' || ($scope.password == '' && $scope.onSelectDataBase !='hiveql') || ($scope.port == '' && $scope.onSelectDataBase !='hiveql'))
+		if ($scope.host == '' || ($scope.username == '' && $scope.onSelectDataBase !='hiveql') || ($scope.password == '' && $scope.onSelectDataBase !='hiveql') || $scope.port == '' )
 		{
 			notifications.toast('0', 'Please fill in all required fields.');
 			return;
@@ -223,7 +222,6 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			{
 				if ($scope.action == "Create")
 				{
-					$scope.databaseType = "";
 					$scope.databaseName = "";
 					$scope.authType = "";
 					$scope.connName = "";
@@ -249,7 +247,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	{
 		var isExist = false;
 		// Add validation
-		if ($scope.databaseName == '' || $scope.connName == '' || $scope.databaseType == '' || $scope.host == '' || $scope.username == '' || $scope.password == '' || $scope.port == '')
+		if ($scope.databaseName == '' || $scope.connName == '' || $scope.databaseType == '' || $scope.host == '' || ($scope.username == ''&& $scope.onSelectDataBase !='hiveql') || ($scope.password == '' && $scope.onSelectDataBase !='hiveql') || $scope.port == '')
 		{
 			notifications.toast('0', 'Please fill in all required fields.');
 			return;
@@ -299,7 +297,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.saveConnection = function()
 	{
 		// Add validation
-		if ($scope.databaseName == '' || $scope.connName == '' || $scope.databaseType == '' || $scope.host == '' || $scope.username == '' || $scope.password == '' || $scope.port == '')
+		if ($scope.databaseName == '' || $scope.connName == '' || $scope.databaseType == '' || $scope.host == '' || ($scope.username == ''&& $scope.onSelectDataBase !='hiveql') || ($scope.password == '' && $scope.onSelectDataBase !='hiveql') || $scope.port == '')
 		{
 			notifications.toast('0', 'Please fill in all required fields.');
 			return;
@@ -310,7 +308,7 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 			password: $scope.password,
 			port: $scope.port,
 			database_name: $scope.databaseName,
-			connection_type: "MSSQL",
+			connection_type: $scope.databaseType,
 			connection_name: $scope.connName,
 			ds_config_id: null,
 			others: {}

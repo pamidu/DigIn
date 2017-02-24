@@ -125,10 +125,8 @@
 										</div>
 										<div flex layout="row">
 											<div layout="column" flex class="p10" ng-show="loginStatus" flex="50">
-												<label>Database Type</label>
-												<md-select ng-model="databaseType" ng-disabled="testStatus">
-													<md-option ng-value="MSSQL">MSSQL</md-option>
-												</md-select>
+												<label>Database Type :</label>
+												<label>{{databaseType}}</label>
 											</div>
 											<div layout="column" flex class="p10" ng-show="loginStatus" flex="50">
 												<label>Database Name</label>
@@ -141,7 +139,7 @@
 											<label>Connection Name</label>
 											<input class="form-control" ng-model="connName" flex ng-disabled="testStatus"/>
 										</div>
-										<div layout="column" class="p10" ng-show="loginStatus" ng-if="selectedSourceType ='sd'">
+										<div layout="column" class="p10" ng-show="loginStatus" ng-if="databaseType =='MSSQL'">
 											<label> Authentication Type </label>
 											<md-radio-group  flex layout="column" ng-model="authType" ng-disabled="testStatus">
 												<md-radio-button value="windows" class="md-primary left">

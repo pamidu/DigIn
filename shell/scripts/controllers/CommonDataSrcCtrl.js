@@ -99,6 +99,23 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
 
             'type': 'character',
             'category': 'att'
+        },{
+            'type': 'VARCHAR2',
+            'category': 'att'
+        },{
+            'type': 'NVARCHAR2',
+            'category': 'att'
+        },{
+            'type': 'NUMBER',
+            'category': 'mes'
+        }, {
+
+            'type': 'FLOAT',
+            'category': 'mes'
+        }, {
+
+            'type': 'LONG',
+            'category': 'mes'
         }
 
     ];
@@ -404,7 +421,7 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                     break;
                                 }
                             }
-                            break;
+                        break;
                         case "memsql":
                             for(var i = 0; i < $scope.allTables.length; i++ ) {
                                 if ($scope.allTables[i].datasource_name == tbl) {
@@ -421,8 +438,8 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                     break;
                                 }
                             }
-                            break;
-                            case "MSSQL":
+                        break;
+                        case "MSSQL":
                             var saveName = "MSSQL" + tbl;
                             if (localStorage.getItem(saveName) === null ||
                                 localStorage.getItem(saveName) === "undefined") {
@@ -435,9 +452,9 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 console.log(BigQueryFieldsString);
                                 callback(JSON.parse(BigQueryFieldsString), true);
                             }
-                            break;
-                            case "hiveql":
-                            var saveName = "MSSQL" + tbl;
+                        break;
+                        case "hiveql":
+                            var saveName = "hiveql" + tbl;
                             if (localStorage.getItem(saveName) === null ||
                                 localStorage.getItem(saveName) === "undefined") {
                                 $scope.client.getMSSQLFields(tbl, $scope.datasourceId ,function(data, status) {
@@ -449,7 +466,21 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                                 console.log(BigQueryFieldsString);
                                 callback(JSON.parse(BigQueryFieldsString), true);
                             }
-                            break;
+                        break;
+                        case "Oracle":
+                            var saveName = "Oracle" + tbl;
+                            if (localStorage.getItem(saveName) === null ||
+                                localStorage.getItem(saveName) === "undefined") {
+                                $scope.client.getMSSQLFields(tbl, $scope.datasourceId ,function(data, status) {
+                                    callback(data, status);
+                                    localStorage.setItem(saveName, JSON.stringify(data));
+                                });
+                            } else {
+                                var BigQueryFieldsString = localStorage.getItem(saveName);
+                                console.log(BigQueryFieldsString);
+                                callback(JSON.parse(BigQueryFieldsString), true);
+                            }
+                        break;
                         case "postgresql":
                             var saveName = "postgresql" + tbl;
                             if (localStorage.getItem(saveName) === null ||
@@ -977,10 +1008,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     }
                 }
                 $scope.fieldObjects[i].isLoading = true;
-                if ($scope.sourceUi.selectedSource == "BigQuery") {
+                if ($scope.sourceUi.selectedSource == "BigQuery" || $scope.sourceUi.selectedSource == "memsql") {
                     query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
                 } else if ($scope.sourceUi.selectedSource == "MSSQL") {
                     query = "SELECT [" + name + "] FROM " + table_name + " GROUP BY [" + name + "] ORDER BY [" + name + "]";
+                }
+                else if ($scope.sourceUi.selectedSource == "hiveql") {
+                    query = "SELECT " + name + " FROM "+ table_name +"  GROUP BY " + name + " ORDER BY " + name + "";
+                }
+                else if ($scope.sourceUi.selectedSource == "Oracle") {
+                    query = "SELECT " + name + " FROM "+ table_name +"  GROUP BY " + name + " ORDER BY " + name + "";
                 }
                 $scope.client.getExecQuery(query, $scope.datasourceId, function(data, status) {
                     if (status) {

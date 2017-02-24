@@ -1008,10 +1008,16 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
                     }
                 }
                 $scope.fieldObjects[i].isLoading = true;
-                if ($scope.sourceUi.selectedSource == "BigQuery") {
+                if ($scope.sourceUi.selectedSource == "BigQuery" || $scope.sourceUi.selectedSource == "memsql") {
                     query = "SELECT " + name + " FROM " + $diginurls.getNamespace() + "." + table_name + " GROUP BY " + name;
                 } else if ($scope.sourceUi.selectedSource == "MSSQL") {
                     query = "SELECT [" + name + "] FROM " + table_name + " GROUP BY [" + name + "] ORDER BY [" + name + "]";
+                }
+                else if ($scope.sourceUi.selectedSource == "hiveql") {
+                    query = "SELECT " + name + " FROM "+ table_name +"  GROUP BY " + name + " ORDER BY " + name + "";
+                }
+                else if ($scope.sourceUi.selectedSource == "Oracle") {
+                    query = "SELECT " + name + " FROM "+ table_name +"  GROUP BY " + name + " ORDER BY " + name + "";
                 }
                 $scope.client.getExecQuery(query, $scope.datasourceId, function(data, status) {
                     if (status) {

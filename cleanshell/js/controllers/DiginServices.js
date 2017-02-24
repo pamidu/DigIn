@@ -1,4 +1,4 @@
-DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $v6urls, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
 	var cache = {};
 	return {
         getUserSettings: function() {
@@ -76,7 +76,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'no
 				callback(cache.tenants);
 			}else{
 				 //return the promise directly.
-				 return $http.get($v6urls.auth + "/tenant/GetTenants/" + $auth.getSecurityToken())
+				 return $http.get(auth_Path + "/tenant/GetTenants/" + $auth.getSecurityToken())
 				   .then(function(result) {
 						cache.tenants = result.data;
 						callback(cache.tenants);
@@ -88,7 +88,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'no
         }, inviteUser: function(userEmail) {
 			 notifications.startLoading("Inviting user, Please wait..");
              //return the promise directly.
-             return $http.get($v6urls.auth + '/tenant/AddUser/' + userEmail + '/user', {
+             return $http.get(auth_Path + '/tenant/AddUser/' + userEmail + '/user', {
 					headers: {'Securitytoken': $rootScope.authObject.SecurityToken}
 				})
 			   .then(function(result) {
@@ -213,7 +213,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$v6urls', '$auth', 'no
 				});	
         }, changePassword: function(oldPassword, newPassword) {
 					 //return the promise directly.
-					 return $http.get($v6urls.auth +'/ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
+					 return $http.get(auth_Path +'/ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
 					   .then(function(result) {
 							//return result.data;
 							

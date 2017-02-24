@@ -1,12 +1,13 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager', 'DiginServices' ,'$diginengine', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager, DiginServices, $diginengine) {
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager', 'DiginServices' ,'$diginengine', 'colorManager','$timeout', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager, DiginServices, $diginengine,colorManager,$timeout) {
+
+	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
+	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
+	colorManager.reinforceTheme();
+	$timeout(function() {
+		colorManager.reinforceTheme();
+	},100)
 	
-	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
-	{
-		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
-	}else{
-		$('md-tabs-wrapper').css('background-color',"white", 'important');
-	}
-	
+	// dashboardId is retrived from the stateParams
 	$scope.dashboardId = $stateParams.id;
 	if(Object.keys($rootScope.currentDashboard).length === 0 && $scope.dashboardId)
 	{
@@ -15,10 +16,11 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 			$rootScope.selectedPageIndex = 0;
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
+			$timeout(function() {
+				colorManager.reinforceTheme();
+			},100)
 		});
 	}
-	
-	//var changed = false;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -34,16 +36,16 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		margins: [5, 5], // margins in between grid items
 		outerMargin: true,
 		draggable: {
-			handle: '.widget-header',
+			handle: '.widget-header', // make the widget dragable only with the widget toolbar (not with the body)
 			drag: function(event, $element, widget) {
-				$scope.$parent.changed = true;
+				$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
 			}, // optional callback fired when item is moved,
 		}, 
 		resizable: {
 			enabled: true,
 			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
 			  resize: function(event,$element,widget){
-				  $scope.$parent.changed = true;
+				  $scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
 				if(widget.widgetName == "Map"){
 					$rootScope.mapheight = $element.clientHeight - 50;
 					$rootScope.mapWidth = $element.clientWidth ;
@@ -110,6 +112,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 			})
 	}
 	
+	//This method is there to keep track of the current page number the user is in within the dashboard so he/she can add new widgets into that particular page
 	$scope.selectPage = function(index) {
 		$rootScope.selectedPageIndex = index;
     }
@@ -155,7 +158,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	}
 	
 	$scope.$on("$destroy", function(){
-		$scope.$parent.changed = false;
+		$scope.$parent.changed = false; // If the user leave the 'dashboard' state
 	})
 	
 	//Widget toolbar controls

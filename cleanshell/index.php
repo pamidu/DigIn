@@ -397,7 +397,7 @@
 						<input style="width:200px" placeholder="search dashboard or report..." ng-model="SearchComponents">
 					</div>
 					<md-button class="md-icon-button"  ng-click="openSearchBar()" aria-label="open search">
-						<ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
+						<!--ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon-->
 					</md-button>
 				</div>
 			</md-toolbar>
@@ -589,6 +589,7 @@
 	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
 	<script src="views/home/homeCtrl.js"></script>
 	<script src="views/settings/myAccount/myAccountCtrl.js"></script>
+	<script src="views/settings/myAccount/addaLaCarte/addaLaCarteCtrl.js"></script>
 	<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
 	<script src="views/settings/shareDashboard/shareDashboardCtrl.js"></script>

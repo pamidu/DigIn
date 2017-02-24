@@ -1,18 +1,11 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,notifications,paymentGateway,$http){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices', 'notifications','paymentGateway','$http','colorManager', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,notifications,paymentGateway,$http,colorManager){
 	
 	var vm = this;
 	
 	$scope.$parent.currentView = "Settings";
-	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
-	{
-		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
-		$("input").attr("disabled", true).css("background","black");
-	}else{
-		$('md-tabs-wrapper').css('background-color',"white", 'important');
-	}
+	colorManager.reinforceTheme();
 	
 	vm.selectedPage = $stateParams.pageNo;
-
 	
 	var userObject = {}; //if the user cancels editing replace $scope.user with this
 	$scope.user = {};
@@ -292,9 +285,6 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 
 DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','DiginServices','notifications' ,function ($scope,$mdDialog,$http,DiginServices,notifications) {
 
-  $scope.cancel = function() {
-    $mdDialog.cancel();
-  };
   $scope.submit = function()
   {
 	   
@@ -333,10 +323,6 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 		reader.readAsDataURL(file);
 	}
 	
-	$scope.cancel = function() {
-		$mdDialog.cancel();
-	};
-	
 	$scope.submit = function()
 	{
 		var profileImg = document.getElementById('profileImg');
@@ -361,22 +347,10 @@ DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notif
 		reader.readAsDataURL(file);
 	}
 	
-	$scope.cancel = function() {
-		$mdDialog.cancel();
-	};
-	
 	$scope.submit = function()
 	{
 		var profileImg = document.getElementById('profileImg');
 		var profileImgSrc = profileImg.src;
 		console.log(profileImgSrc);
-	}
-}])
-
-DiginApp.controller('addaLaCarteCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
-	
-	$scope.submit = function()
-	{
-
 	}
 }])

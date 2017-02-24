@@ -1,3 +1,5 @@
+/*start of toaster styles*/
+
 .fade-in-down, .ts-toastino, .ts-danger, .ts-warning, .ts-success, .ts-default, .ts-dismiss {
   animation: fadeInDown ease 350ms;
   animation-iteration-count: 1;
@@ -272,7 +274,7 @@
 {
 	margin-top: 10px !important;
 }
-
+/*end of toaster styles*/
 
 /*start of password-strength-indicator*/
 #password-strength-indicator {
@@ -372,7 +374,7 @@
 \_/   \_/\____/\_/     \____/\_/ \|\_/\_\\____/\____/  \____\\_/  \|\____/
 */
 
-
+/*start of color picker styles*/
 ng-color-picker ul {
     padding: 0;
     margin: 0;
@@ -389,3 +391,4 @@ ng-color-picker li {
 ng-color-picker li.selected {
     border: 2px solid #333;
 }
+/*end of color picker styles*/

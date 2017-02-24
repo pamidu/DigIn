@@ -231,7 +231,7 @@ md-tabs[md-align-tabs=bottom]
 
 </style>
 
-<footer style="width:100%;right:0px;bottom:0px;position:fixed;">
+<footer class="footerTabContainer">
 	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary">
 	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
 		<md-tab-label layout="row" layout="space-between center">
@@ -247,20 +247,20 @@ md-tabs[md-align-tabs=bottom]
 							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
 							
-								<md-button class="md-icon-button ti-menu-alt" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
+								<md-button class="md-icon-button ti-menu-alt hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
 									<md-tooltip>data</md-tooltip>
 								</md-button>
 								
 						
-								<md-button class="md-icon-button ti-volume"  md-colors="{color:'primary'}" ng-click="widgetControls.commentary($event,widget)">
+								<md-button class="md-icon-button ti-volume hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.commentary($event,widget)">
 									<md-tooltip>commentary</md-tooltip>
 								</md-button>
 			
-								<md-button class="md-icon-button ti-settings"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
+								<md-button class="md-icon-button ti-settings hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
 								
-								<md-menu md-position-mode="target-right target" ng-show="widget.widgetData.initCtrl=='elasticInit'">
+								<md-menu md-position-mode="target-right target hover-color" ng-show="widget.widgetData.initCtrl=='elasticInit'">
 									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
@@ -275,11 +275,11 @@ md-tabs[md-align-tabs=bottom]
 									  </md-menu-content>
 								</md-menu>
 								
-								<md-button class="md-icon-button ti-reload" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+								<md-button class="md-icon-button ti-reload hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
 									<md-tooltip>sync</md-tooltip>
 								</md-button>
 								
-								<md-button class="md-icon-button ti-close" md-colors="{color:'primary'}" ng-click="widgetControls.removeWidget($event,widget)">
+								<md-button class="md-icon-button ti-close hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.removeWidget($event,widget)">
 									<md-tooltip >close</md-tooltip>
 								</md-button>
 

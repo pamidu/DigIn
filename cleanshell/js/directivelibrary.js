@@ -619,3 +619,19 @@ directiveLibraryModule.directive('ngColorPicker', ['ngColorPickerConfig',functio
 	};
 
 }]);
+
+directiveLibraryModule.directive('isDisabledDark', [ '$rootScope', function($rootScope) {
+	return {
+		link: function(scope, element, attrs) {
+			attrs.$observe('disabled', function(result) {
+				if($rootScope.applyDark == true && result == true)
+				{
+					element.addClass('inputDisabledColor');
+				}else{
+					element.removeClass('inputDisabledColor');
+				}
+				
+			});
+		},
+	}
+}]);

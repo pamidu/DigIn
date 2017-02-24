@@ -1514,7 +1514,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.eventHndler.message = $scope.eventHndler.messageAry[0];
         setTimeout(function() {
             $scope.eventHndler.isMainLoading = false;
-            $rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
             if ($scope.selectedChart.chartType == "highCharts" || $scope.selectedChart.chartType == "metric") {
                 //sync
                 widget.widgetData.syncState = false;

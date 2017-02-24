@@ -143,7 +143,7 @@ DiginApp.controller('addWidgetCtrl', ['$scope', '$rootScope','$timeout', '$rootS
 			openInitialConfig( ev, widgetObj.widgetID);
 			console.log($rootScope.selectedPageIndex);
 			$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widgetObj);
-			location.href = '#/dashboard';
+			location.href = '#/dashboard?id='+$rootScope.currentDashboard.compID;
             $mdDialog.hide();
         };
 		

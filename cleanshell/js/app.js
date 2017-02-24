@@ -18,7 +18,8 @@ var DiginApp = angular.module('DuoDiginRt',
 		'configuration',
 		'diginServiceHandler',
 		'rzModule',
-		'pouchdb'
+		'pouchdb',
+		'cellCursor'
 	]
 );
 
@@ -33,7 +34,8 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
    
 	 .state('home', {
 		url: '/home',
-		templateUrl: 'views/home/home.html'
+		templateUrl: 'views/home/home.html',
+		controller: 'homeCtrl'
 	})
 	
 	.state('profile', {
@@ -77,7 +79,7 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 	
 	.state('addaLaCarte', {
 		url: '/addaLaCarte',
-		templateUrl: 'views/settings/myAccount/addaLaCarte.html',
+		templateUrl: 'views/settings/myAccount/addaLaCarte/addaLaCarte.html',
 		controller: 'addaLaCarteCtrl',
 		controllerAs: 'vm'
 	})
@@ -163,7 +165,13 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
         url: '/shareDataset',
         controller: 'datasetShareCtrl',
         templateUrl: "views/settings/datasetShare/datasetShare.html"
-    });
+    })
+	
+	.state('datasourceSettings',{
+		url: '/datasourceSettings',
+		controller: 'datasourceSettingsCtrl',
+		templateUrl: "views/data_source/data_source_settings/datasourceSettings.html"
+	})
 
 
   GoogleMapApi.configure({

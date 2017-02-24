@@ -40,6 +40,7 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/cellCursor.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/intro.js/minified/introjs.min.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angularjs-slider/dist/rzslider.min.css">
 	<!-- endbuild -->
@@ -264,7 +265,7 @@
 		<md-content class="main-headbar-slide" ng-mouseenter="headerToggleVisible = true" ng-mouseleave="headerToggleVisible = false" style="width:100%;height:45px;position:fixed;left:45px;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);z-index:3;overflow:inherit">
 		
 			<div layout="row" layout-align="space-between center" style="padding: 0 25px">
-				<div class="blut-search-wrapper hover-color" ng-click="navigate($event,'Search')" layout="row" flex>
+				<div class="blut-search-wrapper hover-color" ng-click="perform($event,'Search')" layout="row" flex>
 					<i class="icon-search"></i>
 					<span hide-sm hide-xs>Search</span>
 				</div>
@@ -273,19 +274,20 @@
 				</div>
 				<div layout="row" layout-align="end center" class="blut-search-right-wrapper border-left-light">
 
-					<div class="blut-header-icon" ng-click="navigate($event,'Home')">
+					<div class="blut-header-icon" ng-click="navigate($event,'#/home')">
 						<i class="icon-house-outline hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Go Home</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate($event,'TV Mode')" hide-sm hide-xs>
-						<i class="icon-full-size hover-color" md-colors="{color:'primary'}"></i>
-						<md-tooltip md-direction="bottom">Toggle Fullscreen</md-tooltip>
+					<div class="blut-header-icon" ng-click="perform($event,'TV Mode')" hide-sm hide-xs>
+						<i ng-hide="fullscreenOn" class="icon-full-size hover-color" md-colors="{color:'primary'}"></i>
+						<svg style="cursor:pointer" ng-show="fullscreenOn" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" hight="10" width="22" x="22px" y="0px" viewBox="0 0 490.1 490.1" style="enable-background:new 0 0 490.1 490.1;" xml:space="preserve"><g><g><path md-colors="{fill:'primary'}" d="M296,80.85c0-6.8-5.5-12.3-12.3-12.3s-12.3,5.5-12.3,12.3v125.5c0,6.8,5.5,12.3,12.3,12.3h125.5c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3h-95.9l173-173c4.8-4.8,4.8-12.5,0-17.3s-12.5-4.8-17.3,0l-173,173L296,80.85L296,80.85z"/><path md-colors="{fill:'primary'}" d="M20.9,486.45l173.1-173v95.9c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-125.5c0-6.8-5.5-12.3-12.3-12.3H80.8c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.2,12.3,12.2h95.9l-173,173c-4.8,4.8-4.8,12.5,0,17.3c2.4,2.4,5.5,3.6,8.7,3.6S18.5,488.85,20.9,486.45z"/><path md-colors="{fill:'primary'}" d="M206.2,68.55c-6.8,0-12.3,5.5-12.3,12.3v95.9L20.9,3.65c-4.8-4.8-12.5-4.8-17.3,0s-4.8,12.5,0,17.3l173,173H80.8c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h125.5c6.8,0,12.3-5.5,12.3-12.3V80.85C218.5,74.05,213,68.55,206.2,68.55z"/><path md-colors="{fill:'primary'}" d="M421.5,283.85c0-6.8-5.5-12.3-12.3-12.3H283.8c-6.8,0-12.3,5.5-12.3,12.3v125.5c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-95.9l173,173c2.4,2.4,5.5,3.6,8.7,3.6s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-173-173h95.9C416,296.05,421.5,290.65,421.5,283.85z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+						<md-tooltip md-direction="bottom">Turn <span ng-hide="fullscreenOn">On</span><span ng-show="fullscreenOn">Off</span> Fullscreen</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate($event,'Clear Widgets')"  hide-sm hide-xs>
+					<div class="blut-header-icon" ng-click="perform($event,'Clear Widgets')"  hide-sm hide-xs>
 						<i class="icon-broom hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="navigate($event,'Save')"  hide-sm hide-xs>
+					<div class="blut-header-icon" ng-click="perform($event,'Save')"  hide-sm hide-xs>
 						<i class="ti-save hover-color" md-colors="{color:'primary'}"></i>
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
@@ -295,14 +297,14 @@
 					  </div>
 					  <md-menu-content ng-class="{'applyDarkBackground': $root.applyDark == true}" >
 						<md-menu-item>
-						  <md-button ng-click="navigate($event, 'shareDashboard')">
+						  <md-button ng-click="navigate($event, '#/shareDashboard')">
 							  <div layout="row" flex>
 								<p flex>Share Dashboard</p>
 							  </div>
 						  </md-button>
 						</md-menu-item>
 						<md-menu-item>
-						  <md-button ng-click="navigate($event, 'shareDataset')">
+						  <md-button ng-click="navigate($event, '#/shareDataset')">
 							  <div layout="row" flex>
 								<p flex>Share Dataset</p>
 							  </div>
@@ -313,7 +315,7 @@
 					<!--div flex="10" class="blut-header-icon" ng-click="navigate('Help')">
 						<i class="ti-help-alt"></i>
 					</div-->
-					<div class="blut-header-icon" ng-click="navigate($event,'Notifications')">
+					<div class="blut-header-icon" ng-click="perform($event,'Notifications')">
 						<i class="ti-bell hover-color" md-colors="{color:'primary'}"></i>
 						<div md-colors="{background:'accent'}"  style="width:15px;height:15px;border-radius:16px;color:white;margin-top:-30px;margin-left:15px;font-size:10px;font-weight:700;position:absolute"><div style="margin-left:4px;margin-top:1px;" ng-if="notifications.length <=9">{{notifications.length}}</div><div style="margin-left:1px;margin-top:3px;" ng-if="notifications.length > 9">{{notifications.length}}</div></div>
 						<md-tooltip md-direction="bottom">Notifications</md-tooltip>
@@ -333,7 +335,7 @@
 								<a ng-click="navigate($event,'Switch Tenant')">Switch Tenant</a>
 								<!--a ng-click="navigate($event,'Invite User')">Invite user</a>
 								<a ng-click="navigate($event,'Profile Settings')">Profile Settings</a-->
-								<a ng-click="navigate($event,'My Account')">My Account</a>
+								<a ng-click="navigate($event,'#/myAccount')">My Account</a>
 								<a ng-click="Introduce()">Help</a>
 								<a ng-click="navigate($event,'Logout')">Logout</a>
 							  </md-content>
@@ -395,7 +397,7 @@
 						<input style="width:200px" placeholder="search dashboard or report..." ng-model="SearchComponents">
 					</div>
 					<md-button class="md-icon-button"  ng-click="openSearchBar()" aria-label="open search">
-						<ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon>
+						<!--ng-md-icon icon="close" style="fill:white;margin-top:10px" size="24px"></ng-md-icon-->
 					</md-button>
 				</div>
 			</md-toolbar>
@@ -437,6 +439,10 @@
 					<li style="height:30px;font-size:24px"  id="step1"><a md-colors="{color:'primary'}" ></a>
 
 					</li>
+					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'Create Dashboard')" id="step4">
+						<md-tooltip md-direction="right">Create Dashboard</md-tooltip>
+						<a class="hover-color" md-colors="{color:'primary'}"><i class="icon-add-page"></i></a>
+					</li>
 					<li style="height:50px;font-size:24px" class="active has-sub" id="step1"><a class="hover-color" md-colors="{color:'primary'}" ><i class="icon-report"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Reports</a></li>
@@ -452,12 +458,14 @@
 					<li style="height:50px;font-size:24px" class="active has-sub"><a id="step3" class="hover-color" md-colors="{color:'primary'}"><i class="icon-database"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
-							<li ng-click="navigate($event,'Visualize Data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
-							<li ng-click="navigate($event,'Upload Source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
-							<li ng-click="navigate($event,'User Assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
+							<li ng-click="navigate($event,'#/visualize_data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
+							<li ng-click="navigate($event,'#/upload_source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
+							<li ng-click="navigate($event,'#/user_assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
+							<li ng-click="navigate($event,'#/datasourceSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings sub-menu-icon"></i>Datasource Settings</a></li>
+							
 						</ul>
 					</li>
-					<li class="has-sub" style="height:50px;font-size:24px" ng-click="navigate($event,'AddWidget')" id="step4">
+					<li class="has-sub" style="height:50px;font-size:24px" ng-click="perform($event,'AddWidget')" id="step4">
 						<md-tooltip md-direction="right">Add Widget</md-tooltip>
 						<a class="hover-color" md-colors="{color:'primary'}"><i class="icon-plugin"></i></a>
 					</li>
@@ -486,9 +494,9 @@
 							<li class="has-sub" ng-click="navigate($event,'userSettings')"><a><i class="ti-pencil sub-menu-icon"></i>User settings</a></li>
 							<li class="has-sub" ng-click="navigate($event,'accountSettings')"><a><i class="ti-settings sub-menu-icon"></i>Account settings</a></li>
 							<li class="has-sub" ng-click="navigate($event,'groups')"><a><i class="icon-group sub-menu-icon"></i>Groups</a></li-->
-							<li ng-click="navigate($event,'User Administrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
-							<li ng-click="navigate($event,'systemSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
-							<li ng-click="navigate($event,'theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
+							<li ng-click="navigate($event,'#/userAdministrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
+							<li ng-click="navigate($event,'#/systemSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
+							<li ng-click="navigate($event,'#/theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
 						</ul>
 					</li>
 					
@@ -555,6 +563,8 @@
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+	<script src="js/cellCursor.js"></script>
+	
 	<!-- PouchDB -->
 	<script src="bower_components/pouchdb/dist/pouchdb.js"></script>
 	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
@@ -572,9 +582,14 @@
 	<script src="js/controllers/NavCtrl.js"></script>
 
 	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
+	<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
+	<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
+	<script src="dialogs/saveDashboard/saveDashboardService.js"></script>
 	<script src="dialogs/addPage/addPageCtrl.js"></script>
 	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
+	<script src="views/home/homeCtrl.js"></script>
 	<script src="views/settings/myAccount/myAccountCtrl.js"></script>
+	<script src="views/settings/myAccount/addaLaCarte/addaLaCarteCtrl.js"></script>
 	<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
 	<script src="views/settings/shareDashboard/shareDashboardCtrl.js"></script>
@@ -588,6 +603,9 @@
 	<script src="views/social/facebook/facebookCtrl.js"></script>
 	<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 	<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
+	<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
+	<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
+	<script src="js/services/tabularService.js"></script>
 
 	<!--Payment stripe-->
     <script src="https://checkout.stripe.com/checkout.js"></script>

@@ -82,6 +82,11 @@
                             cb(data, status);
                         }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
                     }
+                    if(database == "Oracle"){
+                         $servicehelpers.httpSend("get", function(data, status, msg) {
+                            cb(data, status);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
+                    }
 
                 },
                 getAggData: function(tbl, aggObjArr, limit, id, cb, gb, con) {
@@ -142,6 +147,13 @@
                             var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
                         }
                     }
+                    if(database == "Oracle"){
+                        if (gb === undefined) {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                        } else {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                        }
+                    }
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";
                     if (con) params += "&cons=" + con;
@@ -170,6 +182,8 @@
                     else if (database == 'BigQuery' || database == "memsql")
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id;
                     else if (database == 'hiveql')
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id;
+                    else if (database == 'Oracle')
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id;
                     else 
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;

@@ -1,3 +1,5 @@
+/*The purpose of this style sheet is to make some angular material input components look like bootstrap input components*/
+
 md-select, input, textarea
 {
 	padding: 6px 12px !important;
@@ -25,10 +27,15 @@ input[type=search] {
 }
 
 input:disabled, md-select[disabled] {
-	/*background: #e9e9e9;*/
+	background: #ececec;
+	border: 1px dotted #ccc !important; 
 	cursor: not-allowed;
 	background-image: none !important;
 
+}
+
+.inputDisabledColor{
+	background: #707070 !important;
 }
 
 .select

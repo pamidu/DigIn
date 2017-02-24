@@ -180,18 +180,6 @@ directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog', functio
       throw new TypeError('The object must have properties: classValue, message');
     }
   };
-  
-  ToastinoService.prototype.alertDialog = function(title, content){
-		$mdDialog.show(
-		  $mdDialog.alert()
-			.parent(angular.element(document.querySelector('input[name="editForm"]')))
-			.clickOutsideToClose(true)
-			.title(title)
-			.textContent(content)
-			.ariaLabel('Alert Dialog Demo')
-			.ok('Got it!')
-		);
-	}
 	
 	ToastinoService.prototype.startLoading = function(displayText) {
 		$mdDialog.show({
@@ -214,6 +202,46 @@ directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog', functio
 
   return new ToastinoService();
 }]);
+
+directiveLibraryModule.factory('dialogService', ['$rootScope','$mdDialog', function($rootScope,$mdDialog){
+	
+		return {
+			confirmDialog: function(ev,title, content, okText, cancelText) {
+								
+				var showData = {title: title, content: content, okText: okText, cancelText: cancelText }
+				
+				return $mdDialog.show({
+						  controller: confirmDialogCtrl,
+						  templateUrl: 'dialogs/confirm/confirmDialog.html',
+						  parent: angular.element(document.body),
+						  targetEvent: ev,
+						  clickOutsideToClose:true,
+						  locals: {showData: showData}
+						})
+						.then(function(answer) {
+							return answer;
+						});
+			
+			},alertDialog: function(title, content){
+				$mdDialog.show(
+				  $mdDialog.alert()
+					.parent(angular.element(document.querySelector('input[name="editForm"]')))
+					.clickOutsideToClose(true)
+					.title(title)
+					.textContent(content)
+					.ariaLabel('Alert Dialog Demo')
+					.ok('Got it!')
+				);
+			}
+		}
+	function confirmDialogCtrl ($scope, $mdDialog, showData) {
+		$scope.showData = showData;
+		$scope.confirmReply = function(answer) {
+		  $mdDialog.hide(answer);
+		};
+	}
+	
+}])
 
 directiveLibraryModule.directive('toastino', function () {
   return {
@@ -590,4 +618,20 @@ directiveLibraryModule.directive('ngColorPicker', ['ngColorPickerConfig',functio
 		}
 	};
 
+}]);
+
+directiveLibraryModule.directive('isDisabledDark', [ '$rootScope', function($rootScope) {
+	return {
+		link: function(scope, element, attrs) {
+			attrs.$observe('disabled', function(result) {
+				if($rootScope.applyDark == true && result == true)
+				{
+					element.addClass('inputDisabledColor');
+				}else{
+					element.removeClass('inputDisabledColor');
+				}
+				
+			});
+		},
+	}
 }]);

@@ -1,12 +1,79 @@
 <?php
-//include ("include/config.php");
+
+	if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
+     }
+     else{
+        require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+     }
+
+
+	function updateLatestPackageDetail($token)
+	{		
+		$ch = curl_init();  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$url= Digin_Engine_API.'check_subscription?SecurityToken='.$token;		
+		//$url= 'http://dev.digin.io/DigInEngine/check_subscription?SecurityToken='.$token;	
+		//$url= 'http://192.168.5.188:8080/check_subscription?SecurityToken=d02acf67065fe173fcd7494014c71bea'
+		curl_setopt($ch, CURLOPT_URL, $url);
+		$result = json_decode(curl_exec($ch)); 
+		curl_close($ch);	
+		return true;
+	}
+
+	function checkExceedBlock($token)
+	{	
+		$ch = curl_init();  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$url= Digin_Engine_API.'get_usage_summary?SecurityToken='.$token;	
+		//http://dev.digin.io/DigInEngine/get_usage_summary?SecurityToken=.$token;	
+		curl_setopt($ch, CURLOPT_URL, $url);
+		$result = json_decode(curl_exec($ch)); 	
+		$objLength=count($result->Result->exceed_blocked); 
+		curl_close($ch);
+		
+		if($objLength>0){
+			$storage=$result->Result->exceed_blocked->storage;
+			$data=$result->Result->exceed_blocked->data;
+			$users=$result->Result->exceed_blocked->users; 
+			
+			if($storage ||  $data || $users){
+					$blockStatus= true;
+			}
+			else{
+				$blockStatus= false;			
+			}
+		}
+		else{
+			$blockStatus= true;
+		}
+		return $blockStatus;
+	}
+
+	function checkSubscriptionStatus($token)
+	{		
+		$ch = curl_init();  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$url= Digin_Engine_API.'get_packages?get_type=detail&SecurityToken='.$token;	
+		//$url= 'http://dev.digin.io/DigInEngine/get_packages?get_type=detail&SecurityToken='.$token;	
+		curl_setopt($ch, CURLOPT_URL, $url);
+		$result = json_decode(curl_exec($ch)); 
+		curl_close($ch);	
+		$subscriptionData=[];	
+		$subscriptionStatus= $result->Result[0]->user_status;
+		$remainingDays= $result->Result[0]->remaining_days; 
+		$subscriptionData[0]=$subscriptionStatus;
+		$subscriptionData[1]=$remainingDays;
+		return $subscriptionData;
+	}
+
 function createSessionDmian(){
 	$Host = strtolower($_SERVER['HTTP_HOST']);
 	//echo "$authURI";
 	if(isset($_COOKIE['securityToken'])){
 		$obj=getSession($_COOKIE['securityToken'],"");
 		//ho $_COOKIE['securityToken'];
-		var_dump($obj);
+		//var_dump($obj);
 		//it();
 		if(isset($obj))
 		{
@@ -16,7 +83,7 @@ function createSessionDmian(){
 			//if(!isset($_COOKIE['authData'])){
 			    echo "cookie not set";
 			    $obj=getSession($_COOKIE['securityToken'],$Host);
-			    var_dump($obj);
+			    //var_dump($obj);
 			    if( isset($obj) && $obj->SecurityToken!=""){
 			    	echo "set....1";
 			    	$_SESSION[$Host]=$obj;
@@ -83,7 +150,9 @@ function INTS(){
 		}
 	}
 }
-function getURI(){
+
+	function getURI(){
+
 			if(!isset($_COOKIE["securityToken"])){
 				header("Location: s.php?r=index.php");
 				exit();
@@ -99,7 +168,7 @@ function getURI(){
 		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		    $data = curl_exec($ch);
 		    $obj = json_decode($data);
-		    var_dump($obj);
+		    //var_dump($obj);
 		    if (isset($obj)){
 		    	if(count($obj)!=0){
 		    		setcookie("tenantData", json_encode($obj));
@@ -109,7 +178,7 @@ function getURI(){
     						$tid=$serchfild;
     					}
 					}
-					
+				
 		    		$ch=curl_init();
 		    		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 		    		'SecurityToken :'.$_COOKIE['securityToken'],
@@ -119,12 +188,82 @@ function getURI(){
 				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				    $data = curl_exec($ch);
 				    $obj = json_decode($data);
+					
+					//#Added by chamila
+					//--------get security tokan to tenant domain before redirecting-------------------					
+					$ch=curl_init();
+		    		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		    		'SecurityToken :'.$_COOKIE['securityToken'],
+		    		'X-Apple-Store-Front: 143444,12'
+		    		));
+		    		curl_setopt($ch, CURLOPT_URL, SVC_AUTH_URL.'/GetSession/'.$_COOKIE['securityToken'].'/'.$tid);
+				    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				    $SessionDet = curl_exec($ch);
+				    $SessionDet = json_decode($SessionDet);
+					$tenantToken= $SessionDet->SecurityToken;			
+					
+					//#checking subscription status and blocking status
+					if($tenantToken!=NULL){
+						session_start();
+						$blockStatus=checkExceedBlock($tenantToken);
+						$_SESSION["blockStatus"] = $blockStatus;	
+
+						if($blockStatus){$myAccount=true; $blocking=true;} 									
+						else{	
+								//$_SESSION["subscriptionStatus"] = $subscriptionData[0];
+								//$_SESSION["remainingDays"] = $subscriptionData[1];	
+								$subscriptionData = checkSubscriptionStatus($tenantToken);																
+								if($subscriptionData[0]){
+									if($subscriptionData[1]>=0){
+										$myAccount=false;	
+										$blocking=false;
+									} else{
+										if($subscriptionData[1]>=-15){
+											if(updateLatestPackageDetail($token)){
+												$myAccount=true;
+												$blocking=false;
+											}											
+										} else{
+											$myAccount=true;
+											$blocking=true;
+										};
+									};
+									$myAccount=false;
+									$blocking=false;
+								} else{
+									$myAccount=true;
+									$blocking=true;
+								};	
+
+								$_SESSION["ShowMyAccount"] = $myAccount;
+								$_SESSION["Blocking"] = $blocking;		
+						}	
+						
+						/*var_dump('--------------------'); 
+						var_dump($_SESSION["blockStatus"]); 
+						var_dump($_SESSION["subscriptionStatus"]);
+						var_dump($_SESSION["remainingDays"]);
+						var_dump('--------------------'); 
+						exit();*/
+					}
+
+					//-------------------------------------------------------
+					
 				    if(isset($obj))
 				    {
 				    	if($obj->TenantID!=""){
 						if ($obj->TenantID==strtolower($_SERVER['HTTP_HOST'])){
-				    			//header("Location: http://".$obj->TenantID."/".str_replace("index.html","",$obj->Shell)."");
-								header("Location: http://".$obj->TenantID."/shell");
+								//var_dump($obj); exit(); 
+								//header("Location: http://".$obj->TenantID."/shell");
+								//http://digin.dev.digin.io/shell/#/home/myAccount
+								//http://digin.dev.digin.io/shell/#/home/welcome-search
+								
+								if($myAccount==true){
+									header("Location: http://".$obj->TenantID."/shell/#/home/myAccount");
+								}
+								else{
+									header("Location: http://".$obj->TenantID."/shell/#/home/welcome-search");
+								}								
 		    					exit();
 						}else{
 							header("Location: http://".$obj->TenantID."/s.php?securityToken=".$_COOKIE["securityToken"]);
@@ -170,3 +309,7 @@ function getURI(){
 		    header("Location: boarding/");
 }
 ?>
+
+
+
+

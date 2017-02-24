@@ -1,0 +1,17 @@
+<md-dialog aria-label="confirm dialog">
+  <form>
+  <md-content layout-padding>
+  		<h2 class="md-title" style="margin-top:0px">{{showData.title}}</h2>
+		<p>{{showData.content}}</p>
+		<md-dialog-actions layout="row">
+			<span flex></span>
+			<md-button ng-click="confirmReply('yes')">
+				{{showData.okText}}
+			</md-button>
+			<md-button ng-click="confirmReply('no')">
+				{{showData.cancelText}}
+			</md-button>
+		</md-dialog-actions>
+  </md-content>
+  </form>
+</md-dialog>

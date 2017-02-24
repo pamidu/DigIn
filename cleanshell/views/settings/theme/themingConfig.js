@@ -369,24 +369,31 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 				$rootScope.theme = theme;
 				lighten();				
 			}
+			
+			window.themeInfo = $rootScope.theme;
+			changeHoverColors();
 
+		}
+		
+		function changeHoverColors()
+		{
 			var primaryColor = $mdColors.getThemeColor($rootScope.currentColor+'-primary-500');
 			var accentColor = $mdColors.getThemeColor($rootScope.currentColor+'-accent-500');
 
-			$('.has-sub').css('border-left',"3px solid #8b8b8b").hover(
+			angular.element('.has-sub').css('border-left',"3px solid #8b8b8b").hover(
 			function(){
-				$(this).css('border-left',"3px solid "+accentColor);
+				angular.element(this).css('border-left',"3px solid "+accentColor);
 			},
 			function(){
-				$(this).css('border-left',"3px solid #8b8b8b");
+				angular.element(this).css('border-left',"3px solid #8b8b8b");
 			});
 			
-			$('.hover-color').css('color',primaryColor).hover(
+			angular.element('.hover-color').css('color',primaryColor).hover(
 			function(){
-				$(this).css('color',accentColor);
+				angular.element(this).css('color',accentColor);
 			},
 			function(){
-				$(this).css('color',primaryColor);
+				angular.element(this).css('color',primaryColor);
 			});
 		}
 		
@@ -394,6 +401,7 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 
 			if(lightOrDark.theme == 'Dark')
 			{
+				
 				$rootScope.theme = $rootScope.currentColor + lightOrDark.theme;
 				$rootScope.lightOrDark = lightOrDark.theme;
 				darken();
@@ -402,30 +410,45 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 				$rootScope.lightOrDark = lightOrDark.theme;
 				lighten();
 			}
+			window.themeInfo = $rootScope.theme;
 		}
 		
 		function darken()
 		{
 			$rootScope.h1color = "accent";
-			$('body').css('background',"rgb(88, 88, 88)");
-			$('#cssmenu ul ul li').css('background',"rgb(48,48,48)");
-			$('#cssmenu ul ul li').addClass('dark');
-			$('#cssmenu ul ul li a').addClass('dark');
-			$('.border-left-light').addClass('border-left-dark');
-			$('md-menu-content').css('background-color',"black");
-			$("input").attr("disabled", true).css("background-color","black");
+			angular.element('body').css('background',"rgb(88, 88, 88)");
+			angular.element('#cssmenu ul ul li').css('background',"rgb(48,48,48)");
+			angular.element('#cssmenu ul ul li').addClass("dark");
+			angular.element('#cssmenu ul ul li a').addClass("dark");
+			angular.element('.border-left-light').addClass("border-left-dark");
+			angular.element('md-menu-content').css('background-color',"black");
+			$rootScope.applyDark = true;
+			//$("input").attr("disabled", true).css("background-color","#707070");
 		}
 		
 		function lighten()
 		{
 			$rootScope.h1color = "primary";
-			$('body').css('background',"rgba(230, 230, 230, 1)");
-			$('#cssmenu ul ul li').css('background',"white");
-			$('#cssmenu ul ul li').removeClass('dark');
-			$('#cssmenu ul ul li a').removeClass('dark');
-			$('.border-left-light').removeClass('border-left-dark');
-			$('md-menu-content').css('background-color',"white", 'important');
-			$("input").attr("disabled", true).css("background-color","#e9e9e9");
+			angular.element('body').css('background',"rgba(230, 230, 230, 1)");
+			angular.element('#cssmenu ul ul li').css('background',"white");
+			angular.element('#cssmenu ul ul li').removeClass("dark");
+			angular.element('#cssmenu ul ul li a').removeClass("dark");
+			angular.element('.border-left-light').removeClass('border-left-dark');
+			angular.element('md-menu-content').css('background-color',"white", 'important');
+			$rootScope.applyDark = false;
+			//$("input").attr("disabled", true).css("background-color","#e9e9e9");
 		}
+		
+		//The purpose of this function is to reinforce some ui elements with theme colors inside child views (The initial changeTheme doesn't do it)
+		this.reinforceTheme = function() {
+			if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+			{
+				angular.element('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+			}else{
+				angular.element('md-tabs-wrapper').css('background-color',"white", 'important');
+			}
+			changeHoverColors();
+		}
+		
 }])
 

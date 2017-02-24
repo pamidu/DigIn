@@ -42,7 +42,7 @@ DiginApp.controller('AddCtrl',['$scope', '$mdDialog', '$window', 'notifications'
 DiginApp.controller('HomeCtrl',['$scope','$rootScope', '$mdDialog', '$window', 'notifications','colorManager', function ($scope,$rootScope, $mdDialog, $window, notifications,colorManager) {
 	
 	//console.log(window.parent.document.getElementById('themeStart').getAttribute("md-theme"));
-	//console.log(parent.themeInfo);
+	console.log(parent.themeInfo);
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';

@@ -34,7 +34,10 @@ div.slide-up p {
 }
 </style>
 <div class="setting-card-header">
-	<h2 md-colors="{color:'{{$root.h1color}}-A700'}" style="margin-top: 45px;">Upload Source</h2>
+	<div layout="row" layout-align="end end">
+		<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('home')"></md-button>
+	</div>
+	<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Upload Source</h2>
 	<div class="setting-img-wrap" layout="row" layout-align="center center">
 		<div style="height:120px">
 			<img hide-sm hide-xs ng-src="views/user_assistance/upload/magic-wand.png" />

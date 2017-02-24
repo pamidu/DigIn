@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -8,13 +8,16 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
-	window.themeInfo = 'default';
-	$rootScope.theme = 'default';
+	$rootScope.theme = 'defaultDark';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
-	colorManager.changeTheme(window.themeInfo);
+	colorManager.changeTheme($rootScope.theme);
 	
+	//Check if the currentDashboard has been changed and not saved
+	$scope.changed = false;
+	
+	//call this function from an iFrame to close it and come home
 	window.firefunction = function()
 	{
 		$state.go('home');
@@ -27,16 +30,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		$rootScope.applyDark = true;
 	}else{
 		//explicitly do something if the theme if light
-	}
-	
-	$scope.firstTime = true;
-
-	$scope.share = function(index, type)
-	{
-		$timeout(function(){
-			$mdMenu.hide();
-		},200);
-		
 	}
 	
 	
@@ -64,60 +57,59 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 	}
 	//End of layoutManager
-
+	
 	// Start of Navigate
 	$scope.navigate = function(ev,action)
 	{
-		if(action == "Search"){
-			$mdSidenav('searchBar').toggle();
-		}else if(action == "Home")
+		//Only if the user is in the dashboard check if the currentDashboard has been changed and not saved.
+		if($state.current.name == "dashboard")
 		{
-			$rootScope.showSideMenu = layoutManager.showSideMenu();
-			location.href = '#/home';
-			$scope.currentView = "Home"
-			$rootScope.currentDashboard = {};
-			/*var confirm = $mdDialog.confirm()
-			  .title('')
-			  .textContent('Are you sure you want to go home?')
-			  .ariaLabel('Go Home')
-			  .targetEvent(ev)
-			  .ok('Please do it!')
-			  .cancel('Cancel');
-			$mdDialog.show(confirm).then(function() {
-				location.href = '#/home';
-			})*/
-		}else if(action == "TV Mode")
+			var pageIndex = 0;	
+			try{
+				angular.forEach($scope.currentDashboard.pages, function(value, key) {
+					if($scope.currentDashboard.pages[pageIndex].widgets.length != $scope.selectedDashboard.pages[pageIndex].widgets.length)
+					{
+						$scope.changed= true;
+						console.log("changed");
+					}
+					pageIndex++;
+				});
+			}catch(exception)
+			{
+				$scope.changed = true;
+			}
+			
+			if($scope.changed == false)
+			{
+				navigateTo(ev,action);
+			}else{
+				$mdDialog.show({
+				  controller: saveChangesCtrl,
+				  templateUrl: 'views/dashboard/saveChanges/saveChanges.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true
+				})
+				.then(function(answer) {
+					if(answer == 'Yes')
+					{
+						alert("Changes saved");
+					}else if(answer == 'No')
+					{
+						navigateTo(ev,action);
+					}
+				});
+			}
+		}else{
+			navigateTo(ev,action)
+		}
+		
+	}// End of Navigate
+	
+	function navigateTo(ev,action){
+		if(action.charAt(0) == "#")
 		{
-			//Start of Navigate TVMode
-			if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
-			   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-				if (document.documentElement.requestFullScreen) {  
-				  document.documentElement.requestFullScreen();  
-				} else if (document.documentElement.mozRequestFullScreen) {  
-				  document.documentElement.mozRequestFullScreen();  
-				} else if (document.documentElement.webkitRequestFullScreen) {  
-				  document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
-				}  
-			  } else {  
-				if (document.cancelFullScreen) {  
-				  document.cancelFullScreen();  
-				} else if (document.mozCancelFullScreen) {  
-				  document.mozCancelFullScreen();  
-				} else if (document.webkitCancelFullScreen) {  
-				  document.webkitCancelFullScreen();  
-				}  
-			  }
-			  //End of Navigate TVMode
-		}else if(action == 'Clear Widgets')
-		{
-			console.log("Clear Widgets");
-		}else if(action == 'Save')
-		{
-			console.log("Save");
-		}else if(action == 'Notifications')
-		{
-			$mdSidenav('notifications').toggle();
-			//notifications.toast(1,"yes");
+			location.href = action;
 		}else if(action == "Switch Tenant")
 		{
 			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
@@ -136,19 +128,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				}, function(wantsFullScreen) {
 				  $scope.customFullscreen = (wantsFullScreen === true);
 			});
-		}else if(action == "Invite User")
-		{
-			location.href = '#/inviteUser';
-		}else if(action == "My Account")
-		{
-			console.log("My Account");
-			location.href = '#/myAccount';
-		}else if(action == "User Administrator")
-		{
-			location.href = '#/userAdministrator';
-		}else if(action == "Help")
-		{
-			
 		}else if(action == "Logout")
 		{
 			var confirm = $mdDialog.confirm()
@@ -162,20 +141,32 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			}, function () {
 				//$scope.status = 'No';
 			});
-		}else if(action == "New Page")
+		}else if(action == "Create Dashboard")
 		{
 			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
 			
 			 $mdDialog.show({
-			  controller: 'addPageCtrl',
-			  templateUrl: 'dialogs/addPage/addPage.html',
+			  controller: 'createDashboardCtrl',
+			  templateUrl: 'dialogs/createDashboard/createDashboard.html',
 			  parent: angular.element(document.body),
 			  clickOutsideToClose:true,
 			  targetEvent: ev,
 			  fullscreen: useFullScreen
 			}).then(function(answer) {
-				console.log(answer);
-				location.href = '#/dashboard';
+				$rootScope.currentDashboard = {
+					compName: answer.dashboard,
+					compType: "dashboard",
+					compID: "dash" + createuuid(),
+					refreshInterval: 0, 
+					compClass: null,
+					compCategory: null,
+					pages: [{pageName: answer.page,
+                            pageID: "temp" + createuuid(),
+							widgets: [],
+							pageData: null}]     
+				};
+				console.log("empty dashboar created " + $rootScope.currentDashboard);
+				location.href = '#/visualize_data';
 				
 			});
 			
@@ -184,35 +175,109 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				}, function(wantsFullScreen) {
 				  $scope.customFullscreen = (wantsFullScreen === true);
 			});
-		}else if(action == "RealTime")
+		}
+	}
+	
+	function saveChangesCtrl ($scope, $mdDialog) {
+		$scope.confirmReply = function(answer) {
+		  $mdDialog.hide(answer);
+		};
+	}
+	
+	$scope.fullscreenOn = false;
+	
+	//Start of Perform
+	$scope.perform = function(ev,action)
+	{
+		if(action == "Search"){
+			$mdSidenav('searchBar').toggle();
+			
+		/*	dialogService.confirmDialog(ev, "Title","What is this","yes", "no").then(function(data) {
+				console.log(data);
+			});*/
+		}else if(action == "TV Mode")
 		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-			
-			 $mdDialog.show({
-			  controller: 'imInitCtrl',
-			  templateUrl: 'views/widgets/custom/view_image/InitConfigimage.html',
-			  parent: angular.element(document.body),
-			  clickOutsideToClose:true,
-			  targetEvent: ev,
-			  fullscreen: useFullScreen
-			}).then(function(answer) {
-				console.log(answer);
-				location.href = '#/dashboard';
-				
-			});
-			
-			 $scope.$watch(function() {
-			  return $mdMedia('xs') || $mdMedia('sm');
-				}, function(wantsFullScreen) {
-				  $scope.customFullscreen = (wantsFullScreen === true);
-			});
+			//Start of Navigate TVMode
+			if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+			   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+				   $scope.fullscreenOn = true;
+				if (document.documentElement.requestFullScreen) {  
+				  document.documentElement.requestFullScreen();  
+				} else if (document.documentElement.mozRequestFullScreen) {  
+				  document.documentElement.mozRequestFullScreen();  
+				} else if (document.documentElement.webkitRequestFullScreen) {  
+				  document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+				}  
+			  } else {
+				  $scope.fullscreenOn = false;
+				if (document.cancelFullScreen) {  
+				  document.cancelFullScreen();  
+				} else if (document.mozCancelFullScreen) {  
+				  document.mozCancelFullScreen();  
+				} else if (document.webkitCancelFullScreen) {  
+				  document.webkitCancelFullScreen();  
+				}  
+			  }
+			  //End of Navigate TVMode
+		}else if(action == 'Clear Widgets')
+		{
+			dialogService.confirmDialog(ev, "Clear Widgets","Are you sure you want to clear all Widgets?","yes", "no").then(function(answer) {
+				if(answer == 'yes')
+				{
+                        $rootScope.currentDashboard = [];
+						$rootScope.selectedDashboard = [];
+                        $rootScope.currentDashboard = {
 
-		}else if(action == "Visualize Data")
+                            "pages": null,
+                            "compClass": null,
+                            "compType": null,
+                            "compCategory": null,
+                            "compID": null,
+                            "compName": null,
+                            "refreshInterval": null,
+                        }
+
+                        $rootScope.currentDashboard.pages = [];
+                        var page = {
+                            "widgets": [],
+                            "pageID": "temp" + createuuid(),
+                            "pageName": "DEFAULT",
+                            "pageData": null
+                        }
+                        $rootScope.currentDashboard.pages.push(page);
+				}
+			});
+		}else if(action == 'Save')
 		{
-			location.href = '#/visualize_data';
-		}else if(action == "Upload Source")
+			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+			
+			 $mdDialog.show({
+			  controller: 'saveDashboardCtrl',
+			  templateUrl: 'dialogs/saveDashboard/saveDashboard.html',
+			  parent: angular.element(document.body),
+			  clickOutsideToClose:true,
+			  targetEvent: ev,
+			  fullscreen: useFullScreen
+			}).then(function(answer) {
+				console.log("save dashboard closed");
+				console.log(answer);
+				notifications.startLoading("Saving '"+answer.dashboardName+"' dashboard, Please wait...");
+				
+				$timeout(function(){
+					notifications.finishLoading();
+					notifications.toast(1,"Changes Successfully Saved");
+				}, 3000);
+			}); 
+			
+			 $scope.$watch(function() {
+			  return $mdMedia('xs') || $mdMedia('sm');
+				}, function(wantsFullScreen) {
+				  $scope.customFullscreen = (wantsFullScreen === true);
+			});
+		}else if(action == 'Notifications')
 		{
-			location.href = '#/upload_source';
+			$mdSidenav('notifications').toggle();
+			//notifications.toast(1,"yes");
 		}else if(action == "AddWidget")
 		{
 			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
@@ -231,45 +296,15 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				}, function(wantsFullScreen) {
 				  $scope.customFullscreen = (wantsFullScreen === true);
 			});
-		}else if(action == "User Assistance"){
-			location.href = '#/user_assistance';
-			
-		} else if(action == "createNewUser")
-		{
-			location.href = '#/createNewUser';
-		}else if(action == "shareDashboard")
-		{
-			location.href = '#/shareDashboard';
-		}else if(action == "systemSettings")
-		{
-			console.log('systemSettings');
-			location.href = '#/systemSettings';
-		}else if(action == 'accountSettings')
-		{
-			location.href = '#/accountSettings';
-		}else if(action == 'groups')
-		{
-			location.href = '#/groups';
-		}else if(action == 'theme')
-		{
-			location.href = '#/theme';
-		}else if(action == 'shareDashboard')
-		{
-			location.href = '#/shareDashboard';
-		}else if(action == 'shareDataset')
-		{
-			location.href = '#/shareDataset';
 		}
-		
-		
-	}// End of Navigate
+	}
+	//End of Perform
 	
 	$scope.getUserSettings = {};
 	
 	(function (){
 
 		if(IsLocal == true){
-			console.log("is local");
 			$rootScope.db  = new pouchDB("Dashboards");
 			//$scope.getSearchPanelDetails(); 
 		}else{
@@ -307,6 +342,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
     });
 	
+	//This is a dashboard that is saved and can be reterived later, this is kept to check if the currentDashboard has been changed without saving the changes
+	$rootScope.selectedDashboard = {};
+	
+	//may or may not be saved
 	$rootScope.currentDashboard = {};
 	
 	$scope.diginComponents = (function () {
@@ -335,7 +374,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	function getDashboard(dashboardId)
 	{
 		DiginServices.getComponent(dashboardId).then(function(data) {
-			$rootScope.currentDashboard = data;
+			$rootScope.currentDashboard = angular.copy(data);
+			$rootScope.selectedDashboard = angular.copy(data);
+			console.log($rootScope.currentDashboard);
 			location.href = '#/dashboard?id='+dashboardId;
 		});
 	}

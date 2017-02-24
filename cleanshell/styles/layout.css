@@ -27,6 +27,14 @@
 	border-radius: 8px;
 }
 
+.footerTabContainer
+{
+	width:100%;
+	right:0px;
+	bottom:0px;
+	position:fixed;
+}
+
 .section-title
 {
 	padding:10px;
@@ -111,6 +119,10 @@ md-chips-wrap{
 .table-striped{
 	width: 100%;
 	text-align: left;
+}
+
+.hint{
+	font-size: 12px;
 }
 
 /*Start of Paging Tabs*/

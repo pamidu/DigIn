@@ -45,6 +45,26 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								notifications.toast(0, "Falied to get Dashboard or report");
 								notifications.finishLoading();
 						 });
+        }, deleteComponent: function(dashboardId, permanent) {
+			var reqParam = [{
+                "comp_id": dashboardId.toString(),
+                "permanent_delete": permanent
+            }];
+			
+			var req = {
+				 method: 'DELETE',
+				 url: Digin_Engine_API + 'delete_components/',
+				 headers: {
+					'Securitytoken' : $auth.getSecurityToken()
+				 },
+				 data: angular.toJson(reqParam)
+			}
+			return $http(req).then(function(result){
+					console.log(result);
+					return result.data;
+				}, function(error){
+					notifications.toast(0, "Failed to delete dashboard");
+				});
         }, getWidgetTypes: function() {
              //return the promise directly.
 		 

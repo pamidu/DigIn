@@ -363,7 +363,17 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				$scope.currentView = report.compName;
 			},
 			deleteDashboard: function (dashboard, ev){
-				console.log("delete dashboard");
+				dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete this Dashboard","yes", "cancel").then(function(result) {
+					if(result == 'yes')
+					{
+						DiginServices.deleteComponent(dashboard.compID, false).then(function(data) {
+							if(data.Is_Success == true){
+								// Delete from pouch
+							}
+						});
+					}
+				});
+				
 			},
 			deleteReport: function (dashboard, ev){
 				console.log("delete report");
@@ -430,33 +440,55 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	//Introduction to Shell
 	$scope.IntroOptions = {
-        steps:[
-        {
-            element: document.querySelector('#step1'),
-            intro: "The <b>Form designer</b> is an interactive tool which helps developers to easily create Angular forms in Material Design.",
-			position: 'right'
-        },
-		{
-            element: '#step2',
-            intro: "<b>Add a New Row</b> to the form, right-click the form inputs and edit properties there after",
-            position: 'right'
-        },
-		{
-            element: '#step3',
-            intro: 'After the design you can <b>Save</b> your work to continue working later',
-            position: 'right'
-        },
-        {
-            element: '#step4',
-            intro: "You can <b>Load</b> a previously saved Form (JSON file) and continue working from there, or else upload a project",
-            position: 'right'
-        },
-        {
-            element: '#step5',
-            intro: "The Script of the project can also be changed",
-            position: 'right'
-        }
-        ],
+		steps:[
+			{
+				element: '#addPage',
+				intro: "Create your dashboard with Add page, add many pages as you want and make them a storyboard",
+				position: 'right'
+			}, {
+				element: '#reports',
+				intro: 'Create your static, adhoc reports and publish them here',
+				position: 'right'
+			}, {
+				element: '#datasource',
+				intro: 'Pick  your correct datasource and visualize them in various ways',
+				position: 'right'
+			}, {
+				element: '#addWidgets',
+				intro: 'Create your customized widgets and add it to the dashboard',
+				position: 'right'
+			}, {
+				element: '#socialMedia',
+				intro: 'Dig deep in to your social media pages',
+				position: 'right'
+			},
+			{
+				element: '#shareSocial',
+				intro: 'Share your Dashboards on Social Media',
+				position: 'right'
+			},{
+				element: '#settings',
+				intro: 'Configure the settings related to the system and users',
+				position: 'right'
+			}, {
+				element: '#home',
+				intro: 'Go to <strong>Home</strong> page'
+			}, {
+				element: '#fullscreen',
+				intro: 'Toggle Fullscreen'
+			}, {
+				element: '#clearWidgets',
+				intro: 'Clear widgets in the screen'
+			}, {
+				element: '#save',
+				intro: 'Save the Dashboard'
+			}, {
+				element: '#share',
+				intro: 'Share your dashboard or datasets'
+			}, {
+				element: '#notifications',
+				intro: 'Checkout the latest notifications here'
+			}],
         showStepNumbers: false,
         exitOnOverlayClick: true,
         exitOnEsc:true,

@@ -430,7 +430,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 
 	$scope.saveFilters = function()
 	{
-		var tempObj = 
+		// var tempObj = 
 	}
 
 }]);

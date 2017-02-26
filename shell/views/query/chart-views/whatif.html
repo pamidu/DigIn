@@ -1,0 +1,39 @@
+<style type="text/css">
+
+	table, td {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		border: 1px solid #dddddd;
+	}
+
+	th {
+		padding: 10px;
+	}
+
+	td {
+		padding: 3px;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.selected {
+		background: yellow;
+	}
+
+	.border {
+		border: solid yello 1px;
+	}
+
+</style>
+
+<what-if-configuration-container>
+	<what-if-variable-selector source="source"></what-if-variable-selector>
+	<div layout="row" layout-padding>
+		<p>Formula Genaration:</p>
+		<div flex='3'></div>
+		<md-radio-group layout="row" ng-model="mode">
+			<md-radio-button value="automatic">Automatic</md-radio-button>
+			<md-radio-button value="manual">Manual</md-radio-button>
+		</md-radio-group>
+	</div>
+</what-if-configuration-container>

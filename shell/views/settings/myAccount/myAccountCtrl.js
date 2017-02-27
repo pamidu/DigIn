@@ -811,16 +811,40 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                                 if (response.data.status == true) {
                                     //Success
                                     //notifications.toast("1", response.data.response);
-                                    
-                                    displayProgress("You will be logged-out from your account and please login to re-activate your account.");         
-                                    
-                                    $timeout(function () {
-                                        displayProgress("Logging out...");                                  
-                                    }, 5000);
+                                            
+                                        $http({
+                                            method: 'POST',
+                                            url: Digin_Engine_API + 'activate_packages/',
+                                            data: angular.toJson({"status": "deactivate"}),
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'SecurityToken': getCookie('securityToken')
+                                            }
+                                        })
+                                        .success(function(response) {  
+                                            if(response.Is_Success==true){
+                                                //---------------------
+                                                displayProgress("You will be logged-out from your account and please login to re-activate your account.");         
+                                                
+                                                $timeout(function () {
+                                                    displayProgress("Logging out...");                                  
+                                                }, 5000);
 
-                                    $timeout(function () {
-                                        $window.location = "/logout.php";
-                                    }, 2000);
+                                                $timeout(function () {
+                                                    $window.location = "/logout.php";
+                                                }, 2000);
+                                                //---------------------------
+                                            }
+                                            else{
+                                                console.log(response);
+                                            }
+                                        })
+                                        .error(function(data) {
+                                            console.log(data);
+                                        });
+
+
+
                                     
                                     
                                     

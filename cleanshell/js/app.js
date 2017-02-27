@@ -172,6 +172,12 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		controller: 'datasourceSettingsCtrl',
 		templateUrl: "views/data_source/data_source_settings/datasourceSettings.html"
 	})
+	
+	.state('developer',{
+		url: '/developer',
+		controller: 'developerCtrl',
+		templateUrl: "views/developer/developer.html"
+	})
 
 
   GoogleMapApi.configure({
@@ -183,6 +189,7 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 
 }])
 
+//Check if the Application has internet access or not
 DiginApp.run(function($window, $rootScope) {
       $rootScope.online = navigator.onLine;
       $window.addEventListener("offline", function() {

@@ -320,7 +320,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
                 //Go To Default Dashboard if it exsist
                 var obj = JSON.parse($scope.userSettings.components);
                 if(obj.dashboardId != null) {
-                    getDashboard(obj.dashboardId);
+                    //getDashboard(obj.dashboardId);
                     $scope.data.defaultDashboard = obj.dashboardId;
                     oldDefaultDashboard = angular.copy(obj.dashboardId)
                 }
@@ -580,6 +580,18 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     };
 
     $scope.ShouldAutoStart = false;
+	
+	var cssRule =
+		"color: #2795d8;" +
+		"font-size: 60px;" +
+		"font-weight: bold;" +
+		"text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
+		"font-style: italic;" +
+		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
+	console.log("%cWelcome to Cleanshell", cssRule);
+	
+	console.log("This should only be shown in developer mode");
+	console.log(window.location.origin+window.location.pathname+"#/developer");
 
 	
 }])//END OF NavCtrl

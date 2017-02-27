@@ -1,7 +1,7 @@
 .introjs-overlay {
   position: absolute;
   box-sizing: content-box;
-  z-index: 76;
+  z-index: 57;
   background-color: #000;
   opacity: 0;
   background: -moz-radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.9) 100%);
@@ -33,11 +33,11 @@
 .introjs-showElement,
 tr.introjs-showElement > td,
 tr.introjs-showElement > th {
-  z-index: 76 !important;
+  z-index: 56 !important;
 }
 
 .introjs-disableInteraction {
-  z-index: 76 !important;
+  z-index: 56 !important;
   position: absolute;
   background-color: white;
   opacity: 0;
@@ -93,7 +93,7 @@ tr.introjs-showElement > th {
   visibility: visible;
   top: -16px;
   left: -16px;
-  z-index: 76 !important;
+  z-index: 56 !important;
   padding: 2px;
   font-family: Arial, verdana, tahoma;
   font-size: 13px;
@@ -341,10 +341,10 @@ tr.introjs-showElement > th {
   cursor: pointer;
 }
 .introjs-bullets ul li a:hover {
-  background: #76;
+  background: grey;
 }
 .introjs-bullets ul li a.active {
-  background: #76;
+  background: grey;
 }
 
 .introjs-progress {

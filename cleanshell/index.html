@@ -256,13 +256,13 @@
 		<toastino></toastino>
 		<div class="blut-log-wrapper" style="z-index:77 !important">
 			<div class="left-toggle-wrapper md-primary" md-colors="{background:'primary'}">
-				<img ng-src="{{getUserSettings.logo_path}}" err-src="images/digin43x43.png"/>
+				<img ng-src="{{userSettings.logo_path}}" err-src="images/digin43x43.png"/>
 				 <md-tooltip md-direction="right">
 				  v3.1.0.0
 				</md-tooltip>
 			</div>
 		</div>
-		<md-content class="main-headbar-slide" ng-mouseenter="headerToggleVisible = true" ng-mouseleave="headerToggleVisible = false" style="width:100%;height:45px;position:fixed;left:45px;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);z-index:77 !important;overflow:inherit">
+		<md-content class="main-headbar-slide" ng-mouseenter="headerToggleVisible = true" ng-mouseleave="headerToggleVisible = false" style="width:100%;height:45px;position:fixed;left:45px;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);z-index:58 !important;overflow:inherit">
 		
 			<div layout="row" layout-align="space-between center" style="padding: 0 25px">
 				<div class="blut-search-wrapper hover-color" ng-click="perform($event,'Search')" layout="row" flex>
@@ -326,7 +326,7 @@
 						<div layout="row" class="blut-login-user pull-right">
 							<p ng-model="username" hide-sm hide-xs>{{$root.authObject.Email}}</p>
 							<div class="login-img">
-								<img ng-src="{{getUserSettings.dp_path}}" err-src="images/signup-user.png" />
+								<img ng-src="{{userSettings.dp_path}}" err-src="images/signup-user.png" />
 							</div>
 
 							<div class="dropdown">
@@ -406,14 +406,20 @@
 					<h3 style="color: #9a9a9a;margin-left:10px">Dashboards</h3>
 				</div>
 				<md-list style="padding:0">
-					<md-list-item id="catogory"  ng-repeat="dashboard in dashboards | filter:SearchComponents" ng-click="diginComponents.goDashboard(dashboard)">
+					<md-list-item id="dashboardList"  ng-repeat="dashboard in dashboards | filter:SearchComponents" ng-click="diginComponents.goDashboard(dashboard)">
+					    <md-radio-group class="setDefaultBtn" ng-model="data.defaultDashboard" ng-click="diginComponents.setDefaultDashboard($event, dashboard)" ng-mouseover="setDashboardHover($event)" ng-mouseleave="unsetDashboardHover($event)">
+							<md-radio-button value="{{dashboard.compID}}" class="md-primary" style="float: left;" aria-label="{{dashboard.compID}}">
+							</md-radio-button>
+						</md-radio-group>
 						<span class="ti-pie-chart" md-colors="{color:'{{$root.h1color}}-A700'}" style="font-size:35px; padding-right: 15px"></span>
 						<p class="list-item-margin">{{dashboard.compName}}</p>
 						<md-button class="md-icon-button icon-cancel md-secondary" ng-click="diginComponents.deleteDashboard(dashboard,$event);$event.stopPropagation()" style="margin-top: 10px !important;font-size:10px;" aria-label="delete">
 						</md-button>
 					 </md-list-item>
 				</md-list>
-				
+				<div class="custom-tooltip" ng-show="showTip" style="top:{{clientY}}; left:{{clientX}};">
+					Set as default dashbaord
+				</div>
 				<div class="dashboard-wrapper">
 					<h3 style="color: #9a9a9a;margin-left:10px">Reports</h3>
 				</div>
@@ -432,7 +438,7 @@
 
 		</md-sidenav>
 		
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:77 !important;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce"><!--ng-intro-autostart="firstTime"-->
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:58 !important;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce"><!--ng-intro-autostart="firstTime"-->
 			<div id="cssmenu">
 				<ul>
 					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->

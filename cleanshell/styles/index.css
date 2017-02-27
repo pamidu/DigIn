@@ -239,6 +239,10 @@ body{
 	margin-left: 5px
 }
 
+.setDefaultBtn>md-radio-button{
+	    margin-bottom: 0px;
+}
+
 /* Starter CSS for Flyout Menu */
 #cssmenu{
 	height: 100%;

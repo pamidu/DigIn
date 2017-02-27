@@ -740,9 +740,9 @@
                     userName = sessionInfo.Username;
                 }
 
-                console.log("DEBUG : CheckSession - " + securityToken);
-                console.log("DEBUG : sessionInfo - " + sessionInfo);
-                console.log("DEBUG : userName - " + userName);
+                //console.log("DEBUG : CheckSession - " + securityToken);
+                //console.log("DEBUG : sessionInfo - " + sessionInfo);
+                //console.log("DEBUG : userName - " + userName);
 
                 if (securityToken == null) {
                     var nagivateUrl = "http://" + getHost() + "/s.php?r=" + location.href;

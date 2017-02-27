@@ -30,17 +30,17 @@
 	
 	<!-- build:css styles/styles.css-->
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
-	<link rel="stylesheet" type="text/css" href="styles/digin-main/digin-main.css">
-	<link rel="stylesheet" type="text/css" href="styles/themify/themify-icons.css">
+	<link rel="stylesheet" type="text/css" href="styles/icons/digin-main/digin-main.css">
+	<link rel="stylesheet" type="text/css" href="styles/icons/themify/themify-icons.css">
 	<link rel="stylesheet" type="text/css" href="styles/index.css">
 	<link rel="stylesheet" type="text/css" href="styles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="styles/directive_library.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/directive_library.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/md-steppers/dist/md-steppers.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
-	<link rel="stylesheet" type="text/css" href="styles/ng-croppie.min.css">
-	<link rel="stylesheet" type="text/css" href="styles/cellCursor.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/ng-croppie.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/cellCursor.css">
 	<link rel="stylesheet" type="text/css" href="styles/introjs.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angularjs-slider/dist/rzslider.min.css">
 	<!-- endbuild -->
@@ -262,7 +262,7 @@
 				</md-tooltip>
 			</div>
 		</div>
-		<md-content class="main-headbar-slide" ng-mouseenter="headerToggleVisible = true" ng-mouseleave="headerToggleVisible = false" style="width:100%;height:45px;position:fixed;left:45px;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);z-index:58 !important;overflow:inherit">
+		<md-content class="main-toolbar" ng-mouseenter="headerToggleVisible = true" ng-mouseleave="headerToggleVisible = false">
 		
 			<div layout="row" layout-align="space-between center" style="padding: 0 25px">
 				<div class="blut-search-wrapper hover-color" ng-click="perform($event,'Search')" layout="row" flex>
@@ -438,10 +438,9 @@
 
 		</md-sidenav>
 		
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:58 !important;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit"  ng-intro-options="IntroOptions" ng-intro-method="Introduce"><!--ng-intro-autostart="firstTime"-->
+		<md-content class="main-sidemenu" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" ng-intro-options="IntroOptions" ng-intro-method="Introduce"><!--ng-intro-autostart="firstTime"-->
 			<div id="cssmenu">
 				<ul>
-					<!--li style="margin-top:25px;height:50px;font-size:24px" ng-click="navigate($event,'New Page')"><a><i class="icon-add-page"></i></a></li-->
 					<li style="height:30px;font-size:24px"  id="step1"><a md-colors="{color:'primary'}" ></a>
 
 					</li>
@@ -505,11 +504,8 @@
 							<li ng-click="navigate($event,'#/theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
 						</ul>
 					</li>
-					
-					
 
-
-				</ul><!-- -->
+				</ul>
 				<md-content class="left-menu-toggle hover-color fadeSideMenuToggle" ng-show="sideMenuToggleVisible || !showSideMenu" md-colors="{color:'primary'}" ng-click="leftMenuToggle()">
 					<span ng-if="!showSideMenu" class="ti-angle-right"></span>
 					<span ng-if="showSideMenu" class="ti-angle-left"></span>
@@ -520,12 +516,7 @@
 		<md-content style="background:transparent">
 			
 			<div ui-view></div>
-			<md-toast class="md-bottom md-right" style="position:fixed" ng-show="online == false">
-				<div class="md-toast-content fade-in-down alert-dismissible" layout="row" layout-align="space-between center">
-					<div style="width:15px;height:15px;background:#e24949;border-radius:100px; margin: 10px;"></div>
-					<span flex>You are offline, Please reconnect!</span>
-				</div>
-			</md-toast>
+			<alert-offline ng-show="online==false"></alert-offline>
 		</md-content>
 	</div>
 	<!--END OF APPLICATION CONTAINER-->
@@ -548,28 +539,28 @@
 	<!--Google Maps end-->
 
     <script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
-	<script src="js/uimicrokernel.js"></script>
+	<script src="js/libs/uimicrokernel.js"></script>
 
 	<script src="../shell/scripts/config.js"></script>
 	<script src="js/services/diginservicehandler.js"></script>
 	<script src="js/services/utility.js"></script>
-	<script src="js/directivelibrary.js"></script>
+	<script src="js/libs/directivelibrary.js"></script>
 	<script src="bower_components/md-steppers/dist/md-steppers.js"></script>
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<!--script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script-->
-	<script type="text/javascript" src="js/highcharts-ng.js"></script>
-	<script src="js/digin-gridster.js"></script>
+	<script type="text/javascript" src="js/libs/highcharts-ng.js"></script>
+	<script src="js/libs/digin-gridster.js"></script>
 	
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
 	<script type="text/javascript" src="bower_components/highcharts/highcharts-3d.js"></script>
 	<script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
 	<script type="text/javascript" src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
-	<script type="text/javascript" src="js/ng-croppie.min.js"></script>
+	<script type="text/javascript" src="js/libs/ng-croppie.min.js"></script>
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
-	<script src="js/cellCursor.js"></script>
+	<script src="js/libs/cellCursor.js"></script>
 	
 	<!-- PouchDB -->
 	<script src="bower_components/pouchdb/dist/pouchdb.js"></script>
@@ -591,7 +582,6 @@
 	<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
 	<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
 	<script src="dialogs/saveDashboard/saveDashboardService.js"></script>
-	<script src="dialogs/addPage/addPageCtrl.js"></script>
 	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
 	<script src="views/home/homeCtrl.js"></script>
 	<script src="views/settings/myAccount/myAccountCtrl.js"></script>
@@ -612,6 +602,9 @@
 	<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
 	<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
 	<script src="js/services/tabularService.js"></script>
+	
+	<!--Developer view is only for developers, Please remove this on production-->
+	<script src="views/developer/developerCtrl.js"></script>
 
 	<!--Payment stripe-->
     <script src="https://checkout.stripe.com/checkout.js"></script>

@@ -8,7 +8,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
-	$rootScope.theme = 'defaultDark';
+	$rootScope.theme = 'default';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
@@ -299,9 +299,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 	}
 	//End of Perform
-	
+	$scope.data = {};
 	$scope.userSettings = {};
-	
+    var oldDefaultDashboard = "";
 	(function (){
 
 		if(IsLocal == true){
@@ -312,7 +312,21 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
             DiginServices.getUserSettings().then(function(data) {
                 console.log(data);
                 $scope.userSettings = data;
-                $scope.userSettings.theme_config = $rootScope.theme;
+                $rootScope.theme = $scope.userSettings.theme_config;
+
+                //color the UI
+                colorManager.changeTheme($rootScope.theme);
+
+                //Go To Default Dashboard if it exsist
+                var obj = JSON.parse($scope.userSettings.components);
+                if(obj.dashboardId != null) {
+                    //getDashboard(obj.dashboardId);
+                    $scope.data.defaultDashboard = obj.dashboardId;
+                    oldDefaultDashboard = angular.copy(obj.dashboardId)
+                }
+
+
+                //$scope.userSettings.theme_config = $rootScope.theme;
             });
 		}else{
 			console.log("not local");
@@ -359,7 +373,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		return {
 			goDashboard: function (dashboard) {
 				$mdSidenav('searchBar').close();
-				$scope.currentView = dashboard.compName;
 				getDashboard(dashboard.compID);
 				
 				
@@ -367,11 +380,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			goReport: function (report){
 				console.log("report");
 				$mdSidenav('searchBar').close();
-				$scope.currentView = report.compName;
 			},
 			deleteDashboard: function (dashboard, ev){
-				console.log(ev);
-				/*dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete '"+dashboard.compName+"' dashboard?","yes", "cancel").then(function(result) {
+				dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete '"+dashboard.compName+"' dashboard?","yes", "cancel").then(function(result) {
 					if(result == 'yes')
 					{
 						DiginServices.deleteComponent(dashboard.compID, false).then(function(data) {
@@ -389,15 +400,17 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 							}
 						});
 					}
-				});*/
-				
+				});
 			},
 			deleteReport: function (dashboard, ev){
 				console.log("delete report");
 			},setDefaultDashboard: function (ev, dashboard) {
+				console.log($scope.data.defaultDashboard);
+
+                $scope.data.defaultDashboard = null;
                 dialogService.confirmDialog(ev, "Set Default Dashboard","Are you sure you want to set '"+dashboard.compName+"' dashboard as Default?","yes", "cancel").then(function(result) {
                     if (result == 'yes') {
-
+                        $scope.data.defaultDashboard = dashboard.compID;
 
                         var newComponent = {
                             "saveExplicit" : false,
@@ -412,6 +425,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
                         userSettingsSaveObj.email = $rootScope.authObject.Email
                         userSettingsSaveObj.logo_name = "logo";
                         userSettingsSaveObj.dp_name = "dp";
+                        userSettingsSaveObj.theme_config = $rootScope.theme;
                         delete userSettingsSaveObj.modified_date_time;
                         delete userSettingsSaveObj.created_date_time;
                         delete userSettingsSaveObj.domain;
@@ -419,10 +433,13 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
                         delete userSettingsSaveObj.dp_path;
 
                         DiginServices.postUserSettings(userSettingsSaveObj).then(function(data) {
-                           // console.log(data);
+                           notifications.toast(1,"New default dashboard was saved");
                         });
 
-                    }
+                    }else{
+                        $scope.data.defaultDashboard = null;
+                        $scope.data.defaultDashboard = oldDefaultDashboard;
+					}
                 });
             }
 
@@ -563,6 +580,18 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     };
 
     $scope.ShouldAutoStart = false;
+	
+	var cssRule =
+		"color: #2795d8;" +
+		"font-size: 60px;" +
+		"font-weight: bold;" +
+		"text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
+		"font-style: italic;" +
+		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
+	console.log("%cWelcome to Cleanshell", cssRule);
+	
+	console.log("This should only be shown in developer mode");
+	console.log(window.location.origin+window.location.pathname+"#/developer");
 
 	
 }])//END OF NavCtrl

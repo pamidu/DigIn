@@ -1,22 +1,11 @@
 /*!
-* angular-toastino v0.0.8
-* https://github.com/Mexassi/angular-toastino
-* Copyright (c) 2015 Massimo Presta
-* License: MIT
+* Directive Library: v0.0.8
+* Authour: Dilshan Liyanage
 */
 
 'use strict';
 
 var directiveLibraryModule = angular.module('directivelibrary',[]);
-
-/*
-          __                 __            _____                           .__                                                      
-  _______/  |______ ________/  |_    _____/ ____\   ____    ____           |__| _____    ____             ___________  ____ ______  
- /  ___/\   __\__  \\_  __ \   __\  /  _ \   __\   /    \  / ___\   ______ |  |/     \  / ___\   ______ _/ ___\_  __ \/  _ \\____ \ 
- \___ \  |  |  / __ \|  | \/|  |   (  <_> )  |    |   |  \/ /_/  > /_____/ |  |  Y Y  \/ /_/  > /_____/ \  \___|  | \(  <_> )  |_> >
-/____  > |__| (____  /__|   |__|    \____/|__|    |___|  /\___  /          |__|__|_|  /\___  /           \___  >__|   \____/|   __/ 
-     \/            \/                                  \//_____/                    \//_____/                \/             |__|    
-*/
 
 directiveLibraryModule.factory('Toastino',['$timeout', function ($timeout) {
   var Toastino = function (classValue) {
@@ -284,15 +273,6 @@ directiveLibraryModule.directive('toastino', function () {
 });
 
 /*
-                   .___         _____                           .__                                                      
-  ____   ____    __| _/   _____/ ____\   ____    ____           |__| _____    ____             ___________  ____ ______  
-_/ __ \ /    \  / __ |   /  _ \   __\   /    \  / ___\   ______ |  |/     \  / ___\   ______ _/ ___\_  __ \/  _ \\____ \ 
-\  ___/|   |  \/ /_/ |  (  <_> )  |    |   |  \/ /_/  > /_____/ |  |  Y Y  \/ /_/  > /_____/ \  \___|  | \(  <_> )  |_> >
- \___  >___|  /\____ |   \____/|__|    |___|  /\___  /          |__|__|_|  /\___  /           \___  >__|   \____/|   __/ 
-     \/     \/      \/                      \//_____/                    \//_____/                \/             |__|    
-*/
-
-/*
 directiveLibraryModule.directive('plumbItem', function() {
 	return {
 	  restrict: 'A',       
@@ -436,8 +416,7 @@ function passwordStrengthIndicator() {
 directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$mdDialog){
 	
 	this.hideHeader = function() {
-		console.log("hide header");
-		$('.main-headbar-slide').animate({
+		$('.main-toolbar').animate({
 			top: '-45px'
 		}, 200);
 		
@@ -453,14 +432,10 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 			paddingTop: '0px'
 		},200)
 		
-		/*$('md-tabs-content-wrapper').animate({
-			height: '100vh'
-		},200)*/
-		
 		return false;
 	}
 	this.showHeader = function(){
-		$('.main-headbar-slide').animate({
+		$('.main-toolbar').animate({
 			top: '0px'
 		}, 200);
 		
@@ -485,7 +460,7 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 	}
 	
 	this.hideSideMenu = function(){
-		$('.left-menu-slide').animate({
+		$('.main-sidemenu').animate({
 			left: '-45px'
 		}, 200);
 		$('.card-container').animate({
@@ -497,7 +472,7 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 		return false;
 	}
 	this.showSideMenu = function(){
-		$('.left-menu-slide').animate({
+		$('.main-sidemenu').animate({
 			left: '0px'
 		}, 200);
 		$('.card-container').animate({
@@ -635,3 +610,13 @@ directiveLibraryModule.directive('isDisabledDark', [ '$rootScope', function($roo
 		},
 	}
 }]);
+
+directiveLibraryModule.directive('alertOffline', function() {
+	  return {
+		restrict: 'E',
+		template: '<md-toast class="md-bottom md-right" style="position:fixed"><div class="md-toast-content fade-in-down alert-dismissible" layout="row" layout-align="space-between center"><div style="width:15px;height:15px;background:#e24949;border-radius:100px; margin: 10px;"></div><span flex>You are offline, Please reconnect!</span></div></md-toast>',
+		link: function(scope,element){
+
+		} //end of link
+	  };
+});

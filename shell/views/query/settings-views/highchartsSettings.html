@@ -42,19 +42,20 @@
         </v-pane>
     </v-accordion>
 
-    <div layout="row">
-        <md-input-container style="margin-right: 10px;">
-            <label>Sorting Column</label>
-            <md-select ng-model="executeQryData.executeColumns[0].filedName">
+    <div layout="row" ng-repeat ="element in groupBySortArray">
+
+        <div style="margin-right: 10px;">
+            <label style="color:#01718d">Display Column :</label>
+            <label>{{element.displayName}}</label>
+        </div>
+
+        <div layout="row" style="margin-right: 10px;" >
+            <label style="color:#01718d">Sorting Column :</label>
+            <md-select ng-model="element.sortName" style="margin-top: -10px;">
                 <md-option ng-repeat="column in commonData.columns" value="{{column.filedName}}">{{column.filedName}}</md-option>
             </md-select>
-        </md-input-container>
-        <md-input-container style="margin-right: 10px;">
-            <label>Display Column</label>
-            <md-select ng-model="executeQryData.executeColumns[0].displayName">
-                <md-option ng-repeat="column in commonData.columns" value="{{column.filedName}}">{{column.filedName}}</md-option>
-            </md-select>
-        </md-input-container>
+        </div>
+        
     </div>
 
     <md-input-container flex ng-hide="selectedChart.chart == 'pie' || selectedChart.chart == 'funnel' || selectedChart.chart == 'pyramid' ">
@@ -66,4 +67,7 @@
         <input ng-model="highchartsNG.xAxis.title.text" ng-change="highchartsNG.xAxis.title.text = highchartsNG.xAxis.title.text.split(' ').join('')">
     </md-input-container>
 
+    <md-button class="md-raised md-primary right" ng-click="changeSortHighCharts()">
+        Apply sorting column
+    </md-button>
 </div>

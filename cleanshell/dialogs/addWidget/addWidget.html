@@ -19,11 +19,6 @@
 	text-transform: none;
 	line-height: 18px;
 }
-
-md-ink-bar
-{
-	background: #f9a525 !important;
-}
 </style>
 
 <md-dialog aria-label="Add Widget" ng-cloak>
@@ -42,7 +37,7 @@ md-ink-bar
 	  <md-dialog-content style="max-width:800px;max-height:810px;min-width:385px;">
 		<md-tabs md-dynamic-height md-border-bottom>
 			<md-tab label="{{item.title}}" ng-repeat="item in WidgetTypes" ng-click="filterWidgets(item)">
-				<md-content flex layout-align="center center" layout="row" style="background:#f2f2f2;" layout-wrap>
+				<md-content flex layout-align="center center" layout="row" layout-wrap>
 					<md-button class="select-card-btn md-raised" ng-repeat="widget in Widgets | filter : selected" layout="column" layout-align="center center" ng-click="addAllinOne(widget,$event)">
 						<img ng-src="{{widget.icon}}" alt=""/>
 						<span class="widget-title">

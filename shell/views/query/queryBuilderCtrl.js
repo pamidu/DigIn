@@ -73,6 +73,204 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
+routerApp.directive('whatIfConfigurationContainer', ['$http', function ($http) {
+    return {
+        restrict: 'E',
+        transclude: true,
+        template: '<md-content flex layout="column">'
+                + '<ng-transclude></ng-transclude>'
+                + '</md-content>',
+        controller: ['$scope', function ($scope) {}],
+        link: function (scope, iElement, iAttrs) {
+            
+            scope.mode = 'automatic';
+            console.log(scope.selectedColumns);
+        }
+    };
+}]);
+
+routerApp.directive('whatIfVariableSelector', [function () {
+    return {
+        restrict: 'E',
+        scope: {
+            source: '='
+        },
+        require: '^whatIfConfigurationContainer',
+        template: '<div layout="row" style="height:400px;">'
+                + '<div> <table style="width:100%; height:100%;">'
+                + '<thead><tr><th>Available Columns</th></tr></thead>'
+                + '<tbody><tr ng-repeat="avCol in availableColumns | orderBy">'
+                + '<td ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" ng-class="isToggled(avCol)">{{avCol}}</td>'
+                + '</tr></tbody></table></div>'
+                + '<div layout="column" layout-padding>'
+                + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns()"> > </button>'
+                + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns()"> < </button>'
+                + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns(true)"> >> </button>'
+                + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns(true)"> << </button></div>'
+                + '<div><table style="width:100%; height:100%;">'
+                + '<thead><tr><th>Selected Columns</th></tr></thead>'
+                + '<tbody><tr ng-repeat="slCols in selectedColumns | orderBy">'
+                + '<td ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" ng-class="isToggled(slCols)">{{slCols}}</td>'
+                + '</tr></tbody></table></div>'
+                + '</div>',
+        link: function (scope, iElement, iAttrs) {
+
+            console.log('whatIfVariableSelector hits');
+
+            console.log(scope.source);
+            
+            var MAX_SELECTED_COLUMNS = 10;
+
+            var acceptedColumnTypes = [
+                'FLOAT', 
+                'INTEGER', 
+                'DOUBLE'
+            ];
+
+            scope.selectedColumns = [];
+
+            var activeTable = 'avColsTbl';
+
+            var selected = [];
+
+            scope.availableColumns = scope.source.filter(function(obj) {
+                if(obj.type)
+                    colTy = obj.type.toUpperCase();
+
+                if(acceptedColumnTypes.indexOf(colTy) > -1)
+                    return obj;
+            }).map(function(obj, index) { return obj.filedName; });
+
+
+            scope.toggleRow = function(tbl, row, index, ev) { 
+                ev.preventDefault();
+
+                // current active table changed
+                if(activeTable !== tbl) { 
+                    // keep new table
+                    activeTable = tbl;
+                    // deselecte all selected columns in previous table
+                    selected = []; 
+                }
+                
+                // CTRL key not pressed
+                if(!ev.ctrlKey)
+                    selected = [];
+
+                // push selected columns temp array
+                var idx = selected.indexOf(row);
+                if(idx > -1) 
+                    selected.splice(idx, 1);
+                else
+                    selected.push(row);
+
+                console.log(selected);
+                
+            }
+
+            scope.isToggled = function(row) {
+                isToggled = selected.find(function(col) {
+                    return (col == row);
+                });
+
+                return (isToggled) ? 'selected' : ' '; 
+
+                // return (selected.indexOf(row) > -1) ? 'selected' : ' ';
+            }
+
+            scope.moveToSelectedColumns = function(moveAll = false) {
+                    
+                if(moveAll) { // move all button pressed
+
+                    // no columns in available columns table
+                    if(scope.availableColumns.length === 0) 
+                        return;
+
+                    // selected more than the limit that user allowed to select
+                    if(scope.availableColumns.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
+                        return;
+
+                    // push columns to selected columns table
+                    scope.availableColumns.forEach(function(col) {
+                        if(scope.selectedColumns.indexOf(col) < 0) 
+                            scope.selectedColumns.push(col);
+                    });
+
+                    // set as empty 
+                    scope.availableColumns = selected = [];
+
+                }else { // move single or multi columns 
+
+                    // no columns seleced to move
+                    if(selected.length < 0) 
+                        return;
+
+                    // selected more than the limit that user allowed to select
+                    if(selected.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
+                        return;
+
+                    // push columns to selected columns table
+                    selected.forEach(function(col) {
+                        if(scope.selectedColumns.indexOf(col) < 0){
+                            scope.selectedColumns.push(col);
+                        }
+                    });
+
+                    // filter out selected columns from selected columns table
+                    scope.availableColumns = scope.availableColumns.filter(function(x){ 
+                        return selected.indexOf(x) === -1; 
+                    });
+                    
+                    // wipe out temp selected columns array
+                    selected = [];
+
+                }               
+            }
+
+            scope.moveToAvailableColumns = function(moveAll = false) {
+
+                if(moveAll) { // move all button pressed
+
+                    // no columns in selected columns table
+                    if(scope.selectedColumns.length === 0) 
+                        return;
+
+                    // push columns to available columns table
+                    scope.selectedColumns.forEach(function(col) {
+                        if(scope.availableColumns.indexOf(col) < 0) 
+                            scope.availableColumns.push(col);
+                    });
+
+                    // set as empty 
+                    scope.selectedColumns = selected = [];
+                }else { // move single or multi columns 
+
+                    // no columns seleced to move
+                    if(selected.length < 0) 
+                        return;
+
+                    // push columns to selected columns table
+                    selected.forEach(function(col) {
+                        if(scope.availableColumns.indexOf(col) < 0){
+                            scope.availableColumns.push(col);
+                        }
+                    });
+
+                    // filter out selected columns from selected columns table
+                    scope.selectedColumns = scope.selectedColumns.filter(function(x){ 
+                        return selected.indexOf(x) === -1; 
+                    });
+
+                    // wipe out temp selected columns array
+                    selected = [];
+
+                }
+            }
+
+        }
+    };
+}]);
+
 routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, metricChartServices, layoutManager, tabularService, $qbuilder) {
     if($rootScope.showHeader == true)
    {
@@ -811,6 +1009,16 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 initObj: $scope.initHighchartObj,
                 settingsView: 'views/query/settings-views/Tabularsettings.html',
                 tooltip: "Widget that allows you to visualize data in  tabular manner."
+            },{
+                id: 'ct23',
+                icon: 'fa fa-table',
+                name: 'whatif',
+                chart: 'whatif',
+                chartType: 'whatif',
+                view: 'views/query/chart-views/whatif.html',
+                initObj: {},
+                settingsView: 'views/query/settings-views/whatifSettings.html',
+                tooltip: "What-If"
             }
 
         ]
@@ -1116,6 +1324,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     }
 
                 }
+
                 if (duplicateRecord) {
                     return;
                 }
@@ -1334,6 +1543,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     case 'Tabular':
                         chartTypeTrue = false;
                         break;
+                    case 'whatif':
+                        chartTypeTrue = false;
+                        break;
                     case 'sunburst':
                         this.hideVisualizationType();
                         chartTypeTrue = false;
@@ -1353,8 +1565,11 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         break;
                 }
 
-          
-
+                if($scope.chartType == "whatif"){
+                    $scope.selectedChart = onSelect;
+                    eval("$scope." + $scope.selectedChart.chartType + ".changeType()");
+                    return;
+                }
 
                 // CHART VALIDATIONS
                 if ($scope.chartType == "forecast") {
@@ -1525,9 +1740,67 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }, 1000);
     };
     //chart functions
+
+     // initialize all variables and methodes need to display column and sorting 
+
+            $scope.groupBySortArray =[];
+
+            $scope.addGroupBySortArray =function(field){
+                var obj = {
+                    "sortName": field,
+                    "displayName" : field
+                }
+
+                $scope.groupBySortArray.push(obj);
+                console.log();
+            }
+
+            $scope.remGroupBySortArray =function(field){
+                    var index = -1; 
+                    for(var i=0; i < $scope.groupBySortArray.length; i++){
+                        if($scope.groupBySortArray[i].displayName == field.filedName){
+                            index =i;
+                            break;
+                        }
+                    }
+                    if (index > -1) {
+                        $scope.groupBySortArray.splice(index, 1);
+                    }
+            }
+            
+            $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
+                if (newValue !== oldValue && $scope.selectedChart.chartType == "highCharts") {
+                    if(newValue.length == oldValue.length){
+                        var tempGroupBySortArray=[];
+                        for(var i=0; i < $scope.executeQryData.executeColumns.length; i++){
+                            for(var j=0; j < $scope.groupBySortArray.length; j++){
+
+                                if($scope.executeQryData.executeColumns[i].filedName == $scope.groupBySortArray[j].displayName){
+                                    tempGroupBySortArray[i] = $scope.groupBySortArray[j];
+                                    break;
+                                }
+                            }
+                        }
+                        $scope.groupBySortArray = tempGroupBySortArray; 
+                    }
+                }
+            }, true);
+
+            $scope.changeSortHighCharts = function(){
+                if ($scope.executeQryData.executeColumns.length == 1) {
+                    $scope.getGroupedAggregation($scope.groupBySortArray[0].displayName);
+                } else if ($scope.executeQryData.executeColumns.length > 1) {
+                    $scope.getDrilledAggregation();
+                }
+            }
+
+ 
+
     $scope.highCharts = {
         onInit: function(recon) {
-            if (!recon) $scope.highchartsNG = $scope.selectedChart.initObj;
+            if (!recon){
+                $scope.highchartsNG = $scope.selectedChart.initObj;
+            } 
             else {
                 $scope.highchartsNG = $scope.widget.widgetData.highchartsNG;
                 $scope.highchartsNG.series.forEach(function(key) {
@@ -1540,6 +1813,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
                 $scope.prevChartSize = angular.copy($scope.highchartsNG.size);
                 delete $scope.highchartsNG.size;
+
+                $scope.groupBySortArray = $scope.widget.widgetData.widData.diplaySortArr;
             }
         },
         changeType: function() {
@@ -1553,6 +1828,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
             }
 
+           
+
         },
         selectCondition: function() {
             if ($scope.executeQryData.executeColumns.length <= 1) {
@@ -1564,6 +1841,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
         },
         selectAttribute: function(fieldName) {
+            $scope.addGroupBySortArray(fieldName);
             if ($scope.executeQryData.executeColumns.length == 0) {
                 $scope.executeQryData.executeColumns = [{
                     filedName: fieldName
@@ -1739,6 +2017,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             }
             widget.widgetData.highchartsNG = $scope.highchartsNG;
             widget.widgetData.widData['drilled'] = $scope.isDrilled;
+            widget.widgetData.widData.diplaySortArr =$scope.groupBySortArray;
             if ($scope.isDrilled) widget.widgetData.widData['drillConf'] = $scope.drillDownConfig;
             widget.widgetName = "highcharts";
             widget.widgetData.widView = "views/common-data-src/res-views/ViewCommonSrc.html";
@@ -3832,8 +4111,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
 
+    $scope.whatif = {
+        onInit: function() {},
+        changeType: function() {
+            $scope.source = $scope.commonData.columns;
+        },
 
-    
+    };
+
 
     $scope.Tabular = {
         onInit: function() {
@@ -4287,7 +4572,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.eventHndler.isLoadingChart = false;
                 privateFun.fireMessage('0', 'request failed');
             }
-        }, $scope.selectedCat);
+        }, $scope.groupBySortArray[0].displayName,undefined,$scope.groupBySortArray[0].sortName);
     };
 
     function getAggData(highestLevel,drillOrderArr,fieldArr) {
@@ -4328,6 +4613,23 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     });
                 }
             }
+
+
+            var tempMesureArr = $scope.executeQryData.executeMeasures;
+            var tempArr=[];
+
+            for(var g=0; g< $scope.highchartsNG.series.length; g++){
+                for(var i=0; i< tempMesureArr.length; i++){
+
+                    var measure = (tempMesureArr[i]["condition"]+"_"+tempMesureArr[i]["filedName"]).toLowerCase();
+
+                    if($scope.highchartsNG.series[g]["origName"] == measure)
+                        tempArr.push($scope.highchartsNG.series[g]);
+                }
+
+            }
+
+            $scope.highchartsNG.series = tempArr;
             $scope.highchartsNG.series.forEach(function(key) {
                 key['turboThreshold'] = 0;
                 key['cropThreshold'] = key.data.length;
@@ -4372,10 +4674,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             var level;
                             var tempArray = [];
                             var isDate;
+                            var groupBy;
+                            var orderBy;
                         // var cat = [];
                         for (i = 0; i < drillOrdArr.length; i++) {
                             if (drillOrdArr[i].name == highestLvl) {
                                 nextLevel = drillOrdArr[i].nextLevel;
+                                groupBy = $scope.groupBySortArray[i+1].displayName;
+                                orderBy = $scope.groupBySortArray[i+1].sortName;
                                 drillOrdArr[i].clickedPoint = clickedPoint;
                                 level = drillOrdArr[i].level;
                                 if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
@@ -4402,7 +4708,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                                         tempArrStr = '[' + drillOrdArr[c].name + "] = " + drillOrdArr[c].clickedPoint;
                                     }
                                 } else {
-                                    if (isDate){
+                                if (isDate){
                                         tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = '" + drillOrdArr[c].clickedPoint + "'";
                                     }else{
                                         tempArrStr = '[' + drillOrdArr[c].name + "] = '" + drillOrdArr[c].clickedPoint + "'";
@@ -4484,12 +4790,14 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             chart.xAxis[0].setTitle({
                                 text: nextLevel
                             });
+
                             chart.yAxis[0].setTitle({
                                 text: selectedSeries
                             });
+                            
                             chart.options.customVar = nextLevel;
                             chart.hideLoading();
-                        }, nextLevel, conStr);
+                        }, groupBy, conStr,orderBy);
                     }
                 },
                 drillup: function(e) {
@@ -4539,7 +4847,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.isPendingRequest = false;
                 $scope.eventHndler.isLoadingChart = false;
             });
-        }, highestLevel);
+        }, $scope.groupBySortArray[0].displayName,undefined,$scope.groupBySortArray[0].sortName);
     }
 
     //<Async drilldown> 
@@ -4883,7 +5191,22 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
             });
         });
-        cb(serArr);
+
+        var tempMesureArr = $scope.executeQryData.executeMeasures;
+        var tempArr=[];
+
+        for(var g=0; g< serArr.length; g++){
+            for(var i=0; i< tempMesureArr.length; i++){
+
+                var measure = (tempMesureArr[i]["condition"]+"_"+tempMesureArr[i]["filedName"]).toLowerCase();
+
+                if(serArr[g]["origName"] == measure)
+                    tempArr.push(serArr[g]);
+            }
+
+        }
+
+        cb(tempArr);
     };
     $scope.removeMeasure = function(m) {
         var arrObj = $scope.executeQryData.executeMeasures;
@@ -4904,6 +5227,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
             if($scope.selectedChart.chartType == "Tabular")
                 eval("$scope." + $scope.selectedChart.chartType + ".removeCat(c)");
+            if($scope.selectedChart.chartType == "highCharts")
+                $scope.remGroupBySortArray(c);
         }
     };
     // Remove the target field

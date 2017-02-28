@@ -650,6 +650,13 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                         } else {
                             widget.widgetData.widData.drilled = true;
                         }
+
+                        for(c in res){
+
+                            if(res[c][widget.widgetData.widData.diplaySortArr[0]['sortName']] != res[c][widget.widgetData.widData.diplaySortArr[0]['displayName']])
+                                delete res[c][widget.widgetData.widData.diplaySortArr[0]['sortName']];
+                        }
+
                         var data = filterService.mapResult(requestArray[0],res,widget.widgetData.widData.drilled,color,name,origName);
                         widget.widgetData.syncState = true;
                         widget.widgetData.filteredState = true;
@@ -666,7 +673,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             widget.widgetData.syncState = true;
                         })
                     }
-                },requestArray,filterStr);
+                },widget.widgetData.widData.diplaySortArr[0].displayName,filterStr,widget.widgetData.widData.diplaySortArr[0].sortName);
             }
         };
         // Apply fileters to metric widget
@@ -1233,10 +1240,14 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 var level;
                                 var tempArray = [];
                                 var isDate;
+                                var groupBy;
+                                var orderBy;
                             // var cat = [];
                             for (i = 0; i < drillOrdArr.length; i++) {
                                 if (drillOrdArr[i].name == highestLvl) {
                                     nextLevel = drillOrdArr[i].nextLevel;
+                                    groupBy = widget.widgetData.widData.diplaySortArr[i+1].displayName;
+                                    orderBy = widget.widgetData.widData.diplaySortArr[i+1].sortName;
                                     drillOrdArr[i].clickedPoint = clickedPoint;
                                     level = drillOrdArr[i].level;
                                     if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
@@ -1359,7 +1370,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                 };                                
                                 chart.options.customVar = nextLevel;
                                 chart.hideLoading();
-                            }, nextLevel, filterStr);
+                            }, groupBy, filterStr,orderBy);
                         }
                     },
                     drillup: function(e) {

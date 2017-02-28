@@ -62,9 +62,12 @@
 		$subscriptionData=[];	
 		$subscriptionStatus= $result->Result[0]->user_status;
 		$remainingDays= $result->Result[0]->remaining_days; 
+		$packageId= $result->Result[0]->package_id; 
 		$subscriptionData[0]=$subscriptionStatus;
 		$subscriptionData[1]=$remainingDays;
+		$subscriptionData[2]=$packageId;
 		return $subscriptionData;
+		
 	}
 
 function createSessionDmian(){
@@ -212,25 +215,38 @@ function INTS(){
 						else{	
 								//$_SESSION["subscriptionStatus"] = $subscriptionData[0];
 								//$_SESSION["remainingDays"] = $subscriptionData[1];	
-								$subscriptionData = checkSubscriptionStatus($tenantToken);																
-								if($subscriptionData[0]){
+								$subscriptionData = checkSubscriptionStatus($tenantToken);		
+								if($subscriptionData[0]=="active" ){
 									if($subscriptionData[1]>=0){
 										$myAccount=false;	
 										$blocking=false;
 									} else{
-										if($subscriptionData[1]>=-15){
-											if(updateLatestPackageDetail($token)){
-												$myAccount=true;
-												$blocking=false;
-											}											
-										} else{
+										if($subscriptionData[2]=="1003"){  //Trial period has been expired
 											$myAccount=true;
 											$blocking=true;
-										};
+										}
+										else{
+											if($subscriptionData[1]>=-15){  //14 days payment due grace period - can work but need to put warning
+												if(updateLatestPackageDetail($token)){  //need to check with cloud charge to verify latest payement status
+													$myAccount=true;
+													$blocking=false;
+												}											
+											} else{
+												$myAccount=true;  // Grace period also has been expired, user can not continue with system.
+												$blocking=true;
+											};
+										}											
 									};
-									$myAccount=false;
-									$blocking=false;
-								} else{
+								}
+								else if($subscriptionData[0]=="due" ){ //14 days payment due grace period - can work but need to put warning
+										$myAccount=true;
+										$blocking=false;
+								}
+								else if($subscriptionData[0]=="deactive" ){ //System admin has been deactivate account - need to give msg to activate account.
+										$myAccount=true;
+										$blocking=true;
+								}
+								else{
 									$myAccount=true;
 									$blocking=true;
 								};	
@@ -258,12 +274,14 @@ function INTS(){
 								//http://digin.dev.digin.io/shell/#/home/myAccount
 								//http://digin.dev.digin.io/shell/#/home/welcome-search
 								
-								if($myAccount==true){
+								header("Location: http://".$obj->TenantID."/shell/#/home/welcome-search");	
+
+								/*if($myAccount==true){
 									header("Location: http://".$obj->TenantID."/shell/#/home/myAccount");
 								}
 								else{
 									header("Location: http://".$obj->TenantID."/shell/#/home/welcome-search");
-								}								
+								}	*/							
 		    					exit();
 						}else{
 							header("Location: http://".$obj->TenantID."/s.php?securityToken=".$_COOKIE["securityToken"]);

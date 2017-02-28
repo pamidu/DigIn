@@ -21,6 +21,8 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 			},100)
 		});
 	}
+
+    $scope.$parent.currentView = $rootScope.currentDashboard.compName;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {

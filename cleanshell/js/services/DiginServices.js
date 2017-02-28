@@ -11,7 +11,28 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								console.log(response);
 								notifications.toast(0, "Falied to get User Settings");
 						 });
-        },getSession: function() {
+        },postUserSettings: function(userSettings) {
+        	notifications.startLoading("Saving Settings...");
+        	console.log(userSettings);
+
+			var req = {
+				method: 'POST',
+				url: Digin_Engine_API + 'store_user_settings/',
+				headers: {
+                    'Content-Type': 'application/json',
+					'Securitytoken' : $auth.getSecurityToken()
+				},
+				data: angular.toJson(userSettings)
+			}
+			return $http(req).then(function(result){
+				notifications.finishLoading();
+				return result.data;
+			}, function(error){
+				notifications.toast(0, "Failed to save Settings");
+				notifications.finishLoading();
+			});
+
+		},getSession: function() {
              //return the promise directly.
              return $http.get(auth_Path+'GetSession/' + getCookie('securityToken') + '/Nil')
                        .then(function(result) {
@@ -46,6 +67,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								notifications.finishLoading();
 						 });
         }, deleteComponent: function(dashboardId, permanent) {
+			notifications.startLoading("Deleting Dashboard...");
 			var reqParam = [{
                 "comp_id": dashboardId.toString(),
                 "permanent_delete": permanent
@@ -60,10 +82,11 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 				 data: angular.toJson(reqParam)
 			}
 			return $http(req).then(function(result){
-					console.log(result);
+					notifications.finishLoading();
 					return result.data;
 				}, function(error){
 					notifications.toast(0, "Failed to delete dashboard");
+					notifications.finishLoading();
 				});
         }, getWidgetTypes: function() {
              //return the promise directly.

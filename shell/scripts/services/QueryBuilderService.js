@@ -93,7 +93,7 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
             var i = 0;
             for(c in res[0]){
                 if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-                    if(c != cat){
+                    if(c != cat && origName.indexOf("Apple")){
                         serArr.push({
                             temp: c,
                             name: name[i],
@@ -127,6 +127,9 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
             serArr.forEach(function(ser){
                 delete ser.temp;
             });
+
+      
+
             cb(serArr);
         }
 
@@ -175,6 +178,18 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
                         if (Object.prototype.hasOwnProperty.call(res[0], c)) {
                             if(typeof res[0][c] == "string") cat = c;
                         }
+                    }
+
+                    var mesuresArr = [];
+                    for(c in widObj.commonSrc.mea){
+                        mesuresArr.push((widObj.commonSrc.mea[c]['condition']+"_"+widObj.commonSrc.mea[c]['filedName']).toLowerCase());
+                    }
+
+
+                    for(c in res){
+
+                        if(res[c][widObj.widData.diplaySortArr[0]['sortName']] != res[c][widObj.widData.diplaySortArr[0]['displayName']])
+                            delete res[c][widObj.widData.diplaySortArr[0]['sortName']];
                     }
 
                     if(cat != ""){

@@ -1,0 +1,126 @@
+<style> 
+	.alaCarte_color{
+		color: #3b6982;
+		font-weight: 300;
+	}
+	.alaCarte_h3{
+	    margin-bottom: 4px;
+		margin-top: 0px;
+		font-weight: 300;
+	}
+	
+	.alaCarte_h3_color{
+		color: #02b5e2;
+	}
+	.grey{
+		color: grey;
+	}
+</style>
+<!--CARD CONTAINER START-->
+<div class="card-container">
+	<!--WHITEFRAME START-->
+	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+		<md-content>
+
+			<form name="editForm"  md-theme="default" ng-submit="submit()">
+				<div layout="row" layout-align="end end">
+					<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('myAccount' , 2)"></md-button>
+				</div>
+					
+				<div class="setting-card-header">
+					<h2>Add a La Carte</h2>
+					<div class="setting-img-wrap">
+						<img src="views/settings/myAccount/addaLaCarte/addaLaCarte.png"/>
+					</div>
+				</div>
+				
+				
+				<!--Input Elements Start-->
+				<div layout="row" layout-align="start start">
+					<div class="section-title">Customize Package</div>
+				</div>
+				
+				<div layout-gt-sm="row" class="side-margins">
+					<h2 class="alaCarte_color" flex>Users</h2>
+					<md-input-container flex>
+						<span>No. of Users</span>
+						<md-slider class="md-primary" md-discrete ng-model="users" step="1" min="1" max="20" aria-label="rating">
+						</md-slider>
+					</md-input-container>
+					<div layout="column" layout-align="center center" flex>
+						<h3 class="alaCarte_h3">{{users}} users</h3>
+						<span class="grey">about 20M chat messages</span>
+					</div>
+					
+					<div layout="column" layout-align="center center" flex="20">
+						<h2 class="alaCarte_h3_color">$5</h2>
+					</div>
+				</div>
+				<md-divider></md-divider>
+				<div layout-gt-sm="row" class="side-margins">
+					<h2 class="alaCarte_color" flex>Storage</h2>
+					<md-input-container flex>
+						<span>GB Stored</span>
+						<md-slider class="md-primary" md-discrete ng-model="storage" step="1" min="1" max="100" aria-label="rating">
+						</md-slider>
+					</md-input-container>
+					<div layout="column" layout-align="center center" flex>
+						<h3 class="alaCarte_h3">{{storage}} GB</h3>
+						<span class="grey">about 20M dashboards</span>
+					</div>
+					<div layout="column" layout-align="center center" flex="20">
+						<h2 class="alaCarte_h3_color">$5</h2>
+					</div>
+				</div>
+				<md-divider></md-divider>
+				<div layout-gt-sm="row" class="side-margins">
+					<h2 class="alaCarte_color" flex>Bandwidth</h2>
+					<md-input-container flex>
+						<span>GB Transferred</span>
+						<md-slider class="md-primary" md-discrete ng-model="bandwidth" step="1" min="1" max="100" aria-label="bandwidth">
+						</md-slider>
+					</md-input-container>
+					<div layout="column" layout-align="center center" flex>
+						<h3 class="alaCarte_h3">{{bandwidth}} GB</h3>
+						<span class="grey">about 20M chat messages</span>
+					</div>
+					<div layout="column" layout-align="center center" flex="20">
+						<h2 class="alaCarte_h3_color">$5</h2>
+					</div>
+				</div>
+				<!--div layout-gt-sm="row" class="side-margins">
+					<h2 class="alaCarte_color" flex>Hosting</h2>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>don't be trippin</span>
+						<input required type="email" name="fname" ng-model="content.fname" aria-label="fname"/>
+						<div ng-messages="editForm.fname.$error" role="alert">
+						  <div ng-message-exp="['required']">
+								Frist name is required
+						  </div>
+						</div>
+					</md-input-container>
+					<div layout="column" layout-align="center center" flex>
+						<h3 class="alaCarte_h3">1 GB</h3>
+						<span class="grey">about 20M chat messages</span>
+					</div>
+					<div layout="column" layout-align="center center" flex="20">
+						<h2 class="alaCarte_h3_color">$5</h2>
+					</div>
+				</div-->
+
+				<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
+					<md-button id="accountSubmit" class="md-raised md-primary" style="width:100px;background:#02b5e2" ng-disabled="submitted" type="submit">
+						<span style="text-transform:none">Update</span>
+					</md-button>
+				</div>
+		
+
+			</form>
+
+		</md-content>
+
+	</md-whiteframe><br/>
+	<!--WHITEFRAME END-->
+</div>
+<!--CARD CONTAINER END-->

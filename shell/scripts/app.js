@@ -87,7 +87,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         .state("signup", {
             url: "/home",
             controller: "NavCtrl",
-            templateUrl: "views/partial-home.html",
+            templateUrl: "views/partial-home.php",
             data: {
                 requireLogin: true
             }
@@ -102,7 +102,7 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
         })
         .state("home", {
             url: "/home",
-            templateUrl: "views/partial-home.html",
+            templateUrl: "views/partial-home.php",
             data: {
                 requireLogin: true,
                 preLoader: true
@@ -184,7 +184,6 @@ routerApp.config(["$mdThemingProvider", "$httpProvider", "$stateProvider", "$url
 			controller: 'addaLaCarteCtrl',
 			controllerAs: 'vm'
 		})
-		
         .state("home.userProfile", {
             url: "/settings-userProfile",
             controller: "dashboardSetupCtrl",

@@ -811,16 +811,40 @@ routerApp.controller('myAccountCtrl', function($scope, $rootScope, $state, $mdDi
                                 if (response.data.status == true) {
                                     //Success
                                     //notifications.toast("1", response.data.response);
-                                    
-                                    displayProgress("You will be logged-out from your account and please login to re-activate your account.");         
-                                    
-                                    $timeout(function () {
-                                        displayProgress("Logging out...");                                  
-                                    }, 5000);
+                                            
+                                        $http({
+                                            method: 'POST',
+                                            url: Digin_Engine_API + 'activate_packages/',
+                                            data: angular.toJson({"status": "deactivate"}),
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'SecurityToken': getCookie('securityToken')
+                                            }
+                                        })
+                                        .success(function(response) {  
+                                            if(response.Is_Success==true){
+                                                //---------------------
+                                                displayProgress("You will be logged-out from your account and please login to re-activate your account.");         
+                                                
+                                                $timeout(function () {
+                                                    displayProgress("Logging out...");                                  
+                                                }, 5000);
 
-                                    $timeout(function () {
-                                        $window.location = "/logout.php";
-                                    }, 2000);
+                                                $timeout(function () {
+                                                    $window.location = "/logout.php";
+                                                }, 2000);
+                                                //---------------------------
+                                            }
+                                            else{
+                                                console.log(response);
+                                            }
+                                        })
+                                        .error(function(data) {
+                                            console.log(data);
+                                        });
+
+
+
                                     
                                     
                                     
@@ -3258,6 +3282,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                     //Success
                     paymentGatewaySvc.checkSubscription();
                     $scope.updatePackageDigin(objDigin);
+                    $scope.updateUserStatus();
                     $mdDialog.hide();
                     //$scope.clearData();
                 } else {
@@ -3268,9 +3293,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                         notifications.toast("0", "Please update your card detail.");
                     }else{
                         notifications.toast("0", "Failed to update alaCartes.");
-                    }
-                    
-
+                    }                    
                 }
             } else {
 
@@ -3284,7 +3307,16 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
     }
 
 
-    
+    //#update user status
+    $scope.updateUserStatus=function(){        
+        $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
+        .success(function(data) {
+            console.log(data.Result);
+        }).error(function() {
+            console.log("error");
+        });
+    }
+
     
     //#Update package-Digin*// 
     $scope.updatePackageDigin = function(pkgObj) {  

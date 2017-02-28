@@ -6,17 +6,9 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory', function ($scope,$state,$rootScope,notifications,datasourceFactory) {
+DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory','colorManager','$timeout', function ($scope,$state,$rootScope,notifications,datasourceFactory,colorManager,$timeout) {
 	
 	$scope.$parent.currentView = "Datasource Settings";
-	//Theme config for md-tabs-wrapper
-	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
-	{
-		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
-	} else
-	{
-		$('md-tabs-wrapper').css('background-color',"white", 'important');
-	}
 
 	// Settings of md-steppers
 	$scope.selectedStep = 0;
@@ -125,6 +117,9 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 		datasourceFactory.getAllConnections(securityToken,$scope.onSelectDataBase).then(function(data) {
 			if(data.Is_Success)
 			{
+				$timeout(function() {
+					colorManager.reinforceTheme();
+				}, 100);
 				console.log(data);
 				$scope.connectionStatus = true;
 				$scope.existingConnections = data.Result;

@@ -6,8 +6,8 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','datasourceFactory', 'notifications',
-	function($scope,$rootScope,$state,$http,$diginengine,datasourceFactory,notifications)
+routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','$diginurls','datasourceFactory','notifications',
+	function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactory,notifications)
 {
 
 
@@ -20,7 +20,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 		$('md-tabs-wrapper').css('background-color',"white", 'important');
 	}
 	$scope.selectedFilterOption = "configure";
-	$scope.selectedDatasource = "BigQuery";
+	$scope.selectedDatasource = "MSSQL";
 	$scope.selectionType = "single";
 	$scope.selectedTable = "";
 	$scope.selectedTableValue = "";
@@ -29,17 +29,26 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	$scope.filterName = "";
 	$scope.datasourceId = "";
 	$scope.selectedConnection = "";
+	$scope.selectedDefaultValue = "";
 	$scope.fields = [];
 	$scope.datasources = [];
 	$scope.tables = [];
 	$scope.customFields = [];
 	$scope.datasourceConnections = [];
+	$scope.defaultValues = [];
 	$scope.tableProgress = false;
 	$scope.connectionProgress = false;
 	$scope.fieldsProgress = false;
-	$scope.displayNoneText = false;
-
+	$scope.displayConnectionNoneText = false;
+	$scope.displayTableNoneText = false;
+	$scope.displayFieldNoneText = false;
+	$scope.defaultProgoress = false;
+	$scope.isDefault = false;
 	$scope.selectedStep = 0;
+	$scope.customFields[0] = {
+		actualValue : '',
+		displayValue: ''
+	}
 	var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
 
@@ -76,6 +85,11 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	{
 		$scope.selectedStep += 2;
 	}
+
+	$scope.incrementThreeStep = function()
+	{
+		$scope.selectedStep += 3;
+	}
 	// move to the previous stepper
 	$scope.decrementStep = function()
 	{
@@ -86,16 +100,17 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	{
 		$scope.selectedStep -= 2;
 	}
+	//move three steps back
+	$scope.decrementThreeSteps = function()
+	{
+		$scope.selectedStep -= 3;
+	}
 	// next button at step one
 	$scope.stepOne = function()
 	{
 		if ($scope.selectedFilterOption == "custom")
 		{
-			$scope.selectedStep += 5;
-			$scope.customFields.push({
-				actualValue : '',
-				displayValue: ''
-			})
+			$scope.selectedStep += 6;
 		} else
 		{
 			$scope.incrementStep();
@@ -134,6 +149,8 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	//next button of step four
 	$scope.stepFour = function()
 	{
+		$scope.selectedDefaultValue = '';
+		$scope.defaultProgoress = false;
 		if( $scope.selectedTable == '' || $scope.selectedTable === undefined )
 		{
 			notifications.toast('0','Please select a table');
@@ -169,6 +186,20 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			notifications.toast('0','Please select a value field and a display field.');
 			return;
 		}
+		$scope.isDefault = false;
+		$scope.incrementThreeStep();
+	}
+	// next button of step six
+	$scope.stepSix = function()
+	{
+		if ( $scope.defaultValues.length > 0)				
+		{
+			if ($scope.selectedDefaultValue == '')
+			{
+				notifications.toast('0','Please se;ect a default value to proceed.');
+				return;
+			}
+		}
 		$scope.incrementTwoStep();
 	}
 
@@ -182,15 +213,28 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			$scope.decrementTwoSteps();
 		}
 	}
+	// previous of step six
+	$scope.stepSixPrevious = function()
+	{
+		$scope.isDefault = false;
+		$scope.selectedDefaultValue = '';
+		$scope.decrementStep();
+	}
 
-	$scope.stepSevenPrevious = function()
+	$scope.stepEightPrevious = function()
 	{
 		if ($scope.selectedFilterOption == "custom")
 		{
 			$scope.decrementStep();
 		} else
 		{
-			$scope.decrementTwoSteps();
+			if ($scope.isDefault)
+			{
+				$scope.decrementTwoSteps();
+			} else 
+			{
+				$scope.decrementThreeSteps();				
+			}
 		}
 
 	}
@@ -212,6 +256,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 		$scope.selectedTableValue = "";
 		$scope.selectedTable = "";
 		$scope.tables = [];
+		$scope.displayTableNoneText = false;
 		$scope.client.getTables(function(res, status)
 		{
 			$scope.tableProgress = false;
@@ -219,7 +264,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 			{
 				if(res.length == 0)
 				{
-					$scope.displayNoneText = true;
+					$scope.displayTableNoneText = true;
 				} else
 				{
 					$scope.tables=res;
@@ -230,12 +275,17 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// fetch connections
 	$scope.getConnections = function()
 	{
+		$scope.displayConnectionNoneText = false;
 		$scope.connectionProgress = true;
 		datasourceFactory.getAllConnections(userInfo.SecurityToken,$scope.selectedDatasource).success(function(res)
 		{
 			$scope.connectionProgress = false;
 			if(res.Is_Success)
 			{
+				if(res.Result.length == 0)
+				{
+					$scope.displayConnectionNoneText = true;
+				}
 				$scope.datasourceConnections = res.Result;
 			} else
 			{
@@ -254,14 +304,14 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 		$scope.selectedTableValue = "";
 		$scope.selectedTable = "";
 		$scope.tables = [];
-		$scope.displayNoneText = false;
+		$scope.displayTableNoneText = false;
 		$scope.client.getConnectionTables($scope.datasourceId,$scope.selectedDatasource,function(data,status){
 			if(status)
 			{
 				$scope.tableProgress = false;
 				if(data.length == 0)
 				{
-					$scope.displayNoneText = true;
+					$scope.displayTableNoneText = true;
 				} else
 				{
 					data.sort();
@@ -281,6 +331,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// fetch fields for a given table - mssql, hive and oracle
 	$scope.getAllFields = function()
 	{
+		$scope.displayFieldNoneText = false;
 		$scope.fieldsProgress = true;
         $scope.client.getMSSQLFields($scope.selectedTableValue, $scope.datasourceId ,function(data, status) {
         	if(status)
@@ -294,12 +345,92 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 							name: field.Fieldname
 						})
         			})
+        		} else
+        		{
+        			$scope.displayFieldNoneText = true;
         		}
         	} else
         	{
 				$scope.fieldsProgress = false;
         	}
         });
+	}
+	//add custom filter row
+	$scope.addCustomField = function()
+	{
+		$scope.customFields.push({
+			actualValue: '',
+			displayValue: ''
+		})
+	}
+	//remove custom field
+	$scope.removeCustomField = function(index)
+	{
+		if ($scope.customFields.length == 1)
+		{
+			$scope.customFields = [];
+		} else
+		{
+			if (index == 0)
+			{
+				$scope.customFields.shift();
+			} else
+			{
+				$scope.customFields.splice(index,1);
+			}
+		}
+	}
+	//display default values 
+	$scope.displayDefaultValues = function()
+	{
+		$scope.incrementStep();
+		$scope.isDefault = true;
+		var query = '';
+		$scope.defaultProgoress = true;
+		$scope.defaultValues = [];
+		switch($scope.selectedDatasource)
+		{
+			case 'BigQuery':
+			case 'memsql':
+				// write the statement for bigQuery and memesql
+				query = "SELECT " + $scope.selectedValueField + " FROM " + $diginurls.getNamespace() + "." + $scope.selectedTableValue.datasource_name + " GROUP BY " + $scope.selectedValueField;
+				break;
+			case 'MSSQL':
+				// write for mssql
+				var table = $scope.selectedTableValue.split(".");
+				query = "SELECT [" + $scope.selectedValueField + "] FROM [" + table[0] + '].[' + table[1] + "] GROUP BY [" + $scope.selectedValueField + "] ORDER BY [" + $scope.selectedValueField + "]";
+				break;
+			case 'hiveql':
+				// write for hiveql
+				query = "SELECT " + $scope.selectedValueField + " FROM "+ $scope.selectedTableValue.datasource_name +"  GROUP BY " + $scope.selectedValueField + " ORDER BY " + $scope.selectedValueField + "";
+				break;
+		}
+		$scope.client.getExecQuery(query,$scope.datasourceId,function(data,status)
+		{
+			$scope.defaultProgoress = false;
+			if(status)
+			{
+				angular.forEach(data,function(value)
+				{
+					$scope.$apply(function()
+					{
+						$scope.defaultValues.push(value[$scope.selectedValueField]);
+					});
+				})
+				if ($scope.defaultValues.length > 0)
+				{
+					$scope.selectedDefaultValue = $scope.defaultValues[0];
+				}
+			} else {
+				notifications.toast('0','Error occurred. Please try again.');
+			}
+		})
+
+	}
+
+	$scope.saveFilters = function()
+	{
+		var tempObj = 
 	}
 
 }]);

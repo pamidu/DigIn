@@ -4316,7 +4316,7 @@ close button
 .blut-header-icon {
     outline: none !important;
 	width: 40px;
-	height: 40px;
+	/*height: 40px;*/
 	padding: 10px;
 	border-radius: 3px;
     margin-left: -2px;

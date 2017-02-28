@@ -299,20 +299,41 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 	}
 	//End of Perform
-	
-	$scope.getUserSettings = {};
-	
+	$scope.data = {};
+	$scope.userSettings = {};
+    var oldDefaultDashboard = "";
 	(function (){
 
 		if(IsLocal == true){
 			$rootScope.db  = new pouchDB("Dashboards");
-			//$scope.getSearchPanelDetails(); 
+			//$scope.getSearchPanelDetails();
+
+            //Just for testing, User settings are not needed here
+            DiginServices.getUserSettings().then(function(data) {
+                console.log(data);
+                $scope.userSettings = data;
+                $rootScope.theme = $scope.userSettings.theme_config;
+
+                //color the UI
+                colorManager.changeTheme($rootScope.theme);
+
+                //Go To Default Dashboard if it exsist
+                var obj = JSON.parse($scope.userSettings.components);
+                if(obj.dashboardId != null) {
+                    //getDashboard(obj.dashboardId);
+                    $scope.data.defaultDashboard = obj.dashboardId;
+                    oldDefaultDashboard = angular.copy(obj.dashboardId)
+                }
+
+
+                //$scope.userSettings.theme_config = $rootScope.theme;
+            });
 		}else{
 			console.log("not local");
 			
 			DiginServices.getUserSettings().then(function(data) {
 				console.log(data);
-				$scope.getUserSettings = data;
+				$scope.userSettings = data;
 			});
 			
 			DiginServices.getSession().then(function(data) {
@@ -352,7 +373,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		return {
 			goDashboard: function (dashboard) {
 				$mdSidenav('searchBar').close();
-				$scope.currentView = dashboard.compName;
 				getDashboard(dashboard.compID);
 				
 				
@@ -360,18 +380,89 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			goReport: function (report){
 				console.log("report");
 				$mdSidenav('searchBar').close();
-				$scope.currentView = report.compName;
 			},
 			deleteDashboard: function (dashboard, ev){
-				console.log("delete dashboard");
+				dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete '"+dashboard.compName+"' dashboard?","yes", "cancel").then(function(result) {
+					if(result == 'yes')
+					{
+						DiginServices.deleteComponent(dashboard.compID, false).then(function(data) {
+							if(data.Is_Success == true){
+								
+								// Delete from pouch
+								
+								// Delete from view
+								angular.forEach($scope.dashboards, function(value, key) {
+									if(value.compID == dashboard.compID)
+									{
+										$scope.dashboards.splice(key,1);
+									}
+								})
+							}
+						});
+					}
+				});
 			},
 			deleteReport: function (dashboard, ev){
 				console.log("delete report");
-			}
+			},setDefaultDashboard: function (ev, dashboard) {
+				console.log($scope.data.defaultDashboard);
+
+                $scope.data.defaultDashboard = null;
+                dialogService.confirmDialog(ev, "Set Default Dashboard","Are you sure you want to set '"+dashboard.compName+"' dashboard as Default?","yes", "cancel").then(function(result) {
+                    if (result == 'yes') {
+                        $scope.data.defaultDashboard = dashboard.compID;
+
+                        var newComponent = {
+                            "saveExplicit" : false,
+                            "dashboardId"  : dashboard.compID
+                        }
+
+                        var userSettingsSaveObj = angular.copy($scope.userSettings);
+                        userSettingsSaveObj.components = JSON.stringify(newComponent);
+
+                        if(userSettingsSaveObj.dp_path==undefined) {dp_name="";}else{dp_name=userSettingsSaveObj.dp_path.split("/").pop();}
+                        if(userSettingsSaveObj.logo_path==undefined){logo_name="";} else{logo_name=userSettingsSaveObj.logo_path.split("/").pop();}
+                        userSettingsSaveObj.email = $rootScope.authObject.Email
+                        userSettingsSaveObj.logo_name = "logo";
+                        userSettingsSaveObj.dp_name = "dp";
+                        userSettingsSaveObj.theme_config = $rootScope.theme;
+                        delete userSettingsSaveObj.modified_date_time;
+                        delete userSettingsSaveObj.created_date_time;
+                        delete userSettingsSaveObj.domain;
+                        delete userSettingsSaveObj.logo_path;
+                        delete userSettingsSaveObj.dp_path;
+
+                        DiginServices.postUserSettings(userSettingsSaveObj).then(function(data) {
+                           notifications.toast(1,"New default dashboard was saved");
+                        });
+
+                    }else{
+                        $scope.data.defaultDashboard = null;
+                        $scope.data.defaultDashboard = oldDefaultDashboard;
+					}
+                });
+            }
+
 		};
 	})();
-	
-	function getDashboard(dashboardId)
+
+	//Really sorry about this code below, If I haven't done yet please remind me to create a directive for this.
+	$scope.showTip = false;
+	$scope.clientX = "";
+	$scope.clientY = "";
+	$scope.setDashboardHover = function(ev){ //This is to show the tooltip since the md-tooltip doesn't work because of md-list-item
+        $scope.clientX = Math.ceil(ev.clientX / 10) * 10 + "px";
+        $scope.clientY = Math.ceil(ev.clientY / 10) * 10 + 30 + "px";
+        $scope.showTip = true;
+	}
+
+    $scope.unsetDashboardHover = function(ev){
+        $scope.showTip = false;
+    }
+    //Really sorry about this code above, If I haven't done yet please remind me to create a directive for this.
+
+
+    function getDashboard(dashboardId)
 	{
 		DiginServices.getComponent(dashboardId).then(function(data) {
 			$rootScope.currentDashboard = angular.copy(data);
@@ -430,33 +521,55 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	//Introduction to Shell
 	$scope.IntroOptions = {
-        steps:[
-        {
-            element: document.querySelector('#step1'),
-            intro: "The <b>Form designer</b> is an interactive tool which helps developers to easily create Angular forms in Material Design.",
-			position: 'right'
-        },
-		{
-            element: '#step2',
-            intro: "<b>Add a New Row</b> to the form, right-click the form inputs and edit properties there after",
-            position: 'right'
-        },
-		{
-            element: '#step3',
-            intro: 'After the design you can <b>Save</b> your work to continue working later',
-            position: 'right'
-        },
-        {
-            element: '#step4',
-            intro: "You can <b>Load</b> a previously saved Form (JSON file) and continue working from there, or else upload a project",
-            position: 'right'
-        },
-        {
-            element: '#step5',
-            intro: "The Script of the project can also be changed",
-            position: 'right'
-        }
-        ],
+		steps:[
+			{
+				element: '#addPage',
+				intro: "Create your dashboard with Add page, add many pages as you want and make them a storyboard",
+				position: 'right'
+			}, {
+				element: '#reports',
+				intro: 'Create your static, adhoc reports and publish them here',
+				position: 'right'
+			}, {
+				element: '#datasource',
+				intro: 'Pick  your correct datasource and visualize them in various ways',
+				position: 'right'
+			}, {
+				element: '#addWidgets',
+				intro: 'Create your customized widgets and add it to the dashboard',
+				position: 'right'
+			}, {
+				element: '#socialMedia',
+				intro: 'Dig deep in to your social media pages',
+				position: 'right'
+			},
+			{
+				element: '#shareSocial',
+				intro: 'Share your Dashboards on Social Media',
+				position: 'right'
+			},{
+				element: '#settings',
+				intro: 'Configure the settings related to the system and users',
+				position: 'right'
+			}, {
+				element: '#home',
+				intro: 'Go to <strong>Home</strong> page'
+			}, {
+				element: '#fullscreen',
+				intro: 'Toggle Fullscreen'
+			}, {
+				element: '#clearWidgets',
+				intro: 'Clear widgets in the screen'
+			}, {
+				element: '#save',
+				intro: 'Save the Dashboard'
+			}, {
+				element: '#share',
+				intro: 'Share your dashboard or datasets'
+			}, {
+				element: '#notifications',
+				intro: 'Checkout the latest notifications here'
+			}],
         showStepNumbers: false,
         exitOnOverlayClick: true,
         exitOnEsc:true,
@@ -467,6 +580,18 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     };
 
     $scope.ShouldAutoStart = false;
+	
+	var cssRule =
+		"color: #2795d8;" +
+		"font-size: 60px;" +
+		"font-weight: bold;" +
+		"text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
+		"font-style: italic;" +
+		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
+	console.log("%cWelcome to Cleanshell", cssRule);
+	
+	console.log("This should only be shown in developer mode, Click the below link for the developer documentation");
+	console.log(window.location.origin+window.location.pathname+"#/developer");
 
 	
 }])//END OF NavCtrl

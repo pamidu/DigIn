@@ -217,7 +217,7 @@ function INTS(){
 								//$_SESSION["remainingDays"] = $subscriptionData[1];	
 								$subscriptionData = checkSubscriptionStatus($tenantToken);		
 								if($subscriptionData[0]=="active" ){
-									if($subscriptionData[1]>0){
+									if($subscriptionData[1]>=0){
 										$myAccount=false;	
 										$blocking=false;
 									} else{
@@ -274,12 +274,14 @@ function INTS(){
 								//http://digin.dev.digin.io/shell/#/home/myAccount
 								//http://digin.dev.digin.io/shell/#/home/welcome-search
 								
-								if($myAccount==true){
+								header("Location: http://".$obj->TenantID."/shell/#/home/welcome-search");	
+
+								/*if($myAccount==true){
 									header("Location: http://".$obj->TenantID."/shell/#/home/myAccount");
 								}
 								else{
 									header("Location: http://".$obj->TenantID."/shell/#/home/welcome-search");
-								}								
+								}	*/							
 		    					exit();
 						}else{
 							header("Location: http://".$obj->TenantID."/s.php?securityToken=".$_COOKIE["securityToken"]);

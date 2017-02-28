@@ -271,8 +271,14 @@
 					//var_dump($_SESSION["Blocking"]);
 				?>
 				
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b; display:<?php session_start();  if($_SESSION["Blocking"]) {echo "none";} else {echo "block";} ?>;  overflow:inherit;  ">
+				<?php 
+					//session_start();  
+					//if($_SESSION["Blocking"]) {echo "none";} else {echo "block";} 
+				?>  <!--display : none;  or display : block-->
+
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b; overflow:inherit; ">
 			<div id="cssmenu">
+
 				<ul>
 					<li style="height:30px;font-size:24px"  id="step1"><a md-colors="{color:'primary'}" ></a>
 

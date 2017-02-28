@@ -110,10 +110,6 @@ routerApp.controller('commonDataSrcInit', ['$scope', '$filter', '$controller', '
             'category': 'mes'
         }, {
 
-            'type': 'FLOAT',
-            'category': 'mes'
-        }, {
-
             'type': 'LONG',
             'category': 'mes'
         }

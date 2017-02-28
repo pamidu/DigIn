@@ -37,14 +37,12 @@ body{
 	left:45px;
 	-webkit-box-shadow:2px 0 3px -2px #888;
 	box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
-	z-index:58 !important;
 	overflow:inherit
 }
 
 .main-sidemenu{
 	height:100%;
 	position:fixed;
-	z-index:58 !important;
 	-webkit-box-shadow:2px 0 3px -2px #888;
 	box-shadow:2px 0 3px -2px #888;
 	top:45px;

@@ -1,14 +1,8 @@
-DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','DiginServices', 'notifications','paymentGateway','$http', function ($scope,$rootScope,$mdDialog,DiginServices,notifications,paymentGateway,$http){
+DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','DiginServices', 'notifications','paymentGateway','$http','colorManager', function ($scope,$rootScope,$mdDialog,DiginServices,notifications,paymentGateway,$http,colorManager){
 	var vm = this;
 	
 	$scope.$parent.currentView = "User Administrator";
-	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
-	{
-		$('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
-		$("input").attr("disabled", true).css("background","black");
-	}else{
-		$('md-tabs-wrapper').css('background-color',"white", 'important');
-	}
+    colorManager.reinforceTheme();
 	
 	DiginServices.getInvitedUsers(function(data) {});
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

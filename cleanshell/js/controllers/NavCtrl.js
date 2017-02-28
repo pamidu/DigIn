@@ -8,7 +8,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
-	$rootScope.theme = 'default';
+	$rootScope.theme = 'defaultDark';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
@@ -590,7 +590,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
 	console.log("%cWelcome to Cleanshell", cssRule);
 	
-	console.log("This should only be shown in developer mode");
+	console.log("This should only be shown in developer mode, Click the below link for the developer documentation");
 	console.log(window.location.origin+window.location.pathname+"#/developer");
 
 	

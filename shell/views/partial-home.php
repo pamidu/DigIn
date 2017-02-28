@@ -1,4 +1,3 @@
-
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
 
         <md-toolbar style="min-height: 45px;height:45px;">
@@ -264,7 +263,15 @@
 			</md-content>
 		</md-content>
 		
-		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b;overflow:inherit">
+				<?php	
+					//session_start();
+					//echo "chamila";
+					//var_dump($_SESSION);
+					//var_dump($_SESSION["ShowMyAccount"]);
+					//var_dump($_SESSION["Blocking"]);
+				?>
+				
+		<md-content class="left-menu-slide" ng-mouseenter="sideMenuToggleVisible = true" ng-mouseleave="sideMenuToggleVisible = false" style="height:100%;position:fixed;z-index:3;-webkit-box-shadow:2px 0 3px -2px #888;box-shadow:2px 0 3px -2px #888;top:45px; border-left: 3px solid #8b8b8b; display:<?php session_start();  if($_SESSION["Blocking"]) {echo "none";} else {echo "block";} ?>;  overflow:inherit;  ">
 			<div id="cssmenu">
 				<ul>
 					<li style="height:30px;font-size:24px"  id="step1"><a md-colors="{color:'primary'}" ></a>
@@ -324,6 +331,9 @@
 
 
 				</ul><!-- -->
+				
+				
+				
 				<md-content class="left-menu-toggle hover-color fadeSideMenuToggle" ng-show="sideMenuToggleVisible || !showSideMenu" md-colors="{color:'primary'}" ng-click="leftMenuToggle()">
 					<span ng-if="!showSideMenu" class="ti-angle-right"></span>
 					<span ng-if="showSideMenu" class="ti-angle-left"></span>

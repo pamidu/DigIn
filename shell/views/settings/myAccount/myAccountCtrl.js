@@ -3282,6 +3282,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                     //Success
                     paymentGatewaySvc.checkSubscription();
                     $scope.updatePackageDigin(objDigin);
+                    $scope.updateUserStatus();
                     $mdDialog.hide();
                     //$scope.clearData();
                 } else {
@@ -3292,9 +3293,7 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
                         notifications.toast("0", "Please update your card detail.");
                     }else{
                         notifications.toast("0", "Failed to update alaCartes.");
-                    }
-                    
-
+                    }                    
                 }
             } else {
 
@@ -3308,7 +3307,16 @@ routerApp.controller('addaLaCarteCtrl', ['$scope', '$rootScope', '$mdDialog', '$
     }
 
 
-    
+    //#update user status
+    $scope.updateUserStatus=function(){        
+        $http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
+        .success(function(data) {
+            console.log(data.Result);
+        }).error(function() {
+            console.log("error");
+        });
+    }
+
     
     //#Update package-Digin*// 
     $scope.updatePackageDigin = function(pkgObj) {  

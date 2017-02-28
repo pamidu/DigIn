@@ -249,22 +249,36 @@
 										<md-step-body>
 											<md-content style="padding:20px">
 												<div layout="column" layout-wrap>
-													 <div layout="row" layout-wrap style="padding: 10px 10px 10px 10px;" ng-show="customFields.length > 0">
-													 		<label flex="50">Actual value</label>
-													 		<label flex="50">Display value</label>
-													 </div>
-													<div layout="row" ng-repeat="field in customFields">
-														<div flex="45" style="padding: 10px 10px 10px 10px;">
-															<input class="form-control" ng-model="field.actualValue" flex/>
+													<div layout="row" layout-wrap style="padding: 10px 10px 10px 10px;" ng-show="customFields.length > 0">
+													 		<label flex="40">Actual value</label>
+													 		<label flex="40">Display value</label>
+													 		<label flex="10"></label>
+													 		<label flex="10"> Custom value</label>
+													</div>
+													 <md-radio-group ng-model="selectedDefaultValue">
+														<div layout="row" ng-repeat="field in customFields track by $index">
+															<div flex="45" style="padding: 10px 10px 10px 10px;">
+																<input class="form-control" ng-model="field.actualValue" flex/>
+															</div>
+															<div flex="45" style="padding: 10px 10px 10px 10px;">
+																<input class="form-control" ng-model="field.displayValue" flex/>
+															</div>
+															<div>
+																<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" 
+																	aria-label="remove" ng-click="removeCustomField($index)">
+																</md-button>
+															</div>
+															<div class="all-checkboxes" ng-show="isDefault">
+														  		<md-radio-button value="{{field.actualValue}}" class=" m-top-10">
+														  		</md-radio-button>
+															</div>
 														</div>
-														<div flex="45" style="padding: 10px 10px 10px 10px;">
-															<input class="form-control" ng-model="field.displayValue" flex/>
-														</div>
-														<div>
-															<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" 
-																aria-label="remove" ng-click="removeCustomField($index)">
-															</md-button>
-														</div>
+													 </md-radio-group>
+													<div flex="100" layout="row">
+														<label> Set default value</label>
+														<md-checkbox ng-model="isDefault" ng-click="setDefaultParam()">
+
+														</md-checkbox>
 													</div>
 												</div>
 					                            <div flex layout="row" class="side-margins">

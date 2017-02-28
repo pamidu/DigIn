@@ -336,6 +336,7 @@
 
 <!-- Dashboard filter settings -->
 <script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
+<script src="views/settings/dashboardFilterSettings/dashboardFilterService.js"></script>
 
 <!-- ShareDashboard settings -->
 <script type="text/javascript" src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>

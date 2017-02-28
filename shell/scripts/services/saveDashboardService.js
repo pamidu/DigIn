@@ -162,6 +162,7 @@ var localThis = this;
         "compID": null,
         "compName": dashboardName,
         "refreshInterval": refreshInterval,
+        "filterDetails": $rootScope.dashboard.filterDetails,
         "deletions": $rootScope.dashboard.deletions
       }
     } else {
@@ -173,6 +174,7 @@ var localThis = this;
         "compID": $rootScope.dashboard.compID,
         "compName": dashboardName,
         "refreshInterval": refreshInterval,
+        "filterDetails": $rootScope.dashboard.filterDetails,
         "deletions": $rootScope.dashboard.deletions
       }
     }
@@ -246,6 +248,7 @@ var localThis = this;
               "compID": null,
               "compName": null,
               "refreshInterval": null,
+              "filterDetails": []
           }
 
           $rootScope.dashboard.pages = [];

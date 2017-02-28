@@ -92,7 +92,7 @@
                 getAggData: function(tbl, aggObjArr, limit, id, cb, gb, con) {
                     var strField = "";
                     if (con !== undefined) {
-                        con = con.replace(/&/g , "%26");                        
+                        // con = con.replace(/&/g , "%26");                        
                     }
                     aggObjArr.forEach(function(key) {
                         if (database == "MSSQL") {

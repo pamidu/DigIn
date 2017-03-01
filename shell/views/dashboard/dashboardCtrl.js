@@ -1,5 +1,5 @@
-routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','metricChartServices', 'layoutManager','tabularService',
-    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,metricChartServices, layoutManager,tabularService) {
+routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope', '$mdDialog', '$objectstore', '$sce', '$log', '$csContainer', 'filterService', '$diginurls','$state', '$qbuilder', '$diginengine', 'ngToast',  '$sce', 'notifications','pouchDbServices','layoutManager','metricChartServices', 'layoutManager','tabularService', 'dashboardFilterService', 
+    function($scope,$interval,$http, $rootScope, $mdDialog, $objectstore, $sce, $log, $csContainer, filterService, $diginurls, $state, $qbuilder, $diginengine, ngToast,  $sce,  notifications,pouchDbServices,layoutManager,metricChartServices, layoutManager,tabularService,dashboardFilterService) {
         
         $rootScope.showSideMenu = layoutManager.hideSideMenu();
         if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
@@ -1102,9 +1102,50 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
             widget.d3chartBtn = !d3btnTemp;
         };
 
+        var generateFiltersArray = function(dashboardFilters) {
+            var filtersArray = [];
+            var tempArray = [];
+            angular.forEach(dashboardFilters, function(dbFilter){
+                tempArray = [];
+                if (dbFilter.is_custom == 0 || dbFilter.is_custom == false){
+                    if (dbFilter.filterParameters !== undefined){
+                        angular.forEach(dbFilter.filterParameters,function(row){
+                            tempArray.push({
+                                status: row.status,
+                                value: row.value
+                            })
+                        })
+                        if (tempArray.length > 0){
+                            filtersArray.push({
+                                filter: {
+                                    name: dbFilter.value_field,
+                                    values: tempArray
+                                }
+                            })
+                        }
+                    }
+                } else {
+                    angular.forEach(dbFilter.custom_fields,function(row){
+                        tempArray.push({
+                            status: row.status,
+                            value: row.actualValue
+                        })
+                    })
+                    filtersArray.push({
+                        filter: {
+                            name: dbFilter.filter_name,
+                            values: tempArray
+                        }
+                    })
+                }
+            })
+            return filtersArray;
+        };
+
         //sync widgets of a page when page is opened
         $scope.syncPage = function(page) {
             $scope.isPageSync = true;
+            var filterArray = [];
             if (!page.isSeen) {
                 var count=0;
                 for (var i = 0; i < page.widgets.length; i++) {
@@ -1115,12 +1156,63 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                             page.widgets[i].widgetData.filteredState = false;
                             filterService.clearFilters(page.widgets[i]);
                             if (page.widgets[i].widgetData.selectedChart.chartType != "d3hierarchy" && page.widgets[i].widgetData.selectedChart.chartType != "d3sunburst") {
-                                $qbuilder.sync(page.widgets[i].widgetData, function (data) {
-                                    count++;
-                                    if(page.widgets.length == count){
-                                        pouchDbServices.pageSync($rootScope.dashboard);
+                                if($rootScope.dashboard.dashboard_filters && page.widgets[i].widgetData.selectedChart.chartType == "highCharts") {
+                                    filterArray = generateFiltersArray($rootScope.dashboard.dashboardFilters)
+                                    dashboardFilterService.dashboardFilterWidget(page.widgets[i],filterArray,function(data){
+                                        count++;
+                                        if(page.widgets.length == count){
+                                            pouchDbServices.pageSync($rootScope.dashboard);
+                                        }
+                                    },'page')
+                                } else {
+                                    if (page.widgets[i].widgetData.selectedChart.chartType == "highCharts") {
+                                        var filterArray = [];
+                                      if ($rootScope.dashboard.filterDetails.length > 0) {
+                                        angular.forEach($rootScope.dashboard.filterDetails,function(filter) {
+                                          if (filter.is_default) {
+                                            filterArray.push({
+                                              filter: {
+                                                name: filter.filter_name,
+                                                values: {
+                                                  status: true,
+                                                  value: filter.default_value
+                                                }
+                                              }
+                                            })
+                                          }
+                                        })
+                                        if (filterArray.length > 0 ){
+                                            dashboardFilterService.dashboardFilterWidget(page.widgets[i],filterArray,function(data){
+                                                count++;
+                                                if(page.widgets.length == count){
+                                                    pouchDbServices.pageSync($rootScope.dashboard);
+                                                }
+                                            },'page')
+                                        } else {
+                                            $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                                count++;
+                                                if(page.widgets.length == count){
+                                                    pouchDbServices.pageSync($rootScope.dashboard);
+                                                }
+                                            });
+                                        }
+                                      } else {
+                                        $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                            count++;
+                                            if(page.widgets.length == count){
+                                                pouchDbServices.pageSync($rootScope.dashboard);
+                                            }
+                                        });
+                                      }
+                                    } else {
+                                        $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                            count++;
+                                            if(page.widgets.length == count){
+                                                pouchDbServices.pageSync($rootScope.dashboard);
+                                            }
+                                        });
                                     }
-                                });
+                                }
                             }else{
                                  count++;
                             }

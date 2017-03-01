@@ -51,6 +51,7 @@ routerApp.run(function(cellEditorFactory){
     }
   };
 });
+
 routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPickerConfig) {
 
     return {
@@ -73,18 +74,276 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-routerApp.directive('whatIfConfigurationContainer', ['$http', function ($http) {
+// routerApp.directive('whatIfConfigurationContainer', ['$http', function ($http) {
+//     return {
+//         restrict: 'E',
+//         transclude: true,
+//         template: '<md-content flex layout="column">'
+//                 + '<ng-transclude></ng-transclude>'
+//                 + '</md-content>',
+//         controller: ['$scope', function ($scope) {}],
+//         link: function (scope, iElement, iAttrs) {
+            
+//             scope.mode = 'automatic';
+//             console.log(scope.selectedColumns);
+//         }
+//     };
+// }]);
+
+// routerApp.directive('whatIfVariableSelector', [function () {
+//     return {
+//         restrict: 'E',
+//         scope: {
+//             source: '='
+//         },
+//         require: '^whatIfConfigurationContainer',
+//         template: '<div layout="row" style="height:400px;">'
+//                 + '<div> <table style="width:100%; height:100%;">'
+//                 + '<thead><tr><th>Available Columns</th></tr></thead>'
+//                 + '<tbody><tr ng-repeat="avCol in availableColumns | orderBy">'
+//                 + '<td ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" ng-class="isToggled(avCol)">{{avCol}}</td>'
+//                 + '</tr></tbody></table></div>'
+//                 + '<div layout="column" layout-padding>'
+//                 + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns()"> > </button>'
+//                 + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns()"> < </button>'
+//                 + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns(true)"> >> </button>'
+//                 + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns(true)"> << </button></div>'
+//                 + '<div><table style="width:100%; height:100%;">'
+//                 + '<thead><tr><th>Selected Columns</th></tr></thead>'
+//                 + '<tbody><tr ng-repeat="slCols in selectedColumns | orderBy">'
+//                 + '<td ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" ng-class="isToggled(slCols)">{{slCols}}</td>'
+//                 + '</tr></tbody></table></div>'
+//                 + '</div>',
+//         link: function (scope, iElement, iAttrs) {
+
+//             console.log('whatIfVariableSelector hits');
+
+//             console.log(scope.source);
+            
+//             var MAX_SELECTED_COLUMNS = 10;
+
+//             var acceptedColumnTypes = [
+//                 'FLOAT', 
+//                 'INTEGER', 
+//                 'DOUBLE'
+//             ];
+
+//             scope.selectedColumns = [];
+
+//             var activeTable = 'avColsTbl';
+
+//             var selected = [];
+
+//             scope.availableColumns = scope.source.filter(function(obj) {
+//                 if(obj.type)
+//                     colTy = obj.type.toUpperCase();
+
+//                 if(acceptedColumnTypes.indexOf(colTy) > -1)
+//                     return obj;
+//             }).map(function(obj, index) { return obj.filedName; });
+
+
+//             scope.toggleRow = function(tbl, row, index, ev) { 
+//                 ev.preventDefault();
+
+//                 // current active table changed
+//                 if(activeTable !== tbl) { 
+//                     // keep new table
+//                     activeTable = tbl;
+//                     // deselecte all selected columns in previous table
+//                     selected = []; 
+//                 }
+                
+//                 // CTRL key not pressed
+//                 if(!ev.ctrlKey)
+//                     selected = [];
+
+//                 // push selected columns temp array
+//                 var idx = selected.indexOf(row);
+//                 if(idx > -1) 
+//                     selected.splice(idx, 1);
+//                 else
+//                     selected.push(row);
+
+//                 console.log(selected);
+                
+//             }
+
+//             scope.isToggled = function(row) {
+//                 isToggled = selected.find(function(col) {
+//                     return (col == row);
+//                 });
+
+//                 return (isToggled) ? 'selected' : ' '; 
+
+//                 // return (selected.indexOf(row) > -1) ? 'selected' : ' ';
+//             }
+
+//             scope.moveToSelectedColumns = function(moveAll = false) {
+                    
+//                 if(moveAll) { // move all button pressed
+
+//                     // no columns in available columns table
+//                     if(scope.availableColumns.length === 0) 
+//                         return;
+
+//                     // selected more than the limit that user allowed to select
+//                     if(scope.availableColumns.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
+//                         return;
+
+//                     // push columns to selected columns table
+//                     scope.availableColumns.forEach(function(col) {
+//                         if(scope.selectedColumns.indexOf(col) < 0) 
+//                             scope.selectedColumns.push(col);
+//                     });
+
+//                     // set as empty 
+//                     scope.availableColumns = selected = [];
+
+//                 }else { // move single or multi columns 
+
+//                     // no columns seleced to move
+//                     if(selected.length < 0) 
+//                         return;
+
+//                     // selected more than the limit that user allowed to select
+//                     if(selected.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
+//                         return;
+
+//                     // push columns to selected columns table
+//                     selected.forEach(function(col) {
+//                         if(scope.selectedColumns.indexOf(col) < 0){
+//                             scope.selectedColumns.push(col);
+//                         }
+//                     });
+
+//                     // filter out selected columns from selected columns table
+//                     scope.availableColumns = scope.availableColumns.filter(function(x){ 
+//                         return selected.indexOf(x) === -1; 
+//                     });
+                    
+//                     // wipe out temp selected columns array
+//                     selected = [];
+
+//                 }               
+//             }
+
+//             scope.moveToAvailableColumns = function(moveAll = false) {
+
+//                 if(moveAll) { // move all button pressed
+
+//                     // no columns in selected columns table
+//                     if(scope.selectedColumns.length === 0) 
+//                         return;
+
+//                     // push columns to available columns table
+//                     scope.selectedColumns.forEach(function(col) {
+//                         if(scope.availableColumns.indexOf(col) < 0) 
+//                             scope.availableColumns.push(col);
+//                     });
+
+//                     // set as empty 
+//                     scope.selectedColumns = selected = [];
+//                 }else { // move single or multi columns 
+
+//                     // no columns seleced to move
+//                     if(selected.length < 0) 
+//                         return;
+
+//                     // push columns to selected columns table
+//                     selected.forEach(function(col) {
+//                         if(scope.availableColumns.indexOf(col) < 0){
+//                             scope.availableColumns.push(col);
+//                         }
+//                     });
+
+//                     // filter out selected columns from selected columns table
+//                     scope.selectedColumns = scope.selectedColumns.filter(function(x){ 
+//                         return selected.indexOf(x) === -1; 
+//                     });
+
+//                     // wipe out temp selected columns array
+//                     selected = [];
+
+//                 }
+//             }
+
+//         }
+//     };
+// }]);
+
+routerApp.directive('whatIfConfigurationContainer', ['$rootScope', '$http', function ($rootScope, $http) {
     return {
         restrict: 'E',
-        transclude: true,
-        template: '<md-content flex layout="column">'
-                + '<ng-transclude></ng-transclude>'
+        scope: {
+            columns: '=',
+            datasource: '='
+        },
+        template: '<md-content flex layout="column" layout-align="center center">'
+                +   '<what-if-variable-selector columns="columns" selected-columns="variables"></what-if-variable-selector>'
+                +   '<div layout="row" layout-padding>'
+                +       '<p>Formula Genaration:</p>'
+                +       '<div flex="3"></div>'
+                +       '<md-radio-group layout="row" ng-model="mode">'
+                +           '<md-radio-button value="auto">Automatic</md-radio-button>'
+                +           '<md-radio-button value="manual">Manual</md-radio-button>'
+                +       '</md-radio-group>'
+                +   '</div>'
+                +   '<div>'
+                +       '<button ng-click="start()">{{mode===\'manual\' ? \'Save\' : \'Start Analyzing\'}}</button>'
+                +   '</div>'
                 + '</md-content>',
         controller: ['$scope', function ($scope) {}],
-        link: function (scope, iElement, iAttrs) {
-            
-            scope.mode = 'automatic';
-            console.log(scope.selectedColumns);
+        link: function (scope, element, attrs) {
+
+            scope.variables = [];
+            scope.mode = 'auto';
+            scope.formula = '';
+
+            console.log(scope.datasource);
+
+            var dataHandler = function(r) {
+                $rootScope.$broadcast('data_recevied', r);
+            }
+
+            scope.start = function() {
+                if(scope.variables.length <= 0)
+                    return;
+
+                var d = {
+                    databaseType: scope.datasource.src,
+                    dataTable: scope.datasource.tbl,
+                    datasourceId: scope.datasource.id,
+                    mode: scope.mode,
+                    method: 'linear',
+                    equation: (scope.mode === 'manual') ? scope.formula : '',
+                    yValues: ['sales'],
+                    xValues: scope.variables
+                }
+
+                var params ={
+                    dbtype: d.databaseType,
+                    table: d.dataTable,
+                    datasource_id: d.datasourceId,
+                    type: d.mode,
+                    method: d.method,
+                    equation: d.equation,
+                    y_values: JSON.stringify(d.yValues),
+                    x_values: JSON.stringify(d.xValues),
+                    SecurityToken: JSON.parse(decodeURIComponent(getCookie('authData'))).SecurityToken
+                }
+
+                $http({
+                    url: 'http://dev.digin.io/DigInEngine/regression_analysis',
+                    method: 'GET',
+                    params: params
+                }).then(function(response){
+                    dataHandler(response);
+                }, function(response){
+                    console.log(response)
+                });
+
+            }
         }
     };
 }]);
@@ -93,54 +352,58 @@ routerApp.directive('whatIfVariableSelector', [function () {
     return {
         restrict: 'E',
         scope: {
-            source: '='
+            columns: '=',
+            selectedColumns: '='
         },
-        require: '^whatIfConfigurationContainer',
-        template: '<div layout="row" style="height:400px;">'
-                + '<div> <table style="width:100%; height:100%;">'
-                + '<thead><tr><th>Available Columns</th></tr></thead>'
-                + '<tbody><tr ng-repeat="avCol in availableColumns | orderBy">'
-                + '<td ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" ng-class="isToggled(avCol)">{{avCol}}</td>'
-                + '</tr></tbody></table></div>'
-                + '<div layout="column" layout-padding>'
-                + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns()"> > </button>'
-                + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns()"> < </button>'
-                + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns(true)"> >> </button>'
-                + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns(true)"> << </button></div>'
-                + '<div><table style="width:100%; height:100%;">'
-                + '<thead><tr><th>Selected Columns</th></tr></thead>'
-                + '<tbody><tr ng-repeat="slCols in selectedColumns | orderBy">'
-                + '<td ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" ng-class="isToggled(slCols)">{{slCols}}</td>'
-                + '</tr></tbody></table></div>'
-                + '</div>',
-        link: function (scope, iElement, iAttrs) {
+        template: '<div layout-gt-sm="row" layout-align="center center">'
+                +        '<fieldset class="fieldset">'
+                +            '<legend class="demo-legend">Available Columns </legend>'
+                +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
+                +                '<md-list-item ' 
+                +                    'ng-repeat="avCol in availableColumns | orderBy" '
+                +                    'ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" '
+                +                    'ng-class="isToggled(avCol)">'
+                +                        '<p>{{avCol}}</p>'
+                +                '</md-list-item>'  
+                +            '</md-list>'
+                +        '</fieldset>'
+                +        '<div layout="column">'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToSelectedColumns()"><i class="ti-angle-right" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToAvailableColumns()"><i class="ti-angle-left" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToSelectedColumns(true)"><i class="ti-angle-double-right" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToAvailableColumns(true)"><i class="ti-angle-double-left" style="font-size:15px;"></i></md-button>'
+                +        '</div>'
+                +        '<fieldset class="fieldset">'
+                +            '<legend class="demo-legend">Selected Columns </legend>'
+                +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
+                +                '<md-list-item '
+                +                   'ng-repeat="slCols in selectedColumns" '
+                +                   'ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" '
+                +                   'ng-class="isToggled(slCols)">'
+                +                        '<p>{{slCols}}</p>'
+                +                '</md-list-item>'  
+                +            '</md-list>'
+                +        '</fieldset>'
+                +    '</div>',
+        link: function (scope, element, attrs) {
 
             console.log('whatIfVariableSelector hits');
 
-            console.log(scope.source);
-            
             var MAX_SELECTED_COLUMNS = 10;
 
-            var acceptedColumnTypes = [
-                'FLOAT', 
-                'INTEGER', 
-                'DOUBLE'
-            ];
-
-            scope.selectedColumns = [];
+            var acceptedColumnTypes = ['FLOAT', 'INTEGER', 'DOUBLE'];
 
             var activeTable = 'avColsTbl';
 
             var selected = [];
 
-            scope.availableColumns = scope.source.filter(function(obj) {
+            scope.availableColumns = scope.columns.filter(function(obj) {
                 if(obj.type)
                     colTy = obj.type.toUpperCase();
 
                 if(acceptedColumnTypes.indexOf(colTy) > -1)
                     return obj;
-            }).map(function(obj, index) { return obj.filedName; });
-
+            }).map(function(obj, index) { return obj.name; });
 
             scope.toggleRow = function(tbl, row, index, ev) { 
                 ev.preventDefault();
@@ -270,6 +533,85 @@ routerApp.directive('whatIfVariableSelector', [function () {
         }
     };
 }]);
+
+routerApp.directive('whatIfSliders', ['$rootScope', function ($rootScope) {
+    return {
+        restrict: 'E',
+        template: '<md-content layout-padding>'
+             +       '<md-list>'
+             +           '<md-list-item layout-xs="column" ng-repeat="var in variables">'
+             +               '<p flex="10">{{var.name}}</p>'
+             +               '<md-slider flex min="{{var.minimum}}" max="{{var.maximum}}" ng-model="current[var.name]" step="{{var.step}}" ng-change="calculate(current, formula)">'
+             +               '</md-slider>'
+             +               '<p flex>'
+             +                   'Current: {{current[var.name]}}'
+             +                   'Initial: {{var.initial}}'
+             +                   'Diff: '
+             +               '</p>'
+             +           '</md-list-item>'
+             +       '</md-list>'
+             +   '</md-content>',
+        link: function (scope, iElement, iAttrs) {
+
+            console.log('whatIfSliders hits');
+
+            $rootScope.$on('data_recevied', function(event, data) {
+
+                console.log(data);
+                var response = data.data;
+
+                r = response.Result;
+                scope.formula = r.equation;
+                var min_max = r.min_max;
+                var initials = r.initial
+        
+                var columns_x = Object.keys(initials.x_initials);
+                var columns_y = Object.keys(initials.y_initials);
+
+                var x_values = columns_x.map(function(column) {
+                    return {
+                        name: column,
+                        minimum: min_max.x.x_min[column],
+                        maximum: min_max.x.x_max[column],
+                        initial: initials.x_initials[column],
+                        step: (min_max.x.x_max[column] < 1) ? 0.01 : 1,
+                        target: false
+                    }
+                });
+
+                var y_values = columns_y.map(function(column) {
+                    return {
+                        name: column,
+                        minimum: min_max.y.y_min[column],
+                        maximum: min_max.y.y_max[column],
+                        initial: initials.y_initials[column],
+                        step: (min_max.y.y_max[column] < 1) ? 0.01 : 1,
+                        target: true
+                    }
+                });
+
+                scope.variables = y_values.concat(x_values);
+                console.log(scope.variables);
+
+                scope.current = {}
+                scope.variables.map(function(obj) {
+                    scope.current[obj.name] = obj['initial'];
+                });
+
+            });
+
+            scope.calculate = function(scope, eq) {
+                // var formula = r.equation;
+                console.log(eq);
+                console.log(scope);
+                var code2 = math.compile(eq);
+                code2.eval(scope);  
+            }
+
+        }
+    };
+}]);
+
 
 routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, metricChartServices, layoutManager, tabularService, $qbuilder) {
     if($rootScope.showHeader == true)
@@ -1170,7 +1512,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickCondition: function(row, filed) {
                 $("#togglePanel").hide(200);
-                $scope.isPendingRequest = true;
+                // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleMeasure = false;
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
@@ -1234,7 +1576,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickColumn: function(column) {
                 $("#togglePanelColumns").hide(200);
-                $scope.isPendingRequest = true;
+                // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
                 var isFoundCnd = false;
                 for (i in executeQryData.executeColumns) {
@@ -1292,6 +1634,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickRmvCondition: function(condition, measure) {
                 $scope.isPendingRequest = false;
+            },
+            onClickCreateChart: function() {
+                if ($scope.executeQryData.executeMeasures.length < 1) {
+                    privateFun.fireMessage('0', 'Please select atleast one measure');
+                    return;
+                }
+                if ($scope.executeQryData.executeColumns.length <= 1) {
+                    // If there is one category - no drill down
+                    $scope.getAggregation();
+                } else {
+                    // If there is more than one category - drill down present
+                    $scope.getDrilledAggregation();
+                }
             },
             onClickFilter: function(filter, type) {
                 var duplicateRecord = false;
@@ -1767,24 +2122,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.groupBySortArray.splice(index, 1);
                     }
             }
-            
-            $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
-                if (newValue !== oldValue && $scope.selectedChart.chartType == "highCharts") {
-                    if(newValue.length == oldValue.length){
-                        var tempGroupBySortArray=[];
-                        for(var i=0; i < $scope.executeQryData.executeColumns.length; i++){
-                            for(var j=0; j < $scope.groupBySortArray.length; j++){
-
-                                if($scope.executeQryData.executeColumns[i].filedName == $scope.groupBySortArray[j].displayName){
-                                    tempGroupBySortArray[i] = $scope.groupBySortArray[j];
-                                    break;
-                                }
-                            }
-                        }
-                        $scope.groupBySortArray = tempGroupBySortArray; 
-                    }
-                }
-            }, true);
 
             $scope.changeSortHighCharts = function(){
                 if ($scope.executeQryData.executeColumns.length == 1) {
@@ -1834,10 +2171,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         selectCondition: function() {
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
-                $scope.getAggregation();
+                // $scope.getAggregation();
             } else {
                 // If there is more than one category - drill down present
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
             }
         },
         selectAttribute: function(fieldName) {
@@ -1846,13 +2183,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.executeQryData.executeColumns = [{
                     filedName: fieldName
                 }];
-                $scope.getGroupedAggregation(fieldName);
+                // $scope.getGroupedAggregation(fieldName);
             } else if ($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.isDrilled = true;
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
             }
         },
         executeQuery: function(cat, res, query) {
@@ -1982,10 +2319,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
-                $scope.getAggregation();
+                // $scope.getAggregation();
             } else {
                 // If there is more than one category - drill down present
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
            
             }
         },
@@ -1994,10 +2331,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
-                $scope.getAggregation();
+                // $scope.getAggregation();
             } else {
                 // If there is more than one category - drill down present
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
             }
         },
         onGetAggData: function(res) {
@@ -4114,7 +4451,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.whatif = {
         onInit: function() {},
         changeType: function() {
-            $scope.source = $scope.commonData.columns;
+            $scope.columns = $scope.commonData.columns;
+            $scope.sourceData = $scope.sourceData;
         },
 
     };
@@ -4877,7 +5215,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.executeQryData.executeColumns.forEach(function(key) {
             catArr.push('"' + key.filedName + '"');
         });
-
         if ($scope.isAutoDrill) {
             //if automatic drilling is true, call get highest level
             $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), $scope.sourceData.id, function(res, status) {
@@ -4912,7 +5249,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             filedName: res[i].value
                         });
                     }
+
+                    var tempGroupBySortArray=[];
+                    for(var i=0; i < $scope.executeQryData.executeColumns.length; i++){
+                        for(var j=0; j < $scope.groupBySortArray.length; j++){
+
+                            if($scope.executeQryData.executeColumns[i].filedName == $scope.groupBySortArray[j].displayName){
+                                tempGroupBySortArray[i] = $scope.groupBySortArray[j];
+                                break;
+                            }
+                        }
+                    }
+                    $scope.groupBySortArray = tempGroupBySortArray; 
+
                     getAggData(highestLevel,drillOrderArr,fieldArr);
+
                 } else {
                     privateFun.fireMessage('0', res);
                     $scope.isPendingRequest = false;

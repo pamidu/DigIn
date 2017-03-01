@@ -247,6 +247,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                                                 "compID": repid,
                                                 "compName": files[0].name.replace(/\.[^/.]+$/, ""),
                                                 "refreshInterval": 0,
+                                                "filterDetails": [],
                                                 "deletions": {
                                                     "componentIDs": [],
                                                     "pageIDs": [],
@@ -319,6 +320,7 @@ routerApp.controller('ReportCtrl', ['$scope', 'dynamicallyReportSrv', '$localSto
                                     "compID": repid,
                                     "compName": files[i].name.replace(/\.[^/.]+$/, ""),
                                     "refreshInterval": 0,
+                                    "filterDetails": [],
                                     "deletions": {
                                         "componentIDs": [],
                                         "pageIDs": [],

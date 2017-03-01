@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav', '$window','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav, $window,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
@@ -13,6 +13,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
 	colorManager.changeTheme($rootScope.theme);
+	
+	// use this variable to make the dialogs fullscreen in smaller screen sizes
+	var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
 	
 	//Check if the currentDashboard has been changed and not saved
 	$scope.changed = false;
@@ -39,7 +42,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.topMenuToggle = function()
 	{	
-		if($rootScope.showHeader == true)
+		if($rootScope.showHeader === true)
 		{
 			$rootScope.showHeader = layoutManager.hideHeader();
 		}else{
@@ -49,7 +52,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.leftMenuToggle = function()
 	{
-		if($scope.showSideMenu == true)
+		if($scope.showSideMenu === true)
 		{
 			$rootScope.showSideMenu = layoutManager.hideSideMenu();
 		}else{
@@ -91,17 +94,17 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				  clickOutsideToClose:true
 				})
 				.then(function(answer) {
-					if(answer == 'Yes')
+					if(answer === 'Yes')
 					{
 						alert("Changes saved");
-					}else if(answer == 'No')
+					}else if(answer === 'No')
 					{
 						navigateTo(ev,action);
 					}
 				});
 			}
 		}else{
-			navigateTo(ev,action)
+			navigateTo(ev,action);
 		}
 		
 	}// End of Navigate
@@ -112,8 +115,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			location.href = action;
 		}else if(action == "Switch Tenant")
 		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
-			
 			 $mdDialog.show({
 			  controller: 'switchTenantCtrl',
 			  templateUrl: 'dialogs/switchTenant/switchTenant.html',
@@ -143,7 +144,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			});
 		}else if(action == "Create Dashboard")
 		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
 			
 			 $mdDialog.show({
 			  controller: 'createDashboardCtrl',
@@ -249,7 +249,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			});
 		}else if(action == 'Save')
 		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
 			
 			 $mdDialog.show({
 			  controller: 'saveDashboardCtrl',
@@ -280,7 +279,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			//notifications.toast(1,"yes");
 		}else if(action == "AddWidget")
 		{
-			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
 			
 			 $mdDialog.show({
 			  controller: 'addWidgetCtrl',
@@ -289,7 +287,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			  clickOutsideToClose:true,
 			  targetEvent: ev,
 			  fullscreen: useFullScreen
-			})
+			});
 			
 			 $scope.$watch(function() {
 			  return $mdMedia('xs') || $mdMedia('sm');
@@ -304,13 +302,13 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     var oldDefaultDashboard = "";
 	(function (){
 
-		if(IsLocal == true){
+		if(IsLocal === true){
 			$rootScope.db  = new pouchDB("Dashboards");
 			//$scope.getSearchPanelDetails();
 
             //Just for testing, User settings are not needed here
             DiginServices.getUserSettings().then(function(data) {
-                console.log(data);
+                //notifications.log(data, new Error());
                 $scope.userSettings = data;
                 $rootScope.theme = $scope.userSettings.theme_config;
 
@@ -319,26 +317,26 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
                 //Go To Default Dashboard if it exsist
                 var obj = JSON.parse($scope.userSettings.components);
-                if(obj.dashboardId != null) {
+                if(obj.dashboardId !== null) {
                     //getDashboard(obj.dashboardId);
                     $scope.data.defaultDashboard = obj.dashboardId;
-                    oldDefaultDashboard = angular.copy(obj.dashboardId)
+                    oldDefaultDashboard = angular.copy(obj.dashboardId);
                 }
 
 
                 //$scope.userSettings.theme_config = $rootScope.theme;
             });
 		}else{
-			console.log("not local");
+			notifications.log("not local", new Error());
 			
 			DiginServices.getUserSettings().then(function(data) {
-				console.log(data);
+				notifications.log(data, new Error());
 				$scope.userSettings = data;
 			});
 			
 			DiginServices.getSession().then(function(data) {
 				var pouchdbName = data.UserID + data.Domain;
-				console.log(pouchdbName);
+				notifications.log(pouchdbName, new Error());
 				$rootScope.db  = new pouchDB(pouchdbName);
 			});
 		}
@@ -350,7 +348,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.componentsLoaded = false;
 	DiginServices.getDiginComponents().then(function(data) {
-		console.log(data);
+		notifications.log(data, new Error());
 		$scope.componentsLoaded = true;
 		for (i = 0, len = data.length; i<len; ++i){
 			if(data[i].compType == 'dashboard')
@@ -378,7 +376,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				
 			},
 			goReport: function (report){
-				console.log("report");
+				notifications.log("report", new Error());
 				$mdSidenav('searchBar').close();
 			},
 			deleteDashboard: function (dashboard, ev){
@@ -386,7 +384,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					if(result == 'yes')
 					{
 						DiginServices.deleteComponent(dashboard.compID, false).then(function(data) {
-							if(data.Is_Success == true){
+							if(data.Is_Success === true){
 								
 								// Delete from pouch
 								
@@ -403,9 +401,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				});
 			},
 			deleteReport: function (dashboard, ev){
-				console.log("delete report");
+				notifications.log("delete report", new Error());
 			},setDefaultDashboard: function (ev, dashboard) {
-				console.log($scope.data.defaultDashboard);
+				notifications.log($scope.data.defaultDashboard, new Error());
 
                 $scope.data.defaultDashboard = null;
                 dialogService.confirmDialog(ev, "Set Default Dashboard","Are you sure you want to set '"+dashboard.compName+"' dashboard as Default?","yes", "cancel").then(function(result) {
@@ -420,9 +418,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
                         var userSettingsSaveObj = angular.copy($scope.userSettings);
                         userSettingsSaveObj.components = JSON.stringify(newComponent);
 
-                        if(userSettingsSaveObj.dp_path==undefined) {dp_name="";}else{dp_name=userSettingsSaveObj.dp_path.split("/").pop();}
-                        if(userSettingsSaveObj.logo_path==undefined){logo_name="";} else{logo_name=userSettingsSaveObj.logo_path.split("/").pop();}
-                        userSettingsSaveObj.email = $rootScope.authObject.Email
+                        if(userSettingsSaveObj.dp_path===undefined) {dp_name="";}else{dp_name=userSettingsSaveObj.dp_path.split("/").pop();}
+                        if(userSettingsSaveObj.logo_path===undefined){logo_name="";} else{logo_name=userSettingsSaveObj.logo_path.split("/").pop();}
+                        userSettingsSaveObj.email = $rootScope.authObject.Email;
                         userSettingsSaveObj.logo_name = "logo";
                         userSettingsSaveObj.dp_name = "dp";
                         userSettingsSaveObj.theme_config = $rootScope.theme;
@@ -467,7 +465,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		DiginServices.getComponent(dashboardId).then(function(data) {
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
-			console.log($rootScope.currentDashboard);
+			notifications.log($rootScope.currentDashboard, new Error());
 			location.href = '#/dashboard?id='+dashboardId;
 		});
 	}
@@ -581,17 +579,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
     $scope.ShouldAutoStart = false;
 	
-	var cssRule =
-		"color: #2795d8;" +
-		"font-size: 60px;" +
-		"font-weight: bold;" +
-		"text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
-		"font-style: italic;" +
-		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
-	console.log("%cWelcome to Cleanshell", cssRule);
 	
-	console.log("This should only be shown in developer mode, Click the below link for the developer documentation");
-	console.log(window.location.origin+window.location.pathname+"#/developer");
+		//var newErr = new Error();
+
 
 	
-}])//END OF NavCtrl
+}]);//END OF NavCtrl

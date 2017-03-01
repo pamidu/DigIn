@@ -2,10 +2,15 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
     '$timeout', '$rootScope', '$mdDialog', '$mdMenu', '$objectstore', '$state', '$http', 'filterService',
     '$localStorage', '$window', '$qbuilder', 'ObjectStoreService', 'DashboardService', '$log', '$mdToast',
 
-    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 'Digin_Domain', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB',  '$interval', 'notifications', 'pouchDbServices','IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType', 'version',
+    'DevStudio', '$auth', '$helpers', 'dynamicallyReportSrv', 'Digin_Engine_API', 'Digin_Tomcat_Base', 'ngToast', 
+    'Digin_Domain', 'Digin_Tenant', '$filter', 'ProfileService', 'pouchDB',  '$interval', 'notifications', 'pouchDbServices',
+    'IsLocal','saveDashboardService','colorManager','layoutManager','apis_Path','auth_Path','dbType', 'version', '$diginurls' , 
+    '$diginengine', 'dashboardFilterService', 
     function ($scope, $mdBottomSheet, $mdSidenav, $mdUtil, $timeout, $rootScope, $mdDialog,$mdMenu, $objectstore, $state,
-              $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, DevStudio,
-              $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, Digin_Tenant, $filter, ProfileService, pouchDB, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService, colorManager, layoutManager,apis_Path,auth_Path,dbType,version) {
+              $http, filterService, $localStorage, $window, $qbuilder, ObjectStoreService, DashboardService, $log, $mdToast, 
+              DevStudio, $auth, $helpers, dynamicallyReportSrv, Digin_Engine_API, Digin_Tomcat_Base, ngToast, Digin_Domain, 
+              Digin_Tenant, $filter, ProfileService, pouchDB, $interval, notifications, pouchDbServices,IsLocal,saveDashboardService,
+              colorManager, layoutManager,apis_Path,auth_Path,dbType,version,$diginurls,$diginengine,dashboardFilterService) {
 
         if (DevStudio) {
             $auth.checkSession();
@@ -22,6 +27,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
 		$rootScope.lightOrDark = '';
 		$rootScope.currentColor = '';
 		$rootScope.h1color = '';
+        $scope.is_filter_opened = false;
 		colorManager.changeTheme('default');
 
 
@@ -324,6 +330,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "compID": null,
                             "compName": null,
                             "refreshInterval": null,
+                            "filterDetails": []
                         }
 
                         $rootScope.dashboard.pages = [];
@@ -429,6 +436,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             "compCategory": null,
             "compID": null,
             "refreshInterval": null,
+            "filterDetails": [],
             "deletions": {
                 "componentIDs": [],
                 "pageIDs": [],
@@ -843,6 +851,9 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     .success(function (data) {
 
                         if (data.Is_Success ) {
+                            $scope.dashboardFilters = [];
+                            $scope.is_filter_opened = false;
+                            delete $rootScope.dashboard.dashboardFilters;
 
                             if(data.Result != null ){
                                 console.log("$scope.dashboardObject", $scope.dashboardObject);
@@ -856,7 +867,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                                     };
                                     $rootScope.selectedPageIndx = 0;
                                     $rootScope.selectedPage = 1;
-
+                                    $rootScope.dashboard["dashboard_filters"] = false;
 
                                     //set deletioins
                                     data.Result["deletions"] = {
@@ -1460,8 +1471,174 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
             }
         };
 
+// ----------------------------- DASHBOARD FILTER METHODS START -------------------------------- // 
+        //assign the selected filter options to a scope variable
+        $scope.onClickFilterButton = function(){
 
-        
+            $rootScope.dashboard.dashboardFilters = angular.copy($rootScope.dashboard.filterDetails);
+            $scope.dashboardFilters = $rootScope.dashboard.dashboardFilters;
+            angular.forEach($scope.dashboardFilters,function(filter){
+                filter.sync = false;
+                if(filter.is_custom || filter.is_custom == 1){
+                    angular.forEach(filter.custom_fields,function(field){
+                        field["status"] = false;
+                    })
+                }
+            })
+            // $scope.dashboardFilters = [{"filter_id":null,"is_custom":false,"selection_type":"single","custom_fields":"[{\"actualValue\":\"\",\"displayValue\":\"\"}]","datasource":"memsql","datasource_id":1487620574749,"datasource_connection":"","datasource_table":"superstore_sales","value_field":"district","display_field":"district","is_default":false,"default_value":"","filter_name":"district"},
+            // {"filter_id":null,"is_custom":false,"selection_type":"multiple","custom_fields":"[{\"actualValue\":\"\",\"displayValue\":\"\"}]","datasource":"memsql","datasource_id":1487620574749,"datasource_connection":"","datasource_table":"superstore_sales","value_field":"district","display_field":"district","is_default":false,"default_value":"","filter_name":"district"}];
+        };
+
+        // load the parameters for filtering 
+        $scope.loadFilterParams = function(index) {
+            $scope.client = $diginengine.getClient($scope.dashboardFilters[index].datasource);
+            var query = "";
+            var filter_field = $scope.dashboardFilters[index];
+            if (filter_field.is_custom == false || filter_field.is_custom == 0){
+                if (filter_field.filterParameters === undefined){
+                    filter_field["sync"] = true;
+                    if (filter_field.datasource == "BigQuery" || filter_field.datasource == "memsql" ) {
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM " + $diginurls.getNamespace() + "." + filter_field.datasource_table + " GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field;
+                        else 
+                            query = "SELECT " + filter_field.value_field + " FROM " + $diginurls.getNamespace() + "." + filter_field.datasource_table + " GROUP BY " + filter_field.value_field + " ORDER BY " + filter_field.value_field;
+                    } else if (filter_field.datasource == "MSSQL") {
+                        var db = filter_field.datasource_table.split(".");
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT [" + filter_field.value_field + "],["+ filter_field.display_field + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + filter_field.value_field + "],["+ filter_field.display_field +"] ORDER BY [" + filter_field.value_field + "]";
+                        else
+                            query = "SELECT [" + filter_field.value_field + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + filter_field.value_field + "] ORDER BY [" + filter_field.value_field + "]";
+
+                    }
+                    else if (filter_field.datasource == "hiveql"){
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field + " , " + filter_field.display_field + "";
+                        else
+                            query = "SELECT " + filter_field.value_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " ORDER BY " + filter_field.value_field;
+                    }
+                    else if (filter_field.datasource == "Oracle"){
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field + " , " + filter_field.display_field + "";
+                        else
+                            query = "SELECT " + filter_field.value_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " ORDER BY " + filter_field.value_field;
+
+                    }
+                    filter_field.sync = true;
+                    $scope.client.getExecQuery(query, filter_field.datasource_id, function(data, status){
+                        filter_field.sync = false;
+                        if (status) {
+                            filter_field.filterParameters = [];
+                            angular.forEach(data,function(res){
+                                $scope.$apply(function(){
+                                    filter_field.filterParameters.push({
+                                        value: res[filter_field.value_field],
+                                        display: res[filter_field.display_field],
+                                        status: false
+                                    });
+                                })
+                            })
+                        } else {
+                            $scope.$apply(function(){
+                                notifications.toast('0', 'Error Occured! Please try again!');
+                                return;
+                            });
+                        }
+                    });
+                }
+            }
+        };
+
+        // set the status of field
+        $scope.setSingleSelectStatus = function(row,filterParameters){
+            row.status = true;
+            angular.forEach(filterParameters,function(key){
+                if (key != row){
+                    key.status = false;
+                }
+            })
+        }
+
+        // apply filters to all applicable widgets
+        $scope.applyDashboardFilters = function() {
+            $rootScope.dashboard["dashboard_filters"] = true;
+            var filtersArray = [];
+            var page = $rootScope.dashboard.pages[$rootScope.selectedPageIndx];
+            var tempArray = [];
+
+            angular.forEach($rootScope.dashboard.pages,function(p){
+                if ( p != page ){
+                    p.isSeen = false;
+                }
+            })
+            angular.forEach($scope.dashboardFilters, function(dbFilter){
+                tempArray = [];
+                if (dbFilter.is_custom == 0 || dbFilter.is_custom == false){
+                    if (dbFilter.filterParameters !== undefined){
+                        angular.forEach(dbFilter.filterParameters,function(row){
+                            tempArray.push({
+                                status: row.status,
+                                value: row.value
+                            })
+                        })
+                        if (tempArray.length > 0){
+                            filtersArray.push({
+                                filter: {
+                                    name: dbFilter.filter_name,
+                                    values: tempArray
+                                }
+                            })
+                        }
+                    }
+                } else {
+                    angular.forEach(dbFilter.custom_fields,function(row){
+                        tempArray.push({
+                            status: row.status,
+                            value: row.actualValue
+                        })
+                    })
+                    filtersArray.push({
+                        filter: {
+                            name: dbFilter.filter_name,
+                            values: tempArray
+                        }
+                    })
+                }
+            })
+            for (var i = 0; i < page.widgets.length; i++) {
+                if (typeof(page.widgets[i].widgetData.commonSrc) != "undefined") {
+                    if (page.widgets[i].widgetData.selectedChart.chartType == "highCharts") {
+                        dashboardFilterService.dashboardFilterWidget(page.widgets[i],filtersArray,function(data){
+                        },'widget')
+                    }
+                }
+            }
+        }
+
+
+        //remove dashboard filters from widgets
+        $scope.clearDashboardFilter = function(){
+            // widget.widgetData["dashboardFilterState"] = true;
+            $rootScope.dashboard["dashboard_filters"] = false;
+            var page = $rootScope.dashboard.pages[$rootScope.selectedPageIndx];
+            angular.forEach($rootScope.dashboard.pages,function(p){
+                if ( p != page ){
+                    p.isSeen = false;
+                }
+            })
+            for (var i = 0; i < page.widgets.length; i++) {
+                if (typeof(page.widgets[i].widgetData.commonSrc) != "undefined") {
+                    if (page.widgets[i].widgetData.dashboardFilterState !== undefined){
+                        if (page.widgets[i].widgetData.dashboardFilterState == true) {
+                            page.widgets[i].widgetData.syncState = false;
+                            $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                page.widgets[i].widgetData.syncState = true;
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
         $scope.openNotifications = function()
         {
             $mdSidenav('notifications').toggle().then(function () {
@@ -1502,6 +1679,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "compID": null,
                             "compName": null,
                             "refreshInterval": null,
+                            "filterDetails": []
                         }
 
                         $rootScope.dashboard.pages = [];
@@ -1837,6 +2015,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                             "compID": null,
                             "compName": null,
                             "refreshInterval": null,
+                            "filterDetails": []
                         }
 
                         $rootScope.dashboard.pages = [];

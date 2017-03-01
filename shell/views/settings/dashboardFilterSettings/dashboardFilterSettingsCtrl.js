@@ -24,6 +24,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	$scope.selectionType = "single";
 	$scope.selectedTable = "";
 	$scope.selectedTableValue = "";
+	$scope.selectedConnectionValue = "";
 	$scope.selectedValueField = "";
 	$scope.selectedDisplayField = "";
 	$scope.filterName = "";
@@ -72,7 +73,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// route to home
 	$scope.goHome = function()
 	{
-		$state.go('home.welcomeSearch');
+		$state.go('home.Dashboards');
 	}
 
 	// move to the next stepper
@@ -402,7 +403,7 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 				break;
 			case 'hiveql':
 				// write for hiveql
-				query = "SELECT " + $scope.selectedValueField + " FROM "+ $scope.selectedTableValue.datasource_name +"  GROUP BY " + $scope.selectedValueField + " ORDER BY " + $scope.selectedValueField + "";
+				query = "SELECT " + $scope.selectedValueField + " FROM "+ $scope.selectedTableValue +"  GROUP BY " + $scope.selectedValueField + " ORDER BY " + $scope.selectedValueField + "";
 				break;
 		}
 		$scope.client.getExecQuery(query,$scope.datasourceId,function(data,status)
@@ -428,9 +429,66 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 
 	}
 
+	$scope.setDefaultParam = function()
+	{
+		if ($scope.isDefault)
+		{
+			$scope.selectedDefaultValue = "";
+		}
+	}
+
+	// save the filter with the respective dashboard
 	$scope.saveFilters = function()
 	{
-		var tempObj = 
+		var is_custom;
+		var connection;
+		var table;
+		if ( $scope.selectedFilterOption == "custom" )
+		{
+			is_custom = true;
+		} else 
+		{
+			is_custom = false;
+		}
+		if ($scope.selectedConnectionValue.connection_name === undefined)
+		{
+			connection = "";
+		} else
+		{
+			connection = $scope.selectedConnectionValue.connection_name;
+		}
+		if( $scope.selectedDatasource == 'BigQuery' || $scope.selectedDatasource == 'memsql')
+		{
+			table = $scope.selectedTableValue.datasource_name;
+		} else 
+		{
+			table = $scope.selectedTableValue;
+		}
+
+		var filterObj = {
+			"filter_id" : null,
+			"is_custom" : is_custom,
+			"selection_type" : $scope.selectionType,
+			"custom_fields" : $scope.customFields,
+			"datasource" : $scope.selectedDatasource,
+			"datasource_id" : $scope.datasourceId,
+			"datasource_connection" : connection,
+			"datasource_table" : table,
+			"value_field" : $scope.selectedValueField,
+			"display_field" : $scope.selectedDisplayField,
+			"is_default" : $scope.isDefault,
+			"default_value" : $scope.selectedDefaultValue,
+			"filter_name": $scope.filterName
+		}
+		if ($rootScope.dashboard.filterDetails === undefined)
+		{
+			$rootScope.dashboard["filterDetails"] = [];
+			$rootScope.dashboard.filterDetails.push(filterObj);
+		} else
+		{
+			$rootScope.dashboard.filterDetails.push(filterObj);
+		}
+		$scope.goHome();
 	}
 
 }]);

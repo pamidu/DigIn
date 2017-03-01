@@ -271,6 +271,10 @@
 <script type="text/javascript" src="scripts/controllers/help/welcomeSearchBarCtrl.js"></script>
 <script type="text/javascript" src="scripts/factories/dynamicallyReport/dynamicallyReportFact.js"></script>
 
+<!-- whatif -->
+<script type="text/javascript" src="bower_components/mathjs/dist/math.js"></script>
+<!-- whatif -->
+
 <!-- profile
 <script type="text/javascript" src="scripts/factories/profile/profileFact.js"></script> -->
 <script type="text/javascript" src="scripts/controllers/profile-settings/userProfileCtrl.js"></script>
@@ -336,6 +340,7 @@
 
 <!-- Dashboard filter settings -->
 <script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
+<script src="views/settings/dashboardFilterSettings/dashboardFilterService.js"></script>
 
 <!-- ShareDashboard settings -->
 <script type="text/javascript" src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>

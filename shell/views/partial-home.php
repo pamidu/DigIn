@@ -139,69 +139,67 @@
 						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
 					</div>
                     <md-menu class="blut-header-icon">
-                    	<div  class="blut-header-icon" ng-click="$mdOpenMenu($event);$event.stopPropagation();">
-                            <i class="ti-filter hover-color" md-colors="{color:'primary'}"></i>
+                    	<div  class="blut-header-icon" ng-click="$mdOpenMenu($event);$event.stopPropagation();onClickFilterButton();">
+                            <i class="ti-filter hover-color" ng-class="$root.dashboard.dashboard_filters==true? 'blut-filtered-icon' : 'blut-widget-icon'"></i>
                             <md-tooltip>filter</md-tooltip>
                     	</div>
                         <md-menu-content style="background:white;padding:10px;min-width: calc(40vh);min-height: calc(30vh);">
                             <div flex layout="row" style="min-height: 20px; max-height: 20px;cursor:pointer;">
-                            	<v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" style="margin: 10px;width: 100%;" flex="row">
-                            	<v-pane class="v-pane">
-                            		<v-pane-header>
-                            			<h5 class="font-weight-300 text-upper">Filter One</h5>
-                            		</v-pane-header>
-                            		<v-pane-content>
-										<div> 
-											<div class="bigcheck">
-												<label class="filter-label display-inline-block">
-													All
-													<input type="checkbox" class="bigcheck" md-prevent-menu-close="md-prevent-menu-close"/>
-													<span class="bigcheck-target pull-right"></span>
-												</label>
-											</div>
-											<ul class="cutom-filter-ul" style="overflow: hidden;">
-												<div class="bigcheck">
-													<label class="filter-label" >
-														value one
-														<input type="checkbox" class="bigcheck" md-prevent-menu-close="md-prevent-menu-close"/>
-														<span class="bigcheck-target pull-right"></span>
-													</label>
-												</div>
-											</ul>
-											<ul class="cutom-filter-ul" style="overflow: hidden;">
-												<div class="bigcheck">
-													<label class="filter-label" >
-														value Two
-														<input type="checkbox" class="bigcheck" md-prevent-menu-close="md-prevent-menu-close"/>
-														<span class="bigcheck-target pull-right"></span>
-													</label>
-												</div>
-											</ul>
-										</div>
-                            		</v-pane-content>
-                            	</v-pane>
-                            	<v-pane class="v-pane">
-                            		<v-pane-header>
-                            			<h5 class="font-weight-300 text-upper">Filter Two</h5>
-                            		</v-pane-header>
-                            		<v-pane-content>
-										<div class="submenu">
-											<div class="submenu" style="overflow: hidden;">
-													<label>
-														Value one
-														<input type="radio" class="submenu"/>
-													</label>
-											</div>
-											<div class="submenu" style="overflow: hidden;">
-													<label>
-														Value Two
-														<input type="radio" class="submenu"/>
-													</label>
-											</div>
-										</div>
-                            		</v-pane-content>
-                            	</v-pane>
-                            	</v-accordion>
+                                <div flex layout="row">
+                                    <div ng-click="applyDashboardFilters()" md-prevent-menu-close="md-prevent-menu-close" flex="50" class="filter-text"> 
+                                        <i class="ti-check-box"></i>
+                                        Apply Filters
+                                    </div>
+                                    <div ng-click="clearDashboardFilter()" md-prevent-menu-close="md-prevent-menu-close" flex="50" class="filter-text">
+                                        <i class="ti-trash"></i>
+                                        Clear Filters
+                                    </div>                                          
+                                </div>
+                            </div>
+                            <div flex layout="row" style="min-height: 40px; max-height: 40px;cursor:pointer;">
+                                <v-accordion id="accordionMenu" class="vAccordion--default" control="accordionA" style="margin: 10px; width: 100%; " onexpand="loadFilterParams(index)">
+                                    <v-pane id = "{{ ::filter.filter.id }}" class="v-pane" ng-repeat="filter in dashboardFilters"> 
+                                        <v-pane-header>
+                                            <h5 class="font-weight-300 text-upper">{{ ::filter.filter_name }}</h5>
+                                        </v-pane-header>
+                                        <v-pane-content class="trans-bg v-pane-content">
+                                            <div layout="row" layout-sm="column" layout-align="space-around" ng-show="filter.sync">
+                                                <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
+                                            </div>   
+                                            <div ng-if="!filter.is_custom">
+                                                <div ng-if="filter.selection_type == 'multiple'">
+                                                    <ul style="overflow: hidden;" ng-repeat="row in filter.filterParameters">
+                                                    	<input type="checkbox" ng-model="row.status" md-prevent-menu-close="md-prevent-menu-close" />
+                                                    	{{ ::row.display }}
+                                                    </ul>
+                                                </div>
+                                                <div ng-if="filter.selection_type == 'single'" class="submenu">
+                                                    <div ng-repeat="row in filter.filterParameters" class="submenu" style="overflow: hidden;">
+                                                            <label ng-class="row.status==true? 'selectedSub' : 'unselectedSub'" ng-click="setSingleSelectStatus(row,filter.filterParameters)"  md-prevent-menu-close="md-prevent-menu-close">
+                                                                {{ ::row.display }}
+                                                            </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="filter.is_custom">
+                                            	<div ng-if="filter.selection_type == 'multiple' ">
+                                                    <ul style="overflow: hidden;" ng-repeat="row in filter.custom_fields">
+                                                    	<input type="checkbox" ng-model="row.status" md-prevent-menu-close="md-prevent-menu-close" />
+                                                    	{{ ::row.displayValue }}
+                                                    </ul>
+                                            	</div>
+                                                <div ng-if="filter.selection_type == 'single'" class="submenu">
+                                                    <div ng-repeat="row in filter.custom_fields" class="submenu" style="overflow: hidden;">
+                                                            <label ng-class="row.status==true? 'selectedSub' : 'unselectedSub'" ng-click="setSingleSelectStatus(row,filter.custom_fields)"  md-prevent-menu-close="md-prevent-menu-close">
+                                                                {{ ::row.displayValue }}
+                                                            </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--        end       -->
+                                        </v-pane-content>
+                                    </v-pane>                       
+                                </v-accordion>
                             </div>                             
                         </md-menu-content>
                     </md-menu>

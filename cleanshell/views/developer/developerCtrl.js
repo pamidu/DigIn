@@ -1,7 +1,7 @@
 DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notifications', 'dialogService','$timeout',function ($scope,$mdDialog,colorManager,notifications, dialogService,$timeout){
 	$scope.$parent.currentView = "Developer Documentation";
     colorManager.reinforceTheme();
-
+	
     var cssHeading = "font-size:15px;font-weight:700;";
 
 
@@ -129,4 +129,4 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 
 	$scope.iconHTML = "Example: <i class=' ti-save-alt' style='font-size:15px'></i>";
 
-}])
+}]);

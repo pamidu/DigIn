@@ -1,0 +1,31 @@
+{
+  "name": "mathjs",
+  "main": "./dist/math.min.js",
+  "license": "Apache-2.0",
+  "ignore": [
+    "coverage",
+    "img",
+    "misc",
+    "node_modules",
+    "test",
+    "tools",
+    ".gitignore",
+    ".npmignore",
+    ".travis.yml",
+    "gulpfile.js",
+    "component.json",
+    "package.json"
+  ],
+  "homepage": "https://github.com/josdejong/mathjs",
+  "version": "3.9.1",
+  "_release": "3.9.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.9.1",
+    "commit": "9101dafbad2fe68dbd3b4eb6e15e507bce06c438"
+  },
+  "_source": "https://github.com/josdejong/mathjs.git",
+  "_target": "~3.9.1",
+  "_originalSource": "mathjs",
+  "_direct": true
+}

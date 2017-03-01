@@ -68,15 +68,15 @@ routerApp.controller('DatasourceSettingsCtrl',[ '$scope','$state','$rootScope','
 	$scope.datasources = [{
 		type:"MSSQL",
 		isSelected:false,
-		icon:'styles/icons/source/mssql.svg'
+		icon:"styles/icons/source/mssql.svg"
 	},{
 		type:"ORACLE",
 		isSelected:false,
-		icon:'styles/icons/source/mssql.svg'
+		icon:'styles/icons/source/oracle.svg'
 	},{
 		type:"hiveql",
 		isSelected:false,
-		icon:'styles/icons/source/mssql.svg'
+		icon:'styles/icons/source/hive.svg'
 	}];
 
 	$scope.onSelectDataBase;

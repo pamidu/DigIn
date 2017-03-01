@@ -17,15 +17,24 @@ routerApp.service('dashboardFilterService',function(filterService,$diginengine,$
         angular.forEach(filterParams,function(param){
             tempFilterArray = [];
             tempStr = "";
-            angular.forEach(param.values,function(key){
-                if (key.status){
-                    if (typeof key.value == 'number'){
-                        tempFilterArray.push(key.value);
-                    } else{
-                        tempFilterArray.push( "'" + key.value + "'");
-                    }
+            if (typeof param.values == 'object') {
+                if (typeof param.values.value == 'number'){
+                    tempFilterArray.push(param.values.value)
+                } else{
+                    tempFilterArray.push( "'" + param.values.value + "'");
                 }
-            })
+            	
+            } else {
+	            angular.forEach(param.values,function(key){
+	                if (key.status){
+	                    if (typeof key.value == 'number'){
+	                        tempFilterArray.push(key.value);
+	                    } else{
+	                        tempFilterArray.push( "'" + key.value + "'");
+	                    }
+	                }
+	            })
+            }
             //if fields are seected, convert the array to string for the request
             if(tempFilterArray.length > 0) {
                 tempFilterArray.toString();
@@ -75,7 +84,7 @@ routerApp.service('dashboardFilterService',function(filterService,$diginengine,$
                     }
                 }
                 if (widget.widgetData.widData.diplaySortArr !== undefined){
-                	order_by = widget.widgetData.widData.diplaySortArr[0];
+                	order_by = widget.widgetData.widData.diplaySortArr[0].sortName;
                 }
                 widget.widgetData.syncState = false;
                 var client = $diginengine.getClient(widget.widgetData.commonSrc.src.src);

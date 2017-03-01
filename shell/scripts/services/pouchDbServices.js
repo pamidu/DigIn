@@ -5,7 +5,7 @@
 // Version : 3.1.0.2
 // Modified By : Gevindu
 /////////////////////////////////
-routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,Digin_Domain,pouchDB,filterService,$qbuilder){
+routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,Digin_Domain,pouchDB,filterService,$qbuilder,dashboardFilterService ){
 
     this.tempRootscopePageId;
 
@@ -39,16 +39,63 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         widget.widgetData.syncState = false;
                                         //Clear the filter indication when the chart is re-set
                                         widget.widgetData.filteredState = false;
-                                        filterService.clearFilters(widget); 
+                                        filterService.clearFilters(widget);
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
-                                            $qbuilder.sync(widget.widgetData, function (data) {
-                                              count++;
-                                              if(dashboard.pages[0].widgets.length == count){
-                                                  dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-                                                  settoPouch(dashboardJson,true,cb);
-                                                  $rootScope.dashboard = dashboard;
-                                               }
-                                            });
+                                            if (widget.widgetData.selectedChart.chartType == "highCharts") {
+                                              var filterArray = [];
+                                              if (dashboard.filterDetails.length > 0) {
+                                                angular.forEach(dashboard.filterDetails,function(filter) {
+                                                  if (filter.is_default) {
+                                                    filterArray.push({
+                                                      filter: {
+                                                        name: filter.filter_name,
+                                                        values: {
+                                                          status: true,
+                                                          value: filter.default_value
+                                                        }
+                                                      }
+                                                    })
+                                                  }
+                                                })
+                                                if (filterArray.length > 0 ){
+                                                  dashboardFilterService.dashboardFilterWidget(widget,filterArray,function(data){
+                                                    count++;
+                                                    if(dashboard.pages[0].widgets.length == count){
+                                                        dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                        settoPouch(dashboardJson,true,cb);
+                                                        $rootScope.dashboard = dashboard;
+                                                     }
+                                                  },'page')
+                                                } else {
+                                                  $qbuilder.sync(widget.widgetData, function (data) {
+                                                    count++;
+                                                    if(dashboard.pages[0].widgets.length == count){
+                                                        dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                        settoPouch(dashboardJson,true,cb);
+                                                        $rootScope.dashboard = dashboard;
+                                                     }
+                                                  });
+                                                }
+                                              } else {
+                                                $qbuilder.sync(widget.widgetData, function (data) {
+                                                  count++;
+                                                  if(dashboard.pages[0].widgets.length == count){
+                                                      dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                      settoPouch(dashboardJson,true,cb);
+                                                      $rootScope.dashboard = dashboard;
+                                                   }
+                                                });
+                                              }
+                                            } else {
+                                              $qbuilder.sync(widget.widgetData, function (data) {
+                                                count++;
+                                                if(dashboard.pages[0].widgets.length == count){
+                                                    dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                    settoPouch(dashboardJson,true,cb);
+                                                    $rootScope.dashboard = dashboard;
+                                                 }
+                                              });
+                                            }
 
                                         }else{
                                           count++;
@@ -91,17 +138,61 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                         widget.widgetData.filteredState = false;
                                         filterService.clearFilters(widget); 
                                         if (widget.widgetData.selectedChart.chartType != "d3hierarchy" && widget.widgetData.selectedChart.chartType != "d3sunburst") {
-                                            $qbuilder.sync(widget.widgetData, function (data) {
-                                              count++;
-                                              widget.widgetData.syncState = true;
-                                              if(dashboard.pages[0].widgets.length == count){
-                                                  dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
-                                                  settoPouch(dashboardJson,true,cb);
-                                                  $rootScope.dashboard = dashboard;
-                                               }
-                                              
-                                            });
-
+                                            if (widget.widgetData.selectedChart.chartType == "highCharts") {
+                                              var filterArray = [];
+                                              if (dashboard.filterDetails.length > 0) {
+                                                angular.forEach(dashboard.filterDetails,function(filter){
+                                                  if (filter.is_default) {
+                                                    filterArray.push({
+                                                      filter: {
+                                                        name: filter.filter_name,
+                                                        values: {
+                                                          status: true,
+                                                          value: filter.default_value
+                                                        }
+                                                      }
+                                                    })
+                                                  }
+                                                })
+                                                if (filterArray.length > 0 ){
+                                                  dashboardFilterService.dashboardFilterWidget(widget,filterArray,function(data){
+                                                    count++;
+                                                    if(dashboard.pages[0].widgets.length == count){
+                                                        dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                        settoPouch(dashboardJson,true,cb);
+                                                        $rootScope.dashboard = dashboard;
+                                                     }
+                                                  },'page')
+                                                } else {
+                                                  $qbuilder.sync(widget.widgetData, function (data) {
+                                                    count++;
+                                                    if(dashboard.pages[0].widgets.length == count){
+                                                        dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                        settoPouch(dashboardJson,true,cb);
+                                                        $rootScope.dashboard = dashboard;
+                                                     }
+                                                  });
+                                                }
+                                              } else {
+                                                $qbuilder.sync(widget.widgetData, function (data) {
+                                                  count++;
+                                                  if(dashboard.pages[0].widgets.length == count){
+                                                      dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                      settoPouch(dashboardJson,true,cb);
+                                                      $rootScope.dashboard = dashboard;
+                                                   }
+                                                });
+                                              }
+                                            } else {
+                                              $qbuilder.sync(widget.widgetData, function (data) {
+                                                count++;
+                                                if(dashboard.pages[0].widgets.length == count){
+                                                    dashboardJson = angular.fromJson(CircularJSON.stringify(dashboard));
+                                                    settoPouch(dashboardJson,true,cb);
+                                                    $rootScope.dashboard = dashboard;
+                                                 }
+                                              });
+                                            }
                                         }else{
                                           count++;
                                            if(dashboard.pages[0].widgets.length == count){

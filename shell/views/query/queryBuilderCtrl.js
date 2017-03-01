@@ -1512,7 +1512,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickCondition: function(row, filed) {
                 $("#togglePanel").hide(200);
-                $scope.isPendingRequest = true;
+                // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleMeasure = false;
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
@@ -1576,7 +1576,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickColumn: function(column) {
                 $("#togglePanelColumns").hide(200);
-                $scope.isPendingRequest = true;
+                // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
                 var isFoundCnd = false;
                 for (i in executeQryData.executeColumns) {
@@ -1634,6 +1634,19 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickRmvCondition: function(condition, measure) {
                 $scope.isPendingRequest = false;
+            },
+            onClickCreateChart: function() {
+                if ($scope.executeQryData.executeMeasures.length < 1) {
+                    privateFun.fireMessage('0', 'Please select atleast one measure');
+                    return;
+                }
+                if ($scope.executeQryData.executeColumns.length <= 1) {
+                    // If there is one category - no drill down
+                    $scope.getAggregation();
+                } else {
+                    // If there is more than one category - drill down present
+                    $scope.getDrilledAggregation();
+                }
             },
             onClickFilter: function(filter, type) {
                 var duplicateRecord = false;
@@ -2109,24 +2122,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.groupBySortArray.splice(index, 1);
                     }
             }
-            
-            $scope.$watch("executeQryData.executeColumns", function(newValue, oldValue) {
-                if (newValue !== oldValue && $scope.selectedChart.chartType == "highCharts") {
-                    if(newValue.length == oldValue.length){
-                        var tempGroupBySortArray=[];
-                        for(var i=0; i < $scope.executeQryData.executeColumns.length; i++){
-                            for(var j=0; j < $scope.groupBySortArray.length; j++){
-
-                                if($scope.executeQryData.executeColumns[i].filedName == $scope.groupBySortArray[j].displayName){
-                                    tempGroupBySortArray[i] = $scope.groupBySortArray[j];
-                                    break;
-                                }
-                            }
-                        }
-                        $scope.groupBySortArray = tempGroupBySortArray; 
-                    }
-                }
-            }, true);
 
             $scope.changeSortHighCharts = function(){
                 if ($scope.executeQryData.executeColumns.length == 1) {
@@ -2176,10 +2171,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         selectCondition: function() {
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
-                $scope.getAggregation();
+                // $scope.getAggregation();
             } else {
                 // If there is more than one category - drill down present
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
             }
         },
         selectAttribute: function(fieldName) {
@@ -2188,13 +2183,13 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.executeQryData.executeColumns = [{
                     filedName: fieldName
                 }];
-                $scope.getGroupedAggregation(fieldName);
+                // $scope.getGroupedAggregation(fieldName);
             } else if ($scope.executeQryData.executeColumns.length >= 1) {
                 $scope.isDrilled = true;
                 $scope.executeQryData.executeColumns.push({
                     filedName: fieldName
                 });
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
             }
         },
         executeQuery: function(cat, res, query) {
@@ -2324,10 +2319,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
-                $scope.getAggregation();
+                // $scope.getAggregation();
             } else {
                 // If there is more than one category - drill down present
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
            
             }
         },
@@ -2336,10 +2331,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             // else $scope.getAggregation();
             if ($scope.executeQryData.executeColumns.length <= 1) {
                 // If there is one category - no drill down
-                $scope.getAggregation();
+                // $scope.getAggregation();
             } else {
                 // If there is more than one category - drill down present
-                $scope.getDrilledAggregation();
+                // $scope.getDrilledAggregation();
             }
         },
         onGetAggData: function(res) {
@@ -5220,7 +5215,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         $scope.executeQryData.executeColumns.forEach(function(key) {
             catArr.push('"' + key.filedName + '"');
         });
-
         if ($scope.isAutoDrill) {
             //if automatic drilling is true, call get highest level
             $scope.client.getHighestLevel($scope.sourceData.tbl, catArr.toString(), $scope.sourceData.id, function(res, status) {
@@ -5255,7 +5249,21 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                             filedName: res[i].value
                         });
                     }
+
+                    var tempGroupBySortArray=[];
+                    for(var i=0; i < $scope.executeQryData.executeColumns.length; i++){
+                        for(var j=0; j < $scope.groupBySortArray.length; j++){
+
+                            if($scope.executeQryData.executeColumns[i].filedName == $scope.groupBySortArray[j].displayName){
+                                tempGroupBySortArray[i] = $scope.groupBySortArray[j];
+                                break;
+                            }
+                        }
+                    }
+                    $scope.groupBySortArray = tempGroupBySortArray; 
+
                     getAggData(highestLevel,drillOrderArr,fieldArr);
+
                 } else {
                     privateFun.fireMessage('0', res);
                     $scope.isPendingRequest = false;

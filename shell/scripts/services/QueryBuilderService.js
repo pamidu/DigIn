@@ -185,11 +185,12 @@ routerApp.service('$qbuilder',function($rootScope, $filter,$diginengine,filterSe
                         mesuresArr.push((widObj.commonSrc.mea[c]['condition']+"_"+widObj.commonSrc.mea[c]['filedName']).toLowerCase());
                     }
 
+                    if (widObj.widData.diplaySortArr !== undefined){
+                        for(c in res){
 
-                    for(c in res){
-
-                        if(res[c][widObj.widData.diplaySortArr[0]['sortName']] != res[c][widObj.widData.diplaySortArr[0]['displayName']])
-                            delete res[c][widObj.widData.diplaySortArr[0]['sortName']];
+                            if(res[c][widObj.widData.diplaySortArr[0]['sortName']] != res[c][widObj.widData.diplaySortArr[0]['displayName']])
+                                delete res[c][widObj.widData.diplaySortArr[0]['sortName']];
+                        }
                     }
 
                     if(cat != ""){

@@ -1498,16 +1498,30 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                 if (filter_field.filterParameters === undefined){
                     filter_field["sync"] = true;
                     if (filter_field.datasource == "BigQuery" || filter_field.datasource == "memsql" ) {
-                        query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM " + $diginurls.getNamespace() + "." + filter_field.datasource_table + " GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field;
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM " + $diginurls.getNamespace() + "." + filter_field.datasource_table + " GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field;
+                        else 
+                            query = "SELECT " + filter_field.value_field + " FROM " + $diginurls.getNamespace() + "." + filter_field.datasource_table + " GROUP BY " + filter_field.value_field + " ORDER BY " + filter_field.value_field;
                     } else if (filter_field.datasource == "MSSQL") {
                         var db = filter_field.datasource_table.split(".");
-                        query = "SELECT [" + filter_field.value_field + "],["+ filter_field.display_field + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + filter_field.value_field + "],["+ filter_field.display_field +"] ORDER BY [" + filter_field.value_field + "]";
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT [" + filter_field.value_field + "],["+ filter_field.display_field + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + filter_field.value_field + "],["+ filter_field.display_field +"] ORDER BY [" + filter_field.value_field + "]";
+                        else
+                            query = "SELECT [" + filter_field.value_field + "] FROM [" + db[0] + '].[' + db[1] + "] GROUP BY [" + filter_field.value_field + "] ORDER BY [" + filter_field.value_field + "]";
+
                     }
                     else if (filter_field.datasource == "hiveql"){
-                         query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field + " , " + filter_field.display_field + "";
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field + " , " + filter_field.display_field + "";
+                        else
+                            query = "SELECT " + filter_field.value_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " ORDER BY " + filter_field.value_field;
                     }
                     else if (filter_field.datasource == "Oracle"){
-                         query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field + " , " + filter_field.display_field + "";
+                        if (filter_field.value_field != filter_field.display_field)
+                            query = "SELECT " + filter_field.value_field + " , " + filter_field.display_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " , " + filter_field.display_field + " ORDER BY " + filter_field.value_field + " , " + filter_field.display_field + "";
+                        else
+                            query = "SELECT " + filter_field.value_field + " FROM "+ filter_field.datasource_table +"  GROUP BY " + filter_field.value_field + " ORDER BY " + filter_field.value_field;
+
                     }
                     filter_field.sync = true;
                     $scope.client.getExecQuery(query, filter_field.datasource_id, function(data, status){
@@ -1569,7 +1583,7 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                         if (tempArray.length > 0){
                             filtersArray.push({
                                 filter: {
-                                    name: dbFilter.value_field,
+                                    name: dbFilter.filter_name,
                                     values: tempArray
                                 }
                             })

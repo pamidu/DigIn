@@ -58,6 +58,7 @@ routerApp.service('dashboardFilterService',function(filterService,$diginengine,$
             })
             if ( connection_string.length > 0 ) {
                 var requestArray = [];
+                var order_by;
                 //if chart is configured for drilled down, get the highest level to apply filters
                 if (typeof widget.widgetData.widData.drillConf != "undefined" && widget.widgetData.widData.drilled) {
                     var chart = widget.widgetData.highchartsNG.getHighcharts();
@@ -72,6 +73,9 @@ routerApp.service('dashboardFilterService',function(filterService,$diginengine,$
                     } else {
                         requestArray = undefined;
                     }
+                }
+                if (widget.widgetData.widData.diplaySortArr !== undefined){
+                	order_by = widget.widgetData.widData.diplaySortArr[0];
                 }
                 widget.widgetData.syncState = false;
                 var client = $diginengine.getClient(widget.widgetData.commonSrc.src.src);
@@ -107,7 +111,7 @@ routerApp.service('dashboardFilterService',function(filterService,$diginengine,$
                         widget.widgetData.syncState = true;
                     }
                     cb(widget);
-                },requestArray,connection_string);
+                },requestArray,connection_string,order_by);
             } else {
             	if(type == 'page') {
                     $qbuilder.sync(widget.widgetData, function (data) {

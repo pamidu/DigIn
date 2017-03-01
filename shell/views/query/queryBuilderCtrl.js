@@ -1640,6 +1640,10 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     privateFun.fireMessage('0', 'Please select atleast one measure');
                     return;
                 }
+                if ($scope.executeQryData.executeColumns.length < 1) {
+                    privateFun.fireMessage('0', 'Please select atleast one category');
+                    return;
+                }
                 if ($scope.executeQryData.executeColumns.length <= 1) {
                     // If there is one category - no drill down
                     $scope.getAggregation();
@@ -4619,25 +4623,8 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
         
 
-
-     //-------------------------------------------------------------
-
-    $scope.getAggregation = function() {
-        $scope.eventHndler.isLoadingChart = true;
-        if ($scope.highchartsNG === undefined) {
-            $scope.highchartsNG = {};
-        }
-        if (typeof $scope.highchartsNG.init == "undefined" || !$scope.highchartsNG.init) {
-            $scope.highchartsNG["init"] = false;
-            $scope.highchartsNG = {};
-            if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
-                $scope.dataToBeBind.receivedQuery = "";
-                $scope.isPendingRequest = false;
-                $scope.eventHndler.isLoadingChart = false;
-                $scope.highchartsNG = $scope.initHighchartObj;                
-                return;
-            }
-            if ($scope.chartType != 'Geographical Map') {
+    var initialiseChartObject = function()
+    {
                 $scope.highchartsNG = {
                     options: {
                         chart: {
@@ -4725,8 +4712,27 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                     colors: ['#3b6982'],
                     series: []
                 };
+    }
 
+     //-------------------------------------------------------------
 
+    $scope.getAggregation = function() {
+        $scope.eventHndler.isLoadingChart = true;
+        if ($scope.highchartsNG === undefined) {
+            $scope.highchartsNG = {};
+        }
+        if (typeof $scope.highchartsNG.init == "undefined" || !$scope.highchartsNG.init) {
+            $scope.highchartsNG["init"] = false;
+            $scope.highchartsNG = {};
+            if ($scope.executeQryData.executeColumns.length == 0 && $scope.executeQryData.executeMeasures.length == 0){
+                $scope.dataToBeBind.receivedQuery = "";
+                $scope.isPendingRequest = false;
+                $scope.eventHndler.isLoadingChart = false;
+                $scope.highchartsNG = $scope.initHighchartObj;                
+                return;
+            }
+            if ($scope.chartType != 'Geographical Map') {
+                initialiseChartObject();
             } else {
                 {
                     $scope.highchartsNG.options = {
@@ -4918,6 +4924,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
             // filter only the selected fields from the result returned by the service
             filterService.filterAggData(res, $scope.sourceData.filterFields);
+            initialiseChartObject();
             var serObj = {};
             for (var key in res[0]) {
                 if (Object.prototype.hasOwnProperty.call(res[0], key)) {

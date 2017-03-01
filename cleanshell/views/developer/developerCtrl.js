@@ -1,7 +1,7 @@
 DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notifications', 'dialogService','$timeout',function ($scope,$mdDialog,colorManager,notifications, dialogService,$timeout){
 	$scope.$parent.currentView = "Developer Documentation";
     colorManager.reinforceTheme();
-
+	
     var cssHeading = "font-size:15px;font-weight:700;";
 
 

@@ -308,7 +308,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
             //Just for testing, User settings are not needed here
             DiginServices.getUserSettings().then(function(data) {
-                console.log(data);
+                //notifications.log(data, new Error());
                 $scope.userSettings = data;
                 $rootScope.theme = $scope.userSettings.theme_config;
 
@@ -317,7 +317,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
                 //Go To Default Dashboard if it exsist
                 var obj = JSON.parse($scope.userSettings.components);
-                if(obj.dashboardId !=== null) {
+                if(obj.dashboardId !== null) {
                     //getDashboard(obj.dashboardId);
                     $scope.data.defaultDashboard = obj.dashboardId;
                     oldDefaultDashboard = angular.copy(obj.dashboardId);
@@ -327,16 +327,16 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
                 //$scope.userSettings.theme_config = $rootScope.theme;
             });
 		}else{
-			console.log("not local");
+			notifications.log("not local", new Error());
 			
 			DiginServices.getUserSettings().then(function(data) {
-				console.log(data);
+				notifications.log(data, new Error());
 				$scope.userSettings = data;
 			});
 			
 			DiginServices.getSession().then(function(data) {
 				var pouchdbName = data.UserID + data.Domain;
-				console.log(pouchdbName);
+				notifications.log(pouchdbName, new Error());
 				$rootScope.db  = new pouchDB(pouchdbName);
 			});
 		}
@@ -348,7 +348,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	$scope.componentsLoaded = false;
 	DiginServices.getDiginComponents().then(function(data) {
-		console.log(data);
+		notifications.log(data, new Error());
 		$scope.componentsLoaded = true;
 		for (i = 0, len = data.length; i<len; ++i){
 			if(data[i].compType == 'dashboard')
@@ -376,7 +376,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				
 			},
 			goReport: function (report){
-				console.log("report");
+				notifications.log("report", new Error());
 				$mdSidenav('searchBar').close();
 			},
 			deleteDashboard: function (dashboard, ev){
@@ -401,9 +401,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				});
 			},
 			deleteReport: function (dashboard, ev){
-				console.log("delete report");
+				notifications.log("delete report", new Error());
 			},setDefaultDashboard: function (ev, dashboard) {
-				console.log($scope.data.defaultDashboard);
+				notifications.log($scope.data.defaultDashboard, new Error());
 
                 $scope.data.defaultDashboard = null;
                 dialogService.confirmDialog(ev, "Set Default Dashboard","Are you sure you want to set '"+dashboard.compName+"' dashboard as Default?","yes", "cancel").then(function(result) {
@@ -465,7 +465,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		DiginServices.getComponent(dashboardId).then(function(data) {
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
-			console.log($rootScope.currentDashboard);
+			notifications.log($rootScope.currentDashboard, new Error());
 			location.href = '#/dashboard?id='+dashboardId;
 		});
 	}
@@ -579,17 +579,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
     $scope.ShouldAutoStart = false;
 	
-	var cssRule =
-		"color: #2795d8;" +
-		"font-size: 60px;" +
-		"font-weight: bold;" +
-		"text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
-		"font-style: italic;" +
-		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
-	console.log("%cWelcome to Cleanshell", cssRule);
 	
-	console.log("This should only be shown in developer mode, Click the below link for the developer documentation");
-	console.log(window.location.origin+window.location.pathname+"#/developer");
+		//var newErr = new Error();
+
 
 	
 }]);//END OF NavCtrl

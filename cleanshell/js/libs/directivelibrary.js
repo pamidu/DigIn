@@ -70,7 +70,7 @@ directiveLibraryModule.factory('Toastino',['$timeout', function ($timeout) {
   return Toastino;
 }]);
 
-directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog', function(Toastino, $mdDialog) {
+directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog','DeveloperMode','$log', function(Toastino, $mdDialog,DeveloperMode,$log) {
 
   var ToastinoService = function () {
     this.toastinoMessages = [];
@@ -186,8 +186,34 @@ directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog', functio
 		  clickOutsideToClose:false
 		})
 	}
+	
+	ToastinoService.prototype.log = function(displayText,newErr) {
+		if(DeveloperMode === true)
+		{
+			var lineNumber = newErr.stack.split('\n')[1].split(':')[3];
+			console.log(displayText, "Line number: "+lineNumber);
+		}
+	}
+	
 	ToastinoService.prototype.finishLoading = function(){
 		$mdDialog.hide();
+	}
+	
+
+	
+	if(DeveloperMode === true)
+	{
+		var cssRule =
+		"color: #2795d8;" +
+		"font-size: 60px;" +
+		"font-weight: bold;" +
+		"text-shadow: 1px 1px 5px rgb(249, 162, 34);" +
+		"font-style: italic;" +
+		"filter: dropshadow(color=rgb(249, 162, 34), offx=1, offy=1);";
+		console.log("%cWelcome to Cleanshell", cssRule);
+
+		console.log("This should only be shown in developer mode, Click the below link for the developer documentation");
+		console.log(window.location.origin+window.location.pathname+"#/developer");
 	}
 
   return new ToastinoService();

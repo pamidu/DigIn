@@ -129,4 +129,4 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 
 	$scope.iconHTML = "Example: <i class=' ti-save-alt' style='font-size:15px'></i>";
 
-}])
+}]);

@@ -198,7 +198,7 @@ directiveLibraryModule.factory('dialogService', ['$rootScope','$mdDialog', funct
 		return {
 			confirmDialog: function(ev,title, content, okText, noText, cancelText) {
 								
-				var showData = {title: title, content: content, okText: okText, noText: noText, cancelText: cancelText }
+				var showData = {title: title, content: content, okText: okText, noText: noText, cancelText: cancelText };
 				
 				return $mdDialog.show({
 						  controller: confirmDialogCtrl,
@@ -233,7 +233,7 @@ directiveLibraryModule.factory('dialogService', ['$rootScope','$mdDialog', funct
 			
 			},alertDialog: function(ev,title, content, okText){
 
-                var showData = {title: title, content: content, okText: okText }
+                var showData = {title: title, content: content, okText: okText };
                 return $mdDialog.show({
                     controller: confirmDialogCtrl,
                     template:   '<md-dialog aria-label="confirm dialog">'+

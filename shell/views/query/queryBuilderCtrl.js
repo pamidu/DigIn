@@ -1514,7 +1514,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 }
             },
             onClickCondition: function(row, filed) {
-                $("#togglePanel").hide(200);
                 // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleMeasure = false;
                 var isFoundCnd = false;
@@ -1578,7 +1577,6 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 eval("$scope." + $scope.selectedChart.chartType + ".selectActualCondition(row, field)");
             },
             onClickColumn: function(column) {
-                $("#togglePanelColumns").hide(200);
                 // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
                 var isFoundCnd = false;
@@ -5559,7 +5557,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         for(var g=0; g< serArr.length; g++){
             for(var i=0; i< tempMesureArr.length; i++){
 
-                var measure = (tempMesureArr[i]["condition"]+"_"+tempMesureArr[i]["filedName"]).toLowerCase();
+                var measure = ((tempMesureArr[i]["condition"]).toLowerCase() +"_"+tempMesureArr[i]["filedName"]);
 
                 if(serArr[g]["origName"] == measure)
                     tempArr.push(serArr[g]);

@@ -61,7 +61,7 @@
 
 						<md-content>
 
-							<form name="editForm" ng-submit="profile.changeUserProfile()">
+							<form name="editForm" ng-submit="profile.changeUserProfile($event)">
 								<div layout="row" layout-align="end end">
 									<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('home')"></md-button>
 								</div>
@@ -95,7 +95,7 @@
 									</md-input-container>
 									<md-input-container class="md-block" flex-gt-sm>
 										<span>Company</span>
-										<input type="text" name="company" ng-model="user.Company" ng-disabled="!editModeOn" is-disabled-dark  aria-label="company"/>					
+										<input type="text" name="company" ng-model="Company" ng-disabled="true" is-disabled-dark  aria-label="company"/>					
 									</md-input-container>
 
 								</div>
@@ -120,7 +120,7 @@
 										</div>
 									</md-input-container>
 								</div>
-								<div layout-gt-sm="row" class="side-margins">
+								<!--div layout-gt-sm="row" class="side-margins">
 									<md-input-container class="md-block" flex-gt-sm="50">
 										<span>Billing Address</span>
 										<input required type="text" name="street" ng-model="user.BillingAddress" ng-disabled="!editModeOn"  is-disabled-dark aria-label="billing address"/>
@@ -143,7 +143,7 @@
 										<input type="text" name="zip" ng-model="user.ZipCode" ng-disabled="!editModeOn"  is-disabled-dark aria-label="zip"/>
 									</md-input-container>
 
-								</div>
+								</div-->
 
 								<div layout="row" layout-align="center start" layout-margin ng-init="submitted=false" >
 									<md-button class="md-raised md-primary" style="width:100px;" type="button" ng-click="profile.clickEdit()"  aria-label="edit" ng-if="editModeOn == false">
@@ -199,7 +199,7 @@
 
 									<div layout="column" flex>
 										<text style="font-weight:700;color:grey;font-size:15px">DASHBOARDS</text>
-										<text style="font-size:50px">30</text>
+										<text style="font-size:50px">{{usageDetails.dashboard}}</text>
 									</div>
 								</div>
 								<div layout="row" flex style="padding:10px">
@@ -216,30 +216,30 @@
 							<div layout="row">
 								<div layout="row" flex style="padding:10px;border-right: 1px solid #dddddd">
 									<div layout="row" layout-align="start center" flex="30">
-										<i class="ti-user" style="color:#4caf50;font-size: 30px;padding-top: 23px;" flex="30"></i>
+										<i class="ti-save-alt" style="color:#4caf50;font-size: 30px;padding-top: 23px;" flex="30"></i>
 									</div>
 
 									<div layout="column" flex>
-										<text style="font-weight:700;color:grey;font-size:15px">LOGGED-IN USERS</text>
-										<text style="font-size:50px">2</text>
+										<text style="font-weight:700;color:grey;font-size:15px">STORAGE</text>
+										<text style="font-size:50px">{{usageDetails.storage_bq/1048576 | number:0}} <span style="font-size:30px">MB</span></text>
 									</div>
 								</div>
 								<div layout="row" flex style="padding:10px">
 									<div layout="row" layout-align="start center" flex="30">
-										<i class="icon-group" style="color:#f9a525;font-size: 36px;padding-top: 33px;" flex="30"></i>
+										<i class="ti-stats-up" style="color:#f9a525;font-size: 36px;padding-top: 33px;" flex="30"></i>
 									</div>
 
 									<div layout="column" flex>
-										<text style="font-weight:700;color:grey;font-size:15px">TOTAL USERS</text>
-										<text style="font-size:50px">50</text>
+										<text style="font-weight:700;color:grey;font-size:15px">DATA USAGE</text>
+										<text style="font-size:50px">{{usageDetails.download_bq/1048576 | number:0}} <span style="font-size:30px">MB</span> </text>
 									</div>
 								</div>
 							</div>
 
 						</md-card>
 					</div>
-					<md-card class="product_card" style="padding: 10px">
-							<div id="container" style="margin:10px">Placeholder for chart</div>
+					<md-card class="product_card" style="padding:0px" ng-hide="onsite">
+						<highchart  config="chartConfig"></highchart>
 					</md-card>
 					
 				</div>
@@ -403,6 +403,59 @@
 			</md-tab-body>
 		</md-tab>
 		<!--END OF PACKAGE DETAILS TAB-->
+		
+		<!--START OF PURCHASE HISTORY TAB-->
+		<md-tab label="Purchase History" ng-if="!onsite">
+			<md-tab-label layout="row" layout="space-between center">
+				<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
+					Purchase History
+				</span>
+			</md-tab-label>
+			<md-tab-body>
+				<div class="card-container">
+					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
+
+						<md-content>
+							<form name="editForm" ng-submit="submit()">
+								<div layout="row" layout-align="end end">
+									<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('home')"></md-button>
+								</div>
+								<div class="setting-card-header">
+									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Purchase History</h2>
+									<div class="setting-img-wrap">
+										<img src="views/settings/myAccount/purchase_history.png"/>
+									</div>
+								</div>
+								<div layout="row" layout-align="start start">
+									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Choose Range</div>
+								</div>
+								<div layout="row" layout-gt-sm="row" layout-align="end center" layout-wrap>
+									<div layout="column">
+										<span style="font-size: 12px;margin-bottom: 5px;">From Date </span>
+										<md-datepicker ng-model="fromDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+									</div>
+									<div layout="column" style="margin-left:40px">
+										<span style="font-size: 12px;margin-bottom: 5px;">To Date </span>
+										<md-datepicker ng-model="toDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+									</div>
+									<div layout="column" style="margin:20px 21px 0px 40px">
+										<md-button ng-click="getPaymentHistory()" class="md-fab md-mini" style="margin:0" ng-hide="paymentLoading">
+											<i class="ti-angle-right" style="font-size:18px;line-height: 40px; padding-left: 4px;"></i>
+											<md-tooltip md-direction="right">Get Payment Details</md-tooltip>
+										</md-button>
+									    <span layout="row" layout-align="center center" ng-show="paymentLoading">
+											<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+										</span>
+									</div>
+								</div>
+								
+							</form><br/><br/>
+						</md-content>
+					</md-whiteframe>
+				</div>
+			</md-tab-body>
+		</md-tab>
+		<!--END OF PURCHASE HISTORY TAB-->
 		
 		
 	</md-tabs>

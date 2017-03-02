@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices', 'notifications','paymentGateway','$http','colorManager', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,notifications,paymentGateway,$http,colorManager){
 	
 	var vm = this;
 	
@@ -11,7 +11,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	$scope.user = {};
 	$scope.editModeOn = false;
 	
-	UserServices.getProfile(function(data) {
+	DiginServices.getProfile(function(data) {
 		userObject = angular.copy(data);
 		$scope.user = data;
 	})
@@ -26,7 +26,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 			},
 			changeUserProfile: function (){
 				$scope.editModeOn = true;
-				UserServices.updateProfile($scope.user).then(function(result) {
+				DiginServices.updateProfile($scope.user).then(function(result) {
 					if(result.IsSuccess == true)
 					{
 						$scope.editModeOn = false;

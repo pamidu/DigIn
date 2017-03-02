@@ -2,8 +2,6 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 	$scope.$parent.currentView = "Developer Documentation";
     colorManager.reinforceTheme();
 	
-	$scope.availableColumns = [{name:"order_id"},{name:"order_quantity"},{name: "product_base_margin"} ];
-	
     var cssHeading = "font-size:15px;font-weight:700;";
 
 

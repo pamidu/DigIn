@@ -272,9 +272,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 //     };
 // }]);
 
-// Modified by:  Dilani Maheswaran
-// Date: 02/03/2017
-
 routerApp.directive('whatIfConfigurationContainer', ['$rootScope', '$http', function ($rootScope, $http) {
     return {
         restrict: 'E',
@@ -363,7 +360,7 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 +            '<legend class="demo-legend">Available Columns </legend>'
                 +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
                 +                '<md-list-item ' 
-                +                    'ng-repeat="avCol in availableColumns track by $index" '
+                +                    'ng-repeat="avCol in availableColumns | orderBy" '
                 +                    'ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" '
                 +                    'ng-class="isToggled(avCol)">'
                 +                        '<p>{{avCol}}</p>'
@@ -380,7 +377,7 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 +            '<legend class="demo-legend">Selected Columns </legend>'
                 +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
                 +                '<md-list-item '
-                +                   'ng-repeat="slCols in selectedColumns track by $index" '
+                +                   'ng-repeat="slCols in selectedColumns" '
                 +                   'ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" '
                 +                   'ng-class="isToggled(slCols)">'
                 +                        '<p>{{slCols}}</p>'
@@ -404,9 +401,10 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 if(obj.type)
                     colTy = obj.type.toUpperCase();
 
-                if(acceptedColumnTypes.indexOf(colTy) > -1)
-                    return obj;
-            }).map(function(obj, index) { return obj.filedName; });
+                if(acceptedColumnTypes.indexOf(colTy) > -1) // validate datatype of column
+		    if(scope.columns.indexOf(obj) === idx) // remove duplicates
+                    	return obj;
+            }).map(function(obj, index) { return obj.name; });
 
             scope.toggleRow = function(tbl, row, index, ev) { 
                 ev.preventDefault();
@@ -652,7 +650,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.chartWrapStyle.height = 'calc(91vh)';
             } else {
                 $scope.dynFlex = 70;
-                $scope.chartWrapStyle.height = 'calc(59vh)';
+                $scope.chartWrapStyle.height = 'calc(63vh)';
             }
         }
     };
@@ -696,7 +694,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.isAutoDrill = true;
     $scope.dynFlex = 70;
     $scope.chartWrapStyle = {
-        height: 'calc(59vh)'
+        height: 'calc(63vh)'
     };
     $scope.notificationValue = "";
     $scope.isPendingRequest = false;
@@ -1983,7 +1981,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.chartWrapStyle.height = 'calc(91vh)';
                     } else {
                         $scope.dynFlex = 70;
-                        $scope.chartWrapStyle.height = 'calc(59vh)';
+                        $scope.chartWrapStyle.height = 'calc(63vh)';
                     }
                     return 0;
                 } else {
@@ -1994,7 +1992,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.chartWrapStyle.height = 'calc(91vh)';
                     } else {
                         $scope.dynFlex = 70;
-                        $scope.chartWrapStyle.height = 'calc(59vh)';
+                        $scope.chartWrapStyle.height = 'calc(63vh)';
                     }
                     var i;
                     var chartInData = data;
@@ -5840,6 +5838,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     // convert target value integer to comma seperated value
     $scope.changeTargetValue = function() {
+        $scope.selectedChart.initObj.targetValue=$scope.selectedChart.initObj.targetValueDisplay;
         if ($scope.selectedChart.initObj.targetValue != null) {
             $scope.selectedChart.initObj.targetValueString = $scope.selectedChart.initObj.targetValue.toLocaleString();   
             $scope.selectedChart.initObj.targetValueDisplay = $scope.selectedChart.initObj.targetValue;

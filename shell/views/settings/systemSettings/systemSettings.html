@@ -119,7 +119,8 @@
 										<legend class="demo-legend">Files </legend>
 										<div layout="row" layout-align="space-between end">
 											<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()"  style="margin:10px 0px 0px 19px">
-											  <span ng-if="isChecked()">Un-</span>Select All files 
+											  <span ng-if="isChecked()">Unselect all files</span>
+											  <span ng-if="!isChecked()">Select all files</span>
 											</md-checkbox>
 										</div>
 
@@ -147,7 +148,8 @@
 										<legend class="demo-legend">Folders </legend>
 										<div layout="row" layout-align="space-between end">
 											<md-checkbox aria-label="Select All" ng-checked="isCheckedFolder()" md-indeterminate="isIndeterminateFolder()" ng-click="toggleAllFolder()" style="margin:10px 0px 0px 19px">
-											  <span ng-if="isCheckedFolder()">Un-</span>Select All Folders 
+											  <span ng-if="isCheckedFolder()">Unselect all folders</span>
+											  <span ng-if="!isCheckedFolder()">Select all folders</span> 
 											</md-checkbox>
 										</div>
 

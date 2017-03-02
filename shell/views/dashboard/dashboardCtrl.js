@@ -1165,12 +1165,53 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
                                         }
                                     },'page')
                                 } else {
-                                    $qbuilder.sync(page.widgets[i].widgetData, function (data) {
-                                        count++;
-                                        if(page.widgets.length == count){
-                                            pouchDbServices.pageSync($rootScope.dashboard);
+                                    if (page.widgets[i].widgetData.selectedChart.chartType == "highCharts") {
+                                        var filterArray = [];
+                                      if ($rootScope.dashboard.filterDetails.length > 0) {
+                                        angular.forEach($rootScope.dashboard.filterDetails,function(filter) {
+                                          if (filter.is_default) {
+                                            filterArray.push({
+                                              filter: {
+                                                name: filter.filter_name,
+                                                values: {
+                                                  status: true,
+                                                  value: filter.default_value
+                                                }
+                                              }
+                                            })
+                                          }
+                                        })
+                                        if (filterArray.length > 0 ){
+                                            dashboardFilterService.dashboardFilterWidget(page.widgets[i],filterArray,function(data){
+                                                count++;
+                                                if(page.widgets.length == count){
+                                                    pouchDbServices.pageSync($rootScope.dashboard);
+                                                }
+                                            },'page')
+                                        } else {
+                                            $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                                count++;
+                                                if(page.widgets.length == count){
+                                                    pouchDbServices.pageSync($rootScope.dashboard);
+                                                }
+                                            });
                                         }
-                                    });
+                                      } else {
+                                        $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                            count++;
+                                            if(page.widgets.length == count){
+                                                pouchDbServices.pageSync($rootScope.dashboard);
+                                            }
+                                        });
+                                      }
+                                    } else {
+                                        $qbuilder.sync(page.widgets[i].widgetData, function (data) {
+                                            count++;
+                                            if(page.widgets.length == count){
+                                                pouchDbServices.pageSync($rootScope.dashboard);
+                                            }
+                                        });
+                                    }
                                 }
                             }else{
                                  count++;

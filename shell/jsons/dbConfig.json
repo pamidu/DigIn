@@ -25,12 +25,12 @@
     "display": "true"
 },  {
     "name": "Oracle",
-    "icon": "styles/icons/source/xlsx.svg",
+    "icon": "styles/icons/source/oracle.svg",
     "selected": "false",
     "display": "true"
 }, {
     "name": "hiveql",
-    "icon": "styles/icons/source/xlsx.svg",
+    "icon": "styles/icons/source/hive.svg",
     "selected": "false",
     "display": "true"
 },  {

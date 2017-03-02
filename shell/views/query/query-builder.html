@@ -457,6 +457,12 @@
                     </div> -->
                 </div>
 
+<div style="width: 100%; height: 6%; background: #ffffff; border-top: 3px solid #ECECEC; border-left: 3px solid #ECECEC;z-index: 1;">
+    <md-button class="md-raised md-primary" ng-click="eventHndler.onClickCreateChart('6')">
+        Generate chart
+    </md-button>  
+</div>
+
                 <div ng-disabled="!isDrilled" class="digin-gb-row"
                      ng-if="selectedChart.chartType == 'highCharts' || selectedChart.chartType == 'metric' || selectedChart.chartType == 'Tabular'">
                     <div class="panel-header inline-panel-header p-b-0">
@@ -625,6 +631,12 @@
                             <i class="ti-eraser hvr-pop"></i>
                         </div>
 						<md-tooltip md-direction="left">Clear</md-tooltip>
+                    </div>
+                    <div class=" last-icon" ng-click="eventHndler.onClickCreateChart('6')">
+                        <div class="right-menu">
+                            <i class="ti-arrow-circle-right hvr-pop"></i>
+                        </div>
+                        <md-tooltip md-direction="left">Create Chart</md-tooltip>
                     </div>
 <!-- 					<div class=" last-icon">
 						<div class="right-menu">

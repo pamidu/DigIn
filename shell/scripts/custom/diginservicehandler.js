@@ -97,7 +97,7 @@
                         // con = con.replace(/&/g , "%26");                        
                     }
                     if (ob === undefined) {
-                        gb = ob;
+                        ob = gb;
                     }
                     aggObjArr.forEach(function(key) {
                         if (database == "MSSQL") {

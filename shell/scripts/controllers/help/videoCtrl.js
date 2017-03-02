@@ -27,7 +27,7 @@ routerApp.controller('videoCtrl', function ($scope, $sce, $state) {
             onClick: false
         },
         {
-            id: 'h2',
+            id: 'h3',
             header: 'ETL using talend',
             url: [{
                 src: $sce.trustAsResourceUrl("https://www.youtube.com/watch?v=R5nxTQjWdCA"),
@@ -36,7 +36,7 @@ routerApp.controller('videoCtrl', function ($scope, $sce, $state) {
             onClick: false
         },
         {
-            id: 'h3',
+            id: 'h4',
             header: 'Docs, Sheets, Slides, and other apps',
             url: [{
                 src: $sce.trustAsResourceUrl("https://youtu.be/tLE_zHc3oDE"),

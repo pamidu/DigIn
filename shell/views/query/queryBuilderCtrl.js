@@ -5839,6 +5839,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     };
     // convert target value integer to comma seperated value
     $scope.changeTargetValue = function() {
+        $scope.selectedChart.initObj.targetValue=$scope.selectedChart.initObj.targetValueDisplay;
         if ($scope.selectedChart.initObj.targetValue != null) {
             $scope.selectedChart.initObj.targetValueString = $scope.selectedChart.initObj.targetValue.toLocaleString();   
             $scope.selectedChart.initObj.targetValueDisplay = $scope.selectedChart.initObj.targetValue;

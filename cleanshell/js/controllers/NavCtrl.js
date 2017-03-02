@@ -131,26 +131,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			});
 		}else if(action == "Logout")
 		{
-<<<<<<< HEAD
-			var confirm = $mdDialog.confirm()
-				.title('Are you sure you want to logout?')
-				.targetEvent(event)
-				.ok('Yes!')
-				.cancel('No!');
-			$mdDialog.show(confirm).then(function () {
-				//$scope.status = 'Yes';
-				$window.location = "/logout.php";
-			}, function () {
-				//$scope.status = 'No';
-			});
-=======
 			dialogService.confirmDialog(ev, "Logout","Are you sure you want to logout?","yes", "no").then(function(answer) {
 				if(answer == 'yes')
 				{
 					$window.location = "/logout.php";
 				}
 			})
->>>>>>> refs/remotes/origin/Development
 		}else if(action == "Create Dashboard")
 		{
 			
@@ -308,18 +294,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	//End of Perform
 	$scope.data = {};
 	$scope.userSettings = {};
-<<<<<<< HEAD
-=======
 	$scope.myTenant = {};
->>>>>>> refs/remotes/origin/Development
     var oldDefaultDashboard = "";
 	(function (){
 
 		if(IsLocal === true){
-<<<<<<< HEAD
-=======
 			notifications.log("not", new Error());
->>>>>>> refs/remotes/origin/Development
 			$rootScope.db  = new pouchDB("Dashboards");
 			//$scope.getSearchPanelDetails();
 
@@ -344,15 +324,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
                 //$scope.userSettings.theme_config = $rootScope.theme;
             });
 		}else{
-<<<<<<< HEAD
-			notifications.log("not local", new Error());
-			
-			DiginServices.getUserSettings().then(function(data) {
-				notifications.log(data, new Error());
-				$scope.userSettings = data;
-			});
-			
-=======
 			
 			DiginServices.getUserSettings().then(function(data) {
 				notifications.log(data, new Error());
@@ -363,7 +334,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				$scope.myTenant = data;
 			});
 			
->>>>>>> refs/remotes/origin/Development
 			DiginServices.getSession().then(function(data) {
 				var pouchdbName = data.UserID + data.Domain;
 				notifications.log(pouchdbName, new Error());
@@ -401,11 +371,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		return {
 			goDashboard: function (ev, dashboard) {
 				$mdSidenav('searchBar').close();
-<<<<<<< HEAD
-				getDashboard(dashboard.compID);
-=======
 				getDashboard(ev, dashboard.compID);
->>>>>>> refs/remotes/origin/Development
 				
 				
 			},
@@ -417,11 +383,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete '"+dashboard.compName+"' dashboard?","yes", "cancel").then(function(result) {
 					if(result == 'yes')
 					{
-<<<<<<< HEAD
-						DiginServices.deleteComponent(dashboard.compID, false).then(function(data) {
-=======
 						DiginServices.deleteComponent(ev, dashboard.compID, false).then(function(data) {
->>>>>>> refs/remotes/origin/Development
 							if(data.Is_Success === true){
 								
 								// Delete from pouch
@@ -498,15 +460,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     //Really sorry about this code above, If I haven't done yet please remind me to create a directive for this.
 
 
-<<<<<<< HEAD
-    function getDashboard(dashboardId)
-	{
-		DiginServices.getComponent(dashboardId).then(function(data) {
-=======
     function getDashboard(ev, dashboardId)
 	{
 		DiginServices.getComponent(ev, dashboardId).then(function(data) {
->>>>>>> refs/remotes/origin/Development
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
 			notifications.log($rootScope.currentDashboard, new Error());
@@ -622,10 +578,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     };
 
     $scope.ShouldAutoStart = false;
-	
-	
-		//var newErr = new Error();
-
 
 	
 }]);//END OF NavCtrl

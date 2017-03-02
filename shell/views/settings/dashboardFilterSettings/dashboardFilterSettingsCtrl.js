@@ -440,6 +440,13 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 	// save the filter with the respective dashboard
 	$scope.saveFilters = function()
 	{
+		// validaition
+		if ($scope.filterName == "")
+		{
+			notifications.toast('0','Please add a name to the filter');
+			return;
+		}
+
 		var is_custom;
 		var connection;
 		var table;

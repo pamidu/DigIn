@@ -272,6 +272,9 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 //     };
 // }]);
 
+// Modified by:  Dilani Maheswaran
+// Date: 02/03/2017
+
 routerApp.directive('whatIfConfigurationContainer', ['$rootScope', '$http', function ($rootScope, $http) {
     return {
         restrict: 'E',
@@ -360,7 +363,7 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 +            '<legend class="demo-legend">Available Columns </legend>'
                 +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
                 +                '<md-list-item ' 
-                +                    'ng-repeat="avCol in availableColumns | orderBy" '
+                +                    'ng-repeat="avCol in availableColumns track by $index" '
                 +                    'ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" '
                 +                    'ng-class="isToggled(avCol)">'
                 +                        '<p>{{avCol}}</p>'
@@ -377,7 +380,7 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 +            '<legend class="demo-legend">Selected Columns </legend>'
                 +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
                 +                '<md-list-item '
-                +                   'ng-repeat="slCols in selectedColumns" '
+                +                   'ng-repeat="slCols in selectedColumns track by $index" '
                 +                   'ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" '
                 +                   'ng-class="isToggled(slCols)">'
                 +                        '<p>{{slCols}}</p>'
@@ -403,7 +406,7 @@ routerApp.directive('whatIfVariableSelector', [function () {
 
                 if(acceptedColumnTypes.indexOf(colTy) > -1)
                     return obj;
-            }).map(function(obj, index) { return obj.name; });
+            }).map(function(obj, index) { return obj.filedName; });
 
             scope.toggleRow = function(tbl, row, index, ev) { 
                 ev.preventDefault();

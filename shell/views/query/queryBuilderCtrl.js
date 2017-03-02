@@ -3944,7 +3944,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         },
                         xAxis: {
                             title: {
-                                text: fieldArray[0]
+                                text: $scope.commonData.measures[0].filedName
                             },
                             categories: $scope.histogramPlotcat,
                             labels: {

@@ -2,7 +2,7 @@
     <h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Dashboards </h1>
 	<md-divider style="margin-right:45px;margin-left:45px"></md-divider>
 	<div layout="row" layout-align="center center" layout-wrap>
-		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-800'}" ng-click="diginComponents.goDashboard(dashboard)">
+		<md-card ng-repeat="dashboard in dashboards"  flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-800'}" ng-click="diginComponents.goDashboard($event,dashboard)">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
 				<span class="product_name" style="border-bottom: 1px solid #white;">{{dashboard.compName}}</span>
 			</div>

@@ -401,8 +401,9 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 if(obj.type)
                     colTy = obj.type.toUpperCase();
 
-                if(acceptedColumnTypes.indexOf(colTy) > -1)
-                    return obj;
+                if(acceptedColumnTypes.indexOf(colTy) > -1) // validate datatype of column
+		    if(scope.columns.indexOf(obj) === idx) // remove duplicates
+                    	return obj;
             }).map(function(obj, index) { return obj.name; });
 
             scope.toggleRow = function(tbl, row, index, ev) { 

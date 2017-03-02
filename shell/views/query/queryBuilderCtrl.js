@@ -649,7 +649,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 $scope.chartWrapStyle.height = 'calc(91vh)';
             } else {
                 $scope.dynFlex = 70;
-                $scope.chartWrapStyle.height = 'calc(63vh)';
+                $scope.chartWrapStyle.height = 'calc(59vh)';
             }
         }
     };
@@ -693,7 +693,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
     $scope.isAutoDrill = true;
     $scope.dynFlex = 70;
     $scope.chartWrapStyle = {
-        height: 'calc(63vh)'
+        height: 'calc(59vh)'
     };
     $scope.notificationValue = "";
     $scope.isPendingRequest = false;
@@ -1982,7 +1982,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.chartWrapStyle.height = 'calc(91vh)';
                     } else {
                         $scope.dynFlex = 70;
-                        $scope.chartWrapStyle.height = 'calc(63vh)';
+                        $scope.chartWrapStyle.height = 'calc(59vh)';
                     }
                     return 0;
                 } else {
@@ -1993,7 +1993,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                         $scope.chartWrapStyle.height = 'calc(91vh)';
                     } else {
                         $scope.dynFlex = 70;
-                        $scope.chartWrapStyle.height = 'calc(63vh)';
+                        $scope.chartWrapStyle.height = 'calc(59vh)';
                     }
                     var i;
                     var chartInData = data;

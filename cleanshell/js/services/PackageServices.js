@@ -1,4 +1,4 @@
-DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginApp.factory('PackageServices', ['$rootScope','$http', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
 	var cache = {};
 	return {
         getUserSettings: function() {
@@ -12,11 +12,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								notifications.toast(0, "Falied to get User Settings");
 						 });
         },postUserSettings: function(userSettings) {
-<<<<<<< HEAD
-        	notifications.startLoading("Saving Settings...");
-=======
         	notifications.startLoading(null, "Saving Settings...");
->>>>>>> refs/remotes/origin/Development
         	console.log(userSettings);
 
 			var req = {
@@ -46,19 +42,6 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								console.log(response);
 								notifications.toast(0, "Falied to get Session");
 						 });
-<<<<<<< HEAD
-=======
-        },getTenant: function() {
-             //return the promise directly.
-             return $http.get('/auth/tenant/GetTenant/' + window.location.hostname)
-                       .then(function(result) {
-                            //resolve the promise as the data
-                            return result.data;
-                        },function errorCallback(response) {
-								console.log(response);
-								notifications.toast(0, "Falied to get User Settings");
-						 });
->>>>>>> refs/remotes/origin/Development
         },getDiginComponents: function() {
              //return the promise directly.
              return $http.get(Digin_Engine_API+'get_all_components?SecurityToken='+$auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
@@ -69,15 +52,9 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								console.log(response);
 								notifications.toast(0, "Falied to get Digin Components");
 						 });
-<<<<<<< HEAD
-        }, getComponent: function(dashboardId) {
-             //return the promise directly.
-			 notifications.startLoading("Getting Dashboard");
-=======
         }, getComponent: function(ev, dashboardId) {
              //return the promise directly.
 			 notifications.startLoading(ev, "Getting Dashboard");
->>>>>>> refs/remotes/origin/Development
 			 
                 return $http.get(Digin_Engine_API+'get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+$auth.getSecurityToken()+'&Domain'+Digin_Domain)
                        .then(function(result) {
@@ -89,13 +66,8 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								notifications.toast(0, "Falied to get Dashboard or report");
 								notifications.finishLoading();
 						 });
-<<<<<<< HEAD
-        }, deleteComponent: function(dashboardId, permanent) {
-			notifications.startLoading("Deleting Dashboard...");
-=======
         }, deleteComponent: function(ev,dashboardId, permanent) {
 			notifications.startLoading(ev, "Deleting Dashboard...");
->>>>>>> refs/remotes/origin/Development
 			var reqParam = [{
                 "comp_id": dashboardId.toString(),
                 "permanent_delete": permanent
@@ -141,7 +113,6 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 			 for(i=0;i<obj.length;i++){
 					if(obj[i].widgetID == id) return i;
 				}		
-<<<<<<< HEAD
         }, getTenants: function(callback) {
 			if(cache.tenants)
 			{
@@ -153,8 +124,8 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 						cache.tenants = result.data;
 						callback(cache.tenants);
 					},function errorCallback(response) {
-							console.log(response);
-							notifications.toast(0, "Falied to load tenants");
+						console.log(response);
+						notifications.toast(0, "Falied to load tenants");
 				 });	
 			}
         }, inviteUser: function(userEmail) {
@@ -294,8 +265,6 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 						},function errorCallback(response) {
 							notifications.toast(0, "Falied to retrieve user infomation");
 			});	
-=======
->>>>>>> refs/remotes/origin/Development
         }
 		
    }

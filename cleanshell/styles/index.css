@@ -18,6 +18,7 @@ body{
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.0) !important;
 }
+::-webkit-scrollbar-corner { background: transparent !important; }
 
 ::-webkit-scrollbar-thumb {
     height: 50px;
@@ -30,6 +31,17 @@ body{
     inset 1px 1px 0px rgba(0, 0, 0, 0.05);
 }
 
+<<<<<<< HEAD
+=======
+.blut-log-wrapper {
+	background: #fefefe;
+	height: 42px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+
+>>>>>>> refs/remotes/origin/Development
 .main-toolbar{
 	width:100%;
 	height:45px;
@@ -73,14 +85,6 @@ body{
 	box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)
 }
 
-.blut-log-wrapper {
-	background: #fefefe;
-	height: 42px;
-	position: fixed;
-	z-index:3;
-	top: 0px;
-	left: 0px;
-}
 .left-toggle-wrapper {
 	height: 45px;
 	width: 45px;

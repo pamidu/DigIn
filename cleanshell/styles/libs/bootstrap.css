@@ -70,3 +70,19 @@ md-select-value
 	padding-left: 8px !important;
 	padding-bottom: 2px !important;
 }
+
+md-datepicker{
+	border: 1px solid #ccc !important;
+    border-radius: 4px;
+}
+
+
+.md-datepicker-input-container > input.md-datepicker-input{
+	border: none !important;
+}
+
+
+.md-datepicker-input-container, .md-datepicker-input-container.md-datepicker-focused{
+	border-bottom: none: !important;
+	border: none !important;
+}

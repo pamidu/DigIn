@@ -190,8 +190,18 @@ directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog','Develop
 	ToastinoService.prototype.log = function(displayText,newErr) {
 		if(DeveloperMode === true)
 		{
-			var lineNumber = newErr.stack.split('\n')[1].split(':')[3];
-			console.log(displayText, "Line number: "+lineNumber);
+            if(navigator.userAgent.indexOf("Firefox") != -1)
+            {
+                var originPath = newErr.stack.split('\n')[0].split("/");
+                var fileNameAndLineNumber = originPath[originPath.length - 1].split(">")[0];
+                console.log(displayText, fileNameAndLineNumber);
+            }else if(navigator.userAgent.indexOf("Chrome") != -1)
+            {
+                var originFile = newErr.stack.split('\n')[1].split('/');
+                var fileName = originFile[originFile.length - 1].split(':')[0];
+                var lineNumber = originFile[originFile.length - 1].split(':')[1];
+                console.log(displayText, fileName+" line "+lineNumber);
+            }
 		}
 	}
 	

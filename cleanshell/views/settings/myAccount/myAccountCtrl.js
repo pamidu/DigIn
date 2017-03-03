@@ -1,9 +1,11 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices', 'notifications','paymentGateway','$http','colorManager', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,notifications,paymentGateway,$http,colorManager){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager','onsite', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager,onsite){
 	
 	var vm = this;
 	
 	$scope.$parent.currentView = "Settings";
 	colorManager.reinforceTheme();
+	
+	$scope.onsite = onsite;
 	
 	vm.selectedPage = $stateParams.pageNo;
 	
@@ -11,10 +13,114 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	$scope.user = {};
 	$scope.editModeOn = false;
 	
-	DiginServices.getProfile(function(data) {
+	UserServices.getProfile(function(data) {
 		userObject = angular.copy(data);
 		$scope.user = data;
+		$scope.Company = angular.copy($scope.$parent.myTenant.OtherData.CompanyName);
 	})
+	
+	$scope.usageDetails = {};
+	UserServices.getUsageSummary().then(function(data) {
+		notifications.log(data, new Error());
+		if(data.Is_Success == "True")
+		{
+			$scope.usageDetails = data.Result.usage[0][$rootScope.authObject.Domain][$rootScope.authObject.UserID];
+			notifications.log($scope.usageDetails, new Error());
+		}else{
+			notifications.log("error", new Error());
+		}
+	})
+	
+	var monthlyData = {}; //This will hold the result from the service call
+	var fromDate = "";
+	var toDate = "";
+	
+	(function () {
+		var d = new Date();
+	
+		var month = '' + (d.getMonth() + 1);
+		var day = '' + d.getDate();
+		var year = d.getFullYear();
+		
+		if (month.length < 2){month = '0' + month;}
+		if (day.length < 2){day = '0' + day;}
+		
+		toDate = [year, month, day].join('-');
+		
+		fromDate = d.setDate(d.getDate() - 30);
+		
+		var monthe = '' + (d.getMonth() + 1);
+		var daye = '' + d.getDate();
+		var yeare = d.getFullYear();
+
+		if (monthe.length < 2){ monthe = '0' + monthe; }
+		if (daye.length < 2){ daye = '0' + daye; }
+
+		fromDate = [yeare, monthe, daye].join('-');
+	}());
+
+
+	UserServices.getUsageDetails(fromDate, toDate).then(function(data) {
+		monthlyData = data.Result[0][$rootScope.authObject.Domain][$rootScope.authObject.UserID];
+		for (var detail in monthlyData) {
+				chartXLabels.push(detail);
+			if (monthlyData.hasOwnProperty(detail)) {
+				chartSeries[0].data.push(monthlyData[detail].totalBytesBilled / 1024);
+				chartSeries[1].data.push(monthlyData[detail].totalBytesProcessed / 1024);
+				chartSeries[2].data.push(monthlyData[detail].download_bq / 1024);
+			}
+        }
+		generateMonthlyUsageChart();
+	})
+	
+	var chartXLabels = [];
+    var chartSeries = [{
+        "name": "totalBytesBilled",
+        "data": []
+    }, {
+        "name": "totalBytesProcessed",
+        "data": []
+    }, {
+        "name": "download_bq",
+        "data": []
+    }];
+	
+	function generateMonthlyUsageChart()
+	{
+		$scope.chartConfig = {
+			options: {
+					chart: {
+						type: 'line'
+					},
+					plotOptions: {
+
+					},
+					yAxis: {
+						title: {
+							text: 'Usage'
+						}
+					}
+				},
+				xAxis: {
+					title: {
+						text: 'Date'
+					},
+					categories: chartXLabels
+				},
+				size: {
+					width: 600,
+					height: 412
+				},
+				series: chartSeries,
+				title: {
+					text: 'Monthly usage'
+				},
+				credits: {
+					enabled: false
+				},
+					loading: false
+		}
+	}
   
 	
 	$scope.profile_pic = "images/settings/new_user.png";
@@ -24,9 +130,9 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 			clickEdit: function () {
 				$scope.editModeOn = true;
 			},
-			changeUserProfile: function (){
+			changeUserProfile: function (ev){
 				$scope.editModeOn = true;
-				DiginServices.updateProfile($scope.user).then(function(result) {
+				UserServices.updateProfile(ev,$scope.user).then(function(result) {
 					if(result.IsSuccess == true)
 					{
 						$scope.editModeOn = false;
@@ -70,7 +176,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 		};
     })();
 	
-	setTimeout(function(){
+	/*setTimeout(function(){
 		Highcharts.chart('container', {
 			  title: {
 				text: 'Bandwidth Usage'
@@ -90,7 +196,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 				data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
 			  }]
 		});
-	}, 1000);
+	}, 1000);*/
 	
 	$scope.uploadCompanyLogo = function(ev)
 	{
@@ -277,6 +383,11 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
             $mdDialog.hide();
         })
 		
+	}
+	$scope.paymentLoading = false;
+	$scope.getPaymentHistory = function()
+	{
+		$scope.paymentLoading = true;
 	}
 	
 	

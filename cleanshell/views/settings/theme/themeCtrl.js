@@ -1,4 +1,4 @@
-DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManager', function ($scope,$rootScope,$mdDialog, colorManager){
+DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManager','notifications','DiginServices','$interval', function ($scope,$rootScope,$mdDialog, colorManager,notifications,DiginServices,$interval){
 		$scope.$parent.currentView = "Themes";
 		
 		
@@ -16,14 +16,17 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 			{name:"Green", imageUrl:"green.png", theme:"greenTheme"}
 		]
 		
-		$scope.mainTheme = function(color)
+		$scope.mainTheme = function(ev,color)
 		{
 			colorManager.changeMainTheme(color);
+			
+			confirm(ev);
 		}
 		
-		$scope.changeTheme = function(color)
+		var oldTheme = angular.copy($rootScope.theme);
+		
+		$scope.changeTheme = function(ev,color)
 		{
-			
 			if($rootScope.lightOrDark == "Dark")
 			{
 				colorManager.changeTheme(color.theme+"Dark");
@@ -31,9 +34,89 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 			{
 				colorManager.changeTheme(color.theme);
 			}
+			confirm(ev);
+
 		}
 		
-		$scope.zoomLevel = "100%";
+		function confirm(ev)
+		{
+			if($rootScope.theme != oldTheme)
+			{
+				confirmThemeChange(ev).then(function(answer) 
+				{
+					if(answer == 'yes')
+					{
+						//save theme in database
+						oldTheme = angular.copy($rootScope.theme)
+						notifications.toast(1,"Save the change");
+						/*DiginServices.postUserSettings(userSettingsSaveObj).then(function(data) {
+                           notifications.toast(1,"New default dashboard was saved");
+                        });*/
+						
+					}else{
+						colorManager.changeTheme(oldTheme);
+					}
+				})
+			}
+		}
+		
+		
+		
+		function confirmThemeChange(ev)
+		{
+			var showData = {title: "Change Theme", content: "Do you want to keep this theme?", okText: "keep Changes", noText: "Revert" };
+	
+			return $mdDialog.show({
+				  controller: confirmDialogCtrl,
+				  template: 	'<md-dialog aria-label="confirm dialog">'+
+                                        '<form>'+
+                                            '<md-content layout-padding>'+
+                                                '<h2 class="md-title" style="margin-top:0px">{{showData.title}}</h2>'+
+												'<p>{{showData.content}}<br/> Reverting to Previous theme in <span style="width:30px;">{{times}}</span> seconds</p>'+
+                                                '<md-dialog-actions layout="row">'+
+                                                    '<span flex></span>'+
+                                                    '<md-button ng-if="showData.okText" ng-click="confirmReply(\'yes\')">'+
+                                                        '{{showData.okText}}'+
+                                                    '</md-button>'+
+                                                    '<md-button ng-if="showData.noText" ng-click="confirmReply(\'no\')">'+
+                                                        '{{showData.noText}}'+
+                                                    '</md-button>'+
+                                                    '<md-button ng-if="showData.cancelText" ng-click="$root.cancel()">'+
+                                                        '{{showData.cancelText}}'+
+                                                    '</md-button>'+
+                                                '</md-dialog-actions>'+
+                                            '</md-content>'+
+                                        '</form>'+
+                                    '</md-dialog>',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true,
+				  hasBackdrop:false,
+				  locals: {showData: showData}
+				})
+				.then(function(answer) {
+					return answer;
+				});
+		}
+		
+		function confirmDialogCtrl ($scope, $mdDialog, showData) {
+			$scope.showData = showData;
+
+			$scope.times = 10;
+			var promise = $interval(
+			   function () {
+				  $scope.times = $scope.times - 1;
+				  if($scope.times == 0){ 
+					 $mdDialog.hide("no");
+				  }
+			   }, 1000, 10);
+			   
+			$scope.confirmReply = function(answer) {
+				$interval.cancel(promise);
+				$mdDialog.hide(answer);
+			};
+		}
+		
 		document.body.style.zoom = $scope.zoomLevel;
 		
 		$scope.increaseFontSize = function()
@@ -42,8 +125,8 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 			if(document.body.style.zoom != "120%")
 			{
 				currentZoom = parseInt(document.body.style.zoom.slice(0, -1));
-				$scope.zoomLevel = String(currentZoom + 10) + "%";
-				document.body.style.zoom = $scope.zoomLevel;
+				$scope.$parent.zoomLevel = String(currentZoom + 10) + "%";
+				document.body.style.zoom = $scope.$parent.zoomLevel;
 			}
 			
 		}
@@ -54,8 +137,8 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 			if(document.body.style.zoom != "70%")
 			{
 				currentZoom = parseInt(document.body.style.zoom.slice(0, -1));
-				$scope.zoomLevel = String(currentZoom - 10) + "%";
-				document.body.style.zoom = $scope.zoomLevel;
+				$scope.$parent.zoomLevel = String(currentZoom - 10) + "%";
+				document.body.style.zoom = $scope.$parent.zoomLevel;
 			}
 		}
 		

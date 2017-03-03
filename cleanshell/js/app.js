@@ -173,6 +173,12 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		templateUrl: "views/data_source/data_source_settings/datasourceSettings.html"
 	})
 	
+	.state('dashboardFilterSettings', {
+        url: '/dashboard-filter-settings',
+        controller: 'dashboardFilterSettingsCtrl',
+        templateUrl: "views/settings/dashboardFilterSettings/dashboardFilterSettings.html"
+    })
+	
 	.state('developer',{
 		url: '/developer',
 		controller: 'developerCtrl',

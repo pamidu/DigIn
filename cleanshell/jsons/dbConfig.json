@@ -1,0 +1,41 @@
+[{
+    "name": "MSSQL",
+    "icon": "styles/icons/source/mssql.svg",
+    "selected": "false",
+    "display": "true"
+}, {
+    "name": "BigQuery",
+    "icon": "styles/icons/source/biq-query.svg",
+    "selected": "false",
+    "display": "true"
+}, {
+    "name": "postgresql",
+    "icon": "styles/icons/source/api.svg",
+    "selected": "false",
+    "display": "true"
+}, {
+    "name": "DuoStore",
+    "icon": "styles/icons/source/duo-store.svg",
+    "selected": "false",
+    "display": "true"
+}, {
+    "name": "memsql",
+    "icon": "styles/icons/source/memsql.svg",
+    "selected": "false",
+    "display": "true"
+},  {
+    "name": "Oracle",
+    "icon": "styles/icons/source/oracle.svg",
+    "selected": "false",
+    "display": "true"
+}, {
+    "name": "hiveql",
+    "icon": "styles/icons/source/hive.svg",
+    "selected": "false",
+    "display": "true"
+},  {
+    "name": "CSV Upload",
+    "icon": "styles/icons/source/xlsx.svg",
+    "selected": "false",
+    "display": "true"
+}]

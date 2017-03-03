@@ -432,11 +432,11 @@
 								<div layout="row" layout-gt-sm="row" layout-align="end center" layout-wrap>
 									<div layout="column">
 										<span style="font-size: 12px;margin-bottom: 5px;">From Date </span>
-										<md-datepicker ng-model="fromDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+										<md-datepicker ng-model="startDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
 									</div>
 									<div layout="column" style="margin-left:40px">
 										<span style="font-size: 12px;margin-bottom: 5px;">To Date </span>
-										<md-datepicker ng-model="toDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+										<md-datepicker ng-model="endDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
 									</div>
 									<div layout="column" style="margin:20px 21px 0px 40px">
 										<md-button ng-click="getPaymentHistory()" class="md-fab md-mini" style="margin:0" ng-hide="paymentLoading">
@@ -449,7 +449,38 @@
 									</div>
 								</div>
 								
-							</form><br/><br/>
+									<md-list style="max-height:400px;overflow-y:scroll" layout-padding flex>
+										<md-list-item>
+												<div layout="row" flex>
+													<p style="font-size:16px;font-weight:700"  flex="25"> Date </p>
+													<p style="font-size:16px;font-weight:700" flex> Amount(USD)</p>
+													<p style="font-size:16px;font-weight:700" flex="25"> Package Name </p>
+													<p style="font-size:16px;font-weight:700" flex> Atrribute </p>
+												</div>
+											<md-divider></md-divider>
+										</md-list-item>
+										<div layout="column" layout-align="center center" ng-if="ledgers.length < 1">
+											<h1 style="padding:40px;font-size:20px">Enter a date-range to check Payment History!</h1>
+										</div>
+										<md-list-item ng-repeat="ledger in ledgers">
+											<div layout="row" flex>
+												<p style="color:#717171" flex="25"> {{ ledger.created_datetime }} </p>
+												<p style="color:#717171" flex> {{ ledger.package_price}} </p>
+												<p style="color:#717171" flex="25"> {{ ledger.package_name}} </p>
+												<p style="color:#717171" flex layout="column">
+													<span ng-repeat="record in ledger.details">
+														{{record.package_value}}
+														<span ng-if="record.package_attribute === 'data' ">GB Data</span>
+														<span ng-if="record.package_attribute === 'users' ">Users</span>
+														<span ng-if="record.package_attribute === 'storage' ">GB Storage</span>
+													</span>
+												</p>
+											</div>
+										<md-divider ng-show="!$last"></md-divider>
+										</md-list-item>
+									</md-list>
+							
+							</form><br/>
 						</md-content>
 					</md-whiteframe>
 				</div>

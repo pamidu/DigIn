@@ -1513,6 +1513,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
             },
             onClickCondition: function(row, filed) {
                 // $scope.isPendingRequest = true;
+                $("#togglePanelColumns").hide(200);
                 $scope.eventHndler.isToggleMeasure = false;
                 var isFoundCnd = false;
                 for (i in executeQryData.executeMeasures) {
@@ -1575,6 +1576,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
                 eval("$scope." + $scope.selectedChart.chartType + ".selectActualCondition(row, field)");
             },
             onClickColumn: function(column) {
+                $("#togglePanel").hide(200);
                 // $scope.isPendingRequest = true;
                 $scope.eventHndler.isToggleColumns = false;
                 var isFoundCnd = false;

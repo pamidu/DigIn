@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager','onsite', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager,onsite){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'PackageServices','notifications','paymentGateway','$http','colorManager','onsite', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices,PackageServices,notifications,paymentGateway,$http,colorManager,onsite){
 	
 	var vm = this;
 	
@@ -384,13 +384,40 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
         })
 		
 	}
+	
+	
 	$scope.paymentLoading = false;
+	$scope.startDate = new Date();
+	$scope.endDate = new Date();
+	$scope.ledgers = [];
+	
 	$scope.getPaymentHistory = function()
 	{
 		$scope.paymentLoading = true;
+		PackageServices.getPaymentHistory($scope.startDate, $scope.endDate).then(function(data) {
+			$scope.paymentLoading = false;
+			if(data.Is_Success == true)
+			{
+				notifications.log(data.Result, new Error());
+				var newObj = {};
+				if(data.Result.length>0){
+					angular.forEach(data.Result,function(res){
+						newObj = {};
+						newObj["created_datetime"] = res.created_datetime.replace('T',' ');
+						newObj["package_price"] = res.package_Details[0].package_price;
+						newObj["package_name"] = res.package_Details[0].package_name;
+						newObj["details"] = res.package_Details;
+						$scope.ledgers.push(newObj);
+					})
+				} else {
+					notifications.toast('0','No records in the selected period of time');
+				}
+			}else{
+				notifications.log("error", new Error());
+			}
+		})
 	}
-	
-	
+
 	
 }])
 

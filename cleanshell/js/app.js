@@ -23,7 +23,7 @@ var DiginApp = angular.module('DuoDiginRt',
 	]
 );
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider) {
 
 	$urlRouterProvider.otherwise('/home');
 	$locationProvider.hashPrefix('');
@@ -180,11 +180,15 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 	})
 
 
-  GoogleMapApi.configure({
-	key: 'AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU',
-    // v: '3.20',
-    libraries: 'weather,geometry,visualization'
-  });
+	GoogleMapApi.configure({
+		key: 'AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU',
+		// v: '3.20',
+		libraries: 'weather,geometry,visualization'
+	});
+  
+	$mdDateLocaleProvider.formatDate = function(date) {
+       return moment(date).format('YYYY-MM-DD');
+    };
 
 
 }])

@@ -17,24 +17,15 @@ routerApp.service('dashboardFilterService',function(filterService,$diginengine,$
         angular.forEach(filterParams,function(param){
             tempFilterArray = [];
             tempStr = "";
-            if (typeof param.values == 'object') {
-                if (typeof param.values.value == 'number'){
-                    tempFilterArray.push(param.values.value)
-                } else{
-                    tempFilterArray.push( "'" + param.values.value + "'");
+            angular.forEach(param.values,function(key){
+                if (key.status){
+                    if (typeof key.value == 'number'){
+                        tempFilterArray.push(key.value);
+                    } else{
+                        tempFilterArray.push( "'" + key.value + "'");
+                    }
                 }
-            	
-            } else {
-	            angular.forEach(param.values,function(key){
-	                if (key.status){
-	                    if (typeof key.value == 'number'){
-	                        tempFilterArray.push(key.value);
-	                    } else{
-	                        tempFilterArray.push( "'" + key.value + "'");
-	                    }
-	                }
-	            })
-            }
+            })
             //if fields are seected, convert the array to string for the request
             if(tempFilterArray.length > 0) {
                 tempFilterArray.toString();

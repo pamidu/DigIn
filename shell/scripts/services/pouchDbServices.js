@@ -49,10 +49,10 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                                     filterArray.push({
                                                       filter: {
                                                         name: filter.filter_name,
-                                                        values: {
+                                                        values: [{
                                                           status: true,
                                                           value: filter.default_value
-                                                        }
+                                                        }]
                                                       }
                                                     })
                                                   }
@@ -146,10 +146,10 @@ routerApp.service('pouchDbServices',function($rootScope,$http,Digin_Engine_API,D
                                                     filterArray.push({
                                                       filter: {
                                                         name: filter.filter_name,
-                                                        values: {
+                                                        values: [{
                                                           status: true,
                                                           value: filter.default_value
-                                                        }
+                                                        }]
                                                       }
                                                     })
                                                   }

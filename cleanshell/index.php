@@ -488,7 +488,7 @@
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-google sub-menu-icon"></i>Google+</a></li>
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-twitter sub-menu-icon"></i>Twitter</a></li>
-							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-linkedin sub-menu-icon"></i>Linkedin</a></li>
+							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-linkedin sub-menu-icon"></i>LinkedIn</a></li>
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-email sub-menu-icon"></i>Email</a></li>
 						</ul>
 					</li>

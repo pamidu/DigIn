@@ -450,7 +450,7 @@ routerApp
                             }
                         }
                         else{
-                            displayError("Subscription detail not found for this user inorder to authorize login, please contact system administrator...")
+                            displayError("Subscription detail not found for this user inorder to authorize login, please contact system administrator.")
                             $mdDialog.hide();
                         }
                     
@@ -886,12 +886,12 @@ routerApp
 
             //#pre-loader error
             var displayError = function (message) {
-                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Failed to Complete').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
             };
 
             //#pre-loader success
             var displaySuccess = function (message) {
-                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process Completed !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process Completed').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
             };
 
 

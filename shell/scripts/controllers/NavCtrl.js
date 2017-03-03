@@ -1337,8 +1337,8 @@ routerApp.controller('NavCtrl', ['$scope', '$mdBottomSheet', '$mdSidenav', '$mdU
                     var confirm = $mdDialog.confirm()
                         .title('Are you sure you want to logout?')
                         .targetEvent(event)
-                        .ok('Yes!')
-                        .cancel('No!');
+                        .ok('Yes')
+                        .cancel('No');
                     $mdDialog.show(confirm).then(function () {
                         //$scope.status = 'Yes';
                         $window.location = "/logout.php";

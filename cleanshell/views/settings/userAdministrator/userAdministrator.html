@@ -8,7 +8,7 @@
 		<md-tab-body>
 		<div class="card-container">
 			<div layout="row" style="max-width:960px;margin: 0 auto;margin-bottom: 15px;margin-top:20px">
-				<input placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important;box-shadow:0 2px 4px 0 rgba(0,0,0,.15) !important;margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
+				<input ng-class="{'applyDarkBackground': $root.applyDark == true}" placeholder="Type the user's Email to Invite" style="width:100%;border-radius: 4px 0px 0px 4px !important;box-shadow:0 2px 4px 0 rgba(0,0,0,.15) !important;margin-top: 0px !important;" type="text" ng-model="searchText" ng-keypress="($event.which === 13)?enterInviteUser($event,searchText):0" />
 				<md-button aria-label="Open demo menu" class="md-raised md-primary" style="border-radius: 0px 4px 4px 0px !important;margin: 0px;" ng-click="enterInviteUser($event,searchText)">
 					<span style="text-transform:none">Add User</span>
 				</md-button>
@@ -19,7 +19,7 @@
 
 				<md-content>
 
-					<form name="editForm"  md-theme="default" layout-padding>
+					<form name="editForm" layout-padding>
 
 						<md-list ng-cloak>
 							<md-list-item ng-repeat="user in $root.sharableUsers | filter:searchText">
@@ -75,7 +75,7 @@
 
 					<md-content>
 
-						<form name="editForm"  md-theme="default" ng-submit="submit()">
+						<form name="editForm" ng-submit="submit()">
 							<div layout="row" layout-align="end end">
 								<md-button class="md-icon-button icon-cancel" style="color:#14bae4" aria-label="back" ng-click="route('back')"></md-button>
 							</div>

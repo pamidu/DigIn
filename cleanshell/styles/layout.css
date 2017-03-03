@@ -230,6 +230,6 @@ div.slide-up p {
 /*Manually apply dark theme for md-menu-content with ng-class if the theme is material dark*/
 .applyDarkBackground, .applyDarkBackground > md-menu-item
 {
-	background: rgb(48,48,48) !important;
+	background: #303030 !important;
 	color: white !important;
 }

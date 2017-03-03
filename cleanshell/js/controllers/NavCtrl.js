@@ -8,6 +8,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
+	$scope.zoomLevel = "100%";
 	$rootScope.theme = 'defaultDark';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
@@ -188,10 +189,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	{
 		if(action == "Search"){
 			$mdSidenav('searchBar').toggle();
-			
-		/*	dialogService.confirmDialog(ev, "Title","What is this","yes", "no").then(function(data) {
-				console.log(data);
-			});*/
+			$scope.SearchComponents = "";
 		}else if(action == "TV Mode")
 		{
 			//Start of Navigate TVMode
@@ -253,7 +251,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}else if(action == 'Notifications')
 		{
 			$mdSidenav('notifications').toggle();
-			//notifications.toast(1,"yes");
 		}else if(action == "AddWidget")
 		{
 			

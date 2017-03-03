@@ -395,7 +395,7 @@
 				<div layout="row" layout-align="space-between center">
 
 					<div class="search-box">
-						<input style="width:200px;margin-top: 0px !important" placeholder="search dashboard or report..." ng-model="SearchComponents">
+						<input ng-class="{'applyDarkBackground': $root.applyDark == true}" style="width:200px;margin-top: 0px !important;" placeholder="search dashboard or report..." ng-model="SearchComponents">
 					</div>
 					<md-button class="md-icon-button"  ng-click="perform($event,'Search')" aria-label="open search" hide-lg hide-md hide-gt-lg hide-gt-sm style="margin-top: 5px">
 						<i class="ti-close" style="font-size:15px"></i>

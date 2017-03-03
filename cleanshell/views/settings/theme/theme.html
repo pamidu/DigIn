@@ -1,7 +1,7 @@
 <div class="card-container" layout-padding>
 	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Main Themes </h1>
 	<div layout="row" layout-align="center start" layout-wrap>
-		<md-card ng-repeat="color in themeColor" class="product_card" ng-click="mainTheme(color)" style="background:{{color.backgroundColor}}">
+		<md-card ng-repeat="color in themeColor" class="product_card" ng-click="mainTheme($event, color)" style="background:{{color.backgroundColor}}">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
 				<span class="product_name" style="color:{{color.color}}">{{color.name}}</span>
 			</div>
@@ -12,7 +12,7 @@
 	</div>
     <h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Themes </h1>
 	<div layout="row" layout-align="center start" layout-wrap>
-		<md-card ng-repeat="color in palette" class="product_card" ng-click="changeTheme(color)">
+		<md-card ng-repeat="color in palette" class="product_card" ng-click="changeTheme($event, color)">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
 				<span class="product_name">{{color.name}}</span>
 			</div>

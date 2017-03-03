@@ -230,15 +230,7 @@ directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog','Develop
 }]);
 
 directiveLibraryModule.factory('dialogService', ['$rootScope','$mdDialog', function($rootScope,$mdDialog){
-	
-		return {
-			confirmDialog: function(ev,title, content, okText, noText, cancelText) {
-								
-				var showData = {title: title, content: content, okText: okText, noText: noText, cancelText: cancelText };
-				
-				return $mdDialog.show({
-						  controller: confirmDialogCtrl,
-                          template: '<md-dialog aria-label="confirm dialog">'+
+	var confirmDialogTemplate = 	'<md-dialog aria-label="confirm dialog">'+
                                         '<form>'+
                                             '<md-content layout-padding>'+
                                                 '<h2 class="md-title" style="margin-top:0px">{{showData.title}}</h2>'+
@@ -257,7 +249,15 @@ directiveLibraryModule.factory('dialogService', ['$rootScope','$mdDialog', funct
                                                 '</md-dialog-actions>'+
                                             '</md-content>'+
                                         '</form>'+
-                                    '</md-dialog>',
+                                    '</md-dialog>';
+		return {
+			confirmDialog: function(ev,title, content, okText, noText, cancelText) {
+								
+				var showData = {title: title, content: content, okText: okText, noText: noText, cancelText: cancelText };
+				
+				return $mdDialog.show({
+						  controller: confirmDialogCtrl,
+                          template: confirmDialogTemplate,
 						  parent: angular.element(document.body),
 						  targetEvent: ev,
 						  clickOutsideToClose:true,
@@ -267,7 +267,24 @@ directiveLibraryModule.factory('dialogService', ['$rootScope','$mdDialog', funct
 							return answer;
 						});
 			
-			},alertDialog: function(ev,title, content, okText){
+			},confirmDialogWithoutBackdrop: function(ev,title, content, okText, noText, cancelText) {
+				
+				var showData = {title: title, content: content, okText: okText, noText: noText, cancelText: cancelText };
+				
+				return $mdDialog.show({
+						  controller: confirmDialogCtrl,
+                          template: confirmDialogTemplate,
+						  parent: angular.element(document.body),
+						  targetEvent: ev,
+						  clickOutsideToClose:true,
+						  hasBackdrop:false,
+						  locals: {showData: showData}
+						})
+						.then(function(answer) {
+							return answer;
+						});
+			},
+			alertDialog: function(ev,title, content, okText){
 
                 var showData = {title: title, content: content, okText: okText };
                 return $mdDialog.show({

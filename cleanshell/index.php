@@ -612,7 +612,7 @@
 
 	<!--Payment stripe-->
     <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script src="js/stripe.payment.tool.js"></script>
+    <script src="js/libs/stripe.payment.tool.js"></script>
 
 	
 	<!--Widgets Controllers-->

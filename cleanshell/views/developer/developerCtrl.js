@@ -2,20 +2,21 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 	$scope.$parent.currentView = "Developer Documentation";
     colorManager.reinforceTheme();
 	
-	$scope.availableColumns = [{name:"order_id"},{name:"order_quantity"},{name: "product_base_margin"} ];
-	
+	$scope.startDate = new Date();
     var cssHeading = "font-size:15px;font-weight:700;";
 
 
     $scope.alertDialog = function (ev) {
     	console.log('%c\nALERT DIALOG\n\n',cssHeading);
-    	console.log('dialogService.alertDialog(ev,"Title","This is the content","OK");');
+    	console.log('First inject \'dialogService\' into your controller\n\n'+
+					'dialogService.alertDialog(ev,"Title","This is the content","OK");');
         dialogService.alertDialog(ev,"Title","This is the content","OK");
     }
 
     $scope.confirmDialog = function (ev) {
         console.log('%c\nCONFIRM DIALOG\n\n',cssHeading);
-    	console.log('dialogService.confirmDialog(ev,"Title","Are you sure you want to close this dialog box?", "yes","no","cancel").then(function(answer) {\n'+
+    	console.log('First inject \'dialogService\' into your controller\n\n'+
+		'dialogService.confirmDialog(ev,"Title","Are you sure you want to close this dialog box?", "yes","no","cancel").then(function(answer) {\n'+
         '\tif(answer == "yes")\n'+
         '\t{\n\t\tnotifications.toast(1,"you said yes");\n'+
     	'\t}\n'+
@@ -37,7 +38,8 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 
     $scope.showLoading = function (ev) {
         console.log('%c\nLOADING DIALOG\n\n',cssHeading);
-        console.log('notifications.startLoading(ev,"This will load for 2 seconds");');
+        console.log('First inject \'notifications\' into your controller\n\n'+
+					'notifications.startLoading(ev,"This will load for 2 seconds");');
         console.log(' $timeout(function(){\n'+
         				    '\tnotifications.finishLoading();\n'+
       				'}, 2000););');
@@ -50,7 +52,8 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 
     $scope.showToast = function (type, content) {
         console.log('%c\nTOAST\n\n',cssHeading);
-        console.log('notifications.toast('+type+','+content+');');
+        console.log('First inject \'notifications\' into your controller\n\n'+
+					'notifications.toast('+type+','+content+');');
         notifications.toast(type,content);
     }
 
@@ -66,7 +69,7 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
     	}if(elementType == 'iconButton')
 		{
             console.log('%c\nBUTTON WITH ICON('+specificType+')\n\n',cssHeading);
-            console.log('<md-button ng-click="doSomething()" class="'+specificType+'">Button</md-button>\n'+
+            console.log('<md-button ng-click="doSomething()" class="'+specificType+'">\n'+
 							'\t<i class="ti-save" style="font-size:20px;line-height: 55px;"></i>\n'+
 						'</md-button>');
 		}else if(elementType == 'checkbox')
@@ -81,6 +84,13 @@ DiginApp.controller('developerCtrl',[ '$scope','$mdDialog','colorManager','notif
 			console.log('<md-switch ng-init="switch = false" ng-model="switch" aria-label="Switch 1">\n'+
            					'\tSwitch 1: {{ switch }}\n'+
        					'</md-switch>');
+		}else if(elementType == 'datepicker')
+		{
+            console.log('%c\nDATE PICKER\n\n',cssHeading);
+			console.log('<div layout="column">\n'+
+							'\t<span class="md-datepicker-label">From Date </span>\n'+
+							'\t<md-datepicker ng-model="startDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>\n'+
+						'</div>\n\n Also don\'t forget to initialize $scope.startDate = new Date(); in controller');
 		}else if(elementType == 'icon')
 		{
             console.log('%c\nICON\n\n',cssHeading);

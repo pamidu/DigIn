@@ -133,45 +133,6 @@
 		<md-tab label="add page">
 			<md-tab-label layout="row" layout="space-between center">
 			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
-				Checkboxes
-			</span>
-			</md-tab-label>
-			<md-tab-body>
-				<!--CARD CONTAINER START-->
-				<div class="card-container">
-					<!--WHITEFRAME START-->
-					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
-
-						<md-content>
-
-							<form name="editForm"  md-theme="default" ng-submit="submit()">
-								<div layout="row" layout-align="end end">
-									<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('home')"></md-button>
-								</div>
-								<div class="setting-card-header">
-									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Checkboxes</h2>
-								</div>
-								<div layout="row" layout-align="space-between center">
-									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Basic Usage</div>
-									<md-button class="" ng-click="consoleElement('checkbox')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
-								</div>
-								<div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-									<md-checkbox ng-init="check = false" ng-model="check">
-										Check me out ({{check}})
-									</md-checkbox>
-								</div>
-							</form>
-						</md-content>
-
-					</md-whiteframe><br/>
-					<!--WHITEFRAME END-->
-				</div>
-				<!--CARD CONTAINER END-->
-			</md-tab-body>
-		</md-tab>
-		<md-tab label="add page">
-			<md-tab-label layout="row" layout="space-between center">
-			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
 				Dialogs
 			</span>
 			</md-tab-label>
@@ -230,7 +191,7 @@
 								</div>
 								<div layout="row" layout-align="space-between center">
 									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Basic Usage</div>
-									<md-button type="button" ng-click="consoleElement('input')"><span style="margin: 10px"><&nbsp></span>Console Element Code</md-button>
+									<md-button type="button" ng-click="consoleElement('input')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
 								</div>
 								<div layout-gt-sm="row" class="side-margins">
 									<md-input-container class="md-block" flex-gt-sm>
@@ -254,7 +215,7 @@
 								</div>
 								<div layout="row" layout-align="space-between center">
 									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Select</div>
-									<md-button type="button" ng-click="consoleElement('select')"><span style="margin: 10px"><&nbsp></span>Console Element Code</md-button>
+									<md-button type="button" ng-click="consoleElement('select')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
 								</div>
 								<div layout-gt-sm="row" class="side-margins">
 									<md-input-container class="md-block" flex-gt-sm="40">
@@ -264,6 +225,34 @@
 											<md-option value="female" aria-label="country">Female</md-option>
 										</md-select>
 									</md-input-container>
+								</div>
+								<div layout="row" layout-align="space-between center">
+									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Checkboxes</div>
+									<md-button class="" ng-click="consoleElement('checkbox')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
+								</div>
+								<div layout="row" layout-sm="column" layout-align="start start" layout-padding>
+									<md-checkbox ng-init="check = false" ng-model="check">
+										Check me out ({{check}})
+									</md-checkbox>
+								</div>
+								<div layout="row" layout-align="space-between center">
+									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Switch</div>
+									<md-button class="" ng-click="consoleElement('switch')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
+								</div>
+								<div layout="row" layout-align="start start" layout-padding>
+									<md-switch ng-init="switch = false" ng-model="switch" aria-label="Switch 1">
+										Switch 1: {{ switch }}
+									</md-switch>
+								</div>
+								<div layout="row" layout-align="space-between center">
+									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Date Picker</div>
+									<md-button class="" ng-click="consoleElement('datepicker')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
+								</div>
+								<div layout="row" layout-align="start start" layout-padding>
+									<div layout="column">
+										<span class="md-datepicker-label">From Date </span>
+										<md-datepicker ng-model="startDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+									</div>
 								</div>
 
 
@@ -306,7 +295,7 @@
 								}
 
 								</style>
-							<form name="editForm"  md-theme="default" ng-submit="submit()">
+							<form name="editForm" ng-submit="submit()">
 								<div layout="row" layout-align="end end">
 									<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('home')"></md-button>
 								</div>
@@ -1477,45 +1466,6 @@
 								</div>
 							</form>
 							<br/><br/>
-						</md-content>
-
-					</md-whiteframe><br/>
-					<!--WHITEFRAME END-->
-				</div>
-				<!--CARD CONTAINER END-->
-			</md-tab-body>
-		</md-tab>
-		<md-tab label="switch">
-			<md-tab-label layout="row" layout="space-between center">
-			<span  style="text-transform:none;outline:none;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" flex>
-				Switch
-			</span>
-			</md-tab-label>
-			<md-tab-body>
-				<!--CARD CONTAINER START-->
-				<div class="card-container">
-					<!--WHITEFRAME START-->
-					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
-
-						<md-content>
-
-							<form name="editForm" ng-submit="submit()">
-								<div layout="row" layout-align="end end">
-									<md-button class="md-icon-button icon-cancel" aria-label="back" ng-click="route('home')"></md-button>
-								</div>
-								<div class="setting-card-header">
-									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">Switch</h2>
-								</div>
-								<div layout="row" layout-align="space-between center">
-									<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Basic Usage</div>
-									<md-button class="" ng-click="consoleElement('switch')"><span style="text-transform:none"><span style="margin: 10px"><&nbsp></span>Console Element Code</span> </md-button>
-								</div>
-								<div layout="row" layout-align="center center" layout-padding="">
-									<md-switch ng-init="switch = false" ng-model="switch" aria-label="Switch 1">
-										Switch 1: {{ switch }}
-									</md-switch>
-								</div>
-							</form>
 						</md-content>
 
 					</md-whiteframe><br/>

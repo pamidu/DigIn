@@ -23,7 +23,7 @@ var DiginApp = angular.module('DuoDiginRt',
 	]
 );
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider','$logProvider','DeveloperMode', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider,$logProvider,DeveloperMode) {
 
 	$urlRouterProvider.otherwise('/home');
 	$locationProvider.hashPrefix('');
@@ -195,6 +195,8 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 	$mdDateLocaleProvider.formatDate = function(date) {
        return moment(date).format('YYYY-MM-DD');
     };
+	
+	$logProvider.debugEnabled(DeveloperMode);
 
 
 }])

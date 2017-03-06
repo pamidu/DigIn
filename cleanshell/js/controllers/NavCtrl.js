@@ -1,9 +1,10 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService,$log) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
+	$log.debug('please user $log.debug() or notifications.log() instead of console.log()');
 	
 	$scope.currentView = "Home";
 	

@@ -38,7 +38,7 @@
 
                             <div class="welcome-link sign-up-link"
                                  ng-click="onClickSignUp()">
-                                <a href="javascript:void(0)">Sign up now</a>
+                                <a href="javascript:void(0)">Sign Up now</a>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="right-wrap">
                         <div class="header-login">
                             <div class="login-text-wrap pull-right ">
-                               <h5 id="sliderRight">Sign In</h5>
+                               <h5 id="sliderRight">Sign in</h5>
                             </div>
                         </div>
 
@@ -65,14 +65,14 @@
                                         </br>
                                         <div class="txt-box-login"
                                              ng-class="{error:error.isUserName,'':!error.isUserName}">
-                                            <label>Username</label>
+                                            <label>User name</label>
                                             <div>
                                                 <input type="text"
                                                        required
                                                        id="txtUname"
                                                        name="loginUserName"
                                                        ng-model="signindetails.Username"
-                                                       placeholder="Username"
+                                                       placeholder="User name"
 
                                                        class="form-control">
                                             </div>
@@ -81,6 +81,7 @@
                                                 <div ng-message="required">User name is required.</div>
                                             </div>
                                         </div>
+                                        <br>
                                         <div class="txt-box-login password"
                                              ng-class="{error:error.isPwd,'':!error.isPwd}">
                                             <label>Password</label>

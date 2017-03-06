@@ -108,6 +108,8 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
          
             if($scope.selected.length > 0 || $scope.selectedgroups.length > 0){
 
+              displayProgress("Processing...");
+
               var dashboardId = $rootScope.dashboard.compID;
               var idArr =[];
 
@@ -130,6 +132,8 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
                 "unshare_data":[]
               };
 
+              
+
               console.log(JSON.stringify(shareObject));
               var userInfo= JSON.parse(decodeURIComponent(getCookie('authData')));
               $http({
@@ -151,16 +155,30 @@ routerApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootS
                     notifications.toast(1, response.Custom_Message);
                 }
 
+                $mdDialog.hide();
+
               })
               .error(function(error){  
                 notifications.toast(0, error.Custom_Message);
-               
+                $mdDialog.hide();
               }); 
 
             }else{
-              notifications.toast(0, "You have not select any user or group to share");
+              //notifications.toast(0, "You have not select any user or group to share");
+              notifications.toast(0, "Please select user/ group to share dashboard.");
             }
+
        }
+
+
+      //#pre-loader progress - with message
+      var displayProgress = function (message) {
+          $mdDialog.show({
+              template: '<md-dialog ng-cloak>' + '   <md-dialog-content>' + '       <div style="height:auto; width:auto; padding:10px;" class="loadInidcatorContainer" layout="row" layout-align="start center">' + '           <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40"></md-progress-circular>' + '           <span>'+message+'</span>' + '       </div>' + '   </md-dialog-content>' + '</md-dialog>'
+              , parent: angular.element(document.body)
+              , clickOutsideToClose: false
+          });
+      };
       
 
 

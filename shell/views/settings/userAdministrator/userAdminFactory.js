@@ -18,53 +18,46 @@ routerApp.factory('userAdminFactory', ['$rootScope','$http', '$v6urls', '$auth',
 					notifications.toast(0, "Falied to invite user");
 					notifications.finishLoading();
 			 });	
-        }, getInvitedUsers: function(callback) {
+        }, getInvitedUsers: function() {
 			$rootScope.sharableUsers=[];
 			$rootScope.sharableGroups=[];
-			$rootScope.users=[];
-			
-				//if(cache.invitedUsers)
-				//{
-				//	callback(cache.invitedUsers);
-				//}else{
-					 ////return the promise directly.
+			//$rootScope.users=[];			
 					 return $http.get(apis_Path+'usercommon/getSharableObjects')
 					   .then(function(result) {
-							////return result.data;
 							var j=-1;
 							 for (var i = 0, len = result.data.length; i<len; ++i) {
 								if (result.data[i].Type == "User") {
-									//$rootScope.sharableUsers.push(result.data[i]);
-									$rootScope.users.push(result.data[i]);
-									j++;	
-									/*$http.get('/auth/GetUser/' + result.data[i].Id)
-					                    .success(function (response) {
-					                       result.data[i].Active= response.Active;
-					                    }).error(function (error) {
-					                   	   result.data[i].Active= false;
-					                	});*/
-
-					                	callback(result.data[i].Id,j);
-
-
+									//$rootScope.users.push(result.data[i]);
+									$rootScope.sharableUsers.push(result.data[i]);									
+									j++;					
 								}else if (result.data[i].Type == "Group") {
 									$rootScope.sharableGroups.push(result.data[i]);
 								}
 							}
-							//cache.invitedUsers = result;
-							//callback(cache.invitedUsers)
-							
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to get users");
+					 });			
+		}, getInvitedUsersWithStatus: function(callback) {
+					//$rootScope.sharableUsers=[];
+					$rootScope.sharableGroups=[];
+					$rootScope.users=[];
+					 return $http.get(apis_Path+'usercommon/getSharableObjects')
+					   .then(function(result) {
+							var j=-1;
+							 for (var i = 0, len = result.data.length; i<len; ++i) {
+								if (result.data[i].Type == "User") {
+									$rootScope.users.push(result.data[i]);
+									j++;						
+					                	callback(result.data[i].Id,j);
+								}else if (result.data[i].Type == "Group") {
+									$rootScope.sharableGroups.push(result.data[i]);
+								}
+							}
 						},function errorCallback(response) {
 							notifications.toast(0, "Falied to get users");
 					 });	
-				//}
-		
-		   }, getAllGroups: function(callback) {
-				/*if(cache.allGroups)
-				{
-					callback(cache.allGroups);
-				}else{*/
-					 //return the promise directly.
+		   }
+		   , getAllGroups: function(callback) {
 					 return $http.get(apis_Path+'usercommon/getAllGroups')
 					   .then(function(result) {
 							//return result.data;

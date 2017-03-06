@@ -143,7 +143,7 @@ routerApp
                             dismissOnClick: true,
                             animation: 'slide',
                             dismissOnClick: 'true',
-                            timeout: 50000
+                            timeout: 3000
                         });
                     }
                 }
@@ -174,13 +174,13 @@ routerApp
             $scope.login = function () {
 
                 if ($scope.signindetails.Username == '' || angular.isUndefined($scope.signindetails.Username)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Username is required..');
+                    //mainFun.fireMsg('0', '<strong>Error : </strong>Username is required..');
                     $scope.error.isUserName = true;
                     focus('$scope.signindetails.Username');
                     return;
                 }
                 else if ($scope.signindetails.Password == '' || angular.isUndefined($scope.signindetails.Password)) {
-                    mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
+                    //mainFun.fireMsg('0', '<strong>Error : </strong>Password is required..');
                     $scope.error.isPwd = true;
                     focus('$scope.signindetails.Password');
                     return;
@@ -450,7 +450,7 @@ routerApp
                             }
                         }
                         else{
-                            displayError("Subscription detail not found for this user inorder to authorize login, please contact system administrator...")
+                            displayError("Subscription detail not found for this user inorder to authorize login, please contact system administrator.")
                             $mdDialog.hide();
                         }
                     
@@ -886,12 +886,12 @@ routerApp
 
             //#pre-loader error
             var displayError = function (message) {
-                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process fail !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Failed to Complete').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
             };
 
             //#pre-loader success
             var displaySuccess = function (message) {
-                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process Completed !').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
+                $mdDialog.show($mdDialog.alert().parent(angular.element(document.body)).clickOutsideToClose(true).title('Process Completed').textContent('' + message + '').ariaLabel('Fail to complete.').ok('OK'));
             };
 
 
@@ -1027,7 +1027,7 @@ routerApp
                     $scope.errorNote=true;
                 }
                 else if($scope.strengthText=="very weak2"){
-                    $scope.strenghtNote="Password must contain at least 1 charactor";
+                    $scope.strenghtNote="Password must contain at least 1 character";
                     $scope.errorNote=true;
                 }
                 else
@@ -1436,41 +1436,41 @@ routerApp
                 //*validation
                 if(onsite){              
                     if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
                         $scope.error.isFirstName = true;
                         focus('firstName');
                         return;
                     } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
                         $scope.error.isLastName = true;
                         focus('lastName');
                         return;
                     }
                     else if (signUpUsr.email == '') {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Username is required.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Username is required.');
                         $scope.error.isEmail = true;
                         focus('email');
                         return;
                     }
                     else if (angular.isUndefined(signUpUsr.email)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid username.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Invalid username.');
                         $scope.error.isEmail = true;
                         focus('email');
                         return;
                     }
                     else if (signUpUsr.pwd == '' || angular.isUndefined(signUpUsr.pwd)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
                         $scope.error.isPassword = true;
                         focus('password');
                         return;
                     }else if($scope.errorNote){
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Password is required.');
                         $scope.error.isPassword = true;
                         focus('password');
                         return;
                     }
                     else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
                         $scope.error.isPassword = true;
                         $scope.error.isRetypeCnfrm = true;
                         focus('cnfrmPwd');
@@ -1490,25 +1490,25 @@ routerApp
                 }
                 else{
                     if (signUpUsr.firstName == '' || angular.isUndefined(signUpUsr.firstName)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>First name is required..');
                         $scope.error.isFirstName = true;
                         focus('firstName');
                         return;
                     } else if (signUpUsr.lastName == '' || angular.isUndefined(signUpUsr.lastName)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Last name is required.');
                         $scope.error.isLastName = true;
                         focus('lastName');
                         return;
                     }
 
                     else if (signUpUsr.email == '') {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Email address is required.');
                         $scope.error.isEmail = true;
                         focus('email');
                         return;
                     }
                     else if (angular.isUndefined(signUpUsr.email)) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Invalid email address.');
                         $scope.error.isEmail = true;
                         focus('email');
                         return;
@@ -1527,7 +1527,7 @@ routerApp
                         return;
                     }
                     else if (signUpUsr.pwd != signUpUsr.cnfrPwd) {
-                        mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
+                        //mainFun.fireMsg('0', '<strong>Error : </strong>Password does not match.');
                         $scope.error.isPassword = true;
                         $scope.error.isRetypeCnfrm = true;
                         focus('cnfrmPwd');
@@ -1541,7 +1541,7 @@ routerApp
                         return;
                     }
                     else {
-                        displayProgress('User registration is processing.');
+                        displayProgress('User registration is processing...');
                          mainFun.signUpUser();  
                     }
                 }

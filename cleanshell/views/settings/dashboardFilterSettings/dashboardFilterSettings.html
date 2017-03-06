@@ -1,0 +1,298 @@
+<div class="card-container" ng-init="initiateDatasources()">
+	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
+
+		<md-content>
+			<div layout="row" layout-align="end end">
+				<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" aria-label="back" ng-click="route('home')">
+				</md-button>
+			</div>
+			<div class="setting-card-header">
+				<h2 md-colors="{color:'{{$root.h1color}}-A700'}">
+					Dashboard Filter Settings
+				</h2>
+				<div class="setting-img-wrap">
+					<img src="views/settings/dashboardFilterSettings/dashboard.png"/>
+				</div>
+			</div>
+			<md-stepper-card-content class="md-no-padding">
+				<md-steppers md-dynamic-height md-disable-tabs-behavior="true" md-stretch-steppers="always" md-selected="selectedStep">
+					<md-step label="Filter type">
+						<md-step-body>
+							<div>
+								<div layout="row" layout-align="space-between center" class="side-margins">
+									<md-radio-group class="margin-10" ng-model="selectedFilterOption">
+										<md-radio-button value="configure"> Configure filters from dataset  </md-radio-button>
+										<md-radio-button value="custom" aria-label="Label 1"> Custom Filter </md-radio-button>
+									</md-radio-group>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<span></span>
+									<md-button ng-disabled="showBusyText" class="md-raised md-primary" ng-click="stepOne()">
+										NEXT
+									</md-button>
+								</div>
+							</div>
+						</md-step-body>
+					</md-step>
+					<md-step label="Datasource">
+						<md-step-body>
+							<div>
+								<div layout="row" layout-align="center center" layout-wrap>
+									<md-card ng-repeat="source in datasources"  flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" class="product_card" md-colors="{background:'primary-800'}" ng-click="selectDatasource(source.name)" ng-show="{{source.display}}">
+										<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
+											<span class="product_name" style="border-bottom: 1px solid #white;">
+												{{source.name}}
+											</span>
+											<span>
+												<i class="ti-check" ng-if=" selectedDatasource == source.name "/>
+											</span>
+										</div>
+										<div layout="row" layout-align="end end">
+											<img ng-src={{source.icon}} style="height: 100px;width: 100px;">
+										</div>
+									</md-card>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="stepTwo()" class="md-raised md-primary">NEXT</md-button>
+								</div>
+							</div>
+						</md-step-body>
+					</md-step>
+					<md-step label="Connections">
+						<md-step-body>
+							<md-content style="padding:20px">
+								<div flex layout="row" layout-align="center center" ng-show="ConnectionProgress">
+									<p style="margin-top: 28px;" flex="20" layout="row" layout-align="center center">
+										<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+										</md-progress-circular>
+									</p>
+								</div>
+								<div ng-show="!connectionProgress && datasourceConnections.length > 0">
+									<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+										<label>Search Connection</label>
+										<input class="form-control" placeholder="search Connection..." ng-model="searchConnection" flex/>
+									</div>
+									<div layout="row" layout-wrap>
+										<fieldset class="fieldset" flex>
+											<legend class="demo-legend">Choose Connection </legend>
+											<div layout="row" layout-wrap flex>
+												<md-radio-group layout="row" layout-wrap flex ng-model="selectedConnection">
+													<div class="all-checkboxes" flex="50" ng-repeat="connection in datasourceConnections  | filter : {connection_name: searchConnection}" >
+														<md-radio-button value="{{connection}}" class=" m-top-10">
+															{{connection.connection_name}}
+														</md-radio-button>
+													</div>
+												</md-radio-group>
+											</div>
+										</fieldset>
+									</div>
+								</div>
+								<div class="digin-cmds-source h-inherit" ng-show="displayConnectionNoneText">
+									<div class="error-wrap error m-50 h-inherit">
+										<span> No Connections</span>
+									</div>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="stepThree()" class="md-raised md-primary">NEXT</md-button>
+								</div>
+							</md-content>
+						</md-step-body>
+					</md-step>
+					<md-step label="Table">
+						<md-step-body>
+							<md-content style="padding:20px">
+								<div flex layout="row" layout-align="center center" ng-show="tableProgress">
+									<p style="margin-top: 28px;" flex="20" layout="row" layout-align="center center">
+										<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+										</md-progress-circular>
+									</p>
+								</div>
+								<div ng-show="!tableProgress && tables.length > 0">
+									<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+										<label>Search Table</label>
+										<input class="form-control" placeholder="search table..." ng-model="searchTables" flex/>
+									</div>
+									<div layout="row" layout-wrap>
+										<fieldset class="fieldset" flex>
+											<legend class="demo-legend">Choose table </legend>
+											<div layout="row" layout-wrap flex>
+												<md-radio-group layout="row" layout-wrap flex ng-model="selectedTable">
+													<div class="all-checkboxes" flex="50" ng-repeat="table in tables  | filter : {datasource_name: searchTables}" >
+														<md-radio-button value="{{table}}" class=" m-top-10">
+															{{table.datasource_name}}
+														</md-radio-button>
+													</div>
+												</md-radio-group>
+											</div>
+										</fieldset>
+									</div>
+								</div>
+								<div class="digin-cmds-source h-inherit" ng-show="displayTableNoneText">
+									<div class="error-wrap error m-50 h-inherit">
+										<span> No Tables</span>
+									</div>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="stepFourPrevious()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="stepFour()" class="md-raised md-primary">NEXT</md-button>
+								</div>
+							</md-content>
+						</md-step-body>
+					</md-step>
+					<md-step label="Field">
+						<md-step-body>
+							<md-content style="padding:20px">
+								<div flex layout="row" layout-align="center center" ng-show="fieldsProgress">
+									<p style="margin-top: 28px;" flex="20" layout="row" layout-align="center center">
+										<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+										</md-progress-circular>
+									</p>
+								</div>
+								<div ng-show="!fieldsProgress && fields.length > 0">
+									<div layout="row" layout-wrap>
+										<fieldset class="fieldset" flex>
+											<legend class="demo-legend">Value field </legend>
+												<md-radio-group layout="row" layout-wrap flex ng-model="selectedValueField">
+													<div class="all-checkboxes" flex="50" ng-repeat="field in fields" >
+														<md-radio-button value="{{field.name}}" class=" m-top-10">
+															{{field.name}}
+														</md-radio-button>
+													</div>
+												</md-radio-group>
+										</fieldset>
+										<div style="width:20px"></div>
+										<fieldset class="fieldset" flex>
+											<legend class="demo-legend">Display Field </legend>
+												<md-radio-group layout="row" layout-wrap flex ng-model="selectedDisplayField">
+													<div class="all-checkboxes" flex="50" ng-repeat="field in fields" >
+														<md-radio-button value="{{field.name}}" class=" m-top-10">
+															{{field.name}}
+														</md-radio-button>
+													</div>
+												</md-radio-group>
+										</fieldset>
+									</div>
+									<div layout="row" layout-wrap class="p-t-20 m-b-20">
+										<fieldset class="fieldset" flex>
+											<legend class="demo-legend"> Selection Type </legend>
+											<md-radio-group layout="column" layout-wrap flex ng-model="selectionType">
+												<md-radio-button value="single">
+													Single selection
+												</md-radio-button>
+												<md-radio-button value="multiple">
+													Multiple selection
+												</md-radio-button>
+											</md-radio-group>
+										</fieldset>
+									</div>
+								</div>
+								<div class="digin-cmds-source h-inherit" ng-show="displayFieldNoneText">
+									<div class="error-wrap error m-50 h-inherit">
+										<span> No Fields</span>
+									</div>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="displayDefaultValues()"> Set Default Value</md-button>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="decrementStep()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="stepFive()" class="md-raised md-primary">NEXT</md-button>
+								</div>
+							</md-content>
+						</md-step-body>
+					</md-step>
+					<md-step label="Default">
+						<md-step-body>
+							<md-content>
+								<div flex layout="row" layout-align="center center" ng-show="defaultProgoress">
+									<p style="margin-top: 28px;" flex="20" layout="row" layout-align="center center">
+										<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="40">
+										</md-progress-circular>
+									</p>
+								</div>
+								<div ng-show="!defaultProgoress && defaultValues.length > 0">
+									<fieldset class="fieldset" flex>
+										<legend class="demo-legend">Default Value</legend>
+											<md-radio-group layout="row" layout-wrap flex ng-model="selectedDefaultValue">
+												<div class="all-checkboxes" flex="50" ng-repeat="value in defaultValues" >
+													<md-radio-button value="{{value}}" class=" m-top-10">
+														{{value}}
+													</md-radio-button>
+												</div>
+											</md-radio-group>
+									</fieldset>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="stepSixPrevious()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="stepSix()" class="md-raised md-primary">NEXT</md-button>
+								</div>
+							</md-content>
+						</md-step-body>
+					</md-step>
+					<md-step label="custom">
+						<md-step-body>
+							<md-content style="padding:20px">
+								<div layout="column" layout-wrap>
+									<div layout="row" layout-wrap style="padding: 10px 10px 10px 10px;" ng-show="customFields.length > 0">
+											<label flex="40">Actual value</label>
+											<label flex="40">Display value</label>
+											<label flex="10"></label>
+											<label flex="10"> Custom value</label>
+									</div>
+									 <md-radio-group ng-model="selectedDefaultValue">
+										<div layout="row" ng-repeat="field in customFields track by $index">
+											<div flex="45" style="padding: 10px 10px 10px 10px;">
+												<input class="form-control" ng-model="field.actualValue" flex/>
+											</div>
+											<div flex="45" style="padding: 10px 10px 10px 10px;">
+												<input class="form-control" ng-model="field.displayValue" flex/>
+											</div>
+											<div>
+												<md-button class="md-icon-button icon-cancel" md-colors="{color:md-primary}" 
+													aria-label="remove" ng-click="removeCustomField($index)">
+												</md-button>
+											</div>
+											<div class="all-checkboxes" ng-show="isDefault">
+												<md-radio-button value="{{field.actualValue}}" class=" m-top-10">
+												</md-radio-button>
+											</div>
+										</div>
+									 </md-radio-group>
+									<div flex="100" layout="row">
+										<label> Set default value</label>
+										<md-checkbox ng-model="isDefault" ng-click="setDefaultParam()">
+
+										</md-checkbox>
+									</div>
+								</div>
+								<div flex layout="row" class="side-margins">
+									<md-button ng-click="addCustomField()" class="md-raised">ADD FIELD</md-button>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="GoToStepOne()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="incrementStep()" class="md-raised md-primary">NEXT</md-button>
+								</div>
+							</md-content>
+						</md-step-body>
+					</md-step>
+					<md-step label="Finish">
+						<md-step-body>
+							<md-content style="padding:20px">
+								<div layout="column" flex style="padding: 10px 10px 10px 10px;">
+									<label>Filter Name</label>
+									<input class="form-control" placeholder="Enter filter name.." ng-model="filterName" flex/>
+								</div>
+								<div flex layout="row" layout-align="space-between center" class="side-margins">
+									<md-button ng-click="stepEightPrevious()" class="md-raised md-primary">Previous</md-button>
+									<md-button ng-click="saveFilters()" class="md-raised md-primary">SAVE</md-button>
+								</div>
+							</md-content>
+						</md-step-body>
+					</md-step>
+				</md-steppers>
+			</md-stepper-card-content>
+		</md-content>
+	</md-whiteframe>
+</div>

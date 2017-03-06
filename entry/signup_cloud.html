@@ -47,7 +47,7 @@
                                      align="center">
                             </div>
                             <span class="login-welcome">
-                               Sign up now
+                               Sign Up now
                             </span>
                             <h5>
                                 DigIn
@@ -74,14 +74,14 @@
                                         <div class="form-inline">
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isFirstName,'':!error.isFirstName}">
-                                                <label for="firstName">Firstname</label>
+                                                <label for="firstName">First name</label>
                                                 <div>
                                                     <input type="text" class="form-control"
                                                            id="firstName"
                                                            name="firstName"
                                                            ng-model="signUpUsr.firstName"
                                                            required
-                                                           placeholder="first name">
+                                                           placeholder="First name">
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.firstName.$invalid && !frmDiginSignUp.firstName.$pristine"
                                                  class="ng-message" ng-messages="frmDiginSignUp.firstName.$error">
@@ -90,14 +90,14 @@
                                             </div>
                                             <div class="text-domain-name full-name"
                                                  ng-class="{error:error.isLastName,'':!error.isLastName}">
-                                                <label for="lastName">Lastname</label>
+                                                <label for="lastName">Last name</label>
                                                 <div>
                                                     <input type="text" class="form-control"
                                                            id="lastName"
                                                            name="lastName"
                                                            required
                                                            ng-model="signUpUsr.lastName"
-                                                           placeholder="last name">
+                                                           placeholder="Last name">
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.lastName.$invalid && !frmDiginSignUp.lastName.$pristine"
                                                 class="ng-message" ng-messages="frmDiginSignUp.lastName.$error">
@@ -139,7 +139,7 @@
                                                            ng-model="signUpUsr.pwd"
                                                            ng-keyup="signUpUsr.cnfrPwd=''" 
                                                            ng-focus="signUpUsr.cnfrPwd=''" 
-                                                           placeholder="password"  
+                                                           placeholder="Password"  
                                                            ng-minlength="6" ng-maxlength="32"
                                                            password-strength-indicator>
                                                 </div>
@@ -148,10 +148,10 @@
                                                     <div ng-message="required">*</div>
 
                                                     <span class="error" ng-show="frmDiginSignUp.password.$error.minlength">
-                                                        Password must contain atleast 6 charactors. 
+                                                        Password must contain atleast 6 characters. 
                                                     </span>
                                                     <span class="error" ng-show="frmDiginSignUp.password.$error.maxlength">
-                                                        Maximum length for password can be 32 charactors. 
+                                                        Maximum length for password can be 32 characters. 
                                                     </span>
                                                     
 
@@ -173,11 +173,11 @@
                                                            required
                                                            ng-model="signUpUsr.cnfrPwd"
                                                            password-verify="signUpUsr.pwd"
-                                                           placeholder="confirm password">
+                                                           placeholder="Confirm password">
                                                 </div>
                                                 <div ng-show="frmDiginSignUp.cnfrmPwd.$invalid && !frmDiginSignUp.cnfrmPwd.$pristine && !frmDiginSignUp.password.$error.minlength && !frmDiginSignUp.password.$error.maxlength && !errorNote" 
                                                 class="ng-message"> 
-                                                Password does not match
+                                                Password doesn't match
                                                 </div>
                                             </div>
 
@@ -214,7 +214,7 @@
                                        ng-click="submit()"
                                        ng-class="{disable:frmDiginSignUp.$invalid,active: !frmDiginSignUp.$invalid}"
                                        class="login-btn">
-                                        sign up
+                                        Sign Up
                                     </a>
                                 </div>
 

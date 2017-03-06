@@ -159,8 +159,8 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	}
 	
 	
-	userAdminFactory.getInvitedUsers($scope.getStatus);
-
+	userAdminFactory.getInvitedUsers();
+	userAdminFactory.getInvitedUsersWithStatus($scope.getStatus);
 	
 	//userAdminFactory.getPackageSummary();
 	
@@ -170,7 +170,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		
 	$scope.enterInviteUser = function(ev,searchText)
 	{
-		if($rootScope.userLevel=='user'){
+		if($rootScope.userLevel=='User'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
         }
 		else{
@@ -186,7 +186,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 						userAdminFactory.inviteUser(searchText).then(function(response) {
 							$rootScope.sharableUsers=[];
 							//userAdminFactory.getInvitedUsers(function(data) {});
-							userAdminFactory.getInvitedUsers($scope.getStatus);
+							userAdminFactory.getInvitedUsersWithStatus($scope.getStatus);
 							console.log(response);
 							$scope.searchText = "";
 						});
@@ -262,7 +262,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		}
 
 		
-		if($rootScope.userLevel=='user'){
+		if($rootScope.userLevel=='User'){
            displayError('You are not permitted to do this operation, allowed only for system administrator'); 
 		   return;
         }
@@ -313,7 +313,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 		}
 		
 		
-		if($rootScope.userLevel=='user'){
+		if($rootScope.userLevel=='User'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
 		   return;
         }
@@ -336,7 +336,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 
 							$rootScope.sharableUsers=[];
 							//userAdminFactory.getInvitedUsers(function(data) {});
-							userAdminFactory.getInvitedUsers($scope.getStatus);
+							userAdminFactory.getInvitedUsers();
 						
 						displaySuccess("User removed successfully."); 
 					
@@ -353,7 +353,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
         	}
 		}
 		
-		if($rootScope.userLevel=='user'){
+		if($rootScope.userLevel=='User'){
            displayError('You are not permitted to do this operation, allowed only for system administrator'); 
 		   return;
         }
@@ -412,7 +412,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 	
 	vm.addGroup = function(ev, group, index)
 	{
-		 if($rootScope.userLevel=='user'){
+		 if($rootScope.userLevel=='User'){
            displayError('You are not permitted to do this operation, allowed only for administrator'); 
         }else{
 			if(!group)
@@ -466,7 +466,7 @@ routerApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog'
 			  
 					$rootScope.sharableUsers=[];
 					//userAdminFactory.getInvitedUsers(function(data) {});
-					userAdminFactory.getInvitedUsers($scope.getStatus);
+					userAdminFactory.getInvitedUsers();
 					
 				$scope.groups.splice(index, 1); 
 			});
@@ -601,7 +601,7 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 						$rootScope.sharableUsers=[];
 						
 						//userAdminFactory.getInvitedUsers(function(data) {});
-						userAdminFactory.getInvitedUsers($scope.getStatus);
+						userAdminFactory.getInvitedUsers();
 						
 						notifications.toast(1, "Group Added");
 						vm.group.groupId = result.Data[0].ID;
@@ -646,7 +646,7 @@ routerApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifi
 						{
 							$rootScope.sharableUsers=[];
 							//userAdminFactory.getInvitedUsers(function(data) {});
-							userAdminFactory.getInvitedUsers($scope.getStatus);
+							userAdminFactory.getInvitedUsers();
 							
 							notifications.toast(1, "User group updated successfully.");
 							vm.group.groupId = result.Data[0].ID;

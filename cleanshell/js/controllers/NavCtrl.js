@@ -8,6 +8,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.currentView = "Home";
 	
 	//Theming
+	$scope.zoomLevel = "100%";
 	$rootScope.theme = 'defaultDark';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
@@ -84,6 +85,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			
 			if($scope.changed == false)
 			{
+				clearWidgets();
 				navigateTo(ev,action);
 			}else{
 				$mdDialog.show({
@@ -99,6 +101,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 						alert("Changes saved");
 					}else if(answer === 'No')
 					{
+						clearWidgets();
 						navigateTo(ev,action);
 					}
 				});
@@ -186,10 +189,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	{
 		if(action == "Search"){
 			$mdSidenav('searchBar').toggle();
-			
-		/*	dialogService.confirmDialog(ev, "Title","What is this","yes", "no").then(function(data) {
-				console.log(data);
-			});*/
+			$scope.SearchComponents = "";
 		}else if(action == "TV Mode")
 		{
 			//Start of Navigate TVMode
@@ -219,27 +219,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			dialogService.confirmDialog(ev, "Clear Widgets","Are you sure you want to clear all Widgets?","yes", "no").then(function(answer) {
 				if(answer == 'yes')
 				{
-                        $rootScope.currentDashboard = [];
-						$rootScope.selectedDashboard = [];
-                        $rootScope.currentDashboard = {
-
-                            "pages": null,
-                            "compClass": null,
-                            "compType": null,
-                            "compCategory": null,
-                            "compID": null,
-                            "compName": null,
-                            "refreshInterval": null,
-                        }
-
-                        $rootScope.currentDashboard.pages = [];
-                        var page = {
-                            "widgets": [],
-                            "pageID": "temp" + createuuid(),
-                            "pageName": "DEFAULT",
-                            "pageData": null
-                        }
-                        $rootScope.currentDashboard.pages.push(page);
+					clearWidgets();
 				}
 			});
 		}else if(action == 'Save')
@@ -271,7 +251,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}else if(action == 'Notifications')
 		{
 			$mdSidenav('notifications').toggle();
-			//notifications.toast(1,"yes");
 		}else if(action == "AddWidget")
 		{
 			
@@ -292,6 +271,33 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 	}
 	//End of Perform
+	
+	function clearWidgets()
+	{
+		$rootScope.currentDashboard = [];
+		$rootScope.selectedDashboard = [];
+		$rootScope.currentDashboard = {
+
+			"pages": null,
+			"compClass": null,
+			"compType": null,
+			"compCategory": null,
+			"compID": null,
+			"compName": null,
+			"refreshInterval": null,
+		}
+
+		$rootScope.currentDashboard.pages = [];
+		var page = {
+			"widgets": [],
+			"pageID": "temp" + createuuid(),
+			"pageName": "DEFAULT",
+			"pageData": null
+		}
+		$rootScope.currentDashboard.pages.push(page);
+	}
+	
+	
 	$scope.data = {};
 	$scope.userSettings = {};
 	$scope.myTenant = {};
@@ -501,20 +507,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
 	}, 5000);
 	*/
-	
-	$scope.openNotification = function(path)
-	{
-		if(!path){
-			//do nothing
-		}else{
-			window.location.href = path;
-			$mdSidenav('notifications').toggle();
-		}
 
-	}
-
-
-	
 	
 	
 	//Introduction to Shell

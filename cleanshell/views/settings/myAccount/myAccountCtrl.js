@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'PackageServices','notifications','paymentGateway','$http','colorManager','onsite', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices,PackageServices,notifications,paymentGateway,$http,colorManager,onsite){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'PackageServices', 'notifications','paymentGateway','$http','colorManager','onsite','version', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices, PackageServices,notifications,paymentGateway,$http,colorManager,onsite,version){
 	
 	var vm = this;
 	
@@ -6,6 +6,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	colorManager.reinforceTheme();
 	
 	$scope.onsite = onsite;
+	$scope.version = version;
 	
 	vm.selectedPage = $stateParams.pageNo;
 	
@@ -29,6 +30,16 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 		}else{
 			notifications.log("error", new Error());
 		}
+	})
+	
+	PackageServices.getPackageDetails().then(function(data) {
+		notifications.log(data, new Error());
+		if(data.Is_Success == true)
+		{
+		}else{
+			
+		}
+		
 	})
 	
 	var monthlyData = {}; //This will hold the result from the service call
@@ -109,7 +120,7 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 				},
 				size: {
 					width: 600,
-					height: 412
+					height: 439
 				},
 				series: chartSeries,
 				title: {
@@ -384,8 +395,6 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
         })
 		
 	}
-	
-	
 	$scope.paymentLoading = false;
 	$scope.startDate = new Date();
 	$scope.endDate = new Date();
@@ -393,6 +402,8 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	
 	$scope.getPaymentHistory = function()
 	{
+
+		
 		$scope.paymentLoading = true;
 		PackageServices.getPaymentHistory($scope.startDate, $scope.endDate).then(function(data) {
 			$scope.paymentLoading = false;
@@ -416,8 +427,11 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 				notifications.log("error", new Error());
 			}
 		})
-	}
 
+		
+	}
+	
+	
 	
 }])
 

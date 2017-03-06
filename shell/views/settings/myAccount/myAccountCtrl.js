@@ -2713,12 +2713,12 @@ routerApp.controller('changePasswordCtrl', ['$scope', '$mdDialog', '$http', 'not
                         notifications.toast('0', data.Message);
                     } else {
                         if(onsite){
-                            notifications.toast('1', 'Password is changed successfully.');
+                            notifications.toast('1', 'Password has changed successfully.');
                             $mdDialog.hide();
                         }
                         else{
                             $scope.sendChangePwMail();
-                            notifications.toast('1', 'Password is changed successfully.');
+                            notifications.toast('1', 'Password has changed successfully.');
                             $mdDialog.hide();
                         }
                         

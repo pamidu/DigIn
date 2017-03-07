@@ -6,7 +6,7 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory','colorManager','$timeout', function ($scope,$state,$rootScope,notifications,datasourceFactory,colorManager,$timeout) {
+DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory','colorManager','$timeout','DiginServices', function ($scope,$state,$rootScope,notifications,datasourceFactory,colorManager,$timeout,DiginServices) {
 	
 	$scope.$parent.currentView = "Datasource Settings";
 
@@ -58,8 +58,8 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 
 	var securityToken = JSON.parse(decodeURIComponent(getCookie('authData'))).SecurityToken;
 
-	$scope.sources = [{
-		type:"MSSQL",
+	$scope.sourceType = [];
+	/*	type:"MSSQL",
 		isSelected:false
 	},{
 		type:"ORACLE",
@@ -67,16 +67,28 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 	},{
 		type:"hiveql",
 		isSelected:false
-	}];
+	}];*/
+	
+	DiginServices.getDBConfigs().then(function(data) {
+		console.log(data);
+		//$scope.sourceType = data;
+		angular.forEach(data,function(src,index)
+		{
+			if (src.name != 'DuoStore' && src.name != 'postgresql' && src.name != 'CSV Upload' && src.name != 'BigQuery' && src.name != 'memsql' )
+			{
+				$scope.sourceType.push(src);
+			}
+		})
+	});
 
 	$scope.onSelectDataBase;
 
 	$scope.onSelectDataSource = function(source){
-		for (i = 0; i < $scope.sources.length; i++) {
-            $scope.sources[i].isSelected = false;
-            if($scope.sources[i].type == source.type ){
-            	$scope.sources[i].isSelected = true;
-            	$scope.onSelectDataBase = source.type;
+		for (i = 0; i < $scope.sourceType.length; i++) {
+            $scope.sourceType[i].isSelected = false;
+            if($scope.sourceType[i].name == source.name ){
+            	$scope.sourceType[i].isSelected = true;
+            	$scope.onSelectDataBase = source.name;
             	$scope.incrementStep();
             	$scope.getAllconnections();
             }
@@ -104,17 +116,12 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 	    $scope.decrementStep();
 	    $scope.getAllconnections();
 	}
-	// route to home
-	$scope.goHome = function()
-	{
-		$state.go('home');
-	}
 
 	//get all connections
 	$scope.getAllconnections = function()
 	{
 		$scope.connectionStatus = false;
-		datasourceFactory.getAllConnections(securityToken,$scope.onSelectDataBase).then(function(data) {
+		datasourceFactory.getAllConnections($rootScope.authObject.SecurityToken,$scope.onSelectDataBase).then(function(data) {
 			if(data.Is_Success)
 			{
 				$timeout(function() {

@@ -482,7 +482,7 @@
 						 
 						</ul>
 					</li>
-					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share" id="shareSocial"></i></a>
+					<!--li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share" id="shareSocial"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Share</a></li>
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-facebook sub-menu-icon"></i>Facebook</a></li>
@@ -491,7 +491,7 @@
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-linkedin sub-menu-icon"></i>LinkedIn</a></li>
 							<li><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-email sub-menu-icon"></i>Email</a></li>
 						</ul>
-					</li>
+					</li-->
 					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings" id="settings"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Settings</a></li>
@@ -600,10 +600,12 @@
 	<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
 	<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 	<script src="views/query_builder/query_builderCtrl.js"></script>
+	<script src="views/chart_designer/chart_designerCtrl.js"></script>
 	<script src="views/social/facebook/facebookCtrl.js"></script>
 	<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 	<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
 	<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
+	<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
 	<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
 	<script src="js/services/tabularService.js"></script>
 	

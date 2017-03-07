@@ -142,6 +142,18 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		  }
 	})
 	
+	.state('chart_designer', {
+		url: '/chart_designer',
+		templateUrl: 'views/chart_designer/chart_designer.html',
+		controller: 'chart_designerCtrl',
+		 params: {
+			'selectedAttributes': [],
+			'selectedMeasures': [],
+			'selectedFile': {},
+			'selectedDB' : {}
+		  }
+	})
+	
 	.state('facebook', {
 		url: '/facebook',
 		templateUrl: 'views/social/facebook/facebook.html',

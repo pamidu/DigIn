@@ -527,11 +527,11 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				intro: 'Dig deep in to your social media pages',
 				position: 'right'
 			},
-			{
+			/*{
 				element: '#shareSocial',
 				intro: 'Share your Dashboards on Social Media',
 				position: 'right'
-			},{
+			},*/{
 				element: '#settings',
 				intro: 'Configure the settings related to the system and users',
 				position: 'right'

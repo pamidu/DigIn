@@ -1,9 +1,10 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService,$log) {
 
 	$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
+	$log.debug('please user $log.debug() or notifications.log() instead of console.log()');
 	
 	$scope.currentView = "Home";
 	
@@ -70,8 +71,8 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		{
 			var pageIndex = 0;	
 			try{
-				angular.forEach($scope.currentDashboard.pages, function(value, key) {
-					if($scope.currentDashboard.pages[pageIndex].widgets.length != $scope.selectedDashboard.pages[pageIndex].widgets.length)
+				angular.forEach($rootScope.currentDashboard.pages, function(value, key) {
+					if($rootScope.currentDashboard.pages[pageIndex].widgets.length != $rootScope.selectedDashboard.pages[pageIndex].widgets.length)
 					{
 						$scope.changed= true;
 						console.log("changed");
@@ -86,27 +87,24 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			if($scope.changed == false)
 			{
 				clearWidgets();
-				navigateTo(ev,action);
+				navigateTo(ev,action); // if the user has not made any changes to the dashboard  navigate where he/she wants to
 			}else{
-				$mdDialog.show({
-				  controller: saveChangesCtrl,
-				  templateUrl: 'views/dashboard/saveChanges/saveChanges.html',
-				  parent: angular.element(document.body),
-				  targetEvent: ev,
-				  clickOutsideToClose:true
-				})
-				.then(function(answer) {
-					if(answer === 'Yes')
+				
+				dialogService.confirmDialog(ev,"Unsaved Changes","Save changes to '"+$rootScope.currentDashboard.compName+"' Dashboard before leaving", "yes","no").then(function(answer) {
+					if(answer == "yes")
 					{
+						// save the changes and then navigate where he wants to
 						alert("Changes saved");
-					}else if(answer === 'No')
+					}
+					else if(answer == "no")
 					{
-						clearWidgets();
+						clearWidgets(); // if the user ignores to save the changes navigate where he wants to
 						navigateTo(ev,action);
 					}
 				});
+
 			}
-		}else{
+		}else{// if user is not in dashboard navigate to where he/she wants to
 			navigateTo(ev,action);
 		}
 		
@@ -115,7 +113,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	function navigateTo(ev,action){
 		if(action.charAt(0) == "#")
 		{
-			location.href = action;
+			location.href = action; // if the action looks like this '#/home' navigate to that particular state.
 		}else if(action == "Switch Tenant")
 		{
 			 $mdDialog.show({
@@ -176,12 +174,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 	}
 	
-	function saveChangesCtrl ($scope, $mdDialog) {
-		$scope.confirmReply = function(answer) {
-		  $mdDialog.hide(answer);
-		};
-	}
-	
+	// This variable is only used to toggle the icons and tooltip in the 'Turn Fullscreen On/Off button'
 	$scope.fullscreenOn = false;
 	
 	//Start of Perform
@@ -305,7 +298,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	(function (){
 
 		if(IsLocal === true){
-			notifications.log("not", new Error());
+			notifications.log("not local", new Error());
 			$rootScope.db  = new pouchDB("Dashboards");
 			//$scope.getSearchPanelDetails();
 
@@ -534,11 +527,11 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				intro: 'Dig deep in to your social media pages',
 				position: 'right'
 			},
-			{
+			/*{
 				element: '#shareSocial',
 				intro: 'Share your Dashboards on Social Media',
 				position: 'right'
-			},{
+			},*/{
 				element: '#settings',
 				intro: 'Configure the settings related to the system and users',
 				position: 'right'

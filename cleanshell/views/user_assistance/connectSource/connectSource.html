@@ -108,7 +108,8 @@ input
 			  <div layout="row" layout-wrap flex>
 			  <div flex-xs flex="100">
 				<md-checkbox aria-label="Select All" ng-model="selectAllAttributes" md-indeterminate="isIndeterminate()" ng-click="toggleAllAttributes()">
-				  <span ng-if="selectAllAttributes">Un-</span>Select All
+				  <span ng-if="selectAllAttributes">Unselect all</span>
+				  <span ng-if="!selectAllAttributes">Select all</span>
 				</md-checkbox>
 			  </div>
 				<div class="all-checkboxes" flex="50" ng-repeat="item in attributes">
@@ -124,7 +125,8 @@ input
 			  <div layout="row" layout-wrap flex>
 			  <div flex-xs flex="100">
 				<md-checkbox aria-label="Select All" ng-model="selectAllMeasures" md-indeterminate="isIndeterminate()" ng-click="toggleAllMeasures()">
-				  <span ng-if="selectAllMeasures">Un-</span>Select All
+				  <span ng-if="selectAllMeasures">Unselect all</span>
+				  <span ng-if="!selectAllMeasures">Select all</span>
 				</md-checkbox>
 			  </div>
 				<div class="all-checkboxes" flex="50" ng-repeat="item in measures">

@@ -23,7 +23,7 @@ var DiginApp = angular.module('DuoDiginRt',
 	]
 );
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider','$logProvider','DeveloperMode', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider,$logProvider,DeveloperMode) {
 
 	$urlRouterProvider.otherwise('/home');
 	$locationProvider.hashPrefix('');
@@ -142,6 +142,18 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		  }
 	})
 	
+	.state('chart_designer', {
+		url: '/chart_designer',
+		templateUrl: 'views/chart_designer/chart_designer.html',
+		controller: 'chart_designerCtrl',
+		 params: {
+			'selectedAttributes': [],
+			'selectedMeasures': [],
+			'selectedFile': {},
+			'selectedDB' : {}
+		  }
+	})
+	
 	.state('facebook', {
 		url: '/facebook',
 		templateUrl: 'views/social/facebook/facebook.html',
@@ -195,6 +207,8 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 	$mdDateLocaleProvider.formatDate = function(date) {
        return moment(date).format('YYYY-MM-DD');
     };
+	
+	$logProvider.debugEnabled(DeveloperMode);
 
 
 }])

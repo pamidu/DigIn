@@ -123,7 +123,17 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 			 for(i=0;i<obj.length;i++){
 					if(obj[i].widgetID == id) return i;
 				}		
-        }
+        },getDBConfigs: function() {
+             //return the promise directly.
+             return $http.get('jsons/dbConfig.json')
+                       .then(function(result) {
+                            //resolve the promise as the data
+                            return result.data;
+                        },function errorCallback(response) {
+								console.log(response);
+								notifications.toast(0, "Falied to get DB Configs");
+						 });
+        },
 		
    }
 }]);//END OF DiginServices

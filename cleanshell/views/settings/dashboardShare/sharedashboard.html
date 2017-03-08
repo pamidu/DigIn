@@ -28,7 +28,8 @@
 							<legend class="demo-legend">Users </legend>
 							 <div layout="row" layout-align="space-between center">
 								<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin:10px 0px 0px 19px">
-									<span ng-if="isChecked()">Un-</span>Select All
+									<span ng-if="isChecked()">Unselect all</span>
+									<span ng-if="!isChecked()">Select all</span>
 								</md-checkbox>
 							 </div>
 
@@ -53,7 +54,8 @@
 							<legend class="demo-legend">Groups </legend>
 							<div layout="row" layout-align="space-between center">
 								<md-checkbox aria-label="Select All" ng-checked="isCheckedGroup()" md-indeterminate="isIndeterminateGroup()" ng-click="toggleAllGroup()" style="margin:10px 0px 0px 19px">
-									<span ng-if="isCheckedGroup()">Un-</span>Select All
+									<span ng-if="isCheckedGroup()">Unselect all</span>
+									<span ng-if="!isCheckedGroup()">Select all</span>
 								</md-checkbox>
 							 </div>
 

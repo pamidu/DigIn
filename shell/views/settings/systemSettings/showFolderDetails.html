@@ -9,7 +9,8 @@
 
 				<div>
 					<md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()" style="margin-left: 10px;">
-		              <span ng-if="isChecked()">Un-</span>Select All files 
+		              <span ng-if="isChecked()">Unselect all files </span>
+		              <span ng-if="!isChecked()">Select all files </span>
 		            </md-checkbox>
 	                  <md-button class="buttonMinwidth38 b-r-0" ng-click="closeDialog()">      
 	                    <ng-md-icon icon="close"></ng-md-icon>   

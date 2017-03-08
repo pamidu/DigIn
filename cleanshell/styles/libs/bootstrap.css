@@ -81,6 +81,12 @@ md-datepicker{
 }
 
 
+.md-datepicker-label{
+	font-size: 12px;
+	margin-bottom: 5px;
+}
+
+
 .md-datepicker-input-container > input.md-datepicker-input{
 	border: none !important;
 }

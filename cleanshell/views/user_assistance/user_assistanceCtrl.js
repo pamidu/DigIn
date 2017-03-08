@@ -1,4 +1,4 @@
-DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbType', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbType){
+DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbType','DiginServices', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbType,DiginServices){
 		$scope.$parent.currentView = "User Assistance";
 		var chartBackgroundColor = "";
 		
@@ -515,12 +515,25 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.connectSource_step1 = {};
 		$scope.connectSource_step2 = {};
 		
-		$scope.sourceType = [
-			{name: "BigQuery", icon: "biq-query"},
+		$scope.sourceType = [];
+			/*{name: "BigQuery", icon: "biq-query"},
 			//{name: "Postgre SQL", icon: "views/user_assistance/connectSource/postgress.png"},
 			{name: "Microsoft SQL", icon: "mssql"},
 			{name: "memsql", icon: "memsql"}
-		];
+		];*/
+		
+		DiginServices.getDBConfigs().then(function(data) {
+			console.log(data);
+			//$scope.sourceType = data;
+			angular.forEach(data,function(src,index)
+        	{
+        		if (src.name != 'DuoStore' && src.name != 'postgresql' && src.name != 'CSV Upload')
+        		{
+        			$scope.sourceType.push(src);
+        		}
+        	})
+		});
+		
 		$scope.files = [];
 		$scope.folders = [];
 		$scope.selectedDB = "";

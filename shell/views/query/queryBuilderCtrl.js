@@ -5557,9 +5557,9 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         for(var g=0; g< serArr.length; g++){
             for(var i=0; i< tempMesureArr.length; i++){
 
-                var measure = ((tempMesureArr[i]["condition"]).toLowerCase() +"_"+tempMesureArr[i]["filedName"]);
+                var measure = ((tempMesureArr[i]["condition"])+"_"+tempMesureArr[i]["filedName"]);
 
-                if(serArr[g]["origName"] == measure)
+                if(serArr[g]["origName"].toLowerCase() == measure.toLowerCase())
                     tempArr.push(serArr[g]);
             }
 

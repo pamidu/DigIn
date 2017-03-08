@@ -405,6 +405,10 @@ routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$stat
 				// write for hiveql
 				query = "SELECT " + $scope.selectedValueField + " FROM "+ $scope.selectedTableValue +"  GROUP BY " + $scope.selectedValueField + " ORDER BY " + $scope.selectedValueField + "";
 				break;
+			case 'oracle':
+				// write for hiveql
+				query = "SELECT " + $scope.selectedValueField + " FROM "+ $scope.selectedTableValue +"  GROUP BY " + $scope.selectedValueField + " ORDER BY " + $scope.selectedValueField + "";
+				break;
 		}
 		$scope.client.getExecQuery(query,$scope.datasourceId,function(data,status)
 		{

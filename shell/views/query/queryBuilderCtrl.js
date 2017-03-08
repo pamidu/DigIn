@@ -74,204 +74,6 @@ routerApp.directive('ngColorPicker', ['ngColorPickerConfig', function(ngColorPic
 
 }]);
 
-// routerApp.directive('whatIfConfigurationContainer', ['$http', function ($http) {
-//     return {
-//         restrict: 'E',
-//         transclude: true,
-//         template: '<md-content flex layout="column">'
-//                 + '<ng-transclude></ng-transclude>'
-//                 + '</md-content>',
-//         controller: ['$scope', function ($scope) {}],
-//         link: function (scope, iElement, iAttrs) {
-            
-//             scope.mode = 'automatic';
-//             console.log(scope.selectedColumns);
-//         }
-//     };
-// }]);
-
-// routerApp.directive('whatIfVariableSelector', [function () {
-//     return {
-//         restrict: 'E',
-//         scope: {
-//             source: '='
-//         },
-//         require: '^whatIfConfigurationContainer',
-//         template: '<div layout="row" style="height:400px;">'
-//                 + '<div> <table style="width:100%; height:100%;">'
-//                 + '<thead><tr><th>Available Columns</th></tr></thead>'
-//                 + '<tbody><tr ng-repeat="avCol in availableColumns | orderBy">'
-//                 + '<td ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" ng-class="isToggled(avCol)">{{avCol}}</td>'
-//                 + '</tr></tbody></table></div>'
-//                 + '<div layout="column" layout-padding>'
-//                 + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns()"> > </button>'
-//                 + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns()"> < </button>'
-//                 + '<button style="margin-bottom:5px;" ng-click="moveToSelectedColumns(true)"> >> </button>'
-//                 + '<button style="margin-bottom:5px;" ng-click="moveToAvailableColumns(true)"> << </button></div>'
-//                 + '<div><table style="width:100%; height:100%;">'
-//                 + '<thead><tr><th>Selected Columns</th></tr></thead>'
-//                 + '<tbody><tr ng-repeat="slCols in selectedColumns | orderBy">'
-//                 + '<td ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" ng-class="isToggled(slCols)">{{slCols}}</td>'
-//                 + '</tr></tbody></table></div>'
-//                 + '</div>',
-//         link: function (scope, iElement, iAttrs) {
-
-//             console.log('whatIfVariableSelector hits');
-
-//             console.log(scope.source);
-            
-//             var MAX_SELECTED_COLUMNS = 10;
-
-//             var acceptedColumnTypes = [
-//                 'FLOAT', 
-//                 'INTEGER', 
-//                 'DOUBLE'
-//             ];
-
-//             scope.selectedColumns = [];
-
-//             var activeTable = 'avColsTbl';
-
-//             var selected = [];
-
-//             scope.availableColumns = scope.source.filter(function(obj) {
-//                 if(obj.type)
-//                     colTy = obj.type.toUpperCase();
-
-//                 if(acceptedColumnTypes.indexOf(colTy) > -1)
-//                     return obj;
-//             }).map(function(obj, index) { return obj.filedName; });
-
-
-//             scope.toggleRow = function(tbl, row, index, ev) { 
-//                 ev.preventDefault();
-
-//                 // current active table changed
-//                 if(activeTable !== tbl) { 
-//                     // keep new table
-//                     activeTable = tbl;
-//                     // deselecte all selected columns in previous table
-//                     selected = []; 
-//                 }
-                
-//                 // CTRL key not pressed
-//                 if(!ev.ctrlKey)
-//                     selected = [];
-
-//                 // push selected columns temp array
-//                 var idx = selected.indexOf(row);
-//                 if(idx > -1) 
-//                     selected.splice(idx, 1);
-//                 else
-//                     selected.push(row);
-
-//                 console.log(selected);
-                
-//             }
-
-//             scope.isToggled = function(row) {
-//                 isToggled = selected.find(function(col) {
-//                     return (col == row);
-//                 });
-
-//                 return (isToggled) ? 'selected' : ' '; 
-
-//                 // return (selected.indexOf(row) > -1) ? 'selected' : ' ';
-//             }
-
-//             scope.moveToSelectedColumns = function(moveAll = false) {
-                    
-//                 if(moveAll) { // move all button pressed
-
-//                     // no columns in available columns table
-//                     if(scope.availableColumns.length === 0) 
-//                         return;
-
-//                     // selected more than the limit that user allowed to select
-//                     if(scope.availableColumns.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
-//                         return;
-
-//                     // push columns to selected columns table
-//                     scope.availableColumns.forEach(function(col) {
-//                         if(scope.selectedColumns.indexOf(col) < 0) 
-//                             scope.selectedColumns.push(col);
-//                     });
-
-//                     // set as empty 
-//                     scope.availableColumns = selected = [];
-
-//                 }else { // move single or multi columns 
-
-//                     // no columns seleced to move
-//                     if(selected.length < 0) 
-//                         return;
-
-//                     // selected more than the limit that user allowed to select
-//                     if(selected.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
-//                         return;
-
-//                     // push columns to selected columns table
-//                     selected.forEach(function(col) {
-//                         if(scope.selectedColumns.indexOf(col) < 0){
-//                             scope.selectedColumns.push(col);
-//                         }
-//                     });
-
-//                     // filter out selected columns from selected columns table
-//                     scope.availableColumns = scope.availableColumns.filter(function(x){ 
-//                         return selected.indexOf(x) === -1; 
-//                     });
-                    
-//                     // wipe out temp selected columns array
-//                     selected = [];
-
-//                 }               
-//             }
-
-//             scope.moveToAvailableColumns = function(moveAll = false) {
-
-//                 if(moveAll) { // move all button pressed
-
-//                     // no columns in selected columns table
-//                     if(scope.selectedColumns.length === 0) 
-//                         return;
-
-//                     // push columns to available columns table
-//                     scope.selectedColumns.forEach(function(col) {
-//                         if(scope.availableColumns.indexOf(col) < 0) 
-//                             scope.availableColumns.push(col);
-//                     });
-
-//                     // set as empty 
-//                     scope.selectedColumns = selected = [];
-//                 }else { // move single or multi columns 
-
-//                     // no columns seleced to move
-//                     if(selected.length < 0) 
-//                         return;
-
-//                     // push columns to selected columns table
-//                     selected.forEach(function(col) {
-//                         if(scope.availableColumns.indexOf(col) < 0){
-//                             scope.availableColumns.push(col);
-//                         }
-//                     });
-
-//                     // filter out selected columns from selected columns table
-//                     scope.selectedColumns = scope.selectedColumns.filter(function(x){ 
-//                         return selected.indexOf(x) === -1; 
-//                     });
-
-//                     // wipe out temp selected columns array
-//                     selected = [];
-
-//                 }
-//             }
-
-//         }
-//     };
-// }]);
-
 routerApp.directive('whatIfConfigurationContainer', ['$rootScope', '$http', function ($rootScope, $http) {
     return {
         restrict: 'E',
@@ -361,28 +163,29 @@ routerApp.directive('whatIfVariableSelector', [function () {
                 +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
                 +                '<md-list-item ' 
                 +                    'ng-repeat="avCol in availableColumns | orderBy" '
-                +                    'ng-click="toggleRow(\'avColsTbl\', avCol, $index, $event)" '
+                +                    'ng-click="toggleColumn($event, \'avColsTbl\', avCol)" '
                 +                    'ng-class="isToggled(avCol)">'
                 +                        '<p>{{avCol}}</p>'
                 +                '</md-list-item>'  
                 +            '</md-list>'
                 +        '</fieldset>'
                 +        '<div layout="column">'
-                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToSelectedColumns()"><i class="ti-angle-right" style="font-size:15px;"></i></md-button>'
-                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToAvailableColumns()"><i class="ti-angle-left" style="font-size:15px;"></i></md-button>'
-                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToSelectedColumns(true)"><i class="ti-angle-double-right" style="font-size:15px;"></i></md-button>'
-                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToAvailableColumns(true)"><i class="ti-angle-double-left" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToSelectedColumns($event)"><i class="ti-angle-right" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToAvailableColumns($event)"><i class="ti-angle-left" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToSelectedColumns($event, true)"><i class="ti-angle-double-right" style="font-size:15px;"></i></md-button>'
+                +            '<md-button class="md-icon-button" aria-label="More" ng-click="moveToAvailableColumns($event, true)"><i class="ti-angle-double-left" style="font-size:15px;"></i></md-button>'
                 +        '</div>'
                 +        '<fieldset class="fieldset">'
                 +            '<legend class="demo-legend">Selected Columns </legend>'
                 +            '<md-list ng-cloak flex style="max-height:300px; min-height: 200px;min-width: 200px;overflow:scroll;padding:0">'
                 +                '<md-list-item '
                 +                   'ng-repeat="slCols in selectedColumns" '
-                +                   'ng-click="toggleRow(\'slColsTbl\', slCols, $index, $event)" '
+                +                   'ng-click="toggleColumn($event, \'slColsTbl\', slCols)" '
                 +                   'ng-class="isToggled(slCols)">'
                 +                        '<p>{{slCols}}</p>'
                 +                '</md-list-item>'  
                 +            '</md-list>'
+                +            '<button ng-click="setTarget()" ng-show="isPossibleSetTarget()">Set-Target</button>'
                 +        '</fieldset>'
                 +    '</div>',
         link: function (scope, element, attrs) {
@@ -395,55 +198,100 @@ routerApp.directive('whatIfVariableSelector', [function () {
 
             var activeTable = 'avColsTbl';
 
-            var selected = [];
+            var toggledColumns = [];
 
-            scope.availableColumns = scope.columns.filter(function(obj) {
-                if(obj.type)
-                    colTy = obj.type.toUpperCase();
+            var loadNewWidget = function(columns) {
+                return columns.filter(function(col, idx, arr) {
+                    if(col.type)
+                        colTy = col.type.toUpperCase();
 
-                if(acceptedColumnTypes.indexOf(colTy) > -1) // validate datatype of column
-		    if(scope.columns.indexOf(obj) === idx) // remove duplicates
-                    	return obj;
-            }).map(function(obj, index) { return obj.name; });
+                    if(acceptedColumnTypes.indexOf(colTy) > -1) // validate datatype of column, should be numeric
+                        if(arr.indexOf(col) === idx) // remove duplicates
+                            return col;
+                }).map(function(col) { return col.filedName; });
+            }
 
-            scope.toggleRow = function(tbl, row, index, ev) { 
+            scope.toggleColumn = function(ev, tbl, col) {
                 ev.preventDefault();
 
-                // current active table changed
+                // active table changed
                 if(activeTable !== tbl) { 
-                    // keep new table
-                    activeTable = tbl;
-                    // deselecte all selected columns in previous table
-                    selected = []; 
+                    activeTable = tbl; // keep new table
+                    toggledColumns = []; // deselecte all selected columns in previous table
                 }
-                
+
                 // CTRL key not pressed
                 if(!ev.ctrlKey)
-                    selected = [];
+                    toggledColumns = []; // deselecte all selected columns
 
-                // push selected columns temp array
-                var idx = selected.indexOf(row);
-                if(idx > -1) 
-                    selected.splice(idx, 1);
-                else
-                    selected.push(row);
 
-                console.log(selected);
-                
+                if(tbl === 'avColsTbl') {
+                    var idx = toggledColumns.indexOf(col);
+                    if(idx > -1) toggledColumns.splice(idx, 1);
+                    else toggledColumns.push(col);
+                }
+                else if(tbl === 'slColsTbl'){
+                    var idx = toggledColumns.indexOf(col.name);
+                    if(idx > -1) toggledColumns.splice(idx, 1);
+                    else toggledColumns.push(col.name);
+                }
+
+                console.log(toggledColumns);
+
             }
 
-            scope.isToggled = function(row) {
-                isToggled = selected.find(function(col) {
-                    return (col == row);
-                });
+            scope.isToggled = function(col) {
+                // isToggled = toggledColumns.find(function(col) {
+                //     return (col == elem);
+                // });
 
-                return (isToggled) ? 'selected' : ' '; 
+                // return (isToggled) ? 'selected' : ' '; 
 
-                // return (selected.indexOf(row) > -1) ? 'selected' : ' ';
+                return (toggledColumns.indexOf(col) > -1) ? 'selected' : ' ';
             }
 
-            scope.moveToSelectedColumns = function(moveAll = false) {
-                    
+            scope.setTarget = function() {
+
+                var idx = scope.selectedColumns.findIndex(function(col) { return col.target });
+
+                if(idx > -1) {
+                    if(scope.selectedColumns[idx].name)
+                    scope.selectedColumns[idx].target = false;
+                }
+
+                var idx = scope.selectedColumns.findIndex(function(col) { return col.name === toggledColumns[0]; });
+                scope.selectedColumns[idx].target = true;
+
+                console.log(scope.selectedColumns);
+                return;
+            }
+
+            scope.isPossibleSetTarget = function() {
+
+                // //targets should pick in selected column table
+                if(activeTable !== 'slColsTbl')
+                    return false;
+
+                // no columns selected
+                if(toggledColumns.length <= 0)
+                    return false;
+
+                // only one target can pick
+                if(toggledColumns.length > 1)
+                    return false;
+
+                var idx = scope.selectedColumns.findIndex(function(col) { return col.target });
+                if(idx > -1) {
+                    if(toggledColumns[0] === scope.selectedColumns[idx].name)
+                    return false;
+                }
+
+                return true;
+            }
+
+            scope.moveToSelectedColumns = function(ev, moveAll = false) { 
+                ev.preventDefault();
+
                 if(moveAll) { // move all button pressed
 
                     // no columns in available columns table
@@ -457,41 +305,44 @@ routerApp.directive('whatIfVariableSelector', [function () {
                     // push columns to selected columns table
                     scope.availableColumns.forEach(function(col) {
                         if(scope.selectedColumns.indexOf(col) < 0) 
-                            scope.selectedColumns.push(col);
+                            scope.selectedColumns.push({name: col, target: false});
                     });
 
                     // set as empty 
-                    scope.availableColumns = selected = [];
+                    scope.availableColumns = [];
+                    toggledColumns = [];
 
                 }else { // move single or multi columns 
 
                     // no columns seleced to move
-                    if(selected.length < 0) 
+                    if(toggledColumns.length < 0) 
                         return;
 
                     // selected more than the limit that user allowed to select
-                    if(selected.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
+                    if(toggledColumns.length > (MAX_SELECTED_COLUMNS - scope.selectedColumns.length))
                         return;
 
                     // push columns to selected columns table
-                    selected.forEach(function(col) {
+                    toggledColumns.forEach(function(col) {
                         if(scope.selectedColumns.indexOf(col) < 0){
-                            scope.selectedColumns.push(col);
+                            scope.selectedColumns.push({name: col, target: false});
                         }
                     });
 
-                    // filter out selected columns from selected columns table
-                    scope.availableColumns = scope.availableColumns.filter(function(x){ 
-                        return selected.indexOf(x) === -1; 
+                    // filter out selected columns from available columns table
+                    scope.availableColumns = scope.availableColumns.filter(function(col){ 
+                        return toggledColumns.indexOf(col) === -1; 
                     });
                     
                     // wipe out temp selected columns array
-                    selected = [];
+                    toggledColumns = [];
 
-                }               
+                }
+         
             }
 
-            scope.moveToAvailableColumns = function(moveAll = false) {
+            scope.moveToAvailableColumns = function(ev, moveAll = false) { 
+                ev.preventDefault();
 
                 if(moveAll) { // move all button pressed
 
@@ -501,34 +352,50 @@ routerApp.directive('whatIfVariableSelector', [function () {
 
                     // push columns to available columns table
                     scope.selectedColumns.forEach(function(col) {
-                        if(scope.availableColumns.indexOf(col) < 0) 
-                            scope.availableColumns.push(col);
+                        if(scope.availableColumns.indexOf(col.name) < 0) 
+                            scope.availableColumns.push(col.name);
                     });
 
                     // set as empty 
-                    scope.selectedColumns = selected = [];
+                    scope.selectedColumns = [];
+                    toggledColumns = [];
+
                 }else { // move single or multi columns 
 
                     // no columns seleced to move
-                    if(selected.length < 0) 
+                    if(toggledColumns.length < 0) 
                         return;
 
-                    // push columns to selected columns table
-                    selected.forEach(function(col) {
+                    // push columns to available columns table
+                    toggledColumns.forEach(function(col) {
                         if(scope.availableColumns.indexOf(col) < 0){
                             scope.availableColumns.push(col);
                         }
                     });
 
                     // filter out selected columns from selected columns table
-                    scope.selectedColumns = scope.selectedColumns.filter(function(x){ 
-                        return selected.indexOf(x) === -1; 
+                    scope.selectedColumns = scope.selectedColumns.filter(function(col){ 
+                       return toggledColumns.indexOf(col.name) === -1; 
                     });
 
                     // wipe out temp selected columns array
-                    selected = [];
+                    toggledColumns = [];
 
                 }
+
+            }
+
+            if(!(scope.columns instanceof Array) || !(scope.selectedColumns instanceof Array))
+                throw new TypeError('Invalid data type.');
+
+            if(scope.selectedColumns.length === 0) {
+                scope.availableColumns = loadNewWidget(scope.columns);
+                scope.selectedColumns = [];
+            }
+            else {
+                //loadSavedWidget(scope.columns, scope.variables);
+                scope.availableColumns = scope.columns;
+                scope.selectedColumns = scope.variables;
             }
 
         }
@@ -538,33 +405,87 @@ routerApp.directive('whatIfVariableSelector', [function () {
 routerApp.directive('whatIfSliders', ['$rootScope', function ($rootScope) {
     return {
         restrict: 'E',
+        scope: {
+            source: '='
+        },
         template: '<md-content layout-padding>'
-             +       '<md-list>'
-             +           '<md-list-item layout-xs="column" ng-repeat="var in variables">'
-             +               '<p flex="10">{{var.name}}</p>'
-             +               '<md-slider flex min="{{var.minimum}}" max="{{var.maximum}}" ng-model="current[var.name]" step="{{var.step}}" ng-change="calculate(current, formula)">'
-             +               '</md-slider>'
-             +               '<p flex>'
-             +                   'Current: {{current[var.name]}}'
-             +                   'Initial: {{var.initial}}'
-             +                   'Diff: '
-             +               '</p>'
-             +           '</md-list-item>'
-             +       '</md-list>'
-             +   '</md-content>',
+            +       '<div ng-show="!awa">'
+            +           '<md-progress-circular md-mode="indeterminate"></md-progress-circular>'
+            +       '</div>'
+            +       '<md-list ng-show="awa">'
+            +           '<md-list-item layout-xs="column" ng-repeat="var in variables">'
+            +               '<p flex="10">{{var.name}}</p>'
+            +               '<md-slider flex min="{{var.minimum}}" max="{{var.maximum}}" ng-model="current[var.name]" step="{{var.step}}" ng-change="calculate(current, formula)">'
+            +               '</md-slider>'
+            +               '<p flex>'
+            +                   'Current: {{current[var.name]}}'
+            +                   'Initial: {{var.initial}}'
+            +                   'Diff: '
+            +               '</p>'
+            +           '</md-list-item>'
+            +       '</md-list>'
+            +   '</md-content>',
         link: function (scope, iElement, iAttrs) {
 
             console.log('whatIfSliders hits');
 
-            $rootScope.$on('data_recevied', function(event, data) {
+            scope.awa = false;
+            scope.formula = "";
+
+            var populateSliders = function(data) {
+
+                scope.formula = data.equation;
+
+                var min_max = data.min_max;
+                var initials = data.initial
+        
+                var columns_x = Object.keys(initials.x_initials);
+                var columns_y = Object.keys(initials.y_initials);
+
+                var x_values = columns_x.map(function(column) {
+                    return {
+                        name: column,
+                        minimum: min_max.x.x_min[column],
+                        maximum: min_max.x.x_max[column],
+                        initial: initials.x_initials[column],
+                        step: (min_max.x.x_max[column] < 1) ? 0.01 : 1,
+                        target: false
+                    }
+                });
+
+                var y_values = columns_y.map(function(column) {
+                    return {
+                        name: column,
+                        minimum: min_max.y.y_min[column],
+                        maximum: min_max.y.y_max[column],
+                        initial: initials.y_initials[column],
+                        step: (min_max.y.y_max[column] < 1) ? 0.01 : 1,
+                        target: true
+                    }
+                });
+
+                scope.variables = y_values.concat(x_values);
+                scope.awa = true;
+                console.log(scope.variables);
+
+                scope.current = {}
+                scope.variables.map(function(obj) {
+                    scope.current[obj.name] = obj['initial'];
+                });
+            }
+
+            scope.$watch('source', function(data) {
+                populateSliders(data)
+            });
+
+            $rootScope.$on('DATA_RECEIVED', function(event, data) {
 
                 console.log(data);
-                var response = data.data;
+                scope.awa = true;
 
-                r = response.Result;
-                scope.formula = r.equation;
-                var min_max = r.min_max;
-                var initials = r.initial
+                scope.formula = data.equation;
+                var min_max = data.min_max;
+                var initials = data.initial
         
                 var columns_x = Object.keys(initials.x_initials);
                 var columns_y = Object.keys(initials.y_initials);
@@ -612,7 +533,6 @@ routerApp.directive('whatIfSliders', ['$rootScope', function ($rootScope) {
         }
     };
 }]);
-
 
 routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $timeout, $location, $window, $filter, $csContainer, $diginengine, $state, $stateParams, ngToast, $diginurls, $mdDialog, filterService, metricChartServices, layoutManager, tabularService, $qbuilder) {
     if($rootScope.showHeader == true)
@@ -4453,13 +4373,25 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
 
-    $scope.whatif = {
-        onInit: function() {},
+    $scope.whatif ={
+        onInit: function() {
+            console.log('init')
+            //$scope.columns = ['name', 'address'];
+            //$scope.variables = [{name: 'sales', target: true}, {name: 'discount', target: false}, {name: 'product_base_margin', target: false}]
+        },
         changeType: function() {
             $scope.columns = $scope.commonData.columns;
-            $scope.sourceData = $scope.sourceData;
+            $scope.targets = [];
+            $scope.widget.widgetData.widData.variables = [];
+            $scope.datasource = $scope.sourceData;
         },
-
+        saveWidget: function(widget) {
+            widget.widgetData.widView = "views/query/chart-views/whatifsliders.html";
+            widget.widgetData.widData.columns = $scope.columns;
+            widget.widgetName = "What-If";
+            console.log(widget);
+            $scope.saveChart(widget);
+        }
     };
 
 
@@ -5851,4 +5783,62 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
         }
     };
     // -------------------------- Metric chart methods ends --------------------------
+
+    // ------------- What-If widget releated methods starts ------------------------
+
+    var checkPreConditions = function() {
+        var variables = $scope.widget.widgetData.widData.variables;
+
+        if(!variables.length) {
+            privateFun.fireMessage('0','Please select a target column and variable columns.');
+            return;
+        }
+
+        var targetIdx = variables.findIndex(function(obj) { return obj.target; });
+        if(targetIdx < 0) {
+            privateFun.fireMessage('0','Please select a target column.');
+            return;
+        } 
+    }
+
+    $scope.changeFormulaGenarationType = function() {
+        checkPreConditions();
+    }
+
+    $scope.startAnalyzing = function() {
+        checkPreConditions();
+
+        var variables = $scope.widget.widgetData.widData.variables;
+
+        var xValues = [];
+        var yValues = [];
+
+        variables.forEach(function(obj) {
+            if(obj.target) yValues.push(obj.name);
+            else xValues.push(obj.name);
+        });
+        // equation: (scope.mode === 'manual') ? scope.formula : '',
+        var d = {
+            databaseType: $scope.datasource.src,
+            dataTable: $scope.datasource.tbl,
+            datasourceId: $scope.datasource.id,
+            mode: 'auto',
+            method: 'linear',
+            equation: '',
+            yValues: yValues,
+            xValues: xValues
+        }
+
+        WhatIfService.getInitialValues(d).then(function(response) {
+            if(response.status === 200)
+                if(response.data.Is_Success)
+                    $scope.widget.widgetData.widData.slidersrc = response.data.Result
+                    // $rootScope.$broadcast('DATA_RECEIVED', response.data.Result);
+        }, function(data) {
+            console.log(data);
+        });
+
+    }
+
+    // ------------- What-If widget releated methods end ------------------------
 })

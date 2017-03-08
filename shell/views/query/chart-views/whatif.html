@@ -38,7 +38,31 @@
 	</div>
 </what-if-configuration-container>-->
 
-<what-if-configuration-container datasource="sourceData" columns="columns">
+<!--<what-if-configuration-container datasource="sourceData" columns="columns">
 </what-if-configuration-container>
 
-<what-if-sliders></what-if-sliders>
+<what-if-sliders></what-if-sliders>-->
+
+<md-content flex layout="column" layout-align="center center">
+	
+	<what-if-variable-selector
+		columns="columns"
+		selected-columns="widget.widgetData.widData.variables">
+	</what-if-variable-selector>
+
+   	<div layout="row" layout-padding>
+       	<p>Formula Genaration:</p>
+       	<div flex="3"></div>
+       	<md-radio-group layout="row" ng-model="mode" ng-change="changeFormulaGenarationType()">
+           	<md-radio-button value="auto">Automatic</md-radio-button>
+           	<md-radio-button value="manual">Manual</md-radio-button>
+       	</md-radio-group>
+   	</div>
+
+	<div ng-if="mode === 'manual'">
+		<textcomplete members="selectedColumns" message='formula'></textcomplete>
+	</div>
+
+	<button ng-click="startAnalyzing()">Start Analyzing</button>
+
+</md-content>

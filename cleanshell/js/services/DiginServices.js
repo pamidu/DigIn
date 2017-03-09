@@ -133,6 +133,16 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 								console.log(response);
 								notifications.toast(0, "Falied to get DB Configs");
 						 });
+        },getChartTypes: function() {
+             //return the promise directly.
+             return $http.get('jsons/chartTypes.json')
+                       .then(function(result) {
+                            //resolve the promise as the data
+                            return result.data;
+                        },function errorCallback(response) {
+								console.log(response);
+								notifications.toast(0, "Falied to get DB Configs");
+						 });
         },
 		
    }

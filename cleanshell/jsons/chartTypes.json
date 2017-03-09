@@ -1,0 +1,227 @@
+[
+   {
+      "id":"ct01",
+      "icon":"ti-pie-chart",
+      "name":"pie chart",
+      "chart":"pie",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"A pie chart is a circular chart divided into <br> sectors which is proportional to the quantity it represents"
+   },
+   {
+      "id":"ct02",
+      "icon":"ti-bar-chart-alt",
+      "name":"bar",
+      "chart":"bar",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"A bar chart is exactly the same as a column chart only the x-axis and y-axis are switched"
+   },
+   {
+      "id":"ct03",
+      "icon":"ti-bar-chart",
+      "name":"column",
+      "chart":"column",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"A column chart displays data as vertical bars"
+   },
+   {
+      "id":"ct03",
+      "icon":"ti-gallery",
+      "name":"line ",
+      "chart":"line",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"A line chart is represented by a series of datapoints connected with a straight line. Line charts are most often used to visualize data that changes over time"
+   },
+   {
+      "id":"ct05",
+      "icon":"smoothline",
+      "name":"Smooth line ",
+      "chart":"spline",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":""
+   },
+   {
+      "id":"ct06",
+      "icon":"area",
+      "name":"area ",
+      "chart":"area",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"The area chart functions the same way as a line chart only it fills the area between the line and the threshold, which is 0 by default"
+   },
+   {
+      "id":"ct07",
+      "icon":"smootharea",
+      "name":"Smooth area ",
+      "chart":"areaspline",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"The areaspline chart is the same as area, only the line is a spline instead of straight lines"
+   },
+   {
+      "id":"ct08",
+      "icon":"scatter",
+      "name":"scatter ",
+      "chart":"scatter",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"A scatter chart draw a single point for each point of data in a series without connecting them"
+   },
+   {
+      "id":"ct9",
+      "icon":"hierarchy",
+      "name":"hierarchy",
+      "chart":"hierarchy",
+      "selected":false,
+      "chartType":"d3hierarchy",
+      "view":"views/query/chart-views/hierarchySummary.html",
+      "initObj":{
+         "dec":0
+      },
+      "settingsView":"views/query/settings-views/hierarchySetings.html",
+      "tooltip":"A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
+   },
+   {
+      "id":"ct10",
+      "icon":"ti-shine",
+      "name":"sunburst",
+      "chart":"sunburst",
+      "selected":false,
+      "chartType":"d3sunburst",
+      "view":"views/query/chart-views/sunburst.html",
+      "initObj":{
+         "dec":0
+      },
+      "settingsView":"views/query/settings-views/hierarchySetings.html",
+      "tooltip":"A sunburst is similar to the treemap, except it uses a radial layout. The root node of the tree is at the center, with leaves on the circumference"
+   },
+   {
+      "id":"ct13",
+      "icon":"metric",
+      "name":"metric",
+      "chart":"metric",
+      "selected":false,
+      "chartType":"metric",
+      "view":"views/query/chart-views/metric.html",
+      "groupByField":"",
+      "timeAttribute":"",
+      "trendQuery":"",
+      "notificationConstant":"",
+      "settingsView":"views/query/settings-views/metricSettings.html",
+      "notificationValue":"",
+      "tooltip":""
+   },
+   {
+      "id":"ct15",
+      "icon":"ti-layout-slider-alt",
+      "name":"boxplot",
+      "chart":"boxplot",
+      "selected":false,
+      "chartType":"boxplot",
+      "view":"views/query/chart-views/BoxPlot.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"A box plot is a convenient way of depicting groups of data through their five-number summaries: the smallest observation (sample minimum), lower quartile (Q1), median (Q2), upper quartile (Q3), and largest observation (sample maximum)"
+   },
+   {
+      "id":"ct16",
+      "icon":"histogram",
+      "name":"histogram",
+      "chart":"histogram",
+      "selected":false,
+      "chartType":"histogram",
+      "view":"views/query/chart-views/Histogram.html",
+      "initObj":{
+
+      },
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":""
+   },
+   {
+      "id":"ct17",
+      "icon":"ti-flickr",
+      "name":"bubble",
+      "chart":"bubble",
+      "selected":false,
+      "chartType":"bubble",
+      "view":"views/query/chart-views/bubble.html",
+      "initObj":{
+
+      },
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":""
+   },
+   {
+      "id":"ct18",
+      "icon":"ti-stats-up",
+      "name":"forecast",
+      "chart":"forecast",
+      "selected":false,
+      "chartType":"forecast",
+      "view":"views/query/chart-views/forecast.html",
+      "settingsView":"views/query/settings-views/forecastSettings.html",
+      "tooltip":""
+   },
+   {
+      "id":"ct19",
+      "icon":"ti-filter",
+      "name":"funnel",
+      "chart":"funnel",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":"Funnel charts are a type of chart often used to visualize stages in a sales project, where the top are the initial stages with the most clients. The funnel narrows as more clients drop off"
+   },
+   {
+      "id":"ct20",
+      "icon":"pyramid",
+      "name":"pyramid",
+      "chart":"pyramid",
+      "selected":false,
+      "chartType":"highCharts",
+      "view":"views/query/chart-views/highcharts.html",
+      "settingsView":"views/query/settings-views/highchartsSettings.html",
+      "tooltip":""
+   },
+   {
+      "id":"ct21",
+      "icon":"ti-world",
+      "name":"Geographical Map",
+      "chart":"Geographical Map",
+      "selected":false,
+      "chartType":"map",
+      "view":"views/query/chart-views/GeoMap.html",
+      "settingsView":"views/query/settings-views/mapsettings.html",
+      "tooltip":"A visualization to plot analyse the data on the gographical map"
+   },
+   {
+      "id":"ct22",
+      "icon":"ti-view-list-alt",
+      "name":"Tabular Widget",
+      "chart":"Tabular",
+      "chartType":"Tabular",
+      "view":"views/query/chart-views/Tabular.html",
+      "settingsView":"views/query/settings-views/Tabularsettings.html",
+      "tooltip":"A visualization to plot analyse the data on the gographical map"
+   }
+]

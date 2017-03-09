@@ -589,6 +589,11 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
+			console.log($scope.attributes);
+			console.log($scope.measures);
+			
+			
+			$state.go('query_builder', { 'selectedAttributes': $scope.attributes, 'selectedMeasures':$scope.measures, 'selectedFile':$scope.selectedFile, 'selectedDB': $scope.selectedDB});
 			
 		}		
 		
@@ -664,7 +669,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		//only used in Visualze Data View
 		$scope.goToCreateWidgetState = function()
 		{
-			$state.go('query_builder', { 'selectedAttributes':$scope.selectedAttributes, 'selectedMeasures':$scope.selectedMeasures, 'selectedFile':$scope.selectedFile, 'selectedDB': $scope.selectedDB});
+			$state.go('query_builder', { 'selectedAttributes': $scope.attributes, 'selectedMeasures':$scope.measures, 'selectedFile':$scope.selectedFile, 'selectedDB': $scope.selectedDB});
 		}
 	
 		

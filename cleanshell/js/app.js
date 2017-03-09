@@ -16,10 +16,12 @@ var DiginApp = angular.module('DuoDiginRt',
 		'angular-intro',
 		'ngFileUpload',
 		'configuration',
-		'diginServiceHandler',
 		'rzModule',
 		'pouchdb',
-		'cellCursor'
+		'cellCursor',
+		'DiginHighCharts',
+		'DiginHighMaps',
+		'DiginServiceLibrary'
 	]
 );
 

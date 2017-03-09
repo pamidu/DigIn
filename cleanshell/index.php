@@ -544,8 +544,11 @@
 	<script src="js/libs/uimicrokernel.js"></script>
 
 	<script src="../shell/scripts/config.js"></script>
-	<script src="js/services/diginservicehandler.js"></script>
 	<script src="js/services/utility.js"></script>
+	<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
+	<script src="modules/DiginHighMaps/DiginHighMaps.js"></script>
+	<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
+	<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
 	<script src="js/libs/directivelibrary.js"></script>
 	<script src="bower_components/md-steppers/dist/md-steppers.js"></script>
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>

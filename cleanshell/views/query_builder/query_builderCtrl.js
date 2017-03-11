@@ -207,5 +207,44 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		}, 1000);
 	}
 		
+		
+	//Introduction to Chart Designer
+	$scope.ChartDesignerIntro = {
+		steps:[
+			{
+				element: '#selectChartType',
+				intro: 'Chose the chart type/widget you wish to create',
+				position: 'left'
+			}, {
+				element: '#selectorSection',
+				intro: 'Choose the attributes needed to create a chart/widget, every type will require you to add specific types of attributes',
+				position: 'right'
+			}, {
+				element: '#generateBtn',
+				intro: 'After selecting attributes click generate to fetch data and create your chart',
+				position: 'top'
+			}, {
+				element: '#chartContainer',
+				intro: 'The chart will be displayed here',
+				position: 'bottom'
+			}, {
+				element: '#settingsBtn',
+				intro: 'After generating the chart/widget you can change the default settings',
+				position: 'left'
+			}, {
+				element: '#saveBtn',
+				intro: 'Finally click save to add the created chart/widget in the dashboard',
+				position: 'left'
+			}
+			],
+        showStepNumbers: false,
+        exitOnOverlayClick: true,
+        exitOnEsc:true,
+        nextLabel: '<strong style="color:green">NEXT</strong>',
+        prevLabel: '<span>Previous</span>',
+        skipLabel: 'End Tour',
+        doneLabel: '<strong style="color:green">Got it!!</strong>'
+    };
+
 
 }])

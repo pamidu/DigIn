@@ -8,6 +8,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":"A pie chart is a circular chart divided into <br> sectors which is proportional to the quantity it represents"
    },
    {
@@ -19,6 +20,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":"A bar chart is exactly the same as a column chart only the x-axis and y-axis are switched"
    },
    {
@@ -30,6 +32,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":"A column chart displays data as vertical bars"
    },
    {
@@ -41,6 +44,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":"A line chart is represented by a series of datapoints connected with a straight line. Line charts are most often used to visualize data that changes over time"
    },
    {
@@ -52,6 +56,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":""
    },
    {
@@ -63,6 +68,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":"The area chart functions the same way as a line chart only it fills the area between the line and the threshold, which is 0 by default"
    },
    {
@@ -74,17 +80,19 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": true,
       "tooltip":"The areaspline chart is the same as area, only the line is a spline instead of straight lines"
    },
    {
       "id":"ct08",
       "icon":"scatter",
-      "name":"scatter ",
+      "name":"scatter",
       "chart":"scatter",
       "selected":false,
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": false,
       "tooltip":"A scatter chart draw a single point for each point of data in a series without connecting them"
    },
    {
@@ -95,10 +103,8 @@
       "selected":false,
       "chartType":"d3hierarchy",
       "view":"views/query/chart-views/hierarchySummary.html",
-      "initObj":{
-         "dec":0
-      },
       "settingsView":"views/query/settings-views/hierarchySetings.html",
+	  "enableFilters": false,
       "tooltip":"A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
    },
    {
@@ -109,10 +115,8 @@
       "selected":false,
       "chartType":"d3sunburst",
       "view":"views/query/chart-views/sunburst.html",
-      "initObj":{
-         "dec":0
-      },
       "settingsView":"views/query/settings-views/hierarchySetings.html",
+	  "enableFilters": false,
       "tooltip":"A sunburst is similar to the treemap, except it uses a radial layout. The root node of the tree is at the center, with leaves on the circumference"
    },
    {
@@ -129,6 +133,7 @@
       "notificationConstant":"",
       "settingsView":"views/query/settings-views/metricSettings.html",
       "notificationValue":"",
+	  "enableFilters": false,
       "tooltip":""
    },
    {
@@ -140,6 +145,7 @@
       "chartType":"boxplot",
       "view":"views/query/chart-views/BoxPlot.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": false,
       "tooltip":"A box plot is a convenient way of depicting groups of data through their five-number summaries: the smallest observation (sample minimum), lower quartile (Q1), median (Q2), upper quartile (Q3), and largest observation (sample maximum)"
    },
    {
@@ -150,10 +156,8 @@
       "selected":false,
       "chartType":"histogram",
       "view":"views/query/chart-views/Histogram.html",
-      "initObj":{
-
-      },
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": false,
       "tooltip":""
    },
    {
@@ -164,10 +168,8 @@
       "selected":false,
       "chartType":"bubble",
       "view":"views/query/chart-views/bubble.html",
-      "initObj":{
-
-      },
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": false,
       "tooltip":""
    },
    {
@@ -179,6 +181,7 @@
       "chartType":"forecast",
       "view":"views/query/chart-views/forecast.html",
       "settingsView":"views/query/settings-views/forecastSettings.html",
+	  "enableFilters": true,
       "tooltip":""
    },
    {
@@ -190,6 +193,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": false,
       "tooltip":"Funnel charts are a type of chart often used to visualize stages in a sales project, where the top are the initial stages with the most clients. The funnel narrows as more clients drop off"
    },
    {
@@ -201,6 +205,7 @@
       "chartType":"highCharts",
       "view":"views/query/chart-views/highcharts.html",
       "settingsView":"views/query/settings-views/highchartsSettings.html",
+	  "enableFilters": false,
       "tooltip":""
    },
    {
@@ -212,6 +217,7 @@
       "chartType":"map",
       "view":"views/query/chart-views/GeoMap.html",
       "settingsView":"views/query/settings-views/mapsettings.html",
+	  "enableFilters": true,
       "tooltip":"A visualization to plot analyse the data on the gographical map"
    },
    {
@@ -222,6 +228,18 @@
       "chartType":"Tabular",
       "view":"views/query/chart-views/Tabular.html",
       "settingsView":"views/query/settings-views/Tabularsettings.html",
-      "tooltip":"A visualization to plot analyse the data on the gographical map"
+	  "enableFilters": false,
+      "tooltip":"A table view"
+   },
+   {
+      "id":"ct22",
+      "icon":"whatif",
+      "name":"What If",
+      "chart":"whatif",
+      "chartType":"whatif",
+      "view":"views/query/chart-views/Tabular.html",
+      "settingsView":"views/query/settings-views/Tabularsettings.html",
+	  "enableFilters": false,
+      "tooltip":"What If Widget"
    }
 ]

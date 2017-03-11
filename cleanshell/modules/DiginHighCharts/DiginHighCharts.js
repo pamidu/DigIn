@@ -39,7 +39,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				chartBackgroundColor = "rgb(48,48,48)";
 				chartFontColor = '#fff';
 			}else{
-				chartBackgroundColor = "white";
+				chartBackgroundColor = "rgb(250,250,250)";
 			}
 			
 			//format selected series

@@ -44,7 +44,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.showSideMenu = true;
 	
 	//Adjust window height in chart designer and facebook iframe accordingly otherwise the view will take up the full height
-	$scope.chartDesignerViewPortHeight = "calc(100vh - 46px)"
+	$scope.chartDesignerViewPortHeight = "calc(100vh - 92px)"
 	$scope.iframeViewPortHeight = "calc(100vh - 49px)"
 	
 	$scope.topMenuToggle = function()

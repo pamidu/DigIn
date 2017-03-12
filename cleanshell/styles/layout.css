@@ -6,9 +6,14 @@
 	animation: fadeIn .8s forwards;
 }
 
-.card-container-big
+.main-toolbar-closed
 {
 	padding-top:30px !important;
+}
+
+.main-sidemenu-closed
+{
+	padding-left:0px !important;
 }
 
 .setting-container
@@ -19,7 +24,7 @@
 	animation: fadeIn .8s forwards;
 }
 
-.setting-container-big
+.main-toolbar-closed-setting
 {
 	padding-top:0px !important;
 }

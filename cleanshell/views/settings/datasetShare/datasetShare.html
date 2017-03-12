@@ -7,7 +7,7 @@
 
 </style>
 
-<div class="card-container" layout-padding>
+<div class="card-container"  ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}">
 	<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 		<md-content>
 			<div layout="row" layout-align="end end">

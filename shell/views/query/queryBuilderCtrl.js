@@ -4901,7 +4901,7 @@ routerApp.controller('queryBuilderCtrl', function($scope, $http, $rootScope, $ti
 
                     var measure = (tempMesureArr[i]["condition"]+"_"+tempMesureArr[i]["filedName"]).toLowerCase();
 
-                    if($scope.highchartsNG.series[g]["origName"] == measure)
+                    if(($scope.highchartsNG.series[g]["origName"]).toLowerCase() == measure)
                         tempArr.push($scope.highchartsNG.series[g]);
                 }
 

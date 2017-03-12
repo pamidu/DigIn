@@ -1,17 +1,5 @@
 DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateHighMap','$timeout', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateHighMap,$timeout){
 	$scope.$parent.currentView = "Chart Designer";
-	
-	//Adjust window height accordingly otherwise the view will not become fullscreen
-	$scope.viewPortHeight = "calc(100vh - 92px)";
-	$scope.$parent.topMenuToggle2 = function()
-	{
-		if($rootScope.showHeader == true)
-		{
-			$scope.viewPortHeight = "calc(100vh - 92px)";
-		}else{
-			$scope.viewPortHeight = "calc(100vh - 46px)";
-		}
-	}
 
 	var newElement = "";
 	

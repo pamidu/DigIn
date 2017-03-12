@@ -6,12 +6,22 @@
 	animation: fadeIn .8s forwards;
 }
 
+.card-container-big
+{
+	padding-top:30px !important;
+}
+
 .setting-container
 {
 	padding-top:45px;
 	padding-left:45px;
 	-webkit-animation: fadeIn .8s forwards;
 	animation: fadeIn .8s forwards;
+}
+
+.setting-container-big
+{
+	padding-top:0px !important;
 }
 
 .layout-whiteframe

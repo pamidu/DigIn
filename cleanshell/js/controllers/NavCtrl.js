@@ -4,7 +4,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
-	$log.debug('please user $log.debug() or notifications.log() instead of console.log()');
+	$log.debug('please user $log.debug("sample log") or notifications.log("sample log",new Error()) instead of console.log()');
 	
 	$scope.currentView = "Home";
 	
@@ -35,6 +35,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		$rootScope.applyDark = true;
 	}else{
 		//explicitly do something if the theme if light
+		$rootScope.applyDark = false;
 	}
 	
 	
@@ -42,13 +43,27 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.showHeader = true;
 	$rootScope.showSideMenu = true;
 	
+	//Adjust window height in chart designer and facebook iframe accordingly otherwise the view will take up the full height
+	$scope.chartDesignerViewPortHeight = "calc(100vh - 46px)"
+	$scope.iframeViewPortHeight = "calc(100vh - 49px)"
+	
 	$scope.topMenuToggle = function()
 	{	
 		if($rootScope.showHeader === true)
 		{
-			$rootScope.showHeader = layoutManager.hideHeader();
+			layoutManager.hideHeader(function (data){
+				$rootScope.$apply(function() {
+					$rootScope.showHeader = data;
+					$scope.chartDesignerViewPortHeight = "calc(100vh - 46px)";
+					$scope.iframeViewPortHeight = "calc(100vh - 4px)"
+				})
+			});
 		}else{
-			$rootScope.showHeader = layoutManager.showHeader();
+			layoutManager.showHeader(function (data){
+				$rootScope.showHeader = data;
+				$scope.chartDesignerViewPortHeight = "calc(100vh - 92px)";
+				$scope.iframeViewPortHeight = "calc(100vh - 49px)"
+			});
 		}
 	}
 	
@@ -56,9 +71,15 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	{
 		if($scope.showSideMenu === true)
 		{
-			$rootScope.showSideMenu = layoutManager.hideSideMenu();
+			layoutManager.hideSideMenu(function (data){
+				$rootScope.$apply(function() {
+					$rootScope.showSideMenu = data;
+				})
+			})
 		}else{
-			$rootScope.showSideMenu = layoutManager.showSideMenu();
+			layoutManager.showSideMenu(function (data){
+				$rootScope.showSideMenu = data;
+			})
 		}
 	}
 	//End of layoutManager

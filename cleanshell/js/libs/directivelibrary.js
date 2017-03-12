@@ -502,7 +502,7 @@ function passwordStrengthIndicator() {
 
 directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function($mdToast,$mdDialog){
 	
-	this.hideHeader = function() {
+	this.hideHeader = function(callback) {
 		$('.main-toolbar').animate({
 			top: '-45px'
 		}, 200);
@@ -513,15 +513,19 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 		
 		$('.card-container').animate({
 			paddingTop: '30px'
-		},200)
+		},200,function(){
+			callback(false);
+		})
 		
 		$('.setting-container').animate({
 			paddingTop: '0px'
-		},200)
+		},200,function(){
+			callback(false);
+		})
 		
-		return false;
+		
 	}
-	this.showHeader = function(){
+	this.showHeader = function(callback){
 		$('.main-toolbar').animate({
 			top: '0px'
 		}, 200);
@@ -543,22 +547,26 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 		$('md-tabs-content-wrapper').animate({
 			height: newHeight
 		},200)
-		return true;
+		callback(true);
 	}
 	
-	this.hideSideMenu = function(){
+	this.hideSideMenu = function(callback){
 		$('.main-sidemenu').animate({
 			left: '-45px'
 		}, 200);
 		$('.card-container').animate({
 			paddingLeft: '0px'
-		},200)
+		},200,function(){
+			callback(false);
+		})
 		$('.setting-container').animate({
 			paddingLeft: '0px'
-		},200);
-		return false;
+		},200,function(){
+			callback(false);
+		});
+		//return false;
 	}
-	this.showSideMenu = function(){
+	this.showSideMenu = function(callback){
 		$('.main-sidemenu').animate({
 			left: '0px'
 		}, 200);
@@ -568,7 +576,8 @@ directiveLibraryModule.service('layoutManager',['$mdToast','$mdDialog', function
 		$('.setting-container').animate({
 			paddingLeft: '45px'
 		},200);
-		return true;
+		//return true;
+		callback(true);
 	}
 }])
 

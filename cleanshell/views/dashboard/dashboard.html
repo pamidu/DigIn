@@ -200,7 +200,7 @@
 			<i class="icon-cancel" style="font-size:10px;cursor:pointer;outline:none" ng-click="removePage($event, page);$event.stopPropagation()" flex></i>
 		</md-tab-label>
 		<md-tab-body>
-			<md-content class="setting-container" style="background:transparent">
+			<md-content class="setting-container"  ng-class="{'setting-container-big': $root.showHeader==false}" style="background:transparent">
 				<div gridster="gridsterOpts">
 					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" style="padding-bottom: 49px !important;overflow:inherit;">
 						<div class="widget-header" layout="row" layout-align="space-between center">

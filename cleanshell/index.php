@@ -345,7 +345,7 @@
 				</div>
 			</div>
 			
-			<md-content class="blut-search-toggle  hover-color fadeHeaderToggle"  ng-show="headerToggleVisible || !showHeader" md-colors="{color:'primary'}" ng-click="topMenuToggle();topMenuToggle2()">
+			<md-content class="blut-search-toggle  hover-color fadeHeaderToggle"  ng-show="headerToggleVisible || !showHeader" md-colors="{color:'primary'}" ng-click="topMenuToggle();">
 				<span ng-if="!showHeader" class="ti-angle-down"></span>
 				<span ng-if="showHeader" class="ti-angle-up"></span>
 			</md-content>

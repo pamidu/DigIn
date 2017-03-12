@@ -1,5 +1,5 @@
-<div class="card-container" layout-padding>
-	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Main Themes </h1>
+<div class="card-container" ng-class="{'card-container-big': $root.showHeader==false}" layout-padding>
+	<h1 class="search-header" md-colors="{color:'{{$root.h1color}}-A700'}">Main Themes</h1>
 	<div layout="row" layout-align="center start" layout-wrap>
 		<md-card ng-repeat="color in themeColor" class="product_card" ng-click="mainTheme($event, color)" style="background:{{color.backgroundColor}}">
 			<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">

@@ -56,7 +56,7 @@
 				<span flex></span>
 			</md-tab-label>
 			<md-tab-body>
-				<div class="card-container">
+				<div class="card-container" ng-class="{'card-container-big': $root.showHeader==false}" >
 					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 
 						<md-content>
@@ -256,7 +256,7 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container"  ng-class="{'card-container-big': $root.showHeader==false}"  flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
@@ -412,7 +412,7 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container"  ng-class="{'card-container-big': $root.showHeader==false}"  flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
@@ -458,7 +458,7 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<div class="card-container">
+				<div class="card-container"  ng-class="{'card-container-big': $root.showHeader==false}" >
 					<md-whiteframe class="md-whiteframe-2dp layout-whiteframe" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center"> 
 
 						<md-content>

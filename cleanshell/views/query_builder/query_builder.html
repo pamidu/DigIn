@@ -27,7 +27,7 @@
 </style>
 
 <!--CARD CONTAINER START-->
-<div class="setting-container" ng-intro-options="ChartDesignerIntro" ng-intro-method="IntroduceChart">
+<div class="setting-container" ng-class="{'setting-container-big': $root.showHeader==false}"  ng-intro-options="ChartDesignerIntro" ng-intro-method="IntroduceChart">
 		<md-content>
 			<div layout="row" layout-align="space-between center" flex-gt-sm="100" style="height:45px">
 				<div layout="row" flex>
@@ -77,7 +77,7 @@
 				
 			</div>
 			<md-divider></md-divider>
-			<div layout-gt-sm="row" style="height:{{viewPortHeight}}">
+			<div layout-gt-sm="row" style="height:{{$parent.chartDesignerViewPortHeight}}">
 			
 				<div id="selectorSection" layout="column" flex-gt-sm="25" style="-webkit-box-shadow: 2px 0 3px -2px #888;box-shadow: 2px 0 3px -2px #888;overflow-y:scroll">
 					<div layout="column" ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif'">

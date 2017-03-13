@@ -580,9 +580,9 @@
 
 	<script src="js/app.js"></script>
 	<script src="views/settings/theme/themingConfig.js"></script>
-	<script src="js/services/DiginServices.js"></script>
-	<script src="js/services/PackageServices.js"></script>
-	<script src="views/settings/myAccount/UserServices.js"></script>
+	<script src="modules/DiginServiceLibrary/DiginServices.js"></script>
+	<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
+	<script src="modules/DiginServiceLibrary/UserServices.js"></script>
 	<script src="js/controllers/NavCtrl.js"></script>
 
 	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>

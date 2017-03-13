@@ -1,9 +1,9 @@
-DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
 	var cache = {};
 	return {
         getUserSettings: function() {
              //return the promise directly.
-             return $http.get(Digin_Engine_API+'get_user_settings?SecurityToken='+$auth.getSecurityToken()+'&Domain='+Digin_Domain)
+             return $http.get(Digin_Engine_API+'get_user_settings?SecurityToken='+$rootScope.authObject.SecurityToken+'&Domain='+Digin_Domain)
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -20,7 +20,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 				url: Digin_Engine_API + 'store_user_settings/',
 				headers: {
                     'Content-Type': 'application/json',
-					'Securitytoken' : $auth.getSecurityToken()
+					'Securitytoken' : $rootScope.authObject.SecurityToken
 				},
 				data: angular.toJson(userSettings)
 			}
@@ -54,7 +54,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 						 });
         },getDiginComponents: function() {
              //return the promise directly.
-             return $http.get(Digin_Engine_API+'get_all_components?SecurityToken='+$auth.getSecurityToken()+'&Domain='+Digin_Domain) //jsons/everything.json
+             return $http.get(Digin_Engine_API+'get_all_components?SecurityToken='+$rootScope.authObject.SecurityToken+'&Domain='+Digin_Domain) //jsons/everything.json
                        .then(function(result) {
                             //resolve the promise as the data
                             return result.data.Result;
@@ -66,7 +66,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
              //return the promise directly.
 			 notifications.startLoading(ev, "Getting Dashboard");
 			 
-                return $http.get(Digin_Engine_API+'get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+$auth.getSecurityToken()+'&Domain'+Digin_Domain)
+                return $http.get(Digin_Engine_API+'get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+$rootScope.authObject.SecurityToken+'&Domain'+Digin_Domain)
                        .then(function(result) {
                             //resolve the promise as the data
 							notifications.finishLoading();
@@ -87,7 +87,7 @@ DiginApp.factory('DiginServices', ['$rootScope','$http', '$auth', 'notifications
 				 method: 'DELETE',
 				 url: Digin_Engine_API + 'delete_components/',
 				 headers: {
-					'Securitytoken' : $auth.getSecurityToken()
+					'Securitytoken' : $rootScope.authObject.SecurityToken
 				 },
 				 data: angular.toJson(reqParam)
 			}

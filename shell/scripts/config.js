@@ -11,7 +11,7 @@ angular.module('configuration', [])
 //#for loggin process
 .constant('IsLocal', true) //# true for local developmet only
 .constant('DeveloperMode', true) //# true for local developmet only 
-.constant('Local_Shell_Path', 'http://localhost:8081/DigIn/shell') //#This is the shell path only for local usage
+.constant('Local_Shell_Path', 'http://localhost:8081/DigIn/cleanshell') //#This is the shell path only for local usage
 //#apis folder path inside the html folder ** NOTE : if apis folder in -->html/apis/ then apis_path--> '/apis/'
 .constant('apis_Path', '/apis/')
 .constant('auth_Path', '/auth/')

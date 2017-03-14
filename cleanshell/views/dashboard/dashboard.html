@@ -210,11 +210,6 @@
 								<md-button class="md-icon-button ti-menu-alt hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
 									<md-tooltip>data</md-tooltip>
 								</md-button>
-								
-						
-								<md-button class="md-icon-button ti-volume hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.commentary($event,widget)">
-									<md-tooltip>commentary</md-tooltip>
-								</md-button>
 			
 								<md-button class="md-icon-button ti-settings hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
 									<md-tooltip >settings</md-tooltip>
@@ -247,7 +242,7 @@
 					
 						</div>
 						<md-divider></md-divider>
-						<div style="height:100%;width:100%" ng-init="widInit(widget)" class="dashoard-Wrapper" id="d3Chart-wrap" ng-include="widget.widgetData.widView">
+						<div ng-include="'views/dashboard/widgets.html'">
 						</div>
 					</md-content>
 				</div>

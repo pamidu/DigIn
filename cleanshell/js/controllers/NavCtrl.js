@@ -386,6 +386,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	//may or may not be saved
 	$rootScope.currentDashboard = {};
+
+	//keeps the current page of the currnt dashboard
+	$rootScope.selectedPageIndex = 0;
 	
 	$scope.diginComponents = (function () {
 		return {

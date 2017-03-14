@@ -5,7 +5,7 @@
 
 'use strict';
 
-var DiginHighChartsModule = angular.module('DiginHighCharts',['DiginServiceLibrary']);
+var DiginHighChartsModule = angular.module('DiginHighCharts',['DiginServiceLibrary','directivelibrary']);
 
 DiginHighChartsModule.directive('diginHighChart',['$rootScope', function($rootScope) {
   return {
@@ -26,7 +26,7 @@ DiginHighChartsModule.directive('diginHighChart',['$rootScope', function($rootSc
   };
 }]);
 
-DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine','DiginServicesM', function($rootScope,$diginengine,DiginServicesM) {
+DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine','DiginServicesM','notifications', function($rootScope,$diginengine,DiginServicesM,notifications) {
 	return {
 		generate: function(highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, callback) {
 			
@@ -119,7 +119,25 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			highchartObject.options.chart.type = highChartType;
 			callback(highchartObject);
 			
-		}
+		},
+		highchartValidations: function(highChartType, selectedSeries, selectedCategory){ //this function will validate all the prerequirments needs to satisfy to create a given highcart type 
+			
+			var isChartConditionsOk = false;
+
+			switch (highChartType) {
+                case "pie":
+                	if(selectedSeries.length == 1 && selectedCategory.length > 0 )
+                   		isChartConditionsOk = true;
+                   	else
+                   		notifications.toast(2,"you can't generate a pie chart for more than one series");
+                   	break;
+                default:
+	                break;
+            }
+
+
+			return isChartConditionsOk;
+		},//end of highchartValidations
 		
    }
 }]);//END OF DiginServices

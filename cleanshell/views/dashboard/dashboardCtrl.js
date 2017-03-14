@@ -7,6 +7,8 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 		colorManager.reinforceTheme();
 	},100)
 	
+$scope.widgetFilePath = 'views/dashboard/widgets.html';
+
 	// dashboardId is retrived from the stateParams
 	$scope.dashboardId = $stateParams.id;
 	if(Object.keys($rootScope.currentDashboard).length === 0 && $scope.dashboardId)
@@ -23,61 +25,82 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$windo
 	}
 
     $scope.$parent.currentView = $rootScope.currentDashboard.compName;
+
+
+	    $scope.gridsterOptions = {
+		  margins: [20, 20],
+		  columns: 4,
+		  mobileModeEnabled: false,
+		  width: 'auto',
+		  draggable: {
+		   handle: '.widget-header',
+		   drag: function(event, $element, widget) {
+				$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
+			}
+		  },
+		  resizable: {
+		     enabled: true,
+		     handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+		     
+		     // optional callback fired when resize is started
+		     start: function(event, $element, widget) {},
+		     
+		     // optional callback fired when item is resized,
+		     resize: function(event, $element, widget) {
+		       if (widget.chart.api) widget.chart.api.update();
+		     }, 
+		    
+		      // optional callback fired when item is finished resizing 
+		      stop: function(event,$element,widget){
+			    $scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
+			    $rootScope.$broadcast('widget-resized', { element: $element, widget: widget });
+			   }
+		    },
+	    	mobileBreakPoint: 600, // width threshold to toggle mobile mode
+			mobileModeEnabled: true // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+	 };
 	
 	//configuring gridster
-	$scope.gridsterOpts = {
+	// 	$scope.gridsterOpts = {
 		
-		columns: 24, // number of columns in the grid
-		pushing: true, // whether to push other items out of the way
-		floating: true, // whether to automatically float items up so they stack
-		swapping: false, // whether or not to have items switch places instead of push down if they are the same size
-		width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
-		colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
-		rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
-		isMobile: false, // toggle mobile view
-		margins: [5, 5], // margins in between grid items
-		outerMargin: true,
-		draggable: {
-			handle: '.widget-header', // make the widget dragable only with the widget toolbar (not with the body)
-			drag: function(event, $element, widget) {
-				$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
-			}, // optional callback fired when item is moved,
-		}, 
-		resizable: {
-			enabled: true,
-			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
-			  resize: function(event,$element,widget){
-				  $scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
-				if(widget.widgetName == "Map"){
-					$rootScope.mapheight = $element.clientHeight - 50;
-					$rootScope.mapWidth = $element.clientWidth ;
+	// 	columns: 24, // number of columns in the grid
+	// 	pushing: true, // whether to push other items out of the way
+	// 	floating: true, // whether to automatically float items up so they stack
+	// 	swapping: false, // whether or not to have items switch places instead of push down if they are the same size
+	// 	width: 'auto', // width of the grid. "auto" will expand the grid to its parent container
+	// 	colWidth: 'auto', // width of grid columns. "auto" will divide the width of the grid evenly among the columns
+	// 	rowHeight: '/4', // height of grid rows. 'match' will make it the same as the column width, a numeric value will be interpreted as pixels, '/2' is half the column width, '*5' is five times the column width, etc.
+	// 	isMobile: false, // toggle mobile view
+	// 	margins: [5, 5], // margins in between grid items
+	// 	outerMargin: true,
+	// 	draggable: {
+	// 		handle: '.widget-header', // make the widget dragable only with the widget toolbar (not with the body)
+	// 		drag: function(event, $element, widget) {
+	// 			$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
+	// 		}, // optional callback fired when item is moved,
+	// 	}, 
+	// 	resizable: {
+	// 		enabled: true,
+	// 		handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
+	// 		  stop: function(event,$element,widget){
+	// 			$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
+	// 			$rootScope.$broadcast('widget-resized', { element: $element, widget: widget });
+	// 		}
+ //        },
+	// 	mobileBreakPoint: 600, // width threshold to toggle mobile mode
+	// 	mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+	// 	minColumns: 1, // minimum amount of columns the grid can scale down to
+	// 	minRows: 1, // minimum amount of rows to show if the grid is empty
+	// 	maxRows: 100, // maximum amount of rows in the grid
+	// 	defaultSizeX: 7, // default width of an item in columns
+	// 	defaultSizeY: 23, // default height of an item in rows
+	// 	minSizeX: 6, // minimum column width of an item
+	// 	maxSizeX: null, // maximum column width of an item
+	// 	minSizeY: 5, // minumum row height of an item
+	// 	maxSizeY: null, // maximum row height of an item
+	// 	saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
 
-				}
-			}
-        },
-		mobileBreakPoint: 600, // width threshold to toggle mobile mode
-		mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
-		minColumns: 1, // minimum amount of columns the grid can scale down to
-		minRows: 1, // minimum amount of rows to show if the grid is empty
-		maxRows: 100, // maximum amount of rows in the grid
-		defaultSizeX: 7, // default width of an item in columns
-		defaultSizeY: 23, // default height of an item in rows
-		minSizeX: 6, // minimum column width of an item
-		maxSizeX: null, // maximum column width of an item
-		minSizeY: 5, // minumum row height of an item
-		maxSizeY: null, // maximum row height of an item
-		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
-
-	};
-	
-	/*
-	$scope.gridsterOpts = {
-		pushing: true,
-		floating: true,
-		margins: [5, 5], // margins in between grid items
-		width: 'auto'
-
-	};*/
+	// };
 	
 	//only for testing purpose
 	$scope.standardItems = [

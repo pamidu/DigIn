@@ -9,7 +9,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'uiMicrokernel',
 		'gridster',
 		'highcharts-ng',
-		'uiGmapgoogle-maps',
+		'ngMap',
 		'vAccordion',
 		'ngCroppie',
 		'stripe-payment-tools',
@@ -25,7 +25,7 @@ var DiginApp = angular.module('DuoDiginRt',
 	]
 );
 
-DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider','$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider','$logProvider','DeveloperMode', function($stateProvider, $urlRouterProvider, GoogleMapApi,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider,$logProvider,DeveloperMode) {
+DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$locationProvider', '$mdDateLocaleProvider','$logProvider','DeveloperMode', function($stateProvider, $urlRouterProvider,$mdThemingProvider,$locationProvider,$mdDateLocaleProvider,$logProvider,DeveloperMode) {
 
 	$urlRouterProvider.otherwise('/home');
 	$locationProvider.hashPrefix('');
@@ -198,13 +198,6 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProv
 		controller: 'developerCtrl',
 		templateUrl: "views/developer/developer.html"
 	})
-
-
-	GoogleMapApi.configure({
-		key: 'AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU',
-		// v: '3.20',
-		libraries: 'weather,geometry,visualization'
-	});
   
 	$mdDateLocaleProvider.formatDate = function(date) {
        return moment(date).format('YYYY-MM-DD');

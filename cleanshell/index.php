@@ -535,10 +535,10 @@
 	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
 	<script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
 	
-	<!--Google Maps start-->
-	<script src="bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
-	<script src="bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
-	<!--Google Maps end-->
+	 <!--Google Maps start-->
+	 <script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+	 <script src="http://maps.google.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU"></script>
+	 <!--Google Maps end-->
 
     <script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
 	<script src="js/libs/uimicrokernel.js"></script>
@@ -554,7 +554,7 @@
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<!--script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script-->
 	<script type="text/javascript" src="js/libs/highcharts-ng.js"></script>
-	<script src="js/libs/digin-gridster.js"></script>
+	<!-- <script src="js/libs/digin-gridster.js"></script> -->
 	
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>

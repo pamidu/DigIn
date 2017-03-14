@@ -68,7 +68,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
-		$scope.chartType = $scope.chartTypes[1]; // set default chart
+		$scope.chartType = $scope.chartTypes[0]; // set default chart
 	});
 	
 	//change chart type - default is bar chart(from Highcharts)
@@ -100,30 +100,38 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	//Generate Chart Event
 	$scope.generate = function()
 	{
-		//If a chart is already rendered first remove it
-		$element.find('.currentChart').children().remove();
 		
-		$scope.showBarChartLoading = true;
-		if($scope.chartType.chartType == 'highCharts') // if the user wants a highchart
-		{
-		
-			generateHighchart.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
-				$scope.widgetConfig = data;
-				$scope.showBarChartLoading = false;
-				$scope.showPlaceholderIcon = false;
-				newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
-				$element.find('.currentChart').append(newElement);
-				
-			});
+			//If a chart is already rendered first remove it
+			$element.find('.currentChart').children().remove();
 			
-			//$scope.currentChartType = "highCharts";
-		}else if($scope.chartType.chartType == 'map')
-		{
-			console.log($scope.chartType.chartType);
-			$scope.widgetConfig = generateHighMap.generate(2);
-			newElement = $compile('<digin-high-map config="'+$scope.widgetConfig+'"></digin-high-map>')($scope);
-			$element.find('.currentChart').append(newElement);
-		}
+			$scope.showBarChartLoading = true;
+			if($scope.chartType.chartType == 'highCharts') // if the user wants a highchart
+			{
+			
+				var isChartConditionsOk = generateHighchart.highchartValidations($scope.chartType.chart,$scope.selectedSeries,$scope.selectedCategory);
+				if(isChartConditionsOk){
+					generateHighchart.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
+						$scope.widgetConfig = data;
+						$scope.showBarChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
+						$element.find('.currentChart').append(newElement);
+						
+					});
+				}
+				else{
+					$scope.showBarChartLoading = false;
+				}
+				//$scope.currentChartType = "highCharts";
+			}else if($scope.chartType.chartType == 'map')
+			{
+				console.log($scope.chartType.chartType);
+				$scope.widgetConfig = generateHighMap.generate(2);
+				newElement = $compile('<digin-high-map config="'+$scope.widgetConfig+'"></digin-high-map>')($scope);
+				$element.find('.currentChart').append(newElement);
+			}
+		
+		
 	}
 	
 	//Change to tooltip of the hovered chart type
@@ -149,52 +157,23 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.queryEditState = !$scope.queryEditState;
 	};
 	
-	var widget = {};
-	widget.widgetData = {};
-	widget.widgetData.widData = {};
-	$scope.createWidgetFinish = function()
-	{
-		//alert("create");
-		$scope.saveWidget(widget);
-	}
-	
-	$scope.saveWidget =  function(widget) {
+	$scope.saveWidget =  function() {
 
-		widget.widgetData.highchartsNG = $scope.highcharts;
-		widget.widgetData.widData['drilled'] = false;
-		widget.widgetData.widData['drillConf'] = undefined;
-		widget.widgetName = "highcharts";
-		widget.widgetData.widView = "views/common-data-src/res-views/SimpleHighChart.html";
-		widget.widgetData.initCtrl = "elasticInit";
-		$scope.saveChart(widget);
-	}
-	
-	$scope.saveChart =  function(widget) {
-		var widgets = $rootScope.dashboard.pages[$rootScope.selectedPage - 1].widgets;
-
-		if (widget.widgetID == null) { // new widget, so a temp id is assigned
-			widget.widgetID = "temp" + Math.floor(Math.random() * (100 - 10 + 1) + 10);
-		}
-		widget.widgetData.highchartsNG["size"] = {
-			width: 313,
-			height: 260
+		var widget = {
+			'chartType' : $scope.chartType,
+			'datasourceInfo' : $scope.selectedFile,
+			'Measures' : $scope.selectedSeries,
+			'X-Axis': $scope.selectedCategory,
+			'Design-time-Filter': [],
+			'Runtime-Filter' : [],
+			'widgetConfig' : $scope.widgetConfig
 		};
-		widget.widgetData.dataCtrl = "widgetSettingsDataCtrl";
-		widget.widgetData.dataView = "views/ViewData.html";
-		//widget.widgetData.widView = 'views/query/chart-views/highcharts.html'
-		widget.widgetData["selectedChart"] = $scope.selectedChart;
-		widget.sizeX = 6;
-		widget.sizeY = 21;
-		var objIndex = getRootObjectById(widget.widgetID, widgets);
-		if (objIndex == null) { //new widget
-			widgets.push(widget);
-		}
-		setTimeout(function() {
-			$rootScope.selectedPageIndx = $rootScope.selectedPage - 1;
-			$state.go('home.Dashboards');
-		}, 1000);
+
+		$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);
+
+		$scope.$parent.route('dashboard');
 	}
-		
+	
 		
 	//Introduction to Chart Designer
 	$scope.ChartDesignerIntro = {

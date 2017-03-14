@@ -5,21 +5,38 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	
 	
 	//Get the state parameters passed from visualize data view
-	$scope.selectedAttributes = $stateParams.selectedAttributes;
-	$scope.selectedMeasures = $stateParams.selectedMeasures;
+	$scope.selectedAttributes = $stateParams.allAttributes;
+	$scope.selectedMeasures = $stateParams.allMeasures;
 	$scope.selectedFile = $stateParams.selectedFile;
 	$scope.selectedDB = $stateParams.selectedDB;
+	
+	//The variables that contain the series and category data
+	$scope.selectedSeries = $stateParams.selectedMeasures;
+	$scope.selectedCategory = $stateParams.selectedAttributes;
 	
 	$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 	$scope.limit = 100;
 	$scope.requestLimits = [100, 1000, 2000, 3000, 4000, 5000];
 	$scope.showPlaceholderIcon = true;
 
+	//Array that will contain all chart types
+	$scope.chartTypes = [];
+
+	//Common variable to store the widget contents
+	//$scope.widgetConfig = {};
 	
-	//The variables that contain the series and category data
-	$scope.selectedSeries = [];
-	$scope.selectedCategory = [];
+	$scope.widgetConfig = $stateParams.widget.widgetConfig;
+	//$scope.currentChartType = "";
+	$scope.showBarChartLoading = false;
 	
+	DiginServices.getChartTypes().then(function(data) {
+		$scope.chartTypes = data;
+		
+		//first get all chart types beofre cheking the widget config
+		checkWigetConfig();
+		
+	});
+
 	//add to selectedSeries
 	$scope.pushSeries = function(item, aggregation)
 	{
@@ -63,13 +80,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		}, 3000);
 	}
 	
-	//Array that will contain all chart types
-	$scope.chartTypes = [];
-
-	DiginServices.getChartTypes().then(function(data) {
-		$scope.chartTypes = data;
-		$scope.chartType = $scope.chartTypes[0]; // set default chart
-	});
+	
 	
 	//change chart type - default is bar chart(from Highcharts)
 	$scope.changeChartType = function(index)
@@ -89,13 +100,31 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		}else{
 			$scope.showPlaceholderIcon = true;
 		}
+		
 	}
 	
-	//Common variable to store the widget contents
-	$scope.widgetConfig = {};
-	//$scope.currentChartType = "";
-	$scope.showBarChartLoading = false;
-	
+	//common function to check wether widget config exsits 
+	function checkWigetConfig()
+	{
+		//reRender a high-chart if the type is changed to another chart in highcharts given that a highchart was generated before
+		
+		if(!angular.equals($scope.widgetConfig, {}))//if there is a config
+		{
+			$scope.chartType = $stateParams.chartType;
+			if($scope.chartType.chartType == "highCharts")
+			{
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<digin-high-chart id="{{001}}" config="widgetConfig" ></digin-high-chart>')($scope);
+				$element.find('.currentChart').append(newElement);
+				
+			}else{
+				$scope.showPlaceholderIcon = true;
+			}
+		}else{
+			$scope.chartType = $scope.chartTypes[0]; // set default chart
+			
+		}
+	}
 	
 	//Generate Chart Event
 	$scope.generate = function()
@@ -114,7 +143,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 						$scope.widgetConfig = data;
 						$scope.showBarChartLoading = false;
 						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
+						newElement = $compile('<digin-high-chart id="{{001}}" config="widgetConfig" ></digin-high-chart>')($scope);
 						$element.find('.currentChart').append(newElement);
 						
 					});
@@ -161,12 +190,16 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 
 		var widget = {
 			'chartType' : $scope.chartType,
-			'datasourceInfo' : $scope.selectedFile,
+			'selectedFile' : $scope.selectedFile,
 			'Measures' : $scope.selectedSeries,
-			'X-Axis': $scope.selectedCategory,
-			'Design-time-Filter': [],
-			'Runtime-Filter' : [],
-			'widgetConfig' : $scope.widgetConfig
+			'XAxis': $scope.selectedCategory,
+			'allMeasures' : $scope.selectedMeasures,
+			'allXAxis' : $scope.selectedAttributes,
+			'DesignTimeFilter': [],
+			'RuntimeFilter' : [],
+			'widgetConfig' : $scope.widgetConfig,
+			'selectedDB' : $scope.selectedDB
+			
 		};
 
 		$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);

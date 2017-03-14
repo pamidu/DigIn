@@ -10,17 +10,22 @@ var DiginHighChartsModule = angular.module('DiginHighCharts',['DiginServiceLibra
 DiginHighChartsModule.directive('diginHighChart',['$rootScope','notifications','$state', function($rootScope,notifications,$state) {
   return {
 	restrict: 'E',
-	template: '<highchart config="config"></highchart>',
+	template: '<highchart id="id" config="config"></highchart>',
 	//templateUrl: 'modules/DiginHighCharts/highChartWidget.html',
 	scope: {
-			config: '='
+			config: '=',
+			id: '@'
 		},
 	link: function(scope,element){
+		console.log(scope.id);
 		if($state.current.name == "query_builder"){
-			scope.$apply(function(){
-			});
+			//scope.$apply(function(){
+			//});
 		}
 		scope.$on('widget-resized', function(element, widget) {
+			console.log(element);
+			console.log(widget);
+			
 
 			var height = widget.element[0].clientHeight - 50;
 			var width = widget.element[0].clientWidth;

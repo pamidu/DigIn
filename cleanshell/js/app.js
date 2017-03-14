@@ -137,11 +137,17 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 		templateUrl: 'views/query_builder/query_builder.html',
 		controller: 'query_builderCtrl',
 		 params: {
+			'allAttributes': [],
+			'allMeasures': [],
+			'DesignTimeFilter': [],
+			'RuntimeFilter': [],
 			'selectedAttributes': [],
 			'selectedMeasures': [],
 			'selectedFile': {},
-			'selectedDB' : {}
-		  }
+			'selectedDB' : {},
+			'widget':{},
+			'chartType':{}
+			}
 	})
 	
 	.state('chart_designer', {

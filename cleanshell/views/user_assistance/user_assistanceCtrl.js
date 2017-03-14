@@ -592,10 +592,24 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			console.log($scope.attributes);
 			console.log($scope.measures);
 			
+			var initWidgetObj = {};
+			initWidgetObj.widgetConfig = {};
 			
-			$state.go('query_builder', { 'selectedAttributes': $scope.attributes, 'selectedMeasures':$scope.measures, 'selectedFile':$scope.selectedFile, 'selectedDB': $scope.selectedDB});
+			$state.go('query_builder', 
+			{ 'allAttributes': $scope.attributes, 
+			  'allMeasures':$scope.measures, 
+			  'selectedFile':$scope.selectedFile, 
+			  'DesignTimeFilter': [],
+			  'RuntimeFilter': [],
+			  'selectedDB': $scope.selectedDB,
+			  'selectedAttributes': [],
+			  'selectedMeasures': [],
+			  'widget':initWidgetObj,
+			  'chartType':{}
+			  
+			  });
 			
-		}		
+		}	
 		
 		$scope.goToPreviousConnectSourceStep = function()
 		{

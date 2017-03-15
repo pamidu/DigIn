@@ -20,6 +20,8 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
             //var intDate = new Date();
             var intDate =  new Date();
 
+            //dsfsfsdfdsg
+
 
             //notifications.log(moment(intDate).format('YYYY-MM-DD'), new Error());
             //moment(intDate).format('YYYY-MM-DD')

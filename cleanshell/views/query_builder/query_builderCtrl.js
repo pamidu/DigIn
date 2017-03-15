@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -135,6 +135,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				$scope.showPlaceholderIcon = false;
 				newElement = $compile('<digin-forecast  config="widgetConfig" ></digin-forecast>')($scope);
 				$element.find('.currentChart').append(newElement);
+				
+			}if($scope.chartType.chartType == "map")
+			{
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<google-map-in-settings config="widgetConfig" ></google-map-in-settings>')($scope);
+				$element.find('.currentChart').append(newElement);
+				NgMap.getMap().then(function(map) {
+					var center = map.getCenter();
+					google.maps.event.trigger(map, "resize");
+					map.setCenter(center);
+				});
 				
 			}else{
 				$scope.showPlaceholderIcon = true;

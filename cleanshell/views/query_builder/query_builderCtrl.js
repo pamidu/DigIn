@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateHighMap','$timeout', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateHighMap,$timeout){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateHighMap','generateForecast','$timeout', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateHighMap,generateForecast,$timeout){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -97,7 +97,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 					console.log(data);
 				})
 			}
-		}else{
+		}
+		else if($scope.chartType.chartType == "forecast")
+		{
+			if(!angular.equals($scope.widgetConfig, {}))
+			{
+				$scope.showPlaceholderIcon = false;
+				generateForecast.reRender($scope.chartType.chart, $scope.widgetConfig,function (data){
+					console.log(data);
+				})
+			}
+		}
+		else{
 			$scope.showPlaceholderIcon = true;
 		}
 		
@@ -158,6 +169,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				$scope.widgetConfig = generateHighMap.generate(2);
 				newElement = $compile('<digin-high-map config="'+$scope.widgetConfig+'"></digin-high-map>')($scope);
 				$element.find('.currentChart').append(newElement);
+			}
+			else if($scope.chartType.chartType == 'forecast')
+			{
+				generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
+					$scope.widgetConfig = data;
+					$scope.showBarChartLoading = false;
+					$scope.showPlaceholderIcon = false;
+					newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
+					$element.find('.currentChart').append(newElement);
+					
+				});
 			}
 		
 		

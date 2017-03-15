@@ -1,0 +1,117 @@
+
+    <div layout-gt-sm="row" class="side-margins">
+        <md-input-container class="md-block" flex-gt-sm>
+            <span>Model</span>
+            <md-select aria-label="model" ng-model="forecastObj.paramObj.model">
+              <md-option ng-repeat="mod in forecastObj.models" value="{{mod}}">
+                {{mod}}
+              </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <span>Method</span>
+            <md-select aria-label="method" ng-model="forecastObj.paramObj.method">
+              <md-option ng-repeat="method in forecastObj.method" value="{{method}}">
+                {{method}}
+              </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <div layout-gt-sm="row" class="side-margins">
+        <md-input-container class="md-block" flex-gt-sm>
+            <span>Interval</span>
+            <md-select aria-label="inteval" ng-model="forecastObj.paramObj.interval" ng-change="setDefLenSeason(forecastObj.paramObj.interval)">
+              <md-option ng-repeat="int in forecastObj.intervals" value="{{int}}">
+                {{int}}
+              </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <span>Length of season ( {{forecastObj.paramObj.interval}} )</span>
+            <input aria-label="length of season" ng-model="forecastObj.paramObj.len_season" ng-disabled="forecastObj.paramObj.model == 'double exponential smoothing'" is-disabled-dark>
+        </md-input-container>
+    </div>
+
+    <md-checkbox ng-model="useAlpahaBetaGamma.status" aria-label="Use smoothing parameters"  ng-change ="setAlpahaBetaGamma()">
+        Use smoothing parameters
+    </md-checkbox>
+
+    <div layout-gt-sm="row" class="side-margins">
+        <md-input-container class="md-block" flex-gt-sm>
+            <span>Alpha</span>
+            <input ng-model="forecastObj.paramObj.alpha"  aria-label="Alpha" ng-blur = "setValue('alpha')" ng-disabled="!useAlpahaBetaGamma.status" is-disabled-dark>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <span> Beta </span>
+            <input ng-model="forecastObj.paramObj.beta" aria-label="Beta" ng-blur = "setValue('beta')" ng-disabled="!useAlpahaBetaGamma.status" is-disabled-dark>
+        </md-input-container>
+    </div>
+
+    <div layout-gt-sm="row" class="side-margins">
+        <md-input-container class="md-block" flex-gt-sm>
+            <span> Gamma </span>
+            <input ng-model="forecastObj.paramObj.gamma"  aria-label="Gamma" ng-blur = "setValue('gamma')" ng-disabled="!useAlpahaBetaGamma.status" is-disabled-dark>
+        </md-input-container> 
+        <md-input-container class="md-block" flex-gt-sm>
+
+        </md-input-container> 
+    </div>
+
+    <div class="setting-card-header">
+        <h2 md-colors="{color:'{{$root.h1color}}-A700'}">For Calculation</h2>
+    </div>
+
+    <div layout-gt-sm="row" class="side-margins">
+        <div layout="column">
+            <span class="md-datepicker-label">Start Date </span>
+            <md-datepicker ng-model="forecastObj.paramObj.startdate" aria-label="Start Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+        </div>
+        <div layout="column">
+            <span class="md-datepicker-label">End Date </span>
+            <md-datepicker ng-model="forecastObj.paramObj.enddate" aria-label="End Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+        </div>
+    </div>
+
+    <md-checkbox ng-model="useFiltering.status" aria-label="Use Visualisation period">
+        Use Visualisation period
+    </md-checkbox>
+
+    <div layout-gt-sm="row" class="side-margins" ng-if="useFiltering.status">
+
+        <div layout="column">
+            <span class="md-datepicker-label">Start Date </span>
+            <md-datepicker ng-model="visualDate.startdate" aria-label="Start Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
+        </div>
+        <div layout="column">
+            <span class="md-datepicker-label">End Date </span>
+            <md-datepicker ng-model="visualDate.enddate" aria-label="End Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
+        </div>
+     
+    </div> 
+
+    <div layout-gt-sm="row" class="side-margins">
+        <md-input-container class="md-block" flex-gt-sm>
+            <span>Group by</span>
+            <md-select ng-model="forecastObj.paramObj.forecastAtt" aria-label="Group by">
+              <md-option ng-repeat="att in forecastAtts" value="{{att}}">
+                {{att}}
+              </md-option>
+            </md-select>   
+        </md-input-container> 
+
+
+        <md-checkbox ng-model="forecastObj.paramObj.showActual" aria-label="Show actual" flex-gt-sm>
+            Show actual 
+        </md-checkbox>    
+    </div>
+
+     
+    <div layout="row" layout-align="end end">
+        <md-button ng-click="ForcastBtnFun()" ng-disabled="generateDesable" class="md-raised md-primary">Forecast</md-button>
+    </div>
+
+</div>

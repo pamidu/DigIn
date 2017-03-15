@@ -21,6 +21,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'cellCursor',
 		'DiginHighCharts',
 		'DiginHighMaps',
+		'DiginForecasts',
 		'DiginServiceLibrary'
 	]
 );

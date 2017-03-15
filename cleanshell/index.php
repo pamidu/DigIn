@@ -547,6 +547,7 @@
 	<script src="js/services/utility.js"></script>
 	<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
 	<script src="modules/DiginHighMaps/DiginHighMaps.js"></script>
+	<script src="modules/DiginForecast/DiginForecast.js"></script>
 	<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
 	<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
 	<script src="js/libs/directivelibrary.js"></script>

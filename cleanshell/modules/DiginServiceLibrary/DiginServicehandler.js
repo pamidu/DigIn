@@ -241,7 +241,7 @@
                     }
                     
 
-                    if(database == "BigQuery")
+                    if(database == "BigQuery" || database == "memsql")
                     {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                             cb(data, status,fObj);

@@ -17,17 +17,14 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
           },
          link: function(scope,element){
 
-            //var intDate = new Date();
             var intDate =  new Date();
 
-            //dsfsfsdfdsg
-
+            //var intDate = moment(new Date()).format('LL');
 
             //notifications.log(moment(intDate).format('YYYY-MM-DD'), new Error());
             //moment(intDate).format('YYYY-MM-DD')
+
             var forecastObj={};
-            var widget={};
-            widget.widgetData={};
             var forecastAtt="";
             var showActual=false;
 
@@ -71,6 +68,14 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
     		scope.$apply(function(){
     			console.log(scope.config);
     		});	
+
+            scope.$on('widget-resized', function(element, widget) {
+               var height = widget.element[0].clientHeight - 50;
+               var width = widget.element[0].clientWidth;
+               scope.config.getHighcharts().setSize(width, height, true);
+               
+            });
+
     	}
     };
 }]);
@@ -83,6 +88,8 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 			//#Change chart background colours according to theme
 			var chartBackgroundColor = "";
 			var chartFontColor = "";
+            var widget={};
+            widget.widgetData={};
 			
 			if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 			{
@@ -95,6 +102,10 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
             forecastObj.paramObj.startdate =  moment(forecastObj.paramObj.startdate).format('YYYY-MM-DD');
             forecastObj.paramObj.enddate =  moment(forecastObj.paramObj.enddate).format('YYYY-MM-DD');
+            forecastObj.paramObj.tbl=tableName;
+            forecastObj.paramObj.date_field=selectedCategory[0].name;
+            forecastObj.paramObj.f_field=selectedSeries[0].name;
+
 
             notifications.log(forecastObj,new Error());
             

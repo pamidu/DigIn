@@ -129,6 +129,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				newElement = $compile('<digin-high-chart id="{{001}}" config="widgetConfig" ></digin-high-chart>')($scope);
 				$element.find('.currentChart').append(newElement);
 				
+			}
+			if($scope.chartType.chartType == "forecast")
+			{
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<digin-forecast  config="widgetConfig" ></digin-forecast>')($scope);
+				$element.find('.currentChart').append(newElement);
+				
 			}else{
 				$scope.showPlaceholderIcon = true;
 			}
@@ -212,7 +219,6 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	};
 	
 	$scope.saveWidget =  function() {
-
 		var widget = {
 			'chartType' : $scope.chartType,
 			'selectedFile' : $scope.selectedFile,

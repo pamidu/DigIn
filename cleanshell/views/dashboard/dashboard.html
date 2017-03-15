@@ -207,6 +207,14 @@
 							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
 							
+								<md-button class="md-icon-button ti-fullscreen hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.fullscreen($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
+									<md-tooltip>fullscreen</md-tooltip>
+								</md-button>
+								
+								<md-button class="md-icon-button ti-share hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.share($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
+									<md-tooltip>share</md-tooltip>
+								</md-button>
+								
 								<md-button class="md-icon-button ti-menu-alt hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
 									<md-tooltip>data</md-tooltip>
 								</md-button>
@@ -215,7 +223,7 @@
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
 								
-								<md-menu md-position-mode="target-right target hover-color" ng-show="widget.widgetData.initCtrl=='elasticInit'">
+								<md-menu md-position-mode="target-right target hover-color">
 									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
@@ -230,7 +238,7 @@
 									  </md-menu-content>
 								</md-menu>
 								
-								<md-button class="md-icon-button ti-reload hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)" ng-show="widget.widgetData.initCtrl=='elasticInit' || widget.widgetData.widData.initCtrl=='metricInit'">
+								<md-button class="md-icon-button ti-reload hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)">
 									<md-tooltip>sync</md-tooltip>
 								</md-button>
 								

@@ -1,4 +1,4 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager, DiginServices, $diginengine,colorManager,$timeout,$state) {
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager','notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, DiginServices, $diginengine,colorManager,$timeout,$state) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -180,11 +180,27 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {
 		return {
-			showData: function (ev, widget) {
-				
+			fullscreen: function (ev, widget) {
+				$mdDialog.show({
+				  controller: 'fullscreenCtrl',
+				  templateUrl: 'views/dashboard/fullscreen.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true,
+				  locals: {widget: widget},
+				  fullscreen: true // Only for -xs, -sm breakpoints.
+				})
+				.then(function(answer) {
+				 // $scope.status = 'You said the information was "' + answer + '".';
+				}, function() {
+				  //$scope.status = 'You cancelled the dialog.';
+				});
 			},
-			commentary: function (ev, widget){
-				console.log("commentary");
+			share: function (ev, widget) {
+				notifications.log("Share",new Error());
+			},
+			showData: function (ev, widget) {
+				notifications.log("Show data",new Error());
 			},
 			widgetSettings: function (ev, widget){
 				$state.go("query_builder",{
@@ -201,15 +217,11 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				 });
 			},
 			syncWidget: function (widget) {
-				console.log("syncWidget");
+				notifications.log("Sync Widget",new Error());
 			},
 			removeWidget: function(ev, widget)
 			{
-				console.log("removeWidget");
-				//$('md-tabs-wrapper').css('background-color',"black", 'important');
-			},
-			closeSetting: function () {
-				console.log("closeSetting");
+				notifications.log("Remove Widget",new Error());
 			}
 		};
     })();

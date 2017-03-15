@@ -1,31 +1,31 @@
 
     <div layout-gt-sm="row" class="side-margins">
+
         <md-input-container class="md-block" flex-gt-sm>
             <span>Model</span>
-            <md-select aria-label="model" ng-model="forecastObj.paramObj.model">
-              <md-option ng-repeat="mod in forecastObj.models" value="{{mod}}">
-                {{mod}}
-              </md-option>
+            <md-select aria-label="Model" ng-model="forecastObj.paramObj.model">
+              <md-option value="double exponential smoothing">Double exponential smoothing</md-option>
+              <md-option value="triple exponential smoothing">Triple exponential smoothing</md-option>
             </md-select>
         </md-input-container>
 
         <md-input-container class="md-block" flex-gt-sm>
             <span>Method</span>
-            <md-select aria-label="method" ng-model="forecastObj.paramObj.method">
-              <md-option ng-repeat="method in forecastObj.method" value="{{method}}">
-                {{method}}
-              </md-option>
+            <md-select aria-label="Method" ng-model="forecastObj.paramObj.method">
+              <md-option value="Additive"> Additive </md-option>
+              <md-option value="Multiplicative">Multiplicative</md-option>
             </md-select>
         </md-input-container>
+
     </div>
 
     <div layout-gt-sm="row" class="side-margins">
         <md-input-container class="md-block" flex-gt-sm>
             <span>Interval</span>
             <md-select aria-label="inteval" ng-model="forecastObj.paramObj.interval" ng-change="setDefLenSeason(forecastObj.paramObj.interval)">
-              <md-option ng-repeat="int in forecastObj.intervals" value="{{int}}">
-                {{int}}
-              </md-option>
+              <md-option value="Daily">Daily</md-option>
+              <md-option value="Monthly">Monthly</md-option>
+              <md-option value="Yearly">Yearly</md-option>
             </md-select>
         </md-input-container>
 
@@ -66,32 +66,31 @@
     </div>
 
     <div layout-gt-sm="row" class="side-margins">
-        <div layout="column">
-            <span class="md-datepicker-label">Start Date </span>
-            <md-datepicker ng-model="forecastObj.paramObj.startdate" aria-label="Start Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
-        </div>
-        <div layout="column">
-            <span class="md-datepicker-label">End Date </span>
-            <md-datepicker ng-model="forecastObj.paramObj.enddate" aria-label="End Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
-        </div>
+       <div layout="column">
+        <span class="md-datepicker-label">Start Date </span>
+        <md-datepicker ng-model="forecastObj.paramObj.startdate" aria-label="Start Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+       </div>
+       <div layout="column" style="margin-left: 20px">
+        <span class="md-datepicker-label">End Date </span>
+        <md-datepicker ng-model="forecastObj.paramObj.enddate" aria-label="End Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+       </div>
     </div>
-
-    <md-checkbox ng-model="useFiltering.status" aria-label="Use Visualisation period">
+      <md-checkbox ng-model="useFiltering.status" aria-label="Use Visualisation period">
         Use Visualisation period
     </md-checkbox>
 
-    <div layout-gt-sm="row" class="side-margins" ng-if="useFiltering.status">
+     <div layout-gt-sm="row" class="side-margins" ng-if="useFiltering.status">
 
-        <div layout="column">
-            <span class="md-datepicker-label">Start Date </span>
-            <md-datepicker ng-model="visualDate.startdate" aria-label="Start Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
-        </div>
-        <div layout="column">
-            <span class="md-datepicker-label">End Date </span>
-            <md-datepicker ng-model="visualDate.enddate" aria-label="End Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
-        </div>
-     
-    </div> 
+       <div layout="column">
+        <span class="md-datepicker-label">Start Date </span>
+        <md-datepicker ng-model="visualDate.startdate" aria-label="Start Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
+       </div>
+       <div layout="column" style="margin-left: 20px">
+        <span class="md-datepicker-label">End Date </span>
+        <md-datepicker ng-model="visualDate.enddate" aria-label="End Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
+       </div>
+       
+      </div>
 
     <div layout-gt-sm="row" class="side-margins">
         <md-input-container class="md-block" flex-gt-sm>

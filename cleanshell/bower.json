@@ -21,5 +21,8 @@
     "ngmap": "^1.18.4",
     "angularjs-slider": "^6.0.0",
     "angular-pouchdb": "^5.0.0"
+  },
+  "resolutions": {
+    "angular": "1.6.3"
   }
 }

@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateHighMap','generateForecast','$timeout', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateHighMap,generateForecast,$timeout){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -26,6 +26,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	//$scope.widgetConfig = {};
 	
 	$scope.widgetConfig = $stateParams.widget.widgetConfig;
+	$scope.settingConfig = {};
 	//$scope.currentChartType = "";
 	$scope.showBarChartLoading = false;
 	
@@ -165,14 +166,16 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				//$scope.currentChartType = "highCharts";
 			}else if($scope.chartType.chartType == 'map')
 			{
-				console.log($scope.chartType.chartType);
-				$scope.widgetConfig = generateHighMap.generate(2);
-				newElement = $compile('<digin-high-map config="'+$scope.widgetConfig+'"></digin-high-map>')($scope);
-				$element.find('.currentChart').append(newElement);
+			    
+				    $scope.widgetConfig = generateGoogleMap.generate(2);
+				    $scope.showBarChartLoading = false;
+				    $scope.showPlaceholderIcon = false;
+				    newElement = $compile('<google-map-in-settings></google-map-in-settings>')($scope);
+				    $element.find('.currentChart').append(newElement);
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{
-				generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
+				generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
 					$scope.widgetConfig = data;
 					$scope.showBarChartLoading = false;
 					$scope.showPlaceholderIcon = false;

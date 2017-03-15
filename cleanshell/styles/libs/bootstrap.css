@@ -91,8 +91,12 @@ md-datepicker{
 	border: none !important;
 }
 
+.md-datepicker-input-container{
+	margin-left: 0px !important;
+}
 
 .md-datepicker-input-container, .md-datepicker-input-container.md-datepicker-focused{
 	border-bottom: none: !important;
 	border: none !important;
 }
+

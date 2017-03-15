@@ -7,42 +7,78 @@
 
 var DiginForecastsModule = angular.module('DiginForecasts',['DiginServiceLibrary']);
 
+
+DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notifications', function($rootScope,notifications) {
+    return {
+         restrict: 'E',
+         templateUrl: 'modules/DiginForecast/forecastSettings.html',
+         scope: {
+           forecastObj: '='
+          },
+         link: function(scope,element){
+
+            //var intDate = new Date();
+            var intDate =  new Date();
+
+
+            //notifications.log(moment(intDate).format('YYYY-MM-DD'), new Error());
+            //moment(intDate).format('YYYY-MM-DD')
+            var forecastObj={};
+            var widget={};
+            widget.widgetData={};
+            var forecastAtt="";
+            var showActual=false;
+
+            scope.forecastObj = {
+                paramObj: {
+                    method: "Additive",
+                    model: "triple exponential smoothing",
+                    mod: "triple_exp",
+                    alpha: "",
+                    beta: "",
+                    gamma: "",
+                    a: "",
+                    b: "",
+                    g: "",
+                    fcast_days: 12,
+                    tbl: "",
+                    date_field: "",
+                    f_field: "",
+                    len_season: 12,
+                    interval: "Monthly",
+                    startdate: intDate,
+                    enddate: intDate,
+                    forecastAtt: forecastAtt,
+                    showActual: showActual,
+                }
+            };
+          
+         } //end of link
+    };
+}]);
+
+
 DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScope) {
-  return {
-	restrict: 'E',
-	template: '<highchart config="config"></highchart>',
-	scope: {
-			config: '='
-		},
-	link: function(scope,element){
-		scope.$apply(function(){
-			console.log(scope.config);
-		});	
-	}
-  };
+    return {
+    	restrict: 'E',
+    	template: '<highchart config="config"></highchart>',
+    	scope: {
+    			config: '='
+    		},
+    	link: function(scope,element){
+    		scope.$apply(function(){
+    			console.log(scope.config);
+    		});	
+    	}
+    };
 }]);
 
-DiginForecastsModule.directive('diginForecastSettings',['$rootScope', function($rootScope) {
-  return {
-	restrict: 'E',
-	templateUrl: 'modules/DiginForecast/forecastSettings.html',
-	scope: {
-			config: '='
-		},
-	link: function(scope,element){
-		//scope.$apply(function(){
-		//	console.log(scope.config);
-		//});	
-		console.log(scope.config);			
-	} 
-  };
-}]);
 
-DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','DiginServicesM', function($rootScope,$diginengine,DiginServicesM) {
+DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','notifications', function($rootScope,$diginengine,notifications) {
 	return {
-		generate: function(highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, callback){
+		generate: function(highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB,forecastObj, callback){
 
-			//Change chart background colours according to theme
+			//#Change chart background colours according to theme
 			var chartBackgroundColor = "";
 			var chartFontColor = "";
 			
@@ -55,41 +91,11 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','D
 			}
 
 
-    		var intDate = "March 13, 2017";
-    		var forecastObj={};
-    		var widget={};
-    		widget.widgetData={};
-    		var forecastAtt="";
-    		var showActual=false;
+            forecastObj.paramObj.startdate =  moment(forecastObj.paramObj.startdate).format('YYYY-MM-DD');
+            forecastObj.paramObj.enddate =  moment(forecastObj.paramObj.enddate).format('YYYY-MM-DD');
 
-    		//# create initial forecast object
-    		forecastObj= {
-		        method: ["Additive", "Multiplicative"],
-		        models: ["double exponential smoothing", "triple exponential smoothing"],
-		        intervals: ["Daily", "Monthly", "Yearly"],
-		        paramObj: {
-		            method: "Additive",
-		            model: "triple exponential smoothing",
-		            mod: "triple_exp",
-		            alpha: "",
-		            beta: "",
-		            gamma: "",
-		            a: "",
-		            b: "",
-		            g: "",
-		            fcast_days: 12,
-		            tbl: tableName,
-		            date_field: selectedCategory[0].name,
-		            f_field: selectedSeries[0].name,
-		            len_season: 12,
-		            interval: "Monthly",
-		            startdate: intDate,
-		            enddate: intDate,
-		            forecastAtt: forecastAtt,
-		            showActual: showActual,
-		        }
-    		};
-
+            notifications.log(forecastObj,new Error());
+            
 			//#Create initial object
 			if (forecastObj.paramObj.interval == "Yearly") {
         		forecastObj.paramObj.fcast_days = 1;
@@ -252,10 +258,10 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','D
 	        });	
 
 
-	        var forecastObject={};
+	        var forecastWidgetConfig={};
 
 	        function createForecastObject(widgetData,serArr, catArr){
-	        	forecastObject = {
+	        	forecastWidgetConfig = {
                     options: {
                         chart: {
                             zoomType: 'x',
@@ -328,22 +334,22 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','D
                     series: serArr
                 };
 
-                if (typeof forecastObject.series != "undefined") {
-                    forecastObject.series.forEach(function(key) {
+                if (typeof forecastWidgetConfig.series != "undefined") {
+                    forecastWidgetConfig.series.forEach(function(key) {
                         if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
                     });
                 }
 	        	
-               return forecastObject;	
+               return forecastWidgetConfig;	
 	        }
 
-
+            
 
 	        	
 		},
-		reRender: function(highChartType, forecastObject, callback) {
-			forecastObject.options.chart.type = highChartType;
-			callback(forecastObject);
+		reRender: function(highChartType, forecastWidgetConfig, callback) {
+			forecastWidgetConfig.options.chart.type = highChartType;
+			callback(forecastWidgetConfig);
 			
 		}
 

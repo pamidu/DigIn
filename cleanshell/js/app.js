@@ -20,7 +20,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'pouchdb',
 		'cellCursor',
 		'DiginHighCharts',
-		'DiginHighMaps',
+		'GoogleMap',
 		'DiginForecasts',
 		'DiginServiceLibrary'
 	]

@@ -35,10 +35,11 @@ DiginHighChartsModule.directive('diginHighChart',['$rootScope','notifications','
   };
 }]);
 
-DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine','DiginServicesM','notifications', function($rootScope,$diginengine,DiginServicesM,notifications) {
+DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine','DiginServicesM','notifications', 'chartUtilitiesFactory',
+	function($rootScope,$diginengine,DiginServicesM,notifications,chartUtilitiesFactory) {
 	return {
-		generate: function(highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, callback) {
-			
+		initializeChartObject: function(highChartType) {
+
 			//Change chart background colours according to theme
 			var chartBackgroundColor = "";
 			var chartFontColor = "";
@@ -50,80 +51,103 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			}else{
 				chartBackgroundColor = "rgb(250,250,250)";
 			}
-			
+
+			//Create the chart object
+			var highchartObject = {};
+			highchartObject = {
+				options: {
+					chart: {
+						type: highChartType,
+						backgroundColor: chartBackgroundColor
+					},
+                    tooltip: {
+                        pointFormat: '{point.y:,.0f}'
+                    },
+                    exporting: {
+                        sourceWidth: 600,
+                        sourceHeight: 400
+                    },
+                    xAxis: {
+                        showEmpty: false
+                    },
+                    yAxis: {
+                        showEmpty: false
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                color: '#000000',
+                                format: '<b> {point.name}</b>'
+                            },
+                            series: {
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b> ( {point.y:,.0f} )',
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                    softConnector: true
+                                }
+                            },
+                            showInLegend: false,
+                            tooltip: {
+                                pointFormat: '{series.name}: {point.percentage:,.2f}%'
+                            }
+                        }
+                    }
+				},
+				xAxis: {
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+						style: {
+							color: chartFontColor
+						}
+					},
+					type: 'category'
+				},
+				title: {
+					text: '',
+					style: {
+						color: chartFontColor
+					}
+				},
+                yAxis: {
+                    lineWidth: 1
+                },
+                credits: {
+                    enabled: false
+                },
+				series: []
+			};
+			return highchartObject;
+		},
+		// method by: Dilani Maheswaran
+		// build the highchart with data
+		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, callback, connection) {
+
 			//format selected series
 			var fieldArr = [];
-			for(var i = 0; i < selectedSeries.length; i++){
+			for(var i = 0; i < selectedSeries.length; i++) {
 				fieldArr.push({
 					field: selectedSeries[i].name,
 					agg: selectedSeries[i].aggType
 				});
 			}
-			
-			
 			$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
 				if (status) {
-					var categories = [];
 					var series = [];
-					for(var i = 0; i < res.length; i++){
-						categories.push(res[i][selectedCategory[0].name]);
-						series.push(res[i][selectedSeries[0].aggType.toLowerCase()+"_"+selectedSeries[0].name]);
-					}
-					var res = createChartObject(categories, series);
-					callback(res);
-					//return categories;
-				}else{
-					console.log(res);
+					series = chartUtilitiesFactory.mapChartData(res,selectedCategory[0].name,fieldArr);
+					// highcharts-ng internally calls the setSeries API when series is set
+					chartObj.series = series;
+					callback(chartObj);
+				} else {
+					notifications.toast(0,'Error. Please try again.');
 				}
 
-			},[selectedCategory[0].name]);
-			
-			var highchartObject = {};
-			
-			function createChartObject(categories, series)
-			{
-
-				highchartObject = {
-					options: {
-						  chart: {
-								type: highChartType,
-								backgroundColor: chartBackgroundColor
-							}
-					},
-						  xAxis: {
-							categories: categories,
-							lineColor: chartFontColor,
-							tickColor: chartFontColor,
-							labels: {
-								 style: {
-									color: chartFontColor
-								 }
-							}
-						  },
-					  series: [{
-						data: series,
-						style: {
-							color: chartFontColor
-						 },
-						 labels: {
-								 style: {
-									color: chartFontColor
-								 }
-							}
-					  }],
-					title: {
-						text: 'Sales',
-						style: {
-							color: chartFontColor
-						}
-					}
-				};
-				return highchartObject;
-			};
-				
-			
-			// return DiginServicesM.addOne(2);
-		},//end of generate
+			},[selectedCategory[0].name],connection);
+		},
 		reRender: function(highChartType, highchartObject, callback) {
 			highchartObject.options.chart.type = highChartType;
 			callback(highchartObject);
@@ -149,4 +173,65 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 		},//end of highchartValidations
 		
    }
-}]);//END OF DiginServices
+}]);
+
+// utility services for highcharts
+// owner : Dilani Maheswaran
+// Date: 13/03/2017
+DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
+	return{
+		// set chart series
+		// res : result array from getAggData and getExecQuery
+		// category : x-axis value string
+		// fieldArray : array of objects [{ agg:   , field:   }]
+		mapChartData: function(res, category, fieldArray) {
+			var serArr = [];
+			var fieldStr = "";
+			angular.forEach(fieldArray,function(field){
+				fieldStr = (field.agg + "_" + field.field).toLowerCase();
+				for (var c in res[0]) {
+					if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+						if (c.toLowerCase() == fieldStr)
+						{
+							// maintain origName to map with server response - static
+							// maintain name to give flexibility to the user - variable
+							serArr.push({
+								name: c,
+								data: [],
+								origName: c
+							})
+						}
+					}
+				}
+			});
+			// fill the series data
+			angular.forEach(res,function(value){
+				console.log(value);
+				angular.forEach(serArr,function(series){
+					series.data.push({
+						name: value[category],
+						y: value[series.origName]
+					})
+				})
+			})
+			return(serArr);
+		},
+		//remove all series of highcharts
+		removeAllSeries: function(chartObj) {
+			var chart = chartObj.getHighcharts();
+			for(var i = 0; i < chart.series.length; i++) {
+				chart.series[i].remove();
+			}
+			return(chartObj);
+		},
+		//remove data from chart
+		removeDataPoints: function(chartObj) {
+			var chart = chartObj.getHighcharts();
+		},
+		//set data points
+		setDataPoints: function(chartObj,res) {
+			var chart = chartObj.getHighcharts();
+		}
+	}
+}]);
+//END OF DiginServices

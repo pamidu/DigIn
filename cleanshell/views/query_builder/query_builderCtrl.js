@@ -23,7 +23,6 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.chartTypes = [];
 
 	//Common variable to store the widget contents
-	//$scope.widgetConfig = {};
 	
 	$scope.widgetConfig = $stateParams.widget.widgetConfig;
 	$scope.settingConfig = {};
@@ -159,6 +158,11 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			$diginengine.getUUID(1, function(id){
 				widgetID = id;
 			});
+
+			// initialize if the object is empty
+			$scope.widgetConfig = generateHighchart.initializeChartObject($scope.chartType.chart);
+			newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
+			$element.find('.currentChart').append(newElement);
 			
 		}
 	}
@@ -176,7 +180,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			
 				var isChartConditionsOk = generateHighchart.highchartValidations($scope.chartType.chart,$scope.selectedSeries,$scope.selectedCategory);
 				if(isChartConditionsOk){
-					generateHighchart.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
+					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
 						$scope.widgetConfig = data;
 						$scope.showBarChartLoading = false;
 						$scope.showPlaceholderIcon = false;

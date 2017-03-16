@@ -30,6 +30,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	//$scope.currentChartType = "";
 	$scope.showBarChartLoading = false;
 	
+	//Create widgetId;
+	var widgetID ="";
+	
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
 		
@@ -123,6 +126,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		if(!angular.equals($scope.widgetConfig, {}))//if there is a config
 		{
 			$scope.chartType = $stateParams.chartType;
+			widgetID = $stateParams.widget.widgetID;
 			if($scope.chartType.chartType == "highCharts")
 			{
 				$scope.showPlaceholderIcon = false;
@@ -152,6 +156,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			}
 		}else{
 			$scope.chartType = $scope.chartTypes[0]; // set default chart
+			$diginengine.getUUID(1, function(id){
+				widgetID = id;
+			});
 			
 		}
 	}
@@ -173,7 +180,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 						$scope.widgetConfig = data;
 						$scope.showBarChartLoading = false;
 						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<digin-high-chart id="{{001}}" config="widgetConfig" ></digin-high-chart>')($scope);
+						newElement = $compile('<digin-high-chart id-selector="'+widgetID+'" config="widgetConfig" ></digin-high-chart>')($scope);//'+widgetID+'
 						$element.find('.currentChart').append(newElement);
 						
 					});
@@ -230,6 +237,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	};
 	
 	$scope.saveWidget =  function() {
+		
 		var widget = {
 			'chartType' : $scope.chartType,
 			'selectedFile' : $scope.selectedFile,
@@ -240,7 +248,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			'DesignTimeFilter': [],
 			'RuntimeFilter' : [],
 			'widgetConfig' : $scope.widgetConfig,
-			'selectedDB' : $scope.selectedDB
+			'selectedDB' : $scope.selectedDB,
+			'widgetID' :  widgetID
 			
 		};
 

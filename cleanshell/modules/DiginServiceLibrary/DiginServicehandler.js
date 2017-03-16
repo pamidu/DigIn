@@ -306,6 +306,14 @@
             getClient: function(db, dsid) {
                 if (!dsid) return new DiginEngineClient(getNamespace(), db);
                 else return new DiginEngineClient(dsid, db);
+            },
+            getUUID: function(amount,cb){
+                $servicehelpers.httpSend("get", function(data, status, msg) {
+                    if(amount > 1)
+                        cb(data);    
+                    else
+                        cb(data[0]);                
+                }, $diginurls.diginengine + "get_uuid?n=" + amount);
             }
         }
     });

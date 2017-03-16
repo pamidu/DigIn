@@ -523,8 +523,6 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		];*/
 		
 		DiginServices.getDBConfigs().then(function(data) {
-			console.log(data);
-			//$scope.sourceType = data;
 			angular.forEach(data,function(src,index)
         	{
         		if (src.name != 'DuoStore' && src.name != 'postgresql' && src.name != 'CSV Upload')
@@ -551,7 +549,6 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 						$scope.showBusyText = false;
 						$scope.connectSource_selected = 1;
 						$scope.connectSource_step1.completed = true;
-						console.log(res);
 						
 						for(var i = 0; i < res.length; i++){
 							if(res[i].upload_type == "csv-singlefile"){
@@ -576,7 +573,6 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.selectTable = function(fileOrFolder)
 		{
 			$scope.selectedFile = fileOrFolder;
-			console.log(fileOrFolder.schema);
 			for(var i = 1; i < fileOrFolder.schema.length; i++){
 				if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
 					$scope.measures.push(fileOrFolder.schema[i]);	
@@ -589,9 +585,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
-			console.log($scope.attributes);
-			console.log($scope.measures);
-			
+
 			var initWidgetObj = {};
 			initWidgetObj.widgetConfig = {};
 			

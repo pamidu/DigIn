@@ -28,6 +28,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.settingConfig = {};
 	//$scope.currentChartType = "";
 	$scope.showBarChartLoading = false;
+
+	//variable to hold query of highcharts
+	$scope.chartQuery = "";
 	
 	//Create widgetId;
 	var widgetID ="";
@@ -166,6 +169,15 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			
 		}
 	}
+
+	// bind chart to the view
+	function bindChart()
+	{
+		$scope.showBarChartLoading = false;
+		$scope.showPlaceholderIcon = false;
+		newElement = $compile('<digin-high-chart id-selector="'+widgetID+'" config="widgetConfig" ></digin-high-chart>')($scope);//'+widgetID+'
+		$element.find('.currentChart').append(newElement);
+	}
 	
 	//Generate Chart Event
 	$scope.generate = function()
@@ -177,16 +189,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			$scope.showBarChartLoading = true;
 			if($scope.chartType.chartType == 'highCharts') // if the user wants a highchart
 			{
-			
+
 				var isChartConditionsOk = generateHighchart.highchartValidations($scope.chartType.chart,$scope.selectedSeries,$scope.selectedCategory);
 				if(isChartConditionsOk){
-					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,function (data){
+					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedFile.datasource_id,$scope.selectedDB,false, function (data,query){
 						$scope.widgetConfig = data;
-						$scope.showBarChartLoading = false;
-						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<digin-high-chart id-selector="'+widgetID+'" config="widgetConfig" ></digin-high-chart>')($scope);//'+widgetID+'
-						$element.find('.currentChart').append(newElement);
-						
+						$scope.chartQuery = query;
+						bindChart();
 					});
 				}
 				else{
@@ -216,7 +225,19 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		
 		
 	}
-	
+
+	// execute query and build chart
+	$scope.executeQuery = function()
+	{
+		//If a chart is already rendered first remove it
+		$element.find('.currentChart').children().remove();
+
+		generateHighchart.executeQuery($scope.widgetConfig, $scope.chartQuery, $scope.selectedFile.datasource_id, $scope.limit, 0, $scope.selectedDB, function(data){
+			$scope.widgetConfig = data;
+			bindChart();
+		});
+	}
+
 	//Change to tooltip of the hovered chart type
 	$scope.changeTip = function(tip)
 	{
@@ -302,4 +323,4 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
     };
 
 
-}])
+}]);

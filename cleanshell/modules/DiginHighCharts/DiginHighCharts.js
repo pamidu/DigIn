@@ -125,8 +125,8 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 		},
 		// method by: Dilani Maheswaran
 		// build the highchart with data
-		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, callback, connection) {
-
+		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, isDrilled, callback, connection) {
+			// chartObj - Chart configuration Object, highChartType - chart type String
 			//format selected series
 			var fieldArr = [];
 			for(var i = 0; i < selectedSeries.length; i++) {
@@ -138,16 +138,24 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
 				if (status) {
 					var series = [];
-					series = chartUtilitiesFactory.mapChartData(res,selectedCategory[0].name,fieldArr);
+					series = chartUtilitiesFactory.mapChartData(res,selectedCategory[0].name,isDrilled);
 					// highcharts-ng internally calls the setSeries API when series is set
 					chartObj.series = series;
-					callback(chartObj);
+					callback(chartObj,query);
 				} else {
 					notifications.toast(0,'Error. Please try again.');
+					callback(chartObj,'');
 				}
-
 			},[selectedCategory[0].name],connection);
 		},
+		// execute query to generate chart
+		// method by: Dilani Maheswaran
+		// executeQuery: function(chartObj, query, datasourceId, limit, offset, selectedDB) {
+		// 	$diginengine.getClient(selectedDB).getExecQuery(query, datasourceId, function(res, status, message){
+		// 		// if the x-axis and y-axis values are known, send true
+		// 		series = chartUtilitiesFactory.mapChartData(res,selectedCategory[0].name,fieldArr,true);
+		// 	},limit,offset)
+		// },
 		reRender: function(highChartType, highchartObject, callback) {
 			highchartObject.options.chart.type = highChartType;
 			callback(highchartObject);
@@ -181,36 +189,33 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 	return{
 		// set chart series
-		// res : result array from getAggData and getExecQuery
-		// category : x-axis value string
-		// fieldArray : array of objects [{ agg:   , field:   }]
-		mapChartData: function(res, category, fieldArray) {
+		mapChartData: function(res, category,isDrilled) {
+			// res : result array from getAggData and getExecQuery
+			// category : x-axis value string
+			// isDrilled : enable / disable drilldown
 			var serArr = [];
-			var fieldStr = "";
-			angular.forEach(fieldArray,function(field){
-				fieldStr = (field.agg + "_" + field.field).toLowerCase();
-				for (var c in res[0]) {
-					if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-						if (c.toLowerCase() == fieldStr)
-						{
-							// maintain origName to map with server response - static
-							// maintain name to give flexibility to the user - variable
-							serArr.push({
-								name: c,
-								data: [],
-								origName: c
-							})
-						}
+			for (var c in res[0]) {
+				if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+					if (c.toLowerCase() != category)
+					{
+						// maintain origName to map with server response - static
+						// maintain name to give flexibility to the user - variable
+						serArr.push({
+							name: c,
+							data: [],
+							origName: c
+						})
 					}
 				}
-			});
+			}
 			// fill the series data
 			angular.forEach(res,function(value){
 				console.log(value);
 				angular.forEach(serArr,function(series){
 					series.data.push({
-						name: value[category],
-						y: value[series.origName]
+						name: value[category].toString(),
+						y: parseFloat(value[series.origName]),
+						drilldown: isDrilled
 					})
 				})
 			})

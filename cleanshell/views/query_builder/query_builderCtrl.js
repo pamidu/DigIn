@@ -34,6 +34,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	
 	//Create widgetId;
 	var widgetID ="";
+
+	//to keep the group by column and sort by column
+	$scope.groupBySortArray =[];
 	
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
@@ -60,6 +63,15 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.pushCateory = function(index, item)
 	{
 		$scope.selectedCategory.push(item);
+
+		//push selected category to groupBySortArray
+		var obj = {
+                    "sortName": item.name,
+                    "displayName" : item.name
+        }
+
+        $scope.groupBySortArray.push(obj);
+
 		if($scope.selectedSeries.length > 0)
 		{
 			addGenerateBtnAnimation()
@@ -70,6 +82,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.removeFromSeries = function(index)
 	{
 		$scope.selectedSeries.splice(index, 1);
+		$scope.groupBySortArray.splice(index, 1);
 	}
 	
 	//remove to selectedCategory
@@ -136,13 +149,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				$element.find('.currentChart').append(newElement);
 				
 			}
-			if($scope.chartType.chartType == "forecast")
+			else if($scope.chartType.chartType == "forecast")
 			{
 				$scope.showPlaceholderIcon = false;
 				newElement = $compile('<digin-forecast  config="widgetConfig" ></digin-forecast>')($scope);
 				$element.find('.currentChart').append(newElement);
 				
-			}if($scope.chartType.chartType == "map")
+			}else if($scope.chartType.chartType == "map")
 			{
 				$scope.showPlaceholderIcon = false;
 				newElement = $compile('<google-map-in-settings config="widgetConfig" ></google-map-in-settings>')($scope);
@@ -196,7 +209,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
-					});
+					},undefined);
 				}
 				else{
 					$scope.showBarChartLoading = false;

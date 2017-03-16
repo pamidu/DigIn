@@ -125,7 +125,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 		},
 		// method by: Dilani Maheswaran
 		// build the highchart with data
-		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, isDrilled, callback, connection) {
+		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, isDrilled,groupBySortArray, callback, connection) {
 			// chartObj - Chart configuration Object, highChartType - chart type String
 			//format selected series
 			var fieldArr = [];
@@ -138,7 +138,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
 				if (status) {
 					var series = [];
-					series = chartUtilitiesFactory.mapChartData(res,selectedCategory[0].name,isDrilled);
+					series = chartUtilitiesFactory.mapChartData(res,groupBySortArray[0].displayName,isDrilled);
 					// highcharts-ng internally calls the setSeries API when series is set
 					chartObj.series = series;
 					callback(chartObj,query);
@@ -146,7 +146,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 					notifications.toast(0,'Error. Please try again.');
 					callback(chartObj,'');
 				}
-			},[selectedCategory[0].name],connection);
+			},groupBySortArray[0].displayName,connection,groupBySortArray[0].sortName);
 		},
 		// execute query to generate chart
 		// method by: Dilani Maheswaran
@@ -167,14 +167,56 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 
 			switch (highChartType) {
                 case "pie":
-                	if(selectedSeries.length == 1 && selectedCategory.length > 0 )
-                   		isChartConditionsOk = true;
-                   	else
-                   		notifications.toast(2,"you can't generate a pie chart for more than one series");
+						if(selectedSeries.length == 1 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a pie chart");
+                  break;
+                 case "bar":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
+                   	break;
+                  case "column":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
+                   	break;
+                   case "line":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
+                   	break;
+                   	case "spline":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
+                   	break;
+                   	case "area":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
+                   	break;
+                   	case "areaspline":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
+                   	break;
+                   	case "scatter":
+						if(selectedSeries.length > 0 && selectedCategory.length > 0 )
+							isChartConditionsOk = true;
+						else
+							notifications.toast(2,"Please check the requirements for generate a "+highChartType+" chart");
                    	break;
                 default:
 	                break;
-            }
+	        }
 
 
 			return isChartConditionsOk;

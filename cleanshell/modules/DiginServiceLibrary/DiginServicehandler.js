@@ -8,8 +8,8 @@
 
 
 (function (){
-	
-	function getHost() {
+    
+    function getHost() {
         var host = window.location.hostname;
 
         if (host.indexOf("localhost") != -1 || host.indexOf("127.0.0.1") != -1) host = "104.131.48.155";
@@ -44,10 +44,10 @@
                         cb(data, status);
                     }, $diginurls.diginengine + url_string);
                 },
-                getConnectionTables: function(id,cb) {
+                getConnectionTables: function(id,db,cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
                         cb(data, status);
-                    }, $diginurls.diginengine + "GetTables?db=mssql&datasource_config_id=" + id);
+                    }, $diginurls.diginengine + "GetTables?db="+db+"&datasource_config_id=" + id);
                 },
                 getFields: function(tbl, cb) {
                     $servicehelpers.httpSend("get", function(data, status, msg) {
@@ -77,12 +77,27 @@
                             cb(data, status);
                         }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database);
                     }
+                    if(database == "hiveql"){
+                         $servicehelpers.httpSend("get", function(data, status, msg) {
+                            cb(data, status);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
+                    }
+                    if(database == "Oracle"){
+                         $servicehelpers.httpSend("get", function(data, status, msg) {
+                            cb(data, status);
+                        }, $diginurls.diginengine + "gethighestlevel?tablename=" + tbl + "&id=1&levels=[" + fieldstr + "]&plvl=All&db=" + database + "&datasource_config_id=" + id);
+                    }
 
                 },
-                getAggData: function(tbl, aggObjArr, limit, id, cb, gb, con) {
+                // gb = display column
+                // ob = sorting coulmn 
+                getAggData: function(tbl, aggObjArr, limit, id, cb, gb, con, ob) {
                     var strField = "";
                     if (con !== undefined) {
-                        con = con.replace(/&/g , "%26");                        
+                        // con = con.replace(/&/g , "%26");                        
+                    }
+                    if (ob === undefined) {
+                        ob = gb;
                     }
                     aggObjArr.forEach(function(key) {
                         if (database == "MSSQL") {
@@ -105,31 +120,49 @@
                         if (!gb) {
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}"  + "&datasource_id=" + id;
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
                         }
                     }
                     if (database == "memsql") {
+
+                    // gb = display column
+                    // ob = sorting coulmn 
+
                         if (!gb) {
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
-                        } else {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + gb + "%27:1}"  + "&datasource_id=" + id;
+                        }
+                        else  {
+                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
                         }
                     }
-                    if (database == "MSSQL") {
+                    if (database == "MSSQL" ) {
                         var db = tbl.split(".");
                         if (gb === undefined) {
                             var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
+                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         }
                     }
-                    if (database == "postgresql") {
+                    if (database == "postgresql" ) {
                         if (gb === undefined) {
                             var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1);
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1);
                         }
-
+                    }
+                    if(database == "hiveql"){
+                        if (gb === undefined) {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                        } else {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                        }
+                    }
+                    if(database == "Oracle"){
+                        if (gb === undefined) {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                        } else {
+                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27" + ob + "%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                        }
                     }
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";
@@ -155,9 +188,13 @@
                     if (offset) 
                         offVal = offset;
                     if (database == 'MSSQL')
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&datasource_config_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal + "&datasource_config_id=" + id;
                     else if (database == 'BigQuery' || database == "memsql")
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id;
+                    else if (database == 'hiveql')
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id;
+                    else if (database == 'Oracle')
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id;
                     else 
                         var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
 
@@ -317,9 +354,9 @@
             }
         }
     });
-	
-	
-	 DiginServiceLibraryModule.factory('$servicehelpers', function($http, $auth, Digin_Domain) {
+    
+    
+     DiginServiceLibraryModule.factory('$servicehelpers', function($http, $auth, Digin_Domain) {
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
@@ -332,15 +369,15 @@
                     error(function(data, status, headers, config) {
                         cb(data, false, "");
                     });*/
-					$http({
-						  method: 'GET',
-						  url: reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=' + Digin_Domain
-					}).then(function successCallback(response) {
-						console.log(response);
-						(response.data.Is_Success) ? cb(response.data.Result, true, response.data.Custom_Message): cb(response.data.Custom_Message, false, "");
-					  }, function errorCallback(response) {
-						  cb(response.data, false, "");
-					  });
+                    $http({
+                          method: 'GET',
+                          url: reqUrl + '&SecurityToken=' + getCookie("securityToken") + '&Domain=' + Digin_Domain
+                    }).then(function successCallback(response) {
+                        console.log(response);
+                        (response.data.Is_Success) ? cb(response.data.Result, true, response.data.Custom_Message): cb(response.data.Custom_Message, false, "");
+                      }, function errorCallback(response) {
+                          cb(response.data, false, "");
+                      });
                 }
             },
             sendWorker: function(wSrc, wData, cb) {
@@ -363,8 +400,8 @@
         }
     });
 
-	
-	DiginServiceLibraryModule.factory('$diginurls', function(Digin_Engine_API) {
+    
+    DiginServiceLibraryModule.factory('$diginurls', function(Digin_Engine_API) {
         var host = getHost();
         return {
             //diginengine: "http://" + host + ":8080",

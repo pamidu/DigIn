@@ -135,18 +135,34 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 					agg: selectedSeries[i].aggType
 				});
 			}
-			$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
-				if (status) {
-					var series = [];
-					series = chartUtilitiesFactory.mapChartData(res,groupBySortArray[0].displayName,isDrilled);
-					// highcharts-ng internally calls the setSeries API when series is set
-					chartObj.series = series;
-					callback(chartObj,query);
-				} else {
-					notifications.toast(0,'Error. Please try again.');
-					callback(chartObj,'');
-				}
-			},groupBySortArray[0].displayName,connection,groupBySortArray[0].sortName);
+
+			if(!isDrilled){
+				$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
+					if (status) {
+						var series = [];
+						series = chartUtilitiesFactory.mapChartData(res,groupBySortArray[0].displayName,isDrilled);
+						// highcharts-ng internally calls the setSeries API when series is set
+						chartObj.series = series;
+						callback(chartObj,query);
+					} else {
+						notifications.toast(0,'Error. Please try again.');
+						callback(chartObj,'');
+					}
+				},groupBySortArray[0].displayName,connection,groupBySortArray[0].sortName);
+			}else{
+
+				var catArr = [];
+
+				selectedCategory.forEach(function(cat) {
+				    catArr.push(cat.name.toString());
+				});
+
+
+				$diginengine.getClient(selectedDB).getHighestLevel(tableName, catArr ,datasourceId,function(data, status){
+					console.log(data);
+				})
+			}
+			
 		},
 		// execute query to generate chart
 		// method by: Dilani Maheswaran
@@ -160,6 +176,9 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			highchartObject.options.chart.type = highChartType;
 			callback(highchartObject);
 			
+		},
+		getHighestLevel: function(){
+
 		},
 		highchartValidations: function(highChartType, selectedSeries, selectedCategory){ //this function will validate all the prerequirments needs to satisfy to create a given highcart type 
 			

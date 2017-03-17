@@ -205,11 +205,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 
 				var isChartConditionsOk = generateHighchart.highchartValidations($scope.chartType.chart,$scope.selectedSeries,$scope.selectedCategory);
 				if(isChartConditionsOk){
-					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedFile.datasource_id,$scope.selectedDB,false, function (data,query){
+
+					var isDrilled = false;
+					if($scope.selectedCategory.length > 1){
+						isDrilled = true;
+					} 
+
+					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedFile.datasource_id,$scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
 					},undefined);
+
 				}
 				else{
 					$scope.showBarChartLoading = false;

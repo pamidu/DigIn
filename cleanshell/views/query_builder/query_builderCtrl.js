@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap','notifications', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap,notifications){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -119,13 +119,15 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		}
 		else if($scope.chartType.chartType == "forecast")
 		{
-			if(!angular.equals($scope.widgetConfig, {}))
+			generateForecast.getforecastAtts($scope.selectedAttributes, $scope.selectedMeasures,$scope.settingConfig);
+
+			/*if(!angular.equals($scope.widgetConfig, {}))
 			{
 				$scope.showPlaceholderIcon = false;
 				generateForecast.reRender($scope.chartType.chart, $scope.widgetConfig,function (data){
 					console.log(data);
 				})
-			}
+			}*/
 		}
 		else{
 			$scope.showPlaceholderIcon = true;
@@ -280,6 +282,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.settingsOpened = !$scope.settingsOpened;
 	}
 	
+	$scope.saveSettings = function()
+	{
+	  	$rootScope.$broadcast('press-submit', {callbackFunction: function(data){
+		   if(data)
+		   {
+		    	$scope.settingsOpened = !$scope.settingsOpened;
+		   }else{
+		    	notifications.toast(0,"form invalid");
+		   }
+	  	}});
+	}
+
 	//Initiaize the edit Query as off
 	$scope.queryEditState = false;
 	

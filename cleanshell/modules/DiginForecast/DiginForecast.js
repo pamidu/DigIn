@@ -25,7 +25,6 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
             //moment(intDate).format('YYYY-MM-DD')
 
             var forecastObj={};
-
             scope.forecastObj = {
                 paramObj: {
                     method: "Additive",
@@ -45,17 +44,35 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     interval: "Monthly",
                     startdate: intDate,
                     enddate: intDate,
+                    selectedSeries:"",
+                    selectedCategory: "",
                     forecastAtt: "",
                     showActual: false,
                     isVisual : false,
                     visualstart : intDate,
-                    visualend : intDate
+                    visualend : intDate,
                 }
             };
+
+            scope.$on('press-submit', function(event, args) {
+                scope.forecastSettingsForm.$setSubmitted();
+                if(scope.forecastSettingsForm.$valid)
+                {
+                    args.callbackFunction(true);
+                }else{
+                    args.callbackFunction(false);
+                }                    
+            })
           
          } //end of link
     };
 }]);
+
+DiginForecastsModule.filter('formatdate', function() {
+  return function(items) {
+    return moment(new Date(items)).format('YYYY-MM-DD');
+  };
+});
 
 
 DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScope) {
@@ -83,7 +100,14 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
 
 
 DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','notifications', function($rootScope,$diginengine,notifications) {
-	return {
+	
+
+    return {
+        getforecastAtts : function(cat, ser,forecastObj) {
+            forecastObj.paramObj.selectedCategory=cat;
+            forecastObj.paramObj.selectedCategory.push({});
+            forecastObj.paramObj.selectedSeries=ser;
+        },
         isRequestValidated: function(selectedSeries, selectedCategory){  
             var isRequestValidated = true;
 
@@ -94,7 +118,10 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             else if(selectedCategory.length == 0){
                 notifications.toast(2,"Please select category.");
                 isRequestValidated = false; 
-            }               
+            }  
+            else if (selectedCategory[0].type.toUpperCase() != "TIMESTAMP" && selectedCategory[0].type.toUpperCase() != "DATETIME" && selectedCategory[0].type.toUpperCase() !="DATE" ){
+                notifications.toast(2,"Please select a date for category.");
+            }            
             else{
                 isRequestValidated = true; 
             }

@@ -25,9 +25,6 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
             //moment(intDate).format('YYYY-MM-DD')
 
             var forecastObj={};
-            var forecastAtt="";
-            var showActual=false;
-
             scope.forecastObj = {
                 paramObj: {
                     method: "Additive",
@@ -47,14 +44,35 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     interval: "Monthly",
                     startdate: intDate,
                     enddate: intDate,
-                    forecastAtt: forecastAtt,
-                    showActual: showActual,
+                    selectedSeries:"",
+                    selectedCategory: "",
+                    forecastAtt: "",
+                    showActual: false,
+                    isVisual : false,
+                    visualstart : intDate,
+                    visualend : intDate,
                 }
             };
+
+            scope.$on('press-submit', function(event, args) {
+                scope.forecastSettingsForm.$setSubmitted();
+                if(scope.forecastSettingsForm.$valid)
+                {
+                    args.callbackFunction(true);
+                }else{
+                    args.callbackFunction(false);
+                }                    
+            })
           
          } //end of link
     };
 }]);
+
+DiginForecastsModule.filter('formatdate', function() {
+  return function(items) {
+    return moment(new Date(items)).format('YYYY-MM-DD');
+  };
+});
 
 
 DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScope) {
@@ -65,9 +83,9 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
     			config: '='
     		},
     	link: function(scope,element){
-    		scope.$apply(function(){
-    			console.log(scope.config);
-    		});	
+    		// scope.$apply(function(){
+    		// 	console.log(scope.config);
+    		// });	
 
             scope.$on('widget-resized', function(element, widget) {
                var height = widget.element[0].clientHeight - 50;
@@ -82,16 +100,42 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
 
 
 DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','notifications', function($rootScope,$diginengine,notifications) {
-	return {
+	
+
+    return {
+        getforecastAtts : function(cat, ser,forecastObj) {
+            forecastObj.paramObj.selectedCategory=cat;
+            forecastObj.paramObj.selectedCategory.push({});
+            forecastObj.paramObj.selectedSeries=ser;
+        },
+        isRequestValidated: function(selectedSeries, selectedCategory){  
+            var isRequestValidated = true;
+
+            if(selectedSeries.length == 0){
+                notifications.toast(2,"Please select series.");
+                isRequestValidated = false;
+            }               
+            else if(selectedCategory.length == 0){
+                notifications.toast(2,"Please select category.");
+                isRequestValidated = false; 
+            }  
+            else if (selectedCategory[0].type.toUpperCase() != "TIMESTAMP" && selectedCategory[0].type.toUpperCase() != "DATETIME" && selectedCategory[0].type.toUpperCase() !="DATE" ){
+                notifications.toast(2,"Please select a date for category.");
+            }            
+            else{
+                isRequestValidated = true; 
+            }
+
+            return isRequestValidated;
+        },
 		generate: function(highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB,forecastObj, callback){
 
 			//#Change chart background colours according to theme
 			var chartBackgroundColor = "";
 			var chartFontColor = "";
-            var widget={};
-            widget.widgetData={};
-			
-			if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+            var widgetData={};
+            
+		    if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 			{
 				chartBackgroundColor = "rgb(48,48,48)";
 				chartFontColor = '#fff';
@@ -100,14 +144,14 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 			}
 
 
-            forecastObj.paramObj.startdate =  moment(forecastObj.paramObj.startdate).format('YYYY-MM-DD');
-            forecastObj.paramObj.enddate =  moment(forecastObj.paramObj.enddate).format('YYYY-MM-DD');
+            // forecastObj.paramObj.startdate =  moment(forecastObj.paramObj.startdate).format('YYYY-MM-DD');
+            // forecastObj.paramObj.enddate =  moment(forecastObj.paramObj.enddate).format('YYYY-MM-DD');
             forecastObj.paramObj.tbl=tableName;
             forecastObj.paramObj.date_field=selectedCategory[0].name;
             forecastObj.paramObj.f_field=selectedSeries[0].name;
 
 
-            notifications.log(forecastObj,new Error());
+            //notifications.log(forecastObj,new Error());
             
 			//#Create initial object
 			if (forecastObj.paramObj.interval == "Yearly") {
@@ -118,28 +162,27 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 	            forecastObj.paramObj.fcast_days = 12;
 	        }
 
-	        widget.widgetData.highchartsNG = {};
-	        widget.widgetData.highchartsNG = {
-	            title: {
-	                text: ''
-	            },
-	            credits: {
-	                enabled: false
-	            }
-	        };
-	        //$scope.eventHndler.isLoadingChart = true;
+	       widgetData.title = {
+                title: {
+                    text: ''
+                },
+                credits: {
+                    enabled: false
+                }
+            };
+            //$scope.eventHndler.isLoadingChart = true;
 
-	        if(typeof widget.widgetData.namespace == "undefined"){ 
-	            var namespace = $rootScope.authObject.Email.replace('@', '_'); 
-	            namespace=$rootScope.authObject.Email.replace(/[@.]/g, '_'); 
+            if(typeof widgetData.namespace == "undefined"){ 
+                var namespace = $rootScope.authObject.Email.replace('@', '_'); 
+                namespace=$rootScope.authObject.Email.replace(/[@.]/g, '_'); 
 
-	            widget.widgetData.namespace = namespace;
-	        }
+                widgetData.namespace = namespace;
+            }
 				
 	        //#Call funtion
 	        //$diginengine.getClient.getForcast(fObj,$scope.widget.widgetData,"",$scope.sourceData.id, function(data, status, fObj) {
 	        var fObj = forecastObj.paramObj;
-	        $diginengine.getClient(selectedDB).getForcast(fObj,widget.widgetData,"",datasourceId, function(data, status, fObj) {
+	        $diginengine.getClient(selectedDB).getForcast(fObj,widgetData,"",datasourceId, function(data, status, fObj) {
 	        	if (status) {
 	        		var forcastArr = [];
 	                var serArr = [];
@@ -147,11 +190,13 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 	                var maxDate = "";
     				var minDate = "";
 	                
-	                maxDate = moment(new Date(data.act_max_date)).format('LL');
-	                minDate = moment(new Date(data.act_min_date)).format('LL');
+	                // maxDate = moment(new Date(data.act_max_date)).format('LL');
+	                // minDate = moment(new Date(data.act_min_date)).format('LL');
+	                // forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
+	                // forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
 
-	                forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
-	                forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
+                    forecastObj.paramObj.enddate = new Date(data.max_date);
+                    forecastObj.paramObj.startdate = new Date(data.min_date);
 
 	                 // set alpha,beeta, gamma values returned from the service
 	                if(data.alpha != ""){
@@ -260,7 +305,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
 
 
-	            var data=createForecastObject(widget.widgetData,serArr, catArr );	
+	            var data=createForecastObject(highChartType,widgetData,serArr, catArr );	
 				callback(data);
 	                		
 
@@ -273,7 +318,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
 	        var forecastWidgetConfig={};
 
-	        function createForecastObject(widgetData,serArr, catArr){
+	        function createForecastObject(highChartType,widgetData,serArr, catArr){
 	        	forecastWidgetConfig = {
                     options: {
                         chart: {

@@ -1,0 +1,36 @@
+<form name="inputForm" ng-submit="submit()">
+	<div layout-gt-sm="row" class="side-margins">
+		<md-input-container class="md-block" flex-gt-sm>
+			<span>Full Name</span>
+			<input required type="text" name="name" ng-model="user.Name"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+			<div ng-messages="inputForm.name.$error" role="alert">
+				<div ng-message-exp="['required']">
+					Full name is required
+				</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm="60">
+			<span>Email</span>
+			<input required type="email" name="email" ng-model="user.Email" minlength="10" maxlength="100" ng-pattern="/^.+@.+..+$/" ng-disabled="false"  is-disabled-dark  aria-label="email"/>
+			<div ng-messages="inputForm.email.$error" role="alert">
+				<div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+					Please enter a valid Email
+				</div>
+			</div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row" class="side-margins">
+		<md-input-container class="md-block" flex-gt-sm="40">
+			<span>Gender</span>
+			<md-select ng-model="user.gender" ng-disabled="false" is-disabled-dark aria-label="gender">
+				<md-option value="male" aria-label="country">Male</md-option>
+				<md-option value="female" aria-label="country">Female</md-option>
+			</md-select>
+		</md-input-container>
+		<md-checkbox ng-init="check = false" ng-model="user.check">
+			Are you awesome
+		</md-checkbox>
+	</div>
+		<md-button id="settings-submit-btn" type="submit" class="" style="display:none">Button</md-button>
+	
+</form>

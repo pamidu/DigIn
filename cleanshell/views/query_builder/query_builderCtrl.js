@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap','notifications', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap,notifications){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -82,13 +82,14 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.removeFromSeries = function(index)
 	{
 		$scope.selectedSeries.splice(index, 1);
-		$scope.groupBySortArray.splice(index, 1);
 	}
 	
 	//remove to selectedCategory
 	$scope.removeFromCategory = function(index)
 	{
 		$scope.selectedCategory.splice(index, 1);
+		$scope.groupBySortArray.splice(index, 1);
+
 	}
 	
 	function addGenerateBtnAnimation()
@@ -119,13 +120,15 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		}
 		else if($scope.chartType.chartType == "forecast")
 		{
-			if(!angular.equals($scope.widgetConfig, {}))
+			generateForecast.getforecastAtts($scope.selectedAttributes, $scope.selectedMeasures,$scope.settingConfig);
+
+			/*if(!angular.equals($scope.widgetConfig, {}))
 			{
 				$scope.showPlaceholderIcon = false;
 				generateForecast.reRender($scope.chartType.chart, $scope.widgetConfig,function (data){
 					console.log(data);
 				})
-			}
+			}*/
 		}
 		else{
 			$scope.showPlaceholderIcon = true;
@@ -215,7 +218,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
-					},undefined);
+					},undefined,$scope.selectedAttributes,reArangeArr);
 
 				}
 				else{
@@ -233,14 +236,21 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{
-				generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
-					$scope.widgetConfig = data;
+
+				if(generateForecast.isRequestValidated($scope.selectedSeries, $scope.selectedCategory)){
+					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
+						$scope.widgetConfig = data;
+						$scope.showBarChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
+						$element.find('.currentChart').append(newElement);
+						
+					});
+				}
+				else{
 					$scope.showBarChartLoading = false;
-					$scope.showPlaceholderIcon = false;
-					newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
-					$element.find('.currentChart').append(newElement);
-					
-				});
+				}
+
 			}
 		
 		
@@ -258,6 +268,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		});
 	}
 
+	//adding this methode to recive and set the changed attributeArr and the groupbysortArr
+	var reArangeArr = function(selectedCatArr,sortArr){
+
+		$scope.selectedCategory =[];
+		$scope.groupBySortArray =[];
+		
+		$scope.selectedCategory = selectedCatArr;
+		$scope.groupBySortArray = sortArr;
+
+	}
+
+
 	//Change to tooltip of the hovered chart type
 	$scope.changeTip = function(tip)
 	{
@@ -273,6 +295,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.settingsOpened = !$scope.settingsOpened;
 	}
 	
+	$scope.saveSettings = function()
+	{
+	  	$rootScope.$broadcast('press-submit', {callbackFunction: function(data){
+		   if(data)
+		   {
+		    	$scope.settingsOpened = !$scope.settingsOpened;
+		   }else{
+		    	notifications.toast(0,"form invalid");
+		   }
+	  	}});
+	}
+
 	//Initiaize the edit Query as off
 	$scope.queryEditState = false;
 	

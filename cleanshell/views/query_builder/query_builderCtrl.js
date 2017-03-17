@@ -233,14 +233,21 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{
-				generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
-					$scope.widgetConfig = data;
+
+				if(generateForecast.isRequestValidated($scope.selectedSeries, $scope.selectedCategory)){
+					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
+						$scope.widgetConfig = data;
+						$scope.showBarChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
+						$element.find('.currentChart').append(newElement);
+						
+					});
+				}
+				else{
 					$scope.showBarChartLoading = false;
-					$scope.showPlaceholderIcon = false;
-					newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
-					$element.find('.currentChart').append(newElement);
-					
-				});
+				}
+
 			}
 		
 		

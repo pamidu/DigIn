@@ -294,7 +294,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			'RuntimeFilter' : [],
 			'widgetConfig' : $scope.widgetConfig,
 			'selectedDB' : $scope.selectedDB,
-			'widgetID' :  widgetID
+			'widgetID' :  widgetID,
+			'query' : $scope.chartQuery
 			
 		};
 

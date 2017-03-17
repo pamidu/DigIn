@@ -86,7 +86,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                                 dataLabels: {
                                     enabled: true,
                                     format: '<b>{point.name}</b> ( {point.y:,.0f} )',
-                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                    color: chartFontColor,
                                     softConnector: true
                                 }
                             },
@@ -95,7 +95,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                                 pointFormat: '{series.name}: {point.percentage:,.2f}%'
                             }
                         }
-                    }
+                    },
+					legend: {
+			        itemStyle: {
+			            color: chartFontColor
+			        	}
+			    	}
 				},
 				xAxis: {
 					lineColor: chartFontColor,
@@ -105,7 +110,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 							color: chartFontColor
 						}
 					},
-					type: 'category'
+					type: 'category',
+					title: {
+						style: {
+							color: chartFontColor
+						}
+					}
 				},
 				title: {
 					text: '',
@@ -114,7 +124,19 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 					}
 				},
                 yAxis: {
-                    lineWidth: 1
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+						style: {
+							color: chartFontColor
+						}
+					},
+                    lineWidth: 1,
+					title: {
+						style: {
+							color: chartFontColor
+						}
+					}
                 },
                 credits: {
                     enabled: false

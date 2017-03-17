@@ -63,7 +63,7 @@
 </div>
 
 <div layout="row" layout-align="space-between center">
-	<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">For Calculation</div>
+ 	<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">For Calculation</div>
 </div>
 
 <div layout-gt-sm="row" class="side-margins">
@@ -76,24 +76,39 @@
 		<md-datepicker ng-model="forecastObj.paramObj.enddate" aria-label="End Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
 	</div>
 </div>
-<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
-	<md-checkbox ng-model="useFiltering.status" aria-label="Use Visualisation period">
-		Use Visualisation period
-	</md-checkbox>
-</div>
 
- <div layout-gt-sm="row" class="side-margins" ng-if="useFiltering.status">
+<form name="myForm" flex-gt-xs="">
+	<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
+		<md-checkbox ng-model="forecastObj.paramObj.isVisual" aria-label="Use Visualisation period">
+			Use Visualisation period
+		</md-checkbox>
+	</div>
 
-	<div layout="column" style="width: 187px;">
-		<span class="md-datepicker-label">Start Date </span>
-		<md-datepicker ng-model="visualDate.startdate" aria-label="Start Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
+	<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.paramObj.isVisual">
+		<div layout="column" style="width: 187px;">
+			<span class="md-datepicker-label">Start Date </span>
+			<md-datepicker ng-model="forecastObj.paramObj.visualstart" aria-label="Start Date" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="startdate" md-open-on-focus></md-datepicker>
+		</div>
+		<div layout="column" style="margin-left: 22px">
+			<span class="md-datepicker-label">End Date </span>
+			<md-datepicker ng-model="forecastObj.paramObj.visualend" aria-label="End Date" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="enddate" md-open-on-focus></md-datepicker>
+		</div>
 	</div>
-	<div layout="column" style="margin-left: 22px">
-		<span class="md-datepicker-label">End Date </span>
-		<md-datepicker ng-model="visualDate.enddate" aria-label="End Date" md-placeholder="Enter date" ng-disabled="!useFiltering.status" md-open-on-focus></md-datepicker>
+
+	<div layout-gt-sm="row" class=""  style="margin: 0px 10px 5px 10px;  font-size: 14px; color: #ec3e3e;" ng-messages="myForm.startdate.$error" >
+        <div ng-message="valid">Invalid date</div>
+        <div ng-message="required">Date is required</div>
+        <div ng-message="mindate">Start date must be between {{forecastObj.paramObj.startdate}} and {{forecastObj.paramObj.enddate}} </div>
 	</div>
-   
-  </div>
+
+	<div layout-gt-sm="row" class=""  style="margin: 0px 10px 5px 10px;  font-size: 14px; color: #ec3e3e;" ng-messages="myForm.enddate.$error" >
+        <div ng-message="valid">Invalid date</div>
+        <div ng-message="required">Date is required</div>
+        <div ng-message="maxdate">End date must be between {{forecastObj.paramObj.startdate}} and {{forecastObj.paramObj.enddate}} </div>
+	</div>
+
+
+</form>
 
 <div layout-gt-sm="row" layout-align="center center" class="side-margins">
 	<md-input-container class="md-block" flex-gt-sm>

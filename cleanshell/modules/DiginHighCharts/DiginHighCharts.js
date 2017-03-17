@@ -444,12 +444,21 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 		},
 		// execute query to generate chart
 		// method by: Dilani Maheswaran
-		// executeQuery: function(chartObj, query, datasourceId, limit, offset, selectedDB) {
-		// 	$diginengine.getClient(selectedDB).getExecQuery(query, datasourceId, function(res, status, message){
-		// 		// if the x-axis and y-axis values are known, send true
-		// 		series = chartUtilitiesFactory.mapChartData(res,selectedCategory[0].name,fieldArr,true);
-		// 	},limit,offset)
-		// },
+		executeQuery: function(chartObj, query, datasourceId, limit, offset, selectedDB,callback) {
+			$diginengine.getClient(selectedDB).getExecQuery(query, datasourceId, function(res, status, message){
+				var category = "";
+				var series, c;
+                for (c in res[0]) {
+                    if (Object.prototype.hasOwnProperty.call(res[0], c)) {
+                        if (typeof res[0][c] == "string") category = c;
+                    }
+                }
+				// send drilled parameter as false
+				series = chartUtilitiesFactory.mapChartData(res,category,false);
+				chartObj.series = series;
+				callback(chartObj);
+			},limit,offset)
+		},
 		reRender: function(highChartType, highchartObject, callback) {
 			highchartObject.options.chart.type = highChartType;
 			callback(highchartObject);

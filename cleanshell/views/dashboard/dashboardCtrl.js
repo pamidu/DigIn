@@ -25,36 +25,11 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	}
 
    $scope.$parent.currentView = $rootScope.currentDashboard.compName;
- /*
-
-	    $scope.gridsterOptions = {
-		  margins: [20, 20],
-		  columns: 4,
-		  mobileModeEnabled: false,
-		  width: 'auto',
-		  draggable: {
-			handle: '.widget-header',
-			drag: function(event, $element, widget) {
-				$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
-			}
-		  },
-		  resizable: {
-	 		enabled: true,
-	 		handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
-	 		  stop: function(event,$element,widget){
-				  console.log("log");
-	 			$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
-	 			$rootScope.$broadcast('widget-resized', { element: $element, widget: widget });
-			}
-         },
-	    	mobileBreakPoint: 600, // width threshold to toggle mobile mode
-			mobileModeEnabled: true // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
-	 };*/
 	
 	//configuring gridster
-		$scope.gridsterOpts = {
+	$scope.gridsterOpts = {
 		
-		columns: 24, // number of columns in the grid
+		columns: 12, // number of columns in the grid
 		pushing: true, // whether to push other items out of the way
 		floating: true, // whether to automatically float items up so they stack
 		swapping: false, // whether or not to have items switch places instead of push down if they are the same size
@@ -80,15 +55,15 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
         },
 		mobileBreakPoint: 600, // width threshold to toggle mobile mode
 		mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
-		minColumns: 1, // minimum amount of columns the grid can scale down to
+		/*minColumns: 1, // minimum amount of columns the grid can scale down to
 		minRows: 1, // minimum amount of rows to show if the grid is empty
-		maxRows: 100, // maximum amount of rows in the grid
-		defaultSizeX: 7, // default width of an item in columns
-		defaultSizeY: 23, // default height of an item in rows
-		minSizeX: 6, // minimum column width of an item
+		maxRows: 100, // maximum amount of rows in the grid*/
+		defaultSizeX: 4, // default width of an item in columns
+		defaultSizeY: 11, // default height of an item in rows
+		/*minSizeX: 6, // minimum column width of an item
 		maxSizeX: null, // maximum column width of an item
 		minSizeY: 5, // minumum row height of an item
-		maxSizeY: null, // maximum row height of an item
+		maxSizeY: null, // maximum row height of an item*/
 		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
 
 	};
@@ -181,13 +156,17 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	$scope.widgetControls = (function () {
 		return {
 			fullscreen: function (ev, widget) {
+				
+				var widgetCopy = angular.copy(widget); //get a copy of widget object to send to fullscreen view of widget
+				widgetCopy.widgetID = widgetCopy.widgetID+"-fullscreen";
+
 				$mdDialog.show({
 				  controller: 'fullscreenCtrl',
 				  templateUrl: 'views/dashboard/fullscreen.html',
 				  parent: angular.element(document.body),
 				  targetEvent: ev,
 				  clickOutsideToClose:true,
-				  locals: {widget: widget},
+				  locals: {event: ev, widget: widgetCopy},
 				  fullscreen: true // Only for -xs, -sm breakpoints.
 				})
 				.then(function(answer) {
@@ -226,8 +205,23 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		};
     })();
 	
+}])//END OF dashboardCtrl
+
+DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','$timeout', function($scope, $mdDialog,event, widget,$timeout) {
 
 	
+	$scope.widget = widget;
+	//console.log($scope.widget);
+
+	$timeout(function() {
+		$('#'+$scope.widget.widgetID).highcharts().setSize(document.documentElement.offsetWidth, document.documentElement.offsetHeight - 45, true);
+	},100)
+
+	/*if($scope.widget.widgetData.selectedChart.chartType == "d3sunburst") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||
+	{
+		$scope.widget.widgetData.widData.id = 'fullScreenChart';
+		$scope.widget.widView = "views/ViewHnbMonthFullscreen.html"
+		
+	}*/
 	
-	
-}])//END OF AddCtrl
+}]);// END OF fullscreenCtrl

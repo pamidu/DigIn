@@ -82,13 +82,14 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.removeFromSeries = function(index)
 	{
 		$scope.selectedSeries.splice(index, 1);
-		$scope.groupBySortArray.splice(index, 1);
 	}
 	
 	//remove to selectedCategory
 	$scope.removeFromCategory = function(index)
 	{
 		$scope.selectedCategory.splice(index, 1);
+		$scope.groupBySortArray.splice(index, 1);
+
 	}
 	
 	function addGenerateBtnAnimation()
@@ -215,7 +216,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
-					},undefined);
+					},undefined,$scope.selectedAttributes,reArangeArr);
 
 				}
 				else{
@@ -257,6 +258,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			bindChart();
 		});
 	}
+
+	//adding this methode to recive and set the changed attributeArr and the groupbysortArr
+	var reArangeArr = function(selectedCatArr,sortArr){
+
+		$scope.selectedCategory =[];
+		$scope.groupBySortArray =[];
+		
+		$scope.selectedCategory = selectedCatArr;
+		$scope.groupBySortArray = sortArr;
+
+	}
+
 
 	//Change to tooltip of the hovered chart type
 	$scope.changeTip = function(tip)

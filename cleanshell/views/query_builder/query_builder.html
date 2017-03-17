@@ -273,7 +273,7 @@
 						<div layout="row" style="width:inherit" layout-padding ng-show="queryEditState">
 							<md-input-container class="md-block" flex-gt-sm="70">
 								<span>Query</span>
-								<textarea type="text" name="title" ng-model="dataToBeBind.receivedQuery" aria-label="query"> </textarea>
+								<textarea type="text" name="title" ng-model="chartQuery" aria-label="query"> </textarea>
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
 								<span>Limit</span>
@@ -283,10 +283,10 @@
 									</md-option>
 								</md-select>
 							</md-input-container>
-							<md-button class="" ng-click="getExecuteAgg(dataToBeBind.receivedQuery)" aria-label="open settings" style="height: 30px;line-height: 22px;margin-top: 30px;">Go</md-button>
+							<md-button class="" ng-click="executeQuery()" aria-label="open settings" style="height: 30px;line-height: 22px;margin-top: 30px;">Go</md-button>
 						</div>
 						<div layout="row" style="width:inherit;padding-top:0px" layout-padding ng-hide="queryEditState">
-							<div style="font-size: 14px;">SELECT date ,sum(salesamount) as sum_salesamount FROM omal_duosoftware_com.sales2010 GROUP BY date ORDER BY date</div>
+							<div style="font-size: 14px;">{{ chartQuery }}</div>
 						</div>
 						
 					</div>

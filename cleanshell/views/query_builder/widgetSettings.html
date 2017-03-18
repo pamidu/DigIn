@@ -1,3 +1,5 @@
-<digin-forecast-settings  ng-if="$parent.chartType.chartType == 'forecast'" forecast-obj="$parent.$parent.settingConfig"></digin-forecast-settings>
+<digin-highcharts-settings ng-if="$parent.chartType.chartType == 'highCharts'" forecast-obj="$parent.$parent.settingConfig"></digin-highcharts-settings>
 
-<digin-highcharts-settings  ng-if="$parent.chartType.chartType == 'highCharts'" forecast-obj="$parent.$parent.settingConfig"></digin-highcharts-settings>
+<digin-forecast-settings ng-if="$parent.chartType.chartType == 'forecast'" forecast-obj="$parent.$parent.settingConfig"></digin-forecast-settings>
+
+<google-map-settings ng-if="$parent.chartType.chartType == 'map'" map-settings="$parent.$parent.settingConfig"></google-map-settings>

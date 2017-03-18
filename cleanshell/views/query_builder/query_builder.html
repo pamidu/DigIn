@@ -1,31 +1,3 @@
-<style>
-.chartContainer
-{
-	width: 100%;
-	min-height: 300px;
-}
-
-.callToAction {
-  animation: fade 1.5s 0s infinite;
-
-}
-
-@keyframes fade {
-  25% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 0.25;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-</style>
-
 <!--CARD CONTAINER START-->
 <div class="setting-container" ng-class="{'main-toolbar-closed-setting': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  ng-intro-options="ChartDesignerIntro" ng-intro-method="IntroduceChart">
 		<md-content>
@@ -48,8 +20,8 @@
 						<div style="padding:10px"><span ng-show="tooltip"><b>Tip:</b>&nbsp {{tooltip}}</span></div>
 					  </md-menu-content>
 					</md-menu>
-					<md-button ng-click="openSettings()" class="" aria-label="Clear Everything" hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl><span style="text-transform:none">Configure</span></md-button>
-					<md-button class="" aria-label="Save Chart"><span style="text-transform:none" hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl>Save</span></md-button>
+					<md-button ng-click="openSettings()" aria-label="Clear Everything" hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl><span style="text-transform:none">Configure</span></md-button>
+					<md-button ng-click="saveWidget()" aria-label="Save Chart"  hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl><span style="text-transform:none">Save</span></md-button>
 				</div>
 				<div id="chartInfo" layout="row" layout-align="end center" flex hide-xs hide-sm>
 					<div layout="column" style="width:150px">
@@ -99,7 +71,7 @@
 							  </md-menu-content>
 							</md-menu>
 						</div>				
-						
+						<!--md-divider></md-divider-->
 					</div>
 			
 					<md-list style="margin-top:60px" layout-padding ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif'">
@@ -112,7 +84,7 @@
 					
 					
 					<md-divider></md-divider>
-					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram'">
+					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
 								<span ng-show="chartType.chart != 'pie' && chartType.chart != 'hierarchy' && chartType.chart != 'sunburst'">X-Axis</span>
@@ -131,8 +103,9 @@
 							  </md-menu-content>
 							</md-menu>
 						</div>
+						<!--md-divider></md-divider-->
 					</div>
-					<md-list style="margin-top:60px" layout-padding ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram'">
+					<md-list style="margin-top:60px" layout-padding ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
 						<div layout="row" layout-align="space-between center"  ng-repeat="item in selectedCategory" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{item.name}}</p>
 							<md-button class="md-icon-button md-secondary" ng-click="removeFromCategory($index)" aria-label="remove from category"><span class="ti-close"></span></md-button>
@@ -179,8 +152,91 @@
 						</div>
 					</div>
 					<!--ONLY RELATED TO WHAT IF WIDGET-->
+					
+					<!--ONLY RELATED TO GOOGLE MAP WIDGET-->
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+							<h2>
+								<span>Longitude</span>
+							</h2>
+							<md-menu md-position-mode="target-right target" style="margin-top:10px">
+							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+								<span style="font-size: 14px;font-weight: 800;">Select a column containing longitude information</span><br/>
+								<md-list>
+									<md-list-item class="secondary-button-padding" ng-repeat="item in selectedMeasures" ng-click="defineVariable($index,'longitude',item)">
+										<p>{{item.name}}</p>
+									</md-list-item>
+								</md-list>
+							  </md-menu-content>
+							</md-menu>
+						</div>
+					</div>
+					
+					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+						<div ng-if="settingConfig.longitude" layout="row" layout-align="space-between center"  style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+							<p style="margin:8px">{{settingConfig.longitude.name}}</p>
+							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'longitude')" aria-label="remove from category"><span class="ti-close"></span></md-button>
+						</div>
+						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.longitude.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose a longitude column to create a <span> {{chartType.name}}</span> Chart</text></div>
+					</md-list>
+					<md-divider ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'"></md-divider>
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+							<h2>
+								<span>Latitude</span>
+							</h2>
+							<md-menu md-position-mode="target-right target" style="margin-top:10px">
+							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+								<span style="font-size: 14px;font-weight: 800;">Select a column containing latitude information</span><br/>
+								<md-list>
+									<md-list-item class="secondary-button-padding" ng-repeat="item in selectedMeasures" ng-click="defineVariable($index,'latitude',item)">
+										<p>{{item.name}}</p>
+									</md-list-item>
+								</md-list>
+							  </md-menu-content>
+							</md-menu>
+						</div>
+					</div>
+					
+					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+						<div ng-if="settingConfig.latitude" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+							<p style="margin:8px">{{settingConfig.latitude.name}}</p>
+							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'latitude')" aria-label="remove from category"><span class="ti-close"></span></md-button>
+						</div>
+						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.latitude.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose a latitude column to create a <span> {{chartType.name}}</span> Chart</text></div>
+					</md-list>
+					
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'address'">
+						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+							<h2>
+								<span>Address</span>
+							</h2>
+							<md-menu md-position-mode="target-right target" style="margin-top:10px">
+							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+								<span style="font-size: 14px;font-weight: 800;">Select a column containing the addresses</span><br/>
+								<md-list>
+									<md-list-item class="secondary-button-padding" ng-repeat="item in selectedAttributes" ng-click="defineVariable($index,'address',item)">
+										<p>{{item.name}}</p>
+									</md-list-item>
+								</md-list>
+							  </md-menu-content>
+							</md-menu>
+						</div>
+					</div>
+					
+					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'address'">
+						<div ng-if="settingConfig.address" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+							<p style="margin:8px">{{settingConfig.address.name}}</p>
+							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'address')" aria-label="remove from category"><span class="ti-close"></span></md-button>
+						</div>
+						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.address.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose an address column to create a <span> {{chartType.name}}</span> Chart</text></div>
+					</md-list>
+					<!--ONLY RELATED TO GOOGLE MAP WIDGET-->
 
-					<md-divider></md-divider>
+					<md-divider ng-show="chartType.enableFilters == true"></md-divider>
 					<div layout="column" style="width:100%;min-height:170px" ng-show="chartType.enableFilters == true">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>Design-time Filter</h2>
@@ -251,18 +307,15 @@
 			</div>
 			<div layout="column" flex-gt-sm="65" style="box-shadow: 2px 0 3px -2px #888;">
 				<div layout="column" layout-align="center center">
-					<!--highchart config="highcharts"></highchart-->
-					<!--digin-high-chart config="widgetConfig" ng-show="showHighchart"></digin-high-chart>
-					<digin-high-map config="widgetConfig" ng-show="showHighMap"></digin-high-map-->
 					<div id="chartContainer" class="chartContainer" layout="column" layout-align="center center">
 						<div ng-hide="showPlaceholderIcon" class="currentChart"></div>
 						<div ng-show="showPlaceholderIcon">
 							<large-chart-icons></large-chart-icons>
 						</div>
 					</div>
-					<md-progress-circular ng-show="showBarChartLoading" class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>
+					<md-progress-circular ng-show="showChartLoading" class="md-primary" md-theme="{{$root.theme}}" md-mode="indeterminate" md-diameter="40" style=" padding-right: 45px"></md-progress-circular>
 			
-					<div layout="row" layout-align="end end" style="width:100%"><md-button id="generateBtn" class="md-raised md-accent" ng-click="generate()"><i class="ti-paint-roller" style="font-size: 16px;padding-right: 10px;"></i>Generate</md-button></div>
+					<div layout="row" layout-align="end end" style="width:100%"><md-button id="generateBtn" class="md-raised md-accent" ng-disabled="settingsOpened || showChartLoading" ng-click="generate()"><i class="ti-paint-roller" style="font-size: 16px;padding-right: 10px;"></i>Generate</md-button></div>
 
 					<md-divider style="width:100%;"></md-divider>
 					<div layout="column" layout-align="space-between center" style="width:100%" hide-xs hide-sm>
@@ -326,8 +379,8 @@
 					<div layout="row" layout-align="space-between center">
 						<h1 class="md-toolbar-tools">Chart Settings</h1>
 						<div layout-gt-sm="row">
-							<md-button class="" ng-click="openSettings()" aria-label="cancel settings"><i style="padding-right: 10px;" class="ti-close"></i>Cancel</md-button>
-							<md-button class="" ng-click="saveSettings()" aria-label="save settings"><i style="padding-right: 10px;" class="ti-save"></i>Save</md-button>
+							<md-button class="" ng-click="openSettings()" aria-label="cancel settings"><i style="padding-right: 10px;" class="ti-close"></i>Restore</md-button>
+							<md-button class="" ng-click="saveSettings()" aria-label="save settings"><i style="padding-right: 10px;" class="ti-save"></i>Apply</md-button>
 						</div>
 					</div>
 					<md-divider></md-divider>

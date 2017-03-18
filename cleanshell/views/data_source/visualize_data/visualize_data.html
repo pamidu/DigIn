@@ -55,7 +55,7 @@ md-steppers-content-wrapper{
 				  <md-step label="Table Selection" md-complete="connectSource_step2.completed" ng-disabled="connectSource_step2.disabled">
 					<md-content style="padding:20px;">
 						<form name="step2">
-							<input style="width: 200px;margin-bottom:10px;" placeholder="search table..." ng-model="searchTables" aria-label="false">
+							<input ng-class="{'applyDarkBackground': $root.applyDark == true}" style="width: 200px;margin-bottom:10px;" placeholder="search table..." ng-model="searchTables" aria-label="false">
 							<!--md-radio-group ng-model="table" layout="row"  layout-align="start start" style="padding: 10px;border: 1px solid #ccc;border-radius: 4px;" layout-wrap aria-label="tables">
 								<md-radio-button value="{{table}}" style="padding: 10px;" ng-repeat="table in files | filter:searchTables">{{table.datasource_name}}</md-radio-button>
 							</md-radio-group-->

@@ -249,6 +249,33 @@ div.slide-up p {
 	color: white !important;
 }
 
+/*START OF DIGIN CHART-DESINGER RELATED STYLES*/
+.chartContainer
+{
+	width: 100%;
+	min-height: 300px;
+}
+
+.callToAction {
+  animation: fade 1.5s 0s infinite;
+
+}
+
+@keyframes fade {
+  25% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/*END OF DIGIN CHART-DESINGER RELATED STYLES*/
 
 
 /*START OF DIGIN DASHBOARD RELATED STYLES*/

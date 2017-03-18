@@ -27,7 +27,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.widgetConfig = $stateParams.widget.widgetConfig;
 	$scope.settingConfig = {};
 	//$scope.currentChartType = "";
-	$scope.showBarChartLoading = false;
+	$scope.showChartLoading = false;
 
 	//variable to hold query of highcharts
 	$scope.chartQuery = "";
@@ -91,6 +91,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		$scope.groupBySortArray.splice(index, 1);
 
 	}
+
+	//used only to define one variable from the selector-section (Eg: used to set longitute/ latitude info)
+	$scope.defineVariable = function(index, variableName, value)
+	{
+		$scope.settingConfig[variableName] = value;
+	}
+	
+	//remove a key/value pair from the settingConfig
+	$scope.removeVariable = function(index, variableName)
+	{
+		delete $scope.settingConfig[variableName];
+	}
 	
 	function addGenerateBtnAnimation()
 	{
@@ -105,6 +117,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	//change chart type - default is bar chart(from Highcharts)
 	$scope.changeChartType = function(index)
 	{
+		$scope.settingConfig = {}; //empty the previous settings
 		$scope.chartType = $scope.chartTypes[index];
 		
 		//reRender a high-chart if the type is changed to another chart in highcharts given that a highchart was generated before
@@ -189,7 +202,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	// bind chart to the view
 	function bindChart()
 	{
-		$scope.showBarChartLoading = false;
+		$scope.showChartLoading = false;
 		$scope.showPlaceholderIcon = false;
 		newElement = $compile('<digin-high-chart id-selector="'+widgetID+'" config="widgetConfig" ></digin-high-chart>')($scope);//'+widgetID+'
 		$element.find('.currentChart').append(newElement);
@@ -202,7 +215,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			//If a chart is already rendered first remove it
 			$element.find('.currentChart').children().remove();
 			
-			$scope.showBarChartLoading = true;
+			$scope.showChartLoading = true;
 			if($scope.chartType.chartType == 'highCharts') // if the user wants a highchart
 			{
 
@@ -220,19 +233,23 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 						bindChart();
 					},undefined,$scope.selectedAttributes,reArangeArr);
 
-				}
-				else{
-					$scope.showBarChartLoading = false;
+				}else{
+					$scope.showChartLoading = false;
 				}
 				//$scope.currentChartType = "highCharts";
 			}else if($scope.chartType.chartType == 'map')
 			{
 			    
-				    $scope.widgetConfig = generateGoogleMap.generate(2);
-				    $scope.showBarChartLoading = false;
-				    $scope.showPlaceholderIcon = false;
-				    newElement = $compile('<google-map-in-settings></google-map-in-settings>')($scope);
-				    $element.find('.currentChart').append(newElement);
+				    var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
+					if(isChartConditionsOk){
+						$scope.showChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						newElement = $compile('<google-map-in-settings></google-map-in-settings>')($scope);
+						$element.find('.currentChart').append(newElement);
+					}else{
+						$scope.showChartLoading = false;
+						$scope.showPlaceholderIcon = true;
+					}
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{
@@ -240,7 +257,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 				if(generateForecast.isRequestValidated($scope.selectedSeries, $scope.selectedCategory)){
 					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
 						$scope.widgetConfig = data;
-						$scope.showBarChartLoading = false;
+						$scope.showChartLoading = false;
 						$scope.showPlaceholderIcon = false;
 						newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
 						$element.find('.currentChart').append(newElement);
@@ -248,7 +265,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 					});
 				}
 				else{
-					$scope.showBarChartLoading = false;
+					$scope.showChartLoading = false;
 				}
 
 			}

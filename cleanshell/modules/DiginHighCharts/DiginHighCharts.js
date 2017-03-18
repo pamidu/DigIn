@@ -47,22 +47,18 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','notific
          restrict: 'E',
          templateUrl: 'modules/DiginHighCharts/highChartsSettings.html',
          scope: {
-           forecastObj: '=',
-     submitobj: '&'
+           forecastObj: '='
           },
          link: function(scope,element){
-    console.log(scope);
-    scope.$on('press-submit', function(event, args) {
-      scope.inputForm.$setSubmitted();
-      if(scope.inputForm.$valid)
-      {
-       args.callbackFunction(true);
-      }else{
-       args.callbackFunction(false);
-      }
-       
-      
-     })
+			scope.$on('press-submit', function(event, args) {
+				scope.inputForm.$setSubmitted();
+				if(scope.inputForm.$valid)
+				{
+					args.callbackFunction(true);
+				}else{
+					args.callbackFunction(false);
+				}
+			 })
          } //end of link
     };
 }]);

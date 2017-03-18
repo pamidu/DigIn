@@ -76,10 +76,59 @@ GoogleMapModule.directive('googleMap',['NgMap', function(NgMap) {
   };
 }]);
 
-GoogleMapModule.factory('generateGoogleMap', ['$rootScope', function($rootScope) {
+DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications', function($rootScope,notifications) {
+    return {
+         restrict: 'E',
+         templateUrl: 'modules/GoogleMap/GoogleMapSettings.html',
+         scope: {
+			mapSettings: '='
+          },
+         link: function(scope,element){
+			 
+			scope.mapSettings.locatorType = "geocodes";
+			
+			scope.$on('press-submit', function(event, args) {
+				scope.inputForm.$setSubmitted();
+				if(scope.inputForm.$valid)
+				{
+					args.callbackFunction(true);
+				}else{
+					args.callbackFunction(false);
+				}
+			   
+			  
+			 })
+         } //end of link
+    };
+}]);
+
+GoogleMapModule.factory('generateGoogleMap', ['notifications', function(notifications) {
 	return {
 		generate: function(number) {
 			 return number + 1;
+		},mapValidations: function(settings){
+			var isChartConditionsOk = false;
+			
+			switch (settings.locatorType) {
+                case "geocodes":
+					if(settings.longitude && settings.latitude)
+					{
+						isChartConditionsOk = true;
+					}else{
+						notifications.toast(2,"Please select longitude and latitude columns");
+					}
+					break;
+				case "address":
+					if(settings.address)
+					{
+						isChartConditionsOk = true;
+					}else{
+						notifications.toast(2,"Please select an address column");
+					}
+					break;
+			}
+			return isChartConditionsOk;
+		
 		}
 		
    }

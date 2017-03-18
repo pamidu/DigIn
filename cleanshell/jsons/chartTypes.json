@@ -212,12 +212,12 @@
       "id":"ct21",
       "icon":"ti-world",
       "name":"Geographical Map",
-      "chart":"Geographical Map",
+      "chart":"map",
       "selected":false,
       "chartType":"map",
       "view":"views/query/chart-views/GeoMap.html",
       "settingsView":"views/query/settings-views/mapsettings.html",
-	   "enableFilters": true,
+	  "enableFilters": false,
       "tooltip":"A visualization to plot analyse the data on the gographical map"
    },
    {

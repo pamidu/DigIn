@@ -248,3 +248,245 @@ div.slide-up p {
 	background: #303030 !important;
 	color: white !important;
 }
+
+
+
+/*START OF DIGIN DASHBOARD RELATED STYLES*/
+.widget-header
+{
+    padding: 0px 10px 0px 10px;
+}
+
+/*.widget-button
+{
+	color: #02b5e2;
+}*/
+
+
+.md-tab.md-disabled
+{
+	opacity: 1;
+	background: white !important;
+	color: black !important;
+}
+
+.md-menu {
+    padding: 0px
+}
+
+/* common styles */
+.padding-5 {
+    padding: 5px;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2px;
+}
+
+/****** start wordpress, twitter, rss widgets custom css *****/
+
+/* common classes*/
+.data-container1 {
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 500;
+    width: 100%;
+    padding-left: 8px;
+    padding-bottom: 8px;
+	font-size: 12px;
+}
+
+.data-slot1 {
+    padding: 8px;
+}
+
+.data-slot2 {
+    text-align: left;
+}
+
+.data-slot3 {
+    border-radius: 5px;
+}
+
+.data-field1 {
+    border-radius: 4px 0px 0px 4px;
+    width: 80%;
+    padding: 8px;
+}
+
+.data-field2 {
+    border-radius: 4px 0px 0px 4px;
+    width: 50%;
+    padding: 8px;
+}
+
+.data-field3 {
+    border-radius: 4px 0px 0px 4px;
+    width: 30%;
+    padding: 8px;
+}
+
+.data-item1 {
+    border-radius: 0px 4px 4px 0px;
+    width: 70%;
+    padding: 8px;
+}
+
+.data-item2 {
+    border-radius: 0px 4px 4px 0px;
+    width: 20%;
+    padding: 8px;
+}
+
+.data-item3 {
+    border-radius: 0px 4px 4px 0px;
+    padding: 8px;
+}
+
+.data-item4 {
+    border-radius: 0px 4px 4px 0px;
+    width: 50%;
+    padding: 8px;
+}
+
+.custom-avatar1 {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+
+.custom-avatar2 {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10%;
+    box-sizing: content-box;
+}
+
+.widget-header {
+    font-size: 28px;
+    margin-left: 10px;
+    font-family: 'Ek Mukta', sans-serif;
+    font-weight: 200;
+}
+
+/* twitter */
+
+.font-twitter-blue {
+    color: #55acee;
+}
+
+.background-twitter-grey {
+    color: white;
+    background-color: #292F33;
+}
+
+.background-twitter-blue {
+    color: white;
+    background-color: #55acee;
+}
+
+.background-digin-blue {
+    color: white;
+    background-color: #026689;
+}
+
+/* wordpress */
+.font-wp-grey {
+    color: #464646;
+}
+
+.background-wp-grey {
+    color: white;
+    background-color: #464646;
+}
+
+.background-wp-orange {
+    color: white;
+    background-color: #d54e21;
+}
+
+.background-wp-blue {
+    color: white;
+    background-color: #21759b;
+}
+
+/* rss */
+.background-rss-orange {
+    color: white;
+    background-color: #f26522;
+}
+
+.background-rss-dark-orange {
+    color: white;
+    background-color: #BB450E;
+}
+
+.background-rss-grey {
+    color: white;
+    background-color: #181818;
+}
+
+/**** end wordpress, twitter, rss widgets custom css *****/
+
+.links
+{
+	text-decoration:none;
+	color: #428bca;
+}
+
+.flip-element{
+	-moz-transform: scale(-1, 1);
+	-webkit-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	-ms-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+  to {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}
+.rotating {
+  -webkit-animation: rotating 1s linear infinite;
+  -moz-animation: rotating 1s linear infinite;
+  -ms-animation: rotating 1s linear infinite;
+  -o-animation: rotating 1s linear infinite;
+  animation: rotating 1s linear infinite;
+}
+/*END OF DIGIN DASHBOARD RELATED STYLES*/

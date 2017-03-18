@@ -78,9 +78,10 @@ DiginForecastsModule.filter('formatdate', function() {
 DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScope) {
     return {
     	restrict: 'E',
-    	template: '<highchart config="config"></highchart>',
+    	template: '<highchart id="{{idSelector}}" config="config"></highchart>',
     	scope: {
-    			config: '='
+    			config: '=',
+				idSelector: '@'
     		},
     	link: function(scope,element){
     		// scope.$apply(function(){
@@ -88,9 +89,9 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
     		// });	
 
             scope.$on('widget-resized', function(element, widget) {
-               var height = widget.element[0].clientHeight - 50;
-               var width = widget.element[0].clientWidth;
-               scope.config.getHighcharts().setSize(width, height, true);
+				var height = widget.element[0].clientHeight - 50;
+				var width = widget.element[0].clientWidth;
+				$('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
                
             });
 

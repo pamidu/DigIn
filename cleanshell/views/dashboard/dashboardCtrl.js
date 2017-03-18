@@ -152,6 +152,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		$scope.$parent.changed = false; // If the user leave the 'dashboard' state
 	})
 	
+	
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {
 		return {
@@ -197,6 +198,10 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			},
 			syncWidget: function (widget) {
 				notifications.log("Sync Widget",new Error());
+				widget.syncOn = true;
+				$timeout(function() {
+					widget.syncOn = false;
+				},2000)
 			},
 			removeWidget: function(ev, widget)
 			{

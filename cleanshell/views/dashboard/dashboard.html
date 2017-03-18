@@ -202,7 +202,7 @@
 		<md-tab-body>
 			<md-content class="setting-container" ng-class="{'main-toolbar-closed-setting': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  style="background:transparent">
 				<div gridster="gridsterOpts">
-					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" style="padding-bottom: 49px !important;overflow:inherit;">
+					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" gridster-item-initalize-watcher style="padding-bottom: 49px !important;overflow:inherit;">
 						<div class="widget-header" layout="row" layout-align="space-between center">
 							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">

@@ -7,7 +7,7 @@
 
 var DiginHighChartsModule = angular.module('DiginHighCharts',['DiginServiceLibrary','directivelibrary']);
 
-DiginHighChartsModule.directive('diginHighChart',['$rootScope','notifications','$state', function($rootScope,notifications,$state) {
+DiginHighChartsModule.directive('diginHighChart',['$rootScope','notifications','$state','$timeout', function($rootScope,notifications,$state,$timeout) {
   return {
 	restrict: 'E',
 	template: '<highchart id="{{idSelector}}" config="config"></highchart>',
@@ -16,23 +16,30 @@ DiginHighChartsModule.directive('diginHighChart',['$rootScope','notifications','
 			idSelector: '@'
 		},
 	link: function(scope,element){
-		console.log(element);
-		
-		if($state.current.name == "query_builder"){
-			//scope.$apply(function(){
-			//});
-		}
-		
+
 		scope.$on('widget-resized', function(element, widget) {
 			var height = widget.element[0].clientHeight - 50;
 			var width = widget.element[0].clientWidth;
 			$('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
 			
 		});
-		
-		
 	} //end of link
   };
+}]);
+
+//This directive runs whenever a gridster item is initialized
+DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', function ($timeout) {
+    return {
+        restrict: 'AE',
+        link: function (scope) {
+            scope.$on('gridster-item-initialized', function (event, item) {
+				$timeout(function(){ //wait 100 milliseconds until the dom element is added
+					var widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
+					$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY(), true);
+				}, 100);
+            });
+        }
+    };
 }]);
 
 DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','notifications', function($rootScope,notifications) {

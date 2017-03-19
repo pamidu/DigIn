@@ -53,12 +53,6 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 		controller: 'createNewUserCtrl'
 	})
 	
-	.state('shareDashboard', {
-		url: '/shareDashboard',
-		templateUrl: 'views/settings/shareDashboard/shareDashboard.html',
-		controller: 'shareDashboardCtrl'
-	})
-	
 	.state('userSettings', {
 		url: '/userSettings',
 		templateUrl: 'views/settings/userSettings/userSettings.html',
@@ -216,7 +210,7 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 }])
 
 //Check if the Application has internet access or not
-DiginApp.run(function($window, $rootScope) {
+DiginApp.run(['$window', '$rootScope',function($window, $rootScope) {
       $rootScope.online = navigator.onLine;
       $window.addEventListener("offline", function() {
         $rootScope.$apply(function() {
@@ -229,4 +223,4 @@ DiginApp.run(function($window, $rootScope) {
           $rootScope.online = true;
         });
       }, false);
-});
+}]);

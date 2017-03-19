@@ -22,7 +22,7 @@
         var namespace = authdata.Email.replace(/[@.]/g, '_');
         return namespace;
     }
-    DiginServiceLibraryModule.factory('$diginengine', function($diginurls, $servicehelpers) {
+    DiginServiceLibraryModule.factory('$diginengine',['$diginurls', '$servicehelpers', function($diginurls, $servicehelpers) {
         function DiginEngineClient(_dsid, _db) {
             var dataSetId = _dsid;
             var database = _db;
@@ -353,9 +353,9 @@
                 }, $diginurls.diginengine + "get_uuid?n=" + amount);
             }
         }
-    });
+    }]);
     
-    DiginServiceLibraryModule.factory('datasourceFactory', function ($http, Digin_Engine_API) {
+    DiginServiceLibraryModule.factory('datasourceFactory',['$http', 'Digin_Engine_API', function ($http, Digin_Engine_API) {
         return {
             getAllConnections: function(securityToken,dbType) {
                 return $http({
@@ -404,9 +404,9 @@
                 })
             }
         }
-    });
+    }]);
     
-     DiginServiceLibraryModule.factory('$servicehelpers', function($http, $auth, Digin_Domain) {
+     DiginServiceLibraryModule.factory('$servicehelpers',['$http', '$auth', 'Digin_Domain', function($http, $auth, Digin_Domain) {
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {
@@ -448,10 +448,10 @@
                 });
             }
         }
-    });
+    }]);
 
     
-    DiginServiceLibraryModule.factory('$diginurls', function(Digin_Engine_API) {
+    DiginServiceLibraryModule.factory('$diginurls',['Digin_Engine_API', function(Digin_Engine_API) {
         var host = getHost();
         return {
             //diginengine: "http://" + host + ":8080",
@@ -467,6 +467,6 @@
                 return namespace;
             }
         };
-    });
+    }]);
 
 })();

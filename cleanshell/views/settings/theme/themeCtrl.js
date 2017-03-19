@@ -67,7 +67,7 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 			var showData = {title: "Change Theme", content: "Do you want to keep this theme?", okText: "keep Changes", noText: "Revert" };
 	
 			return $mdDialog.show({
-				  controller: confirmDialogCtrl,
+				  controller: 'confirmDialogCtrl',
 				  template: 	'<md-dialog aria-label="confirm dialog">'+
                                         '<form>'+
                                             '<md-content layout-padding>'+
@@ -99,24 +99,6 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 				});
 		}
 		
-		function confirmDialogCtrl ($scope, $mdDialog, showData) {
-			$scope.showData = showData;
-
-			$scope.times = 10;
-			var promise = $interval(
-			   function () {
-				  $scope.times = $scope.times - 1;
-				  if($scope.times == 0){ 
-					 $mdDialog.hide("no");
-				  }
-			   }, 1000, 10);
-			   
-			$scope.confirmReply = function(answer) {
-				$interval.cancel(promise);
-				$mdDialog.hide(answer);
-			};
-		}
-		
 		document.body.style.zoom = $scope.zoomLevel;
 		
 		$scope.increaseFontSize = function()
@@ -143,4 +125,22 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 		}
 		
 
+}])
+
+DiginApp.controller('confirmDialogCtrl',['$scope', '$mdDialog','$interval', 'showData', function ($scope, $mdDialog,$interval, showData){
+	$scope.showData = showData;
+
+	$scope.times = 10;
+	var promise = $interval(
+	   function () {
+		  $scope.times = $scope.times - 1;
+		  if($scope.times == 0){ 
+			 $mdDialog.hide("no");
+		  }
+	   }, 1000, 10);
+	   
+	$scope.confirmReply = function(answer) {
+		$interval.cancel(promise);
+		$mdDialog.hide(answer);
+	};
 }])

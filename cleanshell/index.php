@@ -524,7 +524,7 @@
 	<!--END OF APPLICATION CONTAINER-->
 	
 	
-	<!-- build:js scripts/script.js -->
+	
 	
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/lodash/dist/lodash.min.js"></script>
@@ -565,9 +565,15 @@
 	<script src="js/libs/directivelibrary.js"></script>
 	<script src="js/libs/ng-croppie.min.js"></script>
 	<script src="js/libs/cellCursor.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js" async></script>
     <script src="js/libs/stripe.payment.tool.js"></script>
 	<!--Non bower libraries-->
 
+		
+	<script src="../shell/scripts/config.js"></script>
+	<script src="js/services/utility.js"></script>
+	
+	<!-- build:js js/script.js -->
 	<!--DigIn Widget Modules-->
 	<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
 	<script src="modules/DiginForecast/DiginForecast.js"></script>
@@ -581,15 +587,13 @@
 	<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
 	<script src="modules/DiginServiceLibrary/UserServices.js"></script>
 	<!--DigIn Service Modules-->
+	<!-- endbuild -->
 	
-	<script src="../shell/scripts/config.js"></script>
-	<script src="js/services/utility.js"></script>
 	
+
 	<script src="js/app.js"></script>
 	<script src="views/settings/theme/themingConfig.js"></script>
-
 	<script src="js/controllers/NavCtrl.js"></script>
-
 	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
 	<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
 	<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
@@ -600,7 +604,6 @@
 	<script src="views/settings/myAccount/addaLaCarte/addaLaCarteCtrl.js"></script>
 	<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
 	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
-	<script src="views/settings/shareDashboard/shareDashboardCtrl.js"></script>
 	<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
 	<script src="views/settings/theme/themeCtrl.js"></script>
 	<script src="views/dashboard/dashboardCtrl.js"></script>
@@ -634,7 +637,7 @@
 	<script src="views/widgets/custom/realTime/realTimeCtrl.js"></script>
 	<!--Widgets Controllers-->
 	
-	<!-- endbuild -->
+
 
 	<script>
 	$(document).ready(function(){

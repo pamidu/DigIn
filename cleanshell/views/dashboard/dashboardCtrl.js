@@ -1,4 +1,4 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager','notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, DiginServices, $diginengine,colorManager,$timeout,$state) {
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager','notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, DiginServices, $diginengine,colorManager,$timeout,$state,dialogService) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -85,14 +85,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	
 	$scope.removePage = function(ev, page)
 	{
-		var confirm = $mdDialog.confirm()
-			  .title('Remove Page')
-			  .textContent('Are you sure you want to remove this page?')
-			  .ariaLabel('Remove Page')
-			  .targetEvent(ev)
-			  .ok('Please do it!')
-			  .cancel('Cancel');
-			$mdDialog.show(confirm).then(function() {
+		dialogService.confirmDialog(ev,"Remove Page","Are you sure you want to remove this page?", "yes","no").then(function(answer) {
+			if(answer == "yes")
+			{
 				for (i = 0, len = $rootScope.currentDashboard.pages.length; i<len; ++i){
 					if($rootScope.currentDashboard.pages[i].pageName == page.pageName)
 					{
@@ -100,7 +95,8 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 						$rootScope.currentDashboard.pages.splice(i, 1);
 					}
 				}
-			})
+			}
+		});
 	}
 	
 	//This method is there to keep track of the current page number the user is in within the dashboard so he/she can add new widgets into that particular page

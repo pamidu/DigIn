@@ -111,7 +111,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				navigateTo(ev,action); // if the user has not made any changes to the dashboard  navigate where he/she wants to
 			}else{
 				
-				dialogService.confirmDialog(ev,"Unsaved Changes","Save changes to '"+$rootScope.currentDashboard.compName+"' Dashboard before leaving", "yes","no").then(function(answer) {
+				dialogService.confirmDialog(ev,"Unsaved Changes","Save changes to '"+$rootScope.currentDashboard.compName+"' Dashboard before leaving", "yes","no", "cancel").then(function(answer) {
 					if(answer == "yes")
 					{
 						// save the changes and then navigate where he wants to

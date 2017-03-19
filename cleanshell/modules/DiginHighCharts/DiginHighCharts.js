@@ -586,7 +586,6 @@ DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 			}
 			// fill the series data
 			angular.forEach(res,function(value){
-				console.log(value);
 				angular.forEach(serArr,function(series){
 					series.data.push({
 						name: value[category].toString(),

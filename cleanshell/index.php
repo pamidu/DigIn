@@ -525,6 +525,7 @@
 	
 	
 	<!-- build:js scripts/script.js -->
+	
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/lodash/dist/lodash.min.js"></script>
 	<script src="bower_components/angular/angular.min.js"></script>
@@ -534,56 +535,59 @@
 	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
 	<script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
-	
-	 <!--Google Maps start-->
-	 <script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
-	 <script src="http://maps.google.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU"></script>
-	 <!--Google Maps end-->
-
-    <script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
-	<script src="js/libs/uimicrokernel.js"></script>
-
-	<script src="../shell/scripts/config.js"></script>
-	<script src="js/services/utility.js"></script>
-	<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
-	<script src="modules/GoogleMap/GoogleMap.js"></script>
-	<script src="modules/DiginForecast/DiginForecast.js"></script>
-	<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
-	<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
-	<script src="js/libs/directivelibrary.js"></script>
-	<script src="bower_components/md-steppers/dist/md-steppers.js"></script>
-	<script src="https://code.highcharts.com/stock/highstock.js"></script>
-	<!--script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script-->
-	<script type="text/javascript" src="js/libs/highcharts-ng.js"></script>
-	<!-- <script src="js/libs/digin-gridster.js"></script> -->
-	
-	<script src="http://code.highcharts.com/modules/exporting.js"></script>
-	<script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
-	<script type="text/javascript" src="bower_components/highcharts/highcharts-3d.js"></script>
-	<script type="text/javascript" src="bower_components/highcharts/highcharts-more.js"></script>
-	<script type="text/javascript" src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
-	<script type="text/javascript" src="js/libs/ng-croppie.min.js"></script>
+	<script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
 	<script src="bower_components/intro.js/minified/intro.min.js"></script>
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
-	<script src="js/libs/cellCursor.js"></script>
-	
+	<script src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
+	<script src="bower_components/md-steppers/dist/md-steppers.js"></script>
 	<!-- PouchDB -->
 	<script src="bower_components/pouchdb/dist/pouchdb.js"></script>
 	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
+	<!-- PouchDB -->
 	
-	<!--for rss feeds>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-	  google.load("feeds", "1");
-	</script-->
+	 <!--Google Maps libraries-->
+	 <script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+	 <script src="http://maps.google.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU" async></script>
+	 <!--Google Maps libraries-->
+	
+	<!--Highcharts libraries-->
+	<script src="js/libs/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->
+	<script src="js/libs/highcharts-ng.js"></script><!--bower_components/highcharts-ng/dist/highcharts-ng.js-->
+	<script src="js/libs/exporting.js"></script><!--http://code.highcharts.com/modules/exporting.js-->
+	<script src="js/libs/drilldown.js"></script><!--http://code.highcharts.com/modules/drilldown.js-->
+	<script src="bower_components/highcharts/highcharts-3d.js"></script>
+	<script src="bower_components/highcharts/highcharts-more.js"></script>
+	<!--Highcharts libraries-->
+	
+	<!--Non bower libraries-->
+	<script src="js/libs/uimicrokernel.js"></script>
+	<script src="js/libs/directivelibrary.js"></script>
+	<script src="js/libs/ng-croppie.min.js"></script>
+	<script src="js/libs/cellCursor.js"></script>
+    <script src="js/libs/stripe.payment.tool.js"></script>
+	<!--Non bower libraries-->
 
-
-	<script src="js/app.js"></script>
-	<script src="views/settings/theme/themingConfig.js"></script>
+	<!--DigIn Widget Modules-->
+	<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
+	<script src="modules/DiginForecast/DiginForecast.js"></script>
+	<script src="modules/GoogleMap/GoogleMap.js"></script>
+	<!--DigIn Widget Modules-->
+	
+	<!--DigIn Service Modules-->
+	<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
+	<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
 	<script src="modules/DiginServiceLibrary/DiginServices.js"></script>
 	<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
 	<script src="modules/DiginServiceLibrary/UserServices.js"></script>
+	<!--DigIn Service Modules-->
+	
+	<script src="../shell/scripts/config.js"></script>
+	<script src="js/services/utility.js"></script>
+	
+	<script src="js/app.js"></script>
+	<script src="views/settings/theme/themingConfig.js"></script>
+
 	<script src="js/controllers/NavCtrl.js"></script>
 
 	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
@@ -612,17 +616,12 @@
 	<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
 	<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
 	<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
-	<script src="js/services/tabularService.js"></script>
 	
 	<!--Developer view is only for developers, Please remove this on production-->
 	<script src="views/developer/developerCtrl.js"></script>
 
-	<!--Payment stripe-->
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script src="js/libs/stripe.payment.tool.js"></script>
-
 	
-	<!--Widgets Controllers-->
+	<!--Widgets Controllers>
 	<script src="views/widgets/clock/clockCtrl.js"></script>
 	<script src="views/widgets/custom/google_maps/gmapsCtrl.js"></script>
 	<script src="views/widgets/blogging/WordPress/wordpressInitCtrl.js"></script>
@@ -633,24 +632,10 @@
 	
 	
 	<script src="views/widgets/custom/realTime/realTimeCtrl.js"></script>
-	
-	
-	<!--temp map-->
-
-	<script type="text/javascript" src="//code.highcharts.com/maps/modules/map.js"></script>
-	<script type="text/javascript" src="//code.highcharts.com/maps/modules/data.js"></script>
-	<script src="//code.highcharts.com/mapdata/countries/us/us-all.js"></script>
-	<script type="text/javascript" src="map_toBedeleted/world-continents.js"></script>
-	<script src="//code.highcharts.com/mapdata/custom/asia.js"></script>
-	<script src="//code.highcharts.com/modules/exporting.js"></script>
-	<script src="//code.highcharts.com/mapdata/custom/oceania.js"></script>
-	<script src="//code.highcharts.com/mapdata/custom/europe.js"></script>
-	<script type="text/javascript" src="map_toBedeleted/lk-all.js"></script>
-	<script src="//code.highcharts.com/mapdata/custom/south-america.js"></script>
-	<script type="text/javascript" src="map_toBedeleted/tempMapCtrl.js"></script>
+	<!--Widgets Controllers-->
 	
 	<!-- endbuild -->
-	<!--Widgets Controllers-->
+
 	<script>
 	$(document).ready(function(){
 		var preload = document.getElementById("preload");

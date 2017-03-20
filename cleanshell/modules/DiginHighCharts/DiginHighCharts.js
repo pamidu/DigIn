@@ -47,7 +47,12 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','notific
          restrict: 'E',
          templateUrl: 'modules/DiginHighCharts/highChartsSettings.html',
          scope: {
-           forecastObj: '='
+           highchartSetting: '=',
+           groupBySortarray : '=',
+           selectedAttributes: '=',
+           widgetConfig: '='
+
+
           },
          link: function(scope,element){
 			scope.$on('press-submit', function(event, args) {

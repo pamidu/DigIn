@@ -19,6 +19,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	$scope.requestLimits = [100, 1000, 2000, 3000, 4000, 5000];
 	$scope.showPlaceholderIcon = true;
 
+
 	//Array that will contain all chart types
 	$scope.chartTypes = [];
 
@@ -26,6 +27,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	
 	$scope.widgetConfig = $stateParams.widget.widgetConfig;
 	$scope.settingConfig = {};
+
 	//$scope.currentChartType = "";
 	$scope.showChartLoading = false;
 
@@ -37,7 +39,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 
 	//to keep the group by column and sort by column
 	$scope.groupBySortArray =[];
-	
+
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
 		
@@ -117,9 +119,15 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	//change chart type - default is bar chart(from Highcharts)
 	$scope.changeChartType = function(index)
 	{
-		$scope.settingConfig = {}; //empty the previous settings
+
+		//$scope.settingConfig = {}; //empty the previous settings
 		$scope.chartType = $scope.chartTypes[index];
-		
+
+		if(angular.equals($scope.widgetConfig.widgetName, undefined))//if there is no config
+		{
+			$scope.settingConfig.widgetName = $scope.chartType.name;
+		}
+
 		//reRender a high-chart if the type is changed to another chart in highcharts given that a highchart was generated before
 		if($scope.chartType.chartType == "highCharts")
 		{
@@ -158,6 +166,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 		{
 			$scope.chartType = $stateParams.chartType;
 			widgetID = $stateParams.widget.widgetID;
+
+			$scope.settingConfig.widgetName = $scope.chartType.name;
+
 			if($scope.chartType.chartType == "highCharts")
 			{
 				$scope.showPlaceholderIcon = false;
@@ -190,6 +201,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			$diginengine.getUUID(1, function(id){
 				widgetID = id;
 			});
+			$scope.settingConfig.widgetName = $scope.chartType.name;
+
+			console.log($scope.settingConfig.widgetName );
 
 			// initialize if the object is empty
 			$scope.widgetConfig = generateHighchart.initializeChartObject($scope.chartType.chart);
@@ -350,7 +364,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			
 		};
 
-		$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);
+		//if its a new widget add it as a new widget else replce 
+			var widgets = $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets;
+			var objIndex = getRootObjectById(widgetID, widgets);
+           
+
+        if(typeof objIndex != 'undefined'){
+        	 widgets[objIndex] = widget;
+        }    
+		else{
+			$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);
+		}
 
 		$scope.$parent.route('dashboard');
 	}

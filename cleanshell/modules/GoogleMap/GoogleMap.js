@@ -85,11 +85,11 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
           },
          link: function(scope,element){
 			 
-			scope.mapSettings.locatorType = "geocodes";
+			scope.mapSettings.locatorType = "geo_code";
 			
 			scope.$on('press-submit', function(event, args) {
-				scope.inputForm.$setSubmitted();
-				if(scope.inputForm.$valid)
+				scope.mapSettingsForm.$setSubmitted();
+				if(scope.mapSettingsForm.$valid)
 				{
 					args.callbackFunction(true);
 				}else{

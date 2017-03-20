@@ -575,7 +575,7 @@
 	-->
 	<!-- endbuild -->
 	
-	<script src="../shell/scripts/config.js"></script>
+	<script src="/Digin/shell/scripts/config.js"></script>
 	
 	<!-- build:js js/script.js -->
 	<!--

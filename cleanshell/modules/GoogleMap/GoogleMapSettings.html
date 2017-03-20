@@ -1,10 +1,21 @@
-<form name="inputForm" ng-submit="submit()">
+<form name="mapSettingsForm" ng-submit="submit()">
 	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm="40">
+		<md-input-container class="md-block" flex-gt-sm>
+			<span>Widget Name</span>
+			<input required type="text" name="name" ng-model="mapSettings.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+			<div ng-messages="mapSettingsForm.name.$error" role="alert">
+				<div ng-message-exp="['required']">
+					Widget name is required
+				</div>
+			</div>
+		</md-input-container>
+	</div>
+	<div layout-gt-sm="row" class="side-margins">
+		<md-input-container class="md-block" flex-gt-sm="50">
 			<span>Locator Type</span>
 			<md-select ng-model="mapSettings.locatorType" ng-disabled="false" is-disabled-dark aria-label="gender">
-				<md-option value="geocodes" aria-label="geocodes">By Geocodes</md-option>
-				<md-option value="address" aria-label="address">By Address</md-option>
+				<md-option value="geo_code" aria-label="geo_code">By Geocodes</md-option>
+				<md-option value="reverse_geo_code" aria-label="reverse_geo_code">By Address</md-option>
 			</md-select>
 		</md-input-container>
 	</div>

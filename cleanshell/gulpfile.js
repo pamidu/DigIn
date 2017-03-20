@@ -66,6 +66,11 @@ gulp.task('moveModules', [], function() {
       .pipe(gulp.dest('dist/modules'));
 });
 
+gulp.task('moveConfig', [], function() {
+  gulp.src("js/config.js")
+      .pipe(gulp.dest('dist/js/config.js'));
+});
+
 gulp.task('moveSounds', [], function() {
   gulp.src("sounds/**")
       .pipe(gulp.dest('dist/sounds'));
@@ -76,7 +81,17 @@ gulp.task('moveViews', [], function() {
       .pipe(gulp.dest('dist/views'));
 });
 
-gulp.task('minify', ['moveIndex','moveLibraries','moveImages','moveDialogs','moveModules','moveSounds','moveViews','useref','minify-scripts','minify-css'])
+gulp.task('moveDiginMainIcons', [], function() {
+  gulp.src("styles/icons/digin-main/**")
+      .pipe(gulp.dest('dist/styles'));
+});
+
+gulp.task('moveThemifyIcons', [], function() {
+  gulp.src("styles/icons/themify/**")
+      .pipe(gulp.dest('dist/styles'));
+});
+
+gulp.task('minify', ['moveIndex','moveLibraries','moveImages','moveDialogs','moveModules','moveConfig','moveSounds','moveViews','moveDiginMainIcons','moveThemifyIcons','useref','minify-scripts','minify-css'])
 
 
 

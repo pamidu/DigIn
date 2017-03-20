@@ -1,4 +1,4 @@
-DiginApp.controller('datasetShareCtrl', ['$scope','$rootScope','$mdDialog','notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory','notifications','apis_Path','dbType',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,notifications,apis_Path,dbType){
+DiginApp.controller('datasetShareCtrl', ['$scope','$rootScope','$mdDialog','notifications','$http','Digin_Engine_API','Digin_Domain','$state','ProfileService','userAdminFactory','apis_Path','dbType',function ($scope,$rootScope,$mdDialog,notifications,$http,Digin_Engine_API,Digin_Domain,$state,ProfileService,userAdminFactory,apis_Path,dbType){
 
   $scope.$parent.currentView = "Share Dataset";
 	$scope.step1 = {};

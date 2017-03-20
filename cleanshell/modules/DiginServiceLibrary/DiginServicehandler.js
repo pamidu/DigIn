@@ -406,7 +406,7 @@
         }
     }]);
     
-     DiginServiceLibraryModule.factory('$servicehelpers',['$http', '$auth', 'Digin_Domain', function($http, $auth, Digin_Domain) {
+     DiginServiceLibraryModule.factory('$servicehelpers',['$http', 'Digin_Domain', function($http, Digin_Domain) {
         return {
             httpSend: function(method, cb, reqUrl, obj) {
                 if (method == "get") {

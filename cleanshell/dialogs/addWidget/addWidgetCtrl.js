@@ -1,5 +1,5 @@
-DiginApp.controller('addWidgetCtrl', ['$scope', '$rootScope','$timeout', '$rootScope', '$mdDialog', '$http', '$log', 'DiginServices',
-    function($scope, $rootScope ,$timeout, $rootScope, $mdDialog, $http, $log, DiginServices) {
+DiginApp.controller('addWidgetCtrl', ['$scope', '$rootScope','$timeout', '$mdDialog', '$http', '$log', 'DiginServices',
+    function($scope, $rootScope ,$timeout, $mdDialog, $http, $log, DiginServices) {
 		
 		if(Object.keys($rootScope.currentDashboard).length != 0)
 		{

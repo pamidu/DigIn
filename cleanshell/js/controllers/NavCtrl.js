@@ -1,7 +1,8 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','$auth' ,'layoutManager', 'notifications', 'DiginServices','$helpers','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,$auth ,layoutManager,notifications,DiginServices,$helpers,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService,$log) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService,$log) {
 
-	$auth.checkSession();
-	$rootScope.authObject = JSON.parse(decodeURIComponent($helpers.getCookie('authData')));
+	//$auth.checkSession();
+	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
+	
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
 	$log.debug('please user $log.debug("sample log") or notifications.log("sample log",new Error()) instead of console.log()');
@@ -370,7 +371,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	DiginServices.getDiginComponents().then(function(data) {
 		notifications.log(data, new Error());
 		$scope.componentsLoaded = true;
-		for (i = 0, len = data.length; i<len; ++i){
+		for (var i = 0, len = data.length; i<len; ++i){
 			if(data[i].compType == 'dashboard')
 			{
 				$scope.dashboards.push(data[i]);

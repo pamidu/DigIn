@@ -540,9 +540,9 @@
 	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
 	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
 	<script src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
-	<script src="bower_components/md-steppers/dist/md-steppers.js"></script>
+	<script src="bower_components/md-steppers/dist/md-steppers.min.js"></script>
 	<!-- PouchDB -->
-	<script src="bower_components/pouchdb/dist/pouchdb.js"></script>
+	<script src="bower_components/pouchdb/dist/pouchdb.min.js"></script>
 	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
 	<!-- PouchDB -->
 	
@@ -552,16 +552,16 @@
 	 <!--Google Maps libraries-->
 	
 	<!--Highcharts libraries-->
-	<script src="js/libs/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->
-	<script src="js/libs/highcharts-ng.js"></script><!--bower_components/highcharts-ng/dist/highcharts-ng.js-->
-	<script src="js/libs/exporting.js"></script><!--http://code.highcharts.com/modules/exporting.js-->
-	<script src="js/libs/drilldown.js"></script><!--http://code.highcharts.com/modules/drilldown.js-->
+	<script src="bower_components/highcharts/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->
+	<script src="bower_components/highcharts/modules/exporting.js"></script><!--http://code.highcharts.com/modules/exporting.js-->
+	<script src="bower_components/highcharts/modules/drilldown.js"></script><!--http://code.highcharts.com/modules/drilldown.js-->
 	<script src="bower_components/highcharts/highcharts-3d.js"></script>
 	<script src="bower_components/highcharts/highcharts-more.js"></script>
+	<script src="js/libs/highcharts-ng.js"></script><!--bower_components/highcharts-ng/dist/highcharts-ng.js-->
 	<!--Highcharts libraries-->
 	
 	<!--Non bower libraries-->
-	<script src="js/libs/uimicrokernel.js"></script>
+	<!--script src="js/libs/uimicrokernel.js"></script-->
 	<script src="js/libs/directivelibrary.js"></script>
 	<script src="js/libs/ng-croppie.min.js"></script>
 	<script src="js/libs/cellCursor.js"></script>
@@ -587,7 +587,6 @@
 	<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
 	<script src="modules/DiginServiceLibrary/UserServices.js"></script>
 	<!--DigIn Service Modules-->
-	<!-- endbuild -->
 	
 	
 
@@ -622,6 +621,7 @@
 	
 	<!--Developer view is only for developers, Please remove this on production-->
 	<script src="views/developer/developerCtrl.js"></script>
+	<!-- endbuild -->
 
 	
 	<!--Widgets Controllers>

@@ -1,4 +1,4 @@
-DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', '$auth', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http, $auth,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
 	var cache = {};
 	return {
         getTenants: function(callback) {
@@ -7,7 +7,7 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', '$auth'
 				callback(cache.tenants);
 			}else{
 				 //return the promise directly.
-				 return $http.get(auth_Path + "/tenant/GetTenants/" + $auth.getSecurityToken())
+				 return $http.get(auth_Path + "/tenant/GetTenants/" + $rootScope.authObject.SecurityToken)
 				   .then(function(result) {
 						cache.tenants = result.data;
 						callback(cache.tenants);

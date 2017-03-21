@@ -7,11 +7,47 @@
 
 var GoogleMapModule = angular.module('GoogleMap',['DiginServiceLibrary']);
 
-GoogleMapModule.directive('googleMapInSettings', function() {
+GoogleMapModule.directive('googleMapInSettings', ['NgMap', function(NgMap) {
   return {
 	restrict: 'E',
 	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
 	link: function(scope,element){
+		
+		scope.setData = "modules/GoogleMap/samplegeojson.json";
+		
+		scope.addresses = [
+			{name: "Majestic City"},
+			{name: "Liberty Plaza Sri Lanka"},
+			{name: "Superior Courts Complex, Hulftsdorp St, Colombo 01200"},
+			{name: "Kumaran Ratnam Rd, Colombo"},
+			{name: "No 121A Sir James Pieris Mw Colombo 02"},
+			{name: "41 Sellapperuma Mawatha Rawathawatta Moratuwa"},
+			{name: "Temple Road Nallur Jaffna"},
+			{name: "37 Mahatma Gandhi Road Jaffna"},
+			{name: "Paradise Island Aluthgama"},
+			{name: "Kaikawala Road Induruwa Bentota"},
+			{name: "449/1 Dedduwa Hapurugala Bentota"},
+			{name: "Mohotti Walauwa 138/18 – 138/22 Galle Road Bentota"},
+			{name: "Aturuwella Bentota"},
+			{name: "No 700 Galle Road Induruwa"},
+			{name: "No 25/6 Nutmeg Garden Kaluwella Galle"},
+			{name: "10 Church Street Fort Galle"},
+			{name: "No-834 Galle Road Talpe Galle"},
+			{name: "Uva Greenland Estate Passara Rd Ella"}
+			
+		]
+			NgMap.getMap().then(function(map) {
+				console.log(map);
+				scope.map = map;
+			});
+			
+			scope.abc = function(ev, c)
+			{
+				console.log(ev);
+				console.log(ev.latLng.lat());
+				console.log(ev.latLng.lng());
+
+			}
 		
 		scope.styles= [{
           'featureType': 'all',
@@ -33,7 +69,7 @@ GoogleMapModule.directive('googleMapInSettings', function() {
 
 	} //end of link
   };
-});
+}]);
 
 GoogleMapModule.directive('googleMap',['NgMap', function(NgMap) {
   return {
@@ -84,7 +120,7 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
 			mapSettings: '='
           },
          link: function(scope,element){
-			 
+						
 			scope.mapSettings.locatorType = "geo_code";
 			
 			scope.$on('press-submit', function(event, args) {
@@ -127,7 +163,7 @@ GoogleMapModule.factory('generateGoogleMap', ['notifications', function(notifica
 					}
 					break;
 			}
-			return isChartConditionsOk;
+			return true;
 		
 		}
 		

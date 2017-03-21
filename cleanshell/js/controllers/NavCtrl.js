@@ -283,6 +283,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				}, function(wantsFullScreen) {
 				  $scope.customFullscreen = (wantsFullScreen === true);
 			});
+		}else if(action == "visualize_data")
+		{
+			location.href = "#/visualize_data";
 		}
 	}
 	//End of Perform

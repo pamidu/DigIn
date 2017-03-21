@@ -586,6 +586,7 @@
 	<script src="modules/DiginServiceLibrary/DiginServices.js"></script>
 	<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
 	<script src="modules/DiginServiceLibrary/UserServices.js"></script>
+	<script src="modules/DiginServiceLibrary/chartSyncServices.js"></script>
 	<!--DigIn Service Modules-->
 	
 	

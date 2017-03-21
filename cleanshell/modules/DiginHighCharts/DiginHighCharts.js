@@ -114,7 +114,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                                 dataLabels: {
                                     enabled: true,
                                     format: '<b>{point.name}</b> ( {point.y:,.0f} )',
-                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                    color: chartFontColor,
                                     softConnector: true
                                 }
                             },
@@ -123,7 +123,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                                 pointFormat: '{series.name}: {point.percentage:,.2f}%'
                             }
                         }
-                    }
+                    },
+					legend: {
+			        itemStyle: {
+			            color: chartFontColor
+			        	}
+			    	}
 				},
 				xAxis: {
 					lineColor: chartFontColor,
@@ -133,7 +138,13 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 							color: chartFontColor
 						}
 					},
-					type: 'category'
+					type: 'category',
+					title: {
+						style: {
+							color: chartFontColor
+						},
+						text: ''
+					}
 				},
 				title: {
 					text: '',
@@ -142,7 +153,20 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 					}
 				},
                 yAxis: {
-                    lineWidth: 1
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+						style: {
+							color: chartFontColor
+						}
+					},
+                    lineWidth: 1,
+					title: {
+						style: {
+							color: chartFontColor
+						},
+						text: ''
+					}
                 },
                 credits: {
                     enabled: false
@@ -151,7 +175,6 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			};
 			return highchartObject;
 		},
-		// method by: Dilani Maheswaran
 		// build the highchart with data
 		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, isDrilled,groupBySortArray, callback, connection, allFields,reArangeArr) {
 			// chartObj - Chart configuration Object, highChartType - chart type String
@@ -281,7 +304,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				                            drillObj = {},
 				                            isLastLevel = false,
 				                            selectedSeries = e.point.series.name,
-				                            origName = "",
+				                            id = "",
 				                            tempArrStr = "",
 				                            serName = "";
 				                            var conStr = "";
@@ -359,17 +382,17 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				                                //filterService.filterAggData(res, $scope.sourceData.filterFields);
 				                                angular.forEach(chartObj.series, function(series) {
 				                                    if (series.name == selectedSeries) {
-				                                        origName = series.origName;
+				                                        id = series.id;
 				                                        serName = series.name;
 				                                    }
 				                                });
 				                                for (var key in res[0]) {
 				                                    if (Object.prototype.hasOwnProperty.call(res[0], key)) {
-				                                        if (key != nextLevel && key == origName) {
+				                                        if (key != nextLevel && key == id) {
 				                                            drillObj = {
 				                                                name: serName,
 				                                                data: [],
-				                                                origName: key,
+				                                                id: key,
 				                                                turboThreshold: 0
 				                                            };
 				                                        }
@@ -380,13 +403,13 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				                                        if (!isLastLevel) {
 				                                            drillObj.data.push({
 				                                                name: key[nextLevel],
-				                                                y: parseFloat(key[drillObj.origName]),
+				                                                y: parseFloat(key[drillObj.id]),
 				                                                drilldown: true
 				                                            });
 				                                        } else {
 				                                            drillObj.data.push({
 				                                                name: key[nextLevel],
-				                                                y: parseFloat(key[drillObj.origName])
+				                                                y: parseFloat(key[drillObj.id])
 				                                            });
 				                                        }
 				                                    });
@@ -574,12 +597,12 @@ DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 				if (Object.prototype.hasOwnProperty.call(res[0], c)) {
 					if (c.toLowerCase() != category)
 					{
-						// maintain origName to map with server response - static
+						// maintain id to map with server response - static
 						// maintain name to give flexibility to the user - variable
 						serArr.push({
+							id: c,
 							name: c,
-							data: [],
-							origName: c
+							data: []
 						})
 					}
 				}
@@ -589,7 +612,7 @@ DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 				angular.forEach(serArr,function(series){
 					series.data.push({
 						name: value[category].toString(),
-						y: parseFloat(value[series.origName]),
+						y: parseFloat(value[series.id]),
 						drilldown: isDrilled
 					})
 				})

@@ -154,7 +154,7 @@
 					<!--ONLY RELATED TO WHAT IF WIDGET-->
 					
 					<!--ONLY RELATED TO GOOGLE MAP WIDGET-->
-					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geo_code'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
 								<span>Longitude</span>
@@ -173,15 +173,15 @@
 						</div>
 					</div>
 					
-					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geo_code'">
 						<div ng-if="settingConfig.longitude" layout="row" layout-align="space-between center"  style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{settingConfig.longitude.name}}</p>
 							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'longitude')" aria-label="remove from category"><span class="ti-close"></span></md-button>
 						</div>
 						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.longitude.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose a longitude column to create a <span> {{chartType.name}}</span> Chart</text></div>
 					</md-list>
-					<md-divider ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'"></md-divider>
-					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+					<md-divider ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geo_code'"></md-divider>
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geo_code'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
 								<span>Latitude</span>
@@ -200,7 +200,7 @@
 						</div>
 					</div>
 					
-					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geocodes'">
+					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'geo_code'">
 						<div ng-if="settingConfig.latitude" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{settingConfig.latitude.name}}</p>
 							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'latitude')" aria-label="remove from category"><span class="ti-close"></span></md-button>
@@ -208,7 +208,7 @@
 						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.latitude.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose a latitude column to create a <span> {{chartType.name}}</span> Chart</text></div>
 					</md-list>
 					
-					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'address'">
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'reverse_geo_code'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
 								<span>Address</span>
@@ -227,7 +227,7 @@
 						</div>
 					</div>
 					
-					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'address'">
+					<md-list layout-padding ng-if="chartType.chart == 'map' && settingConfig.locatorType == 'reverse_geo_code'">
 						<div ng-if="settingConfig.address" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{settingConfig.address.name}}</p>
 							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'address')" aria-label="remove from category"><span class="ti-close"></span></md-button>

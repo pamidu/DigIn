@@ -42,14 +42,23 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
     };
 }]);
 
-DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','notifications', function($rootScope,notifications) {
+DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compile','notifications', 'generateHighchart', 
+	function($rootScope,$compile,notifications,generateHighchart) {
     return {
          restrict: 'E',
          templateUrl: 'modules/DiginHighCharts/highChartsSettings.html',
          scope: {
-           forecastObj: '='
+           highchartSetting: '=',
+           groupBySortarray : '=',
+           selectedAttributes: '=',
+           widgetConfig: '=',
+           chartType: '='
           },
          link: function(scope,element){
+         	console.log(scope.chartType);
+			scope.widgetConfig = generateHighchart.initializeChartObject(scope.chartType);
+			var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
+			element.find('.currentChart').append(newElement);
 			scope.$on('press-submit', function(event, args) {
 				scope.inputForm.$setSubmitted();
 				if(scope.inputForm.$valid)

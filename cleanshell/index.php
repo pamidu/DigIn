@@ -464,7 +464,7 @@
 					<li style="height:50px;font-size:24px" class="active has-sub"><a id="step3" class="hover-color" md-colors="{color:'primary'}"><i class="icon-database" id="datasource"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
-							<li ng-click="navigate($event,'#/visualize_data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
+							<li ng-click="perform($event,'visualize_data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li ng-click="navigate($event,'#/upload_source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
 							<li ng-click="navigate($event,'#/user_assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
 							<li ng-click="navigate($event,'#/datasourceSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings sub-menu-icon"></i>Datasource Settings</a></li>
@@ -524,120 +524,120 @@
 	<!--END OF APPLICATION CONTAINER-->
 	
 	
-	
-	
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
-	<script src="bower_components/lodash/dist/lodash.min.js"></script>
-	<script src="bower_components/angular/angular.min.js"></script>
-	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
-	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
-	<script src="bower_components/angular-material/angular-material.min.js"></script>
-	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
-	<script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
-	<script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
-	<script src="bower_components/intro.js/minified/intro.min.js"></script>
-	<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
-	<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
-	<script src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
-	<script src="bower_components/md-steppers/dist/md-steppers.min.js"></script>
-	<!-- PouchDB -->
-	<script src="bower_components/pouchdb/dist/pouchdb.min.js"></script>
-	<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
-	<!-- PouchDB -->
-	
-	 <!--Google Maps libraries-->
-	 <script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
-	 <script src="http://maps.google.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU" async></script>
-	 <!--Google Maps libraries-->
-	
-	<!--Highcharts libraries-->
-	<script src="bower_components/highcharts/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->
-	<script src="bower_components/highcharts/modules/exporting.js"></script><!--http://code.highcharts.com/modules/exporting.js-->
-	<script src="bower_components/highcharts/modules/drilldown.js"></script><!--http://code.highcharts.com/modules/drilldown.js-->
-	<script src="bower_components/highcharts/highcharts-3d.js"></script>
-	<script src="bower_components/highcharts/highcharts-more.js"></script>
-	<script src="js/libs/highcharts-ng.js"></script><!--bower_components/highcharts-ng/dist/highcharts-ng.js-->
-	<!--Highcharts libraries-->
-	
-	<!--Non bower libraries-->
-	<!--script src="js/libs/uimicrokernel.js"></script-->
-	<script src="js/libs/directivelibrary.js"></script>
-	<script src="js/libs/ng-croppie.min.js"></script>
-	<script src="js/libs/cellCursor.js"></script>
-    <script src="https://checkout.stripe.com/checkout.js" async></script>
-    <script src="js/libs/stripe.payment.tool.js"></script>
-	<!--Non bower libraries-->
-
+	<!-- build:js js/libraries.js -->
+	<!--
+	 ____ ____ __  ____ ____     __ ____    __   __ ____ ____  __  ____ __ ____ ____ 
+	/ ___|_  _) _\(  _ (_  _)   /  (  __)  (  ) (  |  _ (  _ \/ _\(  _ (  |  __) ___)
+	\___ \ )(/    \)   / )(    (  O ) _)   / (_/\)( ) _ ()   /    \)   /)( ) _)\___ \
+	(____/(__)_/\_(__\_)(__)    \__(__)    \____(__|____(__\_)_/\_(__\_|__|____|____/
+	-->
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/lodash/dist/lodash.min.js"></script>
+		<script src="bower_components/angular/angular.min.js"></script>
+		<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+		<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+		<script src="bower_components/angular-material/angular-material.min.js"></script>
+		<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+		<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+		<script src="bower_components/ng-file-upload-shim/ng-file-upload.min.js"></script>
+		<script src="bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
+		<script src="bower_components/intro.js/minified/intro.min.js"></script>
+		<script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+		<script src="bower_components/angularjs-slider/dist/rzslider.min.js"></script>
+		<script src="bower_components/v-accordion/dist/v-accordion.min.js"></script>
+		<script src="bower_components/md-steppers/dist/md-steppers.min.js"></script>
+		<script src="bower_components/pouchdb/dist/pouchdb.min.js"></script>
+		<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
+		<script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
 		
-	<script src="../shell/scripts/config.js"></script>
-	<script src="js/services/utility.js"></script>
+		<!--Highcharts libraries-->
+		<script src="bower_components/highcharts/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->
+		<script src="bower_components/highcharts/modules/exporting.js"></script><!--http://code.highcharts.com/modules/exporting.js-->
+		<script src="bower_components/highcharts/modules/drilldown.js"></script><!--http://code.highcharts.com/modules/drilldown.js-->
+		<script src="bower_components/highcharts/highcharts-3d.js"></script>
+		<script src="bower_components/highcharts/highcharts-more.js"></script>
+		<!--Highcharts libraries-->
+		
+		<!--Non bower libraries-->
+		<script src="js/libs/highcharts-ng.js"></script>
+		<script src="js/libs/directivelibrary.js"></script>
+		<script src="js/libs/ng-croppie.min.js"></script>
+		<script src="js/libs/cellCursor.js"></script>
+		<script src="js/libs/stripe.payment.tool.js"></script>
+		<!--Non bower libraries-->
+
+		<script src="js/services/utility.js"></script>
+	<!--
+	 ____ __ _ ____     __ ____    __   __ ____ ____  __  ____ __ ____ ____ 
+	(  __|  ( (    \   /  (  __)  (  ) (  |  _ (  _ \/ _\(  _ (  |  __) ___)
+	 ) _)/    /) D (  (  O ) _)   / (_/\)( ) _ ()   /    \)   /)( ) _)\___ \
+	(____)_)__|____/   \__(__)    \____(__|____(__\_)_/\_(__\_|__|____|____/
+	-->
+	<!-- endbuild -->
+	
+	<script src="/Digin/shell/scripts/config.js"></script>
 	
 	<!-- build:js js/script.js -->
-	<!--DigIn Widget Modules-->
-	<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
-	<script src="modules/DiginForecast/DiginForecast.js"></script>
-	<script src="modules/GoogleMap/GoogleMap.js"></script>
-	<!--DigIn Widget Modules-->
-	
-	<!--DigIn Service Modules-->
-	<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
-	<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
-	<script src="modules/DiginServiceLibrary/DiginServices.js"></script>
-	<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
-	<script src="modules/DiginServiceLibrary/UserServices.js"></script>
-	<script src="modules/DiginServiceLibrary/chartSyncServices.js"></script>
-	<!--DigIn Service Modules-->
-	
-	
-
-	<script src="js/app.js"></script>
-	<script src="views/settings/theme/themingConfig.js"></script>
-	<script src="js/controllers/NavCtrl.js"></script>
-	<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
-	<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
-	<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
-	<script src="dialogs/saveDashboard/saveDashboardService.js"></script>
-	<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
-	<script src="views/home/homeCtrl.js"></script>
-	<script src="views/settings/myAccount/myAccountCtrl.js"></script>
-	<script src="views/settings/myAccount/addaLaCarte/addaLaCarteCtrl.js"></script>
-	<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
-	<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
-	<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
-	<script src="views/settings/theme/themeCtrl.js"></script>
-	<script src="views/dashboard/dashboardCtrl.js"></script>
-	<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
-	<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
-	<script src="views/user_assistance/user_assistanceCtrl.js"></script>
-	<script src="views/query_builder/query_builderCtrl.js"></script>
-	<script src="views/query_builder/chart-svgs.js"></script>
-	<script src="views/chart_designer/chart_designerCtrl.js"></script>
-	<script src="views/social/facebook/facebookCtrl.js"></script>
-	<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
-	<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
-	<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
-	<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
-	<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
-	
-	<!--Developer view is only for developers, Please remove this on production-->
-	<script src="views/developer/developerCtrl.js"></script>
+	<!--
+	 ____ ____ __  ____ ____     __ ____     __  ____ ____ __   __ ___  __ ____ __ __  __ _    __    __   ___ __ ___ 
+	/ ___|_  _) _\(  _ (_  _)   /  (  __)   / _\(  _ (  _ (  ) (  ) __)/ _(_  _|  )  \(  ( \  (  )  /  \ / __|  ) __)
+	\___ \ )(/    \)   / )(    (  O ) _)   /    \) __/) __/ (_/\)( (__/    \)(  )(  O )    /  / (_/(  O | (_ \)( (__ 
+	(____/(__)_/\_(__\_)(__)    \__(__)    \_/\_(__) (__) \____(__)___)_/\_(__)(__)__/\_)__)  \____/\__/ \___(__)___)
+	-->
+		<!--DigIn Widget Modules-->
+		<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
+		<script src="modules/DiginForecast/DiginForecast.js"></script>
+		<script src="modules/GoogleMap/GoogleMap.js"></script>
+		<!--DigIn Widget Modules-->
+		
+		<!--DigIn Service Modules-->
+		<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
+		<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
+		<script src="modules/DiginServiceLibrary/DiginServices.js"></script>
+		<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
+		<script src="modules/DiginServiceLibrary/UserServices.js"></script>
+		<script src="modules/DiginServiceLibrary/chartSyncServices.js"></script>
+		<!--DigIn Service Modules-->
+		
+		<script src="js/app.js"></script>
+		<script src="views/settings/theme/themingConfig.js"></script>
+		<script src="js/controllers/NavCtrl.js"></script>
+		<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
+		<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
+		<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
+		<script src="dialogs/saveDashboard/saveDashboardService.js"></script>
+		<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
+		<script src="views/home/homeCtrl.js"></script>
+		<script src="views/settings/myAccount/myAccountCtrl.js"></script>
+		<script src="views/settings/myAccount/addaLaCarte/addaLaCarteCtrl.js"></script>
+		<script src="views/settings/userAdministrator/userAdministratorCtrl.js"></script>
+		<script src="views/settings/createNewUser/createNewUserCtrl.js"></script>
+		<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
+		<script src="views/settings/theme/themeCtrl.js"></script>
+		<script src="views/dashboard/dashboardCtrl.js"></script>
+		<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
+		<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
+		<script src="views/user_assistance/user_assistanceCtrl.js"></script>
+		<script src="views/query_builder/query_builderCtrl.js"></script>
+		<script src="views/query_builder/chart-svgs.js"></script>
+		<script src="views/chart_designer/chart_designerCtrl.js"></script>
+		<script src="views/social/facebook/facebookCtrl.js"></script>
+		<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
+		<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
+		<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
+		<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
+		<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
+		<script src="views/developer/developerCtrl.js"></script><!--Developer view is only for developers, Please remove this on production-->
+	<!--
+	 ____ ____ __  ____ ____     __ ____     __  ____ ____ __   __ ___  __ ____ __ __  __ _    __    __   ___ __ ___ 
+	/ ___|_  _) _\(  _ (_  _)   /  (  __)   / _\(  _ (  _ (  ) (  ) __)/ _(_  _|  )  \(  ( \  (  )  /  \ / __|  ) __)
+	\___ \ )(/    \)   / )(    (  O ) _)   /    \) __/) __/ (_/\)( (__/    \)(  )(  O )    /  / (_/(  O | (_ \)( (__ 
+	(____/(__)_/\_(__\_)(__)    \__(__)    \_/\_(__) (__) \____(__)___)_/\_(__)(__)__/\_)__)  \____/\__/ \___(__)___)
+	-->
 	<!-- endbuild -->
-
 	
-	<!--Widgets Controllers>
-	<script src="views/widgets/clock/clockCtrl.js"></script>
-	<script src="views/widgets/custom/google_maps/gmapsCtrl.js"></script>
-	<script src="views/widgets/blogging/WordPress/wordpressInitCtrl.js"></script>
-	<script src="views/widgets/blogging/RssFeeds/rssInitCtrl.js"></script>
-	<script src="views/widgets/blogging/Gnews/gnewsInitCtrl.js"></script>
-	
-	<script src="views/widgets/custom/view_image/imInitCtrl.js"></script>
-	
-	
-	<script src="views/widgets/custom/realTime/realTimeCtrl.js"></script>
-	<!--Widgets Controllers-->
-	
+	<script src="http://maps.google.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU" async></script>
+	<script src="https://checkout.stripe.com/checkout.js" async></script>
 
 
 	<script>

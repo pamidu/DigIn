@@ -818,3 +818,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		
 		
 }])
+
+DiginApp.filter('formatdateandtime', function() {
+  return function(datetime) {
+	var thismoment = moment(new Date(datetime));
+    return thismoment.format('YYYY-MM-DD')+ " @ "+thismoment.format('h:mm:ss a');
+  };
+});

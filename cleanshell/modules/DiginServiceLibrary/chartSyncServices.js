@@ -24,6 +24,7 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
     var HIGHCHARTS = function() {
     	this.sync = function(query,client,widget,is_sync,callback) {
             var seriesArray,chartSeries;
+            var count = 0;
             client.getExecQuery(query, widget.selectedFile.datasource_id, function(res, status, message) {
                 if (status) {
                     var category = "";
@@ -44,6 +45,7 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
                             if (newSeries.id == series.id ) {
                                 // update data retaining all configs
                                 chartObject.get(series.id).setData(newSeries.data);
+                                count++;
                             }
                         });
                     });

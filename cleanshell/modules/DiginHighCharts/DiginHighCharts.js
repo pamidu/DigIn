@@ -639,6 +639,9 @@ DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 		//remove data from chart
 		removeDataPoints: function(chartObj) {
 			var chart = chartObj.getHighcharts();
+			for(var i = 0; i < chart.series.length; i++) {
+				chart.series[i].setData([]);
+			}
 		},
 		//set data points
 		setDataPoints: function(chartObj,res) {

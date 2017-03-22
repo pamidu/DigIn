@@ -179,7 +179,7 @@
 
                 },
 
-                getExecQuery: function(qStr, id, cb, limit,offset) {
+                getExecQuery: function(qStr, id, cb, limit,offset, is_sync) {
                     var wSrc = "js/services/webWorker.js";
                     var limVal = undefined;
                     var offVal = 0;
@@ -187,16 +187,18 @@
                         limVal = limit;
                     if (offset) 
                         offVal = offset;
+                    if (angular.isUndefined(is_sync))
+                        is_sync = 'False';
                     if (database == 'MSSQL')
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal + "&datasource_config_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal + "&datasource_config_id=" + id + "&is_sync=" + is_sync;
                     else if (database == 'BigQuery' || database == "memsql")
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&offset=" + offVal+ "&datasource_id=" + id + "&is_sync=" + is_sync;
                     else if (database == 'hiveql')
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id + "&is_sync=" + is_sync;
                     else if (database == 'Oracle')
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&datasource_config_id=" + id + "&is_sync=" + is_sync;
                     else 
-                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal;
+                        var reqUrl = $diginurls.diginengine + "executeQuery?query=" + qStr + "&db=" + database + "&limit=" + limVal + "&is_sync=" + is_sync;
 
                     var wData = {
                         rUrl: reqUrl,

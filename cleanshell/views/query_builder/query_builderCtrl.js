@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap','notifications', function ($scope,$rootScope,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap,notifications){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap,notifications,$mdMedia){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -323,7 +323,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 	//Toggle chart settings
 	$scope.openSettings = function()
 	{
-		$scope.settingsOpened = !$scope.settingsOpened;
+		if($mdMedia('xs') == true || $mdMedia('sm') == true)
+		{
+			$mdSidenav('chart_desinger_settings').toggle();
+		}else{
+			$scope.settingsOpened = !$scope.settingsOpened;
+		}
+
 	}
 	
 	$scope.saveSettings = function()

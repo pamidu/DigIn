@@ -1,4 +1,7 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager','notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, DiginServices, $diginengine,colorManager,$timeout,$state,dialogService) {
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager',
+	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
+	function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, 
+		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -203,9 +206,12 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			syncWidget: function (widget) {
 				notifications.log("Sync Widget",new Error());
 				widget.syncOn = true;
-				$timeout(function() {
-					widget.syncOn = false;
-				},2000)
+				// send is_sync parameter as true
+				chartSyncServices.sync(widget,function(widget){
+					$scope.$apply(function(){
+						widget.syncOn = false;						
+					})
+				}, 'True');
 			},
 			removeWidget: function(ev, widget)
 			{

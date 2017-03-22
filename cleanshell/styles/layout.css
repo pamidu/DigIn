@@ -516,4 +516,12 @@ div.slide-up p {
   -o-animation: rotating 1s linear infinite;
   animation: rotating 1s linear infinite;
 }
+
+.rotate-90-clockwise{
+    -ms-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
 /*END OF DIGIN DASHBOARD RELATED STYLES*/

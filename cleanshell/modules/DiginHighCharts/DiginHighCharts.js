@@ -56,8 +56,8 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','notific
           },
          link: function(scope,element){
 			scope.$on('press-submit', function(event, args) {
-				scope.inputForm.$setSubmitted();
-				if(scope.inputForm.$valid)
+				scope.hightChartSettingsForm.$setSubmitted();
+				if(scope.hightChartSettingsForm.$valid)
 				{
 					args.callbackFunction(true);
 				}else{

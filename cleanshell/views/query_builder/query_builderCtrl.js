@@ -198,9 +198,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdDialog', '$s
 			}
 		}else{
 			$scope.chartType = $scope.chartTypes[0]; // set default chart
-			$diginengine.getUUID(1, function(id){
-				widgetID = id;
-			});
+			
+			widgetID = "temp" + createuuid();
+			
 			$scope.settingConfig.widgetName = $scope.chartType.name;
 
 			console.log($scope.settingConfig.widgetName );

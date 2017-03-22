@@ -283,20 +283,17 @@
 						<svg style="cursor:pointer" ng-show="fullscreenOn" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" hight="10" width="22" x="22px" y="0px" viewBox="0 0 490.1 490.1" style="enable-background:new 0 0 490.1 490.1;" xml:space="preserve"><g><g><path md-colors="{fill:'primary'}" d="M296,80.85c0-6.8-5.5-12.3-12.3-12.3s-12.3,5.5-12.3,12.3v125.5c0,6.8,5.5,12.3,12.3,12.3h125.5c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3h-95.9l173-173c4.8-4.8,4.8-12.5,0-17.3s-12.5-4.8-17.3,0l-173,173L296,80.85L296,80.85z"/><path md-colors="{fill:'primary'}" d="M20.9,486.45l173.1-173v95.9c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-125.5c0-6.8-5.5-12.3-12.3-12.3H80.8c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.2,12.3,12.2h95.9l-173,173c-4.8,4.8-4.8,12.5,0,17.3c2.4,2.4,5.5,3.6,8.7,3.6S18.5,488.85,20.9,486.45z"/><path md-colors="{fill:'primary'}" d="M206.2,68.55c-6.8,0-12.3,5.5-12.3,12.3v95.9L20.9,3.65c-4.8-4.8-12.5-4.8-17.3,0s-4.8,12.5,0,17.3l173,173H80.8c-6.8,0-12.3,5.5-12.3,12.3s5.5,12.3,12.3,12.3h125.5c6.8,0,12.3-5.5,12.3-12.3V80.85C218.5,74.05,213,68.55,206.2,68.55z"/><path md-colors="{fill:'primary'}" d="M421.5,283.85c0-6.8-5.5-12.3-12.3-12.3H283.8c-6.8,0-12.3,5.5-12.3,12.3v125.5c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-95.9l173,173c2.4,2.4,5.5,3.6,8.7,3.6s6.3-1.2,8.7-3.6c4.8-4.8,4.8-12.5,0-17.3l-173-173h95.9C416,296.05,421.5,290.65,421.5,283.85z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
 						<md-tooltip md-direction="bottom">Turn <span ng-hide="fullscreenOn">On</span><span ng-show="fullscreenOn">Off</span> Fullscreen</md-tooltip>
 					</div>
-					<div class="blut-header-icon" ng-click="perform($event,'Clear Widgets')"  hide-sm hide-xs>
+					<!--div class="blut-header-icon" ng-click="perform($event,'Clear Widgets')"  hide-sm hide-xs>
 						<i class="icon-broom hover-color" md-colors="{color:'primary'}" id="clearWidgets"></i>
 						<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
-					</div>
-					<div class="blut-header-icon" ng-click="perform($event,'Save')"  hide-sm hide-xs>
-						<i class="ti-save hover-color" md-colors="{color:'primary'}" id="save"></i>
-						<md-tooltip md-direction="bottom">Save Dashboard</md-tooltip>
-					</div>
-					<md-menu md-position-mode="target-right target"  hide-sm hide-xs>
-					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)""> <!--$mdOpenMenu($event)-->
+					</div-->
+					<!--md-menu md-position-mode="target-right target"  hide-sm hide-xs>
+					  <div class="blut-header-icon" aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)""> 
 						<i class="ti-share hover-color" md-colors="{color:'primary'}" id="share"></i>
 					  </div>
 					  <md-menu-content ng-class="{'applyDarkBackground': $root.applyDark == true}" >
-						<md-menu-item ng-if="$root.currentDashboard.compID">
+						<!--md-menu-item ng-if="$root.currentDashboard.compID">
+						<!--md-menu-item ng-if="$root.currentDashboard.compID">
 						  <md-button ng-click="navigate($event, '#/shareDashboard')">
 							  <div layout="row" flex>
 								<p flex>Share Dashboard</p>
@@ -466,15 +463,15 @@
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
 							<li ng-click="perform($event,'visualize_data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li ng-click="navigate($event,'#/upload_source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
-							<li ng-click="navigate($event,'#/user_assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
+							<li ng-click="navigate($event,'#/shareDataset')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share sub-menu-icon"></i>Share</a></li>
 							<li ng-click="navigate($event,'#/datasourceSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings sub-menu-icon"></i>Datasource Settings</a></li>
-							
+							<li ng-click="navigate($event,'#/user_assistance')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-wand sub-menu-icon"></i>User Assistance</a></li>
 						</ul>
 					</li>
-					<li class="has-sub" style="height:50px;font-size:24px" ng-click="perform($event,'AddWidget')">
+					<!--li class="has-sub" style="height:50px;font-size:24px" ng-click="perform($event,'AddWidget')">
 						<md-tooltip md-direction="right">Add Widget</md-tooltip>
 						<a class="hover-color" md-colors="{color:'primary'}"><i class="icon-plugin" id="addWidgets"></i></a>
-					</li>
+					</li-->
 					<li class="has-sub" style="height:50px;font-size:24px" class="active has-sub"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-profile" id="socialMedia"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Social Media</a></li>
@@ -594,8 +591,10 @@
 		<script src="modules/DiginServiceLibrary/DiginServiceLibrary.js"></script>
 		<script src="modules/DiginServiceLibrary/DiginServicehandler.js"></script>
 		<script src="modules/DiginServiceLibrary/DiginServices.js"></script>
+		<script src="modules/DiginServiceLibrary/DiginDashboardSavingServices.js"></script>
 		<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
 		<script src="modules/DiginServiceLibrary/UserServices.js"></script>
+		<script src="modules/DiginServiceLibrary/chartSyncServices.js"></script>
 		<!--DigIn Service Modules-->
 		
 		<script src="js/app.js"></script>
@@ -604,7 +603,6 @@
 		<script src="dialogs/addWidget/addWidgetCtrl.js"></script>
 		<script src="dialogs/createDashboard/createDashboardCtrl.js"></script>
 		<script src="dialogs/saveDashboard/saveDashboardCtrl.js"></script>
-		<script src="dialogs/saveDashboard/saveDashboardService.js"></script>
 		<script src="dialogs/switchTenant/switchTenantCtrl.js"></script>
 		<script src="views/home/homeCtrl.js"></script>
 		<script src="views/settings/myAccount/myAccountCtrl.js"></script>
@@ -628,10 +626,10 @@
 		<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
 		<script src="views/developer/developerCtrl.js"></script><!--Developer view is only for developers, Please remove this on production-->
 	<!--
-	 ____ ____ __  ____ ____     __ ____     __  ____ ____ __   __ ___  __ ____ __ __  __ _    __    __   ___ __ ___ 
-	/ ___|_  _) _\(  _ (_  _)   /  (  __)   / _\(  _ (  _ (  ) (  ) __)/ _(_  _|  )  \(  ( \  (  )  /  \ / __|  ) __)
-	\___ \ )(/    \)   / )(    (  O ) _)   /    \) __/) __/ (_/\)( (__/    \)(  )(  O )    /  / (_/(  O | (_ \)( (__ 
-	(____/(__)_/\_(__\_)(__)    \__(__)    \_/\_(__) (__) \____(__)___)_/\_(__)(__)__/\_)__)  \____/\__/ \___(__)___)
+	 ____ __ _ ____    __ ____     __  ____ ____ __   __ ___  __ ____ __ __  __ _    __    __   ___ __ ___ 
+	(  __|  ( (    \   /  (  __)   / _\(  _ (  _ (  ) (  ) __)/ _(_  _|  )  \(  ( \  (  )  /  \ / __|  ) __)
+	 ) _)/    /) D (  (  O ) _)   /    \) __/) __/ (_/\)( (__/    \)(  )(  O )    /  / (_/(  O | (_ \)( (__ 
+	(____)_)__|____/   \__(__)    \_/\_(__) (__) \____(__)___)_/\_(__)(__)__/\_)__)  \____/\__/ \___(__)___)
 	-->
 	<!-- endbuild -->
 	

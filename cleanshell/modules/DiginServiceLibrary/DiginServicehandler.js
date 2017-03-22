@@ -429,6 +429,7 @@
                           cb(response.data, false, "");
                       });
                 }
+
             },
             sendWorker: function(wSrc, wData, cb) {
                 var w = new Worker(wSrc);

@@ -92,7 +92,15 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 					if($rootScope.currentDashboard.pages[i].pageName == page.pageName)
 					{
 						console.log(page);
+
+						var pageID = $rootScope.currentDashboard.pages[i].pageID;
+						if (pageID.toString().substr(0, 4) != "temp") {
+	                            $rootScope.currentDashboard.deletions.pageIDs.push(pageID);
+	                    }
+
 						$rootScope.currentDashboard.pages.splice(i, 1);
+
+
 					}
 				}
 			}
@@ -201,10 +209,48 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			},
 			removeWidget: function(ev, widget)
 			{
-				notifications.log("Remove Widget",new Error());
+
+				var widgetID = widget.widgetID;
+				if (widgetID.toString().substr(0, 4) != "temp") {
+                        $rootScope.currentDashboard.deletions.widgetIDs.push(widgetID);
+                }
+
+				$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.splice(i, 1);	
 			}
 		};
     })();
+    
+	$scope.keepInitialPosition = true;
+	$scope.showDashboardOptions = true;
+	
+	$scope.firstTouchedEvent = function()
+	{
+		$scope.$apply(function () {
+			$scope.keepInitialPosition = false;
+		})
+	}
+	
+	$scope.limit = function(yvalue, ylimit)
+	{
+		if(yvalue >= ylimit){	yvalue = ylimit;	}
+		if(yvalue <= 50){	yvalue = 50;	}
+		
+		$scope.$apply(function () {
+			$scope.showDashboardOptions = false;
+			angular.element('#dashboardOptionsClosed').css('top',yvalue+"px");
+		})
+	}
+	
+	$scope.dashboardOptionsShowClick = function()
+	{
+		$scope.keepInitialPosition = true;
+		$scope.showDashboardOptions = true;
+	}
+	
+	$timeout(function() {
+		var windowWidth = window.outerWidth - 350;
+		angular.element('#dashboardOptionsOpen').css('left',windowWidth+"px");
+	},200)
 	
 }])//END OF dashboardCtrl
 
@@ -226,3 +272,61 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 	}*/
 	
 }]);// END OF fullscreenCtrl
+
+
+
+DiginApp.directive('draggable', ['$document', function($document) {
+    return {
+      restrict: 'A',
+	  scope:	{		
+			draggable: '&',
+			limitHit: '&'
+		},
+	  link: function(scope, elm, attrs) {
+		var xlimit = window.outerWidth - 50;
+		var ylimit = window.outerHeight - 200;
+		
+		var windowWidth = window.outerWidth - 350;
+		angular.element('#dashboardOptionsOpen').css('left',windowWidth+"px");
+		var startX, startY, initialMouseX, initialMouseY;
+
+		elm.bind('mousedown', function($event) {
+		  scope.draggable();
+		  startX = elm.prop('offsetLeft');
+		  startY = elm.prop('offsetTop');
+		  initialMouseX = $event.clientX;
+		  initialMouseY = $event.clientY;
+		  $document.bind('mousemove', mousemove);
+		  $document.bind('mouseup', mouseup);
+		  return false;
+		});
+
+        function mousemove($event) {
+			
+			if($event.clientX >= xlimit || $event.clientX <= 100 || $event.clientY >= ylimit || $event.clientY <= 50)
+			{
+				scope.limitHit({yvalue: $event.clientY, ylimit: ylimit});		
+			}else{
+				var dx = $event.clientX - initialMouseX;
+				var dy = $event.clientY - initialMouseY;
+				elm.css({
+					top:  startY + dy + 'px',
+					left: startX + dx + 'px',
+					opacity: 0.5
+				});
+			}
+
+          return false;
+        }
+
+        function mouseup($event) {
+          $document.unbind('mousemove', mousemove);
+          $document.unbind('mouseup', mouseup);
+		  elm.css({
+			opacity: 1
+          });
+		  
+        }
+      }
+    };
+}]);

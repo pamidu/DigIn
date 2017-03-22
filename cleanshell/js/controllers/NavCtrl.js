@@ -181,7 +181,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					pages: [{pageName: answer.page,
                             pageID: "temp" + createuuid(),
 							widgets: [],
-							pageData: null}]     
+							pageData: null}],
+					deletions :[{
+					        componentIDs:[],
+					        pageIDs:[],
+					        widgetIDs:[]}],
+					filterDetails: null,		     
 				};
 				console.log("empty dashboar created " + $rootScope.currentDashboard);
 				location.href = '#/visualize_data';
@@ -303,6 +308,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			"compID": null,
 			"compName": null,
 			"refreshInterval": null,
+			"filterDetails":null,
+			"deletions" :[{
+					        "componentIDs":[],
+					        "pageIDs":[],
+					        "widgetIDs":[]}],
+
 		}
 
 		$rootScope.currentDashboard.pages = [];
@@ -314,7 +325,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		}
 		$rootScope.currentDashboard.pages.push(page);
 	}
-	
 	
 	$scope.data = {};
 	$scope.userSettings = {};

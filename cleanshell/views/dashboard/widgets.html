@@ -1,4 +1,4 @@
 
-<digin-high-chart id-selector="{{$parent.widget.widgetID}}" ng-if="$parent.widget.chartType.chartType == 'highCharts'" config="$parent.widget.widgetConfig"></digin-high-chart>
-<digin-forecast id-selector="{{$parent.widget.widgetID}}" ng-if="$parent.widget.chartType.chartType == 'forecast'" config="$parent.widget.widgetConfig"></digin-forecast>
-<google-map ng-if="$parent.widget.chartType.chartType == 'map'"></google-map>
+<digin-high-chart id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'highCharts'" config="$parent.widget.widgetData.widgetConfig"></digin-high-chart>
+<digin-forecast id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'forecast'" config="$parent.widget.widgetData.widgetConfig"></digin-forecast>
+<google-map ng-if="$parent.widget.widgetData.chartType.chartType == 'map'"></google-map>

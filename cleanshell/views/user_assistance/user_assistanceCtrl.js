@@ -506,10 +506,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$state.reload();
 		}
 		
-		
-		
 		//Connect Source		
-		
 		//initialize the forms
 		
 		$scope.connectSource_step1 = {};
@@ -586,11 +583,38 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
 
-			var initWidgetObj = {};
-			initWidgetObj.widgetConfig = {};
-			
+
+
+			var widgetData = {
+				'chartType' : null,
+				'selectedFile' : null,
+				'Measures' : null,
+				'XAxis': null,
+				'allMeasures' : null,
+				'allXAxis' : null,
+				'DesignTimeFilter': null,
+				'RuntimeFilter' : null,
+				'widgetConfig' : {},
+				'settingConfig': {},
+				'selectedDB' : null,
+				'widgetID' :  null,
+				'query' : null,
+				'groupBySortArray':null		
+			};
+
+			var widget = {
+				'widgetID' : null,
+				'widgetName' : null,
+				'widgetData' : widgetData,
+				'col':null,
+				'row':null,
+				'sizeX':null,
+				'sizeY':null
+			};
+
 			$state.go('query_builder', 
-			{ 'allAttributes': $scope.attributes, 
+			{ 
+			  'allAttributes': $scope.attributes, 
 			  'allMeasures':$scope.measures, 
 			  'selectedFile':$scope.selectedFile, 
 			  'DesignTimeFilter': [],
@@ -598,11 +622,9 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			  'selectedDB': $scope.selectedDB,
 			  'selectedAttributes': [],
 			  'selectedMeasures': [],
-			  'widget':initWidgetObj,
+			  'widget':widget,
 			  'chartType':{}
-			  
-			  });
-			
+			});
 		}	
 		
 		$scope.goToPreviousConnectSourceStep = function()
@@ -611,7 +633,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.measures = [];
 			$scope.selectedAttributes = [];
 			$scope.selectedMeasures = [];
-			--$scope.connectSource_selected;
+			$scope.connectSource_selected;
 		}
 		
 		//$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];

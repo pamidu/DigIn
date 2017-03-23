@@ -25,7 +25,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 
 	//Common variable to store the widget contents
 	
-	$scope.widgetConfig = $stateParams.widget.widgetConfig;
+	$scope.widgetConfig = $stateParams.widget.widgetData.widgetConfig;
+
+	$scope.widgetCol = null;
+	$scope.widgetRow = null;
+	$scope.widgetSizeX = 4;
+	$scope.widgetSizeY = 11;
+
 	$scope.settingConfig = {};
 
 	//$scope.currentChartType = "";
@@ -166,7 +172,12 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		{
 			$scope.chartType = $stateParams.chartType;
 			widgetID = $stateParams.widget.widgetID;
-			$scope.groupBySortArray = $stateParams.widget.groupBySortArray;
+			$scope.groupBySortArray = $stateParams.widget.widgetData.groupBySortArray;
+
+			$scope.widgetCol = $stateParams.widget.col;
+			$scope.widgetRow = $stateParams.widget.row;
+			$scope.widgetSizeX = $stateParams.widget.sizeX;
+			$scope.widgetSizeY = $stateParams.widget.sizeY;
 
 			$scope.settingConfig.widgetName = $scope.chartType.name;
 
@@ -355,7 +366,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	
 	$scope.saveWidget =  function() {
 		
-		var widget = {
+		var widgetData = {
 			'chartType' : $scope.chartType,
 			'selectedFile' : $scope.selectedFile,
 			'Measures' : $scope.selectedSeries,
@@ -365,10 +376,23 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			'DesignTimeFilter': [],
 			'RuntimeFilter' : [],
 			'widgetConfig' : $scope.widgetConfig,
+			'settingConfig': $scope.settingConfig,
 			'selectedDB' : $scope.selectedDB,
 			'widgetID' :  widgetID,
 			'query' : $scope.chartQuery,
-			'groupBySortArray': $scope.groupBySortArray,
+			'groupBySortArray': $scope.groupBySortArray			
+
+			
+		};
+
+		var widget = {
+			'widgetID' : widgetID ,
+			'widgetName' : $scope.settingConfig.widgetName,
+			'widgetData' : widgetData,
+			'col': $scope.widgetCol,
+			'row': $scope.widgetRow,
+			'sizeX': $scope.widgetSizeX,
+			'sizeY': $scope.widgetSizeY
 
 			
 		};

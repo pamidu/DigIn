@@ -174,7 +174,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				$rootScope.currentDashboard = {
 					compName: answer.dashboard,
 					compType: "dashboard",
-					compID: "dash" + createuuid(),
+					compID: "temp" + createuuid(),
 					refreshInterval: 0, 
 					compClass: null,
 					compCategory: null,

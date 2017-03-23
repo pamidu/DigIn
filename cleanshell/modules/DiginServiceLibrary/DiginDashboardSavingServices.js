@@ -14,23 +14,24 @@
 	 	return{
 	 		saveDashboard: function() {
 
-	 			$rootScope;
-	 			dashboardObject = {
-			        "pages" : pagesArray,
-			        "compClass": null,
-			        "compType": 'dashboard',
-			        "compCategory": null,
-			        "compID": null,
-			        "compName": dashboardName,
-			        "refreshInterval": refreshInterval,
-			        "filterDetails": $rootScope.dashboard.filterDetails,
-			        "deletions": $rootScope.dashboard.deletions
-			     }
+
+	 			//create a angular copy of the dashboard
+
+	 			var dashboardCopy =  angular.copy($rootScope.currentDashboard);
+
+
+	 			// for(var i = 0; i < $rootScope.currentDashboard.pages.length; i++){
+
+	 			// 	for(var j = 0; j < $rootScope.currentDashboard.pages.length; j++){
+	 				
+	 			// 	}
+	 			// }
+
 
                 return $http({
                     method: 'POST',
                     url: Digin_Engine_API + 'store_componen/',
-                    data: angular.toJson(Dashboard),
+                    data: angular.toJson(dashboardCopy),
                     headers: {
                         'Content-Type': 'application/json',
                         'securityToken' : $rootScope.authObject.securityToken

@@ -191,16 +191,16 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			},
 			widgetSettings: function (ev, widget){
 				$state.go("query_builder",{
-				  'allAttributes' : widget.allXAxis,
-				  'allMeasures' : widget.allMeasures,
-				  'DesignTimeFilter ': widget.DesignTimeFilter,
-				  'RuntimeFilter': widget.RuntimeFilter,
-				  'selectedAttributes': widget.XAxis,
-				  'selectedMeasures': widget.Measures,
-				  'selectedFile': widget.selectedFile,
-				  'selectedDB' : widget.selectedDB,
+				  'allAttributes' : widget.widgetData.allXAxis,
+				  'allMeasures' : widget.widgetData.allMeasures,
+				  'DesignTimeFilter ': widget.widgetData.DesignTimeFilter,
+				  'RuntimeFilter': widget.widgetData.RuntimeFilter,
+				  'selectedAttributes': widget.widgetData.XAxis,
+				  'selectedMeasures': widget.widgetData.Measures,
+				  'selectedFile': widget.widgetData.selectedFile,
+				  'selectedDB' : widget.widgetData.selectedDB,
 				  'widget': widget,
-				  'chartType':widget.chartType
+				  'chartType':widget.widgetData.chartType
 				 });
 			},
 			syncWidget: function (widget) {

@@ -122,3 +122,67 @@
 	</md-tabs>
 
 </footer>
+
+<md-card id="dashboardOptionsOpen" draggable="firstTouchedEvent()" limit-hit="limit(yvalue, ylimit)" style="z-index:5;position:fixed;border-radius:4px;top:100px;"  ng-if="showDashboardOptions"><!--ng-class="{'initial-dashboard-options-position': keepInitialPosition==true}"-->
+	<md-toolbar class="md-primary" style="min-height: 30px;height:30px;border-radius: 4px 4px 0px 0px;padding: 8px">
+			<div layout="row" layout-align="start start" style="cursor:move">
+				<i class="ti-more rotate-90-clockwise" style="font-size:12px;line-height: 8px;padding:4px;color:white"></i>
+				<text style="color:white;font-size: 14px;">Dashboard Options</text>
+			</div>
+	</md-toolbar>
+			<div layout="row" style="padding:10px 0px 10px 0px">
+		<div layout="column">
+			<md-button ng-click="perform($event,'AddWidget')" class="md-accent">
+				<i class="icon-plugin" style="font-size:18px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Add Widgets</text>
+			</md-button>
+			<md-button ng-click="perform($event,'Save')" class="md-accent">
+				<i class="ti-save" style="font-size:16px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Save Dashboard</text>
+			</md-button>
+		</div>
+		<md-divider></md-divider>
+			<div layout="column">
+				<!--md-button ng-click="perform($event,'AddWidget')" class="md-primary">
+					<i class="icon-plugin" style="font-size:18px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Add Widgets</text>
+				</md-button-->
+				<div layout="row">
+					<md-button ng-click="doSomething()" class="md-icon-button md-primary">
+						<i class="ti-pin-alt" style="font-size:16px"></i>
+						<md-tooltip md-direction="bottom">Make Default</md-tooltip>
+					</md-button>
+					<md-button ng-click="navigate($event, '#/shareDashboard')" class="md-icon-button md-primary">
+						<i class="ti-share" style="font-size:16px"></i>
+						<md-tooltip md-direction="bottom">Share</md-tooltip>
+					</md-button>
+					<md-button ng-click="perform($event,'Clear Widgets')" class="md-icon-button md-primary">
+						<i class="icon-broom" style="font-size:16px"></i>
+						<md-tooltip md-direction="bottom">Clear Widgets</md-tooltip>
+					</md-button>
+				</div>
+				<div layout="row">
+					<!--md-button ng-click="perform($event,'Save')" class="md-primary">
+						<i class="ti-save" style="font-size:16px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Save Dashboard</text>
+					</md-button-->
+					
+					<md-button ng-click="doSomething()" class="md-icon-button md-primary">
+						<i class="ti-trash" style="font-size:16px"></i>
+						<md-tooltip md-direction="bottom">Delete</md-tooltip>
+					</md-button>
+					<md-button ng-click="doSomething()" class="md-icon-button md-primary">
+						<i class="ti-filter" style="font-size:16px;"></i>
+						<md-tooltip md-direction="bottom">Dashboard Filter</md-tooltip>
+					</md-button>
+				</div>
+			</div>
+			
+
+		</div>
+	
+
+</md-card>
+
+<md-card id="dashboardOptionsClosed" style="z-index:5;position:fixed;border-radius:4px;top:100px;right:0;width:50px;height:50px;margin-right: -2px;" ng-hide="showDashboardOptions">
+	<md-button ng-click="dashboardOptionsShowClick()" class="md-icon-button" style="margin:5px">
+		<i class="ti-more" style="font-size: 25px;line-height: 28px;"></i>
+		<md-tooltip md-direction="left">Dashboard Options</md-tooltip>
+	</md-button>
+</md-card>

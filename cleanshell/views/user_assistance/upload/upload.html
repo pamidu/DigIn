@@ -134,7 +134,7 @@ div.slide-up p {
 							<tr ng-repeat="val in schema track by $index">
 								<td> {{val.name}} </td>
 								<td>
-									<md-select ng-model="val.type" ng-disabled="isExist || showBusyText || preloader || insertPreLoader || uploadPreLoader" aria-label="select data type">
+									<md-select ng-model="val.type" ng-disabled="isExist || showBusyText || preloader || insertPreLoader || uploadPreLoader" is-disabled-dark aria-label="select data type">
 										<md-option ng-repeat="type in fieldTypeObj" value="{{type}}">
 											{{type}}
 										</md-option>

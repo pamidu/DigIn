@@ -1,4 +1,3 @@
-<<<<<<< .mine
 angular.module('configuration', [])
 .constant('Digin_Engine_API', 'http://dev.digin.io/DigInEngine/') //#Note : http://dev.digin.io/DigInEngine/
 .constant('Digin_Engine_API_Namespace', 'Demo')

@@ -279,21 +279,25 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{
-
 				if(generateForecast.isRequestValidated($scope.selectedSeries, $scope.selectedCategory)){
-					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data){
-						$scope.widgetConfig = data;
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
-						$element.find('.currentChart').append(newElement);
+					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data,status){
+						if(status){
+							$scope.widgetConfig = data;
+							$scope.showChartLoading = false;
+							$scope.showPlaceholderIcon = false;
+							newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
+							$element.find('.currentChart').append(newElement);
+						}
+						else{
+							$scope.showChartLoading = false;
+							$scope.showPlaceholderIcon = false;
+						}
 						
 					});
 				}
 				else{
 					$scope.showChartLoading = false;
 				}
-
 			}
 		
 		

@@ -1,4 +1,15 @@
 <form name="forecastSettingsForm" ng-submit="submit()">
+	
+	<div layout-gt-sm="row" class="side-margins">
+		<md-input-container class="md-block" flex-gt-sm>
+			<span> Widget Title </span>
+			<input ng-model="forecastObj.widgetName"  aria-label="title" name="title" required>
+			<div ng-messages="forecastSettingsForm.title.$error">
+				<div ng-message="required">Widget title can not be a blank</div>
+			</div>
+		</md-input-container> 
+	</div>
+
 	<div layout-gt-sm="row" class="side-margins">
 		<md-input-container class="md-block" flex-gt-sm>
 			<span>Model</span>
@@ -78,14 +89,50 @@
 	 	<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">For Calculation</div>
 	</div>
 
+<!--div layout-gt-sm="row" class="side-margins">
+	<md-datepicker name="sdt" 
+                     ng-model="forecastObj.paramObj.startdate" 
+                     md-placeholder="Enter date" 
+                     required 
+                     md-min-date="forecastObj.paramObj.mindate" 
+                     md-max-date="forecastObj.paramObj.maxdate">
+      </md-datepicker>
+
+      <div style="margin-top: 6px; font-size: 12px; color: #ec3e3e;" ng-messages="forecastSettingsForm.sdt.$error">
+        <div ng-message="valid">The entered value is not a date!</div>
+        <div ng-message="required">This date is required!</div>
+        <div ng-message="mindate">Date is too early!</div>
+        <div ng-message="maxdate">Date is too late!</div>
+      </div>
+
+</div-->
+
 	<div layout-gt-sm="row" class="side-margins">
+
 		<div layout="column" style="width: 187px;">
-			<span class="md-datepicker-label">Start Date </span>
-			<md-datepicker ng-model="forecastObj.paramObj.startdate" aria-label="Start Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+			<span class="md-datepicker-label">Start Date</span>
+			<md-datepicker name="startdt" ng-model="forecastObj.paramObj.startdate"  md-placeholder="Enter date" md-min-date="forecastObj.paramObj.mindate" md-max-date="forecastObj.paramObj.maxdate" aria-label="startdt" required></md-datepicker>
+			<div ng-messages="forecastSettingsForm.startdt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
+			<!--startdate: {{forecastObj.paramObj.startdate}}
+			mindate: {{forecastObj.paramObj.mindate}}
+			Maxdate: {{forecastObj.paramObj.maxdate}}-->
+				<div ng-message="valid">Invalid date</div>
+	        	<div ng-message="required">Start date is required</div>
+	        	<div ng-message="mindate">Start date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
+	        	<div ng-message="maxdate">Start date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
+			</div>
 		</div>
+
 		<div layout="column" style="margin-left: 22px">
 			<span class="md-datepicker-label">End Date </span>
-			<md-datepicker ng-model="forecastObj.paramObj.enddate" aria-label="End Date" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+			<md-datepicker name="enddt" ng-model="forecastObj.paramObj.enddate" md-placeholder="Enter date"  md-min-date="forecastObj.paramObj.mindate" md-max-date="forecastObj.paramObj.maxdate" aria-label="enddt" required></md-datepicker>
+			<div ng-messages="forecastSettingsForm.enddt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
+				<div ng-message="valid">Invalid date</div>
+	        	<div ng-message="required">End date is required</div>
+	        	<div ng-message="mindate">End date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
+	        	<div ng-message="maxdate">Start date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
+			</div>
+
 		</div>
 	</div>
 
@@ -98,35 +145,45 @@
 	<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.paramObj.isVisual">
 		<div layout="column" style="width: 187px;">
 			<span class="md-datepicker-label">Start Date </span>
-			<md-datepicker ng-model="forecastObj.paramObj.visualstart" aria-label="Start Date" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="startdate" md-open-on-focus></md-datepicker>
+			<md-datepicker ng-model="forecastObj.paramObj.visualstart" aria-label="startdate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="startdate" required></md-datepicker>
 			<div ng-messages="forecastSettingsForm.startdate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
 				<div ng-message="valid">Invalid date</div>
-	        	<div ng-message="required">Date is required</div>
+	        	<div ng-message="required">Start date is required</div>
 	        	<div ng-message="mindate">Start date must be between {{forecastObj.paramObj.startdate | formatdate}} and {{forecastObj.paramObj.enddate | formatdate}} 	</div>
+	        	<div ng-message="maxdate">Start date must be between {{forecastObj.paramObj.startdate | formatdate}} and {{forecastObj.paramObj.enddate | formatdate}} 	</div>
 			</div>
 		</div>
 		<div layout="column" style="margin-left: 22px">
 			<span class="md-datepicker-label">End Date </span>
-			<md-datepicker ng-model="forecastObj.paramObj.visualend" aria-label="End Date" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="enddate" md-open-on-focus></md-datepicker>
+			<md-datepicker ng-model="forecastObj.paramObj.visualend" aria-label="enddate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.enddate" name="enddate"></md-datepicker>
 			<div ng-messages="forecastSettingsForm.enddate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
 				<div ng-message="valid">Invalid date</div>
-	        	<div ng-message="required">Date is required</div>
-	        	<div ng-message="mindate">End date must be between {{forecastObj.paramObj.startdate | formatdate}} and {{forecastObj.paramObj.enddate | formatdate}} 	</div>
+	        	<div ng-message="required">End date is required</div>
+	        	<div ng-message="mindate">End date must be greater than {{forecastObj.paramObj.enddate | formatdate}} </div>
 			</div>
 		</div>
 	</div>
 
-	<div layout-gt-sm="row" layout-align="center center" class="side-margins">
+
+	<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
+		<md-checkbox ng-model="forecastObj.paramObj.groupby" aria-label="Use group by">
+			Use group by
+		</md-checkbox>		
+	</div>
+			
+	<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.paramObj.groupby">	
 		<md-input-container class="md-block" flex-gt-sm>
-			<span>Group by</span>
-			<md-select ng-model="forecastObj.paramObj.forecastAtt" aria-label="Group by">
+			<span> Select group </span>
+			<md-select ng-model="forecastObj.paramObj.forecastAtt" aria-label="forecastAtt">
 			  <md-option ng-repeat="cat in forecastObj.paramObj.selectedCategory" value="{{cat.name}}">
 				{{cat.name}}
 			  </md-option>
 			</md-select>   
 		</md-input-container> 
+	</div>
 
-		<md-checkbox ng-model="forecastObj.paramObj.showActual" aria-label="Show actual" style="margin: 20px 0px 0px 14px;" flex-gt-sm>
+	<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">	
+		<md-checkbox ng-model="forecastObj.paramObj.showActual" aria-label="Show actual">  <!--style="margin-top:28px"--> 
 			Show actual 
 		</md-checkbox>    
 	</div>

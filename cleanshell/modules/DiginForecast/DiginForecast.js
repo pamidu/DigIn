@@ -23,7 +23,7 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
 
             var forecastObj={};
             scope.forecastObj = {
-                paramObj: {
+                //paramObj: {
                     method: "Additive",
                     model: "triple exponential smoothing",
                     mod: "triple_exp",
@@ -51,8 +51,8 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     isVisual : false,
                     visualstart : intDate,
                     visualend : intDate,
-                    title : ""
-                }
+                    widgetName : ""
+                //}
             };
 
             scope.$on('press-submit', function(event, args) {
@@ -160,20 +160,20 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
             // forecastObj.paramObj.startdate =  moment(forecastObj.paramObj.startdate).format('YYYY-MM-DD');
             // forecastObj.paramObj.enddate =  moment(forecastObj.paramObj.enddate).format('YYYY-MM-DD');
-            forecastObj.paramObj.tbl=tableName;
-            forecastObj.paramObj.date_field=selectedCategory[0].name;
-            forecastObj.paramObj.f_field=selectedSeries[0].name;
+            forecastObj.tbl=tableName;
+            forecastObj.date_field=selectedCategory[0].name;
+            forecastObj.f_field=selectedSeries[0].name;
 
 
             //notifications.log(forecastObj,new Error());
             
             //#Create initial object
-            if (forecastObj.paramObj.interval == "Yearly") {
-                forecastObj.paramObj.fcast_days = 1;
-            } else if (forecastObj.paramObj.interval == "Daily") {
-                forecastObj.paramObj.fcast_days = 7;
-            } else if (forecastObj.paramObj.interval == "Monthly") {
-                forecastObj.paramObj.fcast_days = 12;
+            if (forecastObj.interval == "Yearly") {
+                forecastObj.fcast_days = 1;
+            } else if (forecastObj.interval == "Daily") {
+                forecastObj.fcast_days = 7;
+            } else if (forecastObj.interval == "Monthly") {
+                forecastObj.fcast_days = 12;
             }
 
            widgetData.title = {
@@ -195,7 +195,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                 
             //#Call funtion
             //$diginengine.getClient.getForcast(fObj,$scope.widget.widgetData,"",$scope.sourceData.id, function(data, status, fObj) {
-            var fObj = forecastObj.paramObj;
+            var fObj = forecastObj;
             $diginengine.getClient(selectedDB).getForcast(fObj,widgetData,"",datasourceId, function(data, status, fObj) {
                 if (status) {
                     var forcastArr = [];
@@ -207,16 +207,16 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
                      // set alpha,beeta, gamma values returned from the service
                     if(data.alpha != ""){
-                        forecastObj.paramObj.alpha = data.alpha.toFixed(3);
-                        forecastObj.paramObj.a = data.alpha.toFixed(3);
+                        forecastObj.alpha = data.alpha.toFixed(3);
+                        forecastObj.a = data.alpha.toFixed(3);
                     }                   
                     if(data.beta != ""){
-                        forecastObj.paramObj.beta = data.beta.toFixed(3);
-                        forecastObj.paramObj.b = data.beta.toFixed(3);
+                        forecastObj.beta = data.beta.toFixed(3);
+                        forecastObj.b = data.beta.toFixed(3);
                     }
                     if(data.gamma != ""){
-                        forecastObj.paramObj.gamma = data.gamma.toFixed(3);
-                        forecastObj.paramObj.g = data.gamma.toFixed(3); 
+                        forecastObj.gamma = data.gamma.toFixed(3);
+                        forecastObj.g = data.gamma.toFixed(3); 
                     }
 
                                                             // to check wether service has returned any warnings
@@ -225,12 +225,12 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                         //privateFun.fireMessage('0', data.warning);
 
                     //if the service has return a diferent len_season set it
-                    if (data.len_season != forecastObj.paramObj.len_season) {
-                        forecastObj.paramObj.len_season = data.len_season;
+                    if (data.len_season != forecastObj.len_season) {
+                        forecastObj.len_season = data.len_season;
                     }
 
-                    if(!forecastObj.paramObj.groupby){
-                        forecastObj.paramObj.forecastAtt="";
+                    if(!forecastObj.groupby){
+                        forecastObj.forecastAtt="";
                     }
 
 
@@ -239,11 +239,11 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                     // forecastObj.paramObj.enddate = moment(new Date(data.max_date)).format('LL');
                     // forecastObj.paramObj.startdate = moment(new Date(data.min_date)).format('LL');
 
-                    forecastObj.paramObj.enddate =new Date(data.max_date);
-                    forecastObj.paramObj.startdate = new Date(data.min_date); 
+                    forecastObj.enddate =new Date(data.max_date);
+                    forecastObj.startdate = new Date(data.min_date); 
 
-                    forecastObj.paramObj.mindate=new Date(data.min_date);
-                    forecastObj.paramObj.maxdate=new Date(data.max_date);
+                    forecastObj.mindate=new Date(data.min_date);
+                    forecastObj.maxdate=new Date(data.max_date);
                     //forecastObj.paramObj.mindate = moment(new Date(data.min_date)).subtract(1, 'days').toDate();
                     //forecastObj.paramObj.maxdate = moment(new Date(data.max_date)).subtract(1, 'days').toDate();
 
@@ -366,7 +366,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                                 }
                             },
                             title: {
-                                text: ''
+                                text: forecastObj.widgetName
                             },
                             tooltip: {
                                 pointFormat: '<b> <span style = "color : {series.color}" >  </span> {series.name}: {point.y:,.0f} </b>',
@@ -417,8 +417,8 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
                     var temptArr = forecastWidgetConfig;
 
-                    var startdate = formattedDate(forecastObj.paramObj.visualstart, forecastObj.paramObj.interval);
-                    var enddate = formattedDate(forecastObj.paramObj.visualend, forecastObj.paramObj.interval);
+                    var startdate = formattedDate(forecastObj.visualstart, forecastObj.interval);
+                    var enddate = formattedDate(forecastObj.visualend, forecastObj.interval);
                     var xAxisLen = temptArr.xAxis.categories.length;
 
                     var startInd = -1;
@@ -427,11 +427,11 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                     var tempdata = [];
                     for (var i = 0; i < xAxisLen; i++) {
                         var date;
-                        if (forecastObj.paramObj.interval == "Yearly") {
+                        if (forecastObj.interval == "Yearly") {
                             date = temptArr.xAxis.categories[i] + "-01-01";
-                        } else if (forecastObj.paramObj.interval == "Monthly") {
+                        } else if (forecastObj.interval == "Monthly") {
                             date = temptArr.xAxis.categories[i] + "-01";
-                        } else if (forecastObj.paramObj.interval == "Daily") {
+                        } else if (forecastObj.interval == "Daily") {
                             date = temptArr.xAxis.categories[i];
                         }
 

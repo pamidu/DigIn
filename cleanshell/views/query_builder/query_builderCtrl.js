@@ -178,6 +178,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			$scope.widgetRow = $stateParams.widget.row;
 			$scope.widgetSizeX = $stateParams.widget.sizeX;
 			$scope.widgetSizeY = $stateParams.widget.sizeY;
+			$scope.settingConfig = $stateParams.widget.widgetData.settingConfig;
+
 
 			$scope.settingConfig.widgetName = $scope.chartType.name;
 

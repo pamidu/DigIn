@@ -1,8 +1,44 @@
 <div style="width:600px;box-shadow: 2px 2px 8px 0px #888;" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.google.com/maps/api/jshttp://maps.google.com/maps/api/js?key=AIzaSyANY96AhQijBZgSXQ6RWkYUlO5fxCh6OMU">
-	<ng-map style="height:250px;" center="[7.6, 80.7]" zoom="6">
-		<!--map-data set-style="styles" load-geo-json="{{setData}}" on-click="abc(event)"></map-data-->
-		<marker ng-repeat="address in addresses" position="{{address.name}}" on-click="abc(event)">
-			
-		</marker>
+
+	<ng-map default-style="true" center="41,-87" zoom="3">
+
+		<!--info-window id="foo">
+		  <div ng-non-bindable="" style="color:black">
+			Lat: {{anchor.getPosition().lat()}}<br/>
+			Lng: {{anchor.getPosition().lng()}}<br/>
+			<ul>
+			  <li ng-repeat='item in store.items'>{{item}}</li>
+			</ul>
+		  </div>
+		</info-window>
+
+		<marker ng-repeat="(id, store) in stores" id="{{id}}" position="{{store.position}}" on-click="showStore(event, id)"></marker-->
+
+		<info-window id="foo">
+		  <div ng-non-bindable="" style="color:black">
+			Lat: {{anchor.getPosition().lat()}}<br/>
+			Lng: {{anchor.getPosition().lng()}}<br/>
+		  </div>
+		</info-window>
+		<!--marker position="41, -79" on-click="map.showInfoWindow('bar')" /-->
+		<marker ng-repeat="(id, store) in stores" id="{{id}}" position="{{store.position}}" on-click="showStore(event, id)"></marker>
+		
+		<info-window id="measureswindow" position="{{lat}},{{lng}}">
+		  <div ng-non-bindable="" style="color:black">
+			Lat: {{anchor.getPosition().lat()}}<br/>
+			Lng: {{anchor.getPosition().lng()}}<br/>
+		  </div>
+		</info-window>
+		<map-data set-style="styles" load-geo-json="http://dev.digin.io/DigInEngine/geocoordinate?method=geo_code&SecurityToken=641d7b1d27df0d8bd4d86b2213c18777&dbtype=memsql&datasource_id=1490284460864&measures=[{%27tiv_2012%27:%27avg%27},{%27tiv_2011%27:%27sum%27}]&latitude=point_longitude&longitude=point_latitude" on-click="showMeasure(event)"></map-data>
 	</ng-map>
+	
+	<!--ng-map style="height:250px;" center="[7.6, 80.7]" zoom="2">
+		<info-window id="measureswindow">
+		  <div ng-non-bindable="" style="color:black">
+			Lat: {{anchor.getPosition().lat()}}<br/>
+			Lng: {{anchor.getPosition().lng()}}<br/>
+		  </div>
+		</info-window>
+		<map-data set-style="styles" load-geo-json="modules/GoogleMap/samplegeojson.json" on-click="map.showInfoWindow('measureswindow')"></map-data>
+	</ng-map-->
 </div>

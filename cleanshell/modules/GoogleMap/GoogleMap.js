@@ -15,58 +15,66 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap', function(NgMap) {
 		
 		scope.setData = "modules/GoogleMap/samplegeojson.json";
 		
-		scope.addresses = [
-			{name: "Majestic City"},
-			{name: "Liberty Plaza Sri Lanka"},
-			{name: "Superior Courts Complex, Hulftsdorp St, Colombo 01200"},
-			{name: "Kumaran Ratnam Rd, Colombo"},
-			{name: "No 121A Sir James Pieris Mw Colombo 02"},
-			{name: "41 Sellapperuma Mawatha Rawathawatta Moratuwa"},
-			{name: "Temple Road Nallur Jaffna"},
-			{name: "37 Mahatma Gandhi Road Jaffna"},
-			{name: "Paradise Island Aluthgama"},
-			{name: "Kaikawala Road Induruwa Bentota"},
-			{name: "449/1 Dedduwa Hapurugala Bentota"},
-			{name: "Mohotti Walauwa 138/18 – 138/22 Galle Road Bentota"},
-			{name: "Aturuwella Bentota"},
-			{name: "No 700 Galle Road Induruwa"},
-			{name: "No 25/6 Nutmeg Garden Kaluwella Galle"},
-			{name: "10 Church Street Fort Galle"},
-			{name: "No-834 Galle Road Talpe Galle"},
-			{name: "Uva Greenland Estate Passara Rd Ella"}
-			
-		]
-			NgMap.getMap().then(function(map) {
-				console.log(map);
-				scope.map = map;
-			});
-			
-			scope.abc = function(ev, c)
-			{
-				console.log(ev);
-				console.log(ev.latLng.lat());
-				console.log(ev.latLng.lng());
-
-			}
+		scope.areaData = {
+		 "type": "FeatureCollection",
+		 "features": [{
+		  "geometry": {
+		   "type": "Point",
+		   "coordinates": [79.88897323608397, 6.933072734145719]
+		  },
+		  "type": "Feature",
+		  "properties": {
+		   "aggregate_measures": [{
+			"field": "st",
+			"value": 19.0,
+			"measure": "avg"
+		   }]
+		  }
+		 }]
+		};
 		
-		scope.styles= [{
-          'featureType': 'all',
-          'elementType': 'all',
-          'stylers': [{'visibility': 'off'}]
-        }, {
-          'featureType': 'landscape',
-          'elementType': 'geometry',
-          'stylers': [{'visibility': 'on'}, {'color': '#fcfcfc'}]
-        }, {
-          'featureType': 'water',
-          'elementType': 'labels',
-          'stylers': [{'visibility': 'off'}]
-        }, {
-          'featureType': 'water',
-          'elementType': 'geometry',
-          'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
-        }];
+		scope.map = {};
+		scope.lat = 0;//6.933072734145719;
+		scope.lng = 0;//79.88897323608397;
+			
+		NgMap.getMap().then(function(map) {
+			//console.log(map);
+			scope.map = map;
+		});
+		
+		scope.stores = {
+			foo: { position:[41, -87], items: [1,2,3,4]},
+			bar:{ position:[41, -83], items: [5,6,7,8]}
+		  };
+		  
+		  
+		  scope.showStore = function(evt, storeId) {
+			scope.store = scope.stores[storeId];
+			scope.map.showInfoWindow('foo', this);
+		  };
+		
+		scope.showMeasure = function(evt)
+		{
+			console.log(evt);
+			this.position = angular.copy(evt.latLng)
+			this.id = "measureswindow";
+			this.anchorPoint = {f: true,x: 0, y: -40};
+			console.log(this);
+			
+			scope.lat = evt.latLng.lat();
+			scope.lng = evt.latLng.lng();
+			
+			scope.map.showInfoWindow('measureswindow', this);
 
+		}
+		
+		scope.showStore = function(evt, storeId) {
+			console.log(evt);
+			console.log(this);
+			scope.store = scope.stores[storeId];
+			scope.map.showInfoWindow('foo', this);
+		};
+	
 	} //end of link
   };
 }]);

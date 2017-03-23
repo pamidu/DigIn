@@ -1,3 +1,4 @@
+<<<<<<< .mine
 angular.module('configuration', [])
 .constant('Digin_Engine_API', 'http://dev.digin.io/DigInEngine/') //#Note : http://dev.digin.io/DigInEngine/
 .constant('Digin_Engine_API_Namespace', 'Demo')
@@ -57,7 +58,31 @@ angular.module('configuration', [])
 // //# url for facebook app
 // .constant('fbUrl', 'http://prod.digin.io/DigIn-FB/index.html')
 
-// //configure datasource connections in DigIn/shell/jsons/dbConfig.json
-// // #set the 'display' parameter in each object to configure visibility
-// // # "display": "true" - Datasource will be visible
-// // # "display": "false" - Datasource will be hidden
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -267,17 +267,21 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				//$scope.currentChartType = "highCharts";
 			}else if($scope.chartType.chartType == 'map')
 			{
-			    
-				    var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
-					if(isChartConditionsOk){
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<google-map-in-settings></google-map-in-settings>')($scope);
+				var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
+				if(isChartConditionsOk){
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = false;
+					
+					generateGoogleMap.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (url){
+						console.log(url);
+						newElement = $compile('<google-map-in-settings geojson-url="'+url+'"></google-map-in-settings>')($scope);
 						$element.find('.currentChart').append(newElement);
-					}else{
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = true;
-					}
+					})
+
+				}else{
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+				}
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{

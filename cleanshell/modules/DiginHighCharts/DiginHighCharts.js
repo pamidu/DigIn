@@ -35,7 +35,7 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
             scope.$on('gridster-item-initialized', function (event, item) {
 				$timeout(function(){ //wait 100 milliseconds until the dom element is added
 					var widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
-					$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY(), true);
+					$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY() - 50, true);
 				}, 100);
             });
         }

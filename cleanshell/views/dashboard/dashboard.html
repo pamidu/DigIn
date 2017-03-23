@@ -180,7 +180,7 @@
 
 </md-card>
 
-<md-card id="dashboardOptionsClosed" style="z-index:5;position:fixed;border-radius:4px;top:100px;right:0;width:50px;height:50px;margin-right: -2px;" ng-hide="showDashboardOptions">
+<md-card id="dashboardOptionsClosed" style="z-index:5;position:fixed;border-radius:4px;top:100px;right:0;width:50px;height:50px;margin-right: -2px;" md-swipe-left="dashboardOptionsShowClick()" ng-hide="showDashboardOptions">
 	<md-button ng-click="dashboardOptionsShowClick()" class="md-icon-button" style="margin:5px">
 		<i class="ti-more" style="font-size: 25px;line-height: 28px;"></i>
 		<md-tooltip md-direction="left">Dashboard Options</md-tooltip>

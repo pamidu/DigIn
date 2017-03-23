@@ -19,6 +19,7 @@
 <html ng-app="DuoDiginRt">
 <head>
 	<title>DigIn - Beyond BI</title>
+	<meta charset="utf-8" />
 	<meta name="author" content="Sajeetharan" />
 	<meta name="description" content="Know everything your data is telling you with the platform that gives you everything." />
     <meta name="keywords" content="data integration, analytics, and visualization" />
@@ -617,7 +618,6 @@
 		<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 		<script src="views/query_builder/query_builderCtrl.js"></script>
 		<script src="views/query_builder/chart-svgs.js"></script>
-		<script src="views/chart_designer/chart_designerCtrl.js"></script>
 		<script src="views/social/facebook/facebookCtrl.js"></script>
 		<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 		<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>

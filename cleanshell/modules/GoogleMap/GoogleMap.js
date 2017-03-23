@@ -11,8 +11,12 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap', function(NgMap) {
   return {
 	restrict: 'E',
 	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
+	scope:{
+		geojsonUrl: "@"
+	},
 	link: function(scope,element){
 		
+		console.log(scope.geojsonUrl);
 		scope.setData = "modules/GoogleMap/samplegeojson.json";
 		
 		scope.areaData = {
@@ -146,15 +150,32 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
     };
 }]);
 
-GoogleMapModule.factory('generateGoogleMap', ['notifications', function(notifications) {
+GoogleMapModule.factory('generateGoogleMap', ['$rootScope','notifications','Digin_Engine_API', function($rootScope, notifications,Digin_Engine_API) {
 	return {
-		generate: function(number) {
-			 return number + 1;
+		generate: function(settingConfig, selectedDB, datasource_id, selectedMeasures, callback) {
+			var selectedMeasuresForUrl = [];
+			var measureName = "";
+			var measureType = "";
+			var SecurityToken = $rootScope.authObject.SecurityToken;
+			for (var i = 0, len = selectedMeasures.length; i<len; ++i){
+				measureName = selectedMeasures[i].name;
+				measureType = selectedMeasures[i].aggType.toLowerCase();
+				selectedMeasuresForUrl.push({[measureName] : measureType});
+			}
+			console.log(selectedMeasuresForUrl);
+			selectedMeasuresForUrl = JSON.stringify(selectedMeasuresForUrl)
+			if(settingConfig.locatorType == "geo_code"){
+				var geojsonUrl = Digin_Engine_API+"geocoordinate?method=geo_code&SecurityToken="+SecurityToken+"&dbtype="+selectedDB+"&datasource_id="+datasource_id+"&measures="+selectedMeasuresForUrl+"&latitude="+settingConfig.latitude.name+"&longitude="+settingConfig.longitude.name;
+				callback(geojsonUrl);
+			}else if(settingConfig.locatorType == "reverse_geo_code")
+			{
+				
+			}
 		},mapValidations: function(settings){
 			var isChartConditionsOk = false;
 			
 			switch (settings.locatorType) {
-                case "geocodes":
+                case "geo_code":
 					if(settings.longitude && settings.latitude)
 					{
 						isChartConditionsOk = true;
@@ -162,7 +183,7 @@ GoogleMapModule.factory('generateGoogleMap', ['notifications', function(notifica
 						notifications.toast(2,"Please select longitude and latitude columns");
 					}
 					break;
-				case "address":
+				case "reverse_geo_code":
 					if(settings.address)
 					{
 						isChartConditionsOk = true;
@@ -171,7 +192,7 @@ GoogleMapModule.factory('generateGoogleMap', ['notifications', function(notifica
 					}
 					break;
 			}
-			return true;
+			return isChartConditionsOk;
 		
 		}
 		

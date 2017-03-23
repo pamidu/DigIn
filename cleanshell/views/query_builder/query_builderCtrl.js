@@ -166,6 +166,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		{
 			$scope.chartType = $stateParams.chartType;
 			widgetID = $stateParams.widget.widgetID;
+			$scope.groupBySortArray = $stateParams.widget.groupBySortArray;
 
 			$scope.settingConfig.widgetName = $scope.chartType.name;
 
@@ -366,7 +367,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			'widgetConfig' : $scope.widgetConfig,
 			'selectedDB' : $scope.selectedDB,
 			'widgetID' :  widgetID,
-			'query' : $scope.chartQuery
+			'query' : $scope.chartQuery,
+			'groupBySortArray': $scope.groupBySortArray,
+
 			
 		};
 

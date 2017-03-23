@@ -55,10 +55,11 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
            chartType: '='
           },
          link: function(scope,element){
-         	console.log(scope.chartType);
-			scope.widgetConfig = generateHighchart.initializeChartObject(scope.chartType);
-			var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
-			element.find('.currentChart').append(newElement);
+         	if (angular.equals(scope.widgetConfig, {})) {
+				scope.widgetConfig = generateHighchart.initializeChartObject(scope.chartType);
+				var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
+				element.find('.currentChart').append(newElement);
+         	}
 			scope.$on('press-submit', function(event, args) {
 				scope.hightChartSettingsForm.$setSubmitted();
 				if(scope.hightChartSettingsForm.$valid)

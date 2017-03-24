@@ -1,0 +1,13 @@
+1. Duplicate this folder with the widget name of your choosing. Start the name with uppercase and keep it camelcase from there.
+
+2. The Module names should start with an uppercase and continue in camelcase, directives and factories should start with a
+lowercase letter as convention.
+
+3. Add a reference of the script contaning the module and factories in the index.php file and add the module name in the js/app.js file.
+
+4. The widget should contain a settings view and a widget view. These comes in the form of directives. The settings view widgets are
+called from chartDesinger(or queryBuilder) folder in widgetSettings.html
+
+5. When the generate button is clicked in the chartDesinger(or queryBuilder) add the widget view(directive) programatically.
+
+6. Later all the widget view (directives) are ng-repeated in the dashboard.html

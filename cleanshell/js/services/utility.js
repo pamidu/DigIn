@@ -173,22 +173,27 @@ function getCookie(name) {
 
 //rounding numbers to given decimal places
 function convertDecimals(number, decimal_places) {
-    if (typeof number === 'number' && typeof decimal_places === 'number') {
-      var denominator    = Math.pow(10, decimal_places),
-          rounded_number = Math.round(number * denominator) / denominator;
+	if (typeof number === 'number' && typeof decimal_places === 'number') {
+	  var denominator    = Math.pow(10, decimal_places),
+		  rounded_number = Math.round(number * denominator) / denominator;
 
-      return rounded_number;
-    } else {
-      return number;
-    }
-  }
-  
-  	function createuuid() 
-	{
-		return Math.floor((1 + Math.random()) * 0x10000)
-			.toString(16)
-			.substring(1);
-    }
-  
+	  return rounded_number;
+	} else {
+	  return number;
+	}
+}
+
+function createuuid() 
+{
+	return Math.floor((1 + Math.random()) * 0x10000)
+		.toString(16)
+		.substring(1);
+}
+
+
+String.prototype.replaceAll = function(search, replacement) {
+	var target = this;
+	return target.replace(new RegExp(search, 'g'), replacement);
+};
   
  

@@ -3,3 +3,5 @@
 <digin-forecast-settings ng-if="$parent.chartType.chartType == 'forecast'" forecast-obj="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" measure=$parent.$parent.selectedMeasures></digin-forecast-settings>
 
 <google-map-settings ng-if="$parent.chartType.chartType == 'map'" map-settings="$parent.$parent.settingConfig"></google-map-settings>
+
+<what-if-settings ng-if="$parent.chartType.chartType == 'whatif'" map-settings="$parent.$parent.settingConfig"></what-if-settings>

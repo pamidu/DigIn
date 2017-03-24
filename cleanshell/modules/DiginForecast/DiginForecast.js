@@ -21,8 +21,16 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
 
             var intDate =  new Date();
 
-            var forecastObj={};
-            scope.forecastObj = {
+            var keys = Object.keys(scope.forecastObj);
+            var len = keys.length;
+
+            if(len !=1 ){
+
+            }
+            else
+            {
+               var forecastObj={};
+               scope.forecastObj = {
                 //paramObj: {
                     method: "Additive",
                     model: "triple exponential smoothing",
@@ -51,9 +59,12 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     isVisual : false,
                     visualstart : intDate,
                     visualend : intDate,
-                    widgetName : ""
+                    widgetName : scope.forecastObj.widgetName
                 //}
-            };
+                }; 
+            }
+            
+            
 
             scope.$on('press-submit', function(event, args) {
                 scope.forecastSettingsForm.$setSubmitted();
@@ -109,19 +120,6 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
     
 
     return {
-        getforecastAtts : function(cat, ser,forecastObj) {
-            // var catnSer = {};    
-            // catnSer.selectedCategory=cat;
-            // catnSer.selectedCategory.push({});
-            // catnSer.selectedSeries=ser;
-            // return catnSer;
-
-            // var forecastObj;
-            // forecastObj.paramObj ={};
-            // forecastObj.paramObj.selectedSeries=ser;
-            // forecastObj.paramObj.selectedCategory=cat;
-
-        },
         isRequestValidated: function(selectedSeries, selectedCategory){  
             var isRequestValidated = true;
 

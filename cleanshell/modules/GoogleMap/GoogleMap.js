@@ -7,7 +7,7 @@
 
 var GoogleMapModule = angular.module('GoogleMap',['DiginServiceLibrary']);
 
-GoogleMapModule.directive('googleMapInSettings', ['NgMap', function(NgMap) {
+GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http', function(NgMap, $timeout,$http) {
   return {
 	restrict: 'E',
 	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
@@ -16,34 +16,60 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap', function(NgMap) {
 	},
 	link: function(scope,element){
 		
-		console.log(scope.geojsonUrl);
-		scope.setData = "modules/GoogleMap/samplegeojson.json";
+		scope.dynMarkers = [];
 		
-		scope.areaData = {
-		 "type": "FeatureCollection",
-		 "features": [{
-		  "geometry": {
-		   "type": "Point",
-		   "coordinates": [79.88897323608397, 6.933072734145719]
-		  },
-		  "type": "Feature",
-		  "properties": {
-		   "aggregate_measures": [{
-			"field": "st",
-			"value": 19.0,
-			"measure": "avg"
-		   }]
-		  }
-		 }]
-		};
+		$http.get(scope.geojsonUrl)
+	   .then(function(result) {
+			//console.log(result.data.features);
+			NgMap.getMap().then(function(map) {
+				console.log(result);
+	  
+				for (var i=0; i<result.data.Result.features.length; i++) {
+					var position = result.data.Result.features[i].geometry.coordinates;
+					//console.log(position[0],position[1]);
+					var latLng = new google.maps.LatLng(position[1],position[0]);
+					scope.dynMarkers.push(new google.maps.Marker({position:latLng}));
+				}
+			  scope.markerClusterer = new MarkerClusterer(map, scope.dynMarkers, {});
+			});
+		},function errorCallback(response) {
+			console.log(response);
+		});
+
+	} //end of link
+  };
+}]);
+/*
+GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout', function(NgMap, $timeout) {
+  return {
+	restrict: 'E',
+	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
+	scope:{
+		geojsonUrl: "@"
+	},
+	link: function(scope,element){
+		
+		scope.showMapData = false;
+		
+		$timeout(function(){
+			scope.showMapData = true;
+		},200);
 		
 		scope.map = {};
 		scope.lat = 0;//6.933072734145719;
 		scope.lng = 0;//79.88897323608397;
-			
+		scope.aggregate_measures = [];
+		scope.dynMarkers = [];
+		
 		NgMap.getMap().then(function(map) {
-			//console.log(map);
+			console.log(map);
 			scope.map = map;
+			
+			for (var i=0; i<998; i++) {
+				var latLng = new google.maps.LatLng(markers[i].position[0], markers[i].position[1]);
+				scope.dynMarkers.push(new google.maps.Marker({position:latLng}));
+			}
+			scope.markerClusterer = new MarkerClusterer(map, scope.dynMarkers, {});
 		});
 		
 		scope.stores = {
@@ -56,32 +82,24 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap', function(NgMap) {
 			scope.store = scope.stores[storeId];
 			scope.map.showInfoWindow('foo', this);
 		  };
-		
+
 		scope.showMeasure = function(evt)
 		{
-			console.log(evt);
-			this.position = angular.copy(evt.latLng)
-			this.id = "measureswindow";
-			this.anchorPoint = {f: true,x: 0, y: -40};
+			scope.aggregate_measures = evt.feature.f.aggregate_measures;
 			console.log(this);
+			console.log(evt);
 			
 			scope.lat = evt.latLng.lat();
 			scope.lng = evt.latLng.lng();
-			
-			scope.map.showInfoWindow('measureswindow', this);
+			//this.getPosition()
+						
+			scope.map.showInfoWindow('measureswindow');
 
 		}
-		
-		scope.showStore = function(evt, storeId) {
-			console.log(evt);
-			console.log(this);
-			scope.store = scope.stores[storeId];
-			scope.map.showInfoWindow('foo', this);
-		};
 	
 	} //end of link
   };
-}]);
+}]);*/
 
 GoogleMapModule.directive('googleMap',['NgMap', function(NgMap) {
   return {
@@ -162,8 +180,8 @@ GoogleMapModule.factory('generateGoogleMap', ['$rootScope','notifications','Digi
 				measureType = selectedMeasures[i].aggType.toLowerCase();
 				selectedMeasuresForUrl.push({[measureName] : measureType});
 			}
-			console.log(selectedMeasuresForUrl);
-			selectedMeasuresForUrl = JSON.stringify(selectedMeasuresForUrl)
+			selectedMeasuresForUrl = JSON.stringify(selectedMeasuresForUrl).replaceAll('"', "'");
+			
 			if(settingConfig.locatorType == "geo_code"){
 				var geojsonUrl = Digin_Engine_API+"geocoordinate?method=geo_code&SecurityToken="+SecurityToken+"&dbtype="+selectedDB+"&datasource_id="+datasource_id+"&measures="+selectedMeasuresForUrl+"&latitude="+settingConfig.latitude.name+"&longitude="+settingConfig.longitude.name;
 				callback(geojsonUrl);
@@ -198,3 +216,4 @@ GoogleMapModule.factory('generateGoogleMap', ['$rootScope','notifications','Digi
 		
    }
 }]);//END OF DiginServices
+			

@@ -147,7 +147,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		}
 		else if($scope.chartType.chartType == "forecast")
 		{
-			generateForecast.getforecastAtts($scope.selectedAttributes, $scope.selectedMeasures,$scope.settingConfig);
+			//generateForecast.getforecastAtts($scope.selectedAttributes, $scope.selectedMeasures,$scope.settingConfig);
 
 			/*if(!angular.equals($scope.widgetConfig, {}))
 			{
@@ -180,9 +180,11 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			$scope.widgetSizeY = $stateParams.widget.sizeY;
 			$scope.settingConfig = $stateParams.widget.widgetData.settingConfig;
 
-
-			$scope.settingConfig.widgetName = $scope.chartType.name;
-
+			if($scope.settingConfig.widgetName==undefined || 	$scope.settingConfig.widgetName=="")
+			{
+				$scope.settingConfig.widgetName = $scope.chartType.name;
+			}
+			
 			if($scope.chartType.chartType == "highCharts")
 			{
 				$scope.showPlaceholderIcon = false;

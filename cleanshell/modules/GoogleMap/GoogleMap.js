@@ -20,86 +20,41 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http', fu
 		
 		$http.get(scope.geojsonUrl)
 	   .then(function(result) {
-			//console.log(result.data.features);
 			NgMap.getMap().then(function(map) {
-				console.log(result);
-	  
 				for (var i=0; i<result.data.Result.features.length; i++) {
+					var html = "";
 					var position = result.data.Result.features[i].geometry.coordinates;
-					//console.log(position[0],position[1]);
-					var latLng = new google.maps.LatLng(position[1],position[0]);
-					scope.dynMarkers.push(new google.maps.Marker({position:latLng}));
+					for (var j=0; j<result.data.Result.features[i].properties.aggregate_measures.length; j++) {
+						var currentMeasure = result.data.Result.features[i].properties.aggregate_measures[j];
+						html += "<text class='infowindow-textcolor'>"+currentMeasure.measure+" of "+currentMeasure.field+": "+currentMeasure.value+"</text><br/>";
+					}
+					createMarker(position,map,html);
 				}
 			  scope.markerClusterer = new MarkerClusterer(map, scope.dynMarkers, {});
 			});
 		},function errorCallback(response) {
 			console.log(response);
+		});//end of $http
+		
+		function createMarker(position, map, html) {
+			var latLng = new google.maps.LatLng(position[1],position[0]);
+			var marker = new google.maps.Marker({position:latLng, title:"Hello World!"});
+			google.maps.event.addListener(marker, 'click', function(data) {
+				infowindow.setContent(html);
+				infowindow.open(map, marker);
+			});
+			scope.dynMarkers.push(marker);
+		}//end of create marker
+		
+		var infowindow = new google.maps.InfoWindow(
+		{ 
+			size: new google.maps.Size(150,50)
 		});
+
 
 	} //end of link
   };
 }]);
-/*
-GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout', function(NgMap, $timeout) {
-  return {
-	restrict: 'E',
-	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
-	scope:{
-		geojsonUrl: "@"
-	},
-	link: function(scope,element){
-		
-		scope.showMapData = false;
-		
-		$timeout(function(){
-			scope.showMapData = true;
-		},200);
-		
-		scope.map = {};
-		scope.lat = 0;//6.933072734145719;
-		scope.lng = 0;//79.88897323608397;
-		scope.aggregate_measures = [];
-		scope.dynMarkers = [];
-		
-		NgMap.getMap().then(function(map) {
-			console.log(map);
-			scope.map = map;
-			
-			for (var i=0; i<998; i++) {
-				var latLng = new google.maps.LatLng(markers[i].position[0], markers[i].position[1]);
-				scope.dynMarkers.push(new google.maps.Marker({position:latLng}));
-			}
-			scope.markerClusterer = new MarkerClusterer(map, scope.dynMarkers, {});
-		});
-		
-		scope.stores = {
-			foo: { position:[41, -87], items: [1,2,3,4]},
-			bar:{ position:[41, -83], items: [5,6,7,8]}
-		  };
-		  
-		  
-		  scope.showStore = function(evt, storeId) {
-			scope.store = scope.stores[storeId];
-			scope.map.showInfoWindow('foo', this);
-		  };
-
-		scope.showMeasure = function(evt)
-		{
-			scope.aggregate_measures = evt.feature.f.aggregate_measures;
-			console.log(this);
-			console.log(evt);
-			
-			scope.lat = evt.latLng.lat();
-			scope.lng = evt.latLng.lng();
-			//this.getPosition()
-						
-			scope.map.showInfoWindow('measureswindow');
-
-		}
-	
-	} //end of link
-  };
-}]);*/
 
 GoogleMapModule.directive('googleMap',['NgMap', function(NgMap) {
   return {

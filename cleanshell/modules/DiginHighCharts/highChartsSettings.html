@@ -1,93 +1,97 @@
 <form name="hightChartSettingsForm" ng-submit="submit()">
 
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Widget Name</span>
-			<input required type="text" name="name" ng-model="highchartSetting.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
-			<div ng-messages="hightChartSettingsForm.name.$error" role="alert">
-				<div ng-message-exp="['required']">
-					Widget name is required
-				</div>
-			</div>
-		</md-input-container>
-	</div>
+	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
+	
+	<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding: 20px 0px 20px 0px">
 
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-				<md-switch ng-init="switch = false" ng-model="switch" aria-label="Switch 1">
-					Automaic drilldown: {{ switch }}
-				</md-switch>
-		</md-input-container>
-	</div>
-	<div layout-gt-sm="row" class="side-margins">
-		<v-accordion class="vAccordion--default" flex style="border: 1px solid #ccc;padding: 10px;border-radius:4px" ng-hide="widgetConfig.options.chart.type == 'pie' || widgetConfig.options.chart.type == 'funnel' || widgetConfig.options.chart.type == 'pyramid' ">
-		  <v-pane ng-repeat="series in widgetConfig.series">
-			<v-pane-header>
-			  {{series.name}}
-			</v-pane-header>
-
-			<v-pane-content>
-				<md-input-container class="md-block" flex-gt-sm>
-					<span>Name</span>
-					<input required type="text" name="title" ng-model="series.name" aria-label="name" ng-change="series.name = series.name.split(' ').join('')"/>
-					<div ng-messages="hightChartSettingsForm.title.$error" role="alert">
-					  <div ng-message-exp="['required']">
-							Series name is required
-					  </div>
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Widget Name</span>
+				<input required type="text" name="name" ng-model="highchartSetting.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+				<div ng-messages="hightChartSettingsForm.name.$error" role="alert">
+					<div ng-message-exp="['required']">
+						Widget name is required
 					</div>
-				</md-input-container>
-				<div flex-gt-sm>
-					<span style="font-size:12px;">Select Tile Color</span>
-					</br>
-					<ng-color-picker selected='series.color' colors="colors"></ng-color-picker>
 				</div>
-			</v-pane-content>
-		  </v-pane>
-		</v-accordion>
-	</div>
+			</md-input-container>
+		</div>
 
-	<div layout-gt-sm="row" class="side-margins" ng-hide="widgetConfig.options.chart.type == 'pie' || widgetConfig.options.chart.type == 'funnel' || widgetConfig.options.chart.type == 'pyramid' ">
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+					<md-switch ng-init="switch = false" ng-model="switch" aria-label="Switch 1">
+						Automaic drilldown: {{ switch }}
+					</md-switch>
+			</md-input-container>
+		</div>
+		<div layout-gt-sm="row" class="side-margins">
+			<v-accordion class="vAccordion--default" flex style="border: 1px solid #ccc;padding: 10px;border-radius:4px" ng-hide="widgetConfig.options.chart.type == 'pie' || widgetConfig.options.chart.type == 'funnel' || widgetConfig.options.chart.type == 'pyramid' ">
+			  <v-pane ng-repeat="series in widgetConfig.series">
+				<v-pane-header>
+				  {{series.name}}
+				</v-pane-header>
 
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>X axis</span>
-			<input required type="text" name="xAxis" ng-model="widgetConfig.xAxis.title.text" ng-change="widgetConfig.xAxis.title.text = widgetConfig.xAxis.title.text.split(' ').join('')"   ng-disabled="false"  is-disabled-dark aria-label="name"/>
-			<div ng-messages="hightChartSettingsForm.xAxis.$error" role="alert">
-				<div ng-message-exp="['required']">
-					X axis is required
-				</div>
-			</div>
-		</md-input-container>
+				<v-pane-content>
+					<md-input-container class="md-block" flex-gt-sm>
+						<span>Name</span>
+						<input required type="text" name="title" ng-model="series.name" aria-label="name" ng-change="series.name = series.name.split(' ').join('')"/>
+						<div ng-messages="hightChartSettingsForm.title.$error" role="alert">
+						  <div ng-message-exp="['required']">
+								Series name is required
+						  </div>
+						</div>
+					</md-input-container>
+					<div flex-gt-sm>
+						<span style="font-size:12px;">Select Tile Color</span>
+						</br>
+						<ng-color-picker selected='series.color' colors="colors"></ng-color-picker>
+					</div>
+				</v-pane-content>
+			  </v-pane>
+			</v-accordion>
+		</div>
+		<div layout-gt-sm="row" class="side-margins" ng-if="!(widgetConfig.options.chart.type == 'pie' || widgetConfig.options.chart.type == 'funnel' || widgetConfig.options.chart.type == 'pyramid')">
 
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Y axis</span>
-			<input required type="text" name="yAxis" <input ng-model="widgetConfig.yAxis.title.text" ng-change="widgetConfig.yAxis.title.text = widgetConfig.yAxis.title.text.split(' ').join('')"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
-			<div ng-messages="hightChartSettingsForm.yAxis.$error" role="alert">
-				<div ng-message-exp="['required']">
-					Y axis is required
-				</div>
-			</div>
-		</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>X axis</span>
+				<input type="text" name="xAxis" ng-model="widgetConfig.xAxis.title.text" ng-change="widgetConfig.xAxis.title.text = widgetConfig.xAxis.title.text.split(' ').join('')"   ng-disabled="false"  is-disabled-dark aria-label="name"/>
+				<!--div ng-messages="hightChartSettingsForm.xAxis.$error" role="alert">
+					<div ng-message-exp="['required']">
+						X axis is required
+					</div>
+				</div-->
+			</md-input-container>
 
-	</div>
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Y axis</span>
+				<input type="text" name="yAxis" ng-model="widgetConfig.yAxis.title.text" ng-change="widgetConfig.yAxis.title.text = widgetConfig.yAxis.title.text.split(' ').join('')"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+				<!--div ng-messages="hightChartSettingsForm.yAxis.$error" role="alert">
+					<div ng-message-exp="['required']">
+						Y axis is required
+					</div>
+				</div-->
+			</md-input-container>
 
-	<div layout="row" layout-align="space-between center">
-	 	<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Change Sorting column</div>
-	</div>
+		</div>
 
-	<div layout-gt-sm="row" class="side-margins" ng-repeat ="element in groupBySortarray">
+		<div layout="row" layout-align="space-between center" ng-if="groupBySortarray.length > 0">
+			<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Change Sorting column</div>
+		</div>
 
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Display cloumn</span>
-			<input required type="text" name="displayName" ng-model="element.displayName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+		<div layout-gt-sm="row" class="side-margins" ng-repeat ="element in groupBySortarray">
 
-		</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Display cloumn</span>
+				<input required type="text" name="displayName" ng-model="element.displayName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
 
-		<md-input-container class="md-block" flex-gt-sm="40">
-		<span>Sorting cloumn</span>
-			<md-select ng-model="element.sortName" ng-disabled="false" is-disabled-dark aria-label="ele">
-				<md-option ng-repeat="att in selectedAttributes" value="{{att.name}}" aria-label="att">{{att.name}}</md-option>
-			</md-select>
-		</md-input-container>
-	</div>
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm="40">
+			<span>Sorting cloumn</span>
+				<md-select ng-model="element.sortName" ng-disabled="false" is-disabled-dark aria-label="ele">
+					<md-option ng-repeat="att in selectedAttributes" value="{{att.name}}" aria-label="att">{{att.name}}</md-option>
+				</md-select>
+			</md-input-container>
+		</div>
+	</md-content>
 
 </form>

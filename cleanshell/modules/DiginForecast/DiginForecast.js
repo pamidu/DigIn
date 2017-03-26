@@ -13,9 +13,10 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
          restrict: 'E',
          templateUrl: 'modules/DiginForecast/forecastSettings.html',
          scope: {
-           forecastObj: '=',
-           attr:'=',
-           measure:'='
+			forecastObj: '=',
+			attr:'=',
+			measure:'=',
+			submitForm: '&'
           },
          link: function(scope,element){
 
@@ -64,17 +65,20 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                 }; 
             }
             
-            
-
-            scope.$on('press-submit', function(event, args) {
-                scope.forecastSettingsForm.$setSubmitted();
-                if(scope.forecastSettingsForm.$valid)
-                {
-                    args.callbackFunction(true);
-                }else{
-                    args.callbackFunction(false);
-                }                    
-            })
+           scope.submit = function()
+			{
+				if(scope.forecastSettingsForm.$valid)
+				{
+					scope.submitForm();
+				}else{
+					console.log("invalid");
+				}
+			}
+			
+			scope.restoreSettings = function()
+			{
+				scope.submitForm();
+			}
           
          } //end of link
     };

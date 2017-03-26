@@ -345,7 +345,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.settingsOpened = false;
 	
 	//Toggle chart settings
-	$scope.openSettings = function()
+	$scope.toggleSettings = function()
 	{
 		if($mdMedia('xs') == true || $mdMedia('sm') == true)
 		{
@@ -358,14 +358,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	
 	$scope.saveSettings = function()
 	{
-	  	$rootScope.$broadcast('press-submit', {callbackFunction: function(data){
-		   if(data)
-		   {
-		    	$scope.settingsOpened = !$scope.settingsOpened;
-		   }else{
-		    	notifications.toast(0,"form invalid");
-		   }
-	  	}});
+		$scope.settingsOpened = !$scope.settingsOpened;
 	}
 
 	//Initiaize the edit Query as off

@@ -524,4 +524,10 @@ div.slide-up p {
     -o-transform: rotate(90deg);
     transform: rotate(90deg);
 }
+
+.infowindow-textcolor
+{
+	color: black !important;
+}
+
 /*END OF DIGIN DASHBOARD RELATED STYLES*/

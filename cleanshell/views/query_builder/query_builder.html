@@ -20,7 +20,7 @@
 						<div style="padding:10px"><span ng-show="tooltip"><b>Tip:</b>&nbsp {{tooltip}}</span></div>
 					  </md-menu-content>
 					</md-menu>
-					<md-button class="margin-0" ng-click="openSettings()" aria-label="Clear Everything" hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl><span style="text-transform:none">Configure</span></md-button>
+					<md-button class="margin-0" ng-click="toggleSettings()" aria-label="Clear Everything" hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl><span style="text-transform:none">Configure</span></md-button>
 					<md-button class="margin-0" style="margin: 0;min-width: 50px;width: 50px;" ng-click="saveWidget()" aria-label="Save Chart"  hide-gt-sm hide-md hide-gt-md  hide-lg hide-gt-lg hide-xl><span style="text-transform:none">Save</span></md-button>
 				</div>
 				<div id="chartInfo" layout="row" layout-align="end center" flex hide-xs hide-sm>
@@ -368,7 +368,7 @@
 					  </md-menu-content>
 				</md-menu>
 				<md-divider></md-divider>
-				<md-button id="settingsBtn" class="" ng-click="openSettings()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;border-radius: 0;"><i class="ti-settings" md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>
+				<md-button id="settingsBtn" class="" ng-click="toggleSettings()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;border-radius: 0;"><i class="ti-settings" md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>
 				<md-divider></md-divider>
 				<md-button class="" ng-click="IntroduceChart()" aria-label="open settings" style="padding: 20px;border-bottom: 1px solid #888;border-radius: 0;"><i class="ti-help" 	md-colors="{color:'accent-900'}"	style="font-size:50px;padding: 20px;"></i></md-button>
 				<md-divider></md-divider>
@@ -376,36 +376,12 @@
 			</div>
 			
 			<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-is-locked-open="settingsOpened"  style="min-width: 450px;" md-component-id="rightSettingsNav">
-					<div layout="row" layout-align="space-between center">
-						<h1 class="md-toolbar-tools">Chart Settings</h1>
-						<div layout-gt-sm="row">
-							<md-button class="" ng-click="openSettings()" aria-label="cancel settings"><i style="padding-right: 10px;" class="ti-close"></i>Restore</md-button>
-							<md-button class="" ng-click="saveSettings()" aria-label="save settings"><i style="padding-right: 10px;" class="ti-save"></i>Apply</md-button>
-						</div>
-					</div>
-					<md-divider></md-divider>
-					<md-content style="padding: 20px 0px 20px 0px">
-						<div ng-include="'views/query_builder/widgetSettings.html'"></div>
-					</md-content>
-
+				<div ng-include="'views/query_builder/widgetSettings.html'"></div>
 			</md-sidenav>
 		</md-content>
 </div>
 
 
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="chart_desinger_settings" style="overflow-y:hidden;z-index:1501;">
-
-	<div layout="row" layout-align="space-between center" style="height:45px">
-		<h1 class="md-toolbar-tools" style="padding-right:0px">Chart Settings</h1>
-		<div layout="row">
-			<md-button class="margin-0" style="min-width: 70px;width: 70px;font-size: 12px;" ng-click="openSettings()" aria-label="cancel settings">Restore</md-button>
-			<md-button class="margin-0" style="min-width: 60px;width: 60px;font-size: 12px;" ng-click="saveSettings()" aria-label="save settings">Apply</md-button>
-		</div>
-	</div>
-	<md-divider></md-divider>
-	<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding: 20px 0px 20px 0px" ng-if="notifications.length >= 1">
-		<div ng-include="'views/query_builder/widgetSettings.html'"></div>
-	</md-content>
-		
-
+	<div ng-include="'views/query_builder/widgetSettings.html'"></div>
 </md-sidenav>

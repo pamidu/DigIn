@@ -7,7 +7,7 @@
 
 var GoogleMapModule = angular.module('GoogleMap',['DiginServiceLibrary']);
 
-GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http', function(NgMap, $timeout,$http) {
+GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http','$state', function(NgMap, $timeout,$http,$state) {
   return {
 	restrict: 'E',
 	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
@@ -15,6 +15,16 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http', fu
 		geojsonUrl: "@"
 	},
 	link: function(scope,element){
+		
+		scope.inDashboard = false;
+		if($state.current.name == "dashboard")
+		{
+			console.log("dashboard");
+			scope.inDashboard = true;
+		}else{
+			console.log("chart designer");
+			scope.inDashboard = false;
+		}
 		
 		scope.dynMarkers = [];
 		
@@ -102,23 +112,28 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
          restrict: 'E',
          templateUrl: 'modules/GoogleMap/GoogleMapSettings.html',
          scope: {
-			mapSettings: '='
+			mapSettings: '=',
+			submitForm: '&'
           },
          link: function(scope,element){
 						
 			scope.mapSettings.locatorType = "geo_code";
 			
-			scope.$on('press-submit', function(event, args) {
-				scope.mapSettingsForm.$setSubmitted();
+			scope.submit = function()
+			{
 				if(scope.mapSettingsForm.$valid)
 				{
-					args.callbackFunction(true);
+					console.log(scope.mapSettings);
+					scope.submitForm();
 				}else{
-					args.callbackFunction(false);
+					console.log("invalid");
 				}
-			   
-			  
-			 })
+			}
+			
+			scope.restoreSettings = function()
+			{
+				scope.submitForm();
+			}
          } //end of link
     };
 }]);

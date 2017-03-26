@@ -31,11 +31,19 @@ DiginHighChartsModule.directive('diginHighChart',['$rootScope','notifications','
 DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', function ($timeout) {
     return {
         restrict: 'AE',
-        link: function (scope) {
+        link: function (scope, element, attrs) {
+			scope.chartType = "";
+			attrs.$observe('widgetType', function(result) {
+				scope.chartType = result;
+			});
             scope.$on('gridster-item-initialized', function (event, item) {
+				
 				$timeout(function(){ //wait 100 milliseconds until the dom element is added
-					var widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
-					$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY() - 50, true);
+					if(scope.chartType == "highCharts" || scope.chartType == 'forecast')
+					{
+						var widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
+						$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY() - 50, true);
+					}
 				}, 100);
             });
         }
@@ -48,11 +56,12 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
          restrict: 'E',
          templateUrl: 'modules/DiginHighCharts/highChartsSettings.html',
          scope: {
-           highchartSetting: '=',
-           groupBySortarray : '=',
-           selectedAttributes: '=',
-           widgetConfig: '=',
-           chartType: '='
+			highchartSetting: '=',
+			groupBySortarray : '=',
+			selectedAttributes: '=',
+			widgetConfig: '=',
+			chartType: '=',
+			submitForm: '&'
           },
          link: function(scope,element){
          	if (angular.equals(scope.widgetConfig, {})) {
@@ -60,15 +69,20 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
 				var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
 				element.find('.currentChart').append(newElement);
          	}
-			scope.$on('press-submit', function(event, args) {
-				scope.hightChartSettingsForm.$setSubmitted();
+			scope.submit = function()
+			{
 				if(scope.hightChartSettingsForm.$valid)
 				{
-					args.callbackFunction(true);
+					scope.submitForm();
 				}else{
-					args.callbackFunction(false);
+					notifications.toast(2,"Invalid form");
 				}
-			 })
+			}
+			
+			scope.restoreSettings = function()
+			{
+				scope.submitForm();
+			}
          } //end of link
     };
 }]);

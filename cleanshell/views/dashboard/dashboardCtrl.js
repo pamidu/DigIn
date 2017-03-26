@@ -166,7 +166,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			fullscreen: function (ev, widget) {
 				
 				var widgetCopy = angular.copy(widget); //get a copy of widget object to send to fullscreen view of widget
-				widgetCopy.widgetID = widgetCopy.widgetID+"-fullscreen";
+				widgetCopy.widgetData.widgetID = widgetCopy.widgetData.widgetID+"-fullscreen";
 
 				$mdDialog.show({
 				  controller: 'fullscreenCtrl',
@@ -264,10 +264,11 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 
 	
 	$scope.widget = widget;
-	//console.log($scope.widget);
-
 	$timeout(function() {
-		$('#'+$scope.widget.widgetID).highcharts().setSize(document.documentElement.offsetWidth, document.documentElement.offsetHeight - 45, true);
+		if($scope.widget.widgetData.chartType.chartType == 'highCharts' || $scope.widget.widgetData.chartType.chartType == 'forecast')
+		{
+			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth, document.documentElement.offsetHeight - 45, true);
+		}
 	},100)
 
 	/*if($scope.widget.widgetData.selectedChart.chartType == "d3sunburst") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||

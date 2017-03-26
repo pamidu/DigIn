@@ -1,7 +1,7 @@
-<digin-highcharts-settings ng-if="$parent.chartType.chartType == 'highCharts'" highchart-setting="$parent.$parent.settingConfig" group-by-sortarray ="$parent.$parent.groupBySortArray" selected-attributes="$parent.$parent.selectedAttributes" widget-config="$parent.$parent.widgetConfig" chart-type="$parent.$parent.chartType.chart"></digin-highcharts-settings>
+<digin-highcharts-settings ng-if="$parent.chartType.chartType == 'highCharts'" highchart-setting="$parent.$parent.settingConfig" group-by-sortarray ="$parent.$parent.groupBySortArray" selected-attributes="$parent.$parent.selectedAttributes" widget-config="$parent.$parent.widgetConfig" chart-type="$parent.$parent.chartType.chart" submit-form="toggleSettings()"></digin-highcharts-settings>
 
-<digin-forecast-settings ng-if="$parent.chartType.chartType == 'forecast'" forecast-obj="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" measure=$parent.$parent.selectedMeasures></digin-forecast-settings>
+<digin-forecast-settings ng-if="$parent.chartType.chartType == 'forecast'" forecast-obj="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" measure="$parent.$parent.selectedMeasures" submit-form="toggleSettings()"></digin-forecast-settings>
 
-<google-map-settings ng-if="$parent.chartType.chartType == 'map'" map-settings="$parent.$parent.settingConfig"></google-map-settings>
+<google-map-settings ng-if="$parent.chartType.chartType == 'map'" map-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></google-map-settings>
 
-<what-if-settings ng-if="$parent.chartType.chartType == 'whatif'" map-settings="$parent.$parent.settingConfig"></what-if-settings>
+<what-if-settings ng-if="$parent.chartType.chartType == 'whatif'" map-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></what-if-settings>

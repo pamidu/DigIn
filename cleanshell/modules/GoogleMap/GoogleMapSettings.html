@@ -1,24 +1,28 @@
 <form name="mapSettingsForm" ng-submit="submit()">
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Widget Name</span>
-			<input required type="text" name="name" ng-model="mapSettings.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
-			<div ng-messages="mapSettingsForm.name.$error" role="alert">
-				<div ng-message-exp="['required']">
-					Widget name is required
-				</div>
-			</div>
-		</md-input-container>
-	</div>
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm="50">
-			<span>Locator Type</span>
-			<md-select ng-model="mapSettings.locatorType" ng-disabled="false" is-disabled-dark aria-label="gender">
-				<md-option value="geo_code" aria-label="geo_code">By Geocodes</md-option>
-				<md-option value="reverse_geo_code" aria-label="reverse_geo_code">By Address</md-option>
-			</md-select>
-		</md-input-container>
-	</div>
-	<md-button id="settings-submit-btn" type="submit" class="" style="display:none">Button</md-button>
+
+	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
 	
+	<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding: 20px 0px 20px 0px">
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Widget Name</span>
+				<input required type="text" name="name" ng-model="mapSettings.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+				<div ng-messages="mapSettingsForm.name.$error" role="alert">
+					<div ng-message-exp="['required']">
+						Widget name is required
+					</div>
+				</div>
+			</md-input-container>
+		</div>
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm="50">
+				<span>Locator Type</span>
+				<md-select ng-model="mapSettings.locatorType" ng-disabled="false" is-disabled-dark aria-label="gender">
+					<md-option value="geo_code" aria-label="geo_code">By Geocodes</md-option>
+					<md-option value="reverse_geo_code" aria-label="reverse_geo_code">By Address</md-option>
+				</md-select>
+			</md-input-container>
+		</div>
+	</md-content>
+
 </form>

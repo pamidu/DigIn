@@ -34,6 +34,10 @@ input:disabled, md-select[disabled] {
 
 }
 
+.md-input-message-animation{
+	color: rgb(255, 112, 76) !important;
+}
+
 .inputDisabledColor{
 	background: #707070 !important;
 }

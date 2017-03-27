@@ -19,6 +19,7 @@
 <html ng-app="DuoDiginRt">
 <head>
 	<title>DigIn - Beyond BI</title>
+	<meta charset="utf-8" />
 	<meta name="author" content="Sajeetharan" />
 	<meta name="description" content="Know everything your data is telling you with the platform that gives you everything." />
     <meta name="keywords" content="data integration, analytics, and visualization" />
@@ -561,6 +562,7 @@
 		<script src="js/libs/ng-croppie.min.js"></script>
 		<script src="js/libs/cellCursor.js"></script>
 		<script src="js/libs/stripe.payment.tool.js"></script>
+		<script src="js/libs/markercluster.js"></script>
 		<!--Non bower libraries-->
 
 		<script src="js/services/utility.js"></script>
@@ -585,6 +587,7 @@
 		<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
 		<script src="modules/DiginForecast/DiginForecast.js"></script>
 		<script src="modules/GoogleMap/GoogleMap.js"></script>
+		<script src="modules/WhatIf/WhatIf.js"></script>
 		<!--DigIn Widget Modules-->
 		
 		<!--DigIn Service Modules-->
@@ -619,7 +622,6 @@
 		<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 		<script src="views/query_builder/query_builderCtrl.js"></script>
 		<script src="views/query_builder/chart-svgs.js"></script>
-		<script src="views/chart_designer/chart_designerCtrl.js"></script>
 		<script src="views/social/facebook/facebookCtrl.js"></script>
 		<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 		<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>

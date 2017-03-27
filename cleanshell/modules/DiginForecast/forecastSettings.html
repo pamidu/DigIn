@@ -1,190 +1,195 @@
 <form name="forecastSettingsForm" ng-submit="submit()">
 	
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span> Widget Title </span>
-			<input ng-model="forecastObj.widgetName"  aria-label="title" name="title" required>
-			<div ng-messages="forecastSettingsForm.title.$error">
-				<div ng-message="required">Widget title can not be a blank</div>
+	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
+	
+	<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding: 20px 0px 20px 0px">
+	
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span> Widget Title </span>
+				<input ng-model="forecastObj.widgetName"  aria-label="widgetName" name="widgetName" required>
+				<div ng-messages="forecastSettingsForm.widgetName.$error">
+					<div ng-message="required">Widget title can not be a blank</div>
+				</div>
+			</md-input-container> 
+		</div>
+
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Model</span>
+				<md-select aria-label="Model" ng-model="forecastObj.model">
+				  <md-option value="double exponential smoothing">Double exponential smoothing</md-option>
+				  <md-option value="triple exponential smoothing">Triple exponential smoothing</md-option>
+				</md-select>
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Method</span>
+				<md-select aria-label="Method" ng-model="forecastObj.method">
+				  <md-option value="Additive"> Additive </md-option>
+				  <md-option value="Multiplicative">Multiplicative</md-option>
+				</md-select>
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Interval</span>
+				<md-select aria-label="inteval" ng-model="forecastObj.interval" ng-change="setDefLenSeason(forecastObj.interval)">
+				  <md-option value="Daily">Daily</md-option>
+				  <md-option value="Monthly">Monthly</md-option>
+				  <md-option value="Yearly">Yearly</md-option>
+				</md-select>
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Length of season ( {{forecastObj.paramObj.interval}} )</span>
+				<input aria-label="length of season" ng-model="forecastObj.len_season" ng-disabled="forecastObj.model == 'double exponential smoothing'" min="0"  max=""  type="number" step="" is-disabled-dark>
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row" class="side-margins">
+			<md-checkbox ng-model="useAlpahaBetaGamma.status" aria-label="Use smoothing parameters"  ng-change ="setAlpahaBetaGamma()">
+				Use smoothing parameters
+			</md-checkbox>
+		</div>
+
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span> Alpha </span>
+				<input ng-model="forecastObj.alpha"  aria-label="Alpha" ng-blur = "setValue('alpha')" ng-disabled="!useAlpahaBetaGamma.status" name="alpha" min="0"  max="1"  type="number" step="0.001" is-disabled-dark>
+				<div ng-messages="forecastSettingsForm.alpha.$error">
+					<div ng-message="min">Value must be 0 to 1</div>
+					<div ng-message="max">Value must be 0 to 1</div>
+				</div>
+
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<span> Beta </span>
+				<input ng-model="forecastObj.beta" aria-label="Beta" ng-blur = "setValue('beta')" ng-disabled="!useAlpahaBetaGamma.status" name="beta" min="0"  max="1" type="number" step="0.001" is-disabled-dark>
+				<div ng-messages="forecastSettingsForm.beta.$error">
+					<div ng-message="min">Value must be 0 to 1</div>
+					<div ng-message="max">Value must be 0 to 1</div>
+				</div>
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span> Gamma </span>
+				<input ng-model="forecastObj.gamma"  aria-label="Gamma" ng-blur = "setValue('gamma')" ng-disabled="!useAlpahaBetaGamma.status" name="gamma" min="0"  max="1"  type="number" step="0.001" is-disabled-dark>
+				<div ng-messages="forecastSettingsForm.gamma.$error">
+					<div ng-message="min">Value must be 0 to 1</div>
+					<div ng-message="max">Value must be 0 to 1</div>
+				</div>
+			</md-input-container> 
+			<md-input-container class="md-block" flex-gt-sm>
+
+			</md-input-container> 
+		</div>
+
+		<div layout="row" layout-align="space-between center">
+			<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">For Calculation</div>
+		</div>
+
+	<!--div layout-gt-sm="row" class="side-margins">
+		<md-datepicker name="sdt" 
+						 ng-model="forecastObj.paramObj.startdate" 
+						 md-placeholder="Enter date" 
+						 required 
+						 md-min-date="forecastObj.paramObj.mindate" 
+						 md-max-date="forecastObj.paramObj.maxdate">
+		  </md-datepicker>
+
+		  <div style="margin-top: 6px; font-size: 12px; color: #ec3e3e;" ng-messages="forecastSettingsForm.sdt.$error">
+			<div ng-message="valid">The entered value is not a date!</div>
+			<div ng-message="required">This date is required!</div>
+			<div ng-message="mindate">Date is too early!</div>
+			<div ng-message="maxdate">Date is too late!</div>
+		  </div>
+
+	</div-->
+
+		<div layout-gt-sm="row" class="side-margins">
+
+			<div layout="column" style="width: 187px;">
+				<span class="md-datepicker-label">Start Date</span>
+				<md-datepicker name="startdt" ng-model="forecastObj.startdate"  md-placeholder="Enter date" md-min-date="forecastObj.mindate" md-max-date="forecastObj.maxdate" aria-label="startdt" required></md-datepicker>
+				<div ng-messages="forecastSettingsForm.startdt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
+				<!--startdate: {{forecastObj.paramObj.startdate}}
+				mindate: {{forecastObj.paramObj.mindate}}
+				Maxdate: {{forecastObj.paramObj.maxdate}}-->
+					<div ng-message="valid">Invalid date</div>
+					<div ng-message="required">Start date is required</div>
+					<div ng-message="mindate">Start date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.maxdate | formatdate}} 	</div>
+					<div ng-message="maxdate">Start date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
+				</div>
 			</div>
-		</md-input-container> 
-	</div>
 
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Model</span>
-			<md-select aria-label="Model" ng-model="forecastObj.paramObj.model">
-			  <md-option value="double exponential smoothing">Double exponential smoothing</md-option>
-			  <md-option value="triple exponential smoothing">Triple exponential smoothing</md-option>
-			</md-select>
-		</md-input-container>
+			<div layout="column" style="margin-left: 22px">
+				<span class="md-datepicker-label">End Date </span>
+				<md-datepicker name="enddt" ng-model="forecastObj.paramObj.enddate" md-placeholder="Enter date"  md-min-date="forecastObj.paramObj.mindate" md-max-date="forecastObj.paramObj.maxdate" aria-label="enddt" required></md-datepicker>
+				<div ng-messages="forecastSettingsForm.enddt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
+					<div ng-message="valid">Invalid date</div>
+					<div ng-message="required">End date is required</div>
+					<div ng-message="mindate">End date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.maxdate | formatdate}} 	</div>
+					<div ng-message="maxdate">Start date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.maxdate | formatdate}} 	</div>
+				</div>
 
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Method</span>
-			<md-select aria-label="Method" ng-model="forecastObj.paramObj.method">
-			  <md-option value="Additive"> Additive </md-option>
-			  <md-option value="Multiplicative">Multiplicative</md-option>
-			</md-select>
-		</md-input-container>
-	</div>
-
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Interval</span>
-			<md-select aria-label="inteval" ng-model="forecastObj.paramObj.interval" ng-change="setDefLenSeason(forecastObj.paramObj.interval)">
-			  <md-option value="Daily">Daily</md-option>
-			  <md-option value="Monthly">Monthly</md-option>
-			  <md-option value="Yearly">Yearly</md-option>
-			</md-select>
-		</md-input-container>
-
-		<md-input-container class="md-block" flex-gt-sm>
-			<span>Length of season ( {{forecastObj.paramObj.interval}} )</span>
-			<input aria-label="length of season" ng-model="forecastObj.paramObj.len_season" ng-disabled="forecastObj.paramObj.model == 'double exponential smoothing'" min="0"  max=""  type="number" step="" is-disabled-dark>
-		</md-input-container>
-	</div>
-
-	<div layout-gt-sm="row" class="side-margins">
-		<md-checkbox ng-model="useAlpahaBetaGamma.status" aria-label="Use smoothing parameters"  ng-change ="setAlpahaBetaGamma()">
-			Use smoothing parameters
-		</md-checkbox>
-	</div>
-
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span> Alpha </span>
-			<input ng-model="forecastObj.paramObj.alpha"  aria-label="Alpha" ng-blur = "setValue('alpha')" ng-disabled="!useAlpahaBetaGamma.status" name="alpha" min="0"  max="1"  type="number" step="0.001" is-disabled-dark>
-			<div ng-messages="forecastSettingsForm.alpha.$error">
-				<div ng-message="min">Value must be 0 to 1</div>
-	        	<div ng-message="max">Value must be 0 to 1</div>
-			</div>
-
-		</md-input-container>
-
-		<md-input-container class="md-block" flex-gt-sm>
-			<span> Beta </span>
-			<input ng-model="forecastObj.paramObj.beta" aria-label="Beta" ng-blur = "setValue('beta')" ng-disabled="!useAlpahaBetaGamma.status" name="beta" min="0"  max="1" type="number" step="0.001" is-disabled-dark>
-			<div ng-messages="forecastSettingsForm.beta.$error">
-				<div ng-message="min">Value must be 0 to 1</div>
-	        	<div ng-message="max">Value must be 0 to 1</div>
-			</div>
-		</md-input-container>
-	</div>
-
-	<div layout-gt-sm="row" class="side-margins">
-		<md-input-container class="md-block" flex-gt-sm>
-			<span> Gamma </span>
-			<input ng-model="forecastObj.paramObj.gamma"  aria-label="Gamma" ng-blur = "setValue('gamma')" ng-disabled="!useAlpahaBetaGamma.status" name="gamma" min="0"  max="1"  type="number" step="0.001" is-disabled-dark>
-			<div ng-messages="forecastSettingsForm.gamma.$error">
-				<div ng-message="min">Value must be 0 to 1</div>
-	        	<div ng-message="max">Value must be 0 to 1</div>
-			</div>
-		</md-input-container> 
-		<md-input-container class="md-block" flex-gt-sm>
-
-		</md-input-container> 
-	</div>
-
-	<div layout="row" layout-align="space-between center">
-	 	<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">For Calculation</div>
-	</div>
-
-<!--div layout-gt-sm="row" class="side-margins">
-	<md-datepicker name="sdt" 
-                     ng-model="forecastObj.paramObj.startdate" 
-                     md-placeholder="Enter date" 
-                     required 
-                     md-min-date="forecastObj.paramObj.mindate" 
-                     md-max-date="forecastObj.paramObj.maxdate">
-      </md-datepicker>
-
-      <div style="margin-top: 6px; font-size: 12px; color: #ec3e3e;" ng-messages="forecastSettingsForm.sdt.$error">
-        <div ng-message="valid">The entered value is not a date!</div>
-        <div ng-message="required">This date is required!</div>
-        <div ng-message="mindate">Date is too early!</div>
-        <div ng-message="maxdate">Date is too late!</div>
-      </div>
-
-</div-->
-
-	<div layout-gt-sm="row" class="side-margins">
-
-		<div layout="column" style="width: 187px;">
-			<span class="md-datepicker-label">Start Date</span>
-			<md-datepicker name="startdt" ng-model="forecastObj.paramObj.startdate"  md-placeholder="Enter date" md-min-date="forecastObj.paramObj.mindate" md-max-date="forecastObj.paramObj.maxdate" aria-label="startdt" required></md-datepicker>
-			<div ng-messages="forecastSettingsForm.startdt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
-			<!--startdate: {{forecastObj.paramObj.startdate}}
-			mindate: {{forecastObj.paramObj.mindate}}
-			Maxdate: {{forecastObj.paramObj.maxdate}}-->
-				<div ng-message="valid">Invalid date</div>
-	        	<div ng-message="required">Start date is required</div>
-	        	<div ng-message="mindate">Start date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
-	        	<div ng-message="maxdate">Start date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
 			</div>
 		</div>
 
-		<div layout="column" style="margin-left: 22px">
-			<span class="md-datepicker-label">End Date </span>
-			<md-datepicker name="enddt" ng-model="forecastObj.paramObj.enddate" md-placeholder="Enter date"  md-min-date="forecastObj.paramObj.mindate" md-max-date="forecastObj.paramObj.maxdate" aria-label="enddt" required></md-datepicker>
-			<div ng-messages="forecastSettingsForm.enddt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
-				<div ng-message="valid">Invalid date</div>
-	        	<div ng-message="required">End date is required</div>
-	        	<div ng-message="mindate">End date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
-	        	<div ng-message="maxdate">Start date must be between {{forecastObj.paramObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
-			</div>
 
+		<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
+			<md-checkbox ng-model="forecastObj.isVisual" aria-label="Use Visualisation period">
+				Use Visualisation period
+			</md-checkbox>
 		</div>
-	</div>
-
-
-	<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
-		<md-checkbox ng-model="forecastObj.paramObj.isVisual" aria-label="Use Visualisation period">
-			Use Visualisation period
-		</md-checkbox>
-	</div>
-	<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.paramObj.isVisual">
-		<div layout="column" style="width: 187px;">
-			<span class="md-datepicker-label">Start Date </span>
-			<md-datepicker ng-model="forecastObj.paramObj.visualstart" aria-label="startdate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="startdate" required></md-datepicker>
-			<div ng-messages="forecastSettingsForm.startdate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
-				<div ng-message="valid">Invalid date</div>
-	        	<div ng-message="required">Start date is required</div>
-	        	<div ng-message="mindate">Start date must be between {{forecastObj.paramObj.startdate | formatdate}} and {{forecastObj.paramObj.enddate | formatdate}} 	</div>
-	        	<div ng-message="maxdate">Start date must be between {{forecastObj.paramObj.startdate | formatdate}} and {{forecastObj.paramObj.enddate | formatdate}} 	</div>
+		<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.isVisual">
+			<div layout="column" style="width: 187px;">
+				<span class="md-datepicker-label">Start Date </span>
+				<md-datepicker ng-model="forecastObj.paramObj.visualstart" aria-label="startdate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="startdate" required></md-datepicker>
+				<div ng-messages="forecastSettingsForm.startdate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
+					<div ng-message="valid">Invalid date</div>
+					<div ng-message="required">Start date is required</div>
+					<div ng-message="mindate">Start date must be between {{forecastObj.startdate | formatdate}} and {{forecastObj.enddate | formatdate}} 	</div>
+					<div ng-message="maxdate">Start date must be between {{forecastObj.startdate | formatdate}} and {{forecastObj.enddate | formatdate}} 	</div>
+				</div>
+			</div>
+			<div layout="column" style="margin-left: 22px">
+				<span class="md-datepicker-label">End Date </span>
+				<md-datepicker ng-model="forecastObj.visualend" aria-label="enddate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.enddate" name="enddate"></md-datepicker>
+				<div ng-messages="forecastSettingsForm.enddate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
+					<div ng-message="valid">Invalid date</div>
+					<div ng-message="required">End date is required</div>
+					<div ng-message="mindate">End date must be greater than {{forecastObj.enddate | formatdate}} </div>
+				</div>
 			</div>
 		</div>
-		<div layout="column" style="margin-left: 22px">
-			<span class="md-datepicker-label">End Date </span>
-			<md-datepicker ng-model="forecastObj.paramObj.visualend" aria-label="enddate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.enddate" name="enddate"></md-datepicker>
-			<div ng-messages="forecastSettingsForm.enddate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
-				<div ng-message="valid">Invalid date</div>
-	        	<div ng-message="required">End date is required</div>
-	        	<div ng-message="mindate">End date must be greater than {{forecastObj.paramObj.enddate | formatdate}} </div>
-			</div>
+
+
+		<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
+			<md-checkbox ng-model="forecastObj.groupby" aria-label="Use group by">
+				Use group by
+			</md-checkbox>		
 		</div>
-	</div>
+				
+		<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.groupby">	
+			<md-input-container class="md-block" flex-gt-sm>
+				<span> Select group </span>
+				<md-select ng-model="forecastObj.forecastAtt" aria-label="forecastAtt">
+				  <md-option ng-repeat="cat in forecastObj.selectedCategory" value="{{cat.name}}">
+					{{cat.name}}
+				  </md-option>
+				</md-select>   
+			</md-input-container> 
+		</div>
 
-
-	<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">
-		<md-checkbox ng-model="forecastObj.paramObj.groupby" aria-label="Use group by">
-			Use group by
-		</md-checkbox>		
-	</div>
-			
-	<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.paramObj.groupby">	
-		<md-input-container class="md-block" flex-gt-sm>
-			<span> Select group </span>
-			<md-select ng-model="forecastObj.paramObj.forecastAtt" aria-label="forecastAtt">
-			  <md-option ng-repeat="cat in forecastObj.paramObj.selectedCategory" value="{{cat.name}}">
-				{{cat.name}}
-			  </md-option>
-			</md-select>   
-		</md-input-container> 
-	</div>
-
-	<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">	
-		<md-checkbox ng-model="forecastObj.paramObj.showActual" aria-label="Show actual">  <!--style="margin-top:28px"--> 
-			Show actual 
-		</md-checkbox>    
-	</div>
+		<div layout-gt-sm="row" class="side-margins" style="margin-top:28px">	
+			<md-checkbox ng-model="forecastObj.showActual" aria-label="Show actual">  <!--style="margin-top:28px"--> 
+				Show actual 
+			</md-checkbox>    
+		</div>
+	</md-content>
 </form>

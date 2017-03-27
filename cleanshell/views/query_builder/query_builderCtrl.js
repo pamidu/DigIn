@@ -49,7 +49,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
 		
-		//first get all chart types beofre cheking the widget config
+		//first get all chart types before checking the widget config
 		checkWigetConfig();
 		
 	});
@@ -147,7 +147,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		}
 		else if($scope.chartType.chartType == "forecast")
 		{
-			generateForecast.getforecastAtts($scope.selectedAttributes, $scope.selectedMeasures,$scope.settingConfig);
+			//generateForecast.getforecastAtts($scope.selectedAttributes, $scope.selectedMeasures,$scope.settingConfig);
 
 			/*if(!angular.equals($scope.widgetConfig, {}))
 			{
@@ -178,9 +178,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			$scope.widgetRow = $stateParams.widget.row;
 			$scope.widgetSizeX = $stateParams.widget.sizeX;
 			$scope.widgetSizeY = $stateParams.widget.sizeY;
+			$scope.settingConfig = $stateParams.widget.widgetData.settingConfig;
 
-			$scope.settingConfig.widgetName = $scope.chartType.name;
-
+			if($scope.settingConfig.widgetName==undefined || 	$scope.settingConfig.widgetName=="")
+			{
+				$scope.settingConfig.widgetName = $scope.chartType.name;
+			}
+			
 			if($scope.chartType.chartType == "highCharts")
 			{
 				$scope.showPlaceholderIcon = false;
@@ -265,17 +269,21 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				//$scope.currentChartType = "highCharts";
 			}else if($scope.chartType.chartType == 'map')
 			{
-			    
-				    var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
-					if(isChartConditionsOk){
+				var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
+				if(isChartConditionsOk){
+					
+					generateGoogleMap.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
 						$scope.showChartLoading = false;
 						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<google-map-in-settings></google-map-in-settings>')($scope);
+						$scope.widgetConfig = data;
+						newElement = $compile('<google-map-in-settings config="widgetConfig"></google-map-in-settings>')($scope);
 						$element.find('.currentChart').append(newElement);
-					}else{
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = true;
-					}
+					})
+
+				}else{
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+				}
 			}
 			else if($scope.chartType.chartType == 'forecast')
 			{
@@ -337,7 +345,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.settingsOpened = false;
 	
 	//Toggle chart settings
-	$scope.openSettings = function()
+	$scope.toggleSettings = function()
 	{
 		if($mdMedia('xs') == true || $mdMedia('sm') == true)
 		{
@@ -350,14 +358,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	
 	$scope.saveSettings = function()
 	{
-	  	$rootScope.$broadcast('press-submit', {callbackFunction: function(data){
-		   if(data)
-		   {
-		    	$scope.settingsOpened = !$scope.settingsOpened;
-		   }else{
-		    	notifications.toast(0,"form invalid");
-		   }
-	  	}});
+		$scope.settingsOpened = !$scope.settingsOpened;
 	}
 
 	//Initiaize the edit Query as off

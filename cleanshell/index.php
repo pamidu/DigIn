@@ -562,6 +562,7 @@
 		<script src="js/libs/ng-croppie.min.js"></script>
 		<script src="js/libs/cellCursor.js"></script>
 		<script src="js/libs/stripe.payment.tool.js"></script>
+		<script src="js/libs/markercluster.js"></script>
 		<!--Non bower libraries-->
 
 		<script src="js/services/utility.js"></script>
@@ -586,6 +587,7 @@
 		<script src="modules/DiginHighCharts/DiginHighCharts.js"></script>
 		<script src="modules/DiginForecast/DiginForecast.js"></script>
 		<script src="modules/GoogleMap/GoogleMap.js"></script>
+		<script src="modules/WhatIf/WhatIf.js"></script>
 		<!--DigIn Widget Modules-->
 		
 		<!--DigIn Service Modules-->

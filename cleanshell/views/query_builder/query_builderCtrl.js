@@ -49,7 +49,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
 		
-		//first get all chart types beofre cheking the widget config
+		//first get all chart types before checking the widget config
 		checkWigetConfig();
 		
 	});
@@ -271,12 +271,12 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			{
 				var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
 				if(isChartConditionsOk){
-					$scope.showChartLoading = false;
-					$scope.showPlaceholderIcon = false;
 					
-					generateGoogleMap.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (url){
-						console.log(url);
-						newElement = $compile('<google-map-in-settings geojson-url="'+url+'"></google-map-in-settings>')($scope);
+					generateGoogleMap.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
+						$scope.showChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						$scope.widgetConfig = data;
+						newElement = $compile('<google-map-in-settings config="widgetConfig"></google-map-in-settings>')($scope);
 						$element.find('.currentChart').append(newElement);
 					})
 

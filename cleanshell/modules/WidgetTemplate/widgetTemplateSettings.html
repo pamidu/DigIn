@@ -1,18 +1,13 @@
 <form name="widgetTemplateForm" ng-submit="submit()">
 	
-	
-	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
-	
-	<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding: 20px 0px 20px 0px">
-		<div layout-gt-sm="row" class="side-margins">
-			<md-input-container class="md-block" flex-gt-sm>
-				<span> Widget Title </span>
-				<input ng-model="forecastObj.widgetName"  aria-label="widgetName" name="widgetName" required>
-				<div ng-messages="forecastSettingsForm.widgetName.$error">
-					<div ng-message="required">Widget title can not be a blank</div>
-				</div>
-			</md-input-container> 
-		</div>
+	<div layout-gt-sm="row" class="side-margins">
+		<md-input-container class="md-block" flex-gt-sm>
+			<span> Widget Title </span>
+			<input ng-model="forecastObj.widgetName"  aria-label="widgetName" name="widgetName" required>
+			<div ng-messages="forecastSettingsForm.widgetName.$error">
+				<div ng-message="required">Widget title can not be a blank</div>
+			</div>
+		</md-input-container> 
 	</div>
 
 	

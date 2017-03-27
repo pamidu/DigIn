@@ -4,6 +4,4 @@
 
 <google-map-settings ng-if="$parent.chartType.chartType == 'map'" map-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></google-map-settings>
 
-<what-if-settings ng-if="$parent.chartType.chartType == 'whatif'" whatif-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></what-if-settings>
-
-<metric-settings ng-if="$parent.chartType.chartType == 'metric'" metric-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></metric-settings>
+<what-if-settings ng-if="$parent.chartType.chartType == 'whatif'" map-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></what-if-settings>

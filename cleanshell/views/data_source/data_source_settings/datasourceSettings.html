@@ -125,24 +125,26 @@
 								<div layout-gt-sm="row" class="side-margins">
 									<md-input-container class="md-block" ng-show="loginStatus"  flex-gt-sm>
 										<span>Database Type</span>
-										<md-select ng-model="databaseType" ng-disabled="testStatus" aria-label="database type">
-											<md-option ng-value="MSSQL">MSSQL</md-option>
+										<md-select ng-model="databaseType" aria-label="database type">
+											<md-option ng-value="databaseType">{{databaseType}}</md-option>
 										</md-select>
 									</md-input-container>
 									<md-input-container class="md-block" ng-show="loginStatus"  flex-gt-sm>
 										<span>Database Name</span>
-										<md-select ng-model="databaseName" ng-disabled="testStatus" aria-label="database name">
-											<md-option ng-repeat="db in dbNames | orderBy:'db' " ng-value="db">{{db}}</md-option>
+										<md-select ng-model="databaseName" ng-disabled="testStatus" aria-label="database name" is-disabled-dark>
+											<md-option ng-repeat="db in dbNames | orderBy:'db' " ng-value="db" >{{db}}</md-option>
 										</md-select>
 									</md-input-container>
 								</div>
+
 								<div layout-gt-sm="row" class="side-margins">
 									<md-input-container class="md-block" ng-show="loginStatus"  flex-gt-sm>
 										<span>Connection Name</label>
-										<input class="form-control" ng-model="connName" flex ng-disabled="testStatus"/>
+										<input class="form-control" ng-model="connName" flex ng-disabled="testStatus" is-disabled-dark/>
 									</md-input-container>
 								</div>
-								<div layout="column" class="side-margins"ng-show="loginStatus" ng-if="selectedSourceType ='sd'">
+
+								<div layout="column" class="side-margins" ng-show="loginStatus" ng-if="{{databaseType ='MSSQL'}}">
 									<span style="font-size:12px"> Authentication Type </span>
 									<md-radio-group  flex layout="column" ng-model="authType" ng-disabled="testStatus" style="margin-top:10px">
 										<md-radio-button value="windows" class="md-primary left">
@@ -153,6 +155,7 @@
 										</md-radio-button>
 									</md-radio-group>
 								</div>
+
 							<div flex layout = "row" layout-align="center center" ng-show="loginStatus">
 								<md-button type="button" class="md-raised md-primary"  ng-click="testConnection()" ng-disabled="testStatus || testRequest">Test Connection</md-button>
 							</div>

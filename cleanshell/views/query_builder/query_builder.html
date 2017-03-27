@@ -87,9 +87,10 @@
 					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
-								<span ng-show="chartType.chart != 'pie' && chartType.chart != 'hierarchy' && chartType.chart != 'sunburst'">X-Axis</span>
+								<span ng-show="chartType.chart != 'pie' && chartType.chart != 'hierarchy' && chartType.chart != 'sunburst' && chartType.chart != 'forecast'">X-Axis</span>
 								<span ng-show="chartType.chart == 'pie' || chartType.chart == 'sunburst'">Slices</span>
 								<span ng-show="chartType.chart == 'hierarchy'">Hierarchical levels</span>
+								<span ng-show="chartType.chart == 'forecast'">Date Field</span>
 							</h2>
 							<md-menu md-position-mode="target-right target" style="margin-top:10px">
 							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>

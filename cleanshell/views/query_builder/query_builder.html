@@ -44,7 +44,7 @@
 			<div layout-gt-sm="row" style="height:{{$parent.chartDesignerViewPortHeight}}">
 			
 				<div id="selectorSection" layout="column" flex-gt-sm="25" style="-webkit-box-shadow: 2px 0 3px -2px #888;box-shadow: 2px 0 3px -2px #888;overflow-y:scroll">
-					<div layout="column" ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif'">
+					<div layout="column" ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>Measures</h2>
 							<md-menu md-position-mode="target-right target" style="margin-top:10px">
@@ -74,7 +74,7 @@
 						<!--md-divider></md-divider-->
 					</div>
 			
-					<md-list style="margin-top:60px" layout-padding ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif'">
+					<md-list style="margin-top:60px" layout-padding ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between center" ng-repeat="item in selectedSeries" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{item.name}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
 							<md-button class="md-icon-button" ng-click="removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
@@ -84,7 +84,7 @@
 					
 					
 					<md-divider></md-divider>
-					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
+					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
 								<span ng-show="chartType.chart != 'pie' && chartType.chart != 'hierarchy' && chartType.chart != 'sunburst' && chartType.chart != 'forecast'">X-Axis</span>
@@ -106,7 +106,7 @@
 						</div>
 						<!--md-divider></md-divider-->
 					</div>
-					<md-list style="margin-top:60px" layout-padding ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
+					<md-list style="margin-top:60px" layout-padding ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between center"  ng-repeat="item in selectedCategory" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{item.name}}</p>
 							<md-button class="md-icon-button md-secondary" ng-click="removeFromCategory($index)" aria-label="remove from category"><span class="ti-close"></span></md-button>

@@ -7,14 +7,16 @@
 
 var GoogleMapModule = angular.module('GoogleMap',['DiginServiceLibrary']);
 
-GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http','$state', function(NgMap, $timeout,$http,$state) {
+GoogleMapModule.directive('googleMap', ['NgMap','$timeout','$http','$state', function(NgMap, $timeout,$http,$state) {
   return {
 	restrict: 'E',
-	templateUrl: 'modules/GoogleMap/GoogleMapInSettings.html',
+	templateUrl: 'modules/GoogleMap/GoogleMap.html',
 	scope:{
-		config: "="
+		config: "=",
+		idSelector: '@'
 	},
 	link: function(scope,element){
+		console.log(scope.idSelector);
 		
 		scope.inDashboard = false;
 		if($state.current.name == "dashboard")
@@ -26,8 +28,11 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http','$s
 		
 		
 		scope.dynMarkers = [];
+		var pointerClick = {}; 
+		var mapResize = {};
 
-		NgMap.getMap().then(function(map) {
+		NgMap.getMap(scope.idSelector).then(function(map) {
+			mapResize = google.maps.event.trigger(map, "resize");
 			for (var i=0; i < scope.config.Result.features.length; i++) {
 				var html = "";
 				var position = scope.config.Result.features[i].geometry.coordinates;
@@ -42,8 +47,8 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http','$s
 
 		function createMarker(position, map, html) {
 			var latLng = new google.maps.LatLng(position[1],position[0]);
-			var marker = new google.maps.Marker({position:latLng, title:"Hello World!"});
-			google.maps.event.addListener(marker, 'click', function(data) {
+			var marker = new google.maps.Marker({position:latLng, title:"click for more information"});
+			pointerClick = google.maps.event.addListener(marker, 'click', function(data) {
 				infowindow.setContent(html);
 				infowindow.open(map, marker);
 			});
@@ -56,41 +61,14 @@ GoogleMapModule.directive('googleMapInSettings', ['NgMap','$timeout','$http','$s
 		});
 		
 		scope.$on('widget-resized', function(event, args) {
-			NgMap.getMap().then(function(map) {
+			NgMap.getMap(scope.idSelector).then(function(map) {
 				var center = map.getCenter();
 				google.maps.event.trigger(map, "resize");
 				map.setCenter(center);
 			});			
 		});
-
-
-	} //end of link
-  };
-}]);
-
-GoogleMapModule.directive('googleMap',['NgMap','$state', function(NgMap,$state) {
-  return {
-	restrict: 'E',
-	templateUrl: 'modules/GoogleMap/mapView.html',
-	link: function(scope,element){
-							
-		scope.inDashboard = false;
-		if($state.current.name == "dashboard")
-		{
-			console.log("dashboard");
-			scope.inDashboard = true;
-		}else{
-			console.log("chart designer");
-			scope.inDashboard = false;
-		}
 		
-		scope.$on('widget-resized', function(event, args) {
-			NgMap.getMap().then(function(map) {
-				var center = map.getCenter();
-				google.maps.event.trigger(map, "resize");
-				map.setCenter(center);
-			});			
-		});
+		//scope.$on("$destroy", function(){});
 
 
 	} //end of link

@@ -171,7 +171,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		if(!angular.equals($scope.widgetConfig, {}))//if there is a config
 		{
 			$scope.chartType = $stateParams.chartType;
-			widgetID = $stateParams.widget.widgetID;
+			widgetID = $stateParams.widget.widgetData.widgetID;
 			$scope.groupBySortArray = $stateParams.widget.widgetData.groupBySortArray;
 
 			$scope.widgetCol = $stateParams.widget.col;
@@ -195,13 +195,15 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			else if($scope.chartType.chartType == "forecast")
 			{
 				$scope.showPlaceholderIcon = false;
-				newElement = $compile('<digin-forecast  config="widgetConfig" ></digin-forecast>')($scope);
+				newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
 				$element.find('.currentChart').append(newElement);
 				
 			}else if($scope.chartType.chartType == "map")
 			{
 				$scope.showPlaceholderIcon = false;
-				newElement = $compile('<google-map-in-settings config="widgetConfig" ></google-map-in-settings>')($scope);
+				
+				//id-selector="'+widgetID+'" - There is a bug here, if an id is added when the map is in the dashboard again it will stop working
+				newElement = $compile('<google-map config="widgetConfig" ></google-map>')($scope);
 				$element.find('.currentChart').append(newElement);
 				NgMap.getMap().then(function(map) {
 					var center = map.getCenter();
@@ -257,7 +259,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 						isDrilled = true;
 					} 
 
-					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedFile.datasource_id,$scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
+					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
@@ -276,7 +278,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 						$scope.showChartLoading = false;
 						$scope.showPlaceholderIcon = false;
 						$scope.widgetConfig = data;
-						newElement = $compile('<google-map-in-settings config="widgetConfig"></google-map-in-settings>')($scope);
+						newElement = $compile('<google-map id-selector="'+widgetID+'" config="widgetConfig"></google-map>')($scope);
 						$element.find('.currentChart').append(newElement);
 					})
 

@@ -19,22 +19,28 @@
 
 	 			var dashboardCopy =  angular.copy($rootScope.currentDashboard);
 
-	 			for(var i = 0; i < $rootScope.currentDashboard.pages.length; i++){
-	 				for(var j = 0; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
-	 					
-	 					chartUtilitiesFactory.removeDataPoints(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
-	 				}
-	 			}
+	 			
 
-               return $http({
+	 			// for(var i = 0; i < dashboardCopy.pages.length; i++){
+	 			// 	for(var j = 0; j < dashboardCopy.pages[i].widgets.length; j++){
+	 					
+	 			// 		chartUtilitiesFactory.removeDataPoints(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
+	 			// 	}
+	 			// }
+
+                $http({
                     method: 'POST',
-                    url: Digin_Engine_API + 'store_componen/',
+                    url: "http://192.168.0.101:8080/" + 'store_component/',
                     data: angular.toJson(dashboardCopy),
                     headers: {
                         'Content-Type': 'application/json',
-                        'securityToken' : $rootScope.authObject.securityToken
+                        'securityToken' : $rootScope.authObject.SecurityToken
                     }
-                })
+                }).then(function(data){
+                	console.log(data);
+                },function(err){
+                	console.log(err);
+                });
             }
 	 	}
 

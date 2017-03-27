@@ -200,7 +200,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			return highchartObject;
 		},
 		// build the highchart with data
-		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB, isDrilled,groupBySortArray, callback, connection, allFields,reArangeArr) {
+		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, selectedDB, isDrilled,groupBySortArray, callback, connection, allFields,reArangeArr) {
 			// chartObj - Chart configuration Object, highChartType - chart type String
 			//format selected series
 
@@ -213,8 +213,19 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				});
 			}
 
+			var table = "";
+			var datasource = "";
+			if(selectedDB == "BigQuery" || selectedDB == "memsql"){
+				table = tableName.datasource_name;
+				datasource = tableName.datasource_id;
+
+			}else{
+				table = tableName.datasource_name;
+				datasource = tableName.id;
+			}
+
 			if(!isDrilled){
-				$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
+				$diginengine.getClient(selectedDB).getAggData(table, fieldArr, limit, datasource, function(res, status, query) {
 					if (status) {
 						var series = [];
 						series = chartUtilitiesFactory.mapChartData(res,groupBySortArray[0].displayName,isDrilled);

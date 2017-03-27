@@ -595,6 +595,8 @@
 		<script src="modules/DiginServiceLibrary/PackageServices.js"></script>
 		<script src="modules/DiginServiceLibrary/UserServices.js"></script>
 		<script src="modules/DiginServiceLibrary/chartSyncServices.js"></script>
+		<script src="modules/DiginServiceLibrary/datasourceServices.js"></script>
+
 		<!--DigIn Service Modules-->
 		
 		<script src="js/app.js"></script>
@@ -621,7 +623,6 @@
 		<script src="views/social/facebook/facebookCtrl.js"></script>
 		<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 		<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
-		<script src="views/data_source/data_source_settings/datasourceFactory.js"></script>
 		<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
 		<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
 		<script src="views/developer/developerCtrl.js"></script><!--Developer view is only for developers, Please remove this on production-->

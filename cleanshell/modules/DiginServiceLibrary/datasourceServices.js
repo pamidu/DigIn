@@ -1,4 +1,4 @@
-DiginApp.factory('datasourceFactory',['$http', 'Digin_Engine_API','notifications',  function ($http, Digin_Engine_API, notifications) {
+DiginServiceLibraryModule.factory('datasourceServices',['$http', 'Digin_Engine_API','notifications',  function ($http, Digin_Engine_API, notifications) {
 	return{
 			getAllConnections: function(securityToken,dbType) {
 				return $http.get(Digin_Engine_API + 'get_datasource_config?SecurityToken=' + securityToken + '&connectiontype=' + dbType)
@@ -18,7 +18,7 @@ DiginApp.factory('datasourceFactory',['$http', 'Digin_Engine_API','notifications
 							notifications.toast(0, "Falied to get Databases");
 				});
 			},testConnection: function(securityToken,reqParam,dbType) {
-				return $http.get( Digin_Engine_API + 'test_database_connection?' + 'SecurityToken=' + securityToken +'&hostname=' + reqParam.host + '&port=' + reqParam.port +'&username=' + reqParam.username + '&password=' + reqParam.password + '&databasename=' + reqParam.databaseName+'&db_type=' + dbType)
+				return $http.get( Digin_Engine_API + 'test_database_connection?' + 'SecurityToken=' + securityToken +'&hostname=' + reqParam.host + '&port=' + reqParam.port +'&username=' + reqParam.username + '&password=' + reqParam.password + '&databasename=' + reqParam.databaseName+'&db=' + dbType)
 				   .then(function(result) {
 					   console.log(result);
 						return result.data;

@@ -9,7 +9,7 @@
 
 (function (){
 
-	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope', function(Digin_Engine_API,$http,$rootScope) { 
+	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope','chartUtilitiesFactory', function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory) { 
 
 	 	return{
 	 		saveDashboard: function() {
@@ -19,16 +19,14 @@
 
 	 			var dashboardCopy =  angular.copy($rootScope.currentDashboard);
 
+	 			for(var i = 0; i < $rootScope.currentDashboard.pages.length; i++){
+	 				for(var j = 0; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
+	 					
+	 					chartUtilitiesFactory.removeDataPoints(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
+	 				}
+	 			}
 
-	 			// for(var i = 0; i < $rootScope.currentDashboard.pages.length; i++){
-
-	 			// 	for(var j = 0; j < $rootScope.currentDashboard.pages.length; j++){
-	 				
-	 			// 	}
-	 			// }
-
-
-                return $http({
+               return $http({
                     method: 'POST',
                     url: Digin_Engine_API + 'store_componen/',
                     data: angular.toJson(dashboardCopy),

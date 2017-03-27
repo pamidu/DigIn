@@ -6,7 +6,7 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceFactory','colorManager','$timeout','DiginServices', function ($scope,$state,$rootScope,notifications,datasourceFactory,colorManager,$timeout,DiginServices) {
+DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','notifications','datasourceServices','colorManager','$timeout','DiginServices', function ($scope,$state,$rootScope,notifications,datasourceServices,colorManager,$timeout,DiginServices) {
 	
 	$scope.$parent.currentView = "Datasource Settings";
 
@@ -121,9 +121,11 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 	$scope.getAllconnections = function()
 	{
 		$scope.connectionStatus = false;
-		datasourceFactory.getAllConnections($rootScope.authObject.SecurityToken,$scope.onSelectDataBase).then(function(data) {
+		datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,$scope.onSelectDataBase).then(function(data) {
 			if(data.Is_Success)
 			{
+
+
 				$timeout(function() {
 					colorManager.reinforceTheme();
 				}, 100);
@@ -211,7 +213,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 		$scope.testRequest = false;
 
 		
-		datasourceFactory.getAllDatabases(securityToken,reqParam,$scope.onSelectDataBase).then(function(data) {
+		datasourceServices.getAllDatabases(securityToken,reqParam,$scope.onSelectDataBase).then(function(data) {
 			if(data.Is_Success)
 			{
 				if ($scope.action == "Create")
@@ -271,7 +273,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 		$scope.testRequest = true;
 		$scope.testStatus = false;
 		
-		datasourceFactory.testConnection(securityToken,reqParam,$scope.onSelectDataBase).then(function(data) {
+		datasourceServices.testConnection(securityToken,reqParam,$scope.onSelectDataBase).then(function(data) {
 			if(data.Is_Success)
 			{
 				$scope.testRequest = false;
@@ -316,12 +318,12 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 		$scope.saveRequest = true;
 		$scope.testStatus = false;
 		
-		datasourceFactory.saveConnection(securityToken,reqParam).then(function(res) {
+		datasourceServices.saveConnection(securityToken,reqParam).then(function(res) {
 			if(res.Is_Success)
 			{
 				console.log(res);
 				// Call getAllConnections to get the connections after saving 
-				datasourceFactory.getAllConnections(securityToken,$scope.onSelectDataBase).then(function(data){
+				datasourceServices.getAllConnections(securityToken,$scope.onSelectDataBase).then(function(data){
 					if(data.Is_Success)
 					{	
 						$scope.saveRequest = false;

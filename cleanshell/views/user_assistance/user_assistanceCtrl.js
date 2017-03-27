@@ -1,4 +1,4 @@
-DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbType','DiginServices', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbType,DiginServices){
+DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbType','DiginServices','datasourceServices', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbType,DiginServices,datasourceServices){
 		$scope.$parent.currentView = "User Assistance";
 		var chartBackgroundColor = "";
 		
@@ -529,12 +529,22 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
         	})
 		});
 		
-		$scope.files = [];
-		$scope.folders = [];
-		$scope.selectedDB = "";
+		
 		//Submit one in Upload Source
 		$scope.selectSource = function(type)
 		{
+
+			$scope.files = [];
+			$scope.folders = [];
+
+			$scope.conections = [];
+			
+
+			$scope.tabTitileFirst = "Files";
+			$scope.tabTitileSecond =  "folders";	
+
+			$scope.selectedDB = "";
+
 			//alert(type);
 			if(type == "BigQuery" || type == "memsql")
 			{
@@ -560,13 +570,42 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 					}
 				});
 				
-			}else{
+			}
+			else if(type == "MSSQL"){
+
+				$scope.tabTitileFirst = "Select a connection";
+				$scope.tabTitileSecond =  "Select a table";	
+				$scope.selectedDB = type;
+				$scope.showBusyText = true;
+
+				datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
+               	
+               		$scope.showBusyText = false;
+					$scope.connectSource_selected = 1;
+					$scope.connectSource_step1.completed = true;
+
+					if(res.Is_Success){
+
+						for(var i = 0; i < res.Result.length; i++){
+						
+							$scope.conections.push(res.Result[i]);
+
+						}
+					}
+	               	
+                });
+
+
+
+			}
+			else{
 				notifications.alertDialog("Sorry","Not connected yet");
 			}
 		}
 		$scope.attributes = [];
 		$scope.measures = [];
 		$scope.selectedFile = {};
+
 		$scope.selectTable = function(fileOrFolder)
 		{
 			$scope.selectedFile = fileOrFolder;
@@ -582,10 +621,28 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
+			loadChartDesinger();
+		}	
+		
+		$scope.getTables = function(conection){
+			$scope.tables = [];
+			$diginengine.getClient($scope.selectedDB).getConnectionTables(conection.ds_config_id,$scope.selectedDB,function(res){
+               	
+               		$scope.showBusyText = false;
+					$scope.connectSource_selected = 1;
+					$scope.connectSource_step1.completed = true;
 
+	               	for(var i = 0; i < res; i++){
+						
+						$scope.tables.push(res[i]);
 
+					}
+                });
 
-			var widgetData = {
+		};
+
+		var loadChartDesinger = function(){
+				var widgetData = {
 				'chartType' : null,
 				'selectedFile' : null,
 				'Measures' : null,
@@ -625,8 +682,12 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			  'widget':widget,
 			  'chartType':{}
 			});
-		}	
-		
+		}
+
+
+
+
+
 		$scope.goToPreviousConnectSourceStep = function()
 		{
 			$scope.attributes = [];

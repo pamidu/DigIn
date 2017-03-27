@@ -7,6 +7,7 @@ md-dialog.md-dialog-fullscreen {
     height: 100%;
     border-radius: 0;
 }
+
 </style>
 
 <md-dialog aria-label="Fullscreen Widget">
@@ -22,7 +23,7 @@ md-dialog.md-dialog-fullscreen {
 		</div>
 	  </md-toolbar>
 	  <md-dialog-content style="min-width:385px;">
-		<div ng-include="'views/dashboard/widgets.html'"></div>
+		<div id="fullscreen_widgets" ng-include="'views/dashboard/widgets.html'"></div>
 	  </md-dialog-content>
   </form>
 </md-dialog>

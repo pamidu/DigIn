@@ -257,7 +257,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 						isDrilled = true;
 					} 
 
-					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedFile.datasource_id,$scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
+					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();

@@ -1,6 +1,106 @@
 DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','Upload','Digin_Engine_API','$diginengine','notifications', '$location','$anchorScroll','$state','dbType','DiginServices','datasourceServices', function ($scope,$rootScope,$mdDialog,Upload,Digin_Engine_API,$diginengine,notifications,$location,$anchorScroll,$state,dbType,DiginServices,datasourceServices){
 		$scope.$parent.currentView = "User Assistance";
 		var chartBackgroundColor = "";
+
+		        //data base field type
+        var dataBaseFiledTypes = [{
+            'type': 'nvarchar',
+            'category': 'att'
+        }, {
+            'type': 'varchar',
+            'category': 'att'
+        }, {
+            'type': 'char',
+            'category': 'att'
+        }, {
+            'type': 'bit',
+            'category': 'att'
+        }, {
+            'type': 'STRING',
+            'category': 'att'
+        }, {
+            'type': 'datetime',
+            'category': 'att'
+        }, {
+            'type': 'DATETIME',
+            'category': 'att'
+        }, {
+            'type': 'DATE',
+            'category': 'att'
+        }, {
+            'type': 'TIMESTAMP',
+            'category': 'att'
+        }, {
+            'type': 'int',
+            'category': 'mes'
+        }, {
+            'type': 'decimal',
+            'category': 'mes'
+        }, {
+            'type': 'float',
+            'category': 'mes'
+        }, {
+            'type': 'money',
+            'category': 'mes'
+        }, {
+            'type': 'INTEGER',
+            'category': 'mes'
+        }, {
+            'type': 'FLOAT',
+            'category': 'mes'
+        }, {
+            'type': 'smallint',
+            'category': 'mes'
+        }, {
+            'type': 'integer',
+            'category': 'mes'
+        }, {
+            'type': 'bigint',
+            'category': 'mes'
+        }, {
+            'type': 'numeric',
+            'category': 'mes'
+        }, {
+            'type': 'real',
+            'category': 'mes'
+        }, {
+            'type': 'double precision',
+            'category': 'mes'
+        }, {
+
+            'type': 'smallserial',
+            'category': 'mes'
+        }, {
+
+            'type': 'serial',
+            'category': 'mes'
+        }, {
+
+            'type': 'bigserial',
+            'category': 'mes'
+        }, {
+            'type': 'character varying',
+            'category': 'att'
+        }, {
+
+            'type': 'character',
+            'category': 'att'
+        },{
+            'type': 'VARCHAR2',
+            'category': 'att'
+        },{
+            'type': 'NVARCHAR2',
+            'category': 'att'
+        },{
+            'type': 'NUMBER',
+            'category': 'mes'
+        }, {
+
+            'type': 'LONG',
+            'category': 'mes'
+        }
+
+    ];
 		
 		if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 		{
@@ -621,18 +721,20 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
-			loadChartDesinger();
+			loadChartDesinger($scope.selectedFile);
 		}	
 		
+		var slectedconfigID = "";
 		$scope.getTables = function(conection){
 			$scope.tables = [];
+			slectedconfigID = conection.ds_config_id;
 			$diginengine.getClient($scope.selectedDB).getConnectionTables(conection.ds_config_id,$scope.selectedDB,function(res){
                	
                		$scope.showBusyText = false;
 					$scope.connectSource_selected = 1;
 					$scope.connectSource_step1.completed = true;
 
-	               	for(var i = 0; i < res; i++){
+	               	for(var i = 0; i < res.length; i++){
 						
 						$scope.tables.push(res[i]);
 
@@ -641,7 +743,47 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 
 		};
 
-		var loadChartDesinger = function(){
+
+		$scope.onClickTable = function(table){
+
+			//get all fields
+			$diginengine.getClient($scope.selectedDB).getMSSQLFields(table, slectedconfigID ,function(data, status) {
+				if(status){
+					for(var i=0; i < data.length; i++){
+						for(var j=0; j < dataBaseFiledTypes.length; j++){
+							if(data[i].FieldType == dataBaseFiledTypes[j].type){
+								var obj = {
+									"name": data[i].Fieldname,
+									"type": data[i].FieldType
+								}
+								if(dataBaseFiledTypes[j].category == "att"){
+									$scope.attributes.push(obj);
+								}else if(dataBaseFiledTypes[j].category == "mes"){
+									$scope.measures.push(obj);	
+								}
+							}
+						}
+					}
+
+					$scope.dataconfig = {
+						"id" : slectedconfigID,
+						"src": $scope.selectedDB,
+						"datasource_name": table
+
+					}
+
+					loadChartDesinger($scope.dataconfig);
+
+				}
+
+            });
+
+			
+
+		}
+
+
+		var loadChartDesinger = function(dbconfig){
 				var widgetData = {
 				'chartType' : null,
 				'selectedFile' : null,
@@ -673,7 +815,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			{ 
 			  'allAttributes': $scope.attributes, 
 			  'allMeasures':$scope.measures, 
-			  'selectedFile':$scope.selectedFile, 
+			  'selectedFile':dbconfig, 
 			  'DesignTimeFilter': [],
 			  'RuntimeFilter': [],
 			  'selectedDB': $scope.selectedDB,

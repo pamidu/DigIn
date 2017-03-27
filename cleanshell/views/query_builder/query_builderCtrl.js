@@ -156,6 +156,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					console.log(data);
 				})
 			}*/
+
+			/*
+			var allAttributes=$scope.selectedAttributes;
+			$scope.selectedAttributes=[];
+			var log = [];
+			angular.forEach(allAttributes, function(value, key) {
+				if(value.type=='TIMESTAMP' || value.type=='DATETIME' || value.type=='DATE' )
+			  		$scope.selectedAttributes.push(value);
+			}, log);
+			*/		
+
 		}
 		else{
 			$scope.showPlaceholderIcon = true;

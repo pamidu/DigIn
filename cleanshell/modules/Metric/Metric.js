@@ -5,10 +5,10 @@
 
 'use strict';
 
-var WhatIfModule = angular.module('Metric',['DiginServiceLibrary']);
+var MetricModule = angular.module('Metric',['DiginServiceLibrary']);
 
 
-WhatIfModule.directive('metric',['$rootScope','notifications','generateMetric', function($rootScope,notifications,generateMetric) {
+MetricModule.directive('metric',['$rootScope','notifications','generateMetric', function($rootScope,notifications,generateMetric) {
 	return {
          restrict: 'E',
          templateUrl: 'modules/Metric/Metric.html',
@@ -21,7 +21,7 @@ WhatIfModule.directive('metric',['$rootScope','notifications','generateMetric', 
     };
 }]);
 
-WhatIfModule.directive('metricSettings',['$rootScope','notifications','generateMetric', function($rootScope,notifications,generateMetric) {
+MetricModule.directive('metricSettings',['$rootScope','notifications','generateMetric', function($rootScope,notifications,generateMetric) {
 	return {
          restrict: 'E',
          templateUrl: 'modules/Metric/MetricSettings.html',
@@ -51,7 +51,7 @@ WhatIfModule.directive('metricSettings',['$rootScope','notifications','generateM
     };
 }]);
 
-WhatIfModule.factory('generateMetric', ['$rootScope','notifications', function($rootScope,notifications) {
+MetricModule.factory('generateMetric', ['$rootScope','notifications', function($rootScope,notifications) {
     
 
     return {
@@ -71,4 +71,4 @@ WhatIfModule.factory('generateMetric', ['$rootScope','notifications', function($
 		
 		}
 	}
-}]);//END OF generateWhatIf
+}]);//END OF generateMetric

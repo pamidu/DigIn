@@ -6,7 +6,6 @@ var DiginApp = angular.module('DuoDiginRt',
 		'directivelibrary',
 		'md-steppers',
 		'ngMessages',
-		//'uiMicrokernel',
 		'gridster',
 		'highcharts-ng',
 		'ngMap',
@@ -20,8 +19,9 @@ var DiginApp = angular.module('DuoDiginRt',
 		'pouchdb',
 		'cellCursor',
 		'DiginHighCharts',
-		'GoogleMap',
 		'DiginForecasts',
+		'GoogleMap',
+		'Metric',
 		'DiginServiceLibrary'
 	]
 );

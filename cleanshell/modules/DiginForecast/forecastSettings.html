@@ -43,7 +43,7 @@
 			</md-input-container>
 
 			<md-input-container class="md-block" flex-gt-sm>
-				<span>Length of season ( {{forecastObj.paramObj.interval}} )</span>
+				<span>Length of season ( {{forecastObj.interval}} )</span>
 				<input aria-label="length of season" ng-model="forecastObj.len_season" ng-disabled="forecastObj.model == 'double exponential smoothing'" min="0"  max=""  type="number" step="" is-disabled-dark>
 			</md-input-container>
 		</div>
@@ -95,11 +95,11 @@
 
 	<!--div layout-gt-sm="row" class="side-margins">
 		<md-datepicker name="sdt" 
-						 ng-model="forecastObj.paramObj.startdate" 
+						 ng-model="forecastObj.startdate" 
 						 md-placeholder="Enter date" 
 						 required 
-						 md-min-date="forecastObj.paramObj.mindate" 
-						 md-max-date="forecastObj.paramObj.maxdate">
+						 md-min-date="forecastObj.mindate" 
+						 md-max-date="forecastObj.maxdate">
 		  </md-datepicker>
 
 		  <div style="margin-top: 6px; font-size: 12px; color: #ec3e3e;" ng-messages="forecastSettingsForm.sdt.$error">
@@ -117,19 +117,19 @@
 				<span class="md-datepicker-label">Start Date</span>
 				<md-datepicker name="startdt" ng-model="forecastObj.startdate"  md-placeholder="Enter date" md-min-date="forecastObj.mindate" md-max-date="forecastObj.maxdate" aria-label="startdt" required></md-datepicker>
 				<div ng-messages="forecastSettingsForm.startdt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
-				<!--startdate: {{forecastObj.paramObj.startdate}}
-				mindate: {{forecastObj.paramObj.mindate}}
-				Maxdate: {{forecastObj.paramObj.maxdate}}-->
+				<!--startdate: {{forecastObj.startdate}}
+				mindate: {{forecastObj.mindate}}
+				Maxdate: {{forecastObj.maxdate}}-->
 					<div ng-message="valid">Invalid date</div>
 					<div ng-message="required">Start date is required</div>
 					<div ng-message="mindate">Start date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.maxdate | formatdate}} 	</div>
-					<div ng-message="maxdate">Start date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.paramObj.maxdate | formatdate}} 	</div>
+					<div ng-message="maxdate">Start date must be between {{forecastObj.mindate | formatdate}} and {{forecastObj.maxdate | formatdate}} 	</div>
 				</div>
 			</div>
 
 			<div layout="column" style="margin-left: 22px">
 				<span class="md-datepicker-label">End Date </span>
-				<md-datepicker name="enddt" ng-model="forecastObj.paramObj.enddate" md-placeholder="Enter date"  md-min-date="forecastObj.paramObj.mindate" md-max-date="forecastObj.paramObj.maxdate" aria-label="enddt" required></md-datepicker>
+				<md-datepicker name="enddt" ng-model="forecastObj.enddate" md-placeholder="Enter date"  md-min-date="forecastObj.mindate" md-max-date="forecastObj.maxdate" aria-label="enddt" required></md-datepicker>
 				<div ng-messages="forecastSettingsForm.enddt.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
 					<div ng-message="valid">Invalid date</div>
 					<div ng-message="required">End date is required</div>
@@ -149,7 +149,7 @@
 		<div layout-gt-sm="row" class="side-margins" ng-if="forecastObj.isVisual">
 			<div layout="column" style="width: 187px;">
 				<span class="md-datepicker-label">Start Date </span>
-				<md-datepicker ng-model="forecastObj.paramObj.visualstart" aria-label="startdate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.startdate" md-max-date="forecastObj.paramObj.enddate" name="startdate" required></md-datepicker>
+				<md-datepicker ng-model="forecastObj.visualstart" aria-label="startdate" md-placeholder="Enter date" md-min-date="forecastObj.startdate" md-max-date="forecastObj.enddate" name="startdate" required></md-datepicker>
 				<div ng-messages="forecastSettingsForm.startdate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
 					<div ng-message="valid">Invalid date</div>
 					<div ng-message="required">Start date is required</div>
@@ -159,7 +159,7 @@
 			</div>
 			<div layout="column" style="margin-left: 22px">
 				<span class="md-datepicker-label">End Date </span>
-				<md-datepicker ng-model="forecastObj.visualend" aria-label="enddate" md-placeholder="Enter date" md-min-date="forecastObj.paramObj.enddate" name="enddate"></md-datepicker>
+				<md-datepicker ng-model="forecastObj.visualend" aria-label="enddate" md-placeholder="Enter date" md-min-date="forecastObj.enddate" name="enddate"></md-datepicker>
 				<div ng-messages="forecastSettingsForm.enddate.$error"  style="margin-top: 6px; font-size: 12px; color: #ec3e3e;">
 					<div ng-message="valid">Invalid date</div>
 					<div ng-message="required">End date is required</div>

@@ -17,6 +17,34 @@
 			<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Basic Settings</div>
 		</div>
 		
+		<div layout="row"  class="side-margins">
+
+			<label>Set Aggregation:</label>
+
+			<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.totForNumeric" layout="row"  style="float: left;margin-left:50px">
+				   <md-radio-button value="true"> Enable </md-radio-button>
+				   <md-radio-button value="false"> Disable </md-radio-button>
+			</md-radio-group>
+
+		</div>
+
+		<div layout="row" style="margin-top:20px">
+			<label style="margin-top: 10px"><b>Default Sort Field:</b></label>
+
+			<div layout="column" style="float: left;margin-left:50px">
+
+				  <md-select ng-model="widget.widgetData.widData.tabularConfig.defSortFeild">
+				    <md-option ng-value="user.Attribute" ng-repeat="user in widget.widgetData.widData.tabularConfig.AllingArr">{{ user.Attribute }}</md-option>
+				  </md-select>
+
+				<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.AscOrDec" layout="row" style="margin-top:20px">
+				   <md-radio-button value="ASC"> Ascending </md-radio-button>
+				   <md-radio-button value="DESC"> Descending </md-radio-button>
+				</md-radio-group>
+				
+			</div>
+		</div>
+		
 		
 	</md-content>
 </form>

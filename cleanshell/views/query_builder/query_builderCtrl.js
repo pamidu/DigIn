@@ -182,7 +182,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		if(!angular.equals($scope.widgetConfig, {}))//if there is a config
 		{
 			$scope.chartType = $stateParams.chartType;
-			widgetID = $stateParams.widget.widgetData.widgetID;
+			widgetID = $stateParams.widget.widgetID;
 			$scope.groupBySortArray = $stateParams.widget.widgetData.groupBySortArray;
 
 			$scope.widgetCol = $stateParams.widget.col;

@@ -42,7 +42,7 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/libs/ng-croppie.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/cellCursor.css">
-	<link rel="stylesheet" type="text/css" href="styles/introjs.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/introjs.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/rzslider.min.css">
 	<!-- endbuild -->
 

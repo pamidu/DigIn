@@ -589,6 +589,7 @@
 		<script src="modules/GoogleMap/GoogleMap.js"></script>
 		<script src="modules/WhatIf/WhatIf.js"></script>
 		<script src="modules/Metric/Metric.js"></script>
+		<script src="modules/Tabular/Tabular.js"></script>
 		<!--DigIn Widget Modules-->
 		
 		<!--DigIn Service Modules-->

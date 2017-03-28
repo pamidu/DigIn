@@ -22,6 +22,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'DiginForecasts',
 		'GoogleMap',
 		'Metric',
+		'Tabular',
 		'DiginServiceLibrary'
 	]
 );

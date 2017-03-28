@@ -188,8 +188,8 @@
       "id":"ct22",
       "icon":"ti-view-list-alt",
       "name":"Tabular Widget",
-      "chart":"Tabular",
-      "chartType":"Tabular",
+      "chart":"tabular",
+      "chartType":"tabular",
 	  "enableFilters": false,
       "tooltip":"A table view"
    },

@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,generateMetric,$timeout,NgMap,notifications,$mdMedia){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,generateMetric,generateTabular,$timeout,NgMap,notifications,$mdMedia){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -329,6 +329,24 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 						$scope.showChartLoading = false;
 						$scope.showPlaceholderIcon = false;
 						newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig"></metric>')($scope);
+						$element.find('.currentChart').append(newElement);
+					//})
+
+				}else{
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+				}
+			}else if($scope.chartType.chartType == 'tabular')
+			{
+				var isChartConditionsOk = generateTabular.tabularValidations($scope.settingConfig);
+				if(isChartConditionsOk){
+					
+					/*generateTabular.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
+
+						$scope.widgetConfig = data;*/
+						$scope.showChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						newElement = $compile('<tabular id-selector="'+widgetID+'" config="widgetConfig"></tabular>')($scope);
 						$element.find('.currentChart').append(newElement);
 					//})
 

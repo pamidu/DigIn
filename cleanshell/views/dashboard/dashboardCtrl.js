@@ -100,10 +100,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 						if (pageID.toString().substr(0, 4) != "temp") {
 	                            $rootScope.currentDashboard.deletions.pageIDs.push(pageID);
 	                    }
-
 						$rootScope.currentDashboard.pages.splice(i, 1);
-
-
 					}
 				}
 			}
@@ -158,7 +155,42 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	$scope.$on("$destroy", function(){
 		$scope.$parent.changed = false; // If the user leave the 'dashboard' state
 	})
-	//
+
+	//Dashboard toolbar controls
+
+	$scope.dashboardControls = (function (){
+
+		return {
+			saveDashboard: function(ev){
+
+				$mdDialog.show({
+				  controller: 'saveDashboardCtrl',
+				  templateUrl: 'dialogs/saveDashboard/saveDashboard.html',
+				  parent: angular.element(document.body),
+				  clickOutsideToClose:true,
+				  targetEvent: ev,
+				  fullscreen: useFullScreen
+				}).then(function(answer) {
+					console.log("save dashboard closed");
+					console.log(answer);
+					notifications.startLoading("Saving '"+answer.dashboardName+"' dashboard, Please wait...");
+					
+					$timeout(function(){
+						notifications.finishLoading();
+						notifications.toast(1,"Changes Successfully Saved");
+					}, 3000);
+				}); 
+				
+				 $scope.$watch(function() {
+				  return $mdMedia('xs') || $mdMedia('sm');
+					}, function(wantsFullScreen) {
+					  $scope.customFullscreen = (wantsFullScreen === true);
+				});
+			}
+		}
+
+
+	})();
 	
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {

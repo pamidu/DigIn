@@ -178,14 +178,14 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					refreshInterval: 0, 
 					compClass: null,
 					compCategory: null,
-					pages: {pageName: answer.page,
+					pages: [{pageName: answer.page,
                             pageID: "temp" + createuuid(),
 							widgets: [],
-							pageData: null},
-					deletions :[{
+							pageData: null}],
+					deletions :{
 					        componentIDs:[],
 					        pageIDs:[],
-					        widgetIDs:[]}],
+					        widgetIDs:[]},
 					filterDetails: {},		     
 				};
 				console.log("empty dashboar created " + $rootScope.currentDashboard);
@@ -242,32 +242,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					clearWidgets();
 				}
 			});
-		}else if(action == 'Save')
-		{
-			
-			 $mdDialog.show({
-			  controller: 'saveDashboardCtrl',
-			  templateUrl: 'dialogs/saveDashboard/saveDashboard.html',
-			  parent: angular.element(document.body),
-			  clickOutsideToClose:true,
-			  targetEvent: ev,
-			  fullscreen: useFullScreen
-			}).then(function(answer) {
-				console.log("save dashboard closed");
-				console.log(answer);
-				notifications.startLoading("Saving '"+answer.dashboardName+"' dashboard, Please wait...");
-				
-				$timeout(function(){
-					notifications.finishLoading();
-					notifications.toast(1,"Changes Successfully Saved");
-				}, 3000);
-			}); 
-			
-			 $scope.$watch(function() {
-			  return $mdMedia('xs') || $mdMedia('sm');
-				}, function(wantsFullScreen) {
-				  $scope.customFullscreen = (wantsFullScreen === true);
-			});
 		}else if(action == 'Notifications')
 		{
 			$mdSidenav('notifications').toggle();
@@ -309,10 +283,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			"compName": null,
 			"refreshInterval": null,
 			"filterDetails":[],
-			"deletions" :[{
+			"deletions" :{
 					        "componentIDs":[],
 					        "pageIDs":[],
-					        "widgetIDs":[]}],
+					        "widgetIDs":[]},
 
 		}
 

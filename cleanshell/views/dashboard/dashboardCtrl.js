@@ -156,10 +156,12 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		$scope.$parent.changed = false; // If the user leave the 'dashboard' state
 	})
 
+	 // use this variable to make the dialogs fullscreen in smaller screen sizes
+	 var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+
+
 	//Dashboard toolbar controls
-
 	$scope.dashboardControls = (function (){
-
 		return {
 			saveDashboard: function(ev){
 
@@ -173,12 +175,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				}).then(function(answer) {
 					console.log("save dashboard closed");
 					console.log(answer);
-					notifications.startLoading("Saving '"+answer.dashboardName+"' dashboard, Please wait...");
-					
-					$timeout(function(){
-						notifications.finishLoading();
-						notifications.toast(1,"Changes Successfully Saved");
-					}, 3000);
+					notifications.startLoading(ev,"Saving '"+answer.dashboardName+"' dashboard, Please wait...");
 				}); 
 				
 				 $scope.$watch(function() {

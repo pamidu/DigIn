@@ -44,7 +44,7 @@
 			<div layout-gt-sm="row" style="height:{{$parent.chartDesignerViewPortHeight}}">
 			
 				<div id="selectorSection" layout="column" flex-gt-sm="25" style="-webkit-box-shadow: 2px 0 3px -2px #888;box-shadow: 2px 0 3px -2px #888;overflow-y:scroll">
-					<div layout="column" ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif'">
+					<div layout="column" ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>Measures</h2>
 							<md-menu md-position-mode="target-right target" style="margin-top:10px">
@@ -74,7 +74,7 @@
 						<!--md-divider></md-divider-->
 					</div>
 			
-					<md-list style="margin-top:60px" layout-padding ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif'">
+					<md-list style="margin-top:60px" layout-padding ng-if="chartType.name != 'scatter' && chartType.chart != 'whatif' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between center" ng-repeat="item in selectedSeries" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{item.name}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
 							<md-button class="md-icon-button" ng-click="removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
@@ -84,13 +84,13 @@
 					
 					
 					<md-divider></md-divider>
-					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
+					<div layout="column" style="width:100%;" ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 							<h2>
 								<span ng-show="chartType.chart != 'pie' && chartType.chart != 'hierarchy' && chartType.chart != 'sunburst' && chartType.chart != 'forecast'">X-Axis</span>
-								<span ng-show="chartType.chart == 'pie' || chartType.chart == 'sunburst'">Slices</span>
-								<span ng-show="chartType.chart == 'hierarchy'">Hierarchical levels</span>
-								<span ng-show="chartType.chart == 'forecast'">Date Field</span>
+                                <span ng-show="chartType.chart == 'pie' || chartType.chart == 'sunburst'">Slices</span>
+                                <span ng-show="chartType.chart == 'hierarchy'">Hierarchical levels</span>
+                                <span ng-show="chartType.chart == 'forecast'">Date Field</span>
 							</h2>
 							<md-menu md-position-mode="target-right target" style="margin-top:10px">
 							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
@@ -106,7 +106,7 @@
 						</div>
 						<!--md-divider></md-divider-->
 					</div>
-					<md-list style="margin-top:60px" layout-padding ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map'">
+					<md-list style="margin-top:60px" layout-padding ng-if="chartType.chart != 'whatif' && chartType.chart != 'histogram' && chartType.chart != 'map' && chartType.chart != 'metric'">
 						<div layout="row" layout-align="space-between center"  ng-repeat="item in selectedCategory" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 							<p style="margin:8px">{{item.name}}</p>
 							<md-button class="md-icon-button md-secondary" ng-click="removeFromCategory($index)" aria-label="remove from category"><span class="ti-close"></span></md-button>
@@ -236,6 +236,63 @@
 						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.address.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose an address column to create a <span> {{chartType.name}}</span> Chart</text></div>
 					</md-list>
 					<!--ONLY RELATED TO GOOGLE MAP WIDGET-->
+					
+					<!--ONLY RELATED TO METRIC WIDGET-->
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'metric'">
+						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+							<h2>
+								<span>Actual Value</span>
+							</h2>
+							<md-menu md-position-mode="target-right target" style="margin-top:10px">
+							  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+								<span style="font-size: 14px;font-weight: 800;">Select an actual value</span><br/>
+								<md-list>
+									<md-list-item class="secondary-button-padding" ng-repeat="item in selectedAttributes" ng-click="defineVariable($index,'actual',item)">
+										<p>{{item.name}}</p>
+									</md-list-item>
+								</md-list>
+							  </md-menu-content>
+							</md-menu>
+						</div>
+					</div>
+					
+					<md-list layout-padding ng-if="chartType.chart == 'metric'">
+						<div ng-if="settingConfig.actual" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+							<p style="margin:8px">{{settingConfig.actual.name}}</p>
+							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'actual')" aria-label="remove from category"><span class="ti-close"></span></md-button>
+						</div>
+						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.actual.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose an actual value column to create a <span> {{chartType.name}}</span> Chart</text></div>
+					</md-list>
+					<md-divider ng-if="chartType.chart == 'metric'"></md-divider>
+					<div layout="column" style="width:100%;" ng-if="chartType.chart == 'metric'">
+						<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+							<h2>
+								<span>Target Value</span>
+							</h2>
+							<md-menu md-position-mode="target-right target" style="margin-top:10px">
+							  <md-button class="md-fab md-mini" aria-label="target" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+							  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+								<span style="font-size: 14px;font-weight: 800;">Select a target value</span><br/>
+								<md-list>
+									<md-list-item class="secondary-button-padding" ng-repeat="item in selectedAttributes" ng-click="defineVariable($index,'target',item)">
+										<p>{{item.name}}</p>
+									</md-list-item>
+								</md-list>
+							  </md-menu-content>
+							</md-menu>
+						</div>
+					</div>
+					
+					<md-list layout-padding ng-if="chartType.chart == 'metric'">
+						<div ng-if="settingConfig.target" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+							<p style="margin:8px">{{settingConfig.target.name}}</p>
+							<md-button class="md-icon-button md-secondary" ng-click="removeVariable($index, 'target')" aria-label="remove from category"><span class="ti-close"></span></md-button>
+						</div>
+						<div layout="row" layout-align="center center"><text ng-if="!settingConfig.target.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose a target value column to create a <span> {{chartType.name}}</span> Chart</text></div>
+					</md-list>
+					<md-divider ng-if="chartType.chart == 'metric'"></md-divider>
+					<!--ONLY RELATED TO METRIC WIDGET-->
 
 					<md-divider ng-show="chartType.enableFilters == true"></md-divider>
 					<div layout="column" style="width:100%;min-height:170px" ng-show="chartType.enableFilters == true">

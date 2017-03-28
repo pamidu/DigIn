@@ -122,21 +122,28 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
 
 DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','notifications', function($rootScope,$diginengine,notifications) {
     
-
     return {
         isRequestValidated: function(selectedSeries, selectedCategory){  
             var isRequestValidated = true;
 
             if(selectedSeries.length == 0){
-                notifications.toast(2,"Please select series.");
+                notifications.toast(2,"Please select measures.");
+                isRequestValidated = false;
+            } 
+            else if(selectedSeries.length > 1){
+                notifications.toast(2,"You can select only one measure.");
                 isRequestValidated = false;
             }               
             else if(selectedCategory.length == 0){
-                notifications.toast(2,"Please select category.");
+                notifications.toast(2,"Please select date field.");
                 isRequestValidated = false; 
-            }  
+            } 
+            else if(selectedCategory.length > 1){
+                notifications.toast(2,"You can select only one date field.");
+                isRequestValidated = false; 
+            }   
             else if (selectedCategory[0].type.toUpperCase() != "TIMESTAMP" && selectedCategory[0].type.toUpperCase() != "DATETIME" && selectedCategory[0].type.toUpperCase() !="DATE" ){
-                notifications.toast(2,"Please select a date for category.");
+                notifications.toast(2,"Please select a date for date field.");
                 isRequestValidated = false; 
             }            
             else{

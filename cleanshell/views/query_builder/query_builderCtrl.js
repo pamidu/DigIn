@@ -1,4 +1,4 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,$timeout,NgMap,notifications,$mdMedia){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,generateMetric,$timeout,NgMap,notifications,$mdMedia){
 	$scope.$parent.currentView = "Chart Designer";
 
 	var newElement = "";
@@ -156,6 +156,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					console.log(data);
 				})
 			}*/
+
+			/*
+			var allAttributes=$scope.selectedAttributes;
+			$scope.selectedAttributes=[];
+			var log = [];
+			angular.forEach(allAttributes, function(value, key) {
+				if(value.type=='TIMESTAMP' || value.type=='DATETIME' || value.type=='DATE' )
+			  		$scope.selectedAttributes.push(value);
+			}, log);
+			*/		
+
 		}
 		else{
 			$scope.showPlaceholderIcon = true;
@@ -269,25 +280,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					$scope.showChartLoading = false;
 				}
 				//$scope.currentChartType = "highCharts";
-			}else if($scope.chartType.chartType == 'map')
-			{
-				var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
-				if(isChartConditionsOk){
-					
-					generateGoogleMap.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = false;
-						$scope.widgetConfig = data;
-						newElement = $compile('<google-map id-selector="'+widgetID+'" config="widgetConfig"></google-map>')($scope);
-						$element.find('.currentChart').append(newElement);
-					})
-
-				}else{
-					$scope.showChartLoading = false;
-					$scope.showPlaceholderIcon = true;
-				}
-			}
-			else if($scope.chartType.chartType == 'forecast')
+			}else if($scope.chartType.chartType == 'forecast')
 			{
 				if(generateForecast.isRequestValidated($scope.selectedSeries, $scope.selectedCategory)){
 					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data,status){
@@ -307,6 +300,41 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				}
 				else{
 					$scope.showChartLoading = false;
+				}
+			}else if($scope.chartType.chartType == 'map')
+			{
+				var isChartConditionsOk = generateGoogleMap.mapValidations($scope.settingConfig);
+				if(isChartConditionsOk){
+					
+					generateGoogleMap.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
+						$scope.showChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						$scope.widgetConfig = data;
+						newElement = $compile('<google-map id-selector="'+widgetID+'" config="widgetConfig"></google-map>')($scope);
+						$element.find('.currentChart').append(newElement);
+					})
+
+				}else{
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+				}
+			}else if($scope.chartType.chartType == 'metric')
+			{
+				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
+				if(isChartConditionsOk){
+					
+					/*generateMetric.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
+
+						$scope.widgetConfig = data;*/
+						$scope.showChartLoading = false;
+						$scope.showPlaceholderIcon = false;
+						newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig"></metric>')($scope);
+						$element.find('.currentChart').append(newElement);
+					//})
+
+				}else{
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
 				}
 			}
 		

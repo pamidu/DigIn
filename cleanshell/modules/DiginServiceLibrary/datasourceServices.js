@@ -10,6 +10,7 @@ DiginServiceLibraryModule.factory('datasourceServices',['$http', 'Digin_Engine_A
 						 });
 			},getAllDatabases: function(securityToken,reqParam,dbType) {
 				return $http.get( Digin_Engine_API + 'get_all_databases?' + 'SecurityToken=' + securityToken +'&hostname=' + reqParam.host + '&port=' + reqParam.port +'&username=' + reqParam.username + '&password=' + reqParam.password + '&db=' + dbType)
+				//return $http.get( 'http://192.168.0.101:8080/get_all_databases?' + 'SecurityToken=' + securityToken +'&hostname=' + reqParam.host + '&port=' + reqParam.port +'&username=' + reqParam.username + '&password=' + reqParam.password + '&db=' + dbType)
 				   .then(function(result) {
 					   console.log(result);
 						return result.data;
@@ -19,6 +20,7 @@ DiginServiceLibraryModule.factory('datasourceServices',['$http', 'Digin_Engine_A
 				});
 			},testConnection: function(securityToken,reqParam,dbType) {
 				return $http.get( Digin_Engine_API + 'test_database_connection?' + 'SecurityToken=' + securityToken +'&hostname=' + reqParam.host + '&port=' + reqParam.port +'&username=' + reqParam.username + '&password=' + reqParam.password + '&databasename=' + reqParam.databaseName+'&db=' + dbType)
+				//return $http.get('http://192.168.0.101:8080/test_database_connection?' + 'SecurityToken=' + securityToken +'&hostname=' + reqParam.host + '&port=' + reqParam.port +'&username=' + reqParam.username + '&password=' + reqParam.password + '&databasename=' + reqParam.databaseName+'&db=' + dbType)
 				   .then(function(result) {
 					   console.log(result);
 						return result.data;
@@ -30,6 +32,7 @@ DiginServiceLibraryModule.factory('datasourceServices',['$http', 'Digin_Engine_A
 				var req = {
 					 method: 'POST',
 					 url: Digin_Engine_API + 'store_datasource_config/',
+					 //url: 'http://192.168.0.101:8080/store_datasource_config/',
 					 headers: {
 						'Content-Type': 'application/json',
 						'securityToken' : securityToken

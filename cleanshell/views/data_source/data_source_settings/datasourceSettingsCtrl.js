@@ -81,7 +81,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 		})
 	});
 
-	$scope.onSelectDataBase;
+	//$scope.onSelectDataBase;
 
 	$scope.onSelectDataSource = function(source){
 		for (i = 0; i < $scope.sourceType.length; i++) {
@@ -89,6 +89,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
             if($scope.sourceType[i].name == source.name ){
             	$scope.sourceType[i].isSelected = true;
             	$scope.onSelectDataBase = source.name;
+            	$scope.SelectedDBType = source.name;
             	$scope.incrementStep();
             	$scope.getAllconnections();
             }
@@ -167,7 +168,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 		$scope.port = connection.port;
 		$scope.userName = connection.user_name;
 		$scope.password = "";
-		$scope.databaseType = "MSSQL";
+		$scope.databaseType = $scope.onSelectDataBase;
 		$scope.databaseName = connection.database_name;
 		$scope.authType = 'sql';
 		$scope.connName = connection.connection_name;
@@ -218,7 +219,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 			{
 				if ($scope.action == "Create")
 				{
-					$scope.databaseType = "";
+					$scope.databaseType = $scope.onSelectDataBase;
 					$scope.databaseName = "";
 					$scope.authType = "";
 					$scope.connName = "";
@@ -303,7 +304,7 @@ DiginApp.controller('datasourceSettingsCtrl',[ '$scope','$state','$rootScope','n
 			password: $scope.password,
 			port: $scope.port,
 			database_name: $scope.databaseName,
-			connection_type: "MSSQL",
+			connection_type: $scope.databaseType,
 			connection_name: $scope.connName,
 			ds_config_id: null,
 			others: {}

@@ -22,8 +22,8 @@
 	<meta charset="utf-8" />
 	<meta name="author" content="Sajeetharan" />
 	<meta name="description" content="Know everything your data is telling you with the platform that gives you everything." />
-    <meta name="keywords" content="data integration, analytics, and visualization" />
-    <meta name="viewport" content="user-scalable=no ,width=device-width ,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    	<meta name="keywords" content="data integration, analytics, and visualization" />
+   	<meta name="viewport" content="user-scalable=no ,width=device-width ,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -42,8 +42,8 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/libs/ng-croppie.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/cellCursor.css">
-	<link rel="stylesheet" type="text/css" href="styles/introjs.css">
-	<link rel="stylesheet" type="text/css" href="bower_components/angularjs-slider/dist/rzslider.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/introjs.css">
+	<link rel="stylesheet" type="text/css" href="styles/libs/rzslider.min.css">
 	<!-- endbuild -->
 
 </head>
@@ -588,6 +588,7 @@
 		<script src="modules/DiginForecast/DiginForecast.js"></script>
 		<script src="modules/GoogleMap/GoogleMap.js"></script>
 		<script src="modules/WhatIf/WhatIf.js"></script>
+		<script src="modules/Metric/Metric.js"></script>
 		<!--DigIn Widget Modules-->
 		
 		<!--DigIn Service Modules-->

@@ -51,6 +51,7 @@
                 			for(var j=0 ; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
 
                 				$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j]
+                				$rootScope.currentDashboard.pages[i].widgets[j].widgetData.widgetID = result.data.Result.pages[i].widget_ids[j]
                 			}
                 		}
 

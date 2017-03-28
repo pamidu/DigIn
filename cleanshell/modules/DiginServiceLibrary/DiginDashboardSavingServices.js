@@ -30,7 +30,7 @@
 
                 $http({
                     method: 'POST',
-                    url: "http://192.168.0.101:8080/" + 'store_component/',
+                    url: Digin_Engine_API + 'store_component/',
                     data: angular.toJson(dashboardCopy),
                     headers: {
                         'Content-Type': 'application/json',

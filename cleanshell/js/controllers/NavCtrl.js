@@ -178,10 +178,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					refreshInterval: 0, 
 					compClass: null,
 					compCategory: null,
-					pages: [{pageName: answer.page,
+					pages: {pageName: answer.page,
                             pageID: "temp" + createuuid(),
 							widgets: [],
-							pageData: null}],
+							pageData: null},
 					deletions :[{
 					        componentIDs:[],
 					        pageIDs:[],
@@ -308,7 +308,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			"compID": null,
 			"compName": null,
 			"refreshInterval": null,
-			"filterDetails":null,
+			"filterDetails":[],
 			"deletions" :[{
 					        "componentIDs":[],
 					        "pageIDs":[],
@@ -500,6 +500,13 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     function getDashboard(ev, dashboardId)
 	{
 		DiginServices.getComponent(ev, dashboardId).then(function(data) {
+
+			data.deletions = {
+						        "componentIDs":[],
+						        "pageIDs":[],
+						        "widgetIDs":[]
+						     };
+			
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
 			notifications.log($rootScope.currentDashboard, new Error());

@@ -158,7 +158,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	$scope.$on("$destroy", function(){
 		$scope.$parent.changed = false; // If the user leave the 'dashboard' state
 	})
-	
+	//
 	
 	//Widget toolbar controls
 	$scope.widgetControls = (function () {
@@ -216,12 +216,18 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			removeWidget: function(ev, widget)
 			{
 
+				var widgets = $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets;
 				var widgetID = widget.widgetID;
 				if (widgetID.toString().substr(0, 4) != "temp") {
-                        $rootScope.currentDashboard.deletions.widgetIDs.push(widgetID);
+					for(var i=0; i < widgets.length; i++){
+						if(widgetID == widgets[i].widgetID){
+
+                    		$rootScope.currentDashboard.deletions.widgetIDs.push(widgetID);
+							$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.splice(i, 1);	
+						}
+					}
                 }
 
-				$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.splice(i, 1);	
 			}
 		};
     })();

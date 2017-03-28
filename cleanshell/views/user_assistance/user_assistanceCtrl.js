@@ -671,7 +671,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 				});
 				
 			}
-			else if(type == "MSSQL"){
+			else if(type == "MSSQL" || type == "Oracle"){
 
 				$scope.tabTitileFirst = "Select a connection";
 				$scope.tabTitileSecond =  "Select a table";	

@@ -246,7 +246,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				    catArr.push("%27" +cat.name +"%27");
 				});
 
-				$diginengine.getClient(selectedDB).getHighestLevel(tableName, catArr.toString() ,datasourceId,function(res, status){
+				$diginengine.getClient(selectedDB).getHighestLevel(table, catArr.toString() ,datasource,function(res, status){
 					if(status){
 
 						var highestLevel = "";
@@ -294,7 +294,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                     	reArangeArr(selectedCategory,groupBySortArray);
                     	// -----------------
 
-                    	$diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
+                    	$diginengine.getClient(selectedDB).getAggData(table, fieldArr, limit, datasource, function(res, status, query) {
 
                     		var series = [];
                     		series = chartUtilitiesFactory.mapChartData(res,highestLevel,true);
@@ -410,7 +410,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				                        // Show the loading label
 				                        chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
 				                        //aggregate method
-				                        $diginengine.getClient(selectedDB).getAggData(tableName, fieldArr, limit, datasourceId, function(res, status, query) {
+				                        $diginengine.getClient(selectedDB).getAggData(table, fieldArr, limit, datasource, function(res, status, query) {
 				                            if (status) {
 				                                drillDownConfig["level"+(level+1)+"Query"] = query;
 				                                // filter only the selected fields from the result returned by the service

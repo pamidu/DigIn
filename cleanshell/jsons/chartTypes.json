@@ -190,7 +190,7 @@
       "name":"Tabular Widget",
       "chart":"tabular",
       "chartType":"tabular",
-	  "enableFilters": false,
+	  "enableFilters": true,
       "tooltip":"A table view"
    },
    {

@@ -33,7 +33,7 @@
 
                 $http({
                     method: 'POST',
-                    url: 'http://192.168.0.101:8080/' + 'store_component/',
+                    url: Digin_Engine_API + 'store_component/',
                     data: angular.toJson(dashboardCopy),
                     headers: {
                         'Content-Type': 'application/json',
@@ -51,7 +51,6 @@
                 			for(var j=0 ; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
 
                 				$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j]
-                				$rootScope.currentDashboard.pages[i].widgets[j].widgetData.widgetID = result.data.Result.pages[i].widget_ids[j]
                 			}
                 		}
 

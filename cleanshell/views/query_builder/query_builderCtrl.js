@@ -185,7 +185,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	 //remove from created array
 	 $scope.removeArrayElement = function(index, variableName)
 	 {
-	  console.log(index, variableName);
+	  $scope.settingConfig[variableName].splice(index,1);
 	 }
 	
 	function addGenerateBtnAnimation()

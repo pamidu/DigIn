@@ -535,4 +535,17 @@ div.slide-up p {
 	transform: translate3d(-50%,100%,0);
 }
 
+.noUi-horizontal-size{	
+	width: 85%;
+	margin: 0 auto;
+	margin-top: 45px;
+}
+
+.noUi-handle, .noUi-connect, .noUi-target, .noUi-ltr, .noUi-horizontal{
+	box-shadow: none;
+}
+
+.noUi-tooltip{
+    font-size: 14px;
+}
 /*END OF DIGIN DASHBOARD RELATED STYLES*/

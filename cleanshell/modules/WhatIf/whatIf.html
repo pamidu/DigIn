@@ -1,13 +1,14 @@
-<slider-container ng-repeat="variable in sCollCtrl.config.variables">
-    <h3 style="margin-bottom:40px">{{variable.name}}</h3>
-    <slider 
-        name="{{variable.name}}" 
-        min="variable.minimum" 
-        max="variable.maximum" 
-        current="variable.current"
-        target="variable.target">
-    </slider>
-</slider-container>
-
-<!-- <div style="width:100px;height:100px;background:red">
-</div> -->
+<md-content id="{{sCollCtrl.idSelector}}" style="height:345px">
+	<slider-container ng-repeat="variable in sCollCtrl.config.variables">
+		<div layout="column" layout-align="start start">
+			<slider style="width:100%"
+				name="{{variable.name}}" 
+				min="variable.minimum" 
+				max="variable.maximum" 
+				current="variable.current"
+				target="variable.target">
+			</slider>
+			<text style="margin:18px 0px 0px 40px">{{variable.name}}</text>
+		</div>
+	</slider-container>
+</md-content>

@@ -63,10 +63,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		maxRows: 100, // maximum amount of rows in the grid*/
 		defaultSizeX: 4, // default width of an item in columns
 		defaultSizeY: 11, // default height of an item in rows
-		/*minSizeX: 6, // minimum column width of an item
-		maxSizeX: null, // maximum column width of an item
+		minSizeX: 3, // minimum column width of an item
 		minSizeY: 5, // minumum row height of an item
-		maxSizeY: null, // maximum row height of an item*/
+		/*maxSizeY: null, // maximum row height of an item*/
 		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
 
 	};

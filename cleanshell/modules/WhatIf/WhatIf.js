@@ -70,7 +70,16 @@ WhatIfModule.directive('whatIf', [function () {
             idSelector: '@'
         },
         bindToController: true,
-        link: function (scope, elem, attr) { console.log(scope.sCollCtrl.config.variables);  }
+        link: function (scope, elem, attr) {
+			console.log(scope.sCollCtrl.config.variables);  
+			scope.$on('widget-resized', function(element, widget) {
+				var height = widget.element[0].clientHeight - 50;
+				var whatIfId = widget.element[0].children[2].children[0].getAttribute('id-selector');
+				angular.element('#'+whatIfId).css('height',height+'px');
+				
+			});
+		}
+			
     };
 }])
 
@@ -87,7 +96,7 @@ WhatIfModule.directive('sliderContainer', function() {
         },
         controllerAs: 'sContCtrl',
         bindToController: true,
-        template: '<div ng-transclude></div>',
+        template: '<div ng-transclude class="noUi-horizontal-size"></div>',
         link: function(scope, elem, attr) { console.log('sliderContainer hits')}
     }
 });
@@ -103,7 +112,7 @@ WhatIfModule.directive('slider', function() {
             current: '=',
             target: '='
         },
-        template: '<div id="{{::sliderId}}" style="margin-bottom:70px"></div>', 
+        template: '<div id="{{::sliderId}}" style="margin-bottom:0px"></div>', 
         link: function(scope, elem, attr, ctrl) { 
             console.log('slider hits');
 

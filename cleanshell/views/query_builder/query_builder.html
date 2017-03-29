@@ -1,3 +1,9 @@
+<style>
+.fullwidth
+{
+	width: 100%;
+}
+</style>
 <!--CARD CONTAINER START-->
 <div class="setting-container" ng-class="{'main-toolbar-closed-setting': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  ng-intro-options="ChartDesignerIntro" ng-intro-method="IntroduceChart">
 	<md-content>
@@ -46,6 +52,7 @@
 			<div id="selectorSection" layout="column" flex-gt-sm="25" style="-webkit-box-shadow: 2px 0 3px -2px #888;box-shadow: 2px 0 3px -2px #888;overflow-y:scroll">
 				
 				<div ng-include="'views/query_builder/selector-section/measures-selector.html'"></div>
+				<div ng-include="'views/query_builder/selector-section/measures-without-aggregations-selector.html'"></div>
 				<div ng-include="'views/query_builder/selector-section/slices-selector.html'"></div>
 				<div ng-include="'views/query_builder/selector-section/y-axis-selector.html'"></div>
 				<div ng-include="'views/query_builder/selector-section/google-map-selector.html'"></div>
@@ -58,7 +65,7 @@
 			<div layout="column" flex-gt-sm="65" style="box-shadow: 2px 0 3px -2px #888;">
 				<div layout="column" layout-align="center center">
 					<div id="chartContainer" class="chartContainer" layout="column" layout-align="center center">
-						<div ng-hide="showPlaceholderIcon" class="currentChart" style="width:100%"></div>
+						<div ng-hide="showPlaceholderIcon" class="currentChart" ng-class="{'fullwidth': chartType.chartType == 'whatif'}"></div>
 						<div ng-show="showPlaceholderIcon">
 							<large-chart-icons></large-chart-icons>
 						</div>

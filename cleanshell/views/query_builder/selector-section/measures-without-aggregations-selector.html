@@ -1,0 +1,28 @@
+<div layout="column" ng-if=" $parent.chartType.chart == 'forecast'">
+	<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+		<h2>Measures</h2>
+		<md-menu md-position-mode="target-right target" style="margin-top:10px">
+		  <md-button class="md-fab md-mini" aria-label="series" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px" aria-label="add aggregations"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+				<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
+				<md-list>
+					<md-list-item class="secondary-button-padding" ng-repeat="(key, value) in $parent.selectedMeasures" ng-click="$parent.pushSeries(value, agg)">
+						<p>{{ value.name }}</p>
+					</md-list-item>
+				</md-list>
+		  </md-menu-content>
+		</md-menu>
+	</div>				
+	<!--md-divider></md-divider-->
+</div>
+
+<md-list style="margin-top:60px" layout-padding ng-if=" $parent.chartType.chart == 'forecast'">
+	<div layout="row" layout-align="space-between center" ng-repeat="item in $parent.selectedSeries" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+		<p style="margin:8px">{{item.name}}</p>
+		<md-button class="md-icon-button" ng-click="$parent.removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
+	</div>
+	<div layout="row" layout-align="center center"><text ng-if="$parent.selectedSeries.length == 0" style="font-style: italic;font-size: 14px;text-align: center;">Choose <span ng-show="$parent.chartType.chart != 'pie' && $parent.chartType.chart != 'hierarchy'">atleast </span>one measure to create a&nbsp <span> {{$parent.chartType.name}}</span>&nbspChart</text></div>
+</md-list>
+
+
+<md-divider ng-if=" $parent.chartType.chart == 'forecast'"></md-divider>

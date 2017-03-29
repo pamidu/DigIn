@@ -1,4 +1,4 @@
-<div layout="column" ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric'">
+<div layout="column" ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric' && $parent.chartType.chart != 'forecast'">
 	<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 		<h2>Measures</h2>
 		<md-menu md-position-mode="target-right target" style="margin-top:10px">
@@ -28,7 +28,7 @@
 	<!--md-divider></md-divider-->
 </div>
 
-<md-list style="margin-top:60px" layout-padding ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric'">
+<md-list style="margin-top:60px" layout-padding ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric' && $parent.chartType.chart != 'forecast'">
 	<div layout="row" layout-align="space-between center" ng-repeat="item in $parent.selectedSeries" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 		<p style="margin:8px">{{item.name}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
 		<md-button class="md-icon-button" ng-click="$parent.removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
@@ -37,4 +37,4 @@
 </md-list>
 
 
-<md-divider ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric'"></md-divider>
+<md-divider ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric' && $parent.chartType.chart != 'forecast'"></md-divider>

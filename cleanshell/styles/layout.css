@@ -546,6 +546,14 @@ div.slide-up p {
 }
 
 .noUi-tooltip{
-    font-size: 14px;
+    font-size: 12px;
+}
+
+[disabled] .noUi-connect{
+	background: #B8B8B8 !important;
+}
+
+.noUi-target{
+	background: transparent;
 }
 /*END OF DIGIN DASHBOARD RELATED STYLES*/

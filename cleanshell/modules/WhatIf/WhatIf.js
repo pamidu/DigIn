@@ -24,7 +24,7 @@ WhatIfModule.directive('whatIf', ['$rootScope', 'notifications', 'generateWhatIf
 ]);
 */
 
-WhatIfModule.directive('whatIf', [function () {
+WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function ($rootScope,$mdColors,$timeout) {
     return {
         restrict: 'E',
         controller: function() {
@@ -71,13 +71,18 @@ WhatIfModule.directive('whatIf', [function () {
         },
         bindToController: true,
         link: function (scope, elem, attr) {
-			console.log(scope.sCollCtrl.config.variables);  
+			$timeout(function(){
+				angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
+				//angular.element('.noUi-handle').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
+			}, 100);
+			
 			scope.$on('widget-resized', function(element, widget) {
 				var height = widget.element[0].clientHeight - 50;
 				var whatIfId = widget.element[0].children[2].children[0].getAttribute('id-selector');
 				angular.element('#'+whatIfId).css('height',height+'px');
-				
+				//.noUi-connect
 			});
+
 		}
 			
     };

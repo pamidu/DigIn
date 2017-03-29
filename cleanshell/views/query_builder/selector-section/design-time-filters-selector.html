@@ -1,0 +1,26 @@
+<md-divider ng-show="$parent.chartType.enableFilters == true"></md-divider>
+<div layout="column" style="width:100%;min-height:170px" ng-show="$parent.chartType.enableFilters == true">
+	<div layout="row" layout-align="space-between start" style="padding:0px 10px">
+		<h2>Design-time Filter</h2>
+		<md-menu md-position-mode="target-right target" style="margin-top:10px">
+		  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+			<span style="font-size: 14px;font-weight: 800;">Select any Category/ Categories</span><br/>
+			<md-list>
+				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedAttributes" ng-click="$parent.pushCateory($index,item)">
+					<p>{{item.name}}</p>
+				</md-list-item>
+			</md-list>
+		  </md-menu-content>
+		</md-menu>
+	</div>
+	<div style="padding:0px 10px">
+		<md-divider style="padding:2px"></md-divider>
+		<md-list>
+			<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedFilter" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+				<p>{{item.name}}</p>
+				<md-button class="md-icon-button md-secondary" ng-click="$parent.removeFromFilter($index)" aria-label="remove from category"><span class="ti-close"></span></md-button>
+			</md-list-item>
+		</md-list>
+	</div>
+</div>

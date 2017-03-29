@@ -1,0 +1,34 @@
+<form name="whatifSettingsForm" ng-submit="submit()">
+
+	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
+ 
+ 	<md-content style="overflow-y:scroll;height:calc(100% - 130px);padding: 20px 0px 20px 0px">
+	
+		<div layout-gt-sm="row" class="side-margins">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span> Widget Title </span>
+				<input ng-model="whatifSettings.widgetName"  aria-label="widgetName" name="widgetName" required>
+				<div ng-messages="whatifSettingsForm.widgetName.$error">
+					<div ng-message="required">Widget title can not be a blank</div>
+				</div>
+			</md-input-container> 
+		</div>
+
+		{{whatifSettings|json}}
+
+		<md-subheader >Selected Measures</md-subheader>
+		<md-list-item ng-repeat="person in [{'name':'binara'},{'name':'sahan'},{'name':'dilshan'}]" class="noright">
+			<p>{{ person.name }}</p>
+			<i class="ti-key" style="font-size:15px;" ng-click="setTarget(person)"></i>
+		</md-list-item>
+
+	</md-content>
+
+<!-- 	<md-list style="margin-top:60px" layout-padding>
+		<div layout="row" layout-align="space-between center"  ng-repeat="item in settings" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+			<p style="margin:8px">{{item.name}}</p>
+		</div>
+	</md-list> -->
+
+	
+</form>

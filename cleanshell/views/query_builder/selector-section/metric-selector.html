@@ -1,31 +1,45 @@
 <!--ONLY RELATED TO METRIC WIDGET-->
-<div layout="column" style="width:100%;" ng-if="$parent.chartType.chart == 'metric'">
+
+<div layout="column" ng-if="$parent.chartType.chart == 'metric'">
 	<div layout="row" layout-align="space-between start" style="padding:0px 10px">
-		<h2>
-			<span>Actual Value</span>
-		</h2>
+		<h2>Actual Value</h2>
 		<md-menu md-position-mode="target-right target" style="margin-top:10px">
-		  <md-button class="md-fab md-mini" aria-label="category" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
+		  <md-button class="md-fab md-mini" aria-label="series" ng-click="$mdMenu.open($event)" style="width:36px;height:30px;line-height:30px" aria-label="add aggregations"><span class="ti-plus" style="font-size: 18px;line-height: 36px;"></span></md-button>
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
-			<span style="font-size: 14px;font-weight: 800;">Select an actual value</span><br/>
-			<md-list>
-				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedAttributes" ng-click="$parent.defineVariable($index,'actual',item)">
-					<p>{{item.name}}</p>
-				</md-list-item>
-			</md-list>
+			<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
+			<v-accordion class="vAccordion--default">
+
+			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures">
+				<v-pane-header>
+				  {{ value.name }}
+				</v-pane-header>
+
+				<v-pane-content>
+					<md-list>
+						<md-list-item class="secondary-button-padding" ng-repeat="agg in $parent.$parent.aggregations" ng-click="$parent.addArrayElement($index,'actual',value, agg)">
+							<p>{{agg}}</p>
+						</md-list-item>
+					</md-list>
+				</v-pane-content>
+			  </v-pane>
+
+			</v-accordion>
 		  </md-menu-content>
 		</md-menu>
-	</div>
+	</div>				
+	<!--md-divider></md-divider-->
 </div>
 
-<md-list layout-padding ng-if="$parent.chartType.chart == 'metric'">
-	<div ng-if="$parent.settingConfig.actual" layout="row" layout-align="space-between center" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
-		<p style="margin:8px">{{$parent.settingConfig.actual.name}}</p>
-		<md-button class="md-icon-button md-secondary" ng-click="$parent.removeVariable($index, 'actual')" aria-label="remove from category"><span class="ti-close"></span></md-button>
+<md-list style="margin-top:60px" layout-padding ng-if="$parent.chartType.chart == 'metric'">
+	<div layout="row" layout-align="space-between center" ng-repeat="item in $parent.settingConfig.actual" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+		<p style="margin:8px">{{item.name}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
+		<md-button class="md-icon-button" ng-click="$parent.removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
 	</div>
-	<div layout="row" layout-align="center center"><text ng-if="!$parent.settingConfig.actual.name" style="font-style: italic;font-size: 14px;text-align: center;">Choose an actual value column to create a <span> {{$parent.chartType.name}}</span> Chart</text></div>
+	<div layout="row" layout-align="center center"><text ng-if="$parent.selectedSeries.length == 0" style="font-style: italic;font-size: 14px;text-align: center;">Choose <span ng-show="$parent.chartType.chart != 'pie' && $parent.chartType.chart != 'hierarchy'">atleast </span>one measure to create a&nbsp <span> {{$parent.chartType.name}}</span>&nbspChart</text></div>
 </md-list>
+
 <md-divider ng-if="$parent.chartType.chart == 'metric'"></md-divider>
+
 <div layout="column" style="width:100%;" ng-if="$parent.chartType.chart == 'metric'">
 	<div layout="row" layout-align="space-between start" style="padding:0px 10px">
 		<h2>

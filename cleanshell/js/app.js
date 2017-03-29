@@ -23,6 +23,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'GoogleMap',
 		'Metric',
 		'Tabular',
+		'WhatIf',
 		'DiginServiceLibrary'
 	]
 );

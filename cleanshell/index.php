@@ -44,6 +44,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/libs/cellCursor.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/introjs.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/rzslider.min.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/nouislider/distribute/nouislider.min.css">
 	<!-- endbuild -->
 
 </head>
@@ -547,6 +548,8 @@
 		<script src="bower_components/pouchdb/dist/pouchdb.min.js"></script>
 		<script src="bower_components/angular-pouchdb/angular-pouchdb.min.js"></script>
 		<script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+		<script src="bower_components/nouislider/distribute/nouislider.js"></script>
+    	<script src="bower_components/mathjs/dist/math.js"></script>
 		
 		<!--Highcharts libraries-->
 		<script src="bower_components/highcharts/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->

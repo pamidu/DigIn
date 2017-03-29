@@ -21,3 +21,5 @@
 	</div>
 	<div layout="row" layout-align="center center"><text ng-if="$parent.selectedCategory.length == 0" style="font-style: italic;font-size: 14px;text-align: center;">Choose <span ng-show="$parent.chartType.name != 'scatter'">atleast</span> one attribute to create a <span> {{$parent.chartType.name}}</span> Chart</text></div>
 </md-list>
+
+<md-divider ng-if="$parent.chartType.name == 'scatter'"></md-divider>

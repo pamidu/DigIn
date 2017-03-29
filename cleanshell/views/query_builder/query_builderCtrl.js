@@ -3,6 +3,32 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 
 	var newElement = "";
 	
+    $scope.variables = [{
+        "name": "sales",
+        "minimum": 2.24,
+        "maximum": 89061.05,
+        "initial": 40000.00,
+        "current": 40000.00,
+        "step": 1,
+        "target": true
+    }, {
+        "name": "profit",
+        "minimum": -14140.7,
+        "maximum": 27220.69,
+        "initial": 29,
+        "current": 29,
+        "step": 1,
+        "target": false
+    }, {
+        "name": "product_base_margin",
+        "minimum": 0,
+        "maximum": 600,
+        "initial": 50,
+        "current": 50,
+        "step": 0.01,
+        "target": false
+    }];
+
 	
 	//Get the state parameters passed from visualize data view
 	$scope.selectedAttributes = $stateParams.allAttributes;
@@ -66,6 +92,37 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			addGenerateBtnAnimation()
 		}
 	}
+
+	$scope.toggleSeries = function(ev, series, seriesList) {
+		ev.preventDefault();
+
+		if(seriesList == undefined || series == undefined)
+			return
+
+		var idx = seriesList.findIndex(function(sr) {
+			return sr.name === series.name
+		});
+
+		if(idx > -1) seriesList.splice(idx, 1);
+		else seriesList.push(series); 
+		
+		$scope.settingConfig.seriesList = angular.copy(seriesList)
+
+		console.log(seriesList);
+
+	}
+
+	$scope.isSeriesToggled = function(series, seriesList) {
+
+		if(seriesList.length === 0)
+			return false;
+
+		var idx = seriesList.findIndex(function(sr) {
+			return sr.name === series.name
+		});
+
+		return idx > -1 ? true : false
+	}
 	
 	//add to selectedCategory
 	$scope.pushCateory = function(index, item)
@@ -111,6 +168,25 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	{
 		delete $scope.settingConfig[variableName];
 	}
+
+	 //used only to define a array and push
+	 $scope.addArrayElement = function(index, variableName, value, aggregation)
+	 {
+	  var pushObj = {name:value.name, aggType: aggregation};
+	  
+	  if($scope.settingConfig[variableName]){
+	   $scope.settingConfig[variableName].push(pushObj);
+	  }else{
+	   $scope.settingConfig[variableName] = [];
+	   $scope.settingConfig[variableName].push(pushObj);
+	  }
+	 }
+	 
+	 //remove from created array
+	 $scope.removeArrayElement = function(index, variableName)
+	 {
+	  console.log(index, variableName);
+	 }
 	
 	function addGenerateBtnAnimation()
 	{
@@ -354,6 +430,16 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					$scope.showChartLoading = false;
 					$scope.showPlaceholderIcon = true;
 				}
+			}else if($scope.chartType.chartType == 'whatif')
+			{
+				$scope.widgetConfig.variables = $scope.variables;
+
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = false;
+					newElement = $compile('<what-if id-selector="'+widgetID+'" config="widgetConfig"></what-if>')($scope);
+					$element.find('.currentChart').append(newElement);
+
+				
 			}
 		
 		

@@ -20,7 +20,9 @@
     "lodash": "^4.17.4",
     "ngmap": "^1.18.4",
     "angularjs-slider": "^6.0.0",
-    "angular-pouchdb": "^5.0.0"
+    "angular-pouchdb": "^5.0.0",
+    "nouislider": "^9.2.0",
+    "mathjs": "^3.10.1"
   },
   "resolutions": {
     "angular": "1.6.3"

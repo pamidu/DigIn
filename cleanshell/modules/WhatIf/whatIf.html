@@ -1,0 +1,13 @@
+<slider-container ng-repeat="variable in sCollCtrl.config.variables">
+    <h3 style="margin-bottom:40px">{{variable.name}}</h3>
+    <slider 
+        name="{{variable.name}}" 
+        min="variable.minimum" 
+        max="variable.maximum" 
+        current="variable.current"
+        target="variable.target">
+    </slider>
+</slider-container>
+
+<!-- <div style="width:100px;height:100px;background:red">
+</div> -->

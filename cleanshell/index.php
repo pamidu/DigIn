@@ -33,8 +33,6 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/icons/digin-main/digin-main.css">
 	<link rel="stylesheet" type="text/css" href="styles/icons/themify/themify-icons.css">
-	<link rel="stylesheet" type="text/css" href="styles/index.css">
-	<link rel="stylesheet" type="text/css" href="styles/layout.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/directive_library.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/md-steppers/dist/md-steppers.css">
@@ -45,6 +43,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/libs/introjs.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/rzslider.min.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/nouislider/distribute/nouislider.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/index.css">
+	<link rel="stylesheet" type="text/css" href="styles/layout.css">
 	<!-- endbuild -->
 
 </head>

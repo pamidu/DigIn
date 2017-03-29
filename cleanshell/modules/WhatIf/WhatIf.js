@@ -87,7 +87,7 @@ WhatIfModule.directive('sliderContainer', function() {
         },
         controllerAs: 'sContCtrl',
         bindToController: true,
-        template: '<div ng-transclude"></div>',
+        template: '<div ng-transclude></div>',
         link: function(scope, elem, attr) { console.log('sliderContainer hits')}
     }
 });

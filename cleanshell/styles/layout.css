@@ -530,4 +530,9 @@ div.slide-up p {
 	color: black !important;
 }
 
+.noUi-value-horizontal{
+	-webkit-transform: translate3d(-50%,100%,0);
+	transform: translate3d(-50%,100%,0);
+}
+
 /*END OF DIGIN DASHBOARD RELATED STYLES*/

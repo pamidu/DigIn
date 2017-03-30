@@ -7,7 +7,9 @@
 		<md-divider style="padding:2px"></md-divider>
 		<md-list style="margin-top: 60px;">
 			<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedMeasures" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
-				<md-checkbox ng-model="item.check"></md-checkbox>
+				<md-checkbox 
+					ng-checked="$parent.isSeriesToggled(item, $parent.selectedSeries)" 
+					ng-click="$parent.toggleSeries($event, item, $parent.selectedSeries)"></md-checkbox>
 				<p>{{item.name}}</p>
 			</md-list-item>
 		</md-list>

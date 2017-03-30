@@ -14,12 +14,16 @@
 
 (function (){
 
-	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope','chartUtilitiesFactory','notifications', function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory,notifications) { 
+	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope','chartUtilitiesFactory','notifications','PouchServices', function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory,notifications,PouchServices) { 
 
 	 	return{
-	 		saveDashboard: function() {
-	 			//create a angular copy of the dashboard
+	 		saveDashboard: function(ev, newDashboardDetails) {
+	 			
+				$rootScope.currentDashboard.compName = newDashboardDetails.dashboardName;
+				$rootScope.currentDashboard.refreshInterval = newDashboardDetails.refreshInterval
+				//create a angular copy of the dashboard
 	 			var dashboardCopy =  angular.copy($rootScope.currentDashboard);
+				
 	 			
 	 			//remove data 
 	 			for(var i = 0; i < dashboardCopy.pages.length; i++){
@@ -30,39 +34,41 @@
 	 					}
 	 				}
 	 			}
+				notifications.startLoading(ev,"Saving '"+newDashboardDetails.dashboardName+"' dashboard, Please wait...");
+                return $http({
+						method: 'POST',
+						url: Digin_Engine_API + 'store_component/',
+						data: angular.toJson(dashboardCopy),
+						headers: {
+							'Content-Type': 'application/json',
+							'securityToken' : $rootScope.authObject.SecurityToken
+						}
+					}).then(function(result){
+						if(result.data.Is_Success){
 
-                $http({
-                    method: 'POST',
-                    url: Digin_Engine_API + 'store_component/',
-                    data: angular.toJson(dashboardCopy),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'securityToken' : $rootScope.authObject.SecurityToken
-                    }
-                }).then(function(result){
-                	if(result.data.Is_Success){
+							//assing the ID's to the Dashboard, Pages and Widgets
+							$rootScope.currentDashboard.compID = result.data.Result.comp_id;
 
-                		//assing the ID's to the Dashboard, Pages and Widgets
-                		$rootScope.currentDashboard.compID = result.data.Result.comp_id;
+							for(var i = 0; i < $rootScope.currentDashboard.pages.length; i++){
+								$rootScope.currentDashboard.pages[i].pageID = result.data.Result.pages[i].page_id
 
-                		for(var i = 0; i < $rootScope.currentDashboard.pages.length; i++){
-                			$rootScope.currentDashboard.pages[i].pageID = result.data.Result.pages[i].page_id
+								for(var j=0 ; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
 
-                			for(var j=0 ; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
-
-                				$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j]
-                			}
-                		}
-
-
+									$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j]
+								}
+							}
+							notifications.finishLoading();
+							notifications.toast(1,"Changes Successfully Saved");
+							newDashboardDetails.compID = result.data.Result.comp_id;
+							PouchServices.saveDashboard(newDashboardDetails);
+							return newDashboardDetails;
+						}
+					},function(err){
 						notifications.finishLoading();
-						notifications.toast(1,"Changes Successfully Saved");
-                	}
-                },function(err){
-                	console.log(err);
-                });
+						console.log(err);
+					});
             },
-		 	removeHighChartsData: function(object){
+			removeHighChartsData: function(object){
 		 		for(var i=0 ; i < object.series.length; i++){
 		 			object.series[i].data = [];
 		 		}
@@ -70,4 +76,114 @@
 	 	}
 
 	 }]);
+	 
+	 DiginServiceLibraryModule.factory('PouchServices',['Digin_Engine_API','pouchDB', '$http','$rootScope','notifications','DiginServices', function(Digin_Engine_API,pouchDB,$http,$rootScope,notifications,DiginServices) { 
+
+		function persistData(dashboard)
+		{
+			  var dashboardDoc = {
+				  _id : dashboard.compID.toString(),
+				  dashboard : dashboard
+			  }
+			  
+			  $rootScope.localDb.put(dashboardDoc, function(err, response) {
+				  if (err) {
+					  console.log(err);
+					  
+				  }else {
+					  console.log("Document created successfully");
+
+				  }
+			  });
+		}
+		
+
+			
+		return{
+			getDiginComponents: function(){
+				
+				if($rootScope.online == true)
+				{
+					return DiginServices.getDiginComponents().then(function(data) {
+								return data;
+							})
+				}else{
+					return $rootScope.localDb.allDocs({
+							include_docs: true,
+							attachments: true
+						}).catch(function (err) {
+							console.log(err);
+						}).then(function (data) {
+							console.log(data);
+							var dashboards = [];
+							angular.forEach(data.rows, function (row) {
+								//console.log(row.doc.dashboard);
+								var thisDashboard = row.doc.dashboard;
+								dashboards.push({compID: thisDashboard.compID, compName: thisDashboard.compName, compType: thisDashboard.compType});
+							})
+							//console.log(dashboards);
+							return dashboards;
+						});
+				}
+				
+			},
+			getDashboard: function(ev, dashboardId){
+				return $rootScope.localDb.get(dashboardId.toString()).then(function (doc) {
+					console.log(doc);
+						return doc.dashboard;
+					}).catch(function (err) {//if the dashboard is not saved locally
+					
+						return DiginServices.getComponent(ev, dashboardId).then(function(data) {
+							data.deletions = {
+												"componentIDs":[],
+												"pageIDs":[],
+												"widgetIDs":[]
+											 };
+							persistData(data);
+							return data;
+						});
+					});
+			},
+			saveAndUpdateDashboard: function(newDashboardDetails) {
+				$rootScope.localDb.changes().on('change', function() {
+				  alert('Ch-Ch-Changes');
+				});
+				$rootScope.localDb.get( $rootScope.currentDashboard.compID.toString() , function(err, doc){
+					console.log(err, doc);
+                      if (err){
+                          if (err.status = '404') {// if the document does not exist
+                              //Inserting Document into pouchDB
+                              var dashboardDoc = {
+                                  _id : $rootScope.currentDashboard.compID.toString(),
+                                  dashboard : $rootScope.currentDashboard
+                              }
+							  
+							  $rootScope.localDb.put(dashboardDoc, function(err, response) {
+                                  if (err) {
+                                      console.log(err);
+                                      
+                                  }else {
+                                      console.log("Document created successfully");
+
+                                  }
+                              });
+							}
+						  }else{
+							  var dashboardDoc = {
+                                  dashboard : $rootScope.currentDashboard,
+                                  _id : $rootScope.currentDashboard.compID.toString(),
+                                  _rev : doc._rev
+                              }
+                              $rootScope.localDb.put(dashboardDoc, function(err, response) {
+								  if (err) {
+									console.log("error in updating");
+								  }else {
+									console.log("Document updated successfully");
+								  }
+							});
+						  }
+					});
+			}//end of saveAndUpdateDashboard factory
+		}//end of PouchServices return
+	}]);//end of PouchServices
 })();

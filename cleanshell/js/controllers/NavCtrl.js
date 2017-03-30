@@ -1,4 +1,4 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,IsLocal,dialogService,$log) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log) {
 
 	//$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -331,6 +331,9 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
                 //$scope.userSettings.theme_config = $rootScope.theme;
             });
+			
+				var pouchdbName = 'localPouch';
+				$rootScope.localDb  = new pouchDB(pouchdbName);
 		}else{
 			
 			DiginServices.getUserSettings().then(function(data) {
@@ -345,7 +348,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			DiginServices.getSession().then(function(data) {
 				var pouchdbName = data.UserID + data.Domain;
 				notifications.log(pouchdbName, new Error());
-				$rootScope.db  = new pouchDB(pouchdbName);
+				$rootScope.localDb  = new pouchDB(pouchdbName);
 			});
 		}
 	})();
@@ -355,7 +358,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.reports = [];
 	
 	$scope.componentsLoaded = false;
-	DiginServices.getDiginComponents().then(function(data) {
+	PouchServices.getDiginComponents().then(function(data) {
 		notifications.log(data, new Error());
 		$scope.componentsLoaded = true;
 		for (var i = 0, len = data.length; i<len; ++i){
@@ -367,7 +370,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				$scope.reports.push(data[i]);
 			}
 		}
-    });
+	});
 	
 	//This is a dashboard that is saved and can be reterived later, this is kept to check if the currentDashboard has been changed without saving the changes
 	$rootScope.selectedDashboard = {};
@@ -473,14 +476,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
     function getDashboard(ev, dashboardId)
 	{
-		DiginServices.getComponent(ev, dashboardId).then(function(data) {
-
-			data.deletions = {
-						        "componentIDs":[],
-						        "pageIDs":[],
-						        "widgetIDs":[]
-						     };
-			
+		PouchServices.getDashboard(ev, dashboardId).then(function(data) {
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
 			notifications.log($rootScope.currentDashboard, new Error());

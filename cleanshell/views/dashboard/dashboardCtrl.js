@@ -1,7 +1,7 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager',
-	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
+	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 'DiginDashboardSavingServices',
 	function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, 
-		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices) {
+		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -172,9 +172,17 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				  targetEvent: ev,
 				  fullscreen: useFullScreen
 				}).then(function(answer) {
-					console.log("save dashboard closed");
-					console.log(answer);
-					notifications.startLoading(ev,"Saving '"+answer.dashboardName+"' dashboard, Please wait...");
+					DiginDashboardSavingServices.saveDashboard(ev, answer).then(function(newDashboardDetails) {
+
+						$scope.$parent.currentView = newDashboardDetails.dashboardName;
+						angular.forEach($scope.dashboards, function(value, key) {
+							if(value.compID == newDashboardDetails.compID)
+							{
+								value.compName = newDashboardDetails.dashboardName;
+							}
+						})
+						
+					});
 				}); 
 				
 				 $scope.$watch(function() {

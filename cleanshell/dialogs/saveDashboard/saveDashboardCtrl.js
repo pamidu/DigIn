@@ -1,5 +1,5 @@
-DiginApp.controller('saveDashboardCtrl',[ '$scope','$rootScope','$mdDialog', 'DiginDashboardSavingServices' ,
-	function ($scope,$rootScope,$mdDialog,DiginDashboardSavingServices){
+DiginApp.controller('saveDashboardCtrl',[ '$scope','$rootScope','$mdDialog' ,
+	function ($scope,$rootScope,$mdDialog){
  
 		 $scope.content = {};
 
@@ -9,10 +9,7 @@ DiginApp.controller('saveDashboardCtrl',[ '$scope','$rootScope','$mdDialog', 'Di
 		 
 		 $scope.saveDashboard = function()
 		 {
-
 		  	$mdDialog.hide($scope.content);
-		  	DiginDashboardSavingServices.saveDashboard();
-
 		 }
 		 
 }])

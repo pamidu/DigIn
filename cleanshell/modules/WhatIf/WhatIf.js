@@ -42,11 +42,11 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
             }.bind(this);
 
             this.updateTarget = function(val) {
-                var currentTarget = _resolveFormula();
+                var currentTarget = _resolveFormula(this.config.equation);
             }.bind(this);
 
-            var _resolveFormula = function() {
-                var formula = "sales=profit+product_base_margin"
+            var _resolveFormula = function(formula) {
+                var formula = formula;
                 var fscope = _getFormulaScope();
 
                 var code2 = math.compile(formula);
@@ -65,11 +65,11 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
         },
         controllerAs: 'sCollCtrl',
         templateUrl: 'modules/WhatIf/WhatIf.html',
-        scope: {
+        scope: {},
+        bindToController: {
             config: '=',
             idSelector: '@'
         },
-        bindToController: true,
         link: function (scope, elem, attr) {
 			$timeout(function(){
 				angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
@@ -152,8 +152,9 @@ WhatIfModule.directive('slider', function() {
 
                 // Disabling the slider if it's a target  
                 if(scope.target) {
-                    slider.setAttribute('disabled', true);
-                    sCollCtrl.setTargetSlider({name: scope.name, slider: slider})
+                    var origins = slider.getElementsByClassName('noUi-origin');
+                    origins[0].setAttribute('disabled', true);
+                    sCollCtrl.setTargetSlider({name: scope.name, slider: slider});
                 }
 
                 sCollCtrl.addToCollection({name: scope.name, slider: slider});
@@ -177,8 +178,11 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
               submitForm: '&'
             },
             link: function(scope, element) {  
-                scope.mode = 'auto' 
-                scope.setTarget = function(t) { console.log(t); } 
+
+                scope.whatifSettings['eqconfig'] = {};
+                scope.whatifSettings.eqconfig['mode'] = 'auto';
+                scope.whatifSettings.eqconfig['method'] = 'linear';
+                scope.whatifSettings.eqconfig['equation'] = '';
 
                 scope.submit = function() {
                     if(scope.whatifSettingsForm.$valid) {
@@ -197,14 +201,90 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
     }
 ]);
 
-WhatIfModule.factory('generateWhatIf', ['$rootScope', 'notifications',
-    function($rootScope, notifications) {
+WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 'Digin_Engine_API',
+    function($rootScope, $http, notifications, Digin_Engine_API) {
 
+        var generate = function(dbconfig, eqconfig, callback) {
+            resolveFormula(buildFormulaParams(dbconfig, eqconfig), function(fdata) {
+                callback(buildSlidersData(fdata.Result), fdata.Result.equation);
+            });
+        }
+
+        var resolveFormula = function(params, callback) {
+            $http({
+                url: Digin_Engine_API+'regression_analysis',
+                method: 'GET',
+                params: params
+            }).then(function(response){
+                if(response.status == 200)
+                    if(response.data.hasOwnProperty('Is_Success') && response.data.Is_Success)
+                        callback(response.data);
+            }, function(err){
+                console.log(err);
+            });
+        }
+
+        var buildFormulaParams = function(dbconfig, eqconfig) {
+
+            var fmeasures = getFormulaMeasureNames(eqconfig.variables);
+
+            return {
+                dbtype: dbconfig.databaseType,
+                table: dbconfig.dataTable,
+                datasource_id: dbconfig.datasourceId,
+                type: eqconfig.mode,
+                method: eqconfig.method,
+                equation: eqconfig.equation,
+                y_values: JSON.stringify(fmeasures.yValues),
+                x_values: JSON.stringify(fmeasures.xValues),
+                SecurityToken: $rootScope.authObject.SecurityToken
+            }
+        }
+
+        var buildSlidersData = function(fdata) {
+
+                var initials = fdata.initial;
+                var min_max = fdata.min_max;
         
+                var columns_x = Object.keys(initials.x_initials);
+                var columns_y = Object.keys(initials.y_initials);
+
+                var x_values = columns_x.map(function(column) {
+                    return {
+                        name: column,
+                        minimum: min_max.x.x_min[column],
+                        maximum: min_max.x.x_max[column],
+                        initial: initials.x_initials[column],
+                        current: initials.x_initials[column],
+                        target: false
+                    }
+                });
+
+                var y_values = columns_y.map(function(column) {
+                    return {
+                        name: column,
+                        minimum: min_max.y.y_min[column],
+                        maximum: min_max.y.y_max[column],
+                        initial: initials.y_initials[column],
+                        current: initials.y_initials[column],
+                        target: true
+                    }
+                });
+
+                return y_values.concat(x_values);
+        }
+
+        var getFormulaMeasureNames = function(variables) {
+
+            return variables.reduce(function(acc, val, idx) {
+                if(idx == 0) acc.yValues.push(val.name);
+                else acc.xValues.push(val.name);
+                return acc;
+            },{xValues:[], yValues:[]});
+        }
 
         return {
-            generate: function() {},
-            validateWhatIf: function() {},
+            generate: generate
         }
     }
 ]); //END OF generateWhatIf

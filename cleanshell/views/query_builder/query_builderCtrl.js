@@ -1,34 +1,6 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,generateMetric,generateTabular,$timeout,NgMap,notifications,$mdMedia){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','generateWhatIf','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,generateMetric,generateTabular,generateWhatIf,$timeout,NgMap,notifications,$mdMedia){
 	$scope.$parent.currentView = "Chart Designer";
-
 	var newElement = "";
-	
-    $scope.variables = [{
-        "name": "sales",
-        "minimum": 2.24,
-        "maximum": 89061.05,
-        "initial": 40000.00,
-        "current": 40000.00,
-        "step": 1,
-        "target": true
-    }, {
-        "name": "profit",
-        "minimum": -14140.7,
-        "maximum": 27220.69,
-        "initial": 29,
-        "current": 29,
-        "step": 1,
-        "target": false
-    }, {
-        "name": "product_base_margin",
-        "minimum": 0,
-        "maximum": 600,
-        "initial": 50,
-        "current": 50,
-        "step": 0.01,
-        "target": false
-    }];
-
 	
 	//Get the state parameters passed from visualize data view
 	$scope.selectedAttributes = $stateParams.allAttributes;
@@ -440,14 +412,21 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				}
 			}else if($scope.chartType.chartType == 'whatif')
 			{
-				$scope.widgetConfig.variables = $scope.variables;
-
+				// make available selected measures to settingConfig.eqconfig object
+				$scope.settingConfig.eqconfig['variables'] = angular.copy($scope.settingConfig.seriesList);
+				
+				generateWhatIf.generate({
+					databaseType: $scope.selectedDB, 
+					dataTable: $scope.selectedFile.datasource_name, 
+					datasourceId: $scope.selectedFile.datasource_id
+				}, $scope.settingConfig.eqconfig, function(variables, eq) {
 					$scope.showChartLoading = false;
 					$scope.showPlaceholderIcon = false;
+					$scope.widgetConfig.variables = variables;
+					$scope.widgetConfig.equation = eq;
 					newElement = $compile('<what-if id-selector="'+widgetID+'" config="widgetConfig"></what-if>')($scope);
 					$element.find('.currentChart').append(newElement);
-
-				
+				});
 			}
 		
 		

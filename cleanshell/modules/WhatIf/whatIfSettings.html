@@ -14,13 +14,25 @@
 			</md-input-container> 
 		</div>
 
-		{{whatifSettings|json}}
-
 		<md-subheader >Selected Measures</md-subheader>
-		<md-list-item ng-repeat="person in [{'name':'binara'},{'name':'sahan'},{'name':'dilshan'}]" class="noright">
-			<p>{{ person.name }}</p>
-			<i class="ti-key" style="font-size:15px;" ng-click="setTarget(person)"></i>
-		</md-list-item>
+		<div style="padding:0px 10px">
+			<md-divider style="padding:2px"></md-divider>
+			<md-list>
+				<md-list-item class="secondary-button-padding" ng-repeat="series in whatifSettings.seriesList" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+					{{series.name}}
+				</md-list-item>
+			</md-list>
+		</div>
+
+		<md-subheader >Formula Generation</md-subheader>
+		<md-radio-group layout="row" ng-model="whatifSettings.eqconfig.mode">
+			<md-radio-button value="auto">Automatic</md-radio-button>
+			<md-radio-button value="manual">Manual</md-radio-button>
+		</md-radio-group>
+
+		<div ng-if="whatifSettings.eqconfig.mode === 'manual'">
+			<input type="text" ng-model="whatifSettings.eqconfig.equation">
+		</div>
 
 	</md-content>
 

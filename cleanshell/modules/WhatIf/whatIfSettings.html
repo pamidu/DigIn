@@ -19,11 +19,19 @@
 		</div>
 		
 
-		<md-list class="side-margins">
-			<md-list-item class="secondary-button-padding" ng-repeat="series in whatifSettings.seriesList" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
-				{{series.name}}
-			</md-list-item>
-		</md-list>
+		
+			<md-radio-group layout="column" class="side-margins" ng-model="target">
+				<md-radio-button value="{{series.name}}" class="md-primary" style="float: left;" aria-label="{{series.name}}"  ng-repeat="series in whatifSettings.seriesList">
+					<md-list-item class="secondary-button-padding" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+
+					{{series.name}}
+					<md-button class="md-icon-button icon-cancel md-secondary" ng-click="diginComponents.deleteDashboard(dashboard,$event);$event.stopPropagation()" style="margin-top: 10px !important;font-size:10px;" aria-label="delete">
+					</md-button>
+					</md-list-item>
+				</md-radio-button>
+
+			</md-radio-group>
+
 
 		
 		<div layout="row" layout-align="space-between center">

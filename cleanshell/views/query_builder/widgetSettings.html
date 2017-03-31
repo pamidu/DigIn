@@ -8,4 +8,4 @@
 
 <metric-settings ng-if="$parent.chartType.chartType == 'metric'" metric-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></metric-settings>
 
-<tabular-settings ng-if="$parent.chartType.chartType == 'tabular'" tabular-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></tabular-settings>
+<tabular-settings ng-if="$parent.chartType.chartType == 'tabular'" tabular-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></tabular-settings>

@@ -308,12 +308,12 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
 		if(IsLocal === true){
 			notifications.log("not local", new Error());
-			$rootScope.db  = new pouchDB("Dashboards");
 			//$scope.getSearchPanelDetails();
 
             //Just for testing, User settings are not needed here
             DiginServices.getUserSettings().then(function(data) {
-                //notifications.log(data, new Error());
+                notifications.log(data, new Error());
+				PouchServices.storeUserSettings(data);				
                 $scope.userSettings = data;
                 $rootScope.theme = $scope.userSettings.theme_config;
 
@@ -351,6 +351,17 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 				$rootScope.localDb  = new pouchDB(pouchdbName);
 			});
 		}
+		PouchServices.getUserSettings().then(function(data) {
+			console.log(data);
+			if(data)
+			{
+				$scope.userSettings = data;
+				$rootScope.theme = $scope.userSettings.theme_config;
+
+				//color the UI
+				colorManager.changeTheme($rootScope.theme);
+			}
+		});
 	})();
 	
 	

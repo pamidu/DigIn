@@ -31,6 +31,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.widgetSizeY = 11;
 
 	$scope.settingConfig = {};
+	$scope.notification_data = {};
 
 	//$scope.currentChartType = "";
 	$scope.showChartLoading = false;
@@ -278,6 +279,12 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				//id-selector="'+widgetID+'" - There is a bug here, if an id is added when the map is in the dashboard again it will stop working
 				newElement = $compile('<what-if config="widgetConfig" ></what-if>')($scope);
 				$element.find('.currentChart').append(newElement);
+			}else if($scope.chartType.chartType == "tabular"){
+				$scope.showPlaceholderIcon = false;
+				console.log($scope.settingConfig);
+				newElement = $compile('<tabular config="widgetConfig" tabular-settings="settingConfig"></tabular>')($scope);
+
+				$element.find('.currentChart').append(newElement);
 			}else{
 				$scope.showPlaceholderIcon = true;
 			}
@@ -392,24 +399,6 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					$scope.showChartLoading = false;
 					$scope.showPlaceholderIcon = true;
 				}
-			}else if($scope.chartType.chartType == 'tabular')
-			{
-				var isChartConditionsOk = generateTabular.tabularValidations($scope.settingConfig);
-				if(isChartConditionsOk){
-					
-					/*generateTabular.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
-
-						$scope.widgetConfig = data;*/
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<tabular id-selector="'+widgetID+'" config="widgetConfig"></tabular>')($scope);
-						$element.find('.currentChart').append(newElement);
-					//})
-
-				}else{
-					$scope.showChartLoading = false;
-					$scope.showPlaceholderIcon = true;
-				}
 			}else if($scope.chartType.chartType == 'whatif')
 			{
 				// make available selected measures to settingConfig.eqconfig object
@@ -427,6 +416,24 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					newElement = $compile('<what-if id-selector="'+widgetID+'" config="widgetConfig"></what-if>')($scope);
 					$element.find('.currentChart').append(newElement);
 				});
+			}else if($scope.chartType.chartType == 'tabular')
+			{
+				var isChartConditionsOk = generateTabular.tabularValidations($scope.settingConfig);
+				if(isChartConditionsOk){
+				
+					 generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,"", function (data){
+
+					  $scope.widgetConfig = data;
+					  $scope.showChartLoading = false;
+					  $scope.showPlaceholderIcon = false;
+					  newElement = $compile('<tabular id-selector="'+widgetID+'" config="widgetConfig" tabular-settings="settingConfig"></tabular>')($scope);
+					  $element.find('.currentChart').append(newElement);
+
+					 })
+				}else{
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+				}
 			}
 		
 		
@@ -518,7 +525,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			'col': $scope.widgetCol,
 			'row': $scope.widgetRow,
 			'sizeX': $scope.widgetSizeX,
-			'sizeY': $scope.widgetSizeY
+			'sizeY': $scope.widgetSizeY,
+			'notification_data':$scope.notification_data
 
 			
 		};

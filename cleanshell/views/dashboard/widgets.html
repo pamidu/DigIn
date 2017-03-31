@@ -3,3 +3,4 @@
 <digin-forecast id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'forecast'" config="$parent.widget.widgetData.widgetConfig"></digin-forecast>
 <google-map id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'map'" config="$parent.widget.widgetData.widgetConfig"></google-map>
 <what-if id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'whatif'" config="$parent.widget.widgetData.widgetConfig"></what-if>
+<tabular id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'tabular'" config="$parent.widget.widgetData.widgetConfig" tabular-settings="$parent.widget.widgetData.settingConfig"></tabular>

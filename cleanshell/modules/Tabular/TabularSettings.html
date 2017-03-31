@@ -12,32 +12,27 @@
 				</div>
 			</md-input-container> 
 		</div>
-		
 		<div layout="row" layout-align="space-between center">
 			<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Basic Settings</div>
 		</div>
-		
 		<div layout="row"  class="side-margins">
 
 			<label>Set Aggregation:</label>
 
-			<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.totForNumeric" layout="row" >
+			<md-radio-group ng-model="tabularSettings.totForNumeric" layout="row" >
 				   <md-radio-button value="true"> Enable </md-radio-button>
 				   <md-radio-button value="false"> Disable </md-radio-button>
 			</md-radio-group>
 
 		</div>
-
 		<div layout="row" class="side-margins">
 			<label>Default Sort Field:</label>
-
 			<div layout="column" >
-
-				  <md-select ng-model="widget.widgetData.widData.tabularConfig.defSortFeild">
-				    <md-option ng-value="user.Attribute" ng-repeat="user in widget.widgetData.widData.tabularConfig.AllingArr">{{ user.Attribute }}</md-option>
+				  <md-select ng-model="tabularSettings.defSortFeild" aria-label="att">
+				    <md-option ng-value="att" ng-repeat="att in attr">{{ att.name }}</md-option>
 				  </md-select>
 
-				<md-radio-group ng-model="widget.widgetData.widData.tabularConfig.AscOrDec" layout="row">
+				<md-radio-group ng-model="tabularSettings.AscOrDec" layout="row">
 				   <md-radio-button value="ASC"> Ascending </md-radio-button>
 				   <md-radio-button value="DESC"> Descending </md-radio-button>
 				</md-radio-group>
@@ -57,22 +52,22 @@
 				<th>Aggregation</th>
 			</tr>
 
-			<tr ng-repeat="att in widget.widgetData.widData.tabularConfig.AllingArr">
+			<tr ng-repeat="att in tabularSettings.AllingArr">
 			    <td class="tabular-space">{{att.Attribute}}</td>
 			    <td class="tabular-space">
 			    	<md-input-container class="tabular-space" style="margin-top: 24px !important;">
-	        			<input ng-model="att.DislayName">
+	        			<input ng-model="att.DislayName" aria-label="DislayName">
 	      			</md-input-container>
 			    </td>
 			    <td class="tabular-space">
-			    	<md-select ng-model="att.Alignment" class="tabular-space">
+			    	<md-select ng-model="att.Alignment" class="tabular-space" aria-label="aling">
 				    	<md-option ng-value="aling" ng-repeat="aling in allingments">
 				    		{{aling}}
 				    	</md-option>
 				    </md-select>
 			    </td>
 			    <td ng-hide="att.isString" class="tabular-space">
-			    	<md-select ng-model="att.Aggregation" class="tabular-space">
+			    	<md-select ng-model="att.Aggregation" class="tabular-space" aria-label="agg">
 				    	<md-option ng-value="agg" ng-repeat="agg in aggregationArr">
 				    		{{agg}}
 				    	</md-option>
@@ -86,7 +81,7 @@
 		<label><b>Number of rows to display:</b></label>
 
 		<md-input-container style="margin-top: -19px;float: left;margin-left: 19px;width: 200px;" >
-            <input ng-model="widget.widgetData.widData.tabularConfig.numOfRows"> 
+            <input ng-model="tabularSettings.numOfRows" aria-label="numOfRows"> 
          </md-input-container>
 		</div>
 	</md-content>

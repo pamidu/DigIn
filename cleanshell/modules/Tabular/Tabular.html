@@ -66,36 +66,32 @@ tr .wrap{
 }
 
 </style>
-
-<md-content ng-show="widget.widgetData.syncState"  ng-hide="eventHndler.isLoadingChart" style="padding-top:20px;width:100%;height:100%">
-	<div  id="{{widget.widgetData.id}}">
-	<table id="tabular-table" class="table-data" style="float:left;width:100%;height:100%" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
-  	cell-cursor-paste="cc.setSelectedCellValues($data)"
-  	ng-keydown="keydown($event)"
-  	ng-class="{dragable:dragable()}">
-		
-	<thead>
+  <md-content id="{{sCollCtrl.idSelector}}" ng-hide="config.isloading" style="width:100%;height:100%">
+  <table id="tabular-table" class="table-data" style="width: 99.8%;height:100%;margin: 0 auto" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
+    cell-cursor-paste="cc.setSelectedCellValues($data)"
+    ng-keydown="keydown($event)"
+    ng-class="{dragable:dragable()}">
+  <thead>
     <tr>
-      
       <!-- changeSort is change $scope.sort -->
       <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
-      <td ng-click="widget.widgetData.widData.tabularService.changeSort(x,widget)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr">
+      <td ng-click="tabularService.changeSort(x,config,tabularSettings)" ng-repeat="x in tabularSettings.AllingArr">
         <div class="cell-cursor-col-resize"></div>
         <span style="font-size: 16px;">
           <b>{{x.DislayName}}</b>
         </span>
         <!-- sort key indicator example -->
-        <span ng-show="widget.widgetData.widData.sort=='{{x.Attribute}}'">▲</span>
-        <span ng-show="widget.widgetData.widData.sort=='-{{x.Attribute}}'">▼</span>
+        <span ng-show="config.sort=='{{x.Attribute}}'">▲</span>
+        <span ng-show="config.sort=='-{{x.Attribute}}'">▼</span>
       </td>
     </tr>
   </thead>
   <tbody>
     <!-- angular.js default directive `ng-repeat` and default filters -->
-    <tr ng-repeat="user in widget.widgetData.widData.userList| limitTo:widget.widgetData.widData.tabularConfig.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
+    <tr ng-repeat="user in config.userList| limitTo:tabularSettings.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
      
-      <td ng-repeat="y in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{y.Alignment}}">
-      	  	{{widget.widgetData.widData.tabularService.numberWithCommas(user[y.Attribute])}}
+      <td ng-repeat="y in tabularSettings.AllingArr" style=" text-align:{{y.Alignment}}">
+            {{tabularService.numberWithCommas(user[y.Attribute])}}
       </td>
 
        <!--td>{{user.profit}}</td>
@@ -104,9 +100,9 @@ tr .wrap{
     </tr>
     <tr>
    
-      <td ng-repeat="agg in widget.widgetData.widData.tabularConfig.AllingArr" style=" text-align:{{agg.Alignment}}">
-          <span ng-hide="agg.isString || widget.widgetData.widData.tabularConfig.totForNumeric == 'false'">
-              {{agg.Aggregation}} = {{widget.widgetData.widData.tabularService.numberWithCommas(agg.Aggregation_value)}}
+      <td ng-repeat="agg in tabularSettings.AllingArr" style=" text-align:{{agg.Alignment}}">
+          <span ng-hide="agg.isString || tabularSettings.totForNumeric == 'false'">
+              {{agg.Aggregation}} = {{tabularService.numberWithCommas(agg.Aggregation_value)}}
           </span>
       </td>
     </tr>
@@ -115,15 +111,21 @@ tr .wrap{
 
   <div style="width: 400px;margin-left: auto;margin-right: auto;margin-top: 5px;" layout="row"  layout-align="center center">
 
-      <span>{{widget.widgetData.widData.selectedPage}}</span>
+      <span>{{config.selectedPage}}</span>
 
-      <md-button class="md-primary"  ng-disabled="widget.widgetData.widData.currentPage <= 0" 
-      ng-click="widget.widgetData.widData.tabularService.tabularNavigate('Prev',widget,false)">Prev</md-button>
+      <md-button class="md-primary"  ng-disabled="config.currentPage <= 0" 
+      ng-click="tabularService.tabularNavigate('Prev',config,false,tabularSettings)">Prev</md-button>
 
-      <md-button class="md-primary" ng-disabled="widget.widgetData.widData.isNext"
-      ng-click="widget.widgetData.widData.tabularService.tabularNavigate('Next',widget,false)">Next</md-button>
+      <md-button class="md-primary" ng-disabled="config.isNext"
+      ng-click="tabularService.tabularNavigate('Next',config,false,tabularSettings)">Next</md-button>
 
   </div>
 
-	</div>
+  </div>
 </md-content>
+
+<div layout="row"  layout-align="center center">
+    <md-progress-circular ng-hide="!config.isloading" class="md-accent" md-diameter="40"></md-progress-circular>
+</div>
+
+

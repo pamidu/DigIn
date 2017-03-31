@@ -37,13 +37,14 @@
 				notifications.startLoading(ev,"Saving '"+newDashboardDetails.dashboardName+"' dashboard, Please wait...");
                 return $http({
 						method: 'POST',
-						url: Digin_Engine_API + 'store_component/',
+						url:  Digin_Engine_API+ 'store_component/',//http://192.168.0.101:8080
 						data: angular.toJson(dashboardCopy),
 						headers: {
 							'Content-Type': 'application/json',
 							'securityToken' : $rootScope.authObject.SecurityToken
 						}
 					}).then(function(result){
+						console.log(result);
 						if(result.data.Is_Success){
 
 							//assing the ID's to the Dashboard, Pages and Widgets
@@ -53,14 +54,16 @@
 								$rootScope.currentDashboard.pages[i].pageID = result.data.Result.pages[i].page_id
 
 								for(var j=0 ; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
-
-									$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j]
+									$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j].widget_id;
+									if($rootScope.currentDashboard.pages[i].widgets[j].widgetData.chartType.chartType=="metric"){
+									 $rootScope.currentDashboard.pages[i].widgets[j].notification_data[0].notification_id = result.data.Result.pages[i].widget_ids[j].notification_ids;
+									}
 								}
 							}
 							notifications.finishLoading();
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;
-							PouchServices.saveDashboard(newDashboardDetails);
+							//PouchServices.saveDashboard(newDashboardDetails);
 							return newDashboardDetails;
 						}
 					},function(err){
@@ -100,7 +103,28 @@
 
 			
 		return{
-			getDiginComponents: function(){
+			storeUserSettings: function(userSettings){
+				
+				var userSettingsDoc = {
+					_id : $rootScope.authObject.Email,
+					userSettings : userSettings
+				}
+				
+				$rootScope.localDb.put(userSettingsDoc, function(err, response) {
+				  if (err) {
+					  console.log(err);
+					  
+				  }else {
+					  console.log("userSettings doc created successfully");
+				  }
+			  });
+			},getUserSettings: function(){
+				return $rootScope.localDb.get($rootScope.authObject.Email).then(function (doc) {
+						return doc.userSettings;
+					}).catch(function (err) {//if the dashboard is not saved locally
+						
+					});
+			},getDiginComponents: function(){
 				
 				if($rootScope.online == true)
 				{

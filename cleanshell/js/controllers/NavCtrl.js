@@ -506,13 +506,17 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		$mdDialog.cancel();
 	}	
 	
-	$scope.notifications = [{title:"Urgent", message: "Your system needs to be updated asap", type: 1, icon: "ti-pie-chart", color: "#4CAF50"}];
+	$scope.notifications = [{notification_id: '1234',title:"Urgent", message: "Your system needs to be updated asap", type: 1, icon: "ti-pie-chart", color: "#4CAF50"}];
 	var audio = new Audio('sounds/notification.mp3');
 	$scope.notificationAudio = true; 
 	
+	$scope.removeNotification = function(index)
+	{
+		$scope.notifications.splice(index,1);
+	}
 	/*
 	$timeout(function(){
-		var message = {title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: "2", href:"#/home"};
+		var message = {notification_id: '1234',title:"Great", message: "asldkfja sdflkasdf asldkfa sdfl", type: "2", href:"#/home"};
 		if(!message.icon){message.icon = "ti-comment"};
 			
 		if(parseInt(message.type) == 0){message.color = "#FF5252";}else if(parseInt(message.type) == 1){message.color = "#4CAF50"}else if(parseInt(message.type) == 2){message.color = "#F9A937";}

@@ -216,6 +216,9 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			}, log);
 			*/		
 
+		}else if($scope.chartType.chartType == "whatif")
+		{		
+			$scope.settingsOpened = true;
 		}
 		else{
 			$scope.showPlaceholderIcon = true;

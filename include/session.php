@@ -274,7 +274,7 @@ function INTS(){
 								//http://digin.dev.digin.io/shell/#/home/myAccount
 								//http://digin.dev.digin.io/shell/#/home/welcome-search
 								
-								header("Location: http://".$obj->TenantID."/shell/#/home/welcome-search");	
+								header("Location: http://".$obj->TenantID."/cleanshell");	
 
 								/*if($myAccount==true){
 									header("Location: http://".$obj->TenantID."/shell/#/home/myAccount");

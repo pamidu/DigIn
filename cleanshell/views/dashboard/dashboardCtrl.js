@@ -190,6 +190,30 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 					}, function(wantsFullScreen) {
 					  $scope.customFullscreen = (wantsFullScreen === true);
 				});
+			},deleteDashboard: function(ev)
+			{
+				dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete '"+$rootScope.currentDashboard.compName+"' dashboard?","yes", "cancel").then(function(result) {
+					if(result == 'yes')
+					{
+						console.log("delete dashboard");
+						DiginServices.deleteComponent(ev, $rootScope.currentDashboard.compID, false).then(function(data) {
+							if(data.Is_Success === true){
+								
+								// Delete from pouch
+								
+								// Delete from view
+								angular.forEach($scope.$parent.dashboards, function(value, key) {
+									if(value.compID == $rootScope.currentDashboard.compID)
+									{
+										$scope.dashboards.splice(key,1);
+									}
+								})
+								$scope.$parent.route('home');
+							}
+						});
+					}
+				});
+				
 			}
 		}
 

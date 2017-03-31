@@ -7,23 +7,6 @@
 
 var WhatIfModule = angular.module('WhatIf', ['DiginServiceLibrary']);
 
-/*
-WhatIfModule.directive('whatIf', ['$rootScope', 'notifications', 'generateWhatIf',
-    function($rootScope, notifications, generateWhatIf) {
-        return {
-            restrict: 'E',
-            templateUrl: 'modules/WhatIf/WhatIf.html',
-            scope: {
-                config: '='
-            },
-            link: function(scope, element) {
-                console.log(scope.config);
-            } //end of link
-        };
-    }
-]);
-*/
-
 WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function ($rootScope,$mdColors,$timeout) {
     return {
         restrict: 'E',
@@ -64,7 +47,7 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
 
         },
         controllerAs: 'sCollCtrl',
-        templateUrl: 'modules/WhatIf/WhatIf.html',
+        templateUrl: 'modules/WhatIf/whatIf.html',
         scope: {},
         bindToController: {
             config: '=',
@@ -172,7 +155,7 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
     function($rootScope, notifications, generateWhatIf) {
         return {
             restrict: 'E',
-            templateUrl: 'modules/WhatIf/WhatIfSettings.html',
+            templateUrl: 'modules/WhatIf/whatIfSettings.html',
             scope: {
               whatifSettings: '=',
               submitForm: '&'

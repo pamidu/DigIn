@@ -22,7 +22,7 @@
 	<meta charset="utf-8" />
 	<meta name="author" content="Sajeetharan" />
 	<meta name="description" content="Know everything your data is telling you with the platform that gives you everything." />
-    	<meta name="keywords" content="data integration, analytics, and visualization" />
+    <meta name="keywords" content="data integration, analytics, and visualization" />
    	<meta name="viewport" content="user-scalable=no ,width=device-width ,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -375,7 +375,7 @@
 						<h3>{{ notification.title }}</h3>
 						<p>{{ notification.message }}</p>
 					  </div>
-					  <md-button class="md-icon-button icon-cancel md-secondary" ng-click="diginComponents.deleteDashboard(dashboard,$event);$event.stopPropagation()" style="font-size:10px;" aria-label="delete">
+					  <md-button class="md-icon-button icon-cancel md-secondary" ng-click="removeNotification($index);" style="font-size:10px;" aria-label="delete">
 					  </md-button>
 					</md-list-item>
 				</md-list>
@@ -577,7 +577,7 @@
 	-->
 	<!-- endbuild -->
 	
-	<script src="/Digin/shell/scripts/config.js"></script>
+	<script src="js/config.js"></script>
 	
 	<!-- build:js js/script.js -->
 	<!--

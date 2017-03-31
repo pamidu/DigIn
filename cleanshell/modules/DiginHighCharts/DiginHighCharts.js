@@ -630,7 +630,7 @@ DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 			var serArr = [];
 			for (var c in res[0]) {
 				if (Object.prototype.hasOwnProperty.call(res[0], c)) {
-					if (c.toLowerCase() != category)
+					if (c.toLowerCase() != category.toLowerCase())
 					{
 						// maintain id to map with server response - static
 						// maintain name to give flexibility to the user - variable

@@ -56,10 +56,13 @@
 
 											<v-pane-content>
 												<md-list>
-													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-click="setFilterValueSelection(value,fieldvalues)" ng-if="value.selectionType == 'single' " ng-class="{'filterItemSeleted': fieldvalues.isSelected==true}">
+													<div flex layout = "row" layout-align = "center center" ng-show="value.fieldvalues.length == 0 && value.isLoading">
+														<md-progress-circular class="md-hue-2" md-diameter="20px" ></md-progress-circular>
+													</div>
+													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-mouseup="setFilterValueSelection(value,fieldvalues)" ng-if="value.selectionType == 'single' " ng-class="{'filterItemSeleted': fieldvalues.isSelected==true}">
 														<p ng-click="setFilterValueSelection(value,fieldvalues)" >{{ ::fieldvalues.valueName}}</p>
 													</md-list-item>
-													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-click="setFilterValueSelection(value,fieldvalues)" ng-if="value.selectionType == 'multiple' ">
+													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-if="value.selectionType == 'multiple' ">
 														<p>
 															<md-checkbox ng-model="fieldvalues.isSelected" style="float: left;"/>
 															{{ ::fieldvalues.valueName}}

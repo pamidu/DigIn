@@ -1,7 +1,7 @@
-DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager',
+DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
 	'DiginDashboardSavingServices', 'highchartFilterServices', 'generateHighchart', 
-	function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, 
+	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
 		highchartFilterServices,generateHighchart) {
 
@@ -335,9 +335,17 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		var widgetFilterFields = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData.RuntimeFilter;
 		if (widgetFilterFields[filterIndex]['fieldvalues'] === undefined)
 		{
+			widgetFilterFields[filterIndex]['fieldvalues'] = [];
+		}
+		widgetFilterFields[filterIndex].isLoading = true;
+		if ( widgetFilterFields[filterIndex]['fieldvalues'].length == 0)
+		{
 			var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
 			highchartFilterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile.datasource_name,widgetData.selectedFile.datasource_id,function(data){
-				widgetFilterFields[filterIndex]['fieldvalues'] = data;
+				$scope.$apply(function(){
+					widgetFilterFields[filterIndex]['fieldvalues'] = data;
+				})
+				widgetFilterFields[filterIndex].isLoading = false;
 			},100,0);
 		}
 	}
@@ -348,6 +356,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			fields.isSelected = false;
 		});
 		fieldvalues.isSelected = true;
+		// angular.element('.filterItemSeleted').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
 	}
 
 	$scope.clearWidgetFilters = function(widget) {
@@ -376,10 +385,15 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		widget.isWidgetFiltered = true;
 		widget.syncOn = true;
 		var selectedFilterFiedsCopy = highchartFilterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
-		connectionString = highchartFilterServices.generateFilterConnectionString(groupFilters,widgetData.selectedDB);
-		generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
-			widget.syncOn = false;
-		},connectionString,[],[],isCreate);
+		connectionString = highchartFilterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
+		if (connectionString != "")
+		{
+			generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
+				widget.syncOn = false;
+			},connectionString,[],[],isCreate);
+		} else {
+			// pop up notification
+		}
 	}
 
 	// --------------- widget level filter method end -----------------

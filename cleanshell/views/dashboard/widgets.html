@@ -4,4 +4,5 @@
 <google-map id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'map'" config="$parent.widget.widgetData.widgetConfig"></google-map>
 <what-if id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'whatif'" config="$parent.widget.widgetData.widgetConfig"></what-if>
 <tabular id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'tabular'" config="$parent.widget.widgetData.widgetConfig" tabular-settings="$parent.widget.widgetData.settingConfig"></tabular>
-<metric id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'metric'" config="$parent.widget.widgetData.widgetConfig" settings="$parent.widget.widgetData.settingConfig"></metric>
+<metric id-selector="{{$parent.widget.widgetData.widgetID}}" ng-if="$parent.widget.widgetData.chartType.chartType == 'metric'" config="$parent.widget.widgetData.widgetConfig" settings="$parent.widget.widgetData.settingConfig" notification="$parent.widget.widgetData.notification_data"></metric>
+

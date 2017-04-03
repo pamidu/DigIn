@@ -35,7 +35,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.widgetSizeY = 11;
 
 	$scope.settingConfig = {};
-	$scope.notification_data = {};
+	$scope.notification_data = [];
 
 	//$scope.currentChartType = "";
 	$scope.showChartLoading = false;
@@ -312,7 +312,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			}else if($scope.chartType.chartType == "metric")
 			{
 				$scope.showPlaceholderIcon = false;
-				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig"></metric>')($scope);
+				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
 				$element.find('.currentChart').append(newElement);
 			}
 			else{
@@ -423,13 +423,18 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			{
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
 				if(isChartConditionsOk){				
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (status, query,metricObj,settings){
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status, query,metricObj,settings,notification){
 						if(status){
 							$scope.widgetConfig = metricObj;
+							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;
+              				notification.dashboard_name=$rootScope.currentDashboard.compName;
+              				notification.widget_id=widgetID;
+              				$scope.notification_data=[];
+							$scope.notification_data.push(notification);
 							$scope.chartQuery = query;
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
-							newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig"></metric>')($scope);
+							newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification_data="notification_data"></metric>')($scope);
 							$element.find('.currentChart').append(newElement);
 						}
 						else{
@@ -541,11 +546,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	};
 
 
+	// module by : Dilani Maheswaran
+
 	// ---------------- filter related methods and variables start----------------
 
 	//Variables that contain filter attributes
-	$scope.selectedDesignTimeFilters = [];
-	$scope.selectedRunTimeFilters = [];
+	$scope.selectedDesignTimeFilters = $stateParams.DesignTimeFilter;
+	$scope.selectedRunTimeFilters = $stateParams.RuntimeFilter;
 
 	$scope.designtimeFilters = angular.copy($scope.selectedAttributes); // deep copy as you need to load the values under the particular field
 
@@ -589,10 +596,26 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 
 	// load all the values under the selected field
 	$scope.loadFilterParams = function(index) {
-		if ($scope.designtimeFilters[index]['filterValues'] === undefined)
+		if ($scope.designtimeFilters[index]['fieldvalues'] === undefined) $scope.designtimeFilters[index]['fieldvalues'] = [];
+		if ($scope.designtimeFilters[index]['fieldvalues'].length == 0)
 		{
+			$scope.designtimeFilters[index]['isLoading'] = true;
 			highchartFilterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
-				$scope.designtimeFilters[index]['filterValues'] = data;
+				$scope.$apply(function(){
+					$scope.designtimeFilters[index]['isLoading'] = false;
+					$scope.designtimeFilters[index]['fieldvalues'] = data;
+				})
+				// set the isSelected parameters of the selected fields
+				if ($scope.selectedDesignTimeFilters.length != 0) {
+					for (var i = 0; i < $scope.selectedDesignTimeFilters.length; i++) {
+						if ( $scope.selectedDesignTimeFilters[i].name == $scope.designtimeFilters[index].name) {
+							var idx = $scope.designtimeFilters[index]['fieldvalues'].findIndex(function(arg) {
+								return arg.valueName == $scope.selectedDesignTimeFilters[i].valueName;
+							});
+							$scope.designtimeFilters[index].fieldvalues[idx].isSelected = true;
+						}
+					}
+				}
 			},100,0);
 		}
 	};

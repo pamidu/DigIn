@@ -15,6 +15,7 @@ MetricModule.directive('metric',['$rootScope','notifications','generateMetric','
         scope: {
            	config: '=',
            	settings:'=',
+           	notification_data:'=',
 			idSelector: '@'
          },
         link: function(scope,element){
@@ -129,7 +130,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 			return isChartConditionsOk;		
 		},
-		generate: function(highChartType, tableName, limit, datasourceId, selectedDB,settings, callback){
+		generate: function(highChartType, tableName, limit, datasourceId, selectedDB,settings,notification_data, callback){
 			//#Change chart background colours according to theme
             var chartBackgroundColor = "";
             var chartFontColor = "";
@@ -365,8 +366,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
             	//-----------------------------------
-            	applySettings(status, query,trendValue);
-               	
+            	applySettings(status, query,trendValue);              	
             } 
 
 
@@ -377,57 +377,75 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			    var highRange = metricObj.targetValue * metricObj.rangeSliderOptions.maxValue / 100;
 			    var lowerRange = metricObj.targetValue * metricObj.rangeSliderOptions.minValue / 100;
 
-			    if (metricObj.actualValue <= lowerRange) {
-			        if (settings.colorTheme == "rog") {
-			            if (settings.targetRange == "high") {
-			                settings.color = "red"
-			            } else {
-			                settings.color = "green"
-			            }
-			        } else if (settings.colorTheme == "cgy") {
-			            if (settings.targetRange == "high") {
-			                settings.color = "cyan"
-			            } else {
-			                settings.color = "yellowgreen"
-			            }
-			        } else if (settings.colorTheme == "opg") {
-			            if (settings.targetRange == "high") {
-			                settings.color = "orange"
-			            } else {
-			                settings.color = "green"
-			            }
-			        }
-			    } else if (metricObj.actualValue >= highRange) {
-			        if (settings.colorTheme == "rog") {
-			            if (settings.targetRange == "high") {
-			                settings.color = "green"
-			            } else {
-			                settings.color = "red"
-			            }
-			        } else if (settings.colorTheme == "cgy") {
-			            if (settings.targetRange == "high") {
-			                settings.color = "yellowgreen"
-			            } else {
-			                settings.color = "cyan"
-			            }                    
-			        } else if (settings.colorTheme == "opg") {
-			            if (settings.targetRange == "high") {
-			                settings.color = "green"
-			            } else {
-			                settings.color = "orange"
-			            }
-			        }
-			    } else {
-			        if (settings.colorTheme == "rog") {
-			            settings.color = "orange"
-			        } else if (settings.colorTheme == "cgy") {
-			            settings.color = "green"
-			        } else if (settings.colorTheme == "opg") {
-			            settings.color = "purple"
-			        }
-			    }
-			    
-			    callback(status, query, metricObj);
+					if (metricObj.actualValue <= lowerRange) {
+			        	if (settings.colorTheme == "rog") {
+				            if (ssettings.targetRange == "high") {
+				                settings.color = "#FF5252"
+				            } else {
+				                settings.color = "#4CAF50"
+				            }
+				        } else if (settings.colorTheme == "cgy") {
+				            if (settings.targetRange == "high") {
+				                settings.color = "#1abc9c"
+				            } else {
+				                settings.color = "yellowgreen"
+				            }
+				        } else if (settings.colorTheme == "opg") {
+				            if (settings.targetRange == "high") {
+				                settings.color = "#F9A937"
+				            } else {
+				                settings.color = "#4CAF50"
+				            }
+				        }
+				    } else if (metricObj.actualValue >= highRange) {
+				        if (settings.colorTheme == "rog") {
+				            if (settings.targetRange == "high") {
+				                settings.color = "#4CAF50"
+				            } else {
+				                settings.color = "#FF5252"
+				            }
+				        } else if (settings.colorTheme == "cgy") {
+				            if (settings.targetRange == "high") {
+				                settings.color = "yellowgreen"
+				            } else {
+				                settings.color = "#1abc9c"
+				            }                    
+				        } else if (settings.colorTheme == "opg") {
+				            if (settings.targetRange == "high") {
+				                settings.color = "#4CAF50"
+				            } else {
+				                settings.color = "#F9A937"
+				            }
+				        }
+				    } else {
+				        if (settings.colorTheme == "rog") {
+				            settings.color = "#F9A937"
+				        } else if (settings.colorTheme == "cgy") {
+				            settings.color = "#4CAF50"
+				        } else if (settings.colorTheme == "opg") {
+				            settings.color = "#8e44ad"
+				        }
+				    }
+
+				    //# set notification object---------------------
+					var notification_data={
+		              "notification_id": null,
+		              "actual_value": metricObj.queryActual,
+		              "target_value": metricObj.targetValue,
+		              "trigger_type": settings.colorType,
+		              "is_tv_constant": true,
+		              "dashboard_name": "",
+		              "widget_name": settings.widgetName,
+		              "dbname": selectedDB,
+		              "datasource_id": datasourceId,
+		              "page_id": "",
+		              "widget_id": "",
+		              "prefix": settings.scale,
+		              "prefix_position": settings.scalePosition
+		            }
+					//# -------------------------------------------
+
+			    callback(status, query, metricObj,settings,notification_data);
 			}
 		}
 	}

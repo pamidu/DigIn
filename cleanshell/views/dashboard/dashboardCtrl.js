@@ -111,6 +111,8 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	//This method is there to keep track of the current page number the user is in within the dashboard so he/she can add new widgets into that particular page
 	$scope.selectPage = function(index) {
 		$rootScope.selectedPageIndex = index;
+		// sync a page when it is open for the first time
+		DiginServices.syncPages($rootScope.currentDashboard,index);
     }
 	
 	$scope.editPageName = function(ev, page)
@@ -143,7 +145,8 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				pageID: "temp" + createuuid(),
 				pageName: $scope.fileName,
 				widgets: [],
-				pageData: null
+				pageData: null,
+				isSeen: true
 		})
 		
 		console.log($rootScope.currentDashboard);
@@ -359,6 +362,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		// angular.element('.filterItemSeleted').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
 	}
 
+	// clear filters associated to the chart
 	$scope.clearWidgetFilters = function(widget) {
 		widget.isWidgetFiltered = false;
 		var pageIndex = $rootScope.selectedPageIndex;
@@ -375,6 +379,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		$scope.widgetControls.syncWidget(widget,'False')
 	}
 
+	// build chart with filters applied
 	$scope.applyFilters = function(widget) {
 		var pageIndex = $rootScope.selectedPageIndex;
 		var widgetIndex = $rootScope.currentDashboard.pages[pageIndex].widgets.indexOf(widget);

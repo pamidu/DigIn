@@ -171,6 +171,14 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
                 }
                 callback(values);
             },limit,0);
+        },
+        // remove all data related to filters before saving the dashborad
+        removeFilterData : function(widget) {
+            delete widget.isWidgetFiltered;
+            angular.forEach(widget.widgetData.RuntimeFilter,function(filter) {
+                if(filter.fieldvalues !== undefined) delete filter.fieldvalues;
+                if (filter.isLoading !== undefined) delete filter.isLoading;
+            });
         }
     }
 

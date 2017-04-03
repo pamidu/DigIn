@@ -14,7 +14,9 @@
 
 (function (){
 
-	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope','chartUtilitiesFactory','notifications','PouchServices', function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory,notifications,PouchServices) { 
+	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope','chartUtilitiesFactory',
+	 	'notifications','PouchServices', 'highchartFilterServices', 
+	 	function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory,notifications,PouchServices,highchartFilterServices) { 
 
 	 	return{
 	 		saveDashboard: function(ev, newDashboardDetails) {
@@ -27,10 +29,13 @@
 	 			
 	 			//remove data 
 	 			for(var i = 0; i < dashboardCopy.pages.length; i++){
+	 				if (dashboardCopy.pages[i].isSeen !== undefined) delete dashboardCopy.pages[i].isSeen;
 	 				for(var j = 0; j < dashboardCopy.pages[i].widgets.length; j++){
 	 					
 	 					if(dashboardCopy.pages[i].widgets[j].widgetData.chartType.chartType == "highCharts"){
 	 							//this.removeHighChartsData(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
+	 							// remove filter related data
+	 							chartUtilitiesFactory.removeFilterData(dashboardCopy.pages[i].widgets[j]);
 	 					}
 	 				}
 	 			}

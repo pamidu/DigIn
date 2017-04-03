@@ -1,4 +1,5 @@
-DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain',
+	'auth_Path', 'chartSyncServices', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path,chartSyncServices) {
 	var cache = {};
 	return {
         getUserSettings: function() {
@@ -142,8 +143,25 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
                         },function errorCallback(response) {
 								console.log(response);
 								notifications.toast(0, "Falied to get DB Configs");
-						 });
-        },
-		
+						});
+        },syncPages: function(dashboard,pageIndex) {
+			if (dashboard.pages[pageIndex].isSeen === undefined) {
+				dashboard.pages[pageIndex].isSeen = false;
+			}
+			if (dashboard.pages[pageIndex].isSeen !== undefined) {
+				if (!dashboard.pages[pageIndex].isSeen) {
+					angular.forEach(dashboard.pages[pageIndex].widgets,function(widget){
+						if (widget.widgetData.chartType.chartType == "highCharts") {
+							dashboard.pages[pageIndex].isSeen = true;
+							widget.syncOn = true;
+							// send is_sync parameter as true
+							chartSyncServices.sync(widget.widgetData,function(widget){
+								widget.syncOn = false;						
+							}, 'True');
+						}
+					})
+				}
+			}
+        }
    }
 }]);//END OF DiginServices

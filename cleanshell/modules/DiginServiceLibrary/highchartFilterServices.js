@@ -1,3 +1,6 @@
+
+// __Author__ : Dilani Maheswaran
+
 DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 
     function($diginengine,$diginurls,chartUtilitiesFactory) {
     return {
@@ -86,6 +89,8 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
             return(groupFilters);
         },
 
+        // compare run time and dashboard filters against design time filters. design time filters get the highest priority.
+        // remove if selected filters if not present in design time filters
         compareDesignTimeFilter : function(selectedFilterFieds, designTimeFilters) {
             var name;
             var connectionString = "";
@@ -94,20 +99,20 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
                 return field.valueName == name;
             }
             var selectedFilterFiedsCopy = angular.copy(selectedFilterFieds);
-            var designTimeFiltersGroup = this.generateFilterConnectionString(designTimeFilters);
+            var designTimeFiltersGroup = this.groupFilterConnectionString(designTimeFilters);
             if (designTimeFilters.length > 0) {
                 // loop through design time filter
                 angular.forEach(designTimeFiltersGroup,function(designTimeFilter) {
                     // loop through run time filter
                     angular.forEach(selectedFilterFiedsCopy,function(filterField) {
                         //if run time filter is present in design time filter
-                        if (selectedFilterFiedsCopy.name == designTimeFilter.name) {
+                        if (filterField.name == designTimeFilter.name) {
                             var filterParamsArray = [];
                             // loop through fields of run time filters
                             angular.forEach(filterField.fieldvalues,function(value){
                                 name = value.valueName;
                                 // find if run time filter fields are available in design time filter fields
-                                var index = designTimeFilter.findIndex(returnIndex);
+                                var index = designTimeFilter.fieldvalues.findIndex(returnIndex);
                                 // if present, push it to the array
                                 if (index > -1) {
                                     filterParamsArray.push(value);

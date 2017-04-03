@@ -15,10 +15,13 @@
 
 				<v-pane-content>
 					<md-list>
-						<md-list-item class="secondary-button-padding" ng-repeat="filtervalue in value.filterValues">
+						<div flex layout = "row" layout-align = "center center" ng-show="value.fieldvalues.length == 0 && value.isLoading">
+							<md-progress-circular class="md-hue-2" md-diameter="20px" ></md-progress-circular>
+						</div>
+						<md-list-item class="secondary-button-padding" ng-repeat="filtervalue in value.fieldvalues">
 							<p> 
 								<md-checkbox ng-model="filtervalue.isSelected" style="float: left;" ng-change="$parent.pushDesignTimeFilters(value,filtervalue)"></md-checkbox>
-								{{filtervalue.valueName}} 
+								{{filtervalue.valueName}}
 							</p>
 						</md-list-item>
 					</md-list>

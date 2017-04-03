@@ -513,11 +513,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	};
 
 
+	// module by : Dilani Maheswaran
+
 	// ---------------- filter related methods and variables start----------------
 
 	//Variables that contain filter attributes
-	$scope.selectedDesignTimeFilters = [];
-	$scope.selectedRunTimeFilters = [];
+	$scope.selectedDesignTimeFilters = $stateParams.DesignTimeFilter;
+	$scope.selectedRunTimeFilters = $stateParams.RuntimeFilter;
 
 	$scope.designtimeFilters = angular.copy($scope.selectedAttributes); // deep copy as you need to load the values under the particular field
 
@@ -561,10 +563,26 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 
 	// load all the values under the selected field
 	$scope.loadFilterParams = function(index) {
-		if ($scope.designtimeFilters[index]['filterValues'] === undefined)
+		if ($scope.designtimeFilters[index]['fieldvalues'] === undefined) $scope.designtimeFilters[index]['fieldvalues'] = [];
+		if ($scope.designtimeFilters[index]['fieldvalues'].length == 0)
 		{
+			$scope.designtimeFilters[index]['isLoading'] = true;
 			highchartFilterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
-				$scope.designtimeFilters[index]['filterValues'] = data;
+				$scope.$apply(function(){
+					$scope.designtimeFilters[index]['isLoading'] = false;
+					$scope.designtimeFilters[index]['fieldvalues'] = data;
+				})
+				// set the isSelected parameters of the selected fields
+				if ($scope.selectedDesignTimeFilters.length != 0) {
+					for (var i = 0; i < $scope.selectedDesignTimeFilters.length; i++) {
+						if ( $scope.selectedDesignTimeFilters[i].name == $scope.designtimeFilters[index].name) {
+							var idx = $scope.designtimeFilters[index]['fieldvalues'].findIndex(function(arg) {
+								return arg.valueName == $scope.selectedDesignTimeFilters[i].valueName;
+							});
+							$scope.designtimeFilters[index].fieldvalues[idx].isSelected = true;
+						}
+					}
+				}
 			},100,0);
 		}
 	};

@@ -25,11 +25,12 @@
 			</md-radio-group>
 
 		</div>
+
 		<div layout="row" class="side-margins">
 			<label>Default Sort Field:</label>
 			<div layout="column" >
 				  <md-select ng-model="tabularSettings.defSortFeild" aria-label="att">
-				    <md-option ng-value="att" ng-repeat="att in attr">{{ att.name }}</md-option>
+				    <md-option ng-value="att.name" ng-repeat="att in attr">{{ att.name }}</md-option>
 				  </md-select>
 
 				<md-radio-group ng-model="tabularSettings.AscOrDec" layout="row">

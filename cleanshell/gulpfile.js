@@ -67,7 +67,7 @@ gulp.task('moveModules', [], function() {
 
 gulp.task('moveConfig', [], function() {
   gulp.src("js/config.js")
-      .pipe(gulp.dest('dist/js/config.js'));
+      .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('moveSounds', [], function() {

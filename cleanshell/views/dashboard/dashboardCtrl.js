@@ -300,20 +300,16 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		};
     })();
     
-	$scope.keepInitialPosition = true;
 	$scope.showDashboardOptions = true;
-	
-	$scope.firstTouchedEvent = function()
+	if($mdMedia('xs'))
 	{
-		$scope.$apply(function () {
-			$scope.keepInitialPosition = false;
-		})
+		$scope.showDashboardOptions = false;
 	}
 	
 	$scope.limit = function(yvalue, ylimit)
 	{
 		if(yvalue >= ylimit){	yvalue = ylimit;	}
-		if(yvalue <= 50){	yvalue = 50;	}
+		if(yvalue <= 40){	yvalue = 40;	}
 		
 		$scope.$apply(function () {
 			$scope.showDashboardOptions = false;
@@ -323,8 +319,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	
 	$scope.dashboardOptionsShowClick = function()
 	{
-		$scope.keepInitialPosition = true;
-		$scope.showDashboardOptions = true;
+		$scope.showDashboardOptions = !$scope.showDashboardOptions;
 	}
 
 
@@ -428,7 +423,7 @@ DiginApp.directive('draggable', ['$document', function($document) {
 		var xlimit = window.outerWidth - 50;
 		var ylimit = window.outerHeight - 200;
 		
-		var windowWidth = window.outerWidth - 350;
+		var windowWidth = window.outerWidth - 250;
 		angular.element('#dashboardOptionsOpen').css('left',windowWidth+"px");
 		var startX, startY, initialMouseX, initialMouseY;
 

@@ -10,7 +10,7 @@ var GoogleMapModule = angular.module('GoogleMap',['DiginServiceLibrary']);
 GoogleMapModule.directive('googleMap', ['NgMap','$timeout','$http','$state', function(NgMap, $timeout,$http,$state) {
   return {
 	restrict: 'E',
-	templateUrl: 'modules/GoogleMap/GoogleMap.html',
+	templateUrl: 'modules/GoogleMap/googleMap.html',
 	scope:{
 		config: "=",
 		idSelector: '@'
@@ -78,7 +78,7 @@ GoogleMapModule.directive('googleMap', ['NgMap','$timeout','$http','$state', fun
 DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications', function($rootScope,notifications) {
     return {
          restrict: 'E',
-         templateUrl: 'modules/GoogleMap/GoogleMapSettings.html',
+         templateUrl: 'modules/GoogleMap/googleMapSettings.html',
          scope: {
 			mapSettings: '=',
 			submitForm: '&'

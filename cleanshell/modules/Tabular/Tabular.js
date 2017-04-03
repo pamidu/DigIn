@@ -269,7 +269,14 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
             query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
         }
 
-        cl.getExecQuery(query, config.dataSource.datasource_id, function(data, status) {
+        var datasource_id;
+         if( config.dbType == "BigQuery" || config.dbType == "memsql"){
+         	datasource_id = config.dataSource.datasource_id
+         }else{
+         	datasource_id = config.dataSource.id;
+         }
+
+        cl.getExecQuery(query, datasource_id, function(data, status) {
             if(status){
 
                 if(config.pageingArr[config.pageingArr.length-1].pageEle.length != tabularSettings.numOfRows){
@@ -398,14 +405,15 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                         }
                     } else {
                            
-
-                          if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
-                              var defSortFeild='['+widget.widgetData.widData.tabularConfig.defSortFeild+']';
-                              var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.tbl.split(".")[0]+ "].["+sourceData.tbl.split(".")[1] +"]"+ " ORDER BY "+defSortFeild+" "+widgetData.widData.tabularConfig.AscOrDec;
+                    	dataSourceID = sourceData.id
+                          //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
+                          	if(true){
+                              var defSortFeild='['+tabulrSettings.defSortFeild+']';
+                              var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
                                 
                             }
                             else{
-                                 var defSortFeild = widget.widgetData.widData.tabularConfig.defSortFeild;
+                                var defSortFeild = widget.widgetData.widData.tabularConfig.defSortFeild;
                                 var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,defSortFeild);
                             }
                     }
@@ -413,6 +421,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                 else{
                     if (db == "BigQuery" || db == "memsql") {
 
+                    	 dataSourceID = sourceData.datasource_id
                         //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
                         if(true){
                               var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+config.oderByclumn+" "+config.OrderType;
@@ -422,10 +431,11 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                         }
                     } else {
                        
-
-                        if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
-                             var orderByColumnName='['+orderByColumnName+']';
-                            var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.tbl.split(".")[0] +"].["+ sourceData.tbl.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+OrderType;
+                        dataSourceID = sourceData.id
+                        //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
+                        	if(true){
+                             var orderByColumnName='['+config.oderByclumn+']';
+                            var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.datasource_name.split(".")[0] +"].["+ sourceData.datasource_name.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+config.OrderType;
                                  
                             }
                             else{
@@ -490,13 +500,14 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                                           }
 
                                         config.aggQuerry  =Aggquery;
+                                        config.query  =query;
                                         thisService.setPagination(data,config,tabulrSettings,cb);
 
                                        }
                                 },undefined,filterStr);
                             }
                             else{
-                                config.aggQuerry  =Aggquery;
+                                config.query  =query;
                                 thisService.setPagination(data,config,tabulrSettings,cb);
                                 
                             }
@@ -504,7 +515,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                     }
                     else{
                                     
-                        config.aggQuerry  =Aggquery;
+                        config.query  =query;
                         thisService.setPagination(data,config,tabulrSettings,cb);
                                     
                     } 

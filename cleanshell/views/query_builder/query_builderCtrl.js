@@ -35,7 +35,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.widgetSizeY = 11;
 
 	$scope.settingConfig = {};
-	$scope.notification_data = {};
+	$scope.notification_data = [];
 
 	//$scope.currentChartType = "";
 	$scope.showChartLoading = false;
@@ -56,6 +56,16 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		checkWigetConfig();
 		
 	});
+
+	//#get only date attributes out of selectedAttributes
+	$scope.getOnlyDateAttributes = function()
+	{
+		$scope.dateAttributes=[];
+			angular.forEach($stateParams.allAttributes, function(value, key) {
+				if(value.type=='TIMESTAMP' || value.type=='DATETIME' || value.type=='DATE' )
+			  		$scope.dateAttributes.push(value);
+			}, '');
+	}
 
 	//add to selectedSeries
 	$scope.pushSeries = function(item, aggregation)
@@ -224,6 +234,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		{		
 			$scope.settingsOpened = true;
 		}
+		else if($scope.chartType.chartType == "metric")
+		{
+			$scope.settingsOpened = true;
+			if($scope.dateAttributes==undefined || $scope.dateAttributes==""){
+				$scope.getOnlyDateAttributes();
+			}
+		}
 		else{
 			$scope.showPlaceholderIcon = true;
 		}
@@ -292,7 +309,13 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				newElement = $compile('<tabular config="widgetConfig" tabular-settings="settingConfig"></tabular>')($scope);
 
 				$element.find('.currentChart').append(newElement);
-			}else{
+			}else if($scope.chartType.chartType == "metric")
+			{
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
+				$element.find('.currentChart').append(newElement);
+			}
+			else{
 				$scope.showPlaceholderIcon = true;
 			}
 		}else{
@@ -399,17 +422,27 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			}else if($scope.chartType.chartType == 'metric')
 			{
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
-				if(isChartConditionsOk){
-					
-					/*generateMetric.generate($scope.settingConfig, $scope.selectedDB, $scope.selectedFile.datasource_id, $scope.selectedSeries, function (data){
-
-						$scope.widgetConfig = data;*/
-						$scope.showChartLoading = false;
-						$scope.showPlaceholderIcon = false;
-						newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig"></metric>')($scope);
-						$element.find('.currentChart').append(newElement);
-					//})
-
+				if(isChartConditionsOk){				
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status, query,metricObj,settings,notification){
+						if(status){
+							$scope.widgetConfig = metricObj;
+							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;
+              				notification.dashboard_name=$rootScope.currentDashboard.compName;
+              				notification.widget_id=widgetID;
+              				$scope.notification_data=[];
+							$scope.notification_data.push(notification);
+							$scope.chartQuery = query;
+							$scope.showChartLoading = false;
+							$scope.showPlaceholderIcon = false;
+							newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification_data="notification_data"></metric>')($scope);
+							$element.find('.currentChart').append(newElement);
+						}
+						else{
+							$scope.showChartLoading = false;
+							$scope.showPlaceholderIcon = false;
+						}
+						
+					});
 				}else{
 					$scope.showChartLoading = false;
 					$scope.showPlaceholderIcon = true;

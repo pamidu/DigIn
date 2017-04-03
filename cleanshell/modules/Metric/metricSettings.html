@@ -25,8 +25,8 @@
 			<md-input-container class="md-block" flex-gt-sm>
 				<span>Position</span>
 				<md-select ng-model="metricSettings.scalePosition" ng-disabled="false" ng-change="changePosition()" is-disabled-dark aria-label="position">
-					<md-option value="front" aria-label="country">Front</md-option>
-					<md-option value="back" aria-label="country">Back</md-option>
+					<md-option value="Front" aria-label="Front">Front</md-option>
+					<md-option value="Back" aria-label="Back">Back</md-option>
 				</md-select>
 			</md-input-container>
 		</div>
@@ -34,14 +34,17 @@
 		<div layout-gt-sm="row" class="side-margins">
 			<md-input-container class="md-block" flex-gt-sm>
 				<span>Decimals</span>
-				<md-select ng-model="metricSettings.dec" ng-disabled="false" ng-change="changeDecimals()" is-disabled-dark aria-label="position">
+				<md-select ng-model="metricSettings.decimal" ng-disabled="false" ng-change="changeDecimals()" is-disabled-dark aria-label="position">
 					<md-option ng-repeat="decimal in [0,1,2,3,4,5]" value="{{decimal}}" aria-label="{{decimal}}">{{decimal}}</md-option>
 				</md-select>
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
 				<span>Formatting Value</span>
 				<md-select ng-model="metricSettings.format" ng-disabled="false" ng-change="changeFormat()" is-disabled-dark aria-label="format">
-					<md-option ng-repeat="decimal in [0,1,2,3,4,5]" value="{{decimal}}" aria-label="{{decimal}}">{{decimal}}</md-option>
+					<md-option value="General" aria-label="General">General</md-option>
+					<md-option value="Thousand" aria-label="Thousand">Thousand</md-option>
+					<md-option value="Million" aria-label="Million">Million</md-option>
+					<md-option value="Billion" aria-label="Billion">Billion</md-option>
 				</md-select>
 			</md-input-container>
 		</div>
@@ -53,11 +56,11 @@
 		<div layout-gt-sm="row" class="side-margins">
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Actual value</span>
-                <input ng-model="metricSettings.value" aria-label="scale" ng-disabled="true" is-disabled-dark>
+                <input ng-model="metricSettings.actualValue" aria-label="scale" ng-disabled="true" is-disabled-dark>
             </md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Target value</span>
-                <input ng-model="metricSettings.targetValueDisplay" ng-change="changeTargetValue()" aria-label="scale">
+                <input ng-model="metricSettings.targetValue" ng-change="changeTargetValue()" aria-label="scale">
             </md-input-container>
 		</div>
 		
@@ -68,12 +71,26 @@
 		<div layout-gt-sm="row" class="side-margins">
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Group By</span>
-                <input ng-model="metricSettings.no" ng-change="changeTargetValue()" aria-label="scale">
+                <md-select ng-model="metricSettings.groupBy"  is-disabled-dark aria-label="groupBy">
+					<md-option value="Year" aria-label="Year">Year</md-option>
+					<md-option value="Month" arYearia-label="Month">Month</md-option>
+					<md-option value="Quarter" aria-label="Quarter">Quarter</md-option>
+					<md-option value="Daily" aria-label="Daily">Daily</md-option>
+				</md-select>
             </md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Time Attribute</span>
-                <input ng-model="metricSettings.no" ng-change="changeTargetValue()" aria-label="scale">
-            </md-input-container>
+                <md-select ng-model="metricSettings.timeAttribute" aria-label="timeAttribute" name="timeAttribute" required>
+					<md-option ng-repeat="attr in metricSettings.dateAttrs" value="{{attr.name}}">
+						{{attr.name}}
+					</md-option>
+				</md-select>
+
+				<div ng-messages="metricSettingsForm.timeAttribute.$error">
+					<div ng-message="required">Widget title can not be a blank</div>
+				</div>
+
+			<md-input-container>	
 		</div>
 		
 		<div layout="row" layout-align="space-between center">
@@ -83,7 +100,7 @@
 		<div layout-gt-sm="row" class="side-margins">
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Notification Trigger Value</span>
-                <input ng-model="metricSettings.no" ng-change="changeTargetValue()" aria-label="scale">
+                <input ng-model="metricSettings.notificataionValue" aria-label="scale">
             </md-input-container>
 
 		</div>
@@ -93,12 +110,12 @@
 		</div>
 		<div layout="column" class="side-margins">
 			<span style="font-size:12px;margin-bottom: 7px;">Colouring Type</span>
-			<md-radio-group  flex layout="column" ng-model="metricSettings.targetRange">
+			<md-radio-group  flex layout="column" ng-model="metricSettings.colorType">
 				<md-radio-button value="high" class="md-primary left">Higher is better</md-radio-button>
 				<md-radio-button value="low" class="md-primary left">Lower is better</md-radio-button>                        
 			</md-radio-group>
 		</div>
-		
+
 		<div layout="column" class="side-margins">
 			<span style="font-size:12px;margin-bottom: 7px;margin-top: 15px;">Colour Ranges</span>
 			<rzslider rz-slider-model="0" rz-slider-high="300">
@@ -106,7 +123,7 @@
 		</div>
 		<div layout="column" class="side-margins">
 			<span style="font-size:12px;margin-bottom: 7px;margin-top: 15px;">Color Theme</span>
-			<md-radio-group  flex layout="column" ng-model="metricSettings.targetRange">
+			<md-radio-group  flex layout="column" ng-model="metricSettings.colorTheme">
 				<md-radio-button value="rog" class="md-primary left">Red, Orange, Green</md-radio-button>
 				<md-radio-button value="cgy" class="md-primary left">Cyan, Green, Yellow-Green</md-radio-button>
 				<md-radio-button value="opg" class="md-primary left">Orange, Purple, Green</md-radio-button>                      

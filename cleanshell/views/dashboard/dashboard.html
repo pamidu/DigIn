@@ -89,7 +89,7 @@
 					
 						</div>
 						<md-divider></md-divider>
-						<div ng-include="'views/dashboard/widgets.html'">
+						<div ng-include="'views/dashboard/widgets.html'" style="height:100%">
 						</div>
 					</md-content>
 				</div>
@@ -157,14 +157,20 @@
 
 <md-card id="dashboardOptionsOpen" draggable="firstTouchedEvent()" limit-hit="limit(yvalue, ylimit)" style="z-index:5;position:fixed;border-radius:4px;top:100px;"  ng-if="showDashboardOptions"><!--ng-class="{'initial-dashboard-options-position': keepInitialPosition==true}"-->
 	<md-toolbar class="md-primary" style="min-height: 30px;height:30px;border-radius: 4px 4px 0px 0px;padding: 8px">
-			<div layout="row" layout-align="start start" style="cursor:move">
-				<i class="ti-more rotate-90-clockwise" style="font-size:12px;line-height: 8px;padding:4px;color:white"></i>
-				<text style="color:white;font-size: 14px;">Dashboard Options</text>
+			<div layout="row" layout-align="space-between center" style="cursor:move">
+				<span>
+					<i class="ti-more rotate-90-clockwise" style="font-size:12px;line-height: 8px;padding:4px;color:white"></i>
+					<text style="color:white;font-size: 14px;">Dashboard Options</text>
+				</span>
+				<md-button ng-click="dashboardOptionsShowClick()" class="md-icon-button md-primary" style="margin-top: 5px;">
+					<i class="ti-control-forward" style="font-size: 18px;color:white"></i>
+					<md-tooltip md-direction="bottom">Hide</md-tooltip>
+				</md-button>
 			</div>
 	</md-toolbar>
 			<div layout="row" style="padding:10px 0px 10px 0px">
 		<div layout="column">
-			<md-button ng-click="perform($event,'AddWidget')" class="md-accent">
+			<md-button ng-click="dashboardControls.visualizeData($event)" class="md-accent">
 				<i class="icon-plugin" style="font-size:18px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Add Widgets</text>
 			</md-button>
 			<md-button ng-click="dashboardControls.saveDashboard($event)" class="md-accent">

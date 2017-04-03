@@ -1,2 +1,59 @@
-<div style="width:100px;height:100px;background:red">
-</div>
+
+<md-content layout="row" style="height:100%; width: 100%;" ng-style="{background:settings.color}">
+
+		<div layout="column" layout-align='center start' style="height:100%;" flex="50" 
+			ng-style=" {'color' : (settings.color == 'white') ? 'black' : 'white' }">
+
+			<div ng-show="settings.actualValue">
+				<div flex style="padding:10px;">
+					<div layout="column" flex>
+						<text style="font-size:20px;font-weight: 500;letter-spacing: 1px;" 
+							    ng-if="settings.scalePosition==='Front'" >
+							   		{{settings.scale}} 
+							   		&nbsp;{{settings.actualValue | currency:"":settings.decimal}}
+							   		{{settings.format=="Thousand"?"K":""}}
+						        	{{settings.format=="Million"?"M":""}}
+						        	{{settings.format=="Billion"?"B":""}} 
+						</text>
+						<text   style="font-size:20px;font-weight: 500;letter-spacing: 1px;" 
+						        ng-if="settings.scalePosition==='Back'" >
+						        	{{settings.actualValue | currency:"":settings.decimal}}
+						        	{{settings.format=="Thousand"?"K":""}}
+						        	{{settings.format=="Million"?"M":""}}
+						        	{{settings.format=="Billion"?"B":""}} 
+						        	&nbsp;{{settings.scale}}
+						</text>
+						<text style="font-size:15px">Actual Value</text>
+					</div>
+				</div>
+			</div>
+
+			<div ng-show="settings.targetValue">
+				<div flex style="padding:10px;">
+					<div layout="column" flex>
+						<text 	style="font-size:20px;font-weight: 500;letter-spacing: 1px;" 
+								ng-if="settings.scalePosition==='Front'">					
+									{{settings.scale}} 
+									&nbsp;{{settings.targetValue | currency:"":settings.decimal}}												      
+									{{settings.format=="Thousand"?"K":""}}
+						        	{{settings.format=="Million"?"M":""}}
+						        	{{settings.format=="Billion"?"B":""}} 
+						</text>
+						<text 	style="font-size:20px;font-weight: 500;letter-spacing: 1px;" 
+								ng-if="settings.scalePosition==='Back'">															{{settings.targetValue | currency:"":settings.decimal}}	 						        	
+								{{settings.format=="Thousand"?"K":""}}
+						        {{settings.format=="Million"?"M":""}}
+						        {{settings.format=="Billion"?"B":""}}  
+						        &nbsp;{{settings.scale}}
+						</text>
+						<text style="font-size:15px">Target Value</text>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	<div flex="50" layout="row" style="height:100%;width:50%" ng-show="config.trendChart.series.length>0"> <!--ng-show="config.actualValue"-->
+		<highchart id="{{idSelector}}" config="config.trendChart"></highchart>
+	</div>
+</md-content>

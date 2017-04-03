@@ -107,6 +107,8 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
 }]);
 
 GoogleMapModule.factory('generateGoogleMap', ['$rootScope','notifications','Digin_Engine_API','$http', function($rootScope, notifications,Digin_Engine_API,$http) {
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	return {
 		generate: function(settingConfig, selectedDB, datasource_id, selectedMeasures, callback) {
 			
@@ -118,7 +120,9 @@ GoogleMapModule.factory('generateGoogleMap', ['$rootScope','notifications','Digi
 			for (var i = 0, len = selectedMeasures.length; i<len; ++i){
 				measureName = selectedMeasures[i].name;
 				measureType = selectedMeasures[i].aggType.toLowerCase();
-				selectedMeasuresForUrl.push({[measureName] : measureType});
+				//selectedMeasuresForUrl.push({[measureName] : measureType});
+				selectedMeasuresForUrl.push(_defineProperty({}, measureName, measureType)); //ES5 support
+				
 			}
 			selectedMeasuresForUrl = JSON.stringify(selectedMeasuresForUrl).replaceAll('"', "'");
 			

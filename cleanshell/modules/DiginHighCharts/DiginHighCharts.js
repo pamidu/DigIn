@@ -227,6 +227,13 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			if(!isDrilled){
 				$diginengine.getClient(selectedDB).getAggData(table, fieldArr, limit, datasource, function(res, status, query) {
 					if (status) {
+
+						if(groupBySortArray[0].displayName != groupBySortArray[0].sortName){
+							for(var g=0; g< res.length; g++){
+				            	delete res[g][groupBySortArray[0].sortName];
+				            }
+						}
+
 						var series = [];
 						series = chartUtilitiesFactory.mapChartData(res,groupBySortArray[0].displayName,isDrilled);
 						// highcharts-ng internally calls the setSeries API when series is set
@@ -299,6 +306,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 
                     	$diginengine.getClient(selectedDB).getAggData(table, fieldArr, limit, datasource, function(res, status, query) {
 
+                    		if(groupBySortArray[0].displayName != groupBySortArray[0].sortName){
+								for(var g=0; g< res.length; g++){
+					            	delete res[g][groupBySortArray[0].sortName];
+					            }
+							}
+							
                     		var series = [];
                     		series = chartUtilitiesFactory.mapChartData(res,highestLevel,true);
                     		chartObj.series = series;

@@ -177,7 +177,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				  fullscreen: useFullScreen
 				}).then(function(answer) {
 					DiginDashboardSavingServices.saveDashboard(ev, answer).then(function(newDashboardDetails) {
-
+						console.log(newDashboardDetails);
 						$scope.$parent.currentView = newDashboardDetails.dashboardName;
 						angular.forEach($scope.dashboards, function(value, key) {
 							if(value.compID == newDashboardDetails.compID)

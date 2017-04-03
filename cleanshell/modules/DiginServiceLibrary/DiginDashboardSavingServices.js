@@ -63,7 +63,8 @@
 							notifications.finishLoading();
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;
-							//PouchServices.saveDashboard(newDashboardDetails);
+							console.log(newDashboardDetails);
+							//PouchServices.saveAndUpdateDashboard(newDashboardDetails);
 							return newDashboardDetails;
 						}
 					},function(err){
@@ -153,8 +154,16 @@
 			},
 			getDashboard: function(ev, dashboardId){
 				return $rootScope.localDb.get(dashboardId.toString()).then(function (doc) {
-					console.log(doc);
-						return doc.dashboard;
+						return DiginServices.getComponent(ev, dashboardId).then(function(data) {
+							data.deletions = {
+												"componentIDs":[],
+												"pageIDs":[],
+												"widgetIDs":[]
+											 };
+							persistData(data);
+							return data;
+						});
+						//return doc.dashboard;
 					}).catch(function (err) {//if the dashboard is not saved locally
 					
 						return DiginServices.getComponent(ev, dashboardId).then(function(data) {
@@ -173,8 +182,9 @@
 				  alert('Ch-Ch-Changes');
 				});
 				$rootScope.localDb.get( $rootScope.currentDashboard.compID.toString() , function(err, doc){
+					
 					console.log(err, doc);
-                      if (err){
+                    /*  if (err){
                           if (err.status = '404') {// if the document does not exist
                               //Inserting Document into pouchDB
                               var dashboardDoc = {
@@ -192,7 +202,7 @@
                                   }
                               });
 							}
-						  }else{
+						  }else{*/
 							  var dashboardDoc = {
                                   dashboard : $rootScope.currentDashboard,
                                   _id : $rootScope.currentDashboard.compID.toString(),
@@ -205,8 +215,10 @@
 									console.log("Document updated successfully");
 								  }
 							});
-						  }
-					});
+						  
+				})
+	
+					
 			}//end of saveAndUpdateDashboard factory
 		}//end of PouchServices return
 	}]);//end of PouchServices

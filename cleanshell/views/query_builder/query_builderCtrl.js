@@ -312,7 +312,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			}else if($scope.chartType.chartType == "metric")
 			{
 				$scope.showPlaceholderIcon = false;
-				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig"></metric>')($scope);
+				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
 				$element.find('.currentChart').append(newElement);
 			}
 			else{
@@ -423,13 +423,17 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			{
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
 				if(isChartConditionsOk){				
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (status, query,metricObj,settings){
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status, query,metricObj,settings,notification_data){
 						if(status){
 							$scope.widgetConfig = metricObj;
+							notification_data.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;
+              				notification_data.dashboard_name=$rootScope.currentDashboard.compName;
+              				notification_data.widget_id=widgetID;
+							$scope.notification_data = notification_data;
 							$scope.chartQuery = query;
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
-							newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig"></metric>')($scope);
+							newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification_data="notification_data"></metric>')($scope);
 							$element.find('.currentChart').append(newElement);
 						}
 						else{

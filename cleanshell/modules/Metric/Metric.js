@@ -386,7 +386,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 				            }
 				        } else if (settings.colorTheme == "cgy") {
 				            if (settings.targetRange == "high") {
-				                settings.color = "cyan"
+				                settings.color = "#1abc9c"
 				            } else {
 				                settings.color = "yellowgreen"
 				            }
@@ -408,7 +408,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 				            if (settings.targetRange == "high") {
 				                settings.color = "yellowgreen"
 				            } else {
-				                settings.color = "cyan"
+				                settings.color = "#1abc9c"
 				            }                    
 				        } else if (settings.colorTheme == "opg") {
 				            if (settings.targetRange == "high") {

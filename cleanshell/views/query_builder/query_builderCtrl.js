@@ -35,7 +35,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.widgetSizeY = 11;
 
 	$scope.settingConfig = {};
-	$scope.notification_data = {};
+	$scope.notification_data = [];
 
 	//$scope.currentChartType = "";
 	$scope.showChartLoading = false;
@@ -423,13 +423,14 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			{
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
 				if(isChartConditionsOk){				
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status, query,metricObj,settings,notification_data){
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status, query,metricObj,settings,notification){
 						if(status){
 							$scope.widgetConfig = metricObj;
-							notification_data.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;
-              				notification_data.dashboard_name=$rootScope.currentDashboard.compName;
-              				notification_data.widget_id=widgetID;
-							$scope.notification_data = notification_data;
+							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;
+              				notification.dashboard_name=$rootScope.currentDashboard.compName;
+              				notification.widget_id=widgetID;
+              				$scope.notification_data=[];
+							$scope.notification_data.push(notification);
 							$scope.chartQuery = query;
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;

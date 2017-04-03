@@ -164,7 +164,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	//Dashboard toolbar controls
 	$scope.dashboardControls = (function (){
 		return {
-			saveDashboard: function(ev){
+			visualizeData: function(ev){
+				$scope.$parent.route('visualize_data');
+			},saveDashboard: function(ev){
 
 				$mdDialog.show({
 				  controller: 'saveDashboardCtrl',

@@ -463,7 +463,6 @@
 					<li style="height:50px;font-size:24px" class="active has-sub"><a id="step3" class="hover-color" md-colors="{color:'primary'}"><i class="icon-database" id="datasource"></i></a>
 						<ul>
 							<li><a class="cssmenu-heading" md-colors="{color:'primary-600'}">Data Source</a></li>
-							<li ng-click="perform($event,'visualize_data')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-pie-chart sub-menu-icon"></i>Visualize Data</a></li>
 							<li ng-click="navigate($event,'#/upload_source')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-upload sub-menu-icon"></i>Upload Source</a></li>
 							<li ng-click="navigate($event,'#/shareDataset')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-share sub-menu-icon"></i>Share</a></li>
 							<li ng-click="navigate($event,'#/datasourceSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="icon-settings sub-menu-icon"></i>Datasource Settings</a></li>

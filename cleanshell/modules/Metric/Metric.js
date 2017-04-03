@@ -11,7 +11,7 @@ var MetricModule = angular.module('Metric',['DiginServiceLibrary']);
 MetricModule.directive('metric',['$rootScope','notifications','generateMetric', function($rootScope,notifications,generateMetric) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/Metric/Metric.html',
+         templateUrl: 'modules/Metric/metric.html',
          scope: {
            whatIfObj: '='
           },
@@ -24,7 +24,7 @@ MetricModule.directive('metric',['$rootScope','notifications','generateMetric', 
 MetricModule.directive('metricSettings',['$rootScope','notifications','generateMetric', function($rootScope,notifications,generateMetric) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/Metric/MetricSettings.html',
+         templateUrl: 'modules/Metric/metricSettings.html',
          scope: {
 			metricSettings: '=',
 			submitForm: '&'

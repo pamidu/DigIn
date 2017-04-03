@@ -6,8 +6,8 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','$diginurls','datasourceFactory','notifications',
-	function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactory,notifications)
+routerApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','$diginurls','notifications',
+	function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications)
 {
 
 

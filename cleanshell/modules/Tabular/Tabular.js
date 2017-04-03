@@ -56,13 +56,13 @@ TabularModule.directive('tabularSettings',['$rootScope','notifications','generat
             else
             {
 				scope.allingArr = [];
-			    scope.tabularSettings = {
-			                totForNumeric : "true",
-			                defSortFeild : "",
-			                AscOrDec : "ASC",
-			                AllingArr: [],
-			                numOfRows: 10
-			    }
+
+                scope.tabularSettings.totForNumeric = "true";
+                scope.tabularSettings.defSortFeild = "";
+                scope.tabularSettings.AscOrDec = "ASC";
+                scope.tabularSettings.AllingArr = [];
+                scope.tabularSettings.numOfRows = 10;
+			 
 			}
 		    scope.$watch("select", function(newValue, oldValue) {
 		        if (newValue !== oldValue) {

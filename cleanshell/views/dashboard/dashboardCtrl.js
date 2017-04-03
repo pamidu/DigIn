@@ -164,7 +164,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	//Dashboard toolbar controls
 	$scope.dashboardControls = (function (){
 		return {
-			saveDashboard: function(ev){
+			visualizeData: function(ev){
+				$scope.$parent.route('visualize_data');
+			},saveDashboard: function(ev){
 
 				$mdDialog.show({
 				  controller: 'saveDashboardCtrl',
@@ -175,7 +177,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				  fullscreen: useFullScreen
 				}).then(function(answer) {
 					DiginDashboardSavingServices.saveDashboard(ev, answer).then(function(newDashboardDetails) {
-
+						console.log(newDashboardDetails);
 						$scope.$parent.currentView = newDashboardDetails.dashboardName;
 						angular.forEach($scope.dashboards, function(value, key) {
 							if(value.compID == newDashboardDetails.compID)

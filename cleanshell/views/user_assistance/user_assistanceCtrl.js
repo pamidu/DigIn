@@ -631,7 +631,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		
 		
 		//Submit one in Upload Source
-		$scope.selectSource = function(type)
+		$scope.selectSource = function(ev,type)
 		{
 
 			$scope.files = [];
@@ -645,9 +645,12 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 
 			$scope.selectedDB = "";
 
+			
+
 			//alert(type);
 			if(type == "BigQuery" || type == "memsql")
 			{
+				notifications.startLoading(ev,"Files and folders are loading ... ");
 				$scope.selectedDB = type;
 				$scope.showBusyText = true;
 				$diginengine.getClient(type).getTables(function(res, status) {
@@ -656,6 +659,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 						$scope.showBusyText = false;
 						$scope.connectSource_selected = 1;
 						$scope.connectSource_step1.completed = true;
+						notifications.finishLoading();
 						
 						for(var i = 0; i < res.length; i++){
 							if(res[i].upload_type == "csv-singlefile"){
@@ -673,6 +677,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 			else if(type == "MSSQL" || type == "Oracle"){
 
+				notifications.startLoading(ev,"Connections are loading ... ");
 				$scope.tabTitileFirst = "Select a connection";
 				$scope.tabTitileSecond =  "Select a table";	
 				$scope.selectedDB = type;
@@ -683,14 +688,17 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
                		$scope.showBusyText = false;
 					$scope.connectSource_selected = 1;
 					$scope.connectSource_step1.completed = true;
+					notifications.finishLoading();
 
 					if(res.Is_Success){
-
 						for(var i = 0; i < res.Result.length; i++){
 						
 							$scope.conections.push(res.Result[i]);
 
 						}
+					}else{
+						$scope.showBusyText = false;
+						notifications.toast('0', 'Error occured. Please try again.');
 					}
 	               	
                 });
@@ -706,8 +714,9 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.measures = [];
 		$scope.selectedFile = {};
 
-		$scope.selectTable = function(fileOrFolder)
+		$scope.selectTable = function(ev,fileOrFolder)
 		{
+			notifications.startLoading(ev,"Fields are loading ... ");
 			$scope.selectedFile = fileOrFolder;
 			for(var i = 1; i < fileOrFolder.schema.length; i++){
 				if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
@@ -721,33 +730,40 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 			$scope.connectSource_selected = 2;
 			$scope.connectSource_step2.completed = true;
+			notifications.finishLoading();
 			loadChartDesinger($scope.selectedFile);
 		}	
 		
 		var slectedconfigID = "";
-		$scope.getTables = function(conection){
+		$scope.getTables = function(ev,conection){
 			$scope.tables = [];
 			slectedconfigID = conection.ds_config_id;
+			notifications.startLoading(ev,"Tables are loading ... ");
 			$diginengine.getClient($scope.selectedDB).getConnectionTables(conection.ds_config_id,$scope.selectedDB,function(res){
                	
-               		$scope.showBusyText = false;
-					$scope.connectSource_selected = 1;
-					$scope.connectSource_step1.completed = true;
+					notifications.finishLoading();
+	               	
+	               		$scope.showBusyText = false;
+						$scope.connectSource_selected = 1;
+						$scope.connectSource_step1.completed = true;
 
-	               	for(var i = 0; i < res.length; i++){
-						
-						$scope.tables.push(res[i]);
-
-					}
+		               	for(var i = 0; i < res.length; i++){
+							
+							$scope.tables.push(res[i]);
+						}
+	               	
+               	
                 });
 
 		};
 
 
-		$scope.onClickTable = function(table){
+		$scope.onClickTable = function(ev,table){
 
 			//get all fields
+			notifications.startLoading(ev,"Fields are loading ... ");
 			$diginengine.getClient($scope.selectedDB).getMSSQLFields(table, slectedconfigID ,function(data, status) {
+				notifications.finishLoading();
 				if(status){
 					for(var i=0; i < data.length; i++){
 						for(var j=0; j < dataBaseFiledTypes.length; j++){

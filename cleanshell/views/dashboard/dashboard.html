@@ -1,3 +1,10 @@
+<style>
+.filterItemSeleted
+{
+	background: grey;
+}
+</style>
+
 <footer class="footerTabContainer">
 	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary">
 	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
@@ -29,23 +36,45 @@
 								<md-button class="md-icon-button ti-settings hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
-								
 								<md-menu md-position-mode="target-right target hover-color">
-									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();setAttributes(widget);" >
+									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
-									  <md-menu-content width="4" >
-										<md-menu-item ng-repeat="item in [1, 2, 3]">
-										  <md-button ng-click="ctrl.announceClick($index)">
-											  <div layout="row" flex>
-												<p flex>Option {{item}}</p>
-											  </div>
-										  </md-button>
-										</md-menu-item>
-									  </md-menu-content>
+									<md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+									<div layout="row" layout-align="space-between center" style="height:45px">
+										<div layout="row">
+											<md-button class="margin-0" style="min-width: 70px;width: 70px;font-size: 12px;" aria-label="cancel settings" ng-click="clearWidgetFilters(widget)">Clear</md-button>
+											<md-button class="margin-0" style="min-width: 60px;width: 60px;font-size: 12px;" aria-label="save settings" ng-click="applyFilters(widget)">Apply</md-button>
+										</div>
+									</div>
+
+									<v-accordion class="vAccordion--default" onexpand="loadFilterParams(widget, index)">
+										<v-pane ng-repeat="(key, value) in widget.widgetData.RuntimeFilter">
+											<v-pane-header>
+												{{ ::value.name }}
+											</v-pane-header>
+
+											<v-pane-content>
+												<md-list>
+													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-click="setFilterValueSelection(value,fieldvalues)" ng-if="value.selectionType == 'single' " ng-class="{'filterItemSeleted': fieldvalues.isSelected==true}">
+														<p ng-click="setFilterValueSelection(value,fieldvalues)" >{{ ::fieldvalues.valueName}}</p>
+													</md-list-item>
+													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-click="setFilterValueSelection(value,fieldvalues)" ng-if="value.selectionType == 'multiple' ">
+														<p>
+															<md-checkbox ng-model="fieldvalues.isSelected" style="float: left;"/>
+															{{ ::fieldvalues.valueName}}
+														</p>
+													</md-list-item>
+												</md-list>
+											</v-pane-content>
+										</v-pane>
+
+									</v-accordion>
+
+									</md-menu-content>
 								</md-menu>
 								
-								<md-button class="md-icon-button ti-reload hover-color flip-element" ng-class="{'rotating': widget.syncOn==true}" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget)">
+								<md-button class="md-icon-button ti-reload hover-color flip-element" ng-class="{'rotating': widget.syncOn==true}" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget,'True')">
 									<md-tooltip>sync</md-tooltip>
 								</md-button>
 								

@@ -1,7 +1,9 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$window', '$mdMedia', '$stateParams', 'layoutManager',
-	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 'DiginDashboardSavingServices',
+	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
+	'DiginDashboardSavingServices', 'highchartFilterServices', 'generateHighchart', 
 	function ($scope, $rootScope,$mdDialog, $window, $mdMedia,$stateParams,layoutManager,notifications, 
-		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices) {
+		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
+		highchartFilterServices,generateHighchart) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -263,15 +265,18 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				  'chartType':widget.widgetData.chartType
 				 });
 			},
-			syncWidget: function (widget) {
+			syncWidget: function (widget,is_sync) {
 				notifications.log("Sync Widget",new Error());
 				widget.syncOn = true;
+				if (widget.isWidgetFiltered !== undefined)
+					if (widget.isWidgetFiltered)
+						$scope.applyFilters(widget);
 				// send is_sync parameter as true
-				chartSyncServices.sync(widget,function(widget){
+				chartSyncServices.sync(widget.widgetData,function(widget){
 					$scope.$apply(function(){
 						widget.syncOn = false;						
 					})
-				}, 'True');
+				}, is_sync);
 			},
 			removeWidget: function(ev, widget)
 			{
@@ -321,6 +326,67 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		$scope.keepInitialPosition = true;
 		$scope.showDashboardOptions = true;
 	}
+
+
+	// --------------- widget level filter method start -----------------
+
+	// load the expanded filter field values
+	$scope.loadFilterParams = function(widget, filterIndex)
+	{
+		var pageIndex = $rootScope.selectedPageIndex;
+		var widgetIndex = $rootScope.currentDashboard.pages[pageIndex].widgets.indexOf(widget);
+		var widgetFilterFields = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData.RuntimeFilter;
+		if (widgetFilterFields[filterIndex]['fieldvalues'] === undefined)
+		{
+			var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
+			highchartFilterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile.datasource_name,widgetData.selectedFile.datasource_id,function(data){
+				widgetFilterFields[filterIndex]['fieldvalues'] = data;
+			},100,0);
+		}
+	}
+
+	$scope.setFilterValueSelection = function(value,fieldvalues) {
+		// do nothing
+		angular.forEach(value.fieldvalues,function(fields) {
+			fields.isSelected = false;
+		});
+		fieldvalues.isSelected = true;
+	}
+
+	$scope.clearWidgetFilters = function(widget) {
+		widget.isWidgetFiltered = false;
+		var pageIndex = $rootScope.selectedPageIndex;
+		var widgetIndex = $rootScope.currentDashboard.pages[pageIndex].widgets.indexOf(widget);
+		var widgetFilterFields = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData.RuntimeFilter;
+		angular.forEach(widgetFilterFields,function(filterField) {
+			if (filterField['fieldvalues'] !== undefined)
+			{
+				angular.forEach(filterField.fieldvalues,function(value){
+					value.isSelected = false;
+				})
+			}
+		});
+		$scope.widgetControls.syncWidget(widget,'False')
+	}
+
+	$scope.applyFilters = function(widget) {
+		var pageIndex = $rootScope.selectedPageIndex;
+		var widgetIndex = $rootScope.currentDashboard.pages[pageIndex].widgets.indexOf(widget);
+		var widgetFilterFields = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData.RuntimeFilter;
+		var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
+		var connectionString = "";
+		var isCreate = false;
+		widget.isWidgetFiltered = true;
+		widget.syncOn = true;
+		var selectedFilterFiedsCopy = highchartFilterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
+		connectionString = highchartFilterServices.generateFilterConnectionString(groupFilters,widgetData.selectedDB);
+		generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
+			widget.syncOn = false;
+		},connectionString,[],[],isCreate);
+	}
+
+	// --------------- widget level filter method end -----------------
+	
 	
 	$timeout(function() {
 		var windowWidth = window.outerWidth - 350;

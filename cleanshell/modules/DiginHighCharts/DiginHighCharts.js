@@ -200,7 +200,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 			return highchartObject;
 		},
 		// build the highchart with data
-		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, selectedDB, isDrilled,groupBySortArray, callback, connection, allFields,reArangeArr) {
+		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, selectedDB, isDrilled,groupBySortArray, callback, connection, allFields,reArangeArr,isCreate) {
 			// chartObj - Chart configuration Object, highChartType - chart type String
 			//format selected series
 
@@ -230,7 +230,10 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 						var series = [];
 						series = chartUtilitiesFactory.mapChartData(res,groupBySortArray[0].displayName,isDrilled);
 						// highcharts-ng internally calls the setSeries API when series is set
-						chartObj.series = series;
+						if (isCreate)
+							chartObj.series = series;
+						else
+							chartUtilitiesFactory.updateSeries(res,groupBySortArray[0].displayName,isDrilled,chartObj);
 						callback(chartObj,query);
 					} else {
 						notifications.toast(0,'Error. Please try again.');
@@ -406,6 +409,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				                        if (tempArray.length > 0 ) {
 				                            conStr = tempArray.join( ' And ');
 				                        }
+				                        // todo
+				                        // do not send if value has been already selected in the previous level
+				                        if (connection != '') {
+				                        	conStr += 'And' + connection;
+				                        }
+
 				                        chart.options.lang.drillUpText = "Back to " + highestLvl;
 				                        // Show the loading label
 				                        chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
@@ -672,6 +681,22 @@ DiginHighChartsModule.factory('chartUtilitiesFactory',[function(){
 		//set data points
 		setDataPoints: function(chartObj,res) {
 			var chart = chartObj.getHighcharts();
+		},
+		updateSeries: function(res,category,isDrilled,widgetConfig) {
+            // send drilled parameter as false - temporary
+            var seriesArray = this.mapChartData(res,category,isDrilled);
+
+            // get all the chart object
+            var chartObject = widgetConfig.getHighcharts();
+
+            angular.forEach(seriesArray,function(newSeries) {
+                angular.forEach(widgetConfig.series,function(series) {
+                    if (newSeries.id == series.id) {
+                        // get the relevant series and update data retaining all configs
+                        chartObject.get(series.id).setData(newSeries.data);
+                    }
+                });
+            });
 		}
 	}
 }]);

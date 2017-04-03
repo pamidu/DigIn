@@ -604,6 +604,7 @@
 		<script src="modules/DiginServiceLibrary/UserServices.js"></script>
 		<script src="modules/DiginServiceLibrary/chartSyncServices.js"></script>
 		<script src="modules/DiginServiceLibrary/datasourceServices.js"></script>
+		<script src="modules/DiginServiceLibrary/highchartFilterServices.js"></script>
 
 		<!--DigIn Service Modules-->
 		

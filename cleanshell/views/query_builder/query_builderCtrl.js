@@ -1,4 +1,8 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','generateWhatIf','$timeout','NgMap','notifications','$mdMedia', function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,generateGoogleMap,generateForecast,generateMetric,generateTabular,generateWhatIf,$timeout,NgMap,notifications,$mdMedia){
+DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile',
+	'$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','generateWhatIf',
+	'$timeout','NgMap','notifications','$mdMedia', 'highchartFilterServices', 
+	 function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,
+	 generateGoogleMap,generateForecast,generateMetric,generateTabular,generateWhatIf,$timeout,NgMap,notifications,$mdMedia,highchartFilterServices){
 	$scope.$parent.currentView = "Chart Designer";
 	var newElement = "";
 	
@@ -327,6 +331,14 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			$scope.showChartLoading = true;
 			if($scope.chartType.chartType == 'highCharts') // if the user wants a highchart
 			{
+				var connection_string = "";
+
+				// if filters exist, apply
+				if ($scope.selectedDesignTimeFilters.length > 0)
+				{
+					var groupFilters = highchartFilterServices.groupFilterConnectionString($scope.selectedDesignTimeFilters);
+					connection_string = highchartFilterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
+				}
 
 				var isChartConditionsOk = generateHighchart.highchartValidations($scope.chartType.chart,$scope.selectedSeries,$scope.selectedCategory);
 				if(isChartConditionsOk){
@@ -335,12 +347,12 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					if($scope.selectedCategory.length > 1){
 						isDrilled = true;
 					} 
-
+					var isCreate = true; 
 					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
-					},undefined,$scope.selectedAttributes,reArangeArr);
+					},connection_string,$scope.selectedAttributes,reArangeArr,isCreate);
 
 				}else{
 					$scope.showChartLoading = false;
@@ -499,7 +511,66 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.changeEditState = function() {
 		$scope.queryEditState = !$scope.queryEditState;
 	};
-	
+
+
+	// ---------------- filter related methods and variables start----------------
+
+	//Variables that contain filter attributes
+	$scope.selectedDesignTimeFilters = [];
+	$scope.selectedRunTimeFilters = [];
+
+	$scope.designtimeFilters = angular.copy($scope.selectedAttributes); // deep copy as you need to load the values under the particular field
+
+	//add to design time filter
+	$scope.pushDesignTimeFilters = function(filterField,filterValue)
+	{
+		// if a field is slected, push it to the array
+		if (filterValue.isSelected)
+		{
+			$scope.selectedDesignTimeFilters.push({
+				name : filterField.name,
+				fieldDataType: filterField.type,
+				valueName: filterValue.valueName
+			});
+		} else 
+		{
+			// if a field is un- slected, remove it from the array
+			$scope.selectedDesignTimeFilters.splice({filterName: filterField.name, fieldDataType: filterField.type, valueName: filterValue.valueName},1);
+		}
+	};
+
+	//add to run time filters
+	$scope.pushRunTimeFilters = function(item,type)
+	{
+		var pushObj = angular.copy(item);
+		pushObj.selectionType = type;
+
+		$scope.selectedRunTimeFilters.push(pushObj);
+	};
+
+	//remove selected design time filters
+	$scope.removeDesignTimeFilters = function (index) {
+		$scope.selectedDesignTimeFilters.splice(index,1);
+	};
+
+	//remove selected run time filters
+	$scope.removeRunTimeFilters = function (index) {
+		$scope.selectedRunTimeFilters.splice(index,1);
+	};
+
+
+	// load all the values under the selected field
+	$scope.loadFilterParams = function(index) {
+		if ($scope.designtimeFilters[index]['filterValues'] === undefined)
+		{
+			highchartFilterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
+				$scope.designtimeFilters[index]['filterValues'] = data;
+			},100,0);
+		}
+	};
+
+	// ---------- filter related methods end ---------------
+
 	$scope.saveWidget =  function() {
 		
 		var widgetData = {
@@ -509,8 +580,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			'XAxis': $scope.selectedCategory,
 			'allMeasures' : $scope.selectedMeasures,
 			'allXAxis' : $scope.selectedAttributes,
-			'DesignTimeFilter': [],
-			'RuntimeFilter' : [],
+			'DesignTimeFilter': $scope.selectedDesignTimeFilters,
+			'RuntimeFilter' : $scope.selectedRunTimeFilters,
 			'widgetConfig' : $scope.widgetConfig,
 			'settingConfig': $scope.settingConfig,
 			'selectedDB' : $scope.selectedDB,

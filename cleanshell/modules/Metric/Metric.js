@@ -65,10 +65,24 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
                		notificataionValue:0,
                		colorType:'high',
                		colorTheme:'rog',
-               		dateAttrs:scope.attr
-               }
+               		dateAttrs:scope.attr,
+               		color:"#F9A937s",
+               		rangeSliderOptions: {
+                    minValue: 0,
+                    maxValue: 300,
+                    options: {
+		                        floor: 0,
+		                        ceil: 300,
+		                        step: 1,
+		                        translate: function(value) {
+		                          return value + '%';
+	                        	}
+                    		 }
+                	}
+               	}
            	}
-			
+
+
 			scope.submit = function()
 			{
 				if(scope.metricSettingsForm.$valid)
@@ -86,7 +100,62 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 			}
 
 
-			
+			scope.applyColorSettings=function(){
+				//alert("changging colour");
+				var highRange = scope.metricSettings.targetValue * scope.metricSettings.rangeSliderOptions.maxValue / 100;
+			    var lowerRange = scope.metricSettings.targetValue * scope.metricSettings.rangeSliderOptions.minValue / 100;
+
+
+				if (scope.metricSettings.actualValue <= lowerRange) {
+		        	if (scope.metricSettings.colorTheme == "rog") {
+			            if (scope.metricSettings.targetRange == "high") {
+			                scope.metricSettings.color = "#FF5252"
+			            } else {
+			                scope.metricSettings.color = "#4CAF50"
+			            }
+			        } else if (scope.metricSettings.colorTheme == "cgy") {
+			            if (scope.metricSettings.targetRange == "high") {
+			                scope.metricSettings.color = "#1abc9c"
+			            } else {
+			                scope.metricSettings.color = "yellowgreen"
+			            }
+			        } else if (scope.metricSettings.colorTheme == "opg") {
+			            if (scope.metricSettings.targetRange == "high") {
+			                scope.metricSettings.color = "#F9A937"
+			            } else {
+			                scope.metricSettings.color = "#4CAF50"
+			            }
+			        }
+			    } else if (scope.metricSettings.actualValue >= highRange) {
+			        if (scope.metricSettings.colorTheme == "rog") {
+			            if (scope.metricSettings.targetRange == "high") {
+			                scope.metricSettings.color = "#4CAF50"
+			            } else {
+			                scope.metricSettings.color = "#FF5252"
+			            }
+			        } else if (scope.settings.colorTheme == "cgy") {
+			            if (scope.metricSettings.targetRange == "high") {
+			                scope.metricSettings.color = "yellowgreen"
+			            } else {
+			                scope.metricSettings.color = "#1abc9c"
+			            }                    
+			        } else if (scope.metricSettings.colorTheme == "opg") {
+			            if (scope.metricSettings.targetRange == "high") {
+			                scope.metricSettings.color = "#4CAF50"
+			            } else {
+			                scope.metricSettings.color = "#F9A937"
+			            }
+			        }
+			    } else {
+			        if (scope.metricSettings.colorTheme == "rog") {
+			            scope.metricSettings.color = "#F9A937"
+			        } else if (scope.metricSettings.colorTheme == "cgy") {
+			            scope.metricSettings.color = "#4CAF50"
+			        } else if (scope.metricSettings.colorTheme == "opg") {
+			            scope.metricSettings.color = "#8e44ad"
+			        }
+			    }
+			}
 
 
          } //end of link

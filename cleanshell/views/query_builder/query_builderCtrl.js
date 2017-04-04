@@ -601,7 +601,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		if ($scope.designtimeFilters[index]['fieldvalues'].length == 0)
 		{
 			$scope.designtimeFilters[index]['isLoading'] = true;
-			var is_dashboardFilter = true;
+			var is_dashboardFilter = false;
 			filterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
 				$scope.$apply(function(){
 					$scope.designtimeFilters[index]['isLoading'] = false;

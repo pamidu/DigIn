@@ -1,8 +1,8 @@
 
 // __Author__ : Dilani Maheswaran
 
-DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 
-    function($diginengine,$diginurls,chartUtilitiesFactory) {
+DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 
+    function($diginengine,$diginurls,chartUtilitiesFactory,notifications) {
     return {
         // ------------------- Read Me -----------
         // construct the filter array in the given format to be supported by all methods
@@ -127,7 +127,7 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
         },
 
         // return the values under a selected field for filters
-        getFieldParameters : function(filterName,selectedDB,table,datasource_id,callback,limit,offset)
+        getFieldParameters : function(display_field,selectedDB,table,datasource_id,callback,limit,offset,is_dashboard,value_field)
         {
             // filterName : selected filter field name - string
             // selectedDB : selected database name - string
@@ -135,23 +135,37 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
             // datasource_id : datasource_id of the selected connection or the table - integer
             // limit : request limit set - integer
             // offset : beginning of the record - integer
+            // value field : order by field
+            // is_dashboard : boolean indciating if it dashboard fiters or not
 
             var query = "";
             switch(selectedDB)
             {
                 case 'BigQuery':
                 case 'memsql':
-                    query = "SELECT " + filterName + " FROM " + $diginurls.getNamespace() + "." + table + " GROUP BY " + filterName;
+                    if (is_dashboard)
+                        query = "SELECT " + display_field + "," + value_field + " FROM " + $diginurls.getNamespace() + "." + table + " GROUP BY " + value_field + " , " + display_field + " ORDER BY " + value_field;
+                    else
+                        query = "SELECT " + display_field + " FROM " + $diginurls.getNamespace() + "." + table + " GROUP BY " + display_field;
                     break;
                 case 'MSSQL':
                     var tableNamespace = table.split(".");
-                    query = "SELECT [" + filterName + "] FROM [" + tableNamespace[0] + '].[' + tableNamespace[1] + "] GROUP BY [" + filterName + "] ORDER BY [" + filterName + "]";
+                    if (is_dashboard)
+                        query = "SELECT [" + value_field + "],["+ display_field + "] FROM [" + tableNamespace[0] + '].[' + tableNamespace[1] + "] GROUP BY [" + value_field + "],["+ display_field +"] ORDER BY [" + value_field + "]";
+                    else
+                        query = "SELECT [" + display_field + "] FROM [" + tableNamespace[0] + '].[' + tableNamespace[1] + "] GROUP BY [" + display_field + "] ORDER BY [" + display_field + "]";
                     break;
                 case 'hiveql':
-                    query = "SELECT " + filterName + " FROM "+ table +"  GROUP BY " + filterName + " ORDER BY " + filterName;
+                    if (is_dashboard)
+                        query = "SELECT " + value_field + " , " + display_field + " FROM "+ table +"  GROUP BY " + value_field + " , " + display_field + " ORDER BY " + value_field + " , " + display_field + "";
+                    else
+                        query = "SELECT " + display_field + " FROM "+ table +"  GROUP BY " + display_field + " ORDER BY " + display_field;
                     break;
                 case 'Oracle':
-                    query = "SELECT " + filterName + " FROM "+ table +"  GROUP BY " + filterName + " ORDER BY " + filterName;
+                if (is_dashboard)
+                    query = "SELECT " + value_field + " , " + display_field + " FROM "+ table +"  GROUP BY " + value_field + " , " + display_field + " ORDER BY " + value_field + " , " + display_field + "";
+                else
+                    query = "SELECT " + display_field + " FROM "+ table +"  GROUP BY " + display_field + " ORDER BY " + display_field;
             };
             $diginengine.getClient(selectedDB).getExecQuery(query, datasource_id, function(res, status, message)
             {
@@ -160,14 +174,25 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
                 {
                     angular.forEach(res,function(value)
                     {
-                        values.push({
-                           valueName: value[filterName],
-                           isSelected: false 
-                        });
+                        if (is_dashboard)
+                        {
+                            values.push({
+                               valueName: value[display_field],
+                               isSelected: false,
+                               valueField: value[value_field]
+                            });
+                        } else 
+                        {
+                            values.push({
+                               valueName: value[display_field],
+                               isSelected: false 
+                            });
+                        }
                     });
 
                 } else {
-                    // do nothing
+                    // notify
+                    notifications.toast('0','Error occurred. Please try again.');
                 }
                 callback(values);
             },limit,0);
@@ -178,6 +203,13 @@ DiginServiceLibraryModule.factory('highchartFilterServices',['$diginengine','$di
             angular.forEach(widget.widgetData.RuntimeFilter,function(filter) {
                 if(filter.fieldvalues !== undefined) delete filter.fieldvalues;
                 if (filter.isLoading !== undefined) delete filter.isLoading;
+            });
+        },
+        // assign the necessary parameters to make it common for filter related methods
+        generateDashboardFilterFields : function(dashboardFilters) {
+            angular.forEach(dashboardFilters,function(filter){
+                if (filter.name === undefined) filterArray.name = filter.filter_name;
+                if (filter.fieldvalues === undefined) filterArray.fieldvalues = [];
             });
         }
     }

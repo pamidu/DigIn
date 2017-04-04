@@ -191,7 +191,7 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 	})
 	
 	.state('dashboardFilterSettings', {
-        url: '/dashboard-filter-settings',
+        url: '/dashboardFilterSettings',
         controller: 'dashboardFilterSettingsCtrl',
         templateUrl: "views/settings/dashboardFilterSettings/dashboardFilterSettings.html"
     })

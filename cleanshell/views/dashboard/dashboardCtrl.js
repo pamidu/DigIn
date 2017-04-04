@@ -1,9 +1,9 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
-	'DiginDashboardSavingServices', 'highchartFilterServices', 'generateHighchart', 
+	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
-		highchartFilterServices,generateHighchart) {
+		filterServices,generateHighchart) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -112,7 +112,10 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	$scope.selectPage = function(index) {
 		$rootScope.selectedPageIndex = index;
 		// sync a page when it is open for the first time
-		DiginServices.syncPages($rootScope.currentDashboard,index);
+		DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
+			// returns the synced page
+			$rootScope.currentDashboard = dashboard;
+		});
     }
 	
 	$scope.editPageName = function(ev, page)
@@ -221,7 +224,12 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 					}
 				});
 				
+			},
+			addDashboardFilter: function(ev)
+			{
+				$scope.$parent.route('dashboardFilterSettings');
 			}
+
 		}
 
 
@@ -272,14 +280,14 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			},
 			syncWidget: function (widget,is_sync) {
 				notifications.log("Sync Widget",new Error());
-				widget.syncOn = true;
+				widget.widgetData.syncOn = true;
 				if (widget.isWidgetFiltered !== undefined)
 					if (widget.isWidgetFiltered)
 						$scope.applyFilters(widget);
 				// send is_sync parameter as true
-				chartSyncServices.sync(widget.widgetData,function(widget){
+				chartSyncServices.sync(widget.widgetData,function(widgetData){
 					$scope.$apply(function(){
-						widget.syncOn = false;						
+						widgetData.syncOn = false;
 					})
 				}, is_sync);
 			},
@@ -343,13 +351,14 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		widgetFilterFields[filterIndex].isLoading = true;
 		if ( widgetFilterFields[filterIndex]['fieldvalues'].length == 0)
 		{
+			var is_dashboardFilter = false;
 			var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
-			highchartFilterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile.datasource_name,widgetData.selectedFile.datasource_id,function(data){
+			filterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile.datasource_name,widgetData.selectedFile.datasource_id,function(data){
 				$scope.$apply(function(){
 					widgetFilterFields[filterIndex]['fieldvalues'] = data;
 				})
 				widgetFilterFields[filterIndex].isLoading = false;
-			},100,0);
+			},100,0,is_dashboardFilter);
 		}
 	}
 
@@ -389,8 +398,8 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		var isCreate = false;
 		widget.isWidgetFiltered = true;
 		widget.syncOn = true;
-		var selectedFilterFiedsCopy = highchartFilterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
-		connectionString = highchartFilterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
+		var selectedFilterFiedsCopy = filterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
+		connectionString = filterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
 		if (connectionString != "")
 		{
 			generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
@@ -402,8 +411,51 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	}
 
 	// --------------- widget level filter method end -----------------
-	
-	
+
+	// ------------------ Dashboard level filter method start ---------------------
+
+	$scope.dashboardFilterFields = angular.copy($rootScope.currentDashboard.filterDetails);
+
+	$scope.displayDashboardFilters = function() {
+		if ($rootScope.currentDashboard.filterDetails.length != 0)
+		{
+			filterServices.generateDashboardFilterFields($scope.dashboardFilterFields);
+		}
+	};
+
+	$scope.loadDashboardFilterParams = function(filterIndex){
+		var is_dashboardFilter = true;
+		var expandedFilter = $scope.dashboardFilterFields[filterIndex];
+		dashboardFilterFields.isLoading = true;
+		filterServices.getFieldParameters(expandedFilter.display_field,expandedFilter.datasource,
+			expandedFilter.datasource_table,expandedFilter.datasource_id,function(data){
+			$scope.$apply(function(){
+				dashboardFilterFields[filterIndex]['fieldvalues'] = data;
+			})
+			dashboardFilterFields[filterIndex].isLoading = false;
+		},100,0,is_dashboardFilter,expandedFilter.value_field);
+	};
+
+	$scope.dashboardFilterApply = function() {
+		angular.forEach($scope.dashboardFilterFields,function(dashboardFilter){
+			angular.forEach($rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets,function(widget){
+				if (widget.RuntimeFilter.length !=0) {
+					angular.forEach(widget.RuntimeFilter,function(runTimeFilter){
+						if (runTimeFilter.name == dashboardFilter.name) {
+							// generate connection string and push to an array
+							// append strings using And
+							// call apply filters method of an individual widget
+							// set pageFilter to true
+							// other page filter to false
+							// set dashboard filter to true
+						}
+					})
+				}
+			})
+		})
+	}
+	// ------------------- Dashboard level filter method start ---------------------
+
 	$timeout(function() {
 		var windowWidth = window.outerWidth - 350;
 		angular.element('#dashboardOptionsOpen').css('left',windowWidth+"px");

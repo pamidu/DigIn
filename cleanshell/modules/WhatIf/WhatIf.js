@@ -162,10 +162,13 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
             },
             link: function(scope, element) {  
 
-                scope.whatifSettings['eqconfig'] = {};
-                scope.whatifSettings.eqconfig['mode'] = 'auto';
-                scope.whatifSettings.eqconfig['method'] = 'linear';
-                scope.whatifSettings.eqconfig['equation'] = '';
+                if(!scope.whatifSettings.hasOwnProperty('eqconfig')) {
+                    scope.whatifSettings['eqconfig'] = {};
+                    scope.whatifSettings.eqconfig['mode'] = 'auto';
+                    scope.whatifSettings.eqconfig['method'] = 'linear';
+                    scope.whatifSettings.eqconfig['equation'] = '';
+                    scope.whatifSettings.eqconfig['targets'] = []
+                }
 
                 scope.submit = function() {
                     if(scope.whatifSettingsForm.$valid) {
@@ -179,6 +182,14 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
                 scope.restoreSettings = function() {
                      scope.submitForm();
                 }
+
+                scope.setAsTarget = function(ev, value) {
+                    if(scope.whatifSettings.eqconfig.targets.length > 0)
+                        scope.whatifSettings.eqconfig.targets = []
+
+                    scope.whatifSettings.eqconfig.targets.push(value.name)
+                }
+
             } //end of link
         };
     }
@@ -209,7 +220,7 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
 
         var buildFormulaParams = function(dbconfig, eqconfig) {
 
-            var fmeasures = getFormulaMeasureNames(eqconfig.variables);
+            var fmeasures = getFormulaMeasureNames(eqconfig.variables, eqconfig.targets);
 
             return {
                 dbtype: dbconfig.databaseType,
@@ -257,10 +268,15 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
                 return y_values.concat(x_values);
         }
 
-        var getFormulaMeasureNames = function(variables) {
+        var getFormulaMeasureNames = function(variables, targets) {
 
+            // return variables.reduce(function(acc, val, idx) {
+            //     if(idx == 0) acc.yValues.push(val.name);
+            //     else acc.xValues.push(val.name);
+            //     return acc;
+            // },{xValues:[], yValues:[]});
             return variables.reduce(function(acc, val, idx) {
-                if(idx == 0) acc.yValues.push(val.name);
+                if(targets.indexOf(val.name) > -1) acc.yValues.push(val.name);
                 else acc.xValues.push(val.name);
                 return acc;
             },{xValues:[], yValues:[]});

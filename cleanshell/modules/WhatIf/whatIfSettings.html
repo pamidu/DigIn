@@ -18,19 +18,25 @@
 			<div class="section-title" md-colors="{background:'{{$root.h1color}}-section', color:'accent'}">Selected Measures</div>
 		</div>
 		
-
+		<md-list>
+			<md-list-item class="secondary-button-padding" ng-repeat="series in whatifSettings.seriesList" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+				<p style="padding:8px">{{series.name}}</p>
+				<i class="ti-key md-secondary md-hue-3" aria-label="target" style="font-size:20px;" 
+					ng-click="setAsTarget($event, series)"
+					ng-style="whatifSettings.eqconfig.targets.indexOf(series.name) > -1 ? { color:'green' }:{ color:'#d1cfcf' }"></i>
+			</md-list-item>
+		</md-list>
 		
-			<md-radio-group layout="column" class="side-margins" ng-model="target">
+			<!--<md-radio-group layout="column" class="side-margins" ng-model="target">
 				<md-radio-button value="{{series.name}}" class="md-primary" style="float: left;" aria-label="{{series.name}}"  ng-repeat="series in whatifSettings.seriesList">
 					<md-list-item class="secondary-button-padding" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
-
 					{{series.name}}
 					<md-button class="md-icon-button icon-cancel md-secondary" ng-click="diginComponents.deleteDashboard(dashboard,$event);$event.stopPropagation()" style="margin-top: 10px !important;font-size:10px;" aria-label="delete">
 					</md-button>
 					</md-list-item>
 				</md-radio-button>
 
-			</md-radio-group>
+			</md-radio-group>-->
 
 
 		

@@ -67,7 +67,7 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
              //return the promise directly.
 			 notifications.startLoading(ev, "Getting Dashboard");
 			 
-                return $http.get(Digin_Engine_API+'get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+$rootScope.authObject.SecurityToken+'&Domain'+Digin_Domain)
+                return $http.get(Digin_Engine_API +'get_component_by_comp_id?comp_id='+dashboardId+'&SecurityToken='+$rootScope.authObject.SecurityToken+'&Domain'+Digin_Domain)
                        .then(function(result) {
                             //resolve the promise as the data
 							notifications.finishLoading();

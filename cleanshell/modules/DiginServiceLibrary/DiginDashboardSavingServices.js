@@ -50,7 +50,7 @@
 				notifications.startLoading(ev,"Saving '"+newDashboardDetails.dashboardName+"' dashboard, Please wait...");
                 return $http({
 						method: 'POST',
-						url:  'http://192.168.0.101:8080/'+ 'store_component/',//http://192.168.0.101:8080 //Digin_Engine_API
+						url:  Digin_Engine_API + 'store_component/',//http://192.168.0.101:8080 //Digin_Engine_API
 						data: angular.toJson(dashboardCopy),
 						headers: {
 							'Content-Type': 'application/json',

@@ -639,7 +639,6 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			'widgetID' :  widgetID,
 			'query' : $scope.chartQuery,
 			'groupBySortArray': $scope.groupBySortArray,
-			'notification_data' : $scope.notification_data
 
 
 			

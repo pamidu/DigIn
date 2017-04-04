@@ -42,7 +42,7 @@
 				notifications.startLoading(ev,"Saving '"+newDashboardDetails.dashboardName+"' dashboard, Please wait...");
                 return $http({
 						method: 'POST',
-						url:  Digin_Engine_API+ 'store_component/',//http://192.168.0.101:8080
+						url:  'http://192.168.0.101:8080/'+ 'store_component/',//http://192.168.0.101:8080 //Digin_Engine_API
 						data: angular.toJson(dashboardCopy),
 						headers: {
 							'Content-Type': 'application/json',
@@ -61,7 +61,7 @@
 								for(var j=0 ; j < $rootScope.currentDashboard.pages[i].widgets.length; j++){
 									$rootScope.currentDashboard.pages[i].widgets[j].widgetID = result.data.Result.pages[i].widget_ids[j].widget_id;
 									if($rootScope.currentDashboard.pages[i].widgets[j].widgetData.chartType.chartType=="metric"){
-									 $rootScope.currentDashboard.pages[i].widgets[j].notification_data[0].notification_id = result.data.Result.pages[i].widget_ids[j].notification_ids;
+									 $rootScope.currentDashboard.pages[i].widgets[j].notification_data[0].notification_id = result.data.Result.pages[i].widget_ids[j].notification_ids[0];
 									}
 								}
 							}

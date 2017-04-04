@@ -1,6 +1,6 @@
 DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', 
-	'$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log','filterServices' ,function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,
-		layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log,filterServices) {
+	'$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log','filterServices','DiginDashboardSavingServices' ,function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,
+		layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log,filterServices,DiginDashboardSavingServices) {
 
 	//$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -118,7 +118,18 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					if(answer == "yes")
 					{
 						// save the changes and then navigate where he wants to
-						alert("Changes saved");
+						var dashboardDetails = {dashboardName: $rootScope.currentDashboard.compName, refreshInterval: $rootScope.currentDashboard.refreshInterval};
+						DiginDashboardSavingServices.saveDashboard(ev, dashboardDetails).then(function(newDashboardDetails) {
+							$scope.changed = false; //change this to false again since the chages were saved
+							//$scope.currentView = newDashboardDetails.dashboardName;
+							angular.forEach($scope.dashboards, function(value, key) {
+								if(value.compID == newDashboardDetails.compID)
+								{
+									value.compName = newDashboardDetails.dashboardName;
+								}
+							})
+							navigateTo(ev,action);
+						});
 					}
 					else if(answer == "no")
 					{

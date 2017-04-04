@@ -130,14 +130,18 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				// sync a page when it is open for the first time
 				DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
 					// returns the synced page
-					$rootScope.currentDashboard = dashboard;
+					$scope.$apply(function(){
+						$rootScope.currentDashboard = dashboard;
+					})
 				});
 			}
 		} else {
 			// sync a page when it is open for the first time
 			DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
 				// returns the synced page
-				$rootScope.currentDashboard = dashboard;
+				$scope.$apply(function(){
+					$rootScope.currentDashboard = dashboard;
+				})
 			});
 		}
     };
@@ -206,8 +210,10 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				  targetEvent: ev,
 				  fullscreen: useFullScreen
 				}).then(function(answer) {
+					console.log(answer);
 					DiginDashboardSavingServices.saveDashboard(ev, answer).then(function(newDashboardDetails) {
 						console.log(newDashboardDetails);
+						$scope.$parent.changed = false; //change this to false again since the chages were saved
 						$scope.$parent.currentView = newDashboardDetails.dashboardName;
 						angular.forEach($scope.dashboards, function(value, key) {
 							if(value.compID == newDashboardDetails.compID)

@@ -73,6 +73,8 @@
 									}
 								}
 							}
+							
+							$rootScope.selectedDashboard = angular.copy($rootScope.currentDashboard);
 							notifications.finishLoading();
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;

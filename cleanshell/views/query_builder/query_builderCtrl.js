@@ -670,7 +670,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		else{
 			$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);
 		}
-
+		$scope.$parent.changed = true;
 		$scope.$parent.route('dashboard');
 	}
 	

@@ -208,9 +208,22 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
         // assign the necessary parameters to make it common for filter related methods
         generateDashboardFilterFields : function(dashboardFilters) {
             angular.forEach(dashboardFilters,function(filter){
-                if (filter.name === undefined) filterArray.name = filter.filter_name;
-                if (filter.fieldvalues === undefined) filterArray.fieldvalues = [];
+                if (filter.name === undefined) filter.name = filter.filter_name;
+                if (filter.fieldvalues === undefined) filter.fieldvalues = [];
             });
+        },
+        // set dashboard filtered status to true
+        setDashboardFilter : function(dashboard,page_index,count) {
+            if (dashboard.pages[$rootScope.selectedPageIndex].widgets.length == count)
+            {
+                dashboard['isFiltered'] = true;
+                dashboard.pages[page_index]['isFiltered'] = true;
+                dashboard.pages[page_index]['isSeen'] = true;
+                angular.forEach(dashboard.pages,function(page){
+                    if (dashboard.pages.indexof(page) != page_index && dashboard.pages.indexof(page) > 0)
+                        dashboard.pages[page_index]['isFiltered'] = false;
+                })
+            }
         }
     }
 

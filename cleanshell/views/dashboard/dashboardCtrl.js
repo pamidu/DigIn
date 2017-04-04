@@ -111,12 +111,36 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	//This method is there to keep track of the current page number the user is in within the dashboard so he/she can add new widgets into that particular page
 	$scope.selectPage = function(index) {
 		$rootScope.selectedPageIndex = index;
-		// sync a page when it is open for the first time
-		DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
-			// returns the synced page
-			$rootScope.currentDashboard = dashboard;
-		});
-    }
+		// check if dashboard is filtered
+		if ($rootScope.currentDashboard.isFiltered !== undefined)
+		{
+			if ($rootScope.currentDashboard.isFiltered)
+			{
+				// check if page is filtered
+				if ($rootScope.currentDashboard.pages[index].isFiltered === undefined)
+					// apply dashboard filters
+					$scope.dashboardFilterApply();
+				else
+					if (!$rootScope.currentDashboard.pages[index].isFiltered)
+						// apply dashboard filters
+						$scope.dashboardFilterApply();
+			}
+			else 
+			{
+				// sync a page when it is open for the first time
+				DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
+					// returns the synced page
+					$rootScope.currentDashboard = dashboard;
+				});
+			}
+		} else {
+			// sync a page when it is open for the first time
+			DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
+				// returns the synced page
+				$rootScope.currentDashboard = dashboard;
+			});
+		}
+    };
 	
 	$scope.editPageName = function(ev, page)
 	{
@@ -397,13 +421,13 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		var connectionString = "";
 		var isCreate = false;
 		widget.isWidgetFiltered = true;
-		widget.syncOn = true;
+		widgetData.syncOn = true;
 		var selectedFilterFiedsCopy = filterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
 		connectionString = filterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
 		if (connectionString != "")
 		{
 			generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
-				widget.syncOn = false;
+				widgetData.syncOn = false;
 			},connectionString,[],[],isCreate);
 		} else {
 			// pop up notification
@@ -426,32 +450,57 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	$scope.loadDashboardFilterParams = function(filterIndex){
 		var is_dashboardFilter = true;
 		var expandedFilter = $scope.dashboardFilterFields[filterIndex];
-		dashboardFilterFields.isLoading = true;
+		expandedFilter.isLoading = true;
 		filterServices.getFieldParameters(expandedFilter.display_field,expandedFilter.datasource,
 			expandedFilter.datasource_table,expandedFilter.datasource_id,function(data){
 			$scope.$apply(function(){
-				dashboardFilterFields[filterIndex]['fieldvalues'] = data;
+				expandedFilter['fieldvalues'] = data;
 			})
-			dashboardFilterFields[filterIndex].isLoading = false;
+			expandedFilter.isLoading = false;
 		},100,0,is_dashboardFilter,expandedFilter.value_field);
 	};
 
 	$scope.dashboardFilterApply = function() {
-		angular.forEach($scope.dashboardFilterFields,function(dashboardFilter){
-			angular.forEach($rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets,function(widget){
-				if (widget.RuntimeFilter.length !=0) {
-					angular.forEach(widget.RuntimeFilter,function(runTimeFilter){
-						if (runTimeFilter.name == dashboardFilter.name) {
-							// generate connection string and push to an array
-							// append strings using And
-							// call apply filters method of an individual widget
-							// set pageFilter to true
-							// other page filter to false
-							// set dashboard filter to true
-						}
+		var count = 0;
+		angular.forEach($rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets,function(widget) {
+			var dashboardFilterString = "";
+			if (widget.widgetData.chartType.chartType == "highCharts") {
+				var allFiltersArray = [];
+				var filterString = "";
+				if (widget.widgetData.RuntimeFilter.length !=0) {
+					angular.forEach(widget.widgetData.RuntimeFilter,function(runTimeFilter) {
+						angular.forEach($scope.dashboardFilterFields,function(dashboardFilter) {
+							if (runTimeFilter.name == dashboardFilter.name) {
+								dashboardFilterString = filterServices.generateFilterConnectionString(dashboardFilter,widget.widgetData.selectedDB)
+								if (dashboardFilterString != "")
+									allFiltersArray.push(dashboardFilterString);
+							}
+						});
 					})
 				}
-			})
+				if (allFiltersArray.length > 0)
+				{
+					if (widget.widgetData.DesignTimeFilter.length > 0)
+					{
+						var designTimeFilterArray = filterServices.groupFilterConnectionString(widget.widgetData.DesignTimeFilter);
+						connectionString = filterServices.generateFilterConnectionString(designTimeFilterArray,widget.widgetData.selectedDB);
+						allFiltersArray.push(connectionString);
+					}
+					// make a string with both design time filters and dashboard filters
+					allFiltersArray.join( ' And ');
+				}
+				if (dashboardFilterString != ""){
+					var isCreate = false;
+					generateHighchart.generate(widget.widgetData.widgetConfig, widget.widgetData.chartType.chart, widget.widgetData.selectedFile, widget.widgetData.Measures,widgetData.XAxis, 1000, widget.widgetData.selectedDB,false,widget.widgetData.groupBySortArray ,function (data,query){
+						widget.widgetData.syncOn = false;
+						count++;
+						filterServices.setDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,count);
+					},connectionString,[],[],isCreate);
+				}
+			} else {				
+				count++;
+				filterServices.setDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,count);
+			}
 		})
 	}
 	// ------------------- Dashboard level filter method start ---------------------

@@ -269,12 +269,6 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
         }
 
         var getFormulaMeasureNames = function(variables, targets) {
-
-            // return variables.reduce(function(acc, val, idx) {
-            //     if(idx == 0) acc.yValues.push(val.name);
-            //     else acc.xValues.push(val.name);
-            //     return acc;
-            // },{xValues:[], yValues:[]});
             return variables.reduce(function(acc, val, idx) {
                 if(targets.indexOf(val.name) > -1) acc.yValues.push(val.name);
                 else acc.xValues.push(val.name);

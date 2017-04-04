@@ -15,8 +15,8 @@
 (function (){
 
 	 DiginServiceLibraryModule.factory('DiginDashboardSavingServices',['Digin_Engine_API', '$http','$rootScope','chartUtilitiesFactory',
-	 	'notifications','PouchServices', 'highchartFilterServices', 
-	 	function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory,notifications,PouchServices,highchartFilterServices) { 
+	 	'notifications','PouchServices', 'filterServices', 
+	 	function(Digin_Engine_API,$http,$rootScope,chartUtilitiesFactory,notifications,PouchServices,filterServices) { 
 
 	 	return{
 	 		saveDashboard: function(ev, newDashboardDetails) {

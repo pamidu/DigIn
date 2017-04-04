@@ -1,8 +1,8 @@
 DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile',
 	'$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','generateWhatIf',
-	'$timeout','NgMap','notifications','$mdMedia', 'highchartFilterServices', 
+	'$timeout','NgMap','notifications','$mdMedia', 'filterServices', 
 	 function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,
-	 generateGoogleMap,generateForecast,generateMetric,generateTabular,generateWhatIf,$timeout,NgMap,notifications,$mdMedia,highchartFilterServices){
+	 generateGoogleMap,generateForecast,generateMetric,generateTabular,generateWhatIf,$timeout,NgMap,notifications,$mdMedia,filterServices){
 	$scope.$parent.currentView = "Chart Designer";
 	var newElement = "";
 	
@@ -359,8 +359,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				// if filters exist, apply
 				if ($scope.selectedDesignTimeFilters.length > 0)
 				{
-					var groupFilters = highchartFilterServices.groupFilterConnectionString($scope.selectedDesignTimeFilters);
-					connection_string = highchartFilterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
+					var groupFilters = filterServices.groupFilterConnectionString($scope.selectedDesignTimeFilters);
+					connection_string = filterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
 				}
 
 				var isChartConditionsOk = generateHighchart.highchartValidations($scope.chartType.chart,$scope.selectedSeries,$scope.selectedCategory);
@@ -600,7 +600,8 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		if ($scope.designtimeFilters[index]['fieldvalues'].length == 0)
 		{
 			$scope.designtimeFilters[index]['isLoading'] = true;
-			highchartFilterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
+			var is_dashboardFilter = true;
+			filterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
 				$scope.$apply(function(){
 					$scope.designtimeFilters[index]['isLoading'] = false;
 					$scope.designtimeFilters[index]['fieldvalues'] = data;
@@ -616,7 +617,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 						}
 					}
 				}
-			},100,0);
+			},100,0,is_dashboardFilter);
 		}
 	};
 

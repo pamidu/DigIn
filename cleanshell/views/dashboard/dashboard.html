@@ -60,7 +60,7 @@
 														<md-progress-circular class="md-hue-2" md-diameter="20px" ></md-progress-circular>
 													</div>
 													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-mouseup="setFilterValueSelection(value,fieldvalues)" ng-if="value.selectionType == 'single' " ng-class="{'filterItemSeleted': fieldvalues.isSelected==true}">
-														<p ng-click="setFilterValueSelection(value,fieldvalues)" >{{ ::fieldvalues.valueName}}</p>
+														<p ng-click="setFilterValueSelection(value,fieldvalues)" md-prevent-menu-close="md-prevent-menu-close">{{ ::fieldvalues.valueName}}</p>
 													</md-list-item>
 													<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-if="value.selectionType == 'multiple' ">
 														<p>
@@ -77,7 +77,7 @@
 									</md-menu-content>
 								</md-menu>
 								
-								<md-button class="md-icon-button ti-reload hover-color flip-element" ng-class="{'rotating': widget.syncOn==true}" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget,'True')">
+								<md-button class="md-icon-button ti-reload hover-color flip-element" ng-class="{'rotating': widget.widgetData.syncOn==true}" md-colors="{color:'primary'}" ng-click="widgetControls.syncWidget(widget,'True')">
 									<md-tooltip>sync</md-tooltip>
 								</md-button>
 								
@@ -205,9 +205,46 @@
 						<i class="ti-trash" style="font-size:16px"></i>
 						<md-tooltip md-direction="bottom">Delete</md-tooltip>
 					</md-button>
-					<md-button ng-click="doSomething()" class="md-icon-button md-primary">
-						<i class="ti-filter" style="font-size:16px;"></i>
-						<md-tooltip md-direction="bottom">Dashboard Filter</md-tooltip>
+					<md-menu md-position-mode="target-right target hover-color">
+						<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();displayDashboardFilters();">
+							<md-tooltip >filter</md-tooltip>
+						</md-button>
+						<md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
+							<div layout="row" layout-align="space-between center" style="min-height:36px">
+								<div layout="row" layout-align="end center">
+									<md-button class="margin-0" style="min-width: 70px;width: 70px;font-size: 12px;" aria-label="cancel settings" ng-click="clearWidgetFilters(widget)">Clear</md-button>
+									<md-button class="margin-0" style="min-width: 60px;width: 60px;font-size: 12px;" aria-label="save settings" ng-click="applyFilters(widget)">Apply</md-button>
+								</div>
+							</div>
+							<md-divider></md-divider>
+							<v-accordion class="vAccordion--default" onexpand="loadDashboardFilterParams(index)">
+								<v-pane ng-repeat="(key, value) in dashboardFilterFields">
+									<v-pane-header>
+										{{ ::value.name }}
+									</v-pane-header>
+									<v-pane-content>
+										<md-list>
+											<div flex layout = "row" layout-align = "center center" ng-show="value.fieldvalues.length == 0 && value.isLoading">
+												<md-progress-circular class="md-hue-2" md-diameter="20px" ></md-progress-circular>
+											</div>
+											<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-mouseup="setFilterValueSelection(value,fieldvalues)" ng-if="value.selection_type == 'single' " ng-class="{'filterItemSeleted': fieldvalues.isSelected==true}">
+												<p ng-click="setFilterValueSelection(value,fieldvalues)" md-prevent-menu-close="md-prevent-menu-close">{{ ::fieldvalues.valueName}}</p>
+											</md-list-item>
+											<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-if="value.selection_type == 'multiple' ">
+												<p>
+													<md-checkbox ng-model="fieldvalues.isSelected" style="float: left;"/>
+													{{ ::fieldvalues.valueName}}
+												</p>
+											</md-list-item>
+										</md-list>
+									</v-pane-content>
+								</v-pane>
+							</v-accordion>
+						</md-menu-content>
+					</md-menu>
+					<md-button ng-click="dashboardControls.addDashboardFilter($event)" class="md-icon-button md-primary">
+						<i class="ti-trash" style="font-size:16px"></i>
+						<md-tooltip md-direction="bottom">Add Dashboard Filter</md-tooltip>
 					</md-button>
 				</div>
 			</div>

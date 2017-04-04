@@ -241,6 +241,9 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 							chartObj.series = series;
 						else
 							chartUtilitiesFactory.updateSeries(res,groupBySortArray[0].displayName,isDrilled,chartObj);
+
+
+						
 						callback(chartObj,query);
 					} else {
 						notifications.toast(0,'Error. Please try again.');
@@ -311,7 +314,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 					            	delete res[g][groupBySortArray[0].sortName];
 					            }
 							}
-							
+
                     		var series = [];
                     		series = chartUtilitiesFactory.mapChartData(res,highestLevel,true);
                     		chartObj.series = series;

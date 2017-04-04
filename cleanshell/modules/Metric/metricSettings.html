@@ -110,17 +110,26 @@
 		</div>
 		<div layout="column" class="side-margins">
 			<span style="font-size:12px;margin-bottom: 7px;">Colouring Type</span>
-			<md-radio-group  flex layout="column" ng-model="metricSettings.colorType">
+			<md-radio-group  flex layout="column" ng-model="metricSettings.colorType" ng-change="applyColorSettings()">
 				<md-radio-button value="high" class="md-primary left">Higher is better</md-radio-button>
 				<md-radio-button value="low" class="md-primary left">Lower is better</md-radio-button>                        
 			</md-radio-group>
 		</div>
 
-		<div layout="column" class="side-margins">
+		<!--div layout="column" class="side-margins">
 			<span style="font-size:12px;margin-bottom: 7px;margin-top: 15px;">Colour Ranges</span>
 			<rzslider rz-slider-model="0" rz-slider-high="300">
 			</rzslider>
-		</div>
+		</div-->
+
+		<div layout="column" class="side-margins">
+		    <md-input-container>
+	            <span style="font-size:12px;margin-bottom: 7px;margin-top: 15px;">Colour Ranges</span>
+	            <rzslider rz-slider-model="metricSettings.rangeSliderOptions.minValue" rz-slider-high="metricSettings.rangeSliderOptions.maxValue" rz-slider-options="metricSettings.rangeSliderOptions.options">
+	            </rzslider>
+	        </md-input-container>
+	    </div>    
+
 		<div layout="column" class="side-margins">
 			<span style="font-size:12px;margin-bottom: 7px;margin-top: 15px;">Color Theme</span>
 			<md-radio-group  flex layout="column" ng-model="metricSettings.colorTheme" ng-change="applyColorSettings()"> 

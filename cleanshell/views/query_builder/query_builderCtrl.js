@@ -313,6 +313,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			{
 				$scope.showPlaceholderIcon = false;
 				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
+				//newElement = $compile('<metric config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
 				$element.find('.currentChart').append(newElement);
 			}
 			else{
@@ -640,7 +641,6 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			'widgetID' :  widgetID,
 			'query' : $scope.chartQuery,
 			'groupBySortArray': $scope.groupBySortArray,
-			'notification_data' : $scope.notification_data
 
 
 			

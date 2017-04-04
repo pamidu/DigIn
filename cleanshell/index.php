@@ -501,7 +501,6 @@
 							<li ng-click="navigate($event,'#/userAdministrator')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-user sub-menu-icon"></i>User Administrator</a></li>
 							<li ng-click="navigate($event,'#/systemSettings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-settings sub-menu-icon"></i>System Settings</a></li>
 							<li ng-click="navigate($event,'#/theme')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-palette sub-menu-icon"></i>Themes</a></li>
-							<li ng-click="navigate($event,'#/dashboard-filter-settings')"><a class="hover-color" md-colors="{color:'primary'}"><i class="ti-filter sub-menu-icon"></i>Dashboard Filters</a></li>
 						</ul>
 					</li>
 

@@ -22,7 +22,7 @@ MetricModule.directive('metric',['$rootScope','notifications','generateMetric','
     		$timeout(function(){ //wait 100 milliseconds until the dom element is added
 
 				//var widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
-				$('#'+scope.idSelector).highcharts().setSize(200, 150, true);
+				$('#'+scope.idSelector).highcharts().setSize(230, 200, true);
 				
 			}, 200);
 
@@ -60,6 +60,8 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
                		format:'General',
                		actualValue:0,
                		targetValue:0,
+               		actualDisplayValue:0,
+               		targetDisplayValue:0,
                		groupBy:'Month',
                		timeAttribute:'',
                		notificataionValue:0,
@@ -76,8 +78,12 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 		                        step: 1,
 		                        translate: function(value) {
 		                          return value + '%';
-	                        	}
+	                        	},
+	                        	onEnd: function() {
+					                 scope.applyColorSettings();
+					            }
                     		 }
+
                 	}
                	}
            	}
@@ -105,22 +111,21 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 				var highRange = scope.metricSettings.targetValue * scope.metricSettings.rangeSliderOptions.maxValue / 100;
 			    var lowerRange = scope.metricSettings.targetValue * scope.metricSettings.rangeSliderOptions.minValue / 100;
 
-
 				if (scope.metricSettings.actualValue <= lowerRange) {
 		        	if (scope.metricSettings.colorTheme == "rog") {
-			            if (scope.metricSettings.targetRange == "high") {
+			            if (scope.metricSettings.colorType == "high") {
 			                scope.metricSettings.color = "#FF5252"
 			            } else {
 			                scope.metricSettings.color = "#4CAF50"
 			            }
 			        } else if (scope.metricSettings.colorTheme == "cgy") {
-			            if (scope.metricSettings.targetRange == "high") {
+			            if (scope.metricSettings.colorType == "high") {
 			                scope.metricSettings.color = "#1abc9c"
 			            } else {
 			                scope.metricSettings.color = "yellowgreen"
 			            }
 			        } else if (scope.metricSettings.colorTheme == "opg") {
-			            if (scope.metricSettings.targetRange == "high") {
+			            if (scope.metricSettings.colorType == "high") {
 			                scope.metricSettings.color = "#F9A937"
 			            } else {
 			                scope.metricSettings.color = "#4CAF50"
@@ -128,19 +133,19 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 			        }
 			    } else if (scope.metricSettings.actualValue >= highRange) {
 			        if (scope.metricSettings.colorTheme == "rog") {
-			            if (scope.metricSettings.targetRange == "high") {
+			            if (scope.metricSettings.colorType == "high") {
 			                scope.metricSettings.color = "#4CAF50"
 			            } else {
 			                scope.metricSettings.color = "#FF5252"
 			            }
 			        } else if (scope.settings.colorTheme == "cgy") {
-			            if (scope.metricSettings.targetRange == "high") {
+			            if (scope.metricSettings.colorType == "high") {
 			                scope.metricSettings.color = "yellowgreen"
 			            } else {
 			                scope.metricSettings.color = "#1abc9c"
 			            }                    
 			        } else if (scope.metricSettings.colorTheme == "opg") {
-			            if (scope.metricSettings.targetRange == "high") {
+			            if (scope.metricSettings.colorType == "high") {
 			                scope.metricSettings.color = "#4CAF50"
 			            } else {
 			                scope.metricSettings.color = "#F9A937"
@@ -158,9 +163,38 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 			}
 
 
+			scope.changeFormat = function() {
+		        if(scope.metricSettings.format=='Thousand'){
+		            if(scope.metricSettings.actualValue!=undefined || scope.metricSettings.actualValue!="")
+		                scope.metricSettings.actualDisplayValue=scope.metricSettings.actualValue/1000;
+		            if(scope.metricSettings.targetValue!=undefined ||scope.metricSettings.targetValue!="")
+		                scope.metricSettings.targetDisplayValue=scope.metricSettings.targetValue/1000;
+		        }else if(scope.metricSettings.format=='Million'){
+		            if(scope.metricSettings.actualValue!=undefined || scope.metricSettings.actualValue!="")
+		                scope.metricSettings.actualDisplayValue=scope.metricSettings.actualValue/1000000;
+		            if(scope.metricSettings.targetValue!=undefined || scope.metricSettings.targetValue!="")    
+		                scope.metricSettings.targetDisplayValue=scope.metricSettings.targetValue/1000000;
+		        }else if(scope.metricSettings.format=='Billion'){
+		            if(scope.metricSettings.actualValue!=undefined || scope.metricSettings.actualValue!="")
+		                scope.metricSettings.actualDisplayValue=scope.metricSettings.actualValue/1000000000;
+		            if(scope.metricSettings.targetValue!=undefined || scope.metricSettings.targetValue!="") 
+		                scope.metricSettings.targetDisplayValue=scope.metricSettings.targetValue/1000000000;
+		        }else{
+		            if(scope.metricSettings.actualValue!=undefined || scope.metricSettings.actualValue!="")
+		                scope.metricSettings.actualDisplayValue=scope.metricSettings.actualValue;
+		            if(scope.metricSettings.targetValue!=undefined || scope.metricSettings.targetValue!="")
+		                scope.metricSettings.targetDisplayValue=scope.metricSettings.targetValue;
+		        }
+    		}
+
+
+
+
+
          } //end of link
     };
 }]);
+
 
 MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notifications', function($rootScope,$diginengine,notifications) {    
     return {
@@ -316,6 +350,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
                 if (status) {
                     metricObj.targetQuery = query;
 	                metricObj.targetValue = res[0][Object.keys(res[0])[0]];
+	                settings.targetDisplayValue = res[0][Object.keys(res[0])[0]];
 	                settings.targetValue =metricObj.targetValue;
 	                var actual= getActual();
 
@@ -346,6 +381,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 	                if (status) {
 	                    metricObj.queryActual = query;
 	                    metricObj.actualValue = res[0][Object.keys(res[0])[0]];
+	                    settings.actualDisplayValue = res[0][Object.keys(res[0])[0]];
 	                    settings.actualValue = metricObj.actualValue;
 	                    getTrendValues(actualFieldArr);
 	                } else {

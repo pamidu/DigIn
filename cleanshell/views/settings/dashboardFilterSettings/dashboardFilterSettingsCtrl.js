@@ -6,8 +6,9 @@
 // Modified By : Dilani Maheswaran
 ////////////////////////////////
 
-DiginApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','$diginurls','datasourceFactory','notifications','colorManager',
-function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactory,notifications,colorManager)
+DiginApp.controller('dashboardFilterSettingsCtrl',['$scope','$rootScope','$state','$http','$diginengine','$diginurls','notifications',
+	'colorManager', 'datasourceServices', 'DiginServices', 'filterServices', 
+function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,colorManager,datasourceServices,DiginServices,filterServices)
 {
 	$scope.$parent.currentView = "Dashboard Filter Settings";
 
@@ -44,29 +45,24 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 	}
 	var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 
+   // get all databases
+	DiginServices.getDBConfigs().then(function(data) {
+		console.log(data);
+		//$scope.sourceType = data;
+		angular.forEach(data,function(src,index)
+		{
+    		if (src.name != 'DuoStore' && src.name != 'postgresql' && src.name != 'CSV Upload')
+    		{
+    			$scope.datasources.push(src);
+    		}
+		})
+	});
 
-    $scope.initiateDatasources = function()
-    {
-        $http.get('jsons/dbConfig.json').then(function(data) 
-        {
-        	angular.forEach(data,function(src,index)
-        	{
-        		if (src.name != 'DuoStore' && src.name != 'postgresql' && src.name != 'CSV Upload')
-        		{
-        			$scope.datasources.push(src);
-        		}
-        	})
-        },function errorCallback(response) {
-    
-        	console.log(error);
-        });
-
-    }
 
 	// route to home
 	$scope.goHome = function()
 	{
-		$state.go('home.Dashboards');
+		$scope.$parent.route('dashboard');
 	}
 
 	// move to the next stepper
@@ -190,7 +186,7 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 		{
 			if ($scope.selectedDefaultValue == '')
 			{
-				notifications.toast('0','Please se;ect a default value to proceed.');
+				notifications.toast('0','Please select a default value to proceed.');
 				return;
 			}
 		}
@@ -271,8 +267,8 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 	{
 		$scope.displayConnectionNoneText = false;
 		$scope.connectionProgress = true;
-		datasourceFactory.getAllConnections(userInfo.SecurityToken,$scope.selectedDatasource).success(function(res)
-		{
+		datasourceServices.getAllConnections(userInfo.SecurityToken,$scope.selectedDatasource).then(function(res) {
+			$scope.datasourceConnections = [];
 			$scope.connectionProgress = false;
 			if(res.Is_Success)
 			{
@@ -281,16 +277,10 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 					$scope.displayConnectionNoneText = true;
 				}
 				$scope.datasourceConnections = res.Result;
-			} else
-			{
-				$scope.datasourceConnections = [];
 			}
-		}).error(function(res)
-		{
-			$scope.connectionProgress = false;
-			$scope.datasourceConnections = [];
-		})
+        });
 	}
+
 	// fetch tables of a given connection
 	$scope.getConnectionTables = function()
 	{
@@ -382,28 +372,11 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 		var query = '';
 		$scope.defaultProgoress = true;
 		$scope.defaultValues = [];
-		switch($scope.selectedDatasource)
-		{
-			case 'BigQuery':
-			case 'memsql':
-				// write the statement for bigQuery and memesql
-				query = "SELECT " + $scope.selectedValueField + " FROM " + $diginurls.getNamespace() + "." + $scope.selectedTableValue.datasource_name + " GROUP BY " + $scope.selectedValueField;
-				break;
-			case 'MSSQL':
-				// write for mssql
-				var table = $scope.selectedTableValue.split(".");
-				query = "SELECT [" + $scope.selectedValueField + "] FROM [" + table[0] + '].[' + table[1] + "] GROUP BY [" + $scope.selectedValueField + "] ORDER BY [" + $scope.selectedValueField + "]";
-				break;
-			case 'hiveql':
-				// write for hiveql
-				query = "SELECT " + $scope.selectedValueField + " FROM "+ $scope.selectedTableValue +"  GROUP BY " + $scope.selectedValueField + " ORDER BY " + $scope.selectedValueField + "";
-				break;
-		}
-		$scope.client.getExecQuery(query,$scope.datasourceId,function(data,status)
-		{
-			$scope.defaultProgoress = false;
-			if(status)
-			{
+		var is_dashboardFilter = false;
+		// load the fields for default values
+		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,$scope.selectedTableValue,
+			$scope.datasourceId,function(data){
+				$scope.defaultProgoress = false;
 				angular.forEach(data,function(value)
 				{
 					$scope.$apply(function()
@@ -415,11 +388,7 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 				{
 					$scope.selectedDefaultValue = $scope.defaultValues[0];
 				}
-			} else {
-				notifications.toast('0','Error occurred. Please try again.');
-			}
-		})
-
+		},100,0,is_dashboardFilter);
 	}
 
 	$scope.setDefaultParam = function()
@@ -439,6 +408,7 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 		if ( $scope.selectedFilterOption == "custom" )
 		{
 			is_custom = true;
+			$scope.customFields = [];
 		} else 
 		{
 			is_custom = false;
@@ -473,13 +443,9 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,datasourceFactor
 			"default_value" : $scope.selectedDefaultValue,
 			"filter_name": $scope.filterName
 		}
-		if ($rootScope.dashboard.filterDetails === undefined)
+		if ($rootScope.currentDashboard.filterDetails !== undefined)
 		{
-			$rootScope.dashboard["filterDetails"] = [];
-			$rootScope.dashboard.filterDetails.push(filterObj);
-		} else
-		{
-			$rootScope.dashboard.filterDetails.push(filterObj);
+			$rootScope.currentDashboard.filterDetails.push(filterObj);
 		}
 		$scope.goHome();
 	}

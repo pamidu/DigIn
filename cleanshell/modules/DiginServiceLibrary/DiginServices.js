@@ -144,7 +144,8 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 								console.log(response);
 								notifications.toast(0, "Falied to get DB Configs");
 						});
-        },syncPages: function(dashboard,pageIndex) {
+        },syncPages: function(dashboard,pageIndex,cb) {
+        	var count = 0;
 			if (dashboard.pages[pageIndex].isSeen === undefined) {
 				dashboard.pages[pageIndex].isSeen = false;
 			}
@@ -153,11 +154,16 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 					angular.forEach(dashboard.pages[pageIndex].widgets,function(widget){
 						if (widget.widgetData.chartType.chartType == "highCharts") {
 							dashboard.pages[pageIndex].isSeen = true;
-							widget.syncOn = true;
+							widget.widgetData.syncOn = true;
 							// send is_sync parameter as true
-							chartSyncServices.sync(widget.widgetData,function(widget){
-								widget.syncOn = false;						
+							chartSyncServices.sync(widget.widgetData,function(widgetData){
+								widgetData.syncOn = false;
+								count++;
+								if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
 							}, 'True');
+						} else {
+							count++;
+							if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
 						}
 					})
 				}

@@ -1,4 +1,6 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', '$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log) {
+DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', 
+	'$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log','filterServices' ,function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,
+		layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log,filterServices) {
 
 	//$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -494,7 +496,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			location.href = '#/dashboard?id='+dashboardId;
 		});
 	}
-	
+
 	$scope.route = function(state, pageNo) //pageNo is optional
 	{
 		$state.go(state,{ 'pageNo': pageNo });

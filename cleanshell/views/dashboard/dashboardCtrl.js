@@ -124,7 +124,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			// sync a page when it is open for the first time
 			DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
 				// returns the synced page
-				$rootScope.currentDashboard = dashboard;
+				$scope.$apply(function() {
+					$rootScope.currentDashboard = dashboard;
+				})
 			},'False');
 		}
     };
@@ -305,6 +307,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 					chartSyncServices.sync(widget.widgetData,function(widgetData){
 						$scope.$apply(function(){
 							widgetData.syncOn = false;
+							widget.widgetData = widgetData;
 						})
 					}, is_sync);
 				}
@@ -414,12 +417,12 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
 		var connectionString = "";
 		var isCreate = false;
-		widget.isWidgetFiltered = true;
-		widgetData.syncOn = true;
 		var selectedFilterFiedsCopy = filterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
 		connectionString = filterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
 		if (connectionString != "")
 		{
+			widget.isWidgetFiltered = true;
+			widgetData.syncOn = true;
 			generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
 				widgetData.syncOn = false;
 			},connectionString,[],[],isCreate);
@@ -448,7 +451,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
                                 // compare against design time filter
                                 dashboardFilterCopy = filterServices.compareDesignTimeFilter([dashboardFilter],widget.widgetData.DesignTimeFilter);
                                 // generate the connection string for the dashboard filter
-                                dashboardFilterString = filterServices.generateFilterConnectionString(dashboardFilterCopy,widget.widgetData.selectedDB)
+                                dashboardFilterString = filterServices.generateFilterConnectionString(dashboardFilterCopy,widget.widgetData.selectedDB);
                                 if (dashboardFilterString != "")
                                     allFiltersArray.push(dashboardFilterString);
                             }
@@ -489,20 +492,20 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		var is_dashboardFilter = true;
 		var expandedFilter = $scope.dashboardFilterFields[filterIndex];
 		if (expandedFilter.fieldvalues === undefined && !expandedFilter.is_custom) {
-			expandedFilter['fieldvalues'] = [];
+			expandedFilter.fieldvalues = [];
 		}
 		//if the expanded filter is empty and not a custom filter
-		if (expandedFilter.fieldvalues.length == 0 && !expandedFilter.is_custom) {
+		if (expandedFilter.fieldvalues.length === 0 && !expandedFilter.is_custom) {
 			expandedFilter.isLoading = true;
 			var selectedFile = {};
-			selectedFile['tableName'] = expandedFilter.datasource_table;
+			selectedFile['datasource_name'] = expandedFilter.datasource_table;
 			if(expandedFilter.datasource == "BigQuery" || expandedFilter.datasource == "memsql"){
 				selectedFile['datasource_id'] = expandedFilter.datasource_id;
 			}else {
 				selectedFile['id'] = expandedFilter.id;
 			}
 			
-			filterServices.getFieldParameters(expandedFilter.display_field,selectedFile,expandedFilter.datasource_id,function(data){
+			filterServices.getFieldParameters(expandedFilter.display_field,expandedFilter.datasource,selectedFile,function(data){
 				$scope.$apply(function(){
 					expandedFilter['fieldvalues'] = data;
 				})

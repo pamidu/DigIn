@@ -263,6 +263,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			$scope.widgetSizeX = $stateParams.widget.sizeX;
 			$scope.widgetSizeY = $stateParams.widget.sizeY;
 			$scope.settingConfig = $stateParams.widget.widgetData.settingConfig;
+			$scope.chartQuery = $stateParams.widget.widgetData.query;
 
 			if($scope.settingConfig.widgetName==undefined || 	$scope.settingConfig.widgetName=="")
 			{

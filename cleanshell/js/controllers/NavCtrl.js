@@ -199,7 +199,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 					        componentIDs:[],
 					        pageIDs:[],
 					        widgetIDs:[]},
-					filterDetails: {},		     
+					filterDetails: [],		     
 				};
 				console.log("empty dashboar created " + $rootScope.currentDashboard);
 				location.href = '#/visualize_data';

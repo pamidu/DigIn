@@ -375,7 +375,7 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		$scope.defaultValues = [];
 		var is_dashboardFilter = false;
 		var selectedFile = {};
-		selectedFile['tableName'] = table;
+		selectedFile['datasource_name'] = table;
 		if( $scope.selectedDatasource == 'BigQuery' || $scope.selectedDatasource == 'memsql')
 		{
 			selectedFile['datasource_id'] = $scope.selectedTableValue.datasource_name;
@@ -384,8 +384,8 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 			selectedFile['id'] = $scope.selectedTableValue;
 		}
 		// load the fields for default values
-		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,table,
-			$scope.datasourceId,function(data){
+		display_field,selectedDB,selectedFile,callback,limit,offset,is_dashboard,value_field
+		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,selectedFile,function(data){
 				$scope.defaultProgoress = false;
 				angular.forEach(data,function(value)
 				{

@@ -45,7 +45,7 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 						$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY() - 50, true);
 					}else if(scope.chartType == 'metric'){
 						var widgetID = item.$element[0].children[2].children[0].getAttribute('id-selector');
-						$('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 2, item.getElementSizeY() - 50, true);
+						$('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 1.8, item.getElementSizeY() - 50, true);
 					}
 				}, 100);
             });

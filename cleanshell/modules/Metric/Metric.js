@@ -42,7 +42,7 @@ MetricModule.directive('metric',['$rootScope','notifications','generateMetric','
 
 	    	scope.$on('widget-resized', function(element, widget) {
 				var height = widget.element[0].clientHeight - 50;
-				var width = widget.element[0].clientWidth / 2;
+				var width = widget.element[0].clientWidth / 1.8;
 				$('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
 				//$('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 2, item.getElementSizeY() - 50, true);
 			});
@@ -248,7 +248,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			}      	      
 			else if (settings.groupByField == "") {
 	                notifications.toast(2,'Please select group by attribute for trend.');
-	        }
+	        l}
 			else{
 				isChartConditionsOk = true;
 			}

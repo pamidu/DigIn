@@ -441,38 +441,19 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			deleteReport: function (dashboard, ev){
 				notifications.log("delete report", new Error());
 			},setDefaultDashboard: function (ev, dashboard) {
-				notifications.log($scope.data.defaultDashboard, new Error());
-
-                $scope.data.defaultDashboard = null;
-                dialogService.confirmDialog(ev, "Set Default Dashboard","Are you sure you want to set '"+dashboard.compName+"' dashboard as Default?","yes", "cancel").then(function(result) {
+				
+				dialogService.confirmDialog(ev, "Set Default Dashboard","Are you sure you want to set '"+dashboard.compName+"' dashboard as Default?","yes", "cancel").then(function(result) {
                     if (result == 'yes') {
-                        $scope.data.defaultDashboard = dashboard.compID;
-
-                        var newComponent = {
-                            "saveExplicit" : false,
-                            "dashboardId"  : dashboard.compID
-                        }
-
-                        var userSettingsSaveObj = angular.copy($scope.userSettings);
-                        userSettingsSaveObj.components = JSON.stringify(newComponent);
-
-                        if(userSettingsSaveObj.dp_path===undefined) {dp_name="";}else{dp_name=userSettingsSaveObj.dp_path.split("/").pop();}
-                        if(userSettingsSaveObj.logo_path===undefined){logo_name="";} else{logo_name=userSettingsSaveObj.logo_path.split("/").pop();}
-                        userSettingsSaveObj.email = $rootScope.authObject.Email;
-                        userSettingsSaveObj.logo_name = "logo";
-                        userSettingsSaveObj.dp_name = "dp";
-                        userSettingsSaveObj.theme_config = $rootScope.theme;
-                        delete userSettingsSaveObj.modified_date_time;
-                        delete userSettingsSaveObj.created_date_time;
-                        delete userSettingsSaveObj.domain;
-                        delete userSettingsSaveObj.logo_path;
-                        delete userSettingsSaveObj.dp_path;
-
-                        DiginServices.postUserSettings(userSettingsSaveObj).then(function(data) {
-                           notifications.toast(1,"New default dashboard was saved");
-                        });
-
-                    }else{
+						 var userSettingsSaveObj = {components: "{\"saveExplicit\": false,\"dashboardId\":"+ dashboard.compID+"}"};
+						
+							DiginServices.updateUserSettings(userSettingsSaveObj).then(function(data) {
+								if(data.Is_Success === true){
+									notifications.toast(1,"New default dashboard was saved");
+								}else{
+									notifications.toast(1,"Falied to update Theme");
+								}
+							});
+				    }else{
                         $scope.data.defaultDashboard = null;
                         $scope.data.defaultDashboard = oldDefaultDashboard;
 					}

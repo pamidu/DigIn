@@ -71,7 +71,8 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
 				{
 					scope.submitForm();
 				}else{
-					console.log("invalid");
+					//console.log("invalid");
+                    notifications.toast(2,'Please fill out the required fields before applying');
 				}
 			}
 			

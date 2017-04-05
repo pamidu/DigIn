@@ -127,19 +127,25 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
         },
 
         // return the values under a selected field for filters
-        getFieldParameters : function(display_field,selectedDB,table,datasource_id,callback,limit,offset,is_dashboard,value_field)
+        getFieldParameters : function(display_field,selectedDB,selectedFile,callback,limit,offset,is_dashboard,value_field)
         {
             // filterName : selected filter field name - string
             // selectedDB : selected database name - string
-            // table : selected table name - string
-            // datasource_id : datasource_id of the selected connection or the table - integer
+            // selectedFile : object that contains table name and datasource id
             // limit : request limit set - integer
             // offset : beginning of the record - integer
             // value field : order by field
             // is_dashboard : boolean indciating if it dashboard fiters or not
 
             var query = "";
-            var table;
+            var table,datasource_id;
+            table = selectedFile.datasource_name;
+            if(selectedDB == "BigQuery" || selectedDB == "memsql"){
+                datasource_id = selectedFile.datasource_id;
+
+            }else{
+                datasource_id = selectedFile.id;
+            }
             switch(selectedDB)
             {
                 case 'BigQuery':
@@ -221,30 +227,31 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
             angular.forEach(dashboardFilters,function(filter){
                 if (filter.name === undefined) filter.name = filter.filter_name;
                 // assign values for custom filter
-                if (filter.is_custom == 1)
+                if (filter.is_custom == 1 || filter.is_custom == true)
                 {
+                    filter.fieldvalues = [];
                     angular.forEach(filter.custom_fields,function(field){
-                        field.fieldvalues = {
-                            valueName: value[display_field],
+                        filter.fieldvalues.push({
+                            valueName: field.actualValue,
                             isSelected: false,
-                            displayName: value[value_field]
-                        }
+                            displayName: field.displayValue
+                        });
                     });
                 } else {
                     if (filter.fieldvalues === undefined) filter.fieldvalues = [];
                 }
             });
         },
-        // set dashboard filtered status to true
-        setDashboardFilter : function(dashboard,page_index,count) {
+        // set dashboard filtered status to true / false
+        setDashboardFilter : function(dashboard,page_index,count,status) {
             if (dashboard.pages[page_index].widgets.length == count)
             {
-                dashboard['isFiltered'] = true;
-                dashboard.pages[page_index]['isFiltered'] = true;
-                dashboard.pages[page_index]['isSeen'] = true;
+                dashboard['isFiltered'] = status; 
+                dashboard.pages[page_index]['isFiltered'] = status;
+                dashboard.pages[page_index]['isSeen'] = status;
                 angular.forEach(dashboard.pages,function(page){
-                    if (dashboard.pages.indexof(page) != page_index && dashboard.pages.indexof(page) > 0)
-                        dashboard.pages[page_index]['isFiltered'] = false;
+                    if (dashboard.pages.indexOf(page) != page_index && dashboard.pages.indexof(page) > 0)
+                        dashboard.pages[page_index]['isFiltered'] = false; 
                 })
             }
         }

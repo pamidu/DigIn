@@ -525,6 +525,9 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 		if($scope.widget.widgetData.chartType.chartType == 'highCharts' || $scope.widget.widgetData.chartType.chartType == 'forecast')
 		{
 			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth, document.documentElement.offsetHeight - 45, true);
+		}else if($scope.widget.widgetData.chartType.chartType == 'metric')
+		{
+			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth / 1.8, document.documentElement.offsetHeight - 45, true);
 		}
 	},100)
 

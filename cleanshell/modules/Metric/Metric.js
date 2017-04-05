@@ -8,7 +8,7 @@
 var MetricModule = angular.module('Metric',['DiginServiceLibrary']);
 
 
-MetricModule.directive('metric',['$rootScope','notifications','generateMetric','$timeout', function($rootScope,notifications,generateMetric,$timeout) {
+MetricModule.directive('metric',['$rootScope','notifications','generateMetric','$timeout','$state', function($rootScope,notifications,generateMetric,$timeout,$state) {
 	return {
         restrict: 'E',
         templateUrl: 'modules/Metric/metric.html',
@@ -19,12 +19,34 @@ MetricModule.directive('metric',['$rootScope','notifications','generateMetric','
 			idSelector: '@'
          },
         link: function(scope,element){
-    		$timeout(function(){ //wait 100 milliseconds until the dom element is added
 
-				//var widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
-				$('#'+scope.idSelector).highcharts().setSize(230, 200, true);
-				
-			}, 200);
+	        scope.inDashboard = false;
+			if($state.current.name == "dashboard")
+			{
+				scope.inDashboard = true;
+			}else{
+				scope.inDashboard = false;
+				$timeout(function(){ //wait 100 milliseconds until the dom element is added
+					var height = 280;
+					var width = 330;
+					$('#'+scope.idSelector).highcharts().setSize(width, height, true);
+				}, 200);
+			}
+
+    		/*$timeout(function(){ //wait 100 milliseconds until the dom element is added
+				var height = widget.element[0].clientHeight;
+				var width = widget.element[0].clientWidth/2;
+				$('#'+scope.idSelector).highcharts().setSize(width, height, true);				
+			}, 200);*/
+
+
+	    	scope.$on('widget-resized', function(element, widget) {
+				var height = widget.element[0].clientHeight - 50;
+				var width = widget.element[0].clientWidth / 2;
+				$('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
+				//$('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 2, item.getElementSizeY() - 50, true);
+			});
+
 
         } //end of link
     };

@@ -1,12 +1,32 @@
+<style>
+	.apply-map-size
+	{
+		position:absolute;
+		width: 100%;
+		height: calc(100% - 41px) !important;
+	}
 
-<md-content layout="row" style="height:100%; width: 100%;" ng-style="{background:settings.color}"><!--{{settings}}-->
-		<div layout="column" layout-align='center start' style="height:100%;" flex="45" 
+	.apply-chartsettings-style
+	{
+		width:600px !important;
+		box-shadow: 2px 2px 8px 0px #888;
+	}
+
+	#fullscreen_widgets > google-map> #map-container > .ng-map{
+		height: calc(100% - 45px) !important;
+	}
+</style>
+
+
+
+<md-content layout="row" style="height:100%; width: 100%;" ng-style="{background:settings.color}" ng-class="{'apply-chartsettings-style': inDashboard==false}"><!--{{settings}}-->
+		<div layout="column" layout-align='center start' flex="40" 
 			ng-style=" {'color' : (settings.color == 'white') ? 'black' : 'white' }">
 
 			<div ng-show="settings.actualValue">
 				<div flex style="padding:10px;">
 					<div layout="column" flex>
-						<text style="font-size:15px;font-weight: 400px;letter-spacing: 1px;" 
+						<text style="font-size:25px;font-weight: 500px;letter-spacing: 1px;" 
 							    ng-if="settings.scalePosition==='Front'" >
 							   		{{settings.scale}} 
 							   		&nbsp;{{settings.actualDisplayValue | currency:"":settings.decimal}}
@@ -14,7 +34,7 @@
 						        	{{settings.format=="Million"?"M":""}}
 						        	{{settings.format=="Billion"?"B":""}} 
 						</text>
-						<text   style="font-size:15px;font-weight: 400px; letter-spacing: 1px;" 
+						<text   style="font-size:25px;font-weight: 500px; letter-spacing: 1px;" 
 						        ng-if="settings.scalePosition==='Back'">
 						        	{{settings.actualDisplayValue | currency:"":settings.decimal}}
 						        	{{settings.format=="Thousand"?"K":""}}
@@ -30,7 +50,7 @@
 			<div ng-show="settings.targetValue">
 				<div flex style="padding:10px;">
 					<div layout="column" flex>
-						<text 	style="font-size:15px;font-weight: 400; letter-spacing: 1px;" 
+						<text 	style="font-size:25px;font-weight: 500; letter-spacing: 1px;" 
 								ng-if="settings.scalePosition==='Front'">					
 									{{settings.scale}} 
 									&nbsp;{{settings.targetDisplayValue | currency:"":settings.decimal}}												      
@@ -38,20 +58,20 @@
 						        	{{settings.format=="Million"?"M":""}}
 						        	{{settings.format=="Billion"?"B":""}} 
 						</text>
-						<text 	style="font-size:15px;font-weight: 40;letter-spacing: 1px;" 
+						<text 	style="font-size:25px;font-weight: 500;letter-spacing: 1px;" 
 								ng-if="settings.scalePosition==='Back'">															{{settings.targetValue | currency:"":settings.decimal}}	 						        	
 								{{settings.format=="Thousand"?"K":""}}
 						        {{settings.format=="Million"?"M":""}}
 						        {{settings.format=="Billion"?"B":""}}  
 						        &nbsp;{{settings.scale}}
 						</text>
-						<text style="font-size:15px; font-weight: 400px; ">Target Value</text>
+						<text style="font-size:18px; font-weight: 400px; ">Target Value</text>
 					</div>
 				</div>
 
 			</div>
 		</div>
-	<div flex="55" layout="row" style="height:100%;width:50%" ng-show="config.trendChart.series.length>0"> <!--ng-show="config.actualValue"-->
+	<div flex="60" layout="row"  ng-show="config.trendChart.series.length>0"> <!--ng-show="config.actualValue"-->
 		<highchart id="{{idSelector}}" config="config.trendChart"></highchart>
 	</div>
 </md-content>

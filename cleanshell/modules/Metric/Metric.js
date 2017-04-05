@@ -62,13 +62,13 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
                		targetValue:0,
                		actualDisplayValue:0,
                		targetDisplayValue:0,
-               		groupBy:'Month',
+               		groupBy:'month',
                		timeAttribute:'',
                		notificataionValue:0,
                		colorType:'high',
                		colorTheme:'rog',
                		dateAttrs:scope.attr,
-               		color:"#F9A937s",
+               		color:"#F9A937",
                		rangeSliderOptions: {
                     minValue: 0,
                     maxValue: 300,
@@ -207,15 +207,15 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			if(!settings.actual){
 				notifications.toast(2,"Please select actual value");
 			}
-			else if(!settings.target){
+			/*else if(!settings.target){
 				notifications.toast(2,"Please select target value");
-			}
+			}*/
 			else if(settings.actual.length>1){
 				notifications.toast(2,"Please select only one actual value");
 			}
-			else if(settings.target.length>1){
+			/*else if(settings.target.length>1){
 				notifications.toast(2,"Please select only one target value");
-			}
+			}*/
 			else if (settings.groupBy.length > 0 ) {
 	            if (settings.timeAttribute == "") {
 	                notifications.toast(2,'Please select the time attribute for trend.');
@@ -332,7 +332,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
             //# Select target value - START --------------------------------------------------------------------------------------
-            var queryTarget;
+            /*var queryTarget;
             var filterStr = "";
             var targetFieldArr = [{
                 field: settings.target[0].name,
@@ -357,7 +357,50 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
                 } else {
                     
                 }
-            },undefined,undefined,filterStr);
+            },undefined,undefined,filterStr);*/
+
+
+            var queryTarget;
+            var filterStr = "";
+            var targetFieldArr=[];
+            if(settings.target !=undefined)
+            {
+	            targetFieldArr = [{
+	                field: settings.target[0].name,
+	                agg: settings.target[0].aggType,
+	            }]
+	       
+
+	            // apply design mode filters to metric
+	            var filterArray = [];
+	            //filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
+	            //if (filterArray.length > 0) {
+	            //   filterStr = filterArray.join( ' And ');
+	            //}
+
+	            $diginengine.getClient(selectedDB).getAggData(tableName, targetFieldArr,limit, datasourceId, function(res, status, query) {
+	                if (status) {
+	                    metricObj.targetQuery = query;
+		                metricObj.targetValue = res[0][Object.keys(res[0])[0]];
+		                settings.targetDisplayValue = res[0][Object.keys(res[0])[0]];
+		                settings.targetValue =metricObj.targetValue;
+		                var actual= getActual();
+
+	                } else {
+	                    
+	                }
+	            },undefined,undefined,filterStr);
+        	}
+        	else
+        	{
+        		metricObj.targetQuery = "";
+		        metricObj.targetValue = 0;
+		        settings.targetDisplayValue = 0;
+		        settings.targetValue =metricObj.targetValue;
+		        var actual= getActual();
+        	}
+
+
 
 
         
@@ -410,7 +453,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 		                    createMetricConfig(status, query,res);
 		                } else {
 		                }
-		        },'date',filterStr);
+		        },settings.timeAttribute,filterStr);
             }
 
 
@@ -418,13 +461,20 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
             
             function createMetricConfig(status, query,trendValue){
             	//---------------------------------
-            	var nameSpace = settings.target[0].aggType.toLowerCase() + "_" +settings.target[0].name ;
+            	//var nameSpace = settings.target[0].aggType.toLowerCase() + "_" +settings.target[0].name ;
+            	var nameSpace = settings.actual[0].aggType.toLowerCase() + "_" +settings.actual[0].name ;
 				var seriesData = [];
 		        var tempArr = [];
 		        var units;
 			    
-		        metricObj.groupBy='date'; //delete
-		        metricObj.timeAttribute='month';//delete
+		        metricObj.groupBy=settings.timeAttribute; //delete
+		        metricObj.timeAttribute=settings.groupBy;//delete
+		        metricObj.colorTheme=settings.colorTheme;
+
+		        //metricObj.groupBy='date'; //delete
+		        //metricObj.timeAttribute='month';//delete
+
+		        
 
 		        angular.forEach(trendValue,function(key){
 		            var utc = moment(key[metricObj.groupBy]).utc().valueOf();
@@ -478,7 +528,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
             function applySettings(status, query,trendValue) {
 			    //if (typeof metricObj.actualValue != "number") //var value = parseInt(metricObj.actualValue.replace(/,/g,''));
-
+			    /*
 			    var highRange = metricObj.targetValue * metricObj.rangeSliderOptions.maxValue / 100;
 			    var lowerRange = metricObj.targetValue * metricObj.rangeSliderOptions.minValue / 100;
 
@@ -531,14 +581,21 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 				            settings.color = "#8e44ad"
 				        }
 				    }
+				    */
 
 				    //# set notification object---------------------
+					var is_tv_constant=false;
+				    if(metricObj.targetQuery=="" || metricObj.targetQuery==undefined)
+				    	is_tv_constant=true;
+				    
+
+
 					var notification_data={
 		              "notification_id": null,
 		              "actual_value": metricObj.queryActual,
 		              "target_value": metricObj.targetValue,
 		              "trigger_type": settings.colorType,
-		              "is_tv_constant": true,
+		              "is_tv_constant": is_tv_constant,
 		              "dashboard_name": "",
 		              "widget_name": settings.widgetName,
 		              "dbname": selectedDB,
@@ -550,7 +607,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 		            }
 					//# -------------------------------------------
 
-			    callback(status, query, metricObj,settings,notification_data);
+			    callback(status, metricObj,settings,notification_data);
 			}
 		}
 	}

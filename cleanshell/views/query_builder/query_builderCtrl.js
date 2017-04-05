@@ -424,7 +424,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 			{
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
 				if(isChartConditionsOk){				
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status, query,metricObj,settings,notification){
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
 						if(status){
 							$scope.widgetConfig = metricObj;
 							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;
@@ -432,7 +432,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
               				notification.widget_id=widgetID;
               				$scope.notification_data=[];
 							$scope.notification_data.push(notification);
-							$scope.chartQuery = query;
+							$scope.chartQuery = metricObj.trendQuery;
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
 							newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification_data="notification_data"></metric>')($scope);

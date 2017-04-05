@@ -1,6 +1,5 @@
 
 <md-content layout="row" style="height:100%; width: 100%;" ng-style="{background:settings.color}"><!--{{settings}}-->
-
 		<div layout="column" layout-align='center start' style="height:100%;" flex="45" 
 			ng-style=" {'color' : (settings.color == 'white') ? 'black' : 'white' }">
 
@@ -52,7 +51,6 @@
 
 			</div>
 		</div>
-
 	<div flex="55" layout="row" style="height:100%;width:50%" ng-show="config.trendChart.series.length>0"> <!--ng-show="config.actualValue"-->
 		<highchart id="{{idSelector}}" config="config.trendChart"></highchart>
 	</div>

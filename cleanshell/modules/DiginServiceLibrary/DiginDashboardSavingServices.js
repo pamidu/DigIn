@@ -28,20 +28,21 @@
 
 	 			// remove dashboard filter related parameters
 	 			angular.forEach(dashboardCopy.filterDetails,function(db_filter){
-	 				if (db_filter.name === undefined) delete db_filter.name;
-	 				if (db_filter.fieldvalues === undefined) delete db_filter.fieldvalues;
+	 				if (db_filter.name !== undefined) delete db_filter.name;
+	 				if (db_filter.fieldvalues !== undefined) delete db_filter.fieldvalues;
 
 	 			});
-				if (dashboardCopy.isFiltered!== undefined) delete dashboardCopy.isFiltered;
+
+				delete dashboardCopy.isFiltered;
 	 			
 	 			//remove data 
 	 			for(var i = 0; i < dashboardCopy.pages.length; i++){
-	 				if (dashboardCopy.pages[i].isSeen !== undefined) delete dashboardCopy.pages[i].isSeen;
-	 				if (dashboardCopy.pages[i].isFiltered !== undefined) delete dashboardCopy.pages[i].isFiltered;
+	 				delete dashboardCopy.pages[i].isSeen;
+	 				delete dashboardCopy.pages[i].isFiltered;
 	 				for(var j = 0; j < dashboardCopy.pages[i].widgets.length; j++){
 	 					
 	 					if(dashboardCopy.pages[i].widgets[j].widgetData.chartType.chartType == "highCharts"){
-	 							//this.removeHighChartsData(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
+	 							// this.removeHighChartsData(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
 	 							// remove filter related data
 	 							filterServices.removeFilterData(dashboardCopy.pages[i].widgets[j]);
 	 					}
@@ -73,6 +74,8 @@
 									}
 								}
 							}
+							
+							$rootScope.selectedDashboard = angular.copy($rootScope.currentDashboard);
 							notifications.finishLoading();
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;

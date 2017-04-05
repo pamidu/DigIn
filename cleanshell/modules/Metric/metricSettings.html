@@ -60,7 +60,7 @@
             </md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Target value</span>
-                <input ng-model="metricSettings.targetValue" ng-change="changeTargetValue()" aria-label="scale">
+                <input ng-model="metricSettings.targetValue" ng-change="changeTargetValue()" aria-label="scale" type="number" min="0">
             </md-input-container>
 		</div>
 		
@@ -72,10 +72,10 @@
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Group By</span>
                 <md-select ng-model="metricSettings.groupBy"  is-disabled-dark aria-label="groupBy">
-					<md-option value="Year" aria-label="Year">Year</md-option>
-					<md-option value="Month" arYearia-label="Month">Month</md-option>
-					<md-option value="Quarter" aria-label="Quarter">Quarter</md-option>
-					<md-option value="Daily" aria-label="Daily">Daily</md-option>
+					<md-option value="year" aria-label="Year">Year</md-option>
+					<md-option value="month" arYearia-label="Month">Month</md-option>
+					<md-option value="quarter" aria-label="Quarter">Quarter</md-option>
+					<md-option value="daily" aria-label="Daily">Daily</md-option>
 				</md-select>
             </md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
@@ -100,7 +100,7 @@
 		<div layout-gt-sm="row" class="side-margins">
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Notification Trigger Value</span>
-                <input ng-model="metricSettings.notificataionValue" aria-label="scale">
+                <input ng-model="metricSettings.notificataionValue" aria-label="scale" type="number" min="0">
             </md-input-container>
 
 		</div>

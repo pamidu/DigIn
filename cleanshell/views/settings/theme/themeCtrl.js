@@ -47,11 +47,17 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 					if(answer == 'yes')
 					{
 						//save theme in database
-						oldTheme = angular.copy($rootScope.theme)
-						notifications.toast(1,"Save the change");
-						/*DiginServices.postUserSettings(userSettingsSaveObj).then(function(data) {
-                           notifications.toast(1,"New default dashboard was saved");
-                        });*/
+						oldTheme = angular.copy($rootScope.theme);
+						
+						var userSettingsSaveObj = {theme_config: $rootScope.theme};
+						
+						DiginServices.updateUserSettings(userSettingsSaveObj).then(function(data) {
+							if(data.Is_Success == true){
+								notifications.toast(1,"Theme saved");
+							}else{
+								notifications.toast(1,"Falied to update Theme");
+							}
+						});
 						
 					}else{
 						colorManager.changeTheme(oldTheme);

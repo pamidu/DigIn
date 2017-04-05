@@ -92,33 +92,32 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
                		dateAttrs:scope.attr,
                		color:"#F9A937",
                		rangeSliderOptions: {
-                    minValue: 0,
-                    maxValue: 300,
-                    options: {
-		                        floor: 0,
-		                        ceil: 300,
-		                        step: 1,
-		                        translate: function(value) {
-		                          return value + '%';
-	                        	},
-	                        	onEnd: function() {
-					                 scope.applyColorSettings();
-					            }
-                    		 }
+	                    minValue: 0,
+	                    maxValue: 300,
+	                    options: {
+			                        floor: 0,
+			                        ceil: 300,
+			                        step: 1,
+			                        translate: function(value) {
+			                          return value + '%';
+		                        	},
+		                        	onEnd: function() {
+						                 scope.applyColorSettings();
+						            }
+	                    		 }
 
-                	}
+	                }
                	}
            	}
-
 
 			scope.submit = function()
 			{
 				if(scope.metricSettingsForm.$valid)
 				{
-					console.log(scope.mapSettings);
 					scope.submitForm();
 				}else{
-					console.log("invalid");
+					//console.log("invalid");
+					notifications.toast(2,'Please fill out the required fields before applying');
 				}
 			}
 			
@@ -210,7 +209,9 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
     		}
 
 
-
+    		scope.changeTargetValue=function(){
+    			scope.metricSettings.targetDisplayValue=scope.metricSettings.targetValue;
+    		}
 
 
          } //end of link
@@ -229,7 +230,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			if(!settings.actual){
 				notifications.toast(2,"Please select actual value");
 			}
-			/*else if(!settings.target){
+			/*else if(!metricObj.targetValue){
 				notifications.toast(2,"Please select target value");
 			}*/
 			else if(settings.actual.length>1){
@@ -256,6 +257,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			return isChartConditionsOk;		
 		},
 		generate: function(highChartType, tableName, limit, datasourceId, selectedDB,settings,notification_data, callback){
+			
 			//#Change chart background colours according to theme
             var chartBackgroundColor = "";
             var chartFontColor = "";
@@ -354,34 +356,6 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
             //# Select target value - START --------------------------------------------------------------------------------------
-            /*var queryTarget;
-            var filterStr = "";
-            var targetFieldArr = [{
-                field: settings.target[0].name,
-                agg: settings.target[0].aggType,
-            }]
-
-            // apply design mode filters to metric
-            var filterArray = [];
-            //filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
-            //if (filterArray.length > 0) {
-            //   filterStr = filterArray.join( ' And ');
-            //}
-
-            $diginengine.getClient(selectedDB).getAggData(tableName, targetFieldArr,limit, datasourceId, function(res, status, query) {
-                if (status) {
-                    metricObj.targetQuery = query;
-	                metricObj.targetValue = res[0][Object.keys(res[0])[0]];
-	                settings.targetDisplayValue = res[0][Object.keys(res[0])[0]];
-	                settings.targetValue =metricObj.targetValue;
-	                var actual= getActual();
-
-                } else {
-                    
-                }
-            },undefined,undefined,filterStr);*/
-
-
             var queryTarget;
             var filterStr = "";
             var targetFieldArr=[];
@@ -478,8 +452,6 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 		        },settings.timeAttribute,filterStr);
             }
 
-
-
             
             function createMetricConfig(status, query,trendValue){
             	//---------------------------------
@@ -543,74 +515,18 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
             	//-----------------------------------
-            	applySettings(status, query,trendValue);              	
+            	setNotificationData(status, query,trendValue);              	
             } 
 
 
 
-            function applySettings(status, query,trendValue) {
-			    //if (typeof metricObj.actualValue != "number") //var value = parseInt(metricObj.actualValue.replace(/,/g,''));
-			    /*
-			    var highRange = metricObj.targetValue * metricObj.rangeSliderOptions.maxValue / 100;
-			    var lowerRange = metricObj.targetValue * metricObj.rangeSliderOptions.minValue / 100;
-
-					if (metricObj.actualValue <= lowerRange) {
-			        	if (settings.colorTheme == "rog") {
-				            if (ssettings.targetRange == "high") {
-				                settings.color = "#FF5252"
-				            } else {
-				                settings.color = "#4CAF50"
-				            }
-				        } else if (settings.colorTheme == "cgy") {
-				            if (settings.targetRange == "high") {
-				                settings.color = "#1abc9c"
-				            } else {
-				                settings.color = "yellowgreen"
-				            }
-				        } else if (settings.colorTheme == "opg") {
-				            if (settings.targetRange == "high") {
-				                settings.color = "#F9A937"
-				            } else {
-				                settings.color = "#4CAF50"
-				            }
-				        }
-				    } else if (metricObj.actualValue >= highRange) {
-				        if (settings.colorTheme == "rog") {
-				            if (settings.targetRange == "high") {
-				                settings.color = "#4CAF50"
-				            } else {
-				                settings.color = "#FF5252"
-				            }
-				        } else if (settings.colorTheme == "cgy") {
-				            if (settings.targetRange == "high") {
-				                settings.color = "yellowgreen"
-				            } else {
-				                settings.color = "#1abc9c"
-				            }                    
-				        } else if (settings.colorTheme == "opg") {
-				            if (settings.targetRange == "high") {
-				                settings.color = "#4CAF50"
-				            } else {
-				                settings.color = "#F9A937"
-				            }
-				        }
-				    } else {
-				        if (settings.colorTheme == "rog") {
-				            settings.color = "#F9A937"
-				        } else if (settings.colorTheme == "cgy") {
-				            settings.color = "#4CAF50"
-				        } else if (settings.colorTheme == "opg") {
-				            settings.color = "#8e44ad"
-				        }
-				    }
-				    */
-
+            function setNotificationData(status, query,trendValue) {
+			    
 				    //# set notification object---------------------
 					var is_tv_constant=false;
 				    if(metricObj.targetQuery=="" || metricObj.targetQuery==undefined)
 				    	is_tv_constant=true;
 				    
-
 					var notification_data={
 		              "notification_id": null,
 		              "actual_value": metricObj.queryActual,

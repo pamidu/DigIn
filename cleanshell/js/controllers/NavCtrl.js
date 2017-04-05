@@ -447,7 +447,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 						 var userSettingsSaveObj = {components: "{\"saveExplicit\": false,\"dashboardId\":"+ dashboard.compID+"}"};
 						
 							DiginServices.updateUserSettings(userSettingsSaveObj).then(function(data) {
-								if(data.Is_Success == true){
+								if(data.Is_Success === true){
 									notifications.toast(1,"New default dashboard was saved");
 								}else{
 									notifications.toast(1,"Falied to update Theme");

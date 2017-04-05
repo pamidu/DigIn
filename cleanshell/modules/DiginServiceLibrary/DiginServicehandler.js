@@ -119,8 +119,14 @@
                     if (database == "BigQuery") {
                         if (!gb) {
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
-                        } else {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                        }
+                        else  {
+
+                            if(gb == ob){
+                                var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }else{
+                                 var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1,%27" + ob + "%27:2}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }
                         }
                     }
                     if (database == "memsql") {
@@ -132,7 +138,12 @@
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
                         }
                         else  {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+
+                            if(gb == ob){
+                                var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }else{
+                                 var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1,%27" + ob + "%27:2}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }
                         }
                     }
                     if (database == "MSSQL" ) {
@@ -140,8 +151,14 @@
                         if (gb === undefined) {
                             var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
                         } else {
-                            var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
-                        }
+                            if(gb == ob){
+                                var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
+
+                             }else{
+                                var params = "tablenames={1:%27[" + db[0] + '].[' + db[1] + "]%27}&db=" + database + "&group_by={%27[" + gb + "]%27:1,%27[" + ob + "]%27:2}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1) + "&datasource_config_id=" + id;
+
+                             }
+                         }
                     }
                     if (database == "postgresql" ) {
                         if (gb === undefined) {
@@ -154,15 +171,25 @@
                         if (gb === undefined) {
                             var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
                         } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                            if(gb == ob){
+                                var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                            }
+                            else{
+                                var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1,%27" + ob + "%27:2}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;; 
+                            }    
                         }
                     }
                     if(database == "Oracle"){
-                        if (gb === undefined) {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
-                        } else {
-                            var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27" + ob + "%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
-                        }
+                            if (gb === undefined) {
+                                var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={}&agg=[" + strField + "]&cons=&order_by={}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                            } else {
+                                if(gb == ob){
+                                    var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;;
+                                }
+                                else{
+                                    var params = "tablenames={1:%27" + tbl + "%27}&db=" + database + "&group_by={%27" + gb + "%27:1,%27" + ob + "%27:2}&&agg=[" + strField + "]&cons=&order_by={%27[" + ob + "]%27:1}&id=" + Math.floor((Math.random() * 10) + 1)+ "&datasource_config_id=" + id;; 
+                                }    
+                            }
                     }
 
                     // if (gb) params += "&group_by={'" + gb + "':1}";

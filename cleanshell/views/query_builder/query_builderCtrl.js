@@ -450,6 +450,14 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				}
 			}else if($scope.chartType.chartType == 'whatif')
 			{
+				var isValid = generateWhatIf.validate($scope.settingConfig);
+				
+				if(!isValid){
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+					return;
+				}
+
 				// make available selected measures to settingConfig.eqconfig object
 				$scope.settingConfig.eqconfig['variables'] = angular.copy($scope.settingConfig.seriesList);
 				

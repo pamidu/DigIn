@@ -119,8 +119,14 @@
                     if (database == "BigQuery") {
                         if (!gb) {
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
-                        } else {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                        }
+                        else  {
+
+                            if(gb == ob){
+                                var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }else{
+                                 var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1,%27" + ob + "%27:2}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }
                         }
                     }
                     if (database == "memsql") {
@@ -132,7 +138,12 @@
                             var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={}&cons=&order_by={}" + "&datasource_id=" + id;
                         }
                         else  {
-                            var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+
+                            if(gb == ob){
+                                var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }else{
+                                 var params = "tablenames={1:%27" + getNamespace() + "." + tbl + "%27}&db=" + database + "&agg=[" + strField + "]" + "&group_by={%27" + gb + "%27:1,%27" + ob + "%27:2}&cons=&order_by={%27" + ob + "%27:1}"  + "&datasource_id=" + id;
+                            }
                         }
                     }
                     if (database == "MSSQL" ) {

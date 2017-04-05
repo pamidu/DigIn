@@ -13,10 +13,13 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
         controller: function() {
             var _targetSlider;
             var _sliderCollection = [];
+            var _threshold = 0;
 
             this.setTargetSlider = function(slider) {
-                if(typeof(slider) !== undefined)
+                if(typeof(slider) !== undefined) {
                     _targetSlider = slider
+                    _threshold = parseFloat(_targetSlider.slider.noUiSlider.get());
+                }
             }.bind(this);
 
             this.addToCollection = function(slider) {
@@ -26,6 +29,8 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
 
             this.updateTarget = function(val) {
                 var currentTarget = _resolveFormula(this.config.equation);
+                _targetSlider.slider.noUiSlider.set(currentTarget[_targetSlider.name]);
+                angular.element('#'+_targetSlider.slider.id+' .noUi-connect').css('background', _getColor());
             }.bind(this);
 
             var _resolveFormula = function(formula) {
@@ -35,7 +40,7 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
                 var code2 = math.compile(formula);
                 code2.eval(fscope);
 
-                _targetSlider.slider.noUiSlider.set(fscope[_targetSlider.name]);
+               return fscope;
             }
 
             var _getFormulaScope = function() {
@@ -43,6 +48,16 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
                     acc[cur.name] = cur.slider.noUiSlider.get();
                     return acc;
                 }, {});
+            }
+
+            var _getColor = function () {
+                var _currentValue = parseFloat(_targetSlider.slider.noUiSlider.get());
+                var _color = '';
+
+                if(_currentValue > _threshold) _color = 'green';
+                else if(_currentValue < _threshold) _color = 'red';
+
+                return _color;
             }
 
         },
@@ -54,10 +69,10 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
             idSelector: '@'
         },
         link: function (scope, elem, attr) {
-			$timeout(function(){
-				angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
-				//angular.element('.noUi-handle').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
-			}, 100);
+			// $timeout(function(){
+			// 	angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
+			// 	angular.element('.noUi-handle').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
+			// }, 100);
 			
 			scope.$on('widget-resized', function(element, widget) {
 				var height = widget.element[0].clientHeight - 50;
@@ -162,10 +177,13 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
             },
             link: function(scope, element) {  
 
-                scope.whatifSettings['eqconfig'] = {};
-                scope.whatifSettings.eqconfig['mode'] = 'auto';
-                scope.whatifSettings.eqconfig['method'] = 'linear';
-                scope.whatifSettings.eqconfig['equation'] = '';
+                if(!scope.whatifSettings.hasOwnProperty('eqconfig')) {
+                    scope.whatifSettings['eqconfig'] = {};
+                    scope.whatifSettings.eqconfig['mode'] = 'auto';
+                    scope.whatifSettings.eqconfig['method'] = 'linear';
+                    scope.whatifSettings.eqconfig['equation'] = '';
+                    scope.whatifSettings.eqconfig['targets'] = []
+                }
 
                 scope.submit = function() {
                     if(scope.whatifSettingsForm.$valid) {
@@ -179,6 +197,14 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
                 scope.restoreSettings = function() {
                      scope.submitForm();
                 }
+
+                scope.setAsTarget = function(ev, value) {
+                    if(scope.whatifSettings.eqconfig.targets.length > 0)
+                        scope.whatifSettings.eqconfig.targets = []
+
+                    scope.whatifSettings.eqconfig.targets.push(value.name)
+                }
+
             } //end of link
         };
     }
@@ -209,7 +235,7 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
 
         var buildFormulaParams = function(dbconfig, eqconfig) {
 
-            var fmeasures = getFormulaMeasureNames(eqconfig.variables);
+            var fmeasures = getFormulaMeasureNames(eqconfig.variables, eqconfig.targets);
 
             return {
                 dbtype: dbconfig.databaseType,
@@ -257,10 +283,9 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
                 return y_values.concat(x_values);
         }
 
-        var getFormulaMeasureNames = function(variables) {
-
+        var getFormulaMeasureNames = function(variables, targets) {
             return variables.reduce(function(acc, val, idx) {
-                if(idx == 0) acc.yValues.push(val.name);
+                if(targets.indexOf(val.name) > -1) acc.yValues.push(val.name);
                 else acc.xValues.push(val.name);
                 return acc;
             },{xValues:[], yValues:[]});

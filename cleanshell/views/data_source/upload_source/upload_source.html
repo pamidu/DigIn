@@ -33,7 +33,7 @@ md-steppers-content-wrapper{
 					<div layout="row" layout-align="center center" layout-wrap>
 						<md-card ng-repeat="type in uploadTypes"  flex-xs="100" flex-sm="40" flex-gt-sm="30" flex-gt-lg="20" class="product_card report_card"  ng-click="disableFolderName(type.name)"  md-colors="{background:'primary-800'}">
 							<div layout="row" layout-align="space-between start" style="padding-bottom:5px;">
-								<span class="product_name" style="border-bottom: 1px solid #white;">Upload {{type.name}}</span>
+								<span class="product_name" style="border-bottom: 1px solid #white;">Upload <span ng-show="type.name == 'Folder'"> a file to a </span>{{type.name}}</span>
 							</div>
 							<div layout="row" layout-align="end end">
 								<i class="{{type.icon}}" md-colors="{color:'accent-900'}" style="font-size: 130px;"></i>
@@ -65,8 +65,8 @@ md-steppers-content-wrapper{
 						   
 							<div flex class="side-margins" style="padding-top: 30px;overflow-x: scroll;max-height: 200px;">
 								<md-content>
-									<md-radio-group class="effect-radio-group" ng-model="selectedFolder" aria-label="folder or file">
-										<md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder"> {{folder.name}}  </md-radio-button>
+									<md-radio-group class="effect-radio-group" ng-model="selectedFolder" aria-label="folder or file" ng-disabled="!newCollection">
+										<md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder" style="outline:none"> {{folder.name}}  </md-radio-button>
 									</md-radio-group>
 								</md-content>
 							</div>

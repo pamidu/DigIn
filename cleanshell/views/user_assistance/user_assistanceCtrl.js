@@ -142,6 +142,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 		$scope.goto = function() {
 				//$scope.step1.$setUntouched();
 				//$scope.step1.$setPristine();
+				$scope.selectedFolder = undefined;
 				$scope.newCollection = !$scope.newCollection;
 				console.log($scope.newCollection);
 			}

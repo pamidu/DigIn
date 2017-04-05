@@ -25,24 +25,32 @@
 				$rootScope.currentDashboard.refreshInterval = newDashboardDetails.refreshInterval
 				//create a angular copy of the dashboard
 	 			var dashboardCopy =  angular.copy($rootScope.currentDashboard);
-				
+
+	 			// remove dashboard filter related parameters
+	 			angular.forEach(dashboardCopy.filterDetails,function(db_filter){
+	 				if (db_filter.name === undefined) delete db_filter.name;
+	 				if (db_filter.fieldvalues === undefined) delete db_filter.fieldvalues;
+
+	 			});
+				if (dashboardCopy.isFiltered!== undefined) delete dashboardCopy.isFiltered;
 	 			
 	 			//remove data 
 	 			for(var i = 0; i < dashboardCopy.pages.length; i++){
 	 				if (dashboardCopy.pages[i].isSeen !== undefined) delete dashboardCopy.pages[i].isSeen;
+	 				if (dashboardCopy.pages[i].isFiltered !== undefined) delete dashboardCopy.pages[i].isFiltered;
 	 				for(var j = 0; j < dashboardCopy.pages[i].widgets.length; j++){
 	 					
 	 					if(dashboardCopy.pages[i].widgets[j].widgetData.chartType.chartType == "highCharts"){
 	 							//this.removeHighChartsData(dashboardCopy.pages[i].widgets[j].widgetData.widgetConfig);
 	 							// remove filter related data
-	 							chartUtilitiesFactory.removeFilterData(dashboardCopy.pages[i].widgets[j]);
+	 							filterServices.removeFilterData(dashboardCopy.pages[i].widgets[j]);
 	 					}
 	 				}
 	 			}
 				notifications.startLoading(ev,"Saving '"+newDashboardDetails.dashboardName+"' dashboard, Please wait...");
                 return $http({
 						method: 'POST',
-						url:  'http://192.168.0.101:8080/'+ 'store_component/',//http://192.168.0.101:8080 //Digin_Engine_API
+						url:  Digin_Engine_API + 'store_component/',//http://192.168.0.101:8080 //Digin_Engine_API
 						data: angular.toJson(dashboardCopy),
 						headers: {
 							'Content-Type': 'application/json',
@@ -65,6 +73,8 @@
 									}
 								}
 							}
+							
+							$rootScope.selectedDashboard = angular.copy($rootScope.currentDashboard);
 							notifications.finishLoading();
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;

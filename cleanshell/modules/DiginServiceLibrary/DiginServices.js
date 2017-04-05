@@ -33,6 +33,28 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 				notifications.finishLoading();
 			});
 
+		},updateUserSettings: function(userSettings)
+		{
+		   	notifications.startLoading(null, "Saving Settings...");
+			
+			var req = {
+				method: 'POST',
+				url: Digin_Engine_API + 'update_user_settings/',
+				headers: {
+                    'Content-Type': 'application/json',
+					'Securitytoken' : $rootScope.authObject.SecurityToken
+				},
+				data: angular.toJson(userSettings)
+			}
+			
+			return $http(req).then(function(result){
+				notifications.finishLoading();
+				return result.data;
+			}, function(error){
+				notifications.toast(0, "Failed to save Settings");
+				notifications.finishLoading();
+			});
+			
 		},getSession: function() {
              //return the promise directly.
              return $http.get(auth_Path+'GetSession/' + getCookie('securityToken') + '/Nil')
@@ -144,7 +166,7 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 								console.log(response);
 								notifications.toast(0, "Falied to get DB Configs");
 						});
-        },syncPages: function(dashboard,pageIndex,cb) {
+        },syncPages: function(dashboard,pageIndex,cb,is_sync) {
         	var count = 0;
 			if (!dashboard.pages[pageIndex].isSeen) {
 				angular.forEach(dashboard.pages[pageIndex].widgets,function(widget){
@@ -156,7 +178,7 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 							widgetData.syncOn = false;
 							count++;
 							if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
-						}, 'True');
+						}, is_sync);
 					} else {
 						count++;
 						if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }

@@ -219,6 +219,25 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
             });
         }
 
+        var validate = function(config) {
+            var isValid = false;
+
+            if(typeof(config) === 'undefined')
+                return;
+
+            if(!config.seriesList || config.seriesList.length < 2)
+                notifications.toast(2, "Please select atleast two measures in order to generate What-If widget.");
+
+            if(config.eqconfig.targets.length === 0)
+                notifications.toast(2, "Please select a one target measure from selected measures.");
+
+            if(config.eqconfig.mode === 'manual' && 
+                (config.eqconfig.equation === "" || config.eqconfig.equation === 'undefined'))
+                notifications.toast(2, "Manual formula generation mode requires equation as a input.");
+
+            return isValid;
+        }
+
         var resolveFormula = function(params, callback) {
             $http({
                 url: Digin_Engine_API+'regression_analysis',
@@ -292,7 +311,8 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
         }
 
         return {
-            generate: generate
+            generate: generate,
+            validate: validate
         }
     }
 ]); //END OF generateWhatIf

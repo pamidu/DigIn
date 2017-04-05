@@ -450,6 +450,14 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				}
 			}else if($scope.chartType.chartType == 'whatif')
 			{
+				var isValid = generateWhatIf.validate($scope.settingConfig);
+				
+				if(!isValid){
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = true;
+					return;
+				}
+
 				// make available selected measures to settingConfig.eqconfig object
 				$scope.settingConfig.eqconfig['variables'] = angular.copy($scope.settingConfig.seriesList);
 				
@@ -602,7 +610,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		{
 			$scope.designtimeFilters[index]['isLoading'] = true;
 			var is_dashboardFilter = false;
-			filterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile.datasource_name,$scope.selectedFile.datasource_id,function(data){
+			filterServices.getFieldParameters($scope.designtimeFilters[index].name,$scope.selectedDB,$scope.selectedFile,function(data){
 				$scope.$apply(function(){
 					$scope.designtimeFilters[index]['isLoading'] = false;
 					$scope.designtimeFilters[index]['fieldvalues'] = data;

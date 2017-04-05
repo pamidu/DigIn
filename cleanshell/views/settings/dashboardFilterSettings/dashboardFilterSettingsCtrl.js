@@ -374,12 +374,14 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		$scope.defaultProgoress = true;
 		$scope.defaultValues = [];
 		var is_dashboardFilter = false;
+		var selectedFile = {};
+		selectedFile['tableName'] = table;
 		if( $scope.selectedDatasource == 'BigQuery' || $scope.selectedDatasource == 'memsql')
 		{
-			table = $scope.selectedTableValue.datasource_name;
+			selectedFile['datasource_id'] = $scope.selectedTableValue.datasource_name;
 		} else 
 		{
-			table = $scope.selectedTableValue;
+			selectedFile['id'] = $scope.selectedTableValue;
 		}
 		// load the fields for default values
 		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,table,
@@ -416,9 +418,9 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		if ( $scope.selectedFilterOption == "custom" )
 		{
 			is_custom = true;
-			$scope.customFields = [];
 		} else 
 		{
+			$scope.customFields = [];
 			is_custom = false;
 		}
 		if ($scope.selectedConnectionValue.connection_name === undefined)

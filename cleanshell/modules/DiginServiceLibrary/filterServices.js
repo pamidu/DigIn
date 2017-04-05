@@ -1,8 +1,8 @@
 
 // __Author__ : Dilani Maheswaran
 
-DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 
-    function($diginengine,$diginurls,chartUtilitiesFactory,notifications) {
+DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 'generateHighchart', 
+    function($diginengine,$diginurls,chartUtilitiesFactory,notifications,generateHighchart) {
     return {
         // ------------------- Read Me -----------
         // construct the filter array in the given format to be supported by all methods
@@ -103,15 +103,15 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
             if (designTimeFilters.length > 0) {
                 // loop through design time filter
                 angular.forEach(designTimeFiltersGroup,function(designTimeFilter) {
-                    // loop through run time filter
+                    // loop through run time filter / dashboard filter
                     angular.forEach(selectedFilterFiedsCopy,function(filterField) {
-                        //if run time filter is present in design time filter
+                        //if run time filter / dashboard filter is present in design time filter
                         if (filterField.name == designTimeFilter.name) {
                             var filterParamsArray = [];
-                            // loop through fields of run time filters
+                            // loop through fields of run time filters / dashboard filter
                             angular.forEach(filterField.fieldvalues,function(value){
                                 name = value.valueName;
-                                // find if run time filter fields are available in design time filter fields
+                                // find if run time filter / dashboard filter fields are available in design time filter fields
                                 var index = designTimeFilter.fieldvalues.findIndex(returnIndex);
                                 // if present, push it to the array
                                 if (index > -1) {
@@ -139,6 +139,7 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
             // is_dashboard : boolean indciating if it dashboard fiters or not
 
             var query = "";
+            var table;
             switch(selectedDB)
             {
                 case 'BigQuery':
@@ -177,9 +178,9 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
                         if (is_dashboard)
                         {
                             values.push({
-                               valueName: value[display_field],
+                               valueName: value[value_field], // display value
                                isSelected: false,
-                               valueField: value[value_field]
+                               displayName: value[display_field] // actua value
                             });
                         } else 
                         {
@@ -197,6 +198,16 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
                 callback(values);
             },limit,0);
         },
+        // set all data related to filters
+        setFilterData : function(dashboard,page_index) {
+            if ( dashboard.isFiltered === undefined ) dashboard.isFiltered = false;
+            if ( dashboard.pages[page_index].isSeen === undefined ) dashboard.pages[page_index].isSeen = false;
+            if ( dashboard.pages[page_index].isFiltered === undefined ) dashboard.pages[page_index].isFiltered = false;
+            for ( var i = 0; i < dashboard.pages[page_index].widgets.length; i++ )  
+            {
+                if (dashboard.pages[page_index].widgets[i].isWidgetFiltered === undefined) dashboard.pages[page_index].widgets[i].isWidgetFiltered = false;
+            }
+        },
         // remove all data related to filters before saving the dashborad
         removeFilterData : function(widget) {
             delete widget.isWidgetFiltered;
@@ -209,12 +220,24 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
         generateDashboardFilterFields : function(dashboardFilters) {
             angular.forEach(dashboardFilters,function(filter){
                 if (filter.name === undefined) filter.name = filter.filter_name;
-                if (filter.fieldvalues === undefined) filter.fieldvalues = [];
+                // assign values for custom filter
+                if (filter.is_custom == 1)
+                {
+                    angular.forEach(filter.custom_fields,function(field){
+                        field.fieldvalues = {
+                            valueName: value[display_field],
+                            isSelected: false,
+                            displayName: value[value_field]
+                        }
+                    });
+                } else {
+                    if (filter.fieldvalues === undefined) filter.fieldvalues = [];
+                }
             });
         },
         // set dashboard filtered status to true
         setDashboardFilter : function(dashboard,page_index,count) {
-            if (dashboard.pages[$rootScope.selectedPageIndex].widgets.length == count)
+            if (dashboard.pages[page_index].widgets.length == count)
             {
                 dashboard['isFiltered'] = true;
                 dashboard.pages[page_index]['isFiltered'] = true;

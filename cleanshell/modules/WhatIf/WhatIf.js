@@ -13,10 +13,13 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
         controller: function() {
             var _targetSlider;
             var _sliderCollection = [];
+            var _threshold = 0;
 
             this.setTargetSlider = function(slider) {
-                if(typeof(slider) !== undefined)
+                if(typeof(slider) !== undefined) {
                     _targetSlider = slider
+                    _threshold = parseFloat(_targetSlider.slider.noUiSlider.get());
+                }
             }.bind(this);
 
             this.addToCollection = function(slider) {
@@ -26,6 +29,8 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
 
             this.updateTarget = function(val) {
                 var currentTarget = _resolveFormula(this.config.equation);
+                _targetSlider.slider.noUiSlider.set(currentTarget[_targetSlider.name]);
+                angular.element('#'+_targetSlider.slider.id+' .noUi-connect').css('background', _getColor());
             }.bind(this);
 
             var _resolveFormula = function(formula) {
@@ -35,7 +40,7 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
                 var code2 = math.compile(formula);
                 code2.eval(fscope);
 
-                _targetSlider.slider.noUiSlider.set(fscope[_targetSlider.name]);
+               return fscope;
             }
 
             var _getFormulaScope = function() {
@@ -43,6 +48,16 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
                     acc[cur.name] = cur.slider.noUiSlider.get();
                     return acc;
                 }, {});
+            }
+
+            var _getColor = function () {
+                var _currentValue = parseFloat(_targetSlider.slider.noUiSlider.get());
+                var _color = '';
+
+                if(_currentValue > _threshold) _color = 'green';
+                else if(_currentValue < _threshold) _color = 'red';
+
+                return _color;
             }
 
         },
@@ -54,10 +69,10 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
             idSelector: '@'
         },
         link: function (scope, elem, attr) {
-			$timeout(function(){
-				angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
-				//angular.element('.noUi-handle').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
-			}, 100);
+			// $timeout(function(){
+			// 	angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
+			// 	angular.element('.noUi-handle').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
+			// }, 100);
 			
 			scope.$on('widget-resized', function(element, widget) {
 				var height = widget.element[0].clientHeight - 50;

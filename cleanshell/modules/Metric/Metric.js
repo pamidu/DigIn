@@ -270,7 +270,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
         	//#initialize chart object
         	var metricObj= {
-                color: 'white',
+                color: settings.color,
                 actualValue:'',
                 targetValue:'',
                 rangeSliderOptions: {
@@ -610,7 +610,6 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 				    if(metricObj.targetQuery=="" || metricObj.targetQuery==undefined)
 				    	is_tv_constant=true;
 				    
-
 
 					var notification_data={
 		              "notification_id": null,

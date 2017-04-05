@@ -91,7 +91,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$scope.navigate = function(ev,action)
 	{
 		//Only if the user is in the dashboard check if the currentDashboard has been changed and not saved.
-		if($state.current.name == "dashboard")
+		if($state.current.name == "dashboard" || $state.current.name == "visualize_data"  || $state.current.name == "dashboardFilterSettings")
 		{
 			var pageIndex = 0;	
 			try{

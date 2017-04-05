@@ -125,7 +125,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 			DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
 				// returns the synced page
 				$rootScope.currentDashboard = dashboard;
-			});
+			},'False');
 		}
     };
 	
@@ -371,7 +371,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		{
 			var is_dashboardFilter = false;
 			var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
-			filterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile.datasource_name,widgetData.selectedFile.datasource_id,function(data){
+			filterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile,function(data){
 				$scope.$apply(function(){
 					widgetFilterFields[filterIndex]['fieldvalues'] = data;
 				})
@@ -460,19 +460,18 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 					filterString = allFiltersArray.join( ' And ');
                     var isCreate = false;
                     generateHighchart.generate(widget.widgetData.widgetConfig, widget.widgetData.chartType.chart, widget.widgetData.selectedFile, widget.widgetData.Measures,widget.widgetData.XAxis, 1000, widget.widgetData.selectedDB,false,widget.widgetData.groupBySortArray ,function (data,query){
-                        widget.widgetData.syncOn = false;
-                        // set widget ync parameter to false
+                        // set widget sync parameter to false
                         widget.isWidgetFiltered = false;
                         count++;
-                        filterServices.setDashboardFilter(dashboard,page_index,count);
+                        filterServices.setDashboardFilter(dashboard,page_index,count,true);
                     },filterString,[],[],isCreate);
                 } else {
                     count++;
-                    filterServices.setDashboardFilter(dashboard,page_index,count);
+                    filterServices.setDashboardFilter(dashboard,page_index,count,true);
                 }
             } else {                
                 count++;
-                filterServices.setDashboardFilter(dashboard,page_index,count);
+                filterServices.setDashboardFilter(dashboard,page_index,count,true);
             }
         })
 	}
@@ -489,14 +488,21 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	$scope.loadDashboardFilterParams = function(filterIndex){
 		var is_dashboardFilter = true;
 		var expandedFilter = $scope.dashboardFilterFields[filterIndex];
-		expandedFilter.isLoading = true;
-		if (expandedFilter.fieldvalues === undefined) {
+		if (expandedFilter.fieldvalues === undefined && !expandedFilter.is_custom) {
 			expandedFilter['fieldvalues'] = [];
 		}
 		//if the expanded filter is empty and not a custom filter
 		if (expandedFilter.fieldvalues.length == 0 && !expandedFilter.is_custom) {
-			filterServices.getFieldParameters(expandedFilter.display_field,expandedFilter.datasource,
-				expandedFilter.datasource_table,expandedFilter.datasource_id,function(data){
+			expandedFilter.isLoading = true;
+			var selectedFile = {};
+			selectedFile['tableName'] = expandedFilter.datasource_table;
+			if(expandedFilter.datasource == "BigQuery" || expandedFilter.datasource == "memsql"){
+				selectedFile['datasource_id'] = expandedFilter.datasource_id;
+			}else {
+				selectedFile['id'] = expandedFilter.id;
+			}
+			
+			filterServices.getFieldParameters(expandedFilter.display_field,selectedFile,expandedFilter.datasource_id,function(data){
 				$scope.$apply(function(){
 					expandedFilter['fieldvalues'] = data;
 				})
@@ -507,7 +513,29 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 
 	$scope.dashboardFilterApply = function() {
 		applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields);
-	}
+	};
+
+	$scope.clearDashboardfilters = function() {
+		// set isSeen parameter of page to false
+		angular.forEach($rootScope.currentDashboard.pages,function(page){
+			page.isSeen = false;
+		});
+		angular.forEach($scope.dashboardFilterFields,function(filters){
+			if (filters.fieldvalues !== undefined) {
+				angular.forEach(filters.fieldvalues,function(field){
+					field.isSelected = false;
+				})
+			}
+		})
+		// sync a page when it is cleared
+		DiginServices.syncPages($rootScope.currentDashboard,$rootScope.selectedPageIndex,function(dashboard){
+			$scope.$apply(function(){
+				// returns the synced page
+				$rootScope.currentDashboard = dashboard;
+				filterServices.setDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.length,false);
+			})
+		},'False');
+	};
 	// ------------------- Dashboard level filter method start ---------------------
 
 	$timeout(function() {

@@ -370,18 +370,26 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		$scope.incrementStep();
 		$scope.isDefault = true;
 		var query = '';
+		var table;
 		$scope.defaultProgoress = true;
 		$scope.defaultValues = [];
 		var is_dashboardFilter = false;
+		if( $scope.selectedDatasource == 'BigQuery' || $scope.selectedDatasource == 'memsql')
+		{
+			table = $scope.selectedTableValue.datasource_name;
+		} else 
+		{
+			table = $scope.selectedTableValue;
+		}
 		// load the fields for default values
-		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,$scope.selectedTableValue,
+		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,table,
 			$scope.datasourceId,function(data){
 				$scope.defaultProgoress = false;
 				angular.forEach(data,function(value)
 				{
 					$scope.$apply(function()
 					{
-						$scope.defaultValues.push(value[$scope.selectedValueField]);
+						$scope.defaultValues.push(value.valueName);
 					});
 				})
 				if ($scope.defaultValues.length > 0)

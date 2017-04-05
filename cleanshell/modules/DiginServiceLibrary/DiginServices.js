@@ -146,27 +146,22 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 						});
         },syncPages: function(dashboard,pageIndex,cb) {
         	var count = 0;
-			if (dashboard.pages[pageIndex].isSeen === undefined) {
-				dashboard.pages[pageIndex].isSeen = false;
-			}
-			if (dashboard.pages[pageIndex].isSeen !== undefined) {
-				if (!dashboard.pages[pageIndex].isSeen) {
-					angular.forEach(dashboard.pages[pageIndex].widgets,function(widget){
-						if (widget.widgetData.chartType.chartType == "highCharts") {
-							dashboard.pages[pageIndex].isSeen = true;
-							widget.widgetData.syncOn = true;
-							// send is_sync parameter as true
-							chartSyncServices.sync(widget.widgetData,function(widgetData){
-								widgetData.syncOn = false;
-								count++;
-								if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
-							}, 'True');
-						} else {
+			if (!dashboard.pages[pageIndex].isSeen) {
+				angular.forEach(dashboard.pages[pageIndex].widgets,function(widget){
+					if (widget.widgetData.chartType.chartType == "highCharts") {
+						dashboard.pages[pageIndex].isSeen = true;
+						widget.widgetData.syncOn = true;
+						// send is_sync parameter as true
+						chartSyncServices.sync(widget.widgetData,function(widgetData){
+							widgetData.syncOn = false;
 							count++;
 							if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
-						}
-					})
-				}
+						}, 'True');
+					} else {
+						count++;
+						if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
+					}
+				})
 			}
         }
    }

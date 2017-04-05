@@ -228,12 +228,12 @@
 												<md-progress-circular class="md-hue-2" md-diameter="20px" ></md-progress-circular>
 											</div>
 											<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-mouseup="setFilterValueSelection(value,fieldvalues)" ng-if="value.selection_type == 'single' " ng-class="{'filterItemSeleted': fieldvalues.isSelected==true}">
-												<p ng-click="setFilterValueSelection(value,fieldvalues)" md-prevent-menu-close="md-prevent-menu-close">{{ ::fieldvalues.valueName}}</p>
+												<p ng-click="setFilterValueSelection(value,fieldvalues)" md-prevent-menu-close="md-prevent-menu-close">{{ ::fieldvalues.displayName}}</p>
 											</md-list-item>
 											<md-list-item class="secondary-button-padding" ng-repeat="fieldvalues in value.fieldvalues" ng-if="value.selection_type == 'multiple' ">
 												<p>
 													<md-checkbox ng-model="fieldvalues.isSelected" style="float: left;"/>
-													{{ ::fieldvalues.valueName}}
+													{{ ::fieldvalues.displayName}}
 												</p>
 											</md-list-item>
 										</md-list>
@@ -243,7 +243,7 @@
 						</md-menu-content>
 					</md-menu>
 					<md-button ng-click="dashboardControls.addDashboardFilter($event)" class="md-icon-button md-primary">
-						<i class=" ti-eraser" style="font-size:16px"></i>
+						<i class="  ti-bar-chart-alt " style="font-size:16px"></i>
 						<md-tooltip md-direction="bottom">Add Dashboard Filter</md-tooltip>
 					</md-button>
 				</div>

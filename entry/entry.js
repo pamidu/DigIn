@@ -242,7 +242,7 @@ routerApp
                         {
                             mainFun.fireMsg('0', "Your account is locked, try again in 2 minutes.");
                         }
-                        else if('Username password incorrect')
+                        else if(data.Message=="Username password incorrect")
                         {
                             mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
                         }

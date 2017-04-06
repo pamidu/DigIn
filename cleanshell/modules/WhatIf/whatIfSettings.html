@@ -1,3 +1,68 @@
+<!-- formula box styling -->
+<style type="text/css">
+	#content {
+	    margin:50px auto;
+	    width: 800px;
+	}
+
+	textarea {
+	    /*margin-top: 20px;*/
+	    min-width: 560px;
+	    min-height: 200px;
+	    outline: none;
+	    color: #0e0f0e;
+	    background-color: #fff;
+	    background-repeat: no-repeat;
+	    background-position: right center;
+	    border: 1px solid #ccc;
+	    border-radius: 3px;
+	    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+	    -moz-box-sizing: border-box;
+	    box-sizing: border-box;
+	    transition: all 0.15s ease-in;
+	    -webkit-transition: all 0.15s ease-in 0;
+	    vertical-align: middle;
+	}
+
+	.list {
+	    margin-top: 20px;
+	    margin-bottom: 20px;
+	}
+
+	.dropdown-menu {
+	    background: #fff;
+	    border: 1px solid #ddd;
+	    border-radius: 3px;
+	    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+	}
+
+	.dropdown-menu a:hover {
+	    cursor: pointer;
+	}
+
+	.dropdown-menu li {
+	    border-top: 1px solid #ddd;
+	    display: block;
+	    padding: 5px 10px;
+	    font-weight: bold;
+	}
+
+	.dropdown-menu li:first-child {
+	    border-top: none;
+	}
+
+	.dropdown-menu li:hover,
+	.dropdown-menu .active {
+	    color: #fff;
+	    background: #4183c4;
+	    text-decoration: none;
+	}
+</style>
+<!-- end formula box styling -->
+
 <form name="whatifSettingsForm" ng-submit="submit()">
 
 	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
@@ -38,13 +103,16 @@
 			</md-radio-group>
 		</div>
 
-		<div layout-gt-sm="row" class="side-margins"  ng-if="whatifSettings.eqconfig.mode === 'manual'">
+		<div ng-if="whatifSettings.eqconfig.mode === 'manual'">
+			<textcomplete members="whatifSettings.seriesList" message='whatifSettings.eqconfig.equation'></textcomplete>
+		</div>
+
+		<!--<div layout-gt-sm="row" class="side-margins"  ng-if="whatifSettings.eqconfig.mode === 'manual'">
 			<md-input-container class="md-block" flex-gt-sm>
 				<span> Equation</span>
 				<input ng-model="whatifSettings.eqconfig.equation"  aria-label="equation" name="equation">
-			</md-input-container>
-		</div>
-
+			</md-input-container>-->
+		
 	</md-content>
 
 <!-- 	<md-list style="margin-top:60px" layout-padding>

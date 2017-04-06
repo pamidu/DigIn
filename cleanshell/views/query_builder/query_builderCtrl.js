@@ -413,7 +413,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 						$scope.showChartLoading = false;
 						$scope.showPlaceholderIcon = false;
 						$scope.widgetConfig = data;
-						newElement = $compile('<google-map id-selector="'+widgetID+'" config="widgetConfig"></google-map>')($scope);
+						newElement = $compile('<google-map config="widgetConfig"></google-map>')($scope);
 						$element.find('.currentChart').append(newElement);
 					})
 

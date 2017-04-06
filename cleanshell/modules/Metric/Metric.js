@@ -135,50 +135,50 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 				if (scope.metricSettings.actualValue <= lowerRange) {
 		        	if (scope.metricSettings.colorTheme == "rog") {
 			            if (scope.metricSettings.colorType == "high") {
-			                scope.metricSettings.color = "#FF5252"
+			                scope.metricSettings.color = "#FF5252";
 			            } else {
-			                scope.metricSettings.color = "#4CAF50"
+			                scope.metricSettings.color = "#4CAF50";
 			            }
 			        } else if (scope.metricSettings.colorTheme == "cgy") {
 			            if (scope.metricSettings.colorType == "high") {
-			                scope.metricSettings.color = "#1abc9c"
+			                scope.metricSettings.color = "#1abc9c";
 			            } else {
-			                scope.metricSettings.color = "yellowgreen"
+			                scope.metricSettings.color = "yellowgreen";
 			            }
 			        } else if (scope.metricSettings.colorTheme == "opg") {
 			            if (scope.metricSettings.colorType == "high") {
-			                scope.metricSettings.color = "#F9A937"
+			                scope.metricSettings.color = "#F9A937";
 			            } else {
-			                scope.metricSettings.color = "#4CAF50"
+			                scope.metricSettings.color = "#4CAF50";
 			            }
 			        }
 			    } else if (scope.metricSettings.actualValue >= highRange) {
 			        if (scope.metricSettings.colorTheme == "rog") {
 			            if (scope.metricSettings.colorType == "high") {
-			                scope.metricSettings.color = "#4CAF50"
+			                scope.metricSettings.color = "#4CAF50";
 			            } else {
-			                scope.metricSettings.color = "#FF5252"
+			                scope.metricSettings.color = "#FF5252";
 			            }
 			        } else if (scope.settings.colorTheme == "cgy") {
 			            if (scope.metricSettings.colorType == "high") {
-			                scope.metricSettings.color = "yellowgreen"
+			                scope.metricSettings.color = "yellowgreen";
 			            } else {
-			                scope.metricSettings.color = "#1abc9c"
+			                scope.metricSettings.color = "#1abc9c";
 			            }                    
 			        } else if (scope.metricSettings.colorTheme == "opg") {
 			            if (scope.metricSettings.colorType == "high") {
-			                scope.metricSettings.color = "#4CAF50"
+			                scope.metricSettings.color = "#4CAF50";
 			            } else {
-			                scope.metricSettings.color = "#F9A937"
+			                scope.metricSettings.color = "#F9A937";
 			            }
 			        }
 			    } else {
 			        if (scope.metricSettings.colorTheme == "rog") {
 			            scope.metricSettings.color = "#F9A937"
 			        } else if (scope.metricSettings.colorTheme == "cgy") {
-			            scope.metricSettings.color = "#4CAF50"
+			            scope.metricSettings.color = "#4CAF50";
 			        } else if (scope.metricSettings.colorTheme == "opg") {
-			            scope.metricSettings.color = "#8e44ad"
+			            scope.metricSettings.color = "#8e44ad";
 			        }
 			    }
 			}
@@ -241,14 +241,14 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			}*/
 			else if (settings.groupBy.length > 0 ) {
 	            if (settings.timeAttribute == "") {
-	                notifications.toast(2,'Please select the time attribute for trend.');
+	                notifications.toast(2,'Please select the time attribute for trend');
 	            }   
 	            else{
 	            	isChartConditionsOk = true;
 	            } 
 			}      	      
 			else if (settings.groupByField == "") {
-	                notifications.toast(2,'Please select group by attribute for trend.');
+	                notifications.toast(2,'Please select group by attribute for trend');
 	        l}
 			else{
 				isChartConditionsOk = true;
@@ -276,7 +276,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
                 actualValue:'',
                 targetValue:'',
                 rangeSliderOptions: {
-                    minValue: 0,
+                    minValue: 20,
                     maxValue: 300,
                     options: {
                         floor: 0,

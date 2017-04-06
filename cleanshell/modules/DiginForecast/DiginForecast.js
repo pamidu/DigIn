@@ -34,7 +34,7 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                scope.forecastObj = {
                 //paramObj: {
                     method: "Additive",
-                    model: "triple exponential smoothing",
+                    //model: "triple exponential smoothing",
                     mod: "triple_exp",
                     alpha: "",
                     beta: "",

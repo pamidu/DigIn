@@ -80,7 +80,7 @@
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;
 							console.log(newDashboardDetails);
-							//PouchServices.saveAndUpdateDashboard(newDashboardDetails);
+							PouchServices.saveAndUpdateDashboard(newDashboardDetails);
 							return newDashboardDetails;
 						}
 					},function(err){
@@ -120,21 +120,43 @@
 
 			
 		return{
-			storeUserSettings: function(userSettings){
+			storeAndUpdateUserSettings: function(userSettings){
 				
-				var userSettingsDoc = {
-					_id : $rootScope.authObject.Email,
-					userSettings : userSettings
-				}
-				
-				$rootScope.localDb.put(userSettingsDoc, function(err, response) {
-				  if (err) {
-					  console.log(err);
-					  
-				  }else {
-					  console.log("userSettings doc created successfully");
-				  }
-			  });
+				$rootScope.localDb.get( $rootScope.authObject.Email , function(err, doc){
+					if(err)
+					{
+						if(err.status === 404)
+						{
+							var userSettingsDoc = {
+								_id : $rootScope.authObject.Email,
+								userSettings : userSettings
+							}
+							
+							$rootScope.localDb.put(userSettingsDoc, function(err, response) {
+							  if (err) {
+								  console.log(err);
+								  
+							  }else {
+								  console.log("userSettings doc created successfully");
+							  }
+							})
+						}
+								
+					}else{
+						var userSettingsDoc = {
+							_id : $rootScope.authObject.Email,
+							userSettings : userSettings,
+							_rev : doc._rev
+						}
+						$rootScope.localDb.put(userSettingsDoc, function(err, response) {
+							if (err) {
+								console.log("error in updating");
+							}else {
+								console.log("userSettings doc updated successfully");
+							}
+						});
+					}
+				})
 			},getUserSettings: function(){
 				return $rootScope.localDb.get($rootScope.authObject.Email).then(function (doc) {
 						return doc.userSettings;
@@ -194,13 +216,52 @@
 					});
 			},
 			saveAndUpdateDashboard: function(newDashboardDetails) {
+				console.log(newDashboardDetails.compID.toString());
+				$rootScope.localDb.get( newDashboardDetails.compID.toString() , function(err, doc){
+					console.log(err);
+					console.log(doc);
+					if(err)
+					{
+						if(err.status === 404)
+						{
+							var dashboardDoc = {
+								_id : newDashboardDetails.compID.toString(),
+								dashboard : $rootScope.currentDashboard
+							}
+							
+							$rootScope.localDb.put(dashboardDoc, function(err, response) {
+							  if (err) {
+								  console.log(err);
+								  
+							  }else {
+								  console.log("dashboard doc created successfully");
+							  }
+							})
+						}
+								
+					}else{
+						var dashboardDoc = {
+							_id : newDashboardDetails.compID.toString(),
+							dashboard : $rootScope.currentDashboard,
+							_rev : doc._rev
+						}
+						$rootScope.localDb.put(dashboardDoc, function(err, response) {
+							if (err) {
+								console.log("error in updating");
+							}else {
+								console.log("dashboard doc updated successfully");
+							}
+						});
+					}
+				})
+				/*
 				$rootScope.localDb.changes().on('change', function() {
 				  alert('Ch-Ch-Changes');
 				});
 				$rootScope.localDb.get( $rootScope.currentDashboard.compID.toString() , function(err, doc){
 					
 					console.log(err, doc);
-                    /*  if (err){
+					if (err){
                           if (err.status = '404') {// if the document does not exist
                               //Inserting Document into pouchDB
                               var dashboardDoc = {
@@ -218,7 +279,7 @@
                                   }
                               });
 							}
-						  }else{*/
+					}else{
 							  var dashboardDoc = {
                                   dashboard : $rootScope.currentDashboard,
                                   _id : $rootScope.currentDashboard.compID.toString(),
@@ -231,9 +292,9 @@
 									console.log("Document updated successfully");
 								  }
 							});
-						  
+					}
 				})
-	
+				*/
 					
 			}//end of saveAndUpdateDashboard factory
 		}//end of PouchServices return

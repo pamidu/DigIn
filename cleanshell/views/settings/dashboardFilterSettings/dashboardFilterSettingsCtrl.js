@@ -44,6 +44,11 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		displayValue: ''
 	}
 	var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
+	
+	$scope.goToDashboard = function()
+	{
+		location.href = '#/dashboard?id='+$rootScope.currentDashboard.compID;
+	}
 
    // get all databases
 	DiginServices.getDBConfigs().then(function(data) {

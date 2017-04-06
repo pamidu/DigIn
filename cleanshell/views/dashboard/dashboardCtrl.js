@@ -504,7 +504,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
                         if (!is_default) 
                         	filterServices.setDashboardFilter(dashboard,page_index,count,true);
                         else
-                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[pageIndex].isSeen = true;
+                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
                     },filterString,[],[],isCreate);
                 } else {
                     count++;

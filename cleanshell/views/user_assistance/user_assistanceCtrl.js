@@ -134,6 +134,11 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.selectedPath = type;
 			$scope.submitCurrentStep($scope.stepData[0]);
 		}
+		
+		$scope.goToDashboard = function()
+		{
+			location.href = '#/dashboard?id='+$rootScope.currentDashboard.compID;
+		}
 
 		//start of page one Folder name configuring
 		$scope.currentNavItem = 'page1';
@@ -563,10 +568,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 		};
 
-		$scope.goToDashboard = function() {
+		/*$scope.goToDashboard = function() {
 			$state.go("home.Dashboards");
 			$mdSidenav('right').toggle();
-		}
+		}*/
 
 
 		$scope.getFileDetails = function(e) {

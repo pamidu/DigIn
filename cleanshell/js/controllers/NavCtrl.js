@@ -490,6 +490,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
     function getDashboard(ev, dashboardId)
 	{
 		PouchServices.getDashboard(ev, dashboardId).then(function(data) {
+			$rootScope.selectedPageIndex = 0;
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
 			notifications.log($rootScope.currentDashboard, new Error());

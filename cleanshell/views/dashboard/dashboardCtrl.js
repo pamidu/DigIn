@@ -212,12 +212,20 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 						console.log(newDashboardDetails);
 						$scope.$parent.changed = false; //change this to false again since the chages were saved
 						$scope.$parent.currentView = newDashboardDetails.dashboardName;
+						var isNewDashboard = true;
+						
 						angular.forEach($scope.dashboards, function(value, key) {
 							if(value.compID == newDashboardDetails.compID)
 							{
 								value.compName = newDashboardDetails.dashboardName;
+								isNewDashboard = false;
 							}
 						})
+						
+						if(isNewDashboard === true)
+						{
+							$scope.$parent.dashboards.push({compID: newDashboardDetails.compID, compType: "dashboard", compName: newDashboardDetails.dashboardName });
+						}
 						
 					});
 				}); 

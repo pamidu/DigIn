@@ -13,7 +13,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	
 	//Theming
 	$scope.zoomLevel = "100%";
-	$rootScope.theme = 'defaultDark';
+	$rootScope.theme = 'default';
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
@@ -120,14 +120,22 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 						// save the changes and then navigate where he wants to
 						var dashboardDetails = {dashboardName: $rootScope.currentDashboard.compName, refreshInterval: $rootScope.currentDashboard.refreshInterval};
 						DiginDashboardSavingServices.saveDashboard(ev, dashboardDetails).then(function(newDashboardDetails) {
+							console.log(newDashboardDetails);
 							$scope.changed = false; //change this to false again since the chages were saved
 							//$scope.currentView = newDashboardDetails.dashboardName;
+							var isNewDashboard = true;
+							
 							angular.forEach($scope.dashboards, function(value, key) {
 								if(value.compID == newDashboardDetails.compID)
 								{
 									value.compName = newDashboardDetails.dashboardName;
+									isNewDashboard = false;
 								}
 							})
+							if(isNewDashboard === true)
+							{
+								$scope.dashboards.push({compID: newDashboardDetails.compID, compType: "dashboard", compName: newDashboardDetails.dashboardName });
+							}
 							navigateTo(ev,action);
 						});
 					}
@@ -325,24 +333,24 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
             //Just for testing, User settings are not needed here
             DiginServices.getUserSettings().then(function(data) {
-                notifications.log(data, new Error());
-				PouchServices.storeAndUpdateUserSettings(data);				
-                $scope.userSettings = data;
-                $rootScope.theme = $scope.userSettings.theme_config;
+				if(data)
+				{
+					notifications.log(data, new Error());
+					PouchServices.storeAndUpdateUserSettings(data);				
+					$scope.userSettings = data;
+					$rootScope.theme = $scope.userSettings.theme_config;
 
-                //color the UI
-                colorManager.changeTheme($rootScope.theme);
+					//color the UI
+					colorManager.changeTheme($rootScope.theme);
 
-                //Go To Default Dashboard if it exsist
-                var obj = JSON.parse($scope.userSettings.components);
-                if(obj.dashboardId !== null) {
-                    //getDashboard(obj.dashboardId);
-                    $scope.data.defaultDashboard = obj.dashboardId;
-                    oldDefaultDashboard = angular.copy(obj.dashboardId);
-                }
-
-
-                //$scope.userSettings.theme_config = $rootScope.theme;
+					//Go To Default Dashboard if it exsist
+					var obj = JSON.parse($scope.userSettings.components);
+					if(obj.dashboardId !== null) {
+						//getDashboard(obj.dashboardId);
+						$scope.data.defaultDashboard = obj.dashboardId;
+						oldDefaultDashboard = angular.copy(obj.dashboardId);
+					}
+				}
             });
 			
 				var pouchdbName = 'localPouch';

@@ -80,7 +80,7 @@
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;
 							console.log(newDashboardDetails);
-							PouchServices.saveAndUpdateDashboard(newDashboardDetails);
+							//PouchServices.saveAndUpdateDashboard(newDashboardDetails);
 							return newDashboardDetails;
 						}
 					},function(err){
@@ -254,47 +254,6 @@
 						});
 					}
 				})
-				/*
-				$rootScope.localDb.changes().on('change', function() {
-				  alert('Ch-Ch-Changes');
-				});
-				$rootScope.localDb.get( $rootScope.currentDashboard.compID.toString() , function(err, doc){
-					
-					console.log(err, doc);
-					if (err){
-                          if (err.status = '404') {// if the document does not exist
-                              //Inserting Document into pouchDB
-                              var dashboardDoc = {
-                                  _id : $rootScope.currentDashboard.compID.toString(),
-                                  dashboard : $rootScope.currentDashboard
-                              }
-							  
-							  $rootScope.localDb.put(dashboardDoc, function(err, response) {
-                                  if (err) {
-                                      console.log(err);
-                                      
-                                  }else {
-                                      console.log("Document created successfully");
-
-                                  }
-                              });
-							}
-					}else{
-							  var dashboardDoc = {
-                                  dashboard : $rootScope.currentDashboard,
-                                  _id : $rootScope.currentDashboard.compID.toString(),
-                                  _rev : doc._rev
-                              }
-                              $rootScope.localDb.put(dashboardDoc, function(err, response) {
-								  if (err) {
-									console.log("error in updating");
-								  }else {
-									console.log("Document updated successfully");
-								  }
-							});
-					}
-				})
-				*/
 					
 			}//end of saveAndUpdateDashboard factory
 		}//end of PouchServices return

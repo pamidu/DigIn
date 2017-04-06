@@ -326,7 +326,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
             //Just for testing, User settings are not needed here
             DiginServices.getUserSettings().then(function(data) {
                 notifications.log(data, new Error());
-				PouchServices.storeUserSettings(data);				
+				PouchServices.storeAndUpdateUserSettings(data);				
                 $scope.userSettings = data;
                 $rootScope.theme = $scope.userSettings.theme_config;
 

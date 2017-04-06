@@ -36,12 +36,13 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     method: "Additive",
                     //model: "triple exponential smoothing",
                     mod: "triple_exp",
-                    alpha: "",
-                    beta: "",
-                    gamma: "",
-                    a: "",
-                    b: "",
-                    g: "",
+                    smoothing:false,
+                    alpha: 0,
+                    beta: 0,
+                    gamma: 0,
+                    a: 0,
+                    b: 0,
+                    g: 0,
                     fcast_days: 12,
                     tbl: "",
                     date_field: "",
@@ -81,6 +82,18 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
 				scope.submitForm();
 			}
           
+            scope.setAlpahaBetaGamma=function(){
+                if(!scope.forecastObj.smoothing){
+                    scope.forecastObj.alpha= 0;
+                    scope.forecastObj.beta= 0;
+                    scope.forecastObj.gamma= 0;
+                    scope.forecastObj.a= 0;
+                    scope.forecastObj.b= 0;
+                    scope.forecastObj.g= 0;
+                }
+            }
+
+
          } //end of link
     };
 }]);
@@ -216,20 +229,24 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
 
 
                      // set alpha,beeta, gamma values returned from the service
-                    if(data.alpha != ""){
+
+
+
+                    if(data.alpha != 0){
                         forecastObj.alpha = data.alpha.toFixed(3);
                         forecastObj.a = data.alpha.toFixed(3);
                     }                   
-                    if(data.beta != ""){
+                    if(data.beta != 0){
                         forecastObj.beta = data.beta.toFixed(3);
                         forecastObj.b = data.beta.toFixed(3);
                     }
-                    if(data.gamma != ""){
+                    if(data.gamma != 0){
                         forecastObj.gamma = data.gamma.toFixed(3);
                         forecastObj.g = data.gamma.toFixed(3); 
                     }
 
-                                                            // to check wether service has returned any warnings
+
+                    // to check wether service has returned any warnings
                     if (data.warning != null)
                         console.log(data.warning);
                         //privateFun.fireMessage('0', data.warning);

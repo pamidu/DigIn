@@ -1,8 +1,8 @@
 
 // __Author__ : Dilani Maheswaran
 
-DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 'generateHighchart', 
-    function($diginengine,$diginurls,chartUtilitiesFactory,notifications,generateHighchart) {
+DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 'generateHighchart', 'chartSyncServices', 
+    function($diginengine,$diginurls,chartUtilitiesFactory,notifications,generateHighchart,chartSyncServices) {
     return {
         // ------------------- Read Me -----------
         // construct the filter array in the given format to be supported by all methods
@@ -276,13 +276,11 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
         setDefaultFilter : function(dashboard,page_index,count,widget,cb) {
             // sync the chart if no default value
             chartSyncServices.sync(widget.widgetData,function(widgetData){
-                $scope.$apply(function(){
-                    widgetData.syncOn = false;
-                    widget.widgetData = widgetData;
-                })
+                widgetData.syncOn = false;
+                widget.widgetData = widgetData;
                 if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
                 cb(widget)
-            }, is_sync);
+            }, 'False');
         }
     }
 

@@ -1,9 +1,9 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
-	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 
+	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory', 
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
-		filterServices,generateHighchart) {
+		filterServices,generateHighchart,chartUtilitiesFactory) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -500,9 +500,12 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
                     },filterString,[],[],isCreate);
                 } else {
                     count++;
-                    if (!is_default) 
+                    if (!is_default)
                     	filterServices.setDashboardFilter(dashboard,page_index,count,true);
                     else
+                    	// remove data from the chart
+                    	// chartUtilitiesFactory.removeDataPoints(widget.widgetData.widgetConfig);
+                    	// set dashboard filtered status to true
                     	filterServices.setDefaultFilter(dashboard,page_index,count,widget,function(data){
                     		widget = data;
                     	})

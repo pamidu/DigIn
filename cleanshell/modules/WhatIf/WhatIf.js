@@ -220,20 +220,26 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
         }
 
         var validate = function(config) {
-            var isValid = false;
+            var isValid = true;
 
             if(typeof(config) === 'undefined')
-                return;
+                isValid = false;
 
-            if(!config.seriesList || config.seriesList.length < 2)
+            if(!config.seriesList || config.seriesList.length < 2) {
                 notifications.toast(2, "Please select atleast two measures in order to generate What-If widget.");
-
-            if(config.eqconfig.targets.length === 0)
+                isValid = false;
+            }
+            
+            if(config.eqconfig.targets.length === 0) {
                 notifications.toast(2, "Please select a one target measure from selected measures.");
+                isValid = false;
+            }
 
             if(config.eqconfig.mode === 'manual' && 
-                (config.eqconfig.equation === "" || config.eqconfig.equation === 'undefined'))
-                notifications.toast(2, "Manual formula generation mode requires equation as a input.");
+                (config.eqconfig.equation === "" || config.eqconfig.equation === 'undefined')) {
+                notifications.toast(2, "Manual formula generation mode requires equation as a input."); 
+                isValid = false;
+            }
 
             return isValid;
         }

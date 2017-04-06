@@ -370,21 +370,19 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		$scope.incrementStep();
 		$scope.isDefault = true;
 		var query = '';
-		var table;
 		$scope.defaultProgoress = true;
 		$scope.defaultValues = [];
 		var is_dashboardFilter = false;
 		var selectedFile = {};
-		selectedFile['datasource_name'] = table;
+		selectedFile['datasource_name'] = $scope.selectedTableValue.datasource_name;
 		if( $scope.selectedDatasource == 'BigQuery' || $scope.selectedDatasource == 'memsql')
 		{
-			selectedFile['datasource_id'] = $scope.selectedTableValue.datasource_name;
+			selectedFile['datasource_id'] = $scope.selectedTableValue.datasource_id;
 		} else 
 		{
 			selectedFile['id'] = $scope.selectedTableValue;
 		}
 		// load the fields for default values
-		display_field,selectedDB,selectedFile,callback,limit,offset,is_dashboard,value_field
 		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,selectedFile,function(data){
 				$scope.defaultProgoress = false;
 				angular.forEach(data,function(value)

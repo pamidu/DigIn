@@ -38,13 +38,16 @@
 			</md-radio-group>
 		</div>
 
-		<div layout-gt-sm="row" class="side-margins"  ng-if="whatifSettings.eqconfig.mode === 'manual'">
+		<div ng-if="whatifSettings.eqconfig.mode === 'manual'">
+			<textcomplete members="whatifSettings.seriesList" message='whatifSettings.eqconfig.equation'></textcomplete>
+		</div>
+
+		<!--<div layout-gt-sm="row" class="side-margins"  ng-if="whatifSettings.eqconfig.mode === 'manual'">
 			<md-input-container class="md-block" flex-gt-sm>
 				<span> Equation</span>
 				<input ng-model="whatifSettings.eqconfig.equation"  aria-label="equation" name="equation">
-			</md-input-container>
-		</div>
-
+			</md-input-container>-->
+		
 	</md-content>
 
 <!-- 	<md-list style="margin-top:60px" layout-padding>

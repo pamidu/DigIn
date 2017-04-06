@@ -117,17 +117,29 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		{
 			if (!$rootScope.currentDashboard.pages[index].isFiltered)
 				// apply dashboard filters
-				applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields);
+				applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields,false);
 		}
 		else 
 		{
+			// check if default filter has been applied
+			// if yes, apply - call apply dashboard filter field
+			// else normal sync
 			// sync a page when it is open for the first time
-			DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
-				// returns the synced page
-				$scope.$apply(function() {
-					$rootScope.currentDashboard = dashboard;
-				})
-			},'False');
+
+			// check if default filter has been applied to the dashboard
+			var defaultFilterArray = filterServices.groupDefaultFilters($rootScope.currentDashboard.filterDetails);
+			if (defaultFilterArray.length > 0)
+			{
+				applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,defaultFilterArray,true);
+			} else {
+				// if no default filters have been applied
+				DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
+					// returns the synced page
+					$scope.$apply(function() {
+						$rootScope.currentDashboard = dashboard;
+					})
+				},'False');
+			}
 		}
     };
 	
@@ -301,7 +313,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 				{
 					$scope.applyFilters(widget);
 				} else if ($rootScope.currentDashboard.isFiltered) { // if dashboard filter is applied
-					applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields);
+					applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields,false);
 				} else {
 					// send is_sync parameter as true
 					chartSyncServices.sync(widget.widgetData,function(widgetData){
@@ -365,18 +377,18 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		var pageIndex = $rootScope.selectedPageIndex;
 		var widgetIndex = $rootScope.currentDashboard.pages[pageIndex].widgets.indexOf(widget);
 		var widgetFilterFields = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData.RuntimeFilter;
-		if (widgetFilterFields[filterIndex]['fieldvalues'] === undefined)
+		if (widgetFilterFields[filterIndex].fieldvalues === undefined)
 		{
-			widgetFilterFields[filterIndex]['fieldvalues'] = [];
+			widgetFilterFields[filterIndex].fieldvalues = [];
 		}
 		widgetFilterFields[filterIndex].isLoading = true;
-		if ( widgetFilterFields[filterIndex]['fieldvalues'].length == 0)
+		if ( widgetFilterFields[filterIndex].fieldvalues.length == 0)
 		{
 			var is_dashboardFilter = false;
 			var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
 			filterServices.getFieldParameters(widgetFilterFields[filterIndex].name,widgetData.selectedDB,widgetData.selectedFile,function(data){
 				$scope.$apply(function(){
-					widgetFilterFields[filterIndex]['fieldvalues'] = data;
+					widgetFilterFields[filterIndex].fieldvalues = data;
 				})
 				widgetFilterFields[filterIndex].isLoading = false;
 			},100,0,is_dashboardFilter);
@@ -435,29 +447,44 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 
 	// ------------------ Dashboard level filter method start ---------------------
 
-	function applyDashboardFilter(dashboard,page_index,dashboardFilterFields)
+	// return the filters array
+	function getFiltersArray (widget,dashboardFilterFields)
+	{
+        var allFiltersArray = [];
+        var filterString = "";
+        var dashboardFilterString = "";
+        var dashboardFilterCopy = [];
+        if (widget.widgetData.RuntimeFilter.length !=0) {
+            angular.forEach(widget.widgetData.RuntimeFilter,function(runTimeFilter) {
+                angular.forEach(dashboardFilterFields,function(dashboardFilter) {
+                    if (runTimeFilter.name == dashboardFilter.name) {
+                        // compare against design time filter
+                        dashboardFilterCopy = filterServices.compareDesignTimeFilter([dashboardFilter],widget.widgetData.DesignTimeFilter);
+                        // generate the connection string for the dashboard filter
+                        dashboardFilterString = filterServices.generateFilterConnectionString(dashboardFilterCopy,widget.widgetData.selectedDB);
+                        if (dashboardFilterString != "")
+                            allFiltersArray.push(dashboardFilterString);
+                    }
+                });
+            })
+        }
+        return allFiltersArray;
+	}
+
+	/*
+      todo : put this method to a service
+	 @ dashboard : the current dashboard object
+	 @ page_index : selected page index
+	 @ dashboardFilterFields : the values that are selected for filtering / the default values
+	 @ is_default : if the method is being called to apply default filters when first open
+	*/
+	function applyDashboardFilter(dashboard,page_index,dashboardFilterFields,is_default)
 	{
         var count = 0;
         angular.forEach(dashboard.pages[page_index].widgets,function(widget) {
-            var dashboardFilterString = "";
             if (widget.widgetData.chartType.chartType == "highCharts") {
-                var allFiltersArray = [];
-                var filterString = "";
-                var dashboardFilterCopy = [];
-                if (widget.widgetData.RuntimeFilter.length !=0) {
-                    angular.forEach(widget.widgetData.RuntimeFilter,function(runTimeFilter) {
-                        angular.forEach(dashboardFilterFields,function(dashboardFilter) {
-                            if (runTimeFilter.name == dashboardFilter.name) {
-                                // compare against design time filter
-                                dashboardFilterCopy = filterServices.compareDesignTimeFilter([dashboardFilter],widget.widgetData.DesignTimeFilter);
-                                // generate the connection string for the dashboard filter
-                                dashboardFilterString = filterServices.generateFilterConnectionString(dashboardFilterCopy,widget.widgetData.selectedDB);
-                                if (dashboardFilterString != "")
-                                    allFiltersArray.push(dashboardFilterString);
-                            }
-                        });
-                    })
-                }
+            	var filterString = "";
+            	var allFiltersArray = getFiltersArray(widget,dashboardFilterFields);
                 // if there is a connection string present
                 if (allFiltersArray.length > 0) {
 					filterString = allFiltersArray.join( ' And ');
@@ -466,15 +493,23 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
                         // set widget sync parameter to false
                         widget.isWidgetFiltered = false;
                         count++;
-                        filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                        if (!is_default) 
+                        	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                        else
+                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[pageIndex].isSeen = true;
                     },filterString,[],[],isCreate);
                 } else {
                     count++;
-                    filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                    if (!is_default) 
+                    	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                    else
+                    	filterServices.setDefaultFilter(dashboard,page_index,count,widget,function(data){
+                    		widget = data;
+                    	})
                 }
             } else {                
                 count++;
-                filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                if (!is_default) filterServices.setDashboardFilter(dashboard,page_index,count,true); else dashboard.pages[page_index].isSeen = true;
             }
         })
 	}
@@ -515,7 +550,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 	};
 
 	$scope.dashboardFilterApply = function() {
-		applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields);
+		applyDashboardFilter($rootScope.currentDashboard,$rootScope.selectedPageIndex,$scope.dashboardFilterFields,false);
 	};
 
 	$scope.clearDashboardfilters = function() {

@@ -1,8 +1,8 @@
 
 // __Author__ : Dilani Maheswaran
 
-DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 'generateHighchart', 
-    function($diginengine,$diginurls,chartUtilitiesFactory,notifications,generateHighchart) {
+DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls','chartUtilitiesFactory', 'notifications', 'generateHighchart', 'chartSyncServices', 
+    function($diginengine,$diginurls,chartUtilitiesFactory,notifications,generateHighchart,chartSyncServices) {
     return {
         // ------------------- Read Me -----------
         // construct the filter array in the given format to be supported by all methods
@@ -88,7 +88,24 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
             });
             return(groupFilters);
         },
-
+        // group the default filters of a dashboard
+        groupDefaultFilters : function (filterDetails) {
+            var filterArray = [];
+            for ( var i = 0; i < filterDetails.length; i++)
+            {
+                if ( filterDetails[i].is_default === true || filterDetails[i].is_default === 1 )
+                {
+                    filterArray.push({
+                        name : filterDetails[i].filter_name,
+                        fieldvalues : [{
+                            valueName : filterDetails[i].default_value,
+                            isSelected : true
+                        }]
+                    });
+                }
+            }
+            return(filterArray);
+        },
         // compare run time and dashboard filters against design time filters. design time filters get the highest priority.
         // remove if selected filters if not present in design time filters
         compareDesignTimeFilter : function(selectedFilterFieds, designTimeFilters) {
@@ -254,6 +271,16 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
                         dashboard.pages[page_index]['isFiltered'] = false; 
                 })
             }
+        },
+        // 
+        setDefaultFilter : function(dashboard,page_index,count,widget,cb) {
+            // sync the chart if no default value
+            chartSyncServices.sync(widget.widgetData,function(widgetData){
+                widgetData.syncOn = false;
+                widget.widgetData = widgetData;
+                if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
+                cb(widget)
+            }, 'False');
         }
     }
 

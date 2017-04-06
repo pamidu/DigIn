@@ -5,7 +5,7 @@
 
 'use strict';
 
-var WhatIfModule = angular.module('WhatIf', ['DiginServiceLibrary']);
+var WhatIfModule = angular.module('WhatIf', ['DiginServiceLibrary', 'ngTextcomplete']);
 
 WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function ($rootScope,$mdColors,$timeout) {
     return {
@@ -210,6 +210,55 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
     }
 ]);
 
+WhatIfModule.directive('textcomplete', ['Textcomplete', function (Textcomplete) {
+    return {
+        restrict: 'EA',
+        scope: {
+            members: '=',
+            message: '='
+        },
+        template: '<textarea ng-model=\'message\' type=\'text\'></textarea>',
+        link: function (scope, iElement, iAttrs) {
+            
+            // var mentions = scope.members;
+            var mentions;
+            scope.$watch('members', function(newVal) { mentions = newVal; });
+
+            var opts = scope.operators;
+            var ta = iElement.find('textarea');
+            var textcomplete = new Textcomplete(ta, [
+              {
+                match: /(^|\s)@(\w*)$/,
+                search: function(term, callback) {
+                    callback($.map(mentions, function(mention) {
+                        return mention.name.toLowerCase().indexOf(term.toLowerCase()) === 0 ? mention.name : null;
+                    }));
+                },
+                index: 2,
+                replace: function(mention) {
+                    return '$1@' + mention + ' ';
+                }
+              }
+            ]);
+
+            $(textcomplete).on({
+              'textComplete:select': function (e, value) {
+                scope.$apply(function() {
+                  scope.message = value
+                })
+              },
+              'textComplete:show': function (e) {
+                $(this).data('autocompleting', true);
+              },
+              'textComplete:hide': function (e) {
+                $(this).data('autocompleting', false);
+              }
+            });
+
+        }
+    };
+}]);
+
 WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 'Digin_Engine_API',
     function($rootScope, $http, notifications, Digin_Engine_API) {
 
@@ -230,10 +279,10 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
                 isValid = false;
             }
             
-            if(config.eqconfig.targets.length === 0) {
-                notifications.toast(2, "Please select a one target measure from selected measures.");
-                isValid = false;
-            }
+            // if(config.eqconfig.targets.length === 0) {
+            //     notifications.toast(2, "Please select a one target measure from selected measures.");
+            //     isValid = false;
+            // }
 
             if(config.eqconfig.mode === 'manual' && 
                 (config.eqconfig.equation === "" || config.eqconfig.equation === 'undefined')) {
@@ -260,6 +309,9 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
 
         var buildFormulaParams = function(dbconfig, eqconfig) {
 
+            if(eqconfig.mode === 'manual')
+                eqconfig.targets.push(eqconfig.equation.split("=")[0].replace(/@/g,'').trim());
+
             var fmeasures = getFormulaMeasureNames(eqconfig.variables, eqconfig.targets);
 
             return {
@@ -268,7 +320,9 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
                 datasource_id: dbconfig.datasourceId,
                 type: eqconfig.mode,
                 method: eqconfig.method,
-                equation: eqconfig.equation,
+                equation: (eqconfig.mode === 'manual') 
+                            ? JSON.stringify(formatEquation(eqconfig.equation)) 
+                            : eqconfig.equation,
                 y_values: JSON.stringify(fmeasures.yValues),
                 x_values: JSON.stringify(fmeasures.xValues),
                 SecurityToken: $rootScope.authObject.SecurityToken
@@ -314,6 +368,10 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
                 else acc.xValues.push(val.name);
                 return acc;
             },{xValues:[], yValues:[]});
+        }
+
+        var formatEquation = function(eq) {
+            return [eq.replace(/[@\n ]+/g, "")];
         }
 
         return {

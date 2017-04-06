@@ -548,6 +548,7 @@
 		<script src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
 		<script src="bower_components/nouislider/distribute/nouislider.js"></script>
     	<script src="bower_components/mathjs/dist/math.js"></script>
+		<script src="bower_components/ng-textcomplete/ng-textcomplete.min.js"></script>
 		
 		<!--Highcharts libraries-->
 		<script src="bower_components/highcharts/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->

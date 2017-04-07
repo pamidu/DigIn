@@ -136,17 +136,23 @@ directiveLibraryModule.factory('notifications',['Toastino', '$mdDialog','Develop
   ToastinoService.prototype.popToast = function(toastino){
     this.toastinoMessages.unshift(toastino);
   };
-  
+  var successSound = new Audio('sounds/success.mp3');
+  var errorSound = new Audio('sounds/error.mp3');
+  var warnSound = new Audio('sounds/warn.mp3');
   ToastinoService.prototype.toast = function (type, message, length) {
 		
 		var classType = "";
 		if(type == 0)
 		{
 			classType = "alert-danger";
+			errorSound.play();
 		}else if(type == 1){
 			classType = "alert-success";
+			  
+			successSound.play();
 		}else if(type == 2){
 			classType = "alert-warning";
+			warnSound.play();
 		}else{
 			classType = "alert-info";
 		}

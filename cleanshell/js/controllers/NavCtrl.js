@@ -507,10 +507,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.cancel = function()
 	{
 		$mdDialog.cancel();
-	}	
+	}
 	
 	$scope.notifications = [{notification_id: '1234',title:"Urgent", message: "Your system needs to be updated asap", type: 1, icon: "ti-pie-chart", color: "#4CAF50"}];
-	var audio = new Audio('sounds/notification.mp3');
+	var notificationSound = new Audio('sounds/notification.mp3');
 	$scope.notificationAudio = true; 
 	
 	$scope.removeNotification = function(index)
@@ -528,7 +528,7 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 		notifications.toast(message.type, message.message);
 		if($scope.notificationAudio == true)
 		{
-			audio.play();
+			notificationSound.play();
 		}
 
 	}, 5000);

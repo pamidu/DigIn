@@ -16,7 +16,6 @@ GoogleMapModule.directive('googleMap', ['NgMap','$timeout','$http','$state', fun
 		idSelector: '@'
 	},
 	link: function(scope,element){
-		console.log(scope.idSelector);
 		
 		scope.inDashboard = false;
 		if($state.current.name == "dashboard")

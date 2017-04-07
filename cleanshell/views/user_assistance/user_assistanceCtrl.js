@@ -134,6 +134,11 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.selectedPath = type;
 			$scope.submitCurrentStep($scope.stepData[0]);
 		}
+		
+		$scope.goToDashboard = function()
+		{
+			location.href = '#/dashboard?id='+$rootScope.currentDashboard.compID;
+		}
 
 		//start of page one Folder name configuring
 		$scope.currentNavItem = 'page1';
@@ -563,10 +568,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 		};
 
-		$scope.goToDashboard = function() {
+		/*$scope.goToDashboard = function() {
 			$state.go("home.Dashboards");
 			$mdSidenav('right').toggle();
-		}
+		}*/
 
 
 		$scope.getFileDetails = function(e) {
@@ -854,6 +859,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			$scope.selectedAttributes = [];
 			$scope.selectedMeasures = [];
 			$scope.connectSource_selected;
+			$scope.connectSource_selected = 0;
 		}
 		
 		//$scope.attributes = ['GUStoreID','GUChangeID','StoreCode', 'StoreName','BuildingNumber', 'StreetName', 'City', 'PostalCode','ZipCode', 'Phone1','Phone2','Fax','Status','CreatedUser','CreatedDate','ModifiedUser','ModifiedDate','GUDepotID','GUDepotChgID','MiniStore','GUVehicleID','GUVehicleChgID','GUDeptID'];

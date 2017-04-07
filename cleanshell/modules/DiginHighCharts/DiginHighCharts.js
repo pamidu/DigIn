@@ -432,7 +432,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				                        // todo
 				                        // do not send if value has been already selected in the previous level
 				                        if (connection != '') {
-				                        	conStr += 'And' + connection;
+				                        	conStr += ' And ' + connection;
 				                        }
 
 				                        chart.options.lang.drillUpText = "Back to " + highestLvl;

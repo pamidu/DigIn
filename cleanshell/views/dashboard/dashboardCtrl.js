@@ -457,6 +457,7 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
         if (widget.widgetData.RuntimeFilter.length !=0) {
             angular.forEach(widget.widgetData.RuntimeFilter,function(runTimeFilter) {
                 angular.forEach(dashboardFilterFields,function(dashboardFilter) {
+                	// if dashboard filters and run time filters map
                     if (runTimeFilter.name == dashboardFilter.name) {
                         // compare against design time filter
                         dashboardFilterCopy = filterServices.compareDesignTimeFilter([dashboardFilter],widget.widgetData.DesignTimeFilter);
@@ -464,6 +465,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
                         dashboardFilterString = filterServices.generateFilterConnectionString(dashboardFilterCopy,widget.widgetData.selectedDB);
                         if (dashboardFilterString != "")
                             allFiltersArray.push(dashboardFilterString);
+                        // else
+                        	// if no filter mapping is there with design time filters, display an empty chart
+                        	// chartUtilitiesFactory.removeDataPoints(widget.widgetData.widgetConfig);
                     }
                 });
             })
@@ -496,15 +500,13 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
                         if (!is_default) 
                         	filterServices.setDashboardFilter(dashboard,page_index,count,true);
                         else
-                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[pageIndex].isSeen = true;
+                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
                     },filterString,[],[],isCreate);
                 } else {
                     count++;
                     if (!is_default)
                     	filterServices.setDashboardFilter(dashboard,page_index,count,true);
                     else
-                    	// remove data from the chart
-                    	// chartUtilitiesFactory.removeDataPoints(widget.widgetData.widgetConfig);
                     	// set dashboard filtered status to true
                     	filterServices.setDefaultFilter(dashboard,page_index,count,widget,function(data){
                     		widget = data;

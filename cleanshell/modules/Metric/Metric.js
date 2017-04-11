@@ -92,7 +92,7 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
                		dateAttrs:scope.attr,
                		color:"#F9A937",
                		rangeSliderOptions: {
-	                    minValue: 0,
+	                    minValue: 10,
 	                    maxValue: 300,
 	                    options: {
 			                        floor: 0,
@@ -233,6 +233,9 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			/*else if(!metricObj.targetValue){
 				notifications.toast(2,"Please select target value");
 			}*/
+			else if(settings.actual.length==0){
+				notifications.toast(2,"Please select actual value");
+			}
 			else if(settings.actual.length>1){
 				notifications.toast(2,"Please select only one actual value");
 			}
@@ -258,6 +261,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 		},
 		generate: function(highChartType, tableName, limit, datasourceId, selectedDB,settings,notification_data, callback){
 
+
 			//#Change chart background colours according to theme
             var chartBackgroundColor = "";
             var chartFontColor = "";
@@ -276,7 +280,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
                 actualValue:'',
                 targetValue:'',
                 rangeSliderOptions: {
-                    minValue: 20,
+                    minValue: 10,
                     maxValue: 300,
                     options: {
                         floor: 0,

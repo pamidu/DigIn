@@ -267,7 +267,7 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
                 dashboard.pages[page_index]['isFiltered'] = status;
                 dashboard.pages[page_index]['isSeen'] = status;
                 angular.forEach(dashboard.pages,function(page){
-                    if (dashboard.pages.indexOf(page) != page_index && dashboard.pages.indexof(page) > 0)
+                    if (dashboard.pages.indexOf(page) != page_index && dashboard.pages.indexOf(page) > 0)
                         dashboard.pages[page_index]['isFiltered'] = false; 
                 })
             }

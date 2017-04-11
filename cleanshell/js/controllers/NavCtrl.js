@@ -1,6 +1,6 @@
 DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', 
-	'$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log','filterServices','DiginDashboardSavingServices' ,function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav ,
-		layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log,filterServices,DiginDashboardSavingServices) {
+	'$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log','filterServices','DiginDashboardSavingServices','version',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,
+		layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log,filterServices,DiginDashboardSavingServices,version) {
 
 	//$auth.checkSession();
 	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -17,6 +17,10 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 	$rootScope.lightOrDark = '';
 	$rootScope.currentColor = '';
 	$rootScope.h1color = '';
+
+	//UI version
+	$scope.cleanshell_version = version;
+
 	colorManager.changeTheme($rootScope.theme);
 	
 	// use this variable to make the dialogs fullscreen in smaller screen sizes

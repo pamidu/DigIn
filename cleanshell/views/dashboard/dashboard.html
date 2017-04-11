@@ -1,10 +1,3 @@
-<style>
-.filterItemSeleted
-{
-	background: grey;
-}
-</style>
-
 <footer class="footerTabContainer">
 	<md-tabs id="pagingTabs" md-align-tabs="bottom" class="md-primary" md-selected="$root.selectedPageIndex">
 	  <md-tab ng-repeat="page in currentDashboard.pages" id="tab1" md-on-select="selectPage($index)">
@@ -37,7 +30,7 @@
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
 								<md-menu md-position-mode="target-right target hover-color">
-									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
+									<md-button class="md-icon-button ti-filter shake"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
 									<md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">

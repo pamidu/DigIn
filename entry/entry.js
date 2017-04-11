@@ -150,6 +150,17 @@ routerApp
             })();
 
 
+            $scope.callLogout=function(secToken, event){
+                $http.get(Digin_Tenant+'/LogOut/'+secToken)
+            .success(function (res) {
+                //console.log(data);
+                $scope.login(event);
+            }).error(function () {
+                alert("Error retun while logout the sessions!");
+            });
+            }
+
+
 
             //#check tenant package status
             $scope.checkPackageStatus=function(status){
@@ -171,7 +182,7 @@ routerApp
             };
 
 
-            $scope.login = function () {
+            $scope.login = function (event) {
 
                 if ($scope.signindetails.Username == '' || angular.isUndefined($scope.signindetails.Username)) {
                     //mainFun.fireMsg('0', '<strong>Error : </strong>Username is required..');
@@ -230,7 +241,11 @@ routerApp
                     }
                     else {
                         $mdDialog.hide();
-                        if(data.Message=="Email Address is not verified."){
+                        if(data=="")
+                        {
+                            mainFun.fireMsg('0', "Authorization error, Please contact system administrator.");
+                        }
+                        else if(data.Message=="Email Address is not verified."){
                             if(onsite){
                                 mainFun.fireMsg('0', "Your account is still inactive, Please contact system administrator.");
                             }
@@ -246,6 +261,25 @@ routerApp
                         {
                             mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
                         }
+                        else if(data.Message=='Login Exceeeded please logout your sessions.')
+                        {
+                            //#added to limit user sessions by auth 11/04/2017--------------------------START                                
+                                    var confirm = $mdDialog.confirm()
+                                        .title('You have already logged-in')
+                                        .textContent('Do you want to logout from all devices?')
+                                        .ok('Yes!')
+                                        .cancel('No!');
+                                    $mdDialog.show(confirm).then(function () {
+                                        for (var i=0; i<data.Data.length; i++){
+                                            $scope.callLogout(data.Data[i], event);
+                                        }   
+                                    }, function () {
+                                         mainFun.fireMsg('0', data.Message);
+                                        
+                                    });
+
+                            //#added to limit user sessions ---------------------------------------------END
+                        }
                         else{
                             mainFun.fireMsg('0', data.Message);
                         }
@@ -253,7 +287,7 @@ routerApp
                 }).error(function (data) {
                     //console.log(data);
                     $mdDialog.hide();
-                    mainFun.fireMsg('0', 'Authorization Service responding an error.');
+                    mainFun.fireMsg('0', "Authorization error, Please contact system administrator.");
                 });
             };
 

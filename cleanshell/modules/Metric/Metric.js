@@ -257,7 +257,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 			return isChartConditionsOk;		
 		},
 		generate: function(highChartType, tableName, limit, datasourceId, selectedDB,settings,notification_data, callback){
-			
+
 			//#Change chart background colours according to theme
             var chartBackgroundColor = "";
             var chartFontColor = "";
@@ -389,15 +389,19 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
         	}
         	else
         	{
+        		if(settings.targetValue==undefined || settings.targetValue==""){
+
+		        	metricObj.targetValue = 0;
+		        	settings.targetDisplayValue = 0;
+		        	settings.targetValue =metricObj.targetValue;
+        		}
+        		else{     			
+		        	metricObj.targetValue=settings.targetDisplayValue;
+		        	metricObj.targetValue=settings.targetValue;
+        		}
         		metricObj.targetQuery = "";
-		        metricObj.targetValue = 0;
-		        settings.targetDisplayValue = 0;
-		        settings.targetValue =metricObj.targetValue;
-		        var actual= getActual();
+        		var actual= getActual();	
         	}
-
-
-
 
         
             function getActual(){
@@ -515,7 +519,11 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
             	//-----------------------------------
-            	setNotificationData(status, query,trendValue);              	
+            	setNotificationData(status, query,trendValue);  
+				
+            	//#format values
+				changeFormat();
+
             } 
 
 
@@ -546,6 +554,34 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 			    callback(status, metricObj,settings,notification_data);
 			}
+
+
+			function changeFormat(){
+				if(settings.format=='Thousand'){
+		            if(settings.actualValue!=undefined || settings.actualValue!="")
+		                settings.actualDisplayValue=settings.actualValue/1000;
+		            if(settings.targetValue!=undefined ||settings.targetValue!="")
+		                settings.targetDisplayValue=settings.targetValue/1000;
+		        }else if(settings.format=='Million'){
+		            if(settings.actualValue!=undefined || settings.actualValue!="")
+		                settings.actualDisplayValue=settings.actualValue/1000000;
+		            if(settings.targetValue!=undefined || settings.targetValue!="")    
+		                settings.targetDisplayValue=settings.targetValue/1000000;
+		        }else if(settings.format=='Billion'){
+		            if(settings.actualValue!=undefined || settings.actualValue!="")
+		                settings.actualDisplayValue=settings.actualValue/1000000000;
+		            if(settings.targetValue!=undefined || settings.targetValue!="") 
+		                settings.targetDisplayValue=settings.targetValue/1000000000;
+		        }else{
+		            if(settings.actualValue!=undefined || settings.actualValue!="")
+		                settings.actualDisplayValue=settings.actualValue;
+		            if(settings.targetValue!=undefined || settings.targetValue!="")
+		                settings.targetDisplayValue=settings.targetValue;
+		        }
+			}
+
+
+
 		}
 	}
 }]);//END OF generateMetric

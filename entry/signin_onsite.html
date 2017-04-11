@@ -116,7 +116,7 @@
                                 </br>
                                 <div class="login-btn-wrap" ng-if="!error.isLoading">
                                     <a href="javascript:void(0  )"
-                                       ng-click="login()"
+                                       ng-click="login($event)"
                                        ng-class="{disable:frmDiginLogin.$invalid,activeBtn: !frmDiginLogin.$invalid}"
                                        class="login-btn">
                                         Login

@@ -57,7 +57,7 @@ class UserAuthorization {
         $authDecoded = json_decode($authObj);
         
         if(isset($authDecoded->Error) && $authDecoded->Error) {
-        echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": {}}'; return;
+        echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": '.json_encode($authDecoded->Data).'}'; return;
         }
         
         if(isset($authDecoded->SecurityToken) && isset($authDecoded->UserID)) {

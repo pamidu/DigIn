@@ -235,6 +235,9 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 					}, function(wantsFullScreen) {
 					  $scope.customFullscreen = (wantsFullScreen === true);
 				});
+			},makeDefault: function(ev)
+			{
+				$scope.$parent.diginComponents.setDefaultDashboard(ev, $rootScope.currentDashboard)
 			},deleteDashboard: function(ev)
 			{
 				dialogService.confirmDialog(ev, "Delete Dashboard","Are you sure you want to delete '"+$rootScope.currentDashboard.compName+"' dashboard?","yes", "cancel").then(function(result) {

@@ -261,6 +261,10 @@ routerApp
                         {
                             mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
                         }
+                        else if(data.Message=="The username or password is incorrect. Please try again with the correct credentials. 3 failed attempts will temporarily block the account.")
+                        {
+                            mainFun.fireMsg('0', "User name or password is incorrect, please try again.");
+                        }          
                         else if(data.Message=='Login Exceeeded please logout your sessions.')
                         {
                             //#added to limit user sessions by auth 11/04/2017--------------------------START                                
@@ -281,7 +285,7 @@ routerApp
                             //#added to limit user sessions ---------------------------------------------END
                         }
                         else{
-                            mainFun.fireMsg('0', data.Message);
+                            mainFun.fireMsg('0', data.Message); 
                         }
                     }
                 }).error(function (data) {

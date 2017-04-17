@@ -55,9 +55,17 @@ class UserAuthorization {
         $invoker->addHeader('IP', $_SERVER['REMOTE_ADDR']);
         $authObj = $invoker->get($loginUrl);
         $authDecoded = json_decode($authObj);
-        
+
         if(isset($authDecoded->Error) && $authDecoded->Error) {
-        echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": '.json_encode($authDecoded->Data).'}'; return;
+            //echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": '. isset($authDecoded->Data) ? json_encode($authDecoded->Data) : null . '}'; return;
+            if(isset($authDecoded->Data)){
+                $data=json_encode($authDecoded->Data);
+            }
+            else
+            {
+                $data="null";
+            }
+            echo '{"Success":false, "Message": "'. $authDecoded->Message . '", "Data": '.$data.'}'; return;
         }
         
         if(isset($authDecoded->SecurityToken) && isset($authDecoded->UserID)) {
@@ -71,6 +79,8 @@ class UserAuthorization {
                 echo '{"Success":true, "Message": "You have successfully logged in", "Data": {"SecurityToken": "'. $authDecoded->SecurityToken .'","AuthData": '.$authObj.'}}'; return;
         }
     }
+
+    
 
     public function UserRegistration() {
         $regData = Flight::request()->data;

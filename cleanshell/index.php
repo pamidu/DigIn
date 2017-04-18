@@ -34,10 +34,10 @@
 	<link rel="stylesheet" type="text/css" href="styles/icons/digin-main/digin-main.css">
 	<link rel="stylesheet" type="text/css" href="styles/icons/themify/themify-icons.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="styles/libs/directive_library.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/md-steppers/dist/md-steppers.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
 	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
+	<link rel="stylesheet" type="text/css" href="styles/libs/directive_library.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/ng-croppie.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/cellCursor.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/introjs.css">
@@ -622,6 +622,7 @@
 		<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
 		<script src="views/settings/theme/themeCtrl.js"></script>
 		<script src="views/dashboard/dashboardCtrl.js"></script>
+		<script src="views/dashboard/addWidget/addWidgetDashboardCtrl.js"></script>
 		<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
 		<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
 		<script src="views/user_assistance/user_assistanceCtrl.js"></script>

@@ -197,6 +197,23 @@ $scope.widgetFilePath = 'views/dashboard/widgets.html';
 		return {
 			visualizeData: function(ev){
 				$scope.$parent.route('visualize_data');
+			},
+			addWiget: function(ev){
+				$mdDialog.show({
+				  controller: 'addWidgetDashboardCtrl',
+				  templateUrl: 'views/dashboard/addWidget/addWidget.html',
+				  parent: angular.element(document.body),
+				  clickOutsideToClose:true,
+				  targetEvent: ev,
+				  fullscreen: useFullScreen
+				}).then(function(answer) {
+
+				}); 
+				$scope.$watch(function() {
+				  return $mdMedia('xs') || $mdMedia('sm');
+					}, function(wantsFullScreen) {
+					  $scope.customFullscreen = (wantsFullScreen === true);
+				});
 			},saveDashboard: function(ev){
 
 				$mdDialog.show({
@@ -621,8 +638,6 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 	}*/
 	
 }]);// END OF fullscreenCtrl
-
-
 
 DiginApp.directive('draggable', ['$document', function($document) {
     return {

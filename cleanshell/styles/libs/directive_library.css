@@ -392,3 +392,7 @@ ng-color-picker li.selected {
     border: 2px solid #333;
 }
 /*end of color picker styles*/
+
+.vAccordion--default v-pane-header{
+	margin-bottom: 0px;
+}

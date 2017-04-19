@@ -685,7 +685,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 				});
 				
 			}
-			else if(type == "MSSQL" || type == "Oracle"){
+			else if(type == "MSSQL" || type == "Oracle" || type == "hiveql"){
 
 				notifications.startLoading(ev,"Connections are loading ... ");
 				$scope.tabTitileFirst = "Select a connection";
@@ -777,7 +777,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 				if(status){
 					for(var i=0; i < data.length; i++){
 						for(var j=0; j < dataBaseFiledTypes.length; j++){
-							if(data[i].FieldType == dataBaseFiledTypes[j].type){
+							if((data[i].FieldType).toUpperCase() == (dataBaseFiledTypes[j].type).toUpperCase()){
 								var obj = {
 									"name": data[i].Fieldname,
 									"type": data[i].FieldType

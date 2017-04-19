@@ -31,5 +31,4 @@
 	// define("PAYMENT_GATWAY", "stripe"); 
 	// define("onsite", false); 
 	// define("isLocal", true);  //#isLocal: true when using local host, only for development; isLocal:false for sever implementation
-
 ?>

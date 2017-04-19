@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <?php 
-
      if ($_SERVER['DOCUMENT_ROOT']=="/var/www/html"){
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
         require_once($_SERVER['DOCUMENT_ROOT'] . "/include/session.php");
@@ -53,7 +52,6 @@
 	<div style="background:#2795d8;width:100%;height:100%;display:block" id="preload">
 		<div style=" position:fixed;top: 50%;left: 50%;width:30em;height:18em;margin-top: -9em;margin-left: -15em;">
 			<style>
-
 			#loadSection {
 				display: flex;
 				justify-content: center;
@@ -64,12 +62,10 @@
 				color: white;
 				margin-top: 40px;
 			}
-
 			section div {
 				transform: scale(0, 0);
 				animation: scaler 1.5s ease-in-out infinite;
 			}
-
 			.delay1 {
 				-webkit-animation-delay: .1s;
 				animation-delay: .1s;
@@ -94,13 +90,11 @@
 				-webkit-animation-delay: .6s;
 				animation-delay: .6s;
 			}
-
 			@media (max-width: 768px) {
 				section {
 					font-size: 50px;
 				}
 			}
-
 			@keyframes scaler {
 				0% {
 					transform: scale(0,0);
@@ -113,11 +107,9 @@
 				}
 			}
 			#diginLoaderLogo {
-
 				background-repeat:no-repeat;
 				width:300px;
 				z-index:5;
-
 				
 				-webkit-transform-origin: 0 0;
 				-ms-transform-origin: 0 0;
@@ -127,7 +119,6 @@
 				-webkit-animation: diginLogoAnimation 5s ease-in-out infinite alternate;
 				animation: diginLogoAnimation 5s ease-in-out infinite alternate;
 			}
-
 			@-webkit-keyframes diginLogoAnimation {
 				0% {
 					-webkit-transform: scale(1.0);
@@ -136,7 +127,6 @@
 					-webkit-transform: scale(1.05);
 				}
 			}
-
 			@keyframes diginLogoAnimation {
 				0% {
 					transform: scale(1.0);
@@ -150,12 +140,10 @@
 				-webkit-animation: fadeIn .8s forwards;
 				animation: fadeIn .8s forwards;
 			}
-
 			@keyframes fadeIn {
 				0% {opacity: 0;}
 				100% {opacity: 1;}
 			}
-
 			@-webkit-keyframes fadeIn {
 				0% {opacity: 0;}
 				100% {opacity: 1;}
@@ -165,12 +153,10 @@
 				-webkit-animation: fadeInFast .4s forwards;
 				animation: fadeInFast .8s forwards;
 			}
-
 			@keyframes fadeInFast {
 				0% {opacity: 0;}
 				100% {opacity: 1;}
 			}
-
 			@-webkit-keyframes fadeInFast {
 				0% {opacity: 0;}
 				100% {opacity: 1;}
@@ -180,12 +166,10 @@
 				-webkit-animation: fadeOutFast .4s forwards;
 				animation: fadeOutFast .8s forwards;
 			}
-
 			@keyframes fadeOutFast {
 				0% {opacity: 1;}
 				100% {opacity: 0;}
 			}
-
 			@-webkit-keyframes fadeOutFast {
 				0% {opacity: 1;}
 				100% {opacity: 0;}
@@ -194,16 +178,13 @@
 			/*.fade.ng-hide {
 			  opacity: 0;
 			}
-
 			.fade.ng-hide-remove,
 			.fade.ng-hide-add {
 			  display: block !important;
 			}
-
 			.fade.ng-hide-remove {
 			  transition: all linear 100ms;
 			}
-
 			.fade.ng-hide-add {
 			  transition: all linear 100ms;
 			}*/
@@ -234,7 +215,6 @@
 			.fadeSideMenuToggle.ng-hide-remove {
 			  display: block!important;
 			}
-
 		</style>
 		<center>
 			<img id="diginLoaderLogo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAEsCAMAAAAo4z2kAAAAUVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////8IN+deAAAAGnRSTlMA/fob9kT07+fXt6l44jbNw5SFTtzSn2hZGTlFDcsAAAh9SURBVHja7NxhahsxEIDR0TYlTRrcJqYU5v4H7ZKUEpo2stc71sZ+7wBiYT/0QyMUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFen3QSsrmVOAet3pSxKupq1gHW7UhYVXSmLiq6URUVXyqKiK2VR0ZWyqOhKWVR0pSwqulIWFV0pi4qulEVFV8qioitlUdGVsqjoSllUdKUsKrpSFhVdKYuKrpRFRVfKoqIrZTG+K2VxWFfKYhtdKYt+V8piO10pi/e7Uhbb6kpZ/L8rZbG+TGURscGwlMU/pLKYbTIsZfFGKovZRsPKDHgtlcVsu2Epi9dSWcy2HJayqAkrPwW8SGUx23hYyuK3VBYVsqflcXYBB4QVUx7nc8ABYSmLmrCiKYv1w1JWoS8Xe6qcPbGkrJ/xQdy3fNb2McDNBY8rsicWlfUQK2pvTS/unv2Ipab84zbOrV30HCx7oqCsoncGp5OWnuKs2oUPWLMnxpY15VFae4qD3eZszJ7VLn5ynz2xtKynrb+Cs8+/7OMsdrt2BVdCsmf5X34s+rq+adlmOMVZ3F3FXaPsieVlfR0VVraHRYvHWVzHJbbsiZFl5XLCGit7YmRZeQJhDZU9cVJZ9+PCSmGNlD1xWlnfx4WVO2GNkz1xYlnfxoWVj8L6xd6dbjcNg0EYnrETJ2ShodAWvvu/UCAs50DrSko1tlzP+7vHS/3ETrwpu9lhTSor3ti2xdMNhnUNb5b1MB8stniC1LCu4e2yvtRaOox0z1FZDV7SMaxrqCDrrIV17ZHlJzy6vAOhYUlg1ZC1V8FKLxZea5e3vzIsBSyBLBUs4FJ4SfpzF9e6z3glw1LAEsjSwcLhhTk3lmFdQyVZu2lg4dj82wYN6xoEspSwQMNqoTSsarKGaWBhMKwGSsMSyNLCgmE1UBpWRVkbwzKsP6GqLMMyrN+hqqzOsAzrV6gsq1FY/StTNywJrMqy2CKse5Zu4scPPzp3PyMfDas+rHJZzcH6wpKpd4znkVstrHO8EMlPaLQ0rPqy2oLVlVwwYozHJxmsXYzHNt/tk4YlkNUQLBZM/RKp2CtgbZY4RlYNWIjC2AisLQumfmJkxOqwuMzh19KwJLKksO6S8yrfxB9Z7a5Gza/uz2irNCyNrIXBYuTHj9VgMfI7oqnSsESylgSrj7JYCVYUdUZLpWGpZC0IFquOoyC7yL9BQ1WD1RfLWgwsRnFEBc6LHkE5DUsnSwVrVxdWFzc0vBnWYdljc6dhCWWJYG3qwoqbejOshQ8ZGamglLUEWEPth7ArPlPQ8JMjNWHhYxTGBcBivBD/FmOJ95Mk2fKxsCosbItltQ8rY7/wRAms9KXIezZ7LEzDEstaHqw9XmhHLSxipJXAukHWwmARI+2UsPaLu72rNixs3zcsYrROB4sYr1sJLDy9a1gfMB5lsPBaa4GF03uGBcOaDRZOM8OiDhYNa0ZYOBmWYSlg4d6wDEsBC4+GZVgKWDgalmEpYOFoWIalgIWDYRmWAhYuhmVYCli4MyzDUsDCnWEZlgIW7gzLsBSw8MGwDEsBC2fDMiwFLOwNy7AUsLA3LMNSwMLesAxLAQs7wzIsBSwMhmVYClgYDMuwFLAwGJZhKWCBhmVYgiWl91iGJYBFf8cyLAEsruNXYRjWtLC4kvNYhjUtLK7lzLthTQqLq7lWaFhTwuJ67m4wrAlhcUX3YxnWZLD6Vd2abFhTwdqu62EKw5oI1mllj38Z1jSwjmt7YNWwJoF1Wd0j9oY1Bazz+l4KYlgTwNqt8DVGhqWH1cWMsMKw5k8DizEjLBpWA0lgMeaDdYj/gmFltQBYDBms8nlvDCurBcBizAZrSCy/FBYNSwqLMResM+NZx7qwYofRwrCUsBg6WKWqIojKsKLDSA+GpYTFEMIaMNKXsdmiOqxgjxfaMgxLCCtCCKs8CmBF8IB/OzIiDEsHq6+96QWuijfxYWxE5t3Xy8CfRYRhKWFtq296gSvBePKGpYV1ku5SyjujDiwY1qywjspdSnnsUQvW2bBmhHUncAXFYbAcFmhYs8E6S7a95DBYDgt7w5oJ1nCLKxmsT0BdWAANaw5YnexYpZlwOSwcDGt6WIziOmhg9Teu/AbJNgJYfMz4K37NXQt+QytFKo2rAQpYKKx0cVgZFnOWjR9z14JoqEglcbWHABaKK2F1rWeMxzJY/ILXesYqvRZNFakUrh7QRjdtkE9kPO+Y/5WtYD/EPnMteEFjRSqBqwMaqebnPB8WIzZZE2PubPmE5opU9V19QislWIlgHe6RURCZNfSNvQRWdVcNfroqFW3+8M+rLVhR3hbvNsOqBKuP8nq83wyrDqxt5LSi/zbXs6rKTpFbm2fwABhWgx3tyrAEPdiVYQna29X39u41J2EggMLojOJbSTTGmNn/QhVi/CVCsdc+5pwdNPkgzfQWhBVwrSthBVRdOW7Y0dV/qMLS1ei2tasju73pu7oo6/ZeezsL3pm+q5lN0M63rbV6yPBl+q5uy1rUJY7OluGMru7Karir/DZ9Vyv65G50FdKWPBf9OyuOjMs23GNZj+d2sm3hZFe9z0Xr4t5CWoSX7uei7q8S7rufi9Z2kk3B/Gr0L6ybgvnVIK/tqPpUGGSjq1K7u+LfmDOMprfr/YmuWABd8UlXLIOu2Jk+rLXPRRk7LCfPjKjbuShZ3c5FyWpDzO4nVpmtNsBbgRN1OhclrdO5KGmdzkVJ63MuSpzHOEToighdEaErInRFhK6I0BURuuIgrz0xO+aiRJiLEtEOey1wLnNRIsxFiTAXJcJclAhzUSLMRYlw3E6ErojQFRG6IkJXROiKCF0RoSsidEWEuSgR/tiKCHNRIsxFiWh7DwVGZS5KhLkoEeaiRJiLAgAAAAAAAAAAAAAAAAAAAMBxH2VN+JIi4H0pAAAAAElFTkSuQmCC"/>

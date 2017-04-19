@@ -65,9 +65,10 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
 			selectedAttributes: '=',
 			widgetConfig: '=',
 			chartType: '=',
-			submitForm: '&'
+			submitForm: '&',
           },
          link: function(scope,element){
+
          	if (angular.equals(scope.widgetConfig, {})) {
 				scope.widgetConfig = generateHighchart.initializeChartObject(scope.chartType);
 				var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
@@ -75,6 +76,10 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
          	}
 			scope.submit = function()
 			{
+				// set the sries colour from settingsConfig
+				  for(var i=0; i < scope.widgetConfig.series.length; i++){
+				  	scope.widgetConfig.series[i].color = scope.highchartSetting.seriescolourArr[i].color;
+				  }
 				if(scope.hightChartSettingsForm.$valid)
 				{
 					scope.submitForm();
@@ -87,6 +92,7 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
 			{
 				scope.submitForm();
 			}
+
          } //end of link
     };
 }]);

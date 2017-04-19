@@ -75,6 +75,19 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 		pushObj.aggType = aggregation;
 		
 		$scope.selectedSeries.push(pushObj);
+
+
+		var obj = {
+			"disName":item.name,
+			"name": item.name,
+			"color": "rgb(250,250,250)"
+		};
+
+		if(typeof $scope.settingConfig.seriescolourArr == "undefined"){
+			$scope.settingConfig["seriescolourArr"] = [];
+		}
+		$scope.settingConfig.seriescolourArr.push(obj);
+
 		if($scope.selectedCategory.length > 0)
 		{
 			addGenerateBtnAnimation()
@@ -135,6 +148,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.removeFromSeries = function(index)
 	{
 		$scope.selectedSeries.splice(index, 1);
+		$scope.settingConfig.seriescolourArr.splice(index, 1);
 	}
 	
 	//remove to selectedCategory
@@ -375,6 +389,12 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					} 
 					var isCreate = true; 
 					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
+							
+
+						 // set the sries colour from settingsConfig
+						  for(var i=0; i < data.series.length; i++){
+						  	data.series[i].color = $scope.settingConfig.seriescolourArr[i].color
+						  }
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
 						bindChart();
@@ -482,7 +502,10 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				
 					 generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,"", function (data){
 
+
 					  $scope.widgetConfig = data;
+
+
 					  $scope.showChartLoading = false;
 					  $scope.showPlaceholderIcon = false;
 					  newElement = $compile('<tabular id-selector="'+widgetID+'" config="widgetConfig" tabular-settings="settingConfig"></tabular>')($scope);

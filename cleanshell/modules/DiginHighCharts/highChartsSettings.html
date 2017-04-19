@@ -25,7 +25,7 @@
 		</div>
 		<div layout-gt-sm="row" class="side-margins">
 			<v-accordion class="vAccordion--default" flex style="border: 1px solid #ccc;padding: 10px;border-radius:4px" ng-hide="widgetConfig.options.chart.type == 'pie' || widgetConfig.options.chart.type == 'funnel' || widgetConfig.options.chart.type == 'pyramid' ">
-			  <v-pane ng-repeat="series in widgetConfig.series">
+			  <v-pane ng-repeat="series in highchartSetting.seriescolourArr">
 				<v-pane-header>
 				  {{series.name}}
 				</v-pane-header>

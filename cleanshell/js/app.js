@@ -212,17 +212,32 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 }])
 
 //Check if the Application has internet access or not
-DiginApp.run(['$window', '$rootScope',function($window, $rootScope) {
-      $rootScope.online = navigator.onLine;
-      $window.addEventListener("offline", function() {
-        $rootScope.$apply(function() {
-          $rootScope.online = false;
-        });
-      }, false);
+DiginApp.run(['$window', '$rootScope','pouchDB','PouchServices','colorManager',function($window, $rootScope,pouchDB,PouchServices,colorManager) {
+	var pouchdbName = 'localPouch';
+	$rootScope.theme = "default";
+	
+	$rootScope.localDb  = new pouchDB(pouchdbName);
+	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
+	  $rootScope.online = navigator.onLine;
+	  $window.addEventListener("offline", function() {
+		$rootScope.$apply(function() {
+		  $rootScope.online = false;
+		});
+	  }, false);
 
-      $window.addEventListener("online", function() {
-        $rootScope.$apply(function() {
-          $rootScope.online = true;
-        });
-      }, false);
+	  $window.addEventListener("online", function() {
+		$rootScope.$apply(function() {
+		  $rootScope.online = true;
+		});
+	  }, false);
+	  
+	PouchServices.getUserSettings().then(function(data) {
+		if(data)
+		{
+			$rootScope.theme = data.theme_config;
+
+			//color the UI
+			colorManager.changeTheme($rootScope.theme);
+		}
+	})
 }]);

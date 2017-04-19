@@ -1,9 +1,7 @@
-DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$mdMedia','$mdSidenav','layoutManager', 'notifications', 'DiginServices','colorManager', '$timeout', 
-	'$mdSelect','$mdMenu','$window','pouchDB','PouchServices', 'IsLocal','dialogService','$log','filterServices','DiginDashboardSavingServices','version',function ($scope,$rootScope , $state,$mdDialog, $mdMedia,$mdSidenav,
-		layoutManager,notifications,DiginServices,colorManager,$timeout,$mdSelect,$mdMenu,$window,pouchDB,PouchServices,IsLocal,dialogService,$log,filterServices,DiginDashboardSavingServices,version) {
+DiginApp.controller('NavCtrl', [
+		  '$scope','$rootScope','$state','$mdDialog','$mdMedia','$mdSidenav','layoutManager','notifications','DiginServices','colorManager','$timeout','$mdSelect','$mdMenu','$window','pouchDB','PouchServices','IsLocal','dialogService','$log','filterServices','DiginDashboardSavingServices','version',
+function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  layoutManager,  notifications,  DiginServices,  colorManager,  $timeout,  $mdSelect,  $mdMenu,  $window,  pouchDB,  PouchServices,  IsLocal,  dialogService,  $log,  filterServices,  DiginDashboardSavingServices,  version) {
 
-	//$auth.checkSession();
-	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
 	
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
@@ -346,13 +344,15 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 
 					//color the UI
 					colorManager.changeTheme($rootScope.theme);
-
-					//Go To Default Dashboard if it exsist
-					var obj = JSON.parse($scope.userSettings.components);
-					if(obj.dashboardId !== null) {
-						//getDashboard(obj.dashboardId);
-						$scope.data.defaultDashboard = obj.dashboardId;
-						oldDefaultDashboard = angular.copy(obj.dashboardId);
+					if($scope.userSettings.components)
+					{
+						//Go To Default Dashboard if it exsist
+						var obj = JSON.parse($scope.userSettings.components);
+						if(obj.dashboardId !== null) {
+							//getDashboard(null, obj.dashboardId);
+							$scope.data.defaultDashboard = obj.dashboardId;
+							oldDefaultDashboard = angular.copy(obj.dashboardId);
+						}
 					}
 				}
             });
@@ -377,7 +377,6 @@ DiginApp.controller('NavCtrl', ['$scope','$rootScope', '$state', '$mdDialog', '$
 			});
 		}
 		PouchServices.getUserSettings().then(function(data) {
-			console.log(data);
 			if(data)
 			{
 				$scope.userSettings = data;

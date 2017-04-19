@@ -844,7 +844,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			  'selectedAttributes': [],
 			  'selectedMeasures': [],
 			  'widget':widget,
-			  'chartType':{}
+			  'chartType': 0
 			});
 		}
 

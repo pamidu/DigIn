@@ -11,6 +11,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 	$scope.selectedMeasures = $stateParams.allMeasures;
 	$scope.selectedFile = $stateParams.selectedFile;
 	$scope.selectedDB = $stateParams.selectedDB;
+	console.log($stateParams.chartType);
 	
 	//The variables that contain the series and category data
 	$scope.selectedSeries = $stateParams.selectedMeasures;
@@ -321,7 +322,7 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 				$scope.showPlaceholderIcon = true;
 			}
 		}else{
-			$scope.chartType = $scope.chartTypes[0]; // set default chart
+			$scope.chartType = $scope.chartTypes[$stateParams.chartType]; // set default chart
 			
 			widgetID = "temp" + createuuid();
 			

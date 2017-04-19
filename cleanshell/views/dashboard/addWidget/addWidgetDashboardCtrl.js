@@ -91,13 +91,8 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 
 	}
 	
-	$scope.selectChartType = function()
+	$scope.selectChartType = function(chartIndex)
 	{
-		loadChartDesinger($scope.selectedFile);
-	}
-	
-	var loadChartDesinger = function(selectedFile){
-		console.log(selectedFile);
 			var widgetData = {
 			'chartType' : null,
 			'selectedFile' : null,
@@ -129,14 +124,14 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 		{ 
 		  'allAttributes': $scope.attributes, 
 		  'allMeasures':$scope.measures, 
-		  'selectedFile':selectedFile, 
+		  'selectedFile':$scope.selectedFile, 
 		  'DesignTimeFilter': [],
 		  'RuntimeFilter': [],
 		  'selectedDB': $scope.selectedDB,
 		  'selectedAttributes': [],
 		  'selectedMeasures': [],
 		  'widget':widget,
-		  'chartType':{}
+		  'chartType':chartIndex
 		});
 		
 		$mdDialog.hide();

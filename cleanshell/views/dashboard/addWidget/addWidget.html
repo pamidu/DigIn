@@ -55,7 +55,7 @@
 
 						<v-pane-content>
 							<md-list id="widgetsTypesContainer">
-								<md-list-item ng-repeat="chart in chartTypes"  ng-click="selectChartType()" ng-if="key == 0">
+								<md-list-item ng-repeat="chart in chartTypes"  ng-click="selectChartType($index)" ng-if="key == 0">
 									<small-chart-icons></small-chart-icons>
 									<span style="margin-left:20px">{{chart.name}}</span>
 								 </md-list-item>

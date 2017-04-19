@@ -11,8 +11,6 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	$timeout(function() {
 		colorManager.reinforceTheme();
 	},100)
-	
-$scope.widgetFilePath = 'views/dashboard/widgets.html';
 
 	// dashboardId is retrived from the stateParams
 	$scope.dashboardId = $stateParams.id;

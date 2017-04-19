@@ -1,0 +1,30 @@
+{
+  "name": "cleanshell",
+  "version": "1.0.0",
+  "description": "Know everything your data is telling you with the platform that gives you everything.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuoSoftware/DigIn.git"
+  },
+  "author": "Dilshan Liyanage",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DuoSoftware/DigIn/issues"
+  },
+  "homepage": "https://github.com/DuoSoftware/DigIn#readme",
+  "dependencies": {
+    "gulp-install": "^1.1.0"
+  },
+  "devDependencies": {
+    "gulp-angular-templatecache": "^2.0.0",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-install": "^1.1.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-useref": "^3.1.2"
+  }
+}

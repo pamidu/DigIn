@@ -509,14 +509,13 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 			}
 		};
 
-		$scope.UploadWithUpdate = function(stepData) {
+		$scope.UploadWithUpdate = function(ev, stepData) {
 			if ($scope.files.length <= 0) {
 				notifications.toast(0, "Please add a file!");
 				return;
 			}
 			//$location.hash('report-top');
 			$anchorScroll();
-			var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
 			$scope.insertPreLoader = true;
 			if ($scope.selectedPath == "File") {
 				$scope.folderName = '';
@@ -529,7 +528,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 					$scope.folder_type = 'new';
 				}
 			}
+			
 			for (var i = 0; i < $scope.files.length; i++) {
+				
+				notifications.startLoading(ev,"Uploading file!");
 				Upload.upload({
 					url: Digin_Engine_API + 'insert_data',
 					headers: {
@@ -538,7 +540,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 					data: {
 						schema: JSON.stringify($scope.schema),
 						db: dbType,
-						SecurityToken: userInfo.SecurityToken,
+						SecurityToken: $rootScope.authObject.SecurityToken,
 						filename: $scope.files[i].name,
 						folder_name: $scope.folderName.toLowerCase(),
 						folder_type: $scope.folder_type,
@@ -559,11 +561,13 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 						$scope.diginLogo = 'digin-logo-wrapper2';
 					}
 					console.log(data);
+					notifications.finishLoading();
 				}, function (data) {
 					$scope.insertPreLoader = false;
 					uploadFlag = false;
 					notifications.toast(0, "Error Uploading File!");
 					$scope.diginLogo = 'digin-logo-wrapper2';
+					notifications.finishLoading();
 				});
 			}
 		};

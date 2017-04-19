@@ -23,7 +23,7 @@ md-steppers-content-wrapper{
 							<img hide-sm hide-xs ng-src="views/user_assistance/upload/magic-wand.png" />
 						</div>
 						<div class="slide-up">
-							<p>Welcome to <b>Digin</b>, This wizard will guide you through the process of uploading an CSV file, using that file to create a basic <i>bar-chart</i> and later adding it to your dashboard.</p>
+							<p>This wizard will guide you through the process of uploading a CSV file or uploading multiple CSV files into a folder</p>
 						</div>
 					</div>
 				</div>
@@ -55,7 +55,7 @@ md-steppers-content-wrapper{
 							<div flex class="side-margins" style="padding-top: 30px;">
 								<md-input-container class="md-block" flex-gt-sm="90">
 									<span>Folder Name:</span>
-									<input required name="folderName" ng-model="folderName" ng-disabled="newCollection" aria-label="folder name" ng-pattern='/^\w+$/'>
+									<input required name="folderName" ng-model="folderName" ng-disabled="newCollection" aria-label="folder name" is-disabled-dark ng-pattern='/^\w+$/'>
 									<div ng-messages="step1.folderName.$error">
 										<div ng-message="required">This is required.</div>
 										<div ng-message="pattern">Invalid Folder Name.</div>
@@ -65,8 +65,8 @@ md-steppers-content-wrapper{
 						   
 							<div flex class="side-margins" style="padding-top: 30px;overflow-x: scroll;max-height: 200px;">
 								<md-content>
-									<md-radio-group class="effect-radio-group" ng-model="selectedFolder" aria-label="folder or file" ng-disabled="!newCollection">
-										<md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder" style="outline:none"> {{folder.name}}  </md-radio-button>
+									<md-radio-group class="effect-radio-group" ng-model="selectedFolder" aria-label="folder or file">
+										<md-radio-button ng-click="selectFile(folder)" ng-class="effect-btn" ng-repeat="folder in Folders" ng-value="folder" style="outline:none" ng-disabled="true"> {{folder.name}}  </md-radio-button>
 									</md-radio-group>
 								</md-content>
 							</div>
@@ -133,7 +133,7 @@ md-steppers-content-wrapper{
 							<svg class="circular-loader" height="50" width="50" ng-show="uploadPreLoader">
 								<circle class="path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="6" stroke-miterlimit="10" />
 							</svg>
-							<md-button class="md-raised md-primary" ng-click="UploadWithUpdate(stepData[1])" ng-disabled="showBusyText || preloader || insertPreLoader || uploadPreLoader" aria-label="upload">NEXT</md-button>
+							<md-button class="md-raised md-primary" ng-click="UploadWithUpdate(ev, stepData[1])" ng-disabled="showBusyText || preloader || insertPreLoader || uploadPreLoader" aria-label="upload">NEXT</md-button>
 						</div>
 					</form>
 				</md-content>

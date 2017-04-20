@@ -4,6 +4,7 @@ var gulp = require('gulp'),
 	htmlmin = require('gulp-htmlmin'),
 	templateCache = require('gulp-angular-templatecache'),
 	useref = require('gulp-useref');
+	browserSync = require('browser-sync');
 	
 	
 gulp.task('minify-html', function(cb) {
@@ -98,6 +99,26 @@ gulp.task('moveDiginMainIcons', [], function() {
 gulp.task('moveThemifyIcons', [], function() {
   gulp.src("styles/icons/themify/**")
       .pipe(gulp.dest('dist/styles'));
+});
+
+gulp.task('watch', function()
+{
+	browserSync({
+		server: {
+			baseDir: 'C:/wamp64/www/DigIn',
+			port: 8080
+		}
+	})
+	
+	gulp.watch('js/**/*.js', ['filechange-watch']);
+	gulp.watch('css/**.css', ['filechange-watch']);
+	gulp.watch('partials/**.html', ['filechange-watch']);
+});
+
+
+gulp.task('filechange-watch', function()
+{
+	return browserSync.reload();
 });
 
 gulp.task('moveItems', ['moveIndex','moveLibraries','moveImages','moveDialogs','moveModules','moveConfig','moveSounds','moveViews','moveJsons','moveWebWorker','moveDiginMainIcons','moveThemifyIcons']);

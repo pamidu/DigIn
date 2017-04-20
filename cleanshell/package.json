@@ -20,6 +20,8 @@
     "gulp-install": "^1.1.0"
   },
   "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-clean-css": "^3.0.4",
     "gulp-htmlmin": "^3.0.0",

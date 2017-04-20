@@ -29,8 +29,8 @@
 								<md-button class="md-icon-button ti-settings hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
-								<md-menu md-position-mode="target-right target hover-color">
-									<md-button class="md-icon-button ti-filter shake"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
+								<md-menu md-position-mode="target-right target hover-color"><!--shake-->
+									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
 									<md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">

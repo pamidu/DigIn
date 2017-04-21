@@ -67,7 +67,7 @@
 <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
 <script src="bower_components/angular/angular-cookies.min.js"></script>
-<script type="text/javascript" src="../shell/scripts/config.js"></script>
+<script type="text/javascript" src="../cleanshell/js/config.js"></script>
 <script type="text/javascript" src="entry.js"></script>
 
 

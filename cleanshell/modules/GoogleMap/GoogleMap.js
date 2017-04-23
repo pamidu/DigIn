@@ -74,7 +74,7 @@ GoogleMapModule.directive('googleMap', ['NgMap','$timeout','$http','$state', fun
   };
 }]);
 
-DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications', function($rootScope,notifications) {
+DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications','dialogService', function($rootScope,notifications,dialogService) {
     return {
          restrict: 'E',
          templateUrl: 'modules/GoogleMap/googleMapSettings.html',
@@ -100,6 +100,20 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
 			scope.restoreSettings = function()
 			{
 				scope.submitForm();
+			}
+			
+			scope.cancelSettings = function(ev)
+			{
+				dialogService.confirmDialog(ev,"Unsaved Changes","You have unsaved changes in settings, are you sure you want to close?", "yes","cancel").then(function(answer) {
+					if(answer == "yes")
+					{
+						scope.submitForm();
+					}
+					else if(answer == "no")
+					{
+						notifications.toast(0,"you said cancel");
+					}
+				});
 			}
          } //end of link
     };

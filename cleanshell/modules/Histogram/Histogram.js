@@ -1,17 +1,17 @@
 /*!
-* DiginHighCharts: v0.0.1
+* Histogram: v0.0.1
 * Authour: Dilshan
 */
 
 'use strict';
 
-var WhatIfModule = angular.module('WidgetTemplate',['DiginServiceLibrary']);
+var WhatIfModule = angular.module('Histogram',['DiginServiceLibrary']);
 
 
-WhatIfModule.directive('widgetTemplate',['$rootScope','notifications','generateWidgetTemplate', function($rootScope,notifications,generateWidgetTemplate) {
+WhatIfModule.directive('histogram',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/WidgetTemplate/widgetTemplate.html',
+         templateUrl: 'modules/Histogram/histogram.html',
          scope: {
            widgetTemplateObj: '='
           },
@@ -21,22 +21,22 @@ WhatIfModule.directive('widgetTemplate',['$rootScope','notifications','generateW
     };
 }]);
 
-WhatIfModule.directive('widgetTemplateSettings',['$rootScope','notifications','generateWidgetTemplate', function($rootScope,notifications,generateWidgetTemplate) {
+WhatIfModule.directive('histogramSettings',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/WidgetTemplate/widgetTemplateSettings.html',
+         templateUrl: 'modules/Histogram/histogramSettings.html',
          scope: {
-			widgetTemplateSettings: '=',
+			histogramSettings: '=',
 			submitForm: '&'
           },
          link: function(scope,element){
 			 
-			console.log(scope.widgetTemplateSettings);
+			console.log(scope.histogramSettings);
 			scope.submit = function()
 			{
-				if(scope.widgetTemplateSettingsForm.$valid)
+				if(scope.histogramSettingsForm.$valid)
 				{
-					console.log(scope.widgetTemplateSettings);
+					console.log(scope.histogramSettings);
 					scope.submitForm();
 				}else{
 					console.log("invalid");
@@ -51,13 +51,13 @@ WhatIfModule.directive('widgetTemplateSettings',['$rootScope','notifications','g
     };
 }]);
 
-WhatIfModule.factory('generateWidgetTemplate', ['$rootScope','notifications', function($rootScope,notifications) {
+WhatIfModule.factory('generateHistogram', ['$rootScope','notifications', function($rootScope,notifications) {
     
 
     return {
-		generateWidgetTemplate : function(param) {
+		generate : function(param) {
 			return true;
-        },widgetTemplateValidations: function(){
+        },histogramValidations: function(){
 			
 			var isChartConditionsOk = false;
 

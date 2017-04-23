@@ -9,3 +9,9 @@
 <metric-settings ng-if="$parent.chartType.chartType == 'metric'" metric-settings="$parent.$parent.settingConfig"  attr="$parent.$parent.dateAttributes" submit-form="toggleSettings()"></metric-settings>
 
 <tabular-settings ng-if="$parent.chartType.chartType == 'tabular'" tabular-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></tabular-settings>
+
+<boxplot-settings ng-if="$parent.chartType.chartType == 'boxplot'" boxplot-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></boxplot-settings>
+
+<bubble-settings ng-if="$parent.chartType.chartType == 'bubble'" bubble-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></bubble-settings>
+
+<histogram-settings ng-if="$parent.chartType.chartType == 'histogram'" histogram-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></histogram-settings>

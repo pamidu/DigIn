@@ -1,8 +1,7 @@
-DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$mdDialog', '$stateParams','$diginengine','dbType','$compile',
-	'$element','DiginServices','generateHighchart', 'generateGoogleMap','generateForecast','generateMetric','generateTabular','generateWhatIf',
-	'$timeout','NgMap','notifications','$mdMedia', 'filterServices', 
-	 function ($scope,$rootScope,$mdSidenav,$mdDialog, $stateParams, $diginengine, dbType,$compile,$element,DiginServices,generateHighchart,
-	 generateGoogleMap,generateForecast,generateMetric,generateTabular,generateWhatIf,$timeout,NgMap,notifications,$mdMedia,filterServices){
+DiginApp.controller('query_builderCtrl',[ 
+			 '$scope','$rootScope','$mdSidenav','$mdDialog','$stateParams','$diginengine','dbType','$compile','$element','DiginServices','generateHighchart','generateGoogleMap','generateForecast','generateMetric','generateTabular','generateWhatIf','generateBoxplot','generateBubble','generateHistogram','$timeout','NgMap','notifications','$mdMedia','filterServices', 
+	function ($scope,  $rootScope,  $mdSidenav,  $mdDialog,  $stateParams,  $diginengine,  dbType,  $compile,  $element,  DiginServices,  generateHighchart,  generateGoogleMap,  generateForecast,  generateMetric,  generateTabular,  generateWhatIf,  generateBoxplot,  generateBubble,  generateHistogram,  $timeout,  NgMap,  notifications,  $mdMedia,  filterServices){
+	
 	$scope.$parent.currentView = "Chart Designer";
 	var newElement = "";
 	
@@ -516,6 +515,24 @@ DiginApp.controller('query_builderCtrl',[ '$scope','$rootScope','$mdSidenav','$m
 					$scope.showChartLoading = false;
 					$scope.showPlaceholderIcon = true;
 				}
+			}else if($scope.chartType.chartType == 'boxplot')
+			{
+				$scope.showChartLoading = false;
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<boxplot id-selector="'+widgetID+'" config="widgetConfig" boxplot-settings="settingConfig"></boxplot>')($scope);
+				$element.find('.currentChart').append(newElement);
+			}else if($scope.chartType.chartType == 'bubble')
+			{
+				$scope.showChartLoading = false;
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<bubble id-selector="'+widgetID+'" config="widgetConfig" bubble-settings="settingConfig"></bubble>')($scope);
+				$element.find('.currentChart').append(newElement);
+			}else if($scope.chartType.chartType == 'histogram')
+			{
+				$scope.showChartLoading = false;
+				$scope.showPlaceholderIcon = false;
+				newElement = $compile('<histogram id-selector="'+widgetID+'" config="widgetConfig" histogram-settings="settingConfig"></histogram>')($scope);
+				$element.find('.currentChart').append(newElement);
 			}
 		
 		

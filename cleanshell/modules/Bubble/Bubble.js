@@ -1,19 +1,19 @@
 /*!
-* DiginHighCharts: v0.0.1
+* Bubble Chart: v0.0.1
 * Authour: Dilshan
 */
 
 'use strict';
 
-var WhatIfModule = angular.module('WidgetTemplate',['DiginServiceLibrary']);
+var WhatIfModule = angular.module('Bubble',['DiginServiceLibrary']);
 
 
-WhatIfModule.directive('widgetTemplate',['$rootScope','notifications','generateWidgetTemplate', function($rootScope,notifications,generateWidgetTemplate) {
+WhatIfModule.directive('bubble',['$rootScope','notifications','generateBubble', function($rootScope,notifications,generateBubble) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/WidgetTemplate/widgetTemplate.html',
+         templateUrl: 'modules/Bubble/bubble.html',
          scope: {
-           widgetTemplateObj: '='
+           bubbleObj: '='
           },
          link: function(scope,element){
 
@@ -21,22 +21,22 @@ WhatIfModule.directive('widgetTemplate',['$rootScope','notifications','generateW
     };
 }]);
 
-WhatIfModule.directive('widgetTemplateSettings',['$rootScope','notifications','generateWidgetTemplate', function($rootScope,notifications,generateWidgetTemplate) {
+WhatIfModule.directive('bubbleSettings',['$rootScope','notifications','generateBubble', function($rootScope,notifications,generateBubble) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/WidgetTemplate/widgetTemplateSettings.html',
+         templateUrl: 'modules/Bubble/bubbleSettings.html',
          scope: {
-			widgetTemplateSettings: '=',
+			bubbleSettings: '=',
 			submitForm: '&'
           },
          link: function(scope,element){
 			 
-			console.log(scope.widgetTemplateSettings);
+			console.log(scope.bubbleSettings);
 			scope.submit = function()
 			{
-				if(scope.widgetTemplateSettingsForm.$valid)
+				if(scope.bubbleSettingsForm.$valid)
 				{
-					console.log(scope.widgetTemplateSettings);
+					console.log(scope.bubbleSettings);
 					scope.submitForm();
 				}else{
 					console.log("invalid");
@@ -51,13 +51,13 @@ WhatIfModule.directive('widgetTemplateSettings',['$rootScope','notifications','g
     };
 }]);
 
-WhatIfModule.factory('generateWidgetTemplate', ['$rootScope','notifications', function($rootScope,notifications) {
+WhatIfModule.factory('generateBubble', ['$rootScope','notifications', function($rootScope,notifications) {
     
 
     return {
-		generateWidgetTemplate : function(param) {
+		generate : function(param) {
 			return true;
-        },widgetTemplateValidations: function(){
+        },bubbleValidations: function(){
 			
 			var isChartConditionsOk = false;
 

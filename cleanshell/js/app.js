@@ -24,6 +24,9 @@ var DiginApp = angular.module('DuoDiginRt',
 		'Metric',
 		'Tabular',
 		'WhatIf',
+		'Boxplot',
+		'Bubble',
+		'Histogram',
 		'DiginServiceLibrary'
 	]
 );

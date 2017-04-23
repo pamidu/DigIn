@@ -572,6 +572,9 @@
 		<script src="modules/WhatIf/WhatIf.js"></script>
 		<script src="modules/Metric/Metric.js"></script>
 		<script src="modules/Tabular/Tabular.js"></script>
+		<script src="modules/Boxplot/Boxplot.js"></script>
+		<script src="modules/Bubble/Bubble.js"></script>
+		<script src="modules/Histogram/Histogram.js"></script>
 		<!--DigIn Widget Modules-->
 		
 		<!--DigIn Service Modules-->

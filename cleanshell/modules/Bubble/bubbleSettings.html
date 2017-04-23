@@ -1,4 +1,4 @@
-<form name="widgetTemplateSettingsForm" ng-submit="submit()">
+<form name="bubbleSettingsForm" ng-submit="submit()">
 
 	<div id="widget_settings_header" ng-include="'views/query_builder/widget_settings_header.html'"></div>
 	
@@ -6,8 +6,8 @@
 		<div layout-gt-sm="row" class="side-margins">
 			<md-input-container class="md-block" flex-gt-sm>
 				<span>Widget Name</span>
-				<input required type="text" name="name" ng-model="widgetTemplateSettings.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
-				<div ng-messages="widgetTemplateSettingsForm.name.$error" role="alert">
+				<input required type="text" name="name" ng-model="bubbleSettings.widgetName"  ng-disabled="false"  is-disabled-dark aria-label="name"/>
+				<div ng-messages="bubbleSettingsForm.name.$error" role="alert">
 					<div ng-message-exp="['required']">
 						Widget name is required
 					</div>

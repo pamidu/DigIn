@@ -29,18 +29,14 @@
 						<text style="font-size:25px;font-weight: 500px;letter-spacing: 1px;" 
 							    ng-if="settings.scalePosition==='Front'" ng-change="">
 							   		{{settings.scale}} 
-							   		&nbsp;{{settings.actualDisplayValue | currency:"":settings.decimal}}
-							   		{{settings.format=="Thousand"?"K":""}}
-						        	{{settings.format=="Million"?"M":""}}
-						        	{{settings.format=="Billion"?"B":""}} 
+							   		{{settings.actualDisplayValue | currency:"":settings.decimal}}
+							   		{{settings.format=="Thousand"?"K":settings.format=="Million"?"M":settings.format=="Billion"?"B":""}}
 						</text>
 						<text   style="font-size:25px;font-weight: 500px; letter-spacing: 1px;" 
 						        ng-if="settings.scalePosition==='Back'" >
 						        	{{settings.actualDisplayValue | currency:"":settings.decimal}}
-						        	{{settings.format=="Thousand"?"K":""}}
-						        	{{settings.format=="Million"?"M":""}}
-						        	{{settings.format=="Billion"?"B":""}} 
-						        	&nbsp;{{settings.scale}}
+						        	{{settings.format=="Thousand"?"K":settings.format=="Million"?"M":settings.format=="Billion"?"B":""}}
+						        	{{settings.scale}}
 						</text>
 						<text style="font-size:16px; font-weight: 400px;">Actual Value</text>
 					</div>
@@ -53,17 +49,13 @@
 						<text 	style="font-size:25px;font-weight: 500; letter-spacing: 1px;" 
 								ng-if="settings.scalePosition==='Front'">					
 									{{settings.scale}} 
-									&nbsp;{{settings.targetDisplayValue | currency:"":settings.decimal}}												      
-									{{settings.format=="Thousand"?"K":""}}
-						        	{{settings.format=="Million"?"M":""}}
-						        	{{settings.format=="Billion"?"B":""}} 
+									{{settings.targetDisplayValue | currency:"":settings.decimal}}						      
+									{{settings.format=="Thousand"?"K":settings.format=="Million"?"M":settings.format=="Billion"?"B":""}}
 						</text>
 						<text 	style="font-size:25px;font-weight: 500;letter-spacing: 1px;" 
 								ng-if="settings.scalePosition==='Back'">															{{settings.targetDisplayValue | currency:"":settings.decimal}}	 						        	
-								{{settings.format=="Thousand"?"K":""}}
-						        {{settings.format=="Million"?"M":""}}
-						        {{settings.format=="Billion"?"B":""}}  
-						        &nbsp;{{settings.scale}}
+								{{settings.format=="Thousand"?"K":settings.format=="Million"?"M":settings.format=="Billion"?"B":""}} 
+						        {{settings.scale}}
 						</text>
 						<text style="font-size:16px; font-weight: 400px; ">Target Value</text>
 					</div>

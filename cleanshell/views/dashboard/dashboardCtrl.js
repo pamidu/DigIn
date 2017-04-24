@@ -51,7 +51,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 		resizable: {
 			enabled: true,
 			handles: ['n', 'e', 's', 'w', 'se', 'sw', 'ne', 'nw'],
-			  stop: function(event,$element,widget){
+			  resize: function(event,$element,widget){
 				$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
 				$rootScope.$broadcast('widget-resized', { element: $element, widget: widget });
 			}
@@ -69,21 +69,6 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 		saveGridItemCalculatedHeightInMobile: false, // grid item height in mobile display. true- to use the calculated height by sizeY given
 
 	};
-	
-	//only for testing purpose
-	$scope.standardItems = [
-	  { sizeX: 2, sizeY: 1},
-	  { sizeX: 2, sizeY: 2},
-	  { sizeX: 1, sizeY: 1},
-	  { sizeX: 1, sizeY: 1},
-	  { sizeX: 2, sizeY: 1},
-	  { sizeX: 1, sizeY: 1},
-	  { sizeX: 1, sizeY: 2},
-	  { sizeX: 1, sizeY: 1},
-	  { sizeX: 2, sizeY: 1},
-	  { sizeX: 1, sizeY: 1},
-	  { sizeX: 1, sizeY: 1}
-	];
 	
 	$scope.removePage = function(ev, page)
 	{
@@ -315,7 +300,23 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				notifications.log("Share",new Error());
 			},
 			showData: function (ev, widget) {
-				notifications.log("Show data",new Error());
+				var widgetCopy = angular.copy(widget); //get a copy of widget object to send to fullscreen view of widget
+				//widgetCopy.widgetData.widgetID = widgetCopy.widgetData.widgetID+"-fullscreen";
+
+				$mdDialog.show({
+				  controller: 'dataViewCtrl',
+				  templateUrl: 'views/dashboard/dataView/dataView.html',
+				  parent: angular.element(document.body),
+				  targetEvent: ev,
+				  clickOutsideToClose:true,
+				  locals: {event: ev, widget: widgetCopy},
+				  fullscreen: true // Only for -xs, -sm breakpoints.
+				})
+				.then(function(answer) {
+				 // $scope.status = 'You said the information was "' + answer + '".';
+				}, function() {
+				  //$scope.status = 'You cancelled the dialog.';
+				});
 			},
 			widgetSettings: function (ev, widget){
 				$state.go("query_builder",{
@@ -627,13 +628,6 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth / 1.8, document.documentElement.offsetHeight - 45, true);
 		}
 	},100)
-
-	/*if($scope.widget.widgetData.selectedChart.chartType == "d3sunburst") //$scope.widget.widgetData.selectedChart.chartType != "d3hierarchy" ||
-	{
-		$scope.widget.widgetData.widData.id = 'fullScreenChart';
-		$scope.widget.widView = "views/ViewHnbMonthFullscreen.html"
-		
-	}*/
 	
 }]);// END OF fullscreenCtrl
 

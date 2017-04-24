@@ -605,6 +605,7 @@
 		<script src="views/settings/userSettings/userSettingsCtrl.js"></script>
 		<script src="views/settings/theme/themeCtrl.js"></script>
 		<script src="views/dashboard/dashboardCtrl.js"></script>
+		<script src="views/dashboard/dataView/dataView.js"></script>
 		<script src="views/dashboard/addWidget/addWidgetDashboardCtrl.js"></script>
 		<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
 		<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>

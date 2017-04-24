@@ -363,6 +363,7 @@ routerApp.controller('DashboardCtrl', ['$scope','$interval','$http', '$rootScope
         $scope.showData = function(ev, widget) {
             //saving widget in $rootScope for use in widget data view
             $rootScope.widget = widget;
+			console.log(widget.widgetData.dataCtrl);
             $mdDialog.show({
                     controller: widget.widgetData.dataCtrl,
                     templateUrl: 'views/ViewWidgetSettingsData.html',

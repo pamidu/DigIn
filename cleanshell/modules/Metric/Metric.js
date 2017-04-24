@@ -209,9 +209,9 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
     		}
 
 
-    		scope.changeTargetValue=function(){
+    		/*scope.changeTargetValue=function(){
     			scope.metricSettings.targetDisplayValue=scope.metricSettings.targetValue;
-    		}
+    		}*/
 
 
          } //end of link

@@ -60,7 +60,7 @@
             </md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Target value</span>
-                <input  name="target" ng-model="metricSettings.targetValue" ng-change="changeTargetValue()" aria-label="scale" type="number" required step="any">
+                <input  name="target" ng-model="metricSettings.targetValue" ng-change="changeFormat()" aria-label="scale" type="number" required step="any">
                 <div ng-messages="metricSettingsForm.target.$error">
 					<div ng-message="required">Target value can not be a blank</div>
 				</div>

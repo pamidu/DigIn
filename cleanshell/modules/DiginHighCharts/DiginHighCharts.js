@@ -279,7 +279,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 						callback(chartObj,'');
 					}
 				},groupBySortArray[0].displayName,connection,groupBySortArray[0].sortName);
-			}else{
+			} else {
 
 				var catArr = [];
 				var drillOrderArr = [];
@@ -667,6 +667,32 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 
 			return isChartConditionsOk;
 		},//end of highchartValidations
+		assignChartEvents: function (chartObj) {
+			chartObj.options.chart.events = {
+				drilldown: function(e) {
+
+				},
+				drillup: function(e) {
+
+				},
+                beforePrint: function() {
+                    this.setTitle({
+                        text: this.options.exporting.chartOptions.title.text
+                    })
+                    this.heightPrev = this.chartHeight;
+                    this.widthPrev = this.chartWidth;
+                    if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
+                    this.setSize(800, 600, false);
+                },
+                afterPrint: function() {
+                    this.setTitle({
+                        text: null
+                    })
+                    this.setSize(this.widthPrev, this.heightPrev, true);
+                    if (this.drilldownLevels.length != 0) this.showDrillUpButton();
+                }
+			}
+		}
 		
    }
 }]);

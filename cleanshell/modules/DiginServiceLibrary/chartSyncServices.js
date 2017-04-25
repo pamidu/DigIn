@@ -24,6 +24,7 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
     var HIGHCHARTS = function() {
     	this.sync = function(query,client,widget,is_sync,callback) {
             var seriesArray,chartSeries;
+            var isDrilled = false;
             client.getExecQuery(query, widget.selectedFile.datasource_id, function(res, status, message) {
                 if (status) {
                     // find out the category from the response
@@ -34,7 +35,8 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
                             if (typeof res[0][c] == "string") category = c;
                         }
                     }
-                    chartUtilitiesFactory.updateSeries(res,category,false,widget.widgetConfig);
+                    if (widget.XAxis.length > 1) isDrilled = true;
+                    chartUtilitiesFactory.updateSeries(res,category,isDrilled,widget.widgetConfig);
                     callback(widget);
                 } else {
                     callback(widget);

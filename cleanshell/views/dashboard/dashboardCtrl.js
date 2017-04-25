@@ -141,11 +141,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 		  controller: 'renamePageCtrl',
 		  templateUrl: 'views/dashboard/renamePage/renamePage.html',
 		  parent: angular.element(document.body),
+		  locals: {pageName: page.pageName},
 		  clickOutsideToClose:true,
 		  targetEvent: ev,
 		  fullscreen: useFullScreen
 		}).then(function(answer) {
-			
+			if (answer)
+				page.pageName = answer;
 		});
 		
 		 $scope.$watch(function() {
@@ -385,6 +387,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	{
 		$scope.showDashboardOptions = false;
 	}
+
+	$scope.setBasicChartEvents = function (widget) {
+		if (widget.widgetData.chartType.chartType == "highCharts") 
+		{
+			generateHighchart.assignChartEvents(widget.widgetData.widgetConfig);
+		}
+	}
 	
 	$scope.limit = function(yvalue, ylimit)
 	{
@@ -527,8 +536,10 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
                 if (allFiltersArray.length > 0) {
 					filterString = allFiltersArray.join( ' And ');
                     var isCreate = false;
+                    widget.widgetData.dashboardFilterOn = true;
                     generateHighchart.generate(widget.widgetData.widgetConfig, widget.widgetData.chartType.chart, widget.widgetData.selectedFile, widget.widgetData.Measures,widget.widgetData.XAxis, 1000, widget.widgetData.selectedDB,false,widget.widgetData.groupBySortArray ,function (data,query){
                         // set widget sync parameter to false
+                        widget.widgetData.dashboardFilterOn = false;
                         widget.isWidgetFiltered = false;
                         count++;
                         if (!is_default) 

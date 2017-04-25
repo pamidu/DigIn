@@ -9,7 +9,7 @@
 		<md-tab-body>
 			<md-content class="setting-container" ng-class="{'main-toolbar-closed-setting': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  style="background:transparent">
 				<div gridster="gridsterOpts">
-					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" gridster-item-initalize-watcher widget-type="{{widget.widgetData.chartType.chartType}}" style="padding-bottom: 49px !important;overflow:inherit;">
+					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" gridster-item-initalize-watcher widget-type="{{widget.widgetData.chartType.chartType}}" style="padding-bottom: 49px !important;overflow:inherit;" ng-init="setBasicChartEvents(widget)">
 						<div class="widget-header" layout="row" layout-align="space-between center">
 							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
@@ -29,8 +29,8 @@
 								<md-button class="md-icon-button ti-settings hover-color"  md-colors="{color:'primary'}" ng-click="widgetControls.widgetSettings($event,widget)">
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
-								<md-menu md-position-mode="target-right target hover-color"><!--shake-->
-									<md-button class="md-icon-button ti-filter"  md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
+								<md-menu md-position-mode="target-right target hover-color">
+									<md-button class="md-icon-button ti-filter" ng-class="{'shake': widget.widgetData.dashboardFilterOn == true}" md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
 									<md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">

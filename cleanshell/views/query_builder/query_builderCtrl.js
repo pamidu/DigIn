@@ -15,6 +15,8 @@ DiginApp.controller('query_builderCtrl',[
 	//The variables that contain the series and category data
 	$scope.selectedSeries = $stateParams.selectedMeasures;
 	$scope.selectedCategory = $stateParams.selectedAttributes;
+		
+	$scope.allCatMes = $scope.selectedAttributes.concat($scope.selectedMeasures);
 	
 	$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 	$scope.limit = 100;

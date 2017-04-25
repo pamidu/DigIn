@@ -7,7 +7,7 @@
 			<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
 			<v-accordion class="vAccordion--default">
 
-			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures">
+			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures | orderBy:'name'">
 				<v-pane-header>
 				  {{ value.name }}
 				</v-pane-header>
@@ -29,7 +29,7 @@
 </div>
 
 <md-list style="margin-top:60px" layout-padding ng-if="$parent.chartType.name != 'scatter' && $parent.chartType.chart != 'whatif' && $parent.chartType.chart != 'metric' && $parent.chartType.chart != 'forecast' && $parent.chartType.chart != 'tabular'">
-	<div layout="row" layout-align="space-between center" ng-repeat="item in $parent.selectedSeries" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+	<div layout="row" layout-align="space-between center" ng-repeat="item in $parent.selectedSeries | orderBy:'name'" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 		<p style="margin:8px">{{item.name}}<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;"><span style="color:white">{{item.aggType}}</span></span></p>
 		<md-button class="md-icon-button" ng-click="$parent.removeFromSeries($index)" aria-label="remove from series"><span class="ti-close"></span></md-button>
 	</div>

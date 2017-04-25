@@ -9,7 +9,9 @@
 			<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
 			<v-accordion class="vAccordion--default">
 
-			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures">
+				
+
+			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures | orderBy:'name'">
 				<v-pane-header>
 				  {{ value.name }}
 				</v-pane-header>
@@ -48,7 +50,7 @@
 			<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
 			<v-accordion class="vAccordion--default">
 
-			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures">
+			  <v-pane ng-repeat="(key, value) in $parent.selectedMeasures | orderBy:'name'">
 				<v-pane-header>
 				  {{ value.name }}
 				</v-pane-header>

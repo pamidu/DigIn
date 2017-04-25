@@ -8,7 +8,7 @@
 
 			<v-accordion class="vAccordion--default">
 
-			  <v-pane ng-repeat="(key, value) in $parent.selectedAttributes">
+			  <v-pane ng-repeat="(key, value) in $parent.selectedAttributes | orderBy:'name'">
 				<v-pane-header>
 				  {{ value.name }}
 				</v-pane-header>
@@ -32,7 +32,7 @@
 	<div style="padding:0px 10px">
 		<md-divider style="padding:2px"></md-divider>
 		<md-list>
-			<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedRunTimeFilters" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+			<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedRunTimeFilters | orderBy:'name'" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 				<p style="margin:8px">
 					{{item.name}}
 					<span md-colors="{background:'accent-400'}" style="padding: 2px;border-radius: 2px;margin-left:5px; font-size: 11px;font-weight:800;letter-spacing: 1px;">

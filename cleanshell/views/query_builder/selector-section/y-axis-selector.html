@@ -6,7 +6,7 @@
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 			<span style="font-size: 14px;font-weight: 800;">Select any Category/ Categories</span><br/>
 			<md-list>
-				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedAttributes" ng-click="$parent.pushCateory($index,item)">
+				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedAttributes | orderBy:'name'" ng-click="$parent.pushCateory($index,item)">
 					<p>{{item.name}}</p>
 				</md-list-item>
 			</md-list>
@@ -15,7 +15,7 @@
 	</div>
 </div>
 <md-list style="margin-top:60px" layout-padding  ng-if="$parent.chartType.name == 'scatter'">
-	<div layout="row" layout-align="space-between center"  ng-repeat="item in $parent.selectedCategory" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+	<div layout="row" layout-align="space-between center"  ng-repeat="item in $parent.selectedCategory | orderBy:'name'" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 		<p style="margin:8px">{{item.name}}</p>
 		<md-button class="md-icon-button md-secondary" ng-click="$parent.removeFromCategory($index)" aria-label="remove from category"><span class="ti-close"></span></md-button>
 	</div>

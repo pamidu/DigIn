@@ -391,7 +391,21 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	$scope.setBasicChartEvents = function (widget) {
 		if (widget.widgetData.chartType.chartType == "highCharts") 
 		{
-			generateHighchart.assignChartEvents(widget.widgetData.widgetConfig);
+			var meausresArray = [];
+			var connection_string = "";
+			angular.forEach(widget.widgetData.measures,function (key) {
+				meausresArray.push({
+					agg : key.aggType,
+					field : name
+				});
+			});
+			// if filters exist, apply
+			if (widget.widgetData.DesignTimeFilter.length > 0)
+			{
+				var groupFilters = filterServices.groupFilterConnectionString(widget.widgetData.DesignTimeFilter);
+				connection_string = filterServices.generateFilterConnectionString(groupFilters,widget.widgetData.selectedDB);
+			}
+			generateHighchart.assignChartEvents(widget.widgetData.widgetConfig,meausresArray,widget.widgetData.drilledConf,widget.widgetData.groupBySortArray,widget.widgetData.allXAxis,connection_string);
 		}
 	}
 	

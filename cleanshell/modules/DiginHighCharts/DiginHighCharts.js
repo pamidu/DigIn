@@ -160,8 +160,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,
-                                color: '#000000',
-                                format: '<b> {point.name}</b>'
+                                color: chartFontColor,
+                                format: '<b> {point.name}</b>',
+				                style: {
+				                    textShadow: false,
+				                    textOutline: false
+				                }
                             },
                             series: {
                                 dataLabels: {
@@ -362,15 +366,13 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 					                highestLvl: highestLevel,
 					                fields: fieldArr,
 					                level1Query: query,
-					                currentLevel: 1
+					                currentLevel: 1,
 					        };
-
 					        if (chartObj.xAxis !== undefined){
 				                chartObj.xAxis["title"] = {
 				                    text: highestLevel
 				                };
 				            }
-
 				            chartObj.options['customVar'] = highestLevel;
 
 				            chartObj.options.chart['events'] = {
@@ -569,7 +571,7 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				            	
 				            };
 
-							callback(chartObj,query);
+							callback(chartObj,query,drillDownConfig);
 
 
 
@@ -667,30 +669,212 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 
 			return isChartConditionsOk;
 		},//end of highchartValidations
-		assignChartEvents: function (chartObj) {
+		assignChartEvents: function (chartObj,fieldArr,drillDownConfig,groupBySortArray,allFields,connection) {
 			chartObj.options.chart.events = {
-				drilldown: function(e) {
+            	drilldown: function(e) {
+                    if (!e.seriesOptions) {
+                        var srcTbl = drillDownConfig.srcTbl,
+                            fields = fieldArr,
+                            drillOrdArr = drillDownConfig.drillOrdArr,
+                            chart = this,
+                            clientObj = drillDownConfig.clientObj,
+                            clickedPoint = e.point.name,
+                            nextLevel = "",
+                            highestLvl = this.options.customVar,
+                            drillObj = {},
+                            isLastLevel = false,
+                            selectedSeries = e.point.series.name,
+                            id = "",
+                            tempArrStr = "",
+                            serName = "";
+                            var conStr = "";
+                            var level;
+                            var tempArray = [];
+                            var isDate;
+                            var groupBy;
+                            var orderBy;
+                            var table,datasource_id;
+			
+                        // var cat = [];
+                        for (var i = 0; i < drillOrdArr.length; i++) {
+                            if (drillOrdArr[i].name == highestLvl) {
+                                nextLevel = drillOrdArr[i].nextLevel;
+                                groupBy = groupBySortArray[i+1].displayName;
+                                orderBy = groupBySortArray[i+1].sortName;
+                                drillOrdArr[i].clickedPoint = clickedPoint;
+                                level = drillOrdArr[i].level;
+                                if (!drillOrdArr[i + 1].nextLevel) isLastLevel = true;
+                            }
+                        }
+                        //get the selected point of each level
+                        for(var c = 0; c<level;c++){
+                            tempArrStr = "";
+                            isDate = false;
+                            angular.forEach(allFields,function(key){
+                                if (key.name == drillOrdArr[c].name){
+                                    if (key.dataType !== undefined){
+                                        if (key.dataType == 'DATE' || key.dataType == 'Date'){
+                                            isDate = true;
+                                        }
+                                    }
+                                }
+                            });
 
-				},
-				drillup: function(e) {
+							if(drillDownConfig.dataSrc == "BigQuery" || drillDownConfig.dataSrc == "memsql"){
+								table = drillDownConfig.srcTbl.datasource_name;
+								datasource_id = drillDownConfig.srcTbl.datasource_id;
 
-				},
-                beforePrint: function() {
-                    this.setTitle({
-                        text: this.options.exporting.chartOptions.title.text
-                    })
-                    this.heightPrev = this.chartHeight;
-                    this.widthPrev = this.chartWidth;
-                    if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
-                    this.setSize(800, 600, false);
+							}else{
+								table = drillDownConfig.srcTbl.datasource_name;
+								datasource_id = drillDownConfig.srcTbl.id;
+							}
+
+                            if (drillDownConfig.dataSrc == "MSSQL") {
+                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                    if (isDate){
+                                        tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = " + drillOrdArr[c].clickedPoint;
+                                    }else{
+                                        tempArrStr = '[' + drillOrdArr[c].name + "] = " + drillOrdArr[c].clickedPoint;
+                                    }
+                                } else {
+                                if (isDate){
+                                        tempArrStr = 'Date(['+drillOrdArr[c].name + "]) = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }else{
+                                        tempArrStr = '[' + drillOrdArr[c].name + "] = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
+                                }
+                            } else {
+                                if (typeof drillOrdArr[c].clickedPoint == 'number') {
+                                    if (isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = " + drillOrdArr[c].clickedPoint;
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = " + drillOrdArr[c].clickedPoint;
+                                    }
+                                } else {
+                                    if (isDate){
+                                        tempArrStr = 'Date('+drillOrdArr[c].name + ") = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }else{
+                                        tempArrStr = drillOrdArr[c].name + " = '" + drillOrdArr[c].clickedPoint + "'";
+                                    }
+                                }
+                            }
+                            tempArray.push(tempArrStr);
+                        }
+                        if (tempArray.length > 0 ) {
+                            conStr = tempArray.join( ' And ');
+                        }
+                        // todo
+                        // do not send if value has been already selected in the previous level
+                        if (connection != '') {
+                        	conStr += ' And ' + connection;
+                        }
+
+                        chart.options.lang.drillUpText = "Back to " + highestLvl;
+                        // Show the loading label
+                        chart.showLoading("Retrieving data for '" + clickedPoint.toString().toLowerCase() + "' grouped by '" + nextLevel + "'");
+                        //aggregate method
+                        $diginengine.getClient(drillDownConfig.dataSrc).getAggData(table, drillDownConfig.fields, 1000, datasource_id, function(res, status, query) {
+                            if (status) {
+                                drillDownConfig["level"+(level+1)+"Query"] = query;
+                                // filter only the selected fields from the result returned by the service
+                                //filterService.filterAggData(res, $scope.sourceData.filterFields);
+                                angular.forEach(chartObj.series, function(series) {
+                                    if (series.name == selectedSeries) {
+                                        id = series.id;
+                                        serName = series.name;
+                                    }
+                                });
+                                for (var key in res[0]) {
+                                    if (Object.prototype.hasOwnProperty.call(res[0], key)) {
+                                        if (key != nextLevel && key == id) {
+                                            drillObj = {
+                                                name: serName,
+                                                data: [],
+                                                id: key,
+                                                turboThreshold: 0
+                                            };
+                                        }
+                                    }
+                                }
+                                if (res.length > 0) {
+                                    res.forEach(function(key) {
+                                        if (!isLastLevel) {
+                                            drillObj.data.push({
+                                                name: key[nextLevel],
+                                                y: parseFloat(key[drillObj.id]),
+                                                drilldown: true
+                                            });
+                                        } else {
+                                            drillObj.data.push({
+                                                name: key[nextLevel],
+                                                y: parseFloat(key[drillObj.id])
+                                            });
+                                        }
+                                    });
+                                    drillObj['cropThreshold'] = drillObj.data.length;
+                                }
+                                // console.log(JSON.stringify(drillObj));
+                                // $scope.dataToBeBind.receivedQuery = query;
+                                //$scope.$apply();
+                                chart.addSeriesAsDrilldown(e.point, drillObj);
+                            } else {
+                                e.preventDefault();
+                            }
+
+                            chart.xAxis[0].setTitle({
+                                text: nextLevel
+                            });
+
+                            chart.yAxis[0].setTitle({
+                                text: selectedSeries
+                            });
+                            
+                            chart.options.customVar = nextLevel;
+                            chart.hideLoading();
+                        }, groupBy, conStr,orderBy);
+                    }
                 },
-                afterPrint: function() {
-                    this.setTitle({
-                        text: null
-                    })
-                    this.setSize(this.widthPrev, this.heightPrev, true);
-                    if (this.drilldownLevels.length != 0) this.showDrillUpButton();
-                }
+                drillup: function(e) {
+
+	                    var chart = this;
+	                    drillDownConfig.drillOrdArr.forEach(function(key) {
+	                        if (key.nextLevel && key.nextLevel == chart.options.customVar) {
+	                            chart.options.customVar = key.name;
+	                            chart.xAxis[0].setTitle({
+	                                text: chart.options.customVar
+	                            });
+	                        }
+	                    });
+	                    // set x and y axis titles (DUODIGIN-914)
+	                    var flag = false;
+	                    drillDownConfig.drillOrdArr.forEach(function(key) {
+	                        if (chart.options.customVar == key.nextLevel) {
+	                            chart.options.lang.drillUpText = " Back to " + key.name;
+	                            flag = true;
+	                        }
+	                    });
+	                    if (!flag) {
+	                        chart.yAxis[0].setTitle({
+	                            text: 'values'
+	                        });
+	                    }
+	                },
+	                beforePrint: function() {
+	                    this.setTitle({
+	                        text: this.options.exporting.chartOptions.title.text
+	                    })
+	                    this.heightPrev = this.chartHeight;
+	                    this.widthPrev = this.chartWidth;
+	                    if (this.drillUpButton !== undefined) this.drillUpButton = this.drillUpButton.destroy();
+	                    this.setSize(800, 600, false);
+	                },
+	                afterPrint: function() {
+	                    this.setTitle({
+	                        text: null
+	                    })
+	                    this.setSize(this.widthPrev, this.heightPrev, true);
+	                    if (this.drilldownLevels.length != 0) this.showDrillUpButton();
+	                }
 			}
 		}
 		

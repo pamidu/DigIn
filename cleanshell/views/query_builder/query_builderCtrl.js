@@ -15,8 +15,6 @@ DiginApp.controller('query_builderCtrl',[
 	//The variables that contain the series and category data
 	$scope.selectedSeries = $stateParams.selectedMeasures;
 	$scope.selectedCategory = $stateParams.selectedAttributes;
-		
-	$scope.allCatMes = $scope.selectedAttributes.concat($scope.selectedMeasures);
 	
 	$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 	$scope.limit = 100;
@@ -300,6 +298,7 @@ DiginApp.controller('query_builderCtrl',[
 			$scope.chartType = $stateParams.chartType;
 			widgetID = $stateParams.widget.widgetID;
 			$scope.groupBySortArray = $stateParams.widget.widgetData.groupBySortArray;
+			$scope.drilledConfig = $stateParams.widget.widgetData.drilledConf;
 
 			$scope.widgetCol = $stateParams.widget.col;
 			$scope.widgetRow = $stateParams.widget.row;
@@ -355,6 +354,7 @@ DiginApp.controller('query_builderCtrl',[
 				$element.find('.currentChart').append(newElement);
 			}else if($scope.chartType.chartType == "metric")
 			{
+				$scope.notification_data = $stateParams.widget.notification_data;
 				$scope.showPlaceholderIcon = false;
 				newElement = $compile('<metric id-selector="'+widgetID+'" config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
 				//newElement = $compile('<metric config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
@@ -416,7 +416,7 @@ DiginApp.controller('query_builderCtrl',[
 						isDrilled = true;
 					} 
 					var isCreate = true; 
-					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query){
+					generateHighchart.generate($scope.widgetConfig, $scope.chartType.chart, $scope.selectedFile, $scope.selectedSeries,$scope.selectedCategory, $scope.limit, $scope.selectedDB,isDrilled,$scope.groupBySortArray ,function (data,query,drilledConf){
 							
 
 						 // set the sries colour from settingsConfig
@@ -425,6 +425,7 @@ DiginApp.controller('query_builderCtrl',[
 						  }
 						$scope.widgetConfig = data;
 						$scope.chartQuery = query;
+						$scope.drilledConfig = drilledConf;
 						bindChart();
 					},connection_string,$scope.selectedAttributes,reArangeArr,isCreate);
 
@@ -729,6 +730,7 @@ DiginApp.controller('query_builderCtrl',[
 			'widgetID' :  widgetID,
 			'query' : $scope.chartQuery,
 			'groupBySortArray': $scope.groupBySortArray,
+			'drilledConf' : $scope.drilledConfig 
 
 
 			

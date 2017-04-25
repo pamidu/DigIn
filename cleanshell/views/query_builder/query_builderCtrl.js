@@ -67,31 +67,44 @@ DiginApp.controller('query_builderCtrl',[
 			}, '');
 	}
 
-	//add to selectedSeries
-	$scope.pushSeries = function(item, aggregation)
-	{
-		var pushObj = angular.copy(item);
-		pushObj.aggType = aggregation;
-		
-		$scope.selectedSeries.push(pushObj);
+//add to selectedSeries
+ $scope.pushSeries = function(item, aggregation)
+ {
+  	//check weather series is also added
+  	var isFoundCnd = false;
+    for (i in $scope.selectedSeries) {
+        if ($scope.selectedSeries[i].name == item.name && $scope.selectedSeries[i].aggType == aggregation) {
+                isFoundCnd = true;
+    			notifications.toast(2,'duplicate record found ..');
+                return;
+        }
+            isFoundCnd = false;
+    }
+
+    if(!isFoundCnd){
+         var pushObj = angular.copy(item);
+   		pushObj.aggType = aggregation;
+   
+   		$scope.selectedSeries.push(pushObj);
 
 
-		var obj = {
-			"disName":item.name,
-			"name": item.name,
-			"color": "rgb(250,250,250)"
-		};
+   		var obj = {
+    		"disName":item.name,
+    		"name": item.name,
+    		"color": "rgb(250,250,250)"
+   		};
 
-		if(typeof $scope.settingConfig.seriescolourArr == "undefined"){
-			$scope.settingConfig["seriescolourArr"] = [];
-		}
-		$scope.settingConfig.seriescolourArr.push(obj);
+   		if(typeof $scope.settingConfig.seriescolourArr == "undefined"){
+    		$scope.settingConfig["seriescolourArr"] = [];
+   		}
+   		$scope.settingConfig.seriescolourArr.push(obj);
 
-		if($scope.selectedCategory.length > 0)
-		{
-			addGenerateBtnAnimation()
-		}
-	}
+   		if($scope.selectedCategory.length > 0)
+   		{
+    		addGenerateBtnAnimation()
+   		}
+    } 
+ }
 
 	$scope.toggleSeries = function(ev, series, seriesList) {
 		ev.preventDefault();
@@ -124,24 +137,38 @@ DiginApp.controller('query_builderCtrl',[
 		return idx > -1 ? true : false
 	}
 	
-	//add to selectedCategory
-	$scope.pushCateory = function(index, item)
-	{
-		$scope.selectedCategory.push(item);
-
-		//push selected category to groupBySortArray
-		var obj = {
-                    "sortName": item.name,
-                    "displayName" : item.name
+//add to selectedCategory
+ $scope.pushCateory = function(index, item)
+ {   
+  var isFoundCnd = false;
+    for (i in $scope.selectedCategory) {
+        if ($scope.selectedCategory[i].name == item.name) {
+            isFoundCnd = true;
+            //alert('duplicate record found in object...');
+            notifications.toast(2,'duplicate record found ..');
+            $scope.isPendingRequest = false;
+            return;
         }
+        isFoundCnd = false;
+    }
 
-        $scope.groupBySortArray.push(obj);
+    if(!isFoundCnd){
+     	$scope.selectedCategory.push(item);
 
-		if($scope.selectedSeries.length > 0)
-		{
-			addGenerateBtnAnimation()
-		}
-	}
+				//push selected category to groupBySortArray
+			var obj = {
+        	"sortName": item.name,
+        	"displayName" : item.name
+    	}
+
+     		$scope.groupBySortArray.push(obj);
+
+	  	if($scope.selectedSeries.length > 0)
+	   	{
+	    		addGenerateBtnAnimation()
+	  	}
+    }
+ }
 	
 	//remove to selectedSeries
 	$scope.removeFromSeries = function(index)

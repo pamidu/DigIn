@@ -198,6 +198,10 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
                      scope.submitForm();
                 }
 
+                scope.changeFormulaGenerationMode = function(mode) {
+                    scope.whatifSettings.eqconfig['targets'] = []
+                }
+
                 scope.setAsTarget = function(ev, value) {
                     if(scope.whatifSettings.eqconfig.targets.length > 0)
                         scope.whatifSettings.eqconfig.targets = []

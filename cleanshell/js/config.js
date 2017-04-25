@@ -9,7 +9,7 @@ angular.module('configuration', [])
 .constant('Digin_Tenant', 'http://dev.auth.digin.io:3048') //#Note : http://dev.auth.digin.io:3048
 .constant('Digin_ObjStore', 'http://dev.auth.digin.io:3000') //#http://dev.auth.digin.io:3000
 //#for loggin process
-.constant('IsLocal', false) //# true for local developmet only
+.constant('IsLocal', true) //# true for local developmet only
 .constant('DeveloperMode', true) //# true for local developmet only 
 .constant('Local_Shell_Path', 'http://localhost:8081/DigIn/cleanshell') //#This is the shell path only for local usage
 //#apis folder path inside the html folder ** NOTE : if apis folder in -->html/apis/ then apis_path--> '/apis/'

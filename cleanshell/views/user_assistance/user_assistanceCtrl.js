@@ -19,9 +19,6 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
             'type': 'STRING',
             'category': 'att'
         }, {
-            'type': 'datetime',
-            'category': 'att'
-        }, {
             'type': 'DATETIME',
             'category': 'att'
         }, {

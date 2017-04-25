@@ -62,7 +62,7 @@ DiginApp.controller('query_builderCtrl',[
 	{
 		$scope.dateAttributes=[];
 			angular.forEach($stateParams.allAttributes, function(value, key) {
-				if(value.type=='TIMESTAMP' || value.type=='DATETIME' || value.type=='DATE' )
+				if(value.type.toUpperCase()=='TIMESTAMP' || value.type.toUpperCase()=='DATETIME' || value.type.toUpperCase()=='DATE' )
 			  		$scope.dateAttributes.push(value);
 			}, '');
 	}
@@ -91,7 +91,7 @@ DiginApp.controller('query_builderCtrl',[
    		var obj = {
     		"disName":item.name,
     		"name": item.name,
-    		"color": "rgb(250,250,250)"
+    		"color": "#7cb5ec"
    		};
 
    		if(typeof $scope.settingConfig.seriescolourArr == "undefined"){
@@ -471,8 +471,17 @@ DiginApp.controller('query_builderCtrl',[
 			}else if($scope.chartType.chartType == 'metric')
 			{
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
-				if(isChartConditionsOk){				
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
+				if(isChartConditionsOk){	
+
+					var datasource_id;
+			         if( $scope.selectedDB == "BigQuery" || $scope.selectedDB == "memsql"){
+			          datasource_id = $scope.selectedFile.datasource_id
+			         }else{
+			          datasource_id = $scope.selectedFile.id;
+			         }
+
+							
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
 						if(status){
 							$scope.widgetConfig = metricObj;
 							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;

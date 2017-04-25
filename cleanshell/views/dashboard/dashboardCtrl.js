@@ -54,7 +54,14 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 			  resize: function(event,$element,widget){
 				$scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
 				$rootScope.$broadcast('widget-resized', { element: $element, widget: widget });
-			}
+			},
+			stop: function(event,$element,widget){
+		     $timeout(function(){ //wait 100 milliseconds until the dom element is added
+		      $scope.$parent.changed = true; // Keep track if the Dashboard is changed without saving
+		      $rootScope.$broadcast('widget-resized', { element: $element, widget: widget });
+		     
+		     }, 300);
+		    }
         },
 		mobileBreakPoint: 600, // width threshold to toggle mobile mode
 		mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint

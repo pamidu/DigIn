@@ -97,7 +97,8 @@
 		</div>
 		
 		<div layout-gt-sm="row" class="side-margins" style="margin-top: 12px;">
-			<md-radio-group layout="row" ng-model="whatifSettings.eqconfig.mode">
+			<md-radio-group layout="row" ng-model="whatifSettings.eqconfig.mode"
+				ng-change="changeFormulaGenerationMode(whatifSettings.eqconfig.mode)">
 				<md-radio-button value="auto">Automatic</md-radio-button>
 				<md-radio-button value="manual">Manual</md-radio-button>
 			</md-radio-group>

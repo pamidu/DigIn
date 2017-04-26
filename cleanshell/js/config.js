@@ -2,7 +2,7 @@ angular.module('configuration', [])
 .constant('Digin_Engine_API', 'http://dev.digin.io/DigInEngine/') //#Note : http://dev.digin.io/DigInEngine/
 .constant('Digin_Engine_API_Namespace', 'Demo')
 .constant('Digin_Tomcat_Base', 'http://dev.digin.io:9897/') //#Note : http://dev.digin.io:9897/
-.constant('Digin_Domain', 'http://dev.digin.io') //# Note : dev.digin.io
+.constant('Digin_Domain', 'dev.digin.io') //# Note : dev.digin.io
 .constant('DevStudio', false)
 .constant('ReportDevelopment','http://prod.report.digin.io:5488/') //#Note : http://prod.report.digin.io:5488/
 .constant('Digin_Auth', 'http://dev.digin.io/') //# Note : http://dev.digin.io/

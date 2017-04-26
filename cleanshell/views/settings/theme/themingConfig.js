@@ -444,8 +444,10 @@ DiginApp.service('colorManager',['$rootScope','$mdTheming','$mdColors', function
 			if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
 			{
 				angular.element('md-tabs-wrapper').css('background-color',"rgb(48,48,48)", 'important');
+				darken();
 			}else{
 				angular.element('md-tabs-wrapper').css('background-color',"white", 'important');
+				lighten();
 			}
 			changeHoverColors();
 		}

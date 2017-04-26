@@ -16,7 +16,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	$scope.dashboardId = $stateParams.id;
 	if(Object.keys($rootScope.currentDashboard).length === 0 && $scope.dashboardId)
 	{
-		DiginServices.getComponent($scope.dashboardId).then(function(data) {
+		DiginServices.getComponent(null,$scope.dashboardId).then(function(data) {
 			//There is a samll problem that this runs twice, console.log to check
 			$rootScope.selectedPageIndex = 0;
 			$rootScope.currentDashboard = angular.copy(data);

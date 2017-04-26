@@ -1,4 +1,4 @@
-DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManager','notifications','DiginServices','$interval', function ($scope,$rootScope,$mdDialog, colorManager,notifications,DiginServices,$interval){
+DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManager','notifications','DiginServices','PouchServices','$interval', function ($scope,$rootScope,$mdDialog, colorManager,notifications,DiginServices,PouchServices,$interval){
 		$scope.$parent.currentView = "Themes";
 		
 		
@@ -48,6 +48,8 @@ DiginApp.controller('themeCtrl',[ '$scope', '$rootScope','$mdDialog','colorManag
 					{
 						//save theme in database
 						oldTheme = angular.copy($rootScope.theme);
+						$scope.userSettings.theme_config = $rootScope.theme;
+						PouchServices.storeAndUpdateUserSettings($scope.userSettings);	
 						
 						var userSettingsSaveObj = {theme_config: $rootScope.theme};
 						

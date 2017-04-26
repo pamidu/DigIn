@@ -54,8 +54,8 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
                 var _currentValue = parseFloat(_targetSlider.slider.noUiSlider.get());
                 var _color = '';
 
-                if(_currentValue > _threshold) _color = 'green';
-                else if(_currentValue < _threshold) _color = 'red';
+                if(_currentValue > _threshold) _color = '#4CAF50';
+                else if(_currentValue < _threshold) _color = '#FF5252';
 
                 return _color;
             }
@@ -221,7 +221,7 @@ WhatIfModule.directive('textcomplete', ['Textcomplete', function (Textcomplete) 
             members: '=',
             message: '='
         },
-        template: '<textarea ng-model=\'message\' type=\'text\'></textarea>',
+        template: '<textarea id="whatif-textarea" ng-model=\'message\' type=\'text\'></textarea>',
         link: function (scope, iElement, iAttrs) {
             
             // var mentions = scope.members;

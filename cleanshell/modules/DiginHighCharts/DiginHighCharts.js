@@ -50,14 +50,15 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 					}else if(scope.chartType == 'metric'){
 						widgetID = item.$element[0].children[2].children[0].getAttribute('id-selector');
 						$('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 1.8, item.getElementSizeY() - 50, true);
+					}else if(scope.chartType == 'whatif'){
+						console.log(item);
+						var height = item.getElementSizeY() - 50;
+						var whatIfId = item.$element[0].children[2].children[0].getAttribute('id-selector');
+						angular.element('#'+whatIfId).css('height',height+'px');
 					}
 				}, 100);
-
-            });
-
-            scope.$on('gridster-item-initialized', function (event, item) {
-    
-				    $timeout(function(){ //wait 100 milliseconds until the dom element is added
+				
+				$timeout(function(){ //wait 100 milliseconds until the dom element is added
 				     var widgetID="";
 				     if(scope.chartType == "highCharts" || scope.chartType == 'forecast')
 				     {
@@ -66,8 +67,14 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 				     }else if(scope.chartType == 'metric'){
 				      widgetID = item.$element[0].children[2].children[0].getAttribute('id-selector');
 				      $('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 1.8, item.getElementSizeY() - 50, true);
-				     }
-				    }, 1500);
+				     }else if(scope.chartType == 'whatif'){
+						console.log(item);
+						var height = item.getElementSizeY() - 50;
+						var whatIfId = item.$element[0].children[2].children[0].getAttribute('id-selector');
+						angular.element('#'+whatIfId).css('height',height+'px');
+					 }
+				}, 1500);
+
             });
         }
     };

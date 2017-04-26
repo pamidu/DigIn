@@ -5,8 +5,8 @@
 	</div>
 	<div style="padding:0px 10px">
 		<md-divider style="padding:2px"></md-divider>
-		<md-list style="margin-top: 60px;">
-			<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedMeasures | orderBy:'name'" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
+		<md-list>
+			<md-list-item class="secondary-button-padding list-item-small" ng-repeat="item in $parent.selectedMeasures | orderBy:'name'" style="border: 1px solid #dddddd;border-radius: 3px;margin-bottom:4px;padding:0px 5px">
 				<md-checkbox 
 					ng-checked="$parent.isSeriesToggled(item, $parent.selectedSeries)" 
 					ng-click="$parent.toggleSeries($event, item, $parent.selectedSeries)"></md-checkbox>

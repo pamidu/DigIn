@@ -11,7 +11,7 @@
 				<div gridster="gridsterOpts">
 					<md-content gridster-item="widget" ng-repeat="widget in page.widgets" gridster-item-initalize-watcher widget-type="{{widget.widgetData.chartType.chartType}}" style="padding-bottom: 49px !important;overflow:inherit;" ng-init="setBasicChartEvents(widget)">
 						<div class="widget-header" layout="row" layout-align="space-between center">
-							<span style="font-size: 20px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
+							<span style="font-size: 16px;" md-colors="{color:'{{$root.h1color}}-A700'}">{{widget.widgetName}}</span>
 							<div layout="row" layout-align="end center">
 							
 								<md-button class="md-icon-button ti-fullscreen hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.fullscreen($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->

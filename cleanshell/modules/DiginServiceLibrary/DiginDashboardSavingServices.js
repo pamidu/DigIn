@@ -58,7 +58,6 @@
 							'securityToken' : $rootScope.authObject.SecurityToken
 						}
 					}).then(function(result){
-						console.log(result);
 						if(result.data.Is_Success){
 
 							//assing the ID's to the Dashboard, Pages and Widgets
@@ -85,6 +84,7 @@
 						}
 					},function(err){
 						notifications.finishLoading();
+						notifications.toast(0,"Error saving Dashboard");
 						console.log(err);
 					});
             },

@@ -1,8 +1,8 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
-	'notifications', 'DiginServices' ,'$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
+	'notifications', 'DiginServices' ,'PouchServices','$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
 	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory', 
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
-		DiginServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
+		DiginServices, PouchServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
 		filterServices,generateHighchart,chartUtilitiesFactory) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
@@ -16,11 +16,12 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	$scope.dashboardId = $stateParams.id;
 	if(Object.keys($rootScope.currentDashboard).length === 0 && $scope.dashboardId)
 	{
-		DiginServices.getComponent(null,$scope.dashboardId).then(function(data) {
+		PouchServices.getDashboard(null,$scope.dashboardId).then(function(data) {
 			//There is a samll problem that this runs twice, console.log to check
 			$rootScope.selectedPageIndex = 0;
 			$rootScope.currentDashboard = angular.copy(data);
 			$rootScope.selectedDashboard = angular.copy(data);
+			$scope.$parent.currentView = $rootScope.currentDashboard.compName;
 			$timeout(function() {
 				colorManager.reinforceTheme();
 			},100)

@@ -18,7 +18,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
         }, {
             'type': 'STRING',
             'category': 'att'
-        }, {
+        },{
             'type': 'DATETIME',
             'category': 'att'
         }, {
@@ -33,10 +33,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
         }, {
             'type': 'decimal',
             'category': 'mes'
-        }, {
-            'type': 'float',
-            'category': 'mes'
-        }, {
+        },{
             'type': 'money',
             'category': 'mes'
         }, {
@@ -48,10 +45,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
         }, {
             'type': 'smallint',
             'category': 'mes'
-        }, {
-            'type': 'integer',
-            'category': 'mes'
-        }, {
+        },{
             'type': 'bigint',
             'category': 'mes'
         }, {
@@ -779,10 +773,10 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 									"name": data[i].Fieldname,
 									"type": data[i].FieldType
 								}
-								if(dataBaseFiledTypes[j].category == "att"){
-									$scope.attributes.push(obj);
-								}else if(dataBaseFiledTypes[j].category == "mes"){
-									$scope.measures.push(obj);	
+								$scope.attributes.push(obj);
+
+								if(dataBaseFiledTypes[j].category == "mes"){
+									$scope.measures.push(obj);
 								}
 							}
 						}

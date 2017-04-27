@@ -307,7 +307,24 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				});
 			},
 			share: function (ev, widget) {
-				notifications.log("Share",new Error());
+				//notifications.log("Share",new Error());
+
+				var dashboardName = $rootScope.selectedDashboard.compName;
+	            if(typeof dashboardName != "undefined"){
+	                $mdDialog.show({
+	                    controller: 'shareCtrl',
+	                    templateUrl: 'views/dashboard/widgetShare/widgetShare.html',
+	                    clickOutsideToClose: true,
+	                    resolve: {},
+	                    locals: {
+	                        widget: widget,
+	                        DashboardName:dashboardName
+	                    }
+	                });
+	            }else{
+	                notifications.toast('0', 'Please save the dashboard before proceed');
+	            }
+				
 			},
 			showData: function (ev, widget) {
 				var widgetCopy = angular.copy(widget); //get a copy of widget object to send to fullscreen view of widget

@@ -27,7 +27,8 @@ var DiginApp = angular.module('DuoDiginRt',
 		'Boxplot',
 		'Bubble',
 		'Histogram',
-		'DiginServiceLibrary'
+		'DiginServiceLibrary',
+		'720kb.socialshare'
 	]
 );
 

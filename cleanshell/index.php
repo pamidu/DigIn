@@ -35,7 +35,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/libs/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/md-steppers/dist/md-steppers.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
-	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>
+	<link rel="stylesheet" type="text/css" href="bower_components/v-accordion/dist/v-accordion.min.css"/>	
 	<link rel="stylesheet" type="text/css" href="styles/libs/directive_library.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/ng-croppie.min.css">
 	<link rel="stylesheet" type="text/css" href="styles/libs/cellCursor.css">
@@ -529,6 +529,7 @@
 		<script src="bower_components/nouislider/distribute/nouislider.js"></script>
     	<script src="bower_components/mathjs/dist/math.js"></script>
 		<script src="bower_components/ng-textcomplete/ng-textcomplete.min.js"></script>
+		<script src="bower_components/angular-socialshare/dist/angular-socialshare.js"></script>
 		
 		<!--Highcharts libraries-->
 		<script src="bower_components/highcharts/highstock.js"></script><!--https://code.highcharts.com/stock/highstock.js-->
@@ -608,6 +609,7 @@
 		<script src="views/dashboard/dataView/dataView.js"></script>
 		<script src="views/dashboard/addWidget/addWidgetDashboardCtrl.js"></script>
 		<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
+		<script src="views/dashboard/widgetShare/widgetShareCtrl.js"></script>
 		<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
 		<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 		<script src="views/query_builder/query_builderCtrl.js"></script>

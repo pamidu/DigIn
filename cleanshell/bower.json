@@ -23,7 +23,8 @@
     "angular-pouchdb": "^5.0.0",
     "nouislider": "^9.2.0",
     "mathjs": "^3.10.1",
-    "ng-textcomplete": "~0.6.0"
+    "ng-textcomplete": "~0.6.0",
+    "angular-socialshare": "angularjs-socialshare#^2.3.7"
   },
   "resolutions": {
     "angular": "1.6.3"

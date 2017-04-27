@@ -1,5 +1,7 @@
-DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServices','$diginengine','$state', function($scope, $mdDialog,DiginServices,$diginengine,$state) {
+DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServices','$diginengine','$state','notifications', function($scope, $mdDialog,DiginServices,$diginengine,$state,notifications) {
 
+
+	$scope.loadingTables = false;
 	$scope.sourceType = [];
 	
 	$scope.files = [];
@@ -22,6 +24,8 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 	
 	$scope.selectSource = function(ev,type)
 	{
+		$scope.loadingTables = true;
+		
 		//reset arrays
 		$scope.files = [];
 		$scope.folders = [];
@@ -34,33 +38,45 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 			$diginengine.getClient(type).getTables(function(res, status) {
 				
 				if(status) {
-					$scope.showBusyText = false;
 					
-					for(var i = 0; i < res.length; i++){
-						if(res[i].upload_type == "csv-singlefile"){
-						  $scope.files.push(res[i]);
-						}else{
-						  $scope.folders.push(res[i]);
+					$scope.loadingTables = false;
+					if(res.length != 0)
+					{
+						for(var i = 0; i < res.length; i++){
+							if(res[i].upload_type == "csv-singlefile"){
+							  $scope.files.push(res[i]);
+							}else{
+							  $scope.folders.push(res[i]);
+							}
 						}
+					}else{
+						notifications.toast(2, "No Tables");
 					}
 				} else {
-					$scope.showBusyText = false;
+					$scope.loadingTables = false;
 					notifications.toast('0', 'Error occured. Please try again.');
 				}
 			});
 		}else if(type == "MSSQL" || type == "Oracle"){
 			datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
 			
-				$scope.showBusyText = false;
+				$scope.loadingTables = false;
 				$scope.connectSource_selected = 1;
 				$scope.connectSource_step1.completed = true;
 				notifications.finishLoading();
 
 				if(res.Is_Success){
-					for(var i = 0; i < res.Result.length; i++){
-					
-						$scope.conections.push(res.Result[i]);
+					console.log(res.data);
+					if(res.data.Result.length != 0)
+					{
+						console.log("in loop");
+						for(var i = 0; i < res.Result.length; i++){
+						
+							$scope.conections.push(res.Result[i]);
 
+						}
+					}else{
+						notifications.toast(2, "No Tables");
 					}
 				}else{
 					$scope.showBusyText = false;

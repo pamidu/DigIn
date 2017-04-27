@@ -395,4 +395,5 @@ ng-color-picker li.selected {
 
 .vAccordion--default v-pane-header{
 	margin-bottom: 0px;
+	padding: 8px 0;
 }

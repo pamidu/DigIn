@@ -6,7 +6,7 @@
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 				<span style="font-size: 14px;font-weight: 800;">Select any Aggregation (Average,<br/>  Sum, Count, Minimum or Maximum)<br/> form the measures below</span><br/>
 				<md-list>
-					<md-list-item class="secondary-button-padding" ng-repeat="(key, value) in $parent.selectedMeasures | orderBy:'name'" ng-click="$parent.pushSeries(value, agg)">
+					<md-list-item class="secondary-button-padding list-item-small" ng-repeat="(key, value) in $parent.selectedMeasures | orderBy:'name'" ng-click="$parent.pushSeries(value, agg)">
 						<p>{{ value.name }}</p>
 					</md-list-item>
 				</md-list>

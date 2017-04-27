@@ -12,7 +12,7 @@
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 			<span style="font-size: 14px;font-weight: 800;">Select any Category/ Categories</span><br/>
 			<md-list>
-				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedAttributes | orderBy:'name'" ng-click="$parent.pushCateory($index,item)">
+				<md-list-item class="secondary-button-padding list-item-small" ng-repeat="item in $parent.selectedAttributes | orderBy:'name'" ng-click="$parent.pushCateory($index,item)">
 					<p>{{item.name}}</p>
 				</md-list-item>
 			</md-list>

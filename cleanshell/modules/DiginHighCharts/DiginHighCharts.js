@@ -51,7 +51,6 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 						widgetID = item.$element[0].children[2].children[0].getAttribute('id-selector');
 						$('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 1.8, item.getElementSizeY() - 50, true);
 					}else if(scope.chartType == 'whatif'){
-						console.log(item);
 						var height = item.getElementSizeY() - 50;
 						var whatIfId = item.$element[0].children[2].children[0].getAttribute('id-selector');
 						angular.element('#'+whatIfId).css('height',height+'px');
@@ -68,7 +67,6 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 				      widgetID = item.$element[0].children[2].children[0].getAttribute('id-selector');
 				      $('#'+widgetID).highcharts().setSize(item.getElementSizeX() / 1.8, item.getElementSizeY() - 50, true);
 				     }else if(scope.chartType == 'whatif'){
-						console.log(item);
 						var height = item.getElementSizeY() - 50;
 						var whatIfId = item.$element[0].children[2].children[0].getAttribute('id-selector');
 						angular.element('#'+whatIfId).css('height',height+'px');

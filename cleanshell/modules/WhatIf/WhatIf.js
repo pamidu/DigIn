@@ -94,13 +94,13 @@ WhatIfModule.directive('sliderContainer', function() {
         transclude: true,
         controller: function() {
             this.func = function() {
-                console.log('slider container func hits')
+               // console.log('slider container func hits')
             }.bind(this);
         },
         controllerAs: 'sContCtrl',
         bindToController: true,
         template: '<div ng-transclude class="noUi-horizontal-size"></div>',
-        link: function(scope, elem, attr) { console.log('sliderContainer hits')}
+        link: function(scope, elem, attr) { }
     }
 });
 
@@ -117,7 +117,6 @@ WhatIfModule.directive('slider', function() {
         },
         template: '<div id="{{::sliderId}}" style="margin-bottom:0px"></div>', 
         link: function(scope, elem, attr, ctrl) { 
-            console.log('slider hits');
 
             var sCollCtrl = ctrl[0];
             var sContCtrl = ctrl[1];

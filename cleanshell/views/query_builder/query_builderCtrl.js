@@ -340,7 +340,6 @@ DiginApp.controller('query_builderCtrl',[
 				
 			}else if($scope.chartType.chartType == "whatif")
 			{
-				console.log("what-if hit");
 				$scope.showPlaceholderIcon = false;
 				
 				//id-selector="'+widgetID+'" - There is a bug here, if an id is added when the map is in the dashboard again it will stop working

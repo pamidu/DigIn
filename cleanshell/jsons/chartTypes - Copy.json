@@ -80,6 +80,26 @@
       "tooltip":"A scatter chart draw a single point for each point of data in a series without connecting them"
    },
    {
+      "id":"ct9",
+      "icon":"hierarchy",
+      "name":"hierarchy",
+      "chart":"hierarchy",
+      "selected":false,
+      "chartType":"d3hierarchy",
+	  "enableFilters": false,
+      "tooltip":"A decomposition of a graph is a collection of edge-disjoint subgraphs of such that every edge of belongs to exactly one"
+   },
+   {
+      "id":"ct10",
+      "icon":"ti-shine",
+      "name":"sunburst",
+      "chart":"sunburst",
+      "selected":false,
+      "chartType":"d3sunburst",
+	  "enableFilters": false,
+      "tooltip":"A sunburst is similar to the treemap, except it uses a radial layout. The root node of the tree is at the center, with leaves on the circumference"
+   },
+   {
       "id":"ct13",
       "icon":"metric",
       "name":"metric",
@@ -91,6 +111,36 @@
       "trendQuery":"",
       "notificationConstant":"",
       "notificationValue":"",
+	  "enableFilters": false,
+      "tooltip":""
+   },
+   {
+      "id":"ct15",
+      "icon":"ti-layout-slider-alt",
+      "name":"boxplot",
+      "chart":"boxplot",
+      "selected":false,
+      "chartType":"boxplot",
+	  "enableFilters": false,
+      "tooltip":"A box plot is a convenient way of depicting groups of data through their five-number summaries: the smallest observation (sample minimum), lower quartile (Q1), median (Q2), upper quartile (Q3), and largest observation (sample maximum)"
+   },
+   {
+      "id":"ct16",
+      "icon":"histogram",
+      "name":"histogram",
+      "chart":"histogram",
+      "selected":false,
+      "chartType":"histogram",
+	  "enableFilters": false,
+      "tooltip":""
+   },
+   {
+      "id":"ct17",
+      "icon":"ti-flickr",
+      "name":"bubble",
+      "chart":"bubble",
+      "selected":false,
+      "chartType":"bubble",
 	  "enableFilters": false,
       "tooltip":""
    },
@@ -113,6 +163,16 @@
       "chartType":"highCharts",
 	  "enableFilters": false,
       "tooltip":"Funnel charts are a type of chart often used to visualize stages in a sales project, where the top are the initial stages with the most clients. The funnel narrows as more clients drop off"
+   },
+   {
+      "id":"ct20",
+      "icon":"pyramid",
+      "name":"pyramid",
+      "chart":"pyramid",
+      "selected":false,
+      "chartType":"highCharts",
+	  "enableFilters": false,
+      "tooltip":""
    },
    {
       "id":"ct21",

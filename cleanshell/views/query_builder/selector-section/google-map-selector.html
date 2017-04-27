@@ -9,7 +9,7 @@
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 			<span style="font-size: 14px;font-weight: 800;">Select a column containing longitude information</span><br/>
 			<md-list>
-				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedMeasures | orderBy:'name'" ng-click="$parent.defineVariable($index,'longitude',item)">
+				<md-list-item class="secondary-button-padding list-item-small" ng-repeat="item in $parent.selectedMeasures | orderBy:'name'" ng-click="$parent.defineVariable($index,'longitude',item)">
 					<p>{{item.name}}</p>
 				</md-list-item>
 			</md-list>
@@ -36,7 +36,7 @@
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 			<span style="font-size: 14px;font-weight: 800;">Select a column containing latitude information</span><br/>
 			<md-list>
-				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedMeasures | orderBy:'name'" ng-click="$parent.defineVariable($index,'latitude',item)">
+				<md-list-item class="secondary-button-padding list-item-small" ng-repeat="item in $parent.selectedMeasures | orderBy:'name'" ng-click="$parent.defineVariable($index,'latitude',item)">
 					<p>{{item.name}}</p>
 				</md-list-item>
 			</md-list>
@@ -63,7 +63,7 @@
 		  <md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">
 			<span style="font-size: 14px;font-weight: 800;">Select a column containing the addresses</span><br/>
 			<md-list>
-				<md-list-item class="secondary-button-padding" ng-repeat="item in $parent.selectedAttributes | orderBy:'name'" ng-click="$parent.defineVariable($index,'address',item)">
+				<md-list-item class="secondary-button-padding list-item-small" ng-repeat="item in $parent.selectedAttributes | orderBy:'name'" ng-click="$parent.defineVariable($index,'address',item)">
 					<p>{{item.name}}</p>
 				</md-list-item>
 			</md-list>

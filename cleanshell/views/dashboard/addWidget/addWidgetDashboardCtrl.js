@@ -1,12 +1,14 @@
-DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServices','$diginengine','$state','notifications', function($scope, $mdDialog,DiginServices,$diginengine,$state,notifications) {
+DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialog','DiginServices','datasourceServices','$diginengine','$state','notifications', function($scope,$rootScope, $mdDialog,DiginServices,datasourceServices,$diginengine,$state,notifications) {
 
 
 	$scope.loadingTables = false;
+	$scope.loadingConnections = false;
+	$scope.showConnections = false;
 	$scope.sourceType = [];
 	
 	$scope.files = [];
 	$scope.folders = [];
-	$scope.conections = [];
+	$scope.connections = [];
 	
 	$scope.chartTypes = [];
 
@@ -22,19 +24,21 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 	
 	$scope.selectedDB = "";
 	
-	$scope.selectSource = function(ev,type)
+	$scope.selectSource = function(ev,type, retriveAgain)
 	{
-		if($scope.selectedDB != type)
+		if($scope.selectedDB != type || retriveAgain)
 		{
-			$scope.loadingTables = true;
 			
 			//reset arrays
 			$scope.files = [];
 			$scope.folders = [];
-			$scope.conections = [];
+			$scope.connections = [];
 			
 			if(type == "BigQuery" || type == "memsql")
-			{
+			{	
+				$scope.showConnections = false;
+				$scope.loadingTables = true;
+				
 				$scope.selectedDB = type;
 			
 				$diginengine.getClient(type).getTables(function(res, status) {
@@ -61,28 +65,26 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 					}
 				});
 			}else if(type == "MSSQL" || type == "Oracle"){
+				$scope.showConnections = true;
+				$scope.loadingConnections = true;
 				datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
-				
-					$scope.loadingTables = false;
-					$scope.connectSource_selected = 1;
-					$scope.connectSource_step1.completed = true;
-					notifications.finishLoading();
-
+					//$scope.connectSource_selected = 1;
 					if(res.Is_Success){
-						console.log(res.data);
-						if(res.data.Result.length != 0)
+						$scope.loadingConnections = false;
+						console.log(res.Result);
+						if(res.Result.length != 0)
 						{
-							console.log("in loop");
 							for(var i = 0; i < res.Result.length; i++){
 							
-								$scope.conections.push(res.Result[i]);
+								$scope.connections.push(res.Result[i]);
 
 							}
+							console.log($scope.connections);
 						}else{
 							notifications.toast(2, "No Tables");
 						}
 					}else{
-						$scope.showBusyText = false;
+						$scope.loadingConnections = false;
 						notifications.toast('0', 'Error occured. Please try again.');
 					}
 					

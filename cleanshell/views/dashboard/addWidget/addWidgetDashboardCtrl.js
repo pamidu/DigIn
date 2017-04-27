@@ -24,66 +24,72 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$mdDialog','DiginServi
 	
 	$scope.selectSource = function(ev,type)
 	{
-		$scope.loadingTables = true;
-		
-		//reset arrays
-		$scope.files = [];
-		$scope.folders = [];
-		$scope.conections = [];
-		
-		if(type == "BigQuery" || type == "memsql")
+		if($scope.selectedDB != type)
 		{
-			$scope.selectedDB = type;
-		
-			$diginengine.getClient(type).getTables(function(res, status) {
-				
-				if(status) {
-					
-					$scope.loadingTables = false;
-					if(res.length != 0)
-					{
-						for(var i = 0; i < res.length; i++){
-							if(res[i].upload_type == "csv-singlefile"){
-							  $scope.files.push(res[i]);
-							}else{
-							  $scope.folders.push(res[i]);
-							}
-						}
-					}else{
-						notifications.toast(2, "No Tables");
-					}
-				} else {
-					$scope.loadingTables = false;
-					notifications.toast('0', 'Error occured. Please try again.');
-				}
-			});
-		}else if(type == "MSSQL" || type == "Oracle"){
-			datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
+			$scope.loadingTables = true;
 			
-				$scope.loadingTables = false;
-				$scope.connectSource_selected = 1;
-				$scope.connectSource_step1.completed = true;
-				notifications.finishLoading();
-
-				if(res.Is_Success){
-					console.log(res.data);
-					if(res.data.Result.length != 0)
-					{
-						console.log("in loop");
-						for(var i = 0; i < res.Result.length; i++){
+			//reset arrays
+			$scope.files = [];
+			$scope.folders = [];
+			$scope.conections = [];
+			
+			if(type == "BigQuery" || type == "memsql")
+			{
+				$scope.selectedDB = type;
+			
+				$diginengine.getClient(type).getTables(function(res, status) {
+					
+					if(status) {
 						
-							$scope.conections.push(res.Result[i]);
+						$scope.loadingTables = false;
 
+						if(res.length != 0)
+						{
+							for(var i = 0; i < res.length; i++){
+								if(res[i].upload_type == "csv-singlefile"){
+								  $scope.files.push(res[i]);
+								}else{
+								  $scope.folders.push(res[i]);
+								}
+							}
+						}else{
+							notifications.toast(2, "No Tables");
+						}
+					} else {
+						$scope.loadingTables = false;
+						notifications.toast('0', 'Error occured. Please try again.');
+					}
+				});
+			}else if(type == "MSSQL" || type == "Oracle"){
+				datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
+				
+					$scope.loadingTables = false;
+					$scope.connectSource_selected = 1;
+					$scope.connectSource_step1.completed = true;
+					notifications.finishLoading();
+
+					if(res.Is_Success){
+						console.log(res.data);
+						if(res.data.Result.length != 0)
+						{
+							console.log("in loop");
+							for(var i = 0; i < res.Result.length; i++){
+							
+								$scope.conections.push(res.Result[i]);
+
+							}
+						}else{
+							notifications.toast(2, "No Tables");
 						}
 					}else{
-						notifications.toast(2, "No Tables");
+						$scope.showBusyText = false;
+						notifications.toast('0', 'Error occured. Please try again.');
 					}
-				}else{
-					$scope.showBusyText = false;
-					notifications.toast('0', 'Error occured. Please try again.');
-				}
-				
-			});
+					
+				});
+			}
+		}else{
+			notifications.toast(2, "Already Selected");
 		}
 	}
 	

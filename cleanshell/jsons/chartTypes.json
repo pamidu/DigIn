@@ -105,16 +105,6 @@
       "tooltip":""
    },
    {
-      "id":"ct19",
-      "icon":"ti-filter",
-      "name":"funnel",
-      "chart":"funnel",
-      "selected":false,
-      "chartType":"highCharts",
-	  "enableFilters": false,
-      "tooltip":"Funnel charts are a type of chart often used to visualize stages in a sales project, where the top are the initial stages with the most clients. The funnel narrows as more clients drop off"
-   },
-   {
       "id":"ct21",
       "icon":"ti-world",
       "name":"Geographical Map",

@@ -46,7 +46,14 @@
 						 </md-list-item>
 					</md-list-->
 					<md-list flex style="padding-top: 0">
-						<md-subheader class="md-no-sticky list-item-small">Tables</md-subheader>
+						<md-content class="list-item-small md-subheader" layout="row" layout-align="space-between center" flex>
+							<div class="md-subheader-inner">
+								<span class="md-subheader-content">Tables</span>
+							</div>
+							<md-button ng-click="reloadTables()" class="md-icon-button">
+								<i class="ti-reload" style="font-size:16px;line-height: 24px;"></i>
+							</md-button>
+						</md-content>
 						<md-list style="padding-top: 0" id="widgetsTypesContainer">
 							 <md-list-item class="list-item-small list-item-small" ng-repeat="file in files" ng-click="selectTable($event,file)"  ng-class="{'filterItemSeleted': file.datasource_name==selectedFile.datasource_name}">
 								<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 20px;" alt="">

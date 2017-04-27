@@ -216,32 +216,62 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 }])
 
 //Check if the Application has internet access or not
-DiginApp.run(['$window', '$rootScope','pouchDB','PouchServices','colorManager',function($window, $rootScope,pouchDB,PouchServices,colorManager) {
-	var pouchdbName = 'localPouch';
-	$rootScope.theme = "default";
+DiginApp.run(['$window', '$rootScope','pouchDB','PouchServices','DiginServices','colorManager','IsLocal',function($window, $rootScope,pouchDB,PouchServices,DiginServices,colorManager,IsLocal) {
 	
-	$rootScope.localDb  = new pouchDB(pouchdbName);
-	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
-	  $rootScope.online = navigator.onLine;
+	
+	$rootScope.online = navigator.onLine;
+	$window.addEventListener("online", function() {
+		$rootScope.$apply(function() {
+		  $rootScope.online = true;
+		});
+	}, false);
+	
 	  $window.addEventListener("offline", function() {
 		$rootScope.$apply(function() {
 		  $rootScope.online = false;
 		});
 	  }, false);
-
-	  $window.addEventListener("online", function() {
-		$rootScope.$apply(function() {
-		  $rootScope.online = true;
-		});
-	  }, false);
 	  
-	PouchServices.getUserSettings().then(function(data) {
-		if(data)
-		{
-			$rootScope.theme = data.theme_config;
+	$rootScope.authObject = JSON.parse(decodeURIComponent(getCookie('authData')));
+	
+	if(IsLocal === true){
+		var pouchdbName = 'localPouch';
+		$rootScope.theme = "default";
+		
+		$rootScope.localDb  = new pouchDB(pouchdbName);
+		
+		PouchServices.getUserSettings().then(function(data) {
+			if(data)
+			{
+				console.log(data);
+				$rootScope.theme = data.theme_config;
 
-			//color the UI
-			colorManager.changeTheme($rootScope.theme);
-		}
-	})
+				//color the UI
+				colorManager.changeTheme($rootScope.theme);
+			}
+		})
+		console.log("local");
+	}else{
+		console.log("not local");
+		
+		DiginServices.getSession().then(function(data) {
+			var pouchdbName = data.UserID + data.Domain;
+			console.log(pouchdbName);
+			$rootScope.localDb  = new pouchDB(pouchdbName);
+			
+			PouchServices.getUserSettings().then(function(data) {
+				if(data)
+				{
+					console.log(data);
+					$rootScope.theme = data.theme_config;
+
+					//color the UI
+					colorManager.changeTheme($rootScope.theme);
+				}
+			})
+		});
+		
+
+		
+	}
 }]);

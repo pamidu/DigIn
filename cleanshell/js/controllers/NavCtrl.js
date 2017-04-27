@@ -364,7 +364,22 @@ function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  la
 			
 			DiginServices.getUserSettings().then(function(data) {
 				notifications.log(data, new Error());
+				PouchServices.storeAndUpdateUserSettings(data);
 				$scope.userSettings = data;
+				$rootScope.theme = $scope.userSettings.theme_config;
+
+					//color the UI
+					colorManager.changeTheme($rootScope.theme);
+					if($scope.userSettings.components)
+					{
+						//Go To Default Dashboard if it exsist
+						var obj = JSON.parse($scope.userSettings.components);
+						if(obj.dashboardId !== null) {
+							//getDashboard(null, obj.dashboardId);
+							$scope.data.defaultDashboard = obj.dashboardId;
+							oldDefaultDashboard = angular.copy(obj.dashboardId);
+						}
+					}
 			});
 			
 			DiginServices.getTenant().then(function(data) {
@@ -375,18 +390,20 @@ function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  la
 				var pouchdbName = data.UserID + data.Domain;
 				notifications.log(pouchdbName, new Error());
 				$rootScope.localDb  = new pouchDB(pouchdbName);
-			});
-		}
-		PouchServices.getUserSettings().then(function(data) {
-			if(data)
-			{
-				$scope.userSettings = data;
-				$rootScope.theme = $scope.userSettings.theme_config;
+				PouchServices.getUserSettings().then(function(data) {
+					if(data)
+					{
+						$scope.userSettings = data;
+						$rootScope.theme = $scope.userSettings.theme_config;
 
-				//color the UI
-				colorManager.changeTheme($rootScope.theme);
-			}
-		});
+						//color the UI
+						colorManager.changeTheme($rootScope.theme);
+					}
+				});
+			});
+
+		}
+
 	})();
 	
 	

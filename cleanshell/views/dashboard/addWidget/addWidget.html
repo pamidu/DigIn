@@ -20,15 +20,15 @@
 		<md-dialog-content style="max-width:800px;max-height:810px;min-width:385px;width:800px;margin-top:48px">
 			<div layout="column">
 				<div layout="row" layout-align="start center" style="margin:10px; font-size: 14px;">
-					<span>memsql</span>
-					<!--span><i class="ti-angle-right" style="margin: 10px;"></i>Superstore </span-->
+					<span>{{selectedDB}}</span>
+					<span ng-show="files.length !=0"><i class="ti-angle-right" style="margin: 10px;"></i>{{selectedFile.datasource_name}} </span>
 				</div>
 				<md-divider></md-divider>
 				<div layout="row" style="overflow-x:auto">
 					<md-list style="padding-top: 0" flex>
 						<md-subheader class="md-no-sticky list-item-small">Databases</md-subheader>
-						 <md-list-item class="list-item-small" ng-repeat="source in sourceType" ng-click="selectSource(ev, source.name)">
-							<div style="width:30px">
+						 <md-list-item class="list-item-small" ng-repeat="source in sourceType" ng-click="selectSource(ev, source.name)"  ng-class="{'filterItemSeleted': source.name==selectedDB}">
+							<div style="width:30px;line-height: 18px;">
 								<svg ng-if="source.name == 'memsql'" width="30" height="30" viewBox="0 0 256 235" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><path md-colors="{fill:'accent-900'}" d="M81.4 85.374c22.535-21.976 45.344-15.742 45.344-15.742 35.454 7.538 33.567 40.173 33.567 40.173 9.67-34.132-28.835-49.467-28.835-49.467 44.234 13.909 39.098 50.053 39.098 50.053-1.396 21.775-20.726 30.949-20.726 30.949 35.284-8.096 28.643-48.453 28.643-48.453 7.233 39.782-12.942 51.842-24.11 57.705-18.983 9.77-36.984-2.245-36.984-2.245 26.7 26.192 56.644.179 56.644.179-24.76 23.648-48.135 15.187-48.135 15.187-32.942-10.05-30.39-38.833-30.39-38.833-9.961 33.891 28.17 48.405 28.17 48.405-28.653-6.954-36.305-31.906-36.305-31.906-9.771-38.247 18.015-48.512 18.015-48.512-34.808 7.513-28.445 47.87-28.445 47.87-6.678-27.82 7.917-44.584 7.917-44.584 24.846-28.196 52.928-10.823 52.928-10.823-26.144-25.983-56.557-.064-56.557-.064m73.701 125.906c28.475-2.513 81.797-10.609 101.06-100.502 0 0-25.405 105.248-108.877 82.914 0 0 54.439-8.375 76.214-53.043 0 0 42.434-71.747-38.526-139.585 0 0 78.168 76.214 19.263 137.352 0 0 30.43-75.376-37.967-121.44 0 0-42.434-33.22-108.877-6.42 0 0 101.34-32.384 127.023 51.646 0 0-51.926-63.372-128.419-25.683 0 0-45.505 22.612-55.834 87.38 0 0 25.684-104.968 107.48-82.076 0 0-73.421 3.35-85.705 91.847 0 0-5.862 59.464 48.855 98.827 0 0-78.168-74.539-19.262-134.84 0 0-28.197 66.443 32.663 116.694 0 0 41.875 38.804 114.46 10.05 0 0-100.502 32.663-127.023-52.484-.28.279 34.896 43.83 83.472 39.363" /></svg>
 								<i ng-if="source.name == 'BigQuery'" class="ti-search" style="font-size:20px; margin-left: 6px;" md-colors="{color:'accent-900'}"></i>	
 								<i ng-if="source.name == 'Oracle'" class="ti-server" style="font-size:20px; margin-left: 6px;" md-colors="{color:'accent-900'}"></i>							
@@ -45,24 +45,43 @@
 							{{item}}
 						 </md-list-item>
 					</md-list-->
-					<md-list flex>
-						<md-subheader class="md-no-sticky">Tables</md-subheader>
-						 <md-list-item class="list-item-small list-item-small" ng-repeat="file in files" ng-click="selectTable($event,file)">
-							<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 20px;" alt="">
-							<span style="margin-left:20px">{{file.datasource_name}}</span>
-						 </md-list-item>
-						 
-						 <span layout="row" ng-hide="loadingTables || files.length != 0" style="font-size: 14px;width: 230px;text-align: center;margin-top: 65px;">Please select a Database/ Datasource</span>
-						 <div ng-show="loadingTables" layout="row" layout-align="center center" style="font-size: 14px;width: 230px;text-align: center;margin-top: 65px;">
-							<md-progress-circular class="md-hue-2" md-diameter="20px"></md-progress-circular>
-							<span style="margin-left: 12px;">Loading Tables</span>
+					<md-list flex style="padding-top: 0">
+						<md-content class="list-item-small md-subheader" layout="row" layout-align="space-between center" flex>
+							<div class="md-subheader-inner">
+								<span class="md-subheader-content">Tables</span>
+							</div>
+							<md-button ng-click="reloadTables()" class="md-icon-button">
+								<i class="ti-reload" style="font-size:16px;line-height: 24px;"></i>
+							</md-button>
+						</md-content>
+						<md-list style="padding-top: 0" id="widgetsTypesContainer">
+							 <md-list-item class="list-item-small list-item-small" ng-repeat="file in files" ng-click="selectTable($event,file)"  ng-class="{'filterItemSeleted': file.datasource_name==selectedFile.datasource_name}">
+								<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 20px;" alt="">
+								<span style="margin-left:20px">{{file.datasource_name}}</span>
+							 </md-list-item>
+						 </md-list>
+						 <div layout="row"  layout-align="center center">
+							<span ng-hide="loadingTables || files.length != 0" style="font-size: 14px;text-align: center;margin-top: 65px;max-width: 200px;">Please select a Database/ Datasource</span>
+							 <div ng-show="loadingTables" layout="row" layout-align="center center" style="font-size: 14px;width: 230px;text-align: center;margin-top: 65px;">
+								<md-progress-circular class="md-hue-2" md-diameter="20px"></md-progress-circular>
+								<span style="margin-left: 12px;">Loading Tables</span>
+							 </div>
 						 </div>
 					</md-list>
-					<md-list flex="40">
-						<md-subheader class="md-no-sticky">Widgets</md-subheader>
-						<v-accordion class="vAccordion--default" style="padding: 0px 10px 0px 10px;:">
+					<md-list flex style="padding-top: 0">
+						<md-subheader class="md-no-sticky list-item-small">Widgets</md-subheader>
+						<md-list id="widgetsTypesContainer" ng-show="selectedFile.datasource_name">
+							<md-list-item class="list-item-small" ng-repeat="chart in chartTypes"  ng-click="selectChartType($index)">
+								<small-chart-icons></small-chart-icons>
+								<span style="margin-left:20px">{{chart.name}}</span>
+							 </md-list-item>
+						 </md-list>
+						 <div layout="row"  layout-align="center center">
+							<span ng-hide="selectedFile.datasource_name" style="font-size: 14px;text-align: center;margin-top: 65px;">Please select a Table</span>
+						 </div>
+						<!--v-accordion class="vAccordion--default" style="padding: 0px 10px 0px 10px;:">
 
-						  <v-pane ng-repeat="(key, value) in ['Charts','Geospatial Data', 'General']">
+						  <v-pane id="{{ ::key}}" ng-repeat="(key, value) in ['Charts']" expanded="pane.isExpanded">
 							<v-pane-header>
 							  {{ value }}
 							</v-pane-header>
@@ -76,7 +95,7 @@
 								 </md-list>
 							</v-pane-content>
 							</v-pane>
-						</v-accordion>
+						</v-accordion-->
 					</md-list>
 				</div>
 			</div>

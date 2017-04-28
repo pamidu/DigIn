@@ -21,7 +21,9 @@
 			<div layout="column">
 				<div layout="row" layout-align="start center" style="margin:10px; font-size: 14px;">
 					<span>{{selectedDB}}</span>
-					<span ng-show="files.length !=0"><i class="ti-angle-right" style="margin: 10px;"></i>{{selectedFile.datasource_name}} </span>
+					<span ng-show="selectedConnection"><i class="ti-angle-right" style="margin: 10px;"></i>{{selectedConnection.connection_name}} </span>
+					<span ng-show="selectedFileOrFolder"><i class="ti-angle-right" style="margin: 10px;"></i>{{selectedFileOrFolder.datasource_name}} </span>
+					<span ng-show="selectedTable"><i class="ti-angle-right" style="margin: 10px;"></i>{{selectedTable}} </span>
 				</div>
 				<md-divider></md-divider>
 				<div layout="row" style="overflow-x:auto">
@@ -44,17 +46,17 @@
 							<div class="md-subheader-inner">
 								<span class="md-subheader-content">Connections</span>
 							</div>
-							<!--md-button ng-click="selectSource(ev, selectedDB, true)" class="md-icon-button">
+							<md-button ng-click="selectSource(ev, selectedDB, true)" class="md-icon-button">
 								<i class="ti-reload" style="font-size:16px;line-height: 24px;"></i>
 								<md-tooltip md-direction="left">
 									Reload Connections
 								</md-tooltip>
-							</md-button-->
+							</md-button>
 						</md-content>
 						<md-list style="padding-top: 0" id="widgetsTypesContainer">
-							 <md-list-item class="list-item-small list-item-small" ng-repeat="connection in connections" ng-click="selectTable($event,file)" >
+							 <md-list-item class="list-item-small list-item-small" ng-repeat="connection in connections" ng-click="getTables($event,connection)" ng-class="{'filterItemSeleted': connection.ds_config_id == selectedConnection.ds_config_id}">
 								<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 20px;" alt="">
-								<span style="margin-left:20px;line-height: 16px;">{{connection.connection_name}}</span>
+								<span style="margin-left:20px;line-height: 16px;font-size:14px">{{connection.connection_name}}</span>
 							 </md-list-item>
 						 </md-list>
 						 <div layout="row"  layout-align="center center">
@@ -77,13 +79,21 @@
 							</md-button>
 						</md-content>
 						<md-list style="padding-top: 0" id="widgetsTypesContainer">
-							 <md-list-item class="list-item-small list-item-small" ng-repeat="file in files" ng-click="selectTable($event,file)"  ng-class="{'filterItemSeleted': file.datasource_name==selectedFile.datasource_name}">
+							 <md-list-item class="list-item-small list-item-small" ng-repeat="file in files" ng-click="selectTable($event,file)"  ng-class="{'filterItemSeleted': file.datasource_name==selectedFileOrFolder.datasource_name}">
 								<img ng-src="views/settings/systemSettings/file_icon.png" style="width: 20px;" alt="">
-								<span style="margin-left:20px">{{file.datasource_name}}</span>
+								<span style="margin-left:20px;line-height: 16px;font-size:14px">{{file.datasource_name}}</span>
+							 </md-list-item>
+							 <md-list-item class="list-item-small list-item-small" ng-repeat="folder in folders" ng-click="selectTable($event,folder)"  ng-class="{'filterItemSeleted': folder.datasource_name==selectedFileOrFolder.datasource_name}">
+								<img ng-src="views/settings/systemSettings/folder.png" style="width: 20px;" alt="">
+								<span style="margin-left:20px;line-height: 16px;font-size:14px">{{folder.datasource_name}}</span>
+							 </md-list-item>
+							 <md-list-item class="list-item-small list-item-small" ng-repeat="table in tables" ng-click="getConnectionTable($event,table)" ng-class="{'filterItemSeleted': table==selectedTable}">
+								<img ng-src="views/data_source/visualize_data/table.png" style="width: 20px;" alt="">
+								<span style="margin-left:20px;line-height: 16px;font-size:14px">{{table}}</span>
 							 </md-list-item>
 						 </md-list>
 						 <div layout="row"  layout-align="center center">
-							<span ng-hide="loadingTables || files.length != 0" style="font-size: 14px;text-align: center;margin-top: 65px;max-width: 200px;">Please select a Database/ Datasource</span>
+							<span ng-hide="loadingTables || files.length != 0 || folders.length != 0 || tables.length != 0" style="font-size: 14px;text-align: center;margin-top: 65px;max-width: 200px;">Please select a Database/ Datasource</span>
 							 <div ng-show="loadingTables" layout="row" layout-align="center center" style="font-size: 14px;width: 230px;text-align: center;margin-top: 65px;">
 								<md-progress-circular class="md-hue-2" md-diameter="20px"></md-progress-circular>
 								<span style="margin-left: 12px;">Loading Tables</span>
@@ -92,14 +102,18 @@
 					</md-list>
 					<md-list flex style="padding-top: 0">
 						<md-subheader class="md-no-sticky list-item-small">Widgets</md-subheader>
-						<md-list id="widgetsTypesContainer" ng-show="selectedFile.datasource_name">
+						<md-list id="widgetsTypesContainer" ng-show="selectedFileOrFolder.datasource_name || selectedTable">
 							<md-list-item class="list-item-small" ng-repeat="chart in chartTypes"  ng-click="selectChartType($index)">
 								<small-chart-icons></small-chart-icons>
-								<span style="margin-left:20px">{{chart.name}}</span>
+								<span style="margin-left:20px;line-height: 16px;font-size:14px">{{chart.name}}</span>
 							 </md-list-item>
 						 </md-list>
 						 <div layout="row"  layout-align="center center">
-							<span ng-hide="selectedFile.datasource_name" style="font-size: 14px;text-align: center;margin-top: 65px;">Please select a Table</span>
+						 	<span ng-hide="selectedFileOrFolder.datasource_name || selectedTable || loadingConnectionTable" style="font-size: 14px;text-align: center;margin-top: 65px;">Please select a Table</span>
+							<div ng-show="loadingConnectionTable" layout="row" layout-align="center center" style="font-size: 14px;width: 230px;text-align: center;margin-top: 65px;">
+								<md-progress-circular class="md-hue-2" md-diameter="20px"></md-progress-circular>
+								<span style="margin-left: 12px;">Loading Table</span>
+							</div>
 						 </div>
 						<!--v-accordion class="vAccordion--default" style="padding: 0px 10px 0px 10px;:">
 

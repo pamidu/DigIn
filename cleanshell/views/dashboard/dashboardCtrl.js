@@ -614,14 +614,10 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 		//if the expanded filter is empty and not a custom filter
 		if (expandedFilter.fieldvalues.length === 0 && !expandedFilter.is_custom) {
 			expandedFilter.isLoading = true;
-			var selectedFile = {};
-			selectedFile['datasource_name'] = expandedFilter.datasource_table;
-			if(expandedFilter.datasource == "BigQuery" || expandedFilter.datasource == "memsql"){
-				selectedFile['datasource_id'] = expandedFilter.datasource_id;
-			}else {
-				selectedFile['id'] = expandedFilter.id;
-			}
-			
+			var selectedFile = {
+				datasource_name : expandedFilter.datasource_table,
+				datasource_id : expandedFilter.datasource_id
+			};
 			filterServices.getFieldParameters(expandedFilter.display_field,expandedFilter.datasource,selectedFile,function(data){
 				$scope.$apply(function(){
 					expandedFilter['fieldvalues'] = data;

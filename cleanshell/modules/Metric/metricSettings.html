@@ -84,7 +84,10 @@
 			<md-input-container class="md-block" flex-gt-sm>
                 <span>Time Attribute</span>
                 <md-select ng-model="metricSettings.timeAttribute" aria-label="timeAttribute" name="timeAttribute" required>
-					<md-option ng-repeat="attr in metricSettings.dateAttrs" value="{{attr.name}}">
+					<md-option ng-repeat="attr in metricSettings.dateAttrs" value="{{attr.name}}" ng-if=" attr.type == 'datetime' 
+                     || attr.type == 'DATETIME'
+                     || attr.type == 'DATE'
+                     || attrattr.type == 'TIMESTAMP'" >
 						{{attr.name}}
 					</md-option>
 				</md-select>

@@ -18,10 +18,20 @@
 									<md-tooltip>fullscreen</md-tooltip>
 								</md-button>
 								
-								<md-button class="md-icon-button ti-share hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.share($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
-									<md-tooltip>share</md-tooltip>
-								</md-button>
-								
+								<md-menu md-position-mode="target-right target hover-color">
+									<md-button class="md-icon-button ti-share hover-color" md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();">
+										<md-tooltip>share</md-tooltip>
+									</md-button>
+									<md-menu-content ng-class="{'applyDarkBackground': $root.applyDark == true}">
+										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'facebook')">Facebook</md-button>
+										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'google')">Google</md-button>
+										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'twitter')">Twitter</md-button>
+										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'linkedin')">Linkedin</md-button>
+										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'email')">Email</md-button>
+									</md-menu-content>
+								</md-menu>
+
+
 								<md-button class="md-icon-button ti-menu-alt hover-color" md-colors="{color:'primary'}" ng-click="widgetControls.showData($event,widget)"><!--ng-if="showDataViewBtn(widget)"-->
 									<md-tooltip>data</md-tooltip>
 								</md-button>

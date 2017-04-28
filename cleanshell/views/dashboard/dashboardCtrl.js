@@ -1,9 +1,9 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'PouchServices','$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
-	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory', 
+	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','Socialshare','widgetShareService', 
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, PouchServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
-		filterServices,generateHighchart,chartUtilitiesFactory) {
+		filterServices,generateHighchart,chartUtilitiesFactory,Socialshare,widgetShareService) {
 
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -306,25 +306,42 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				  //$scope.status = 'You cancelled the dialog.';
 				});
 			},
-			share: function (ev, widget) {
-				//notifications.log("Share",new Error());
-
-				var dashboardName = $rootScope.selectedDashboard.compName;
-	            if(typeof dashboardName != "undefined"){
-	                $mdDialog.show({
-	                    controller: 'shareCtrl',
-	                    templateUrl: 'views/dashboard/widgetShare/widgetShare.html',
-	                    clickOutsideToClose: true,
-	                    resolve: {},
-	                    locals: {
-	                        widget: widget,
-	                        DashboardName:dashboardName
-	                    }
-	                });
+			share: function (ev, widget,provider) {
+	            if(typeof $rootScope.selectedDashboard.compName != "undefined"){
+			        if (provider == "email") {
+			            $mdDialog.show({
+			                controller: 'shareEmailClients',
+			                templateUrl: 'views/dashboard/widgetShare/shareEmailClients.html',
+			                resolve: {},
+			                locals: {
+			                    widget: widget,
+			                    DashboardName: $rootScope.selectedDashboard.compName
+			                }
+			            })
+			        } else {
+			            widgetShareService.getShareWidgetURL(widget, $scope.getreturnSocial, provider);
+			        }
+			
+				    $scope.getreturnSocial = function(url, provider) {
+				        //var url = 'http://prod.digin.io/digin//data/digin_user_data/1fe2dfa9c6c56c8492b9c78107eb5ae3/nordirisrhytacom.prod.digin.io/DPs/4.jpg';
+				        if (provider == "pinterest") {
+				            window.open('https://pinterest.com/pin/create/button/?url=' + url + '', '_blank');
+				        } else if (provider == "tumblr") {
+				            window.open('http://www.tumblr.com/share/link?url=' + url + '', '_blank');
+				        } else {
+				            Socialshare.share({
+				                'provider': provider,
+				                'attrs': {
+				                    'socialshareUrl': url,
+				                    'socialsharePopupHeight': '400',
+				                    'socialsharePopupWidth': '400'
+				                }
+				            });
+				        }
+				    }
 	            }else{
 	                notifications.toast('0', 'Please save the dashboard before proceed');
 	            }
-				
 			},
 			showData: function (ev, widget) {
 				var widgetCopy = angular.copy(widget); //get a copy of widget object to send to fullscreen view of widget

@@ -253,14 +253,9 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 
 			var table = "";
 			var datasource = "";
-			if(selectedDB == "BigQuery" || selectedDB == "memsql"){
-				table = tableName.datasource_name;
-				datasource = tableName.datasource_id;
-
-			}else{
-				table = tableName.datasource_name;
-				datasource = tableName.id;
-			}
+			
+			table = tableName.datasource_name;
+			datasource = tableName.datasource_id;
 
 			if(!isDrilled){
 				$diginengine.getClient(selectedDB).getAggData(table, fieldArr, limit, datasource, function(res, status, query) {
@@ -724,16 +719,8 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
                                     }
                                 }
                             });
-
-							if(drillDownConfig.dataSrc == "BigQuery" || drillDownConfig.dataSrc == "memsql"){
-								table = drillDownConfig.srcTbl.datasource_name;
-								datasource_id = drillDownConfig.srcTbl.datasource_id;
-
-							}else{
-								table = drillDownConfig.srcTbl.datasource_name;
-								datasource_id = drillDownConfig.srcTbl.id;
-							}
-
+							table = drillDownConfig.srcTbl.datasource_name;
+							datasource_id = drillDownConfig.srcTbl.datasource_id;
                             if (drillDownConfig.dataSrc == "MSSQL") {
                                 if (typeof drillOrdArr[c].clickedPoint == 'number') {
                                     if (isDate){

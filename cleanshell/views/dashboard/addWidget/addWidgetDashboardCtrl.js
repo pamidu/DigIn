@@ -1,8 +1,15 @@
 DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialog','DiginServices','datasourceServices','$diginengine','$state','notifications', function($scope,$rootScope, $mdDialog,DiginServices,datasourceServices,$diginengine,$state,notifications) {
 
 
+	$scope.selectedDB = "";
+	$scope.selectedConnection = "";
+	$scope.selectedFileOrFolder = "";
+	$scope.selectedTable = "";
+	
+
 	$scope.loadingTables = false;
 	$scope.loadingConnections = false;
+	$scope.loadingConnectionTable = false;
 	$scope.showConnections = false;
 	$scope.sourceType = [];
 	
@@ -11,6 +18,8 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.connections = [];
 	
 	$scope.chartTypes = [];
+	
+	var dataBaseFiledTypes=[{type:"nvarchar",category:"att"},{type:"varchar",category:"att"},{type:"char",category:"att"},{type:"bit",category:"att"},{type:"STRING",category:"att"},{type:"DATETIME",category:"att"},{type:"DATE",category:"att"},{type:"TIMESTAMP",category:"att"},{type:"int",category:"mes"},{type:"decimal",category:"mes"},{type:"money",category:"mes"},{type:"INTEGER",category:"mes"},{type:"FLOAT",category:"mes"},{type:"smallint",category:"mes"},{type:"bigint",category:"mes"},{type:"numeric",category:"mes"},{type:"real",category:"mes"},{type:"double precision",category:"mes"},{type:"smallserial",category:"mes"},{type:"serial",category:"mes"},{type:"bigserial",category:"mes"},{type:"character varying",category:"att"},{type:"character",category:"att"},{type:"VARCHAR2",category:"att"},{type:"NVARCHAR2",category:"att"},{type:"NUMBER",category:"mes"},{type:"LONG",category:"mes"}];
 
 	DiginServices.getDBConfigs().then(function(data) {
 		angular.forEach(data,function(src,index)
@@ -22,8 +31,6 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 		})
 	});
 	
-	$scope.selectedDB = "";
-	
 	$scope.selectSource = function(ev,type, retriveAgain)
 	{
 		if($scope.selectedDB != type || retriveAgain)
@@ -33,6 +40,7 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			$scope.files = [];
 			$scope.folders = [];
 			$scope.connections = [];
+			$scope.selectedFileOrFolder = "";
 			
 			if(type == "BigQuery" || type == "memsql")
 			{	
@@ -67,11 +75,13 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			}else if(type == "MSSQL" || type == "Oracle"){
 				$scope.showConnections = true;
 				$scope.loadingConnections = true;
+				
+				$scope.selectedDB = type;
+				
 				datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
 					//$scope.connectSource_selected = 1;
 					if(res.Is_Success){
 						$scope.loadingConnections = false;
-						console.log(res.Result);
 						if(res.Result.length != 0)
 						{
 							for(var i = 0; i < res.Result.length; i++){
@@ -95,13 +105,32 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 		}
 	}
 	
+	$scope.tables = [];
+	$scope.getTables = function(ev,connection){
+		$scope.tables = [];
+		$scope.selectedConnection = connection;
+		console.log(connection);
+		$scope.loadingTables = true;
+		$diginengine.getClient($scope.selectedDB).getConnectionTables(connection.ds_config_id,$scope.selectedDB,function(res){
+			console.log(res);
+			$scope.loadingTables = false;
+			for(var i = 0; i < res.length; i++){
+				
+				$scope.tables.push(res[i]);
+			}
+			
+			
+		});
+
+	};
+	
 	$scope.attributes = [];
 	$scope.measures = [];
-	$scope.selectedFile = {};
 	
 	$scope.selectTable = function(ev,fileOrFolder)
 	{
-		$scope.selectedFile = fileOrFolder;
+		$scope.selectedFileOrFolder = fileOrFolder;
+		console.log($scope.selectedFileOrFolder);
 		for(var i = 1; i < fileOrFolder.schema.length; i++){
 			if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
 				$scope.measures.push(fileOrFolder.schema[i]);	
@@ -112,14 +141,55 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 				$scope.attributes.push(fileOrFolder.schema[i]);
 			}
 		}
+	}
+	
+	$scope.getConnectionTable = function(ev,table)
+	{
+		$scope.loadingConnectionTable = true;
+		//get all fields
+		$diginengine.getClient($scope.selectedDB).getMSSQLFields(table, $scope.selectedConnection.ds_config_id ,function(data, status) {
+			if(status){
+				$scope.loadingConnectionTable = false;
+				$scope.selectedTable = table;
+				for(var i=0; i < data.length; i++){
+					for(var j=0; j < dataBaseFiledTypes.length; j++){
+						if((data[i].FieldType).toUpperCase() == (dataBaseFiledTypes[j].type).toUpperCase()){
+							var obj = {
+								"name": data[i].Fieldname,
+								"type": data[i].FieldType
+							}
+							$scope.attributes.push(obj);
 
+							if(dataBaseFiledTypes[j].category == "mes"){
+								$scope.measures.push(obj);
+							}
+						}
+					}
+				}
+				
+				console.log($scope.measures);
+				console.log($scope.attributes);
+
+				$scope.selectedFileOrFolder = {
+					"datasource_id" : $scope.selectedConnection.ds_config_id,
+					"src": $scope.selectedDB,
+					"datasource_name": table
+
+				}
+
+			}else{
+				$scope.loadingConnectionTable = false;
+			}
+
+		});
+		
 	}
 	
 	$scope.selectChartType = function(chartIndex)
 	{
 			var widgetData = {
 			'chartType' : null,
-			'selectedFile' : null,
+			'selectedFileOrFolder' : null,
 			'Measures' : null,
 			'XAxis': null,
 			'allMeasures' : null,
@@ -143,12 +213,13 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			'sizeX':null,
 			'sizeY':null
 		};
-
+		console.log($scope.selectedFileOrFolder);
+		console.log($scope.dataconfig);
 		$state.go('query_builder', 
 		{ 
 		  'allAttributes': $scope.attributes, 
 		  'allMeasures':$scope.measures, 
-		  'selectedFile':$scope.selectedFile, 
+		  'selectedFile':$scope.selectedFileOrFolder, 
 		  'DesignTimeFilter': [],
 		  'RuntimeFilter': [],
 		  'selectedDB': $scope.selectedDB,

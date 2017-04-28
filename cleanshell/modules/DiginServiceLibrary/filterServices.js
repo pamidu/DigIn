@@ -155,14 +155,8 @@ DiginServiceLibraryModule.factory('filterServices',['$diginengine','$diginurls',
             // is_dashboard : boolean indciating if it dashboard fiters or not
 
             var query = "";
-            var datasource_id;
             var table = selectedFile.datasource_name;
-            if(selectedDB == "BigQuery" || selectedDB == "memsql"){
-                datasource_id = selectedFile.datasource_id;
-
-            }else{
-                datasource_id = selectedFile.id;
-            }
+            var datasource_id = selectedFile.datasource_id;
             switch(selectedDB)
             {
                 case 'BigQuery':

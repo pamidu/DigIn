@@ -378,15 +378,10 @@ function($scope,$rootScope,$state,$http,$diginengine,$diginurls,notifications,co
 		$scope.defaultProgoress = true;
 		$scope.defaultValues = [];
 		var is_dashboardFilter = false;
-		var selectedFile = {};
-		selectedFile['datasource_name'] = $scope.selectedTableValue.datasource_name;
-		if( $scope.selectedDatasource == 'BigQuery' || $scope.selectedDatasource == 'memsql')
-		{
-			selectedFile['datasource_id'] = $scope.selectedTableValue.datasource_id;
-		} else 
-		{
-			selectedFile['id'] = $scope.selectedTableValue;
-		}
+		var selectedFile = {
+			datasource_name : $scope.selectedTableValue.datasource_name,
+			datasource_id : $scope.selectedTableValue.datasource_id
+		};
 		// load the fields for default values
 		filterServices.getFieldParameters($scope.selectedValueField,$scope.selectedDatasource,selectedFile,function(data){
 				$scope.defaultProgoress = false;

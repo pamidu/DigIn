@@ -18,6 +18,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'rzModule',
 		'pouchdb',
 		'cellCursor',
+		'720kb.socialshare',
 		'DiginHighCharts',
 		'DiginForecasts',
 		'GoogleMap',
@@ -27,8 +28,7 @@ var DiginApp = angular.module('DuoDiginRt',
 		'Boxplot',
 		'Bubble',
 		'Histogram',
-		'DiginServiceLibrary',
-		'720kb.socialshare'
+		'DiginServiceLibrary'
 	]
 );
 

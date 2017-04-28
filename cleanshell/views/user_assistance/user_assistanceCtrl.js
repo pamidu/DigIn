@@ -783,7 +783,7 @@ DiginApp.controller('user_assistanceCtrl',[ '$scope','$rootScope','$mdDialog','U
 					}
 
 					$scope.dataconfig = {
-						"id" : slectedconfigID,
+						"datasource_id" : slectedconfigID,
 						"src": $scope.selectedDB,
 						"datasource_name": table
 

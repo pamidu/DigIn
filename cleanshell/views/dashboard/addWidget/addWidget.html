@@ -45,7 +45,7 @@
 							<div class="md-subheader-inner">
 								<span class="md-subheader-content">Connections</span>
 							</div>
-							<md-button ng-click="selectSource(ev, selectedDB, true)" class="md-icon-button">
+							<md-button ng-click="selectSource($event, selectedDB, true)" class="md-icon-button" ng-show="selectedDB">
 								<i class="ti-reload" style="font-size:16px;line-height: 24px;"></i>
 								<md-tooltip md-direction="left">
 									Reload Connections
@@ -70,7 +70,7 @@
 							<div class="md-subheader-inner">
 								<span class="md-subheader-content">Tables</span>
 							</div>
-							<md-button ng-click="selectSource(ev, selectedDB, true)" class="md-icon-button">
+							<md-button ng-click="updateTables(ev, selectedDB, selectedConnection, true)" class="md-icon-button"  ng-show="showTableReloadBtn">
 								<i class="ti-reload" style="font-size:16px;line-height: 24px;"></i>
 								<md-tooltip md-direction="left">
 									Reload Tables

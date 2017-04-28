@@ -12,6 +12,7 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.loadingConnectionTable = false;
 	$scope.showConnections = false;
 	$scope.sourceType = [];
+	$scope.showTableReloadBtn = false;
 	
 	$scope.files = [];
 	$scope.folders = [];
@@ -50,6 +51,7 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			{	
 				$scope.showConnections = false;
 				$scope.loadingTables = true;
+				$scope.showTableReloadBtn = true;
 				
 				$scope.selectedDB = type;
 			
@@ -79,6 +81,7 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			}else if(type == "MSSQL" || type == "Oracle"){
 				$scope.showConnections = true;
 				$scope.loadingConnections = true;
+				$scope.showTableReloadBtn = false;
 				
 				$scope.selectedDB = type;
 				
@@ -109,10 +112,11 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 		}
 	}
 	
-	$scope.getTables = function(ev,connection){
+	$scope.getTables = function(ev,connection, retriveAgain){
 		$scope.tables = [];
 		$scope.selectedTable = "";
 		$scope.selectedFileOrFolder = "";
+		$scope.showTableReloadBtn = true;
 		$scope.selectedConnection = connection;
 		console.log(connection);
 		$scope.loadingTables = true;
@@ -146,6 +150,17 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			{
 				$scope.attributes.push(fileOrFolder.schema[i]);
 			}
+		}
+	}
+	
+	
+	$scope.updateTables = function(ev, selectedDb, connection, retriveAgain)
+	{
+		if(connection)
+		{
+			$scope.getTables(ev,connection,retriveAgain );
+		}else{
+			$scope.selectSource(ev, selectedDb, retriveAgain)
 		}
 	}
 	

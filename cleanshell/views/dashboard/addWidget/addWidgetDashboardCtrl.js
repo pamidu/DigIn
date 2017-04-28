@@ -16,6 +16,7 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.files = [];
 	$scope.folders = [];
 	$scope.connections = [];
+	$scope.tables = [];
 	
 	$scope.chartTypes = [];
 	
@@ -39,7 +40,10 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			//reset arrays
 			$scope.files = [];
 			$scope.folders = [];
+			$scope.tables = "";
 			$scope.connections = [];
+			$scope.selectedTable = "";
+			$scope.selectedConnection = "";
 			$scope.selectedFileOrFolder = "";
 			
 			if(type == "BigQuery" || type == "memsql")
@@ -105,14 +109,14 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 		}
 	}
 	
-	$scope.tables = [];
 	$scope.getTables = function(ev,connection){
 		$scope.tables = [];
+		$scope.selectedTable = "";
+		$scope.selectedFileOrFolder = "";
 		$scope.selectedConnection = connection;
 		console.log(connection);
 		$scope.loadingTables = true;
 		$diginengine.getClient($scope.selectedDB).getConnectionTables(connection.ds_config_id,$scope.selectedDB,function(res){
-			console.log(res);
 			$scope.loadingTables = false;
 			for(var i = 0; i < res.length; i++){
 				
@@ -130,6 +134,8 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.selectTable = function(ev,fileOrFolder)
 	{
 		$scope.selectedFileOrFolder = fileOrFolder;
+		$scope.attributes = [];
+		$scope.measures = [];
 		console.log($scope.selectedFileOrFolder);
 		for(var i = 1; i < fileOrFolder.schema.length; i++){
 			if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
@@ -146,6 +152,11 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.getConnectionTable = function(ev,table)
 	{
 		$scope.loadingConnectionTable = true;
+		$scope.selectedFileOrFolder = "";
+		$scope.selectedTable = "";
+		$scope.attributes = [];
+		$scope.measures = [];
+		
 		//get all fields
 		$diginengine.getClient($scope.selectedDB).getMSSQLFields(table, $scope.selectedConnection.ds_config_id ,function(data, status) {
 			if(status){

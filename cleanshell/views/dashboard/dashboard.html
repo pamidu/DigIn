@@ -160,7 +160,7 @@
 
 <md-card id="dashboardOptionsOpen" draggable="firstTouchedEvent()" limit-hit="limit(yvalue, ylimit)" style="z-index:5;position:fixed;border-radius:4px;top:100px;"  ng-if="showDashboardOptions"><!--ng-class="{'initial-dashboard-options-position': keepInitialPosition==true}"-->
 	<md-toolbar class="md-primary" style="min-height: 30px;height:30px;border-radius: 4px 4px 0px 0px;padding: 8px">
-			<div layout="row" layout-align="space-between center" style="cursor:move">
+			<div layout="row" layout-align="space-between center" style="cursor:move; height: 13px;">
 				<span>
 					<i class="ti-more rotate-90-clockwise" style="font-size:12px;line-height: 8px;padding:4px;color:white"></i>
 					<text style="color:white;font-size: 14px;">Dashboard Options</text>
@@ -176,7 +176,7 @@
 			<!--md-button ng-click="dashboardControls.visualizeData($event)" class="md-accent">
 				<i class="icon-plugin" style="font-size:18px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Add Widget (old)</text>
 			</md-button-->
-			<md-button ng-click="dashboardControls.addWiget($event)" class="md-accent">
+			<md-button ng-click="dashboardControls.addWiget($event)" class="md-accent" ng-class="{'callToAction': $root.currentDashboard.pages[0].widgets.length == 0}">
 				<i class="icon-plugin" style="font-size:18px;padding-right:10px"></i><text style="text-transform:none;font-size: 12px;">Add Widget</text>
 			</md-button>
 			<md-button ng-click="dashboardControls.saveDashboard($event)" class="md-accent">

@@ -212,7 +212,7 @@ function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  la
 					filterDetails: [],		     
 				};
 				console.log("empty dashboar created " + $rootScope.currentDashboard);
-				location.href = '#/visualize_data';
+				location.href = '#/dashboard';
 				$rootScope.selectedPageIndex = 0;
 				
 			});

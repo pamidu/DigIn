@@ -4,19 +4,19 @@ DiginApp.controller('shareCtrl', ['Socialshare', '$scope', '$mdDialog', 'widget'
     $scope.DashboardName = DashboardName;
     $scope.shareOptions = [{
         provider: "facebook",
-        icon: "styles/icons/social-media/facebook.svg"
+        icon: "views/dashboard/widgetShare/icons/facebook.svg"
     }, {
         provider: "google",
-        icon: "styles/icons/social-media/googleplus.svg"
+        icon: "views/dashboard/widgetShare/icons/googleplus.svg"
     }, {
         provider: "twitter",
-        icon: "styles/icons/social-media/twitter.svg"
+        icon: "views/dashboard/widgetShare/icons/twitter.svg"
     }, {
         provider: "linkedin",
-        icon: "styles/icons/social-media/linkedin.svg"
+        icon: "views/dashboard/widgetShare/icons/linkedin.svg"
     }, {
         provider: "email",
-        icon: "styles/icons/social-media/email.svg"
+        icon: "views/dashboard/widgetShare/icons/email.svg"
     }];
 
     $scope.close = function() {
@@ -28,7 +28,7 @@ DiginApp.controller('shareCtrl', ['Socialshare', '$scope', '$mdDialog', 'widget'
         if (provider == "email") {
             $mdDialog.show({
                 controller: 'shareEmailClients',
-                templateUrl: 'views/shareEmailClients.html',
+                templateUrl: 'views/dashboard/widgetShare/shareEmailClients.html',
                 resolve: {},
                 locals: {
                     widget: widget,

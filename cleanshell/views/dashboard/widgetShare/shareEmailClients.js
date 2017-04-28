@@ -12,18 +12,18 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
 
      $scope.shareOptions = [{
         provider: "Gmail",
-        icon: "styles/css/images/icons/gmail.svg"
+        icon: "views/dashboard/widgetShare/icons/gmail.svg"
         }, {
             provider: "Yahoo",
-            icon: "styles/css/images/icons/yahoo.svg"
+            icon: "views/dashboard/widgetShare/icons/yahoo.svg"
         }, 
          {
              provider: "outlook",
-             icon: "styles/css/images/icons/outlook.svg"
+             icon: "views/dashboard/widgetShare/icons/outlook.svg"
          }, 
         {
             provider: "Other",
-            icon: "styles/css/images/icons/mail.svg"
+            icon: "views/dashboard/widgetShare/icons/mail.svg"
         }];
 
 
@@ -34,7 +34,7 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
 
     $scope.openeMailClent = function(provider) {
         var widget =$scope.widget;
-        var URL = ShareWidgetService.getShareWidgetURL(widget,$scope.getreturnEmail,provider);
+        var URL = DiginServices.getShareWidgetURL(widget,$scope.getreturnEmail,provider);
   
     };
 
@@ -51,7 +51,7 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
       if(provider=="Other"){
             $mdDialog.show({
                 controller: 'localEmailClient',
-                templateUrl: 'views/loginEmail.html',
+                templateUrl: 'views/dashboard/widgetShare/loginEmail.html',
                 resolve: {},
                 locals: {
                     URL: URL,
@@ -90,7 +90,7 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
   
 }]);
 
-routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','ngToast',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,ngToast) {
+DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','notifications',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,notifications) {
 
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
     var sender = userInfo.Email;
@@ -141,16 +141,16 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardN
                 }
             }).then(function(response){
                 console.log(response)
-                $scope.fireMsg('1', 'Mail sent successfully!');
+                notifications.toast('1', 'Mail sent successfully!');
                 $scope.close();
             },function(response){
                 console.log(response)
-                $scope.fireMsg('0', 'Mail sending fail!');
+                notifications.toast('0', 'Mail sending fail!');
             })   
 
         }  
         else{
-            $scope.fireMsg('0', 'Please check your email addresses!');
+            notifications.toast('0', 'Please check your email addresses!');
         }
     }
 
@@ -170,22 +170,7 @@ routerApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardN
         return pattern.test(email);    
     }
 
-    $scope.fireMsg=function (msgType, content) {
-            ngToast.dismiss();
-            var _className;
-            if (msgType == '0') {
-                _className = 'danger';
-            } else if (msgType == '1') {
-                _className = 'success';
-            }
-                ngToast.create({
-                    className: _className,
-                    content: content,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    dismissOnClick: true
-                    });
-    }
+    
 
     $scope.checkCCList = function(ccList){
 

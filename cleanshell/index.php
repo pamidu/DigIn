@@ -610,6 +610,7 @@
 		<script src="views/dashboard/addWidget/addWidgetDashboardCtrl.js"></script>
 		<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
 		<script src="views/dashboard/widgetShare/widgetShareCtrl.js"></script>
+		<script src="views/dashboard/widgetShare/shareEmailClients.js"></script>
 		<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
 		<script src="views/user_assistance/user_assistanceCtrl.js"></script>
 		<script src="views/query_builder/query_builderCtrl.js"></script>

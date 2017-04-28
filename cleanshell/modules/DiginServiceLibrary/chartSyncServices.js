@@ -45,4 +45,11 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
     	}
     }
 
+    var TABULAR = function(){
+        this.sync = function(query,client,widget,is_sync,callback){
+            tabularService.executeQuery(widget.selectedDB,widget.widgetConfig.dataSource,widget.settingConfig,widget.widgetConfig.filters,widget.widgetConfig,callback);
+        }
+
+    }    
+
 }]);

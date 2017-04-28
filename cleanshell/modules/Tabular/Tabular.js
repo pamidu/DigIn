@@ -138,7 +138,7 @@ TabularModule.factory('generateTabular', ['$rootScope','notifications','tabularS
 			return true;
 		
 		},
-		generate: function(db , dataSource , tabulrSettings ,filterStr, cb){
+		generate: function(db , dataSource , tabulrSettings ,designFilterString, runtimefiltersArr, cb){
 
 			var config = {
 				'Aggquery' : "",
@@ -154,13 +154,14 @@ TabularModule.factory('generateTabular', ['$rootScope','notifications','tabularS
 				'OrderType': "",
 				"dbType":db,
 				"dataSource":dataSource,
-				"filters" :[],
+				"runtimefiltersArr" :runtimefiltersArr,
 				"query":"",
 				"aggQuerry":"",
-				"isloading":false
+				"isloading":false,
+                "designFilterString":designFilterString
 			};
 
-			tabularService.executeQuery(db , dataSource ,  tabulrSettings , filterStr , config , function(tabulConfig){
+			tabularService.executeQuery(db , dataSource ,  tabulrSettings , config , function(tabulConfig){
                 
 				cb(tabulConfig);
             });
@@ -263,7 +264,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
 
         var query ="";
         config.isNext = true;
-        if(typeof config.filters == undefined || config.filters == ""){
+        if(config.runtimefiltersArr == null){
             query = config.query;
         }else{
             query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
@@ -367,13 +368,12 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
     }
 
 
-    this.executeQuery=function(db, sourceData , tabulrSettings ,filterStr, config, cb){  
+    this.executeQuery=function(db, sourceData , tabulrSettings , config, cb){  
 
            
             var fieldArray = [];
             var fieldArrayMSSQL = [];
 
-            var widgetConfig = "";
 
             var executeColumns = tabulrSettings.AllingArr;
 
@@ -396,21 +396,28 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                 if(!config.isSort){
                     if (db == "BigQuery" || db == "memsql") {
                         dataSourceID = sourceData.datasource_id
-                        //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
-                        if(true){
-                            var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+tabulrSettings.defSortFeild+" "+tabulrSettings.AscOrDec;
+
+                        //check its has runtime filters
+                        if(config.runtimefiltersArr == null){
+                            //check wether it has designtime filters
+                            if(config.designFilterString == "")
+                                var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+tabulrSettings.defSortFeild+" "+tabulrSettings.AscOrDec;
+                            else
+                                var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " WHERE "+ config.designFilterString +" ORDER BY "+tabulrSettings.defSortFeild+" "+tabulrSettings.AscOrDec;
                         }
                         else{
                             var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,defSortFeild);
                         }
                     } else {
                            
-                    	dataSourceID = sourceData.id
-                          //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
-                          	if(true){
+                    	   dataSourceID = sourceData.id
+                           if(config.runtimefiltersArr == null){
                               var defSortFeild='['+tabulrSettings.defSortFeild+']';
-                              var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
-                                
+                              if(config.designFilterString == ""){
+                                 var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
+                              }
+                              else
+                                 var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " WHERE " + config.designFilterString +" ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
                             }
                             else{
                                 var defSortFeild = widget.widgetData.widData.tabularConfig.defSortFeild;
@@ -421,10 +428,12 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                 else{
                     if (db == "BigQuery" || db == "memsql") {
 
-                    	 dataSourceID = sourceData.datasource_id
-                        //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
-                        if(true){
-                              var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+config.oderByclumn+" "+config.OrderType;
+                    	dataSourceID = sourceData.datasource_id
+                        if(config.runtimefiltersArr == null){
+                            if(config.designFilterString == "")
+                                var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+config.oderByclumn+" "+config.OrderType;
+                            else
+                                var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " WHERE "+ config.designFilterString +" ORDER BY "+config.oderByclumn+" "+config.OrderType;
                         }
                         else{
                             var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
@@ -432,16 +441,18 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                     } else {
                        
                         dataSourceID = sourceData.id
-                        //if(typeof widget.widgetData.filterStr == "undefined" || widget.widgetData.filterStr == ""){
-                        	if(true){
+                        if(config.runtimefiltersArr == null){
                              var orderByColumnName='['+config.oderByclumn+']';
-                            var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.datasource_name.split(".")[0] +"].["+ sourceData.datasource_name.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+config.OrderType;
-                                 
-                            }
-                            else{
-                                var orderByColumnName = orderByColumnName;
-                                var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
-                            }
+                             if(config.designFilterString == "")
+                                var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.datasource_name.split(".")[0] +"].["+ sourceData.datasource_name.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+config.OrderType;
+                             else
+                                var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.datasource_name.split(".")[0] +"].["+ sourceData.datasource_name.split(".")[1] + "]" +" WHERE " + config.designFilterString +" ORDER BY "+orderByColumnName+" "+config.OrderType;   
+                            
+                        }
+                        else{
+                            var orderByColumnName = orderByColumnName;
+                            var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
+                        }
                     }
                 }
 
@@ -504,7 +515,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                                         thisService.setPagination(data,config,tabulrSettings,cb);
 
                                        }
-                                },undefined,filterStr);
+                                },undefined,config.designFilterString);
                             }
                             else{
                                 config.query  =query;
@@ -553,7 +564,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
         }
 
         
-        this.executeQuery(config.dbType, config.dataSource,tabularSettings,config.filters,config,  function(query){
+        this.executeQuery(config.dbType, config.dataSource,tabularSettings,config,  function(query){
 
              config.isloading = false;
             // var query=query;

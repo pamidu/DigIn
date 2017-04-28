@@ -535,9 +535,18 @@ DiginApp.controller('query_builderCtrl',[
 			}else if($scope.chartType.chartType == 'tabular')
 			{
 				var isChartConditionsOk = generateTabular.tabularValidations($scope.settingConfig);
+
+				var connection_string = "";
+			    // if filters exist, apply
+			    if ($scope.selectedDesignTimeFilters.length > 0)
+			    {
+			     var groupFilters = filterServices.groupFilterConnectionString($scope.selectedDesignTimeFilters);
+			     connection_string = filterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
+			    }
+
+
 				if(isChartConditionsOk){
-				
-					 generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,"", function (data){
+					generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,connection_string,null, function (data){
 
 
 					  $scope.widgetConfig = data;

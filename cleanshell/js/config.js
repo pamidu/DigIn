@@ -21,7 +21,7 @@ angular.module('configuration', [])
 .constant('onsite', true)   
 .constant('tenantId','test')
 .constant('version','V3.2.1.8')
-//#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
+//#Database type --> mssql, postgresql,bigquery,mysql,memsql #Database type for csv/excel upload
 .constant('dbType', 'memsql')
 //# url for facebook app
 .constant('fbUrl', 'DigIn-FB/')

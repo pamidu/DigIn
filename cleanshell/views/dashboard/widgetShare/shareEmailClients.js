@@ -114,7 +114,7 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
             //console.log(JSON.stringify($scope.mailData));
             $http({
                 method: 'POST',
-                url: 'http://104.196.114.113:3500/command/notification',
+                url: 'http://104.199.166.27:3500/command/notification',
                 data: $scope.mailData,
                 headers:{
                     'Content-Type': 'application/json',

@@ -25,6 +25,7 @@ angular.module('configuration', [])
 //# url for facebook app
 .constant('fbUrl', 'DigIn-FB/')
 
+
 //configure datasource connections in DigIn/shell/jsons/dbConfig.json
 // #set the 'display' parameter in each object to configure visibility
 // # "display": "true" - Datasource will be visible

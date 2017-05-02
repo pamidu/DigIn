@@ -395,8 +395,10 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     }
     
     vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) { 
-    
-        if($scope.tenant.name=="" || $scope.tenant.name==undefined){
+        if($scope.tenant==undefined){
+            return;
+        }
+        else if($scope.tenant.name=="" || $scope.tenant.name==undefined){
             return;
         }
         /*else if($scope.tenant.company=="" || $scope.tenant.company==undefined){

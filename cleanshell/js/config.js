@@ -8,6 +8,7 @@ angular.module('configuration', [])
 .constant('Digin_Auth', 'http://dev.digin.io/') //# Note : http://dev.digin.io/
 .constant('Digin_Tenant', 'http://dev.auth.digin.io:3048') //#Note : http://dev.auth.digin.io:3048
 .constant('Digin_ObjStore', 'http://dev.auth.digin.io:3000') //#http://dev.auth.digin.io:3000
+.constant('Digin_CEB', 'http://dev.auth.digin.io:3500') //#http://dev.auth.digin.io:3500
 //#for loggin process
 .constant('IsLocal', true) //# true for local developmet only
 .constant('DeveloperMode', true) //# true for local developmet only 

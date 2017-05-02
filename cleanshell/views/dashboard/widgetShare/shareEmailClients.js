@@ -73,7 +73,7 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
 
 
 
-DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','notifications',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,notifications) {
+DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','notifications','Digin_CEB',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,notifications,Digin_CEB) {
     
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
     var sender = userInfo.Email;
@@ -114,7 +114,7 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
             //console.log(JSON.stringify($scope.mailData));
             $http({
                 method: 'POST',
-                url: 'http://104.199.166.27:3500/command/notification',
+                url: Digin_CEB+'/command/notification',
                 data: $scope.mailData,
                 headers:{
                     'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
             }).then(function(response){
                 console.log(response)
                 notifications.toast('1', 'Mail sent successfully!');
-                $scope.close();
+                $mdDialog.cancel();
             },function(response){
                 console.log(response)
                 notifications.toast('0', 'Mail sending fail!');

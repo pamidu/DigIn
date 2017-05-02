@@ -29,6 +29,8 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	}
 
    $scope.$parent.currentView = $rootScope.currentDashboard.compName;
+   
+   $scope.lastPath = $scope.$parent.lastPath;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -198,9 +200,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				  parent: angular.element(document.body),
 				  clickOutsideToClose:true,
 				  targetEvent: ev,
+				  locals: {lastPath: $scope.lastPath},
 				  fullscreen: useFullScreen
 				}).then(function(answer) {
-
+					if(answer){
+						console.log(answer);
+						$scope.lastPath = answer;
+					}
 				}); 
 				$scope.$watch(function() {
 				  return $mdMedia('xs') || $mdMedia('sm');

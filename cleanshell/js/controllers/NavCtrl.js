@@ -5,6 +5,8 @@ function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  la
 	
 	$rootScope.sharableUsers = [];
 	$rootScope.sharableGroups = [];
+	
+	$scope.lastPath = {dataSource:undefined, connection: undefined, table: undefined, connectionTable: undefined};
 	$log.debug('please user $log.debug("sample log") or notifications.log("sample log",new Error()) instead of console.log()');
 	
 	$scope.currentView = "Home";

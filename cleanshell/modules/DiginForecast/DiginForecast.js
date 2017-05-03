@@ -644,6 +644,15 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             forecastWidgetConfig.options.chart.type = highChartType;
             callback(forecastWidgetConfig);
             
+        },
+        applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, cb){
+            /*widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
+            widget.widgetData.widgetConfig.designFilterString = designFilterString;
+
+            tabularService.executeQuery(widget.widgetData.selectedDB , widget.widgetData.selectedFile ,  widget.widgetData.settingConfig , widget.widgetData.widgetConfig , function(tabulConfig){
+                cb(tabulConfig);
+            });*/
+
         }
         
    }

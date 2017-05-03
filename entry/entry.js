@@ -153,10 +153,11 @@ routerApp
             $scope.callLogout=function(secToken, event){
                 $http.get(Digin_Tenant+'/LogOut/'+secToken)
             .success(function (res) {
+                console.log("session cleared.");
                 //console.log(data);
-                $scope.login(event);
+                //$scope.login(event);
             }).error(function () {
-                alert("Error retun while logout the sessions!");
+                //alert("Error retun while logout the sessions!");
             });
             }
 
@@ -274,9 +275,15 @@ routerApp
                                         .ok('Yes!')
                                         .cancel('No!');
                                     $mdDialog.show(confirm).then(function () {
-                                        for (var i=0; i<data.Data.length; i++){
-                                            $scope.callLogout(data.Data[i], event);
-                                        }   
+                                            for (var i=0; i<data.Data.length; i++){
+                                                $scope.callLogout(data.Data[i], event);
+                                            }   
+
+                                            if(i==data.Data.length)
+                                            {
+                                                $scope.login(event);
+                                            }
+
                                     }, function () {
                                          mainFun.fireMsg('0', data.Message);
                                         

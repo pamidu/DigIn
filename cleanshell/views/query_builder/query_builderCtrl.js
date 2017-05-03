@@ -62,6 +62,7 @@ DiginApp.controller('query_builderCtrl',[
 	});
 
 	//#get only date attributes out of selectedAttributes
+	/*
 	$scope.getOnlyDateAttributes = function()
 	{
 		$scope.dateAttributes=[];
@@ -70,6 +71,7 @@ DiginApp.controller('query_builderCtrl',[
 			  		$scope.dateAttributes.push(value);
 			}, '');
 	}
+	*/
 
 //add to selectedSeries
  $scope.pushSeries = function(item, aggregation)
@@ -282,9 +284,9 @@ DiginApp.controller('query_builderCtrl',[
 		else if($scope.chartType.chartType == "metric")
 		{
 			$scope.settingsOpened = true;
-			if($scope.dateAttributes==undefined || $scope.dateAttributes==""){
+			/*if($scope.dateAttributes==undefined || $scope.dateAttributes==""){
 				$scope.getOnlyDateAttributes();
-			}
+			}*/
 		}
 		else{
 			$scope.showPlaceholderIcon = true;
@@ -479,15 +481,7 @@ DiginApp.controller('query_builderCtrl',[
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
 				if(isChartConditionsOk){	
 
-					var datasource_id;
-			         if( $scope.selectedDB == "BigQuery" || $scope.selectedDB == "memsql"){
-			          datasource_id = $scope.selectedFile.datasource_id
-			         }else{
-			          datasource_id = $scope.selectedFile.id;
-			         }
-
-							
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
+					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
 						if(status){
 							$scope.widgetConfig = metricObj;
 							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;

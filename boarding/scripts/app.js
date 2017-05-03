@@ -368,24 +368,21 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
             }
         })
         .success(function(response) {
+            $mdDialog.hide();
             console.log(response);
-            if(plan.id=="Free"){
+            if(plan.id=="Free"){                
                 $rootScope.trial=true;
                 $rootScope.btnMessage="Congratulations...!";
                 $rootScope.btnMessage2="This trial version is valid only for 30 days.";
-                $mdDialog.hide();
                 localStorage.setItem('firstLogin',true);
                 $rootScope.btnContinue="Go to Home";
-                $mdDialog.hide();
                 vm.enableNextStep();
             }
             else if(plan.id=="onsite"){
-                $mdDialog.hide();
                 vm.enableNextStep();
                 vm.enableNextStep();
             } 
             else{
-                $mdDialog.hide();
                 vm.enableNextStep();
             }
         })
@@ -395,8 +392,10 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
     }
     
     vm.submitCurrentStep = function submitCurrentStep(tenant, isSkip) { 
-    
-        if($scope.tenant.name=="" || $scope.tenant.name==undefined){
+        if($scope.tenant==undefined){
+            return;
+        }
+        else if($scope.tenant.name=="" || $scope.tenant.name==undefined){
             return;
         }
         /*else if($scope.tenant.company=="" || $scope.tenant.company==undefined){
@@ -707,7 +706,6 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                             $scope.plan.name="Free";
                             displayError("Direct to free package.");
                             vm.addPackage($scope.plan, $scope.TenantSecToken);     
-
                         }    
                     }
                     else

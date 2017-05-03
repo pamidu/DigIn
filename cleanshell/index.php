@@ -334,7 +334,7 @@
 		<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="notifications" style="overflow-y:hidden;z-index:1501;">
 
 			<md-toolbar class="md-primary" style="min-height: 45px;height:45px;">
-				<div layout="row" layout-align="space-between center">
+				<div layout="row" layout-align="space-between center" style="height: 45px;">
 					<div layout="row" layout-align="start center">
 						<md-button class="md-icon-button" ng-click="perform($event,'Notifications')" aria-label="close" hide-lg hide-md hide-gt-lg hide-gt-sm>
 							<i class="ti-close" style="font-size:15px"></i>
@@ -609,7 +609,7 @@
 		<script src="views/dashboard/dataView/dataView.js"></script>
 		<script src="views/dashboard/addWidget/addWidgetDashboardCtrl.js"></script>
 		<script src="views/dashboard/renamePage/renamePageCtrl.js"></script>
-		<script src="views/dashboard/widgetShare/widgetShareCtrl.js"></script>
+		<script src="views/dashboard/widgetShare/widgetShareService.js"></script>
 		<script src="views/dashboard/widgetShare/shareEmailClients.js"></script>
 		<script src="views/settings/systemSettings/systemSettingsCtrl.js"></script>
 		<script src="views/user_assistance/user_assistanceCtrl.js"></script>

@@ -6,7 +6,7 @@
 
 <what-if-settings ng-if="$parent.chartType.chartType == 'whatif'" whatif-settings="$parent.$parent.settingConfig" submit-form="toggleSettings()"></what-if-settings>
 
-<metric-settings ng-if="$parent.chartType.chartType == 'metric'" metric-settings="$parent.$parent.settingConfig"  attr="$parent.$parent.dateAttributes" submit-form="toggleSettings()"></metric-settings>
+<metric-settings ng-if="$parent.chartType.chartType == 'metric'" metric-settings="$parent.$parent.settingConfig"  attr="$parent.$parent.selectedAttributes" submit-form="toggleSettings()"></metric-settings>
 
 <tabular-settings ng-if="$parent.chartType.chartType == 'tabular'" tabular-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></tabular-settings>
 

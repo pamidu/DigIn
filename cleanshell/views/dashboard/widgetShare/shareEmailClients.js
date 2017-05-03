@@ -1,4 +1,4 @@
-DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','DashboardName','DiginServices',function ($scope,$mdDialog,widget,DashboardName,DiginServices) {
+DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','DashboardName','widgetShareService',function ($scope,$mdDialog,widget,DashboardName,widgetShareService) {
 
     $scope.widget = widget;
     $scope.DashboardName = DashboardName;
@@ -34,12 +34,10 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
 
     $scope.openeMailClent = function(provider) {
         var widget =$scope.widget;
-        var URL = DiginServices.getShareWidgetURL(widget,$scope.getreturnEmail,provider);
-  
+        var URL = widgetShareService.getShareWidgetURL(widget,$scope.getreturnEmail,provider);
     };
 
    $scope.getreturnEmail = function(URL,provider){
-
 
     var emailSubject = 'DigIn - '+$scope.DashboardName+' : '+$scope.widgetName+'';
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -61,37 +59,22 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
                 }
             })
         }else if(provider=="Gmail"){
-
-            //First open up the authentication dialog
-            //https://mail.google.com/mail/?to=inbox@example.com&bcc=admin@example.com&subject=Hey#compose
-            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su='+emailSubject+'&body='+emailBody+'&bcc=','_blank');
-            
+            //#First open up the authentication dialog
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=&su='+emailSubject+'&body='+emailBody+'&bcc=','_blank'); 
         }
         else if(provider=="Yahoo"){
-
-    //          emailBody = 'Hi,%0D%0ACheck Out '+$scope.DashboardName+' : '+$scope.widgetName+' shared by '+sender
-    // +'.%0D%0APowered by DigIn.io.%0D%0A(URL of the widget '+URL+')%0D%0ARegards,%0D%0ADigIn Team.';
-  
             window.open('http://compose.mail.yahoo.com/?to=&subject='+emailSubject+'&body='+emailBody+'','_blank');
-
         }
         else if(provider=="outlook"){
-            //window.location.href ='mailto:?subject='+emailSubject+'&body='+emailBody+'';
-
             window.open('https://outlook.live.com/?path=/mail/action/compose&to=&subject='+emailSubject+'&body='+emailBody+'','_blank');
-
-
-
-
         }
-
-   }
-
-  
+   } 
 }]);
 
-DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','notifications',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,notifications) {
 
+
+DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardName','widgetName','$http','notifications','Digin_CEB',function ($scope,$mdDialog,URL,DashboardName,widgetName,$http,notifications,Digin_CEB) {
+    
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
     var sender = userInfo.Email;
     $scope.emailBody='Check Out '+DashboardName+' : '+widgetName+' shared by '+sender+'.<br><br>powered by DigIn.io(link to '+URL+')<br><br>Regards,<br><br>DigIn Team.';
@@ -102,12 +85,11 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
     
     $scope.sendEmail=function () {
 
-            if(typeof $scope.emailCc != "undefined")
-                isCClistOk = $scope.checkCCList($scope.emailCc);
+        if(typeof $scope.emailCc != "undefined")
+            isCClistOk = $scope.checkCCList($scope.emailCc);
 
-          if($scope.validateEmail($scope.emailTo) && isCClistOk){
-            
-            
+        if($scope.validateEmail($scope.emailTo) && isCClistOk){
+                      
             $scope.mailData =   {
                 "type": "email",
                 "to": $scope.emailTo,
@@ -129,11 +111,10 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
             };
 
             var token =getCookie("securityToken");
-
-            console.log(JSON.stringify($scope.mailData));
+            //console.log(JSON.stringify($scope.mailData));
             $http({
                 method: 'POST',
-                url: 'http://104.196.114.113:3500/command/notification',
+                url: Digin_CEB+'/command/notification',
                 data: $scope.mailData,
                 headers:{
                     'Content-Type': 'application/json',
@@ -142,50 +123,30 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
             }).then(function(response){
                 console.log(response)
                 notifications.toast('1', 'Mail sent successfully!');
-                $scope.close();
+                $mdDialog.cancel();
             },function(response){
                 console.log(response)
                 notifications.toast('0', 'Mail sending fail!');
             })   
-
         }  
         else{
             notifications.toast('0', 'Please check your email addresses!');
         }
     }
 
-    $scope.close = function() {
-
-            $mdDialog.hide();
-    };
-
-    $scope.closeDialog = function() {
-
-            $mdDialog.hide();
-    };
-
     $scope.validateEmail = function(email){
-
         var pattern = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/igm;
         return pattern.test(email);    
     }
 
-    
-
     $scope.checkCCList = function(ccList){
-
         var str = ccList;
         var res = str.split(",");
-
         for(var i =0 ; i < res.length ; i++){
-
             if(!$scope.validateEmail(res[i]))
                 return false;
         }
-
         return true;
     }
-
-
 
 }]);    

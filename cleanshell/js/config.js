@@ -8,6 +8,7 @@ angular.module('configuration', [])
 .constant('Digin_Auth', 'http://dev.digin.io/') //# Note : http://dev.digin.io/
 .constant('Digin_Tenant', 'http://dev.auth.digin.io:3048') //#Note : http://dev.auth.digin.io:3048
 .constant('Digin_ObjStore', 'http://dev.auth.digin.io:3000') //#http://dev.auth.digin.io:3000
+.constant('Digin_CEB', 'http://dev.auth.digin.io:3500') //#http://dev.auth.digin.io:3500
 //#for loggin process
 .constant('IsLocal', true) //# true for local developmet only
 .constant('DeveloperMode', true) //# true for local developmet only 
@@ -20,10 +21,11 @@ angular.module('configuration', [])
 .constant('onsite', true)   
 .constant('tenantId','test')
 .constant('version','V3.2.1.8')
-//#Database type --> mssql, postgresql,bigquery,mysql #Database type for csv/excel upload
+//#Database type --> mssql, postgresql,bigquery,mysql,memsql #Database type for csv/excel upload
 .constant('dbType', 'memsql')
 //# url for facebook app
 .constant('fbUrl', 'DigIn-FB/')
+
 
 //configure datasource connections in DigIn/shell/jsons/dbConfig.json
 // #set the 'display' parameter in each object to configure visibility

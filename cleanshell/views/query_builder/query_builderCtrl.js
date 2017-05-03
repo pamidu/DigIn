@@ -15,6 +15,10 @@ DiginApp.controller('query_builderCtrl',[
 	//The variables that contain the series and category data
 	$scope.selectedSeries = $stateParams.selectedMeasures;
 	$scope.selectedCategory = $stateParams.selectedAttributes;
+
+	$scope.selectedDesignTimeFilters = $stateParams.DesignTimeFilter;
+	$scope.selectedRunTimeFilters = $stateParams.RuntimeFilter;
+
 	
 	$scope.aggregations = ["AVG","SUM","COUNT","MIN","MAX"];
 	$scope.limit = 100;
@@ -546,7 +550,7 @@ DiginApp.controller('query_builderCtrl',[
 
 
 				if(isChartConditionsOk){
-					generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,connection_string,null, function (data){
+					generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,connection_string,"", function (data){
 
 
 					  $scope.widgetConfig = data;
@@ -649,9 +653,7 @@ DiginApp.controller('query_builderCtrl',[
 	// ---------------- filter related methods and variables start----------------
 
 	//Variables that contain filter attributes
-	$scope.selectedDesignTimeFilters = $stateParams.DesignTimeFilter;
-	$scope.selectedRunTimeFilters = $stateParams.RuntimeFilter;
-
+	
 	$scope.designtimeFilters = angular.copy($scope.selectedAttributes); // deep copy as you need to load the values under the particular field
 
 	//add to design time filter

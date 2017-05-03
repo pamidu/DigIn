@@ -8,7 +8,7 @@
 
 			<v-accordion class="vAccordion--default">
 
-			  <v-pane ng-repeat="(key, value) in $parent.selectedAttributes | orderBy:'name'">
+			  <v-pane ng-repeat="(key, value) in $parent.selectedAttributes">
 				<v-pane-header>
 				  {{ value.name }}
 				</v-pane-header>

@@ -138,7 +138,7 @@ TabularModule.factory('generateTabular', ['$rootScope','notifications','tabularS
 			return true;
 		
 		},
-		generate: function(db , dataSource , tabulrSettings ,designFilterString, runtimefiltersArr, cb){
+		generate: function(db , dataSource , tabulrSettings ,designFilterString, runtimefilterString, cb){
 
 			var config = {
 				'Aggquery' : "",
@@ -154,18 +154,29 @@ TabularModule.factory('generateTabular', ['$rootScope','notifications','tabularS
 				'OrderType': "",
 				"dbType":db,
 				"dataSource":dataSource,
-				"runtimefiltersArr" :runtimefiltersArr,
+				"runtimefilterString" :runtimefilterString,
 				"query":"",
 				"aggQuerry":"",
 				"isloading":false,
-                "designFilterString":designFilterString
+                "designFilterString":designFilterString,
+                "runtimeQuery" : ""
 			};
 
 			tabularService.executeQuery(db , dataSource ,  tabulrSettings , config , function(tabulConfig){
                 
 				cb(tabulConfig);
             });
-		}
+		},
+        applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, cb){
+            widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
+            widget.widgetData.widgetConfig.designFilterString = designFilterString;
+
+            tabularService.executeQuery(widget.widgetData.selectedDB , widget.widgetData.selectedFile ,  widget.widgetData.settingConfig , widget.widgetData.widgetConfig , function(tabulConfig){
+                
+                cb(tabulConfig);
+            });
+
+        }
 
 	}
 }]);//END OF generateTabular
@@ -264,18 +275,14 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
 
         var query ="";
         config.isNext = true;
-        if(config.runtimefiltersArr == null){
+        if(config.runtimefilterString == ""){
             query = config.query;
         }else{
-            query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,widget.widgetData.widData.tabularConfig.defSortFeild);
+            query = config.runtimeQuery;
         }
 
-        var datasource_id;
-         if( config.dbType == "BigQuery" || config.dbType == "memsql"){
-         	datasource_id = config.dataSource.datasource_id
-         }else{
-         	datasource_id = config.dataSource.id;
-         }
+        var datasource_id = config.dataSource.datasource_id
+     
 
         cl.getExecQuery(query, datasource_id, function(data, status) {
             if(status){
@@ -355,6 +362,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
 
         }
         else{
+
             for(var i=0; i < widget.widgetData.widData.tabularConfig.AllingArr.length; i++){
 
                 fieldArray.push('['+widget.widgetData.widData.tabularConfig.AllingArr[i].Attribute+']');
@@ -395,10 +403,10 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                 
                 if(!config.isSort){
                     if (db == "BigQuery" || db == "memsql") {
-                        dataSourceID = sourceData.datasource_id
+                        dataSourceID = sourceData.datasource_id;
 
                         //check its has runtime filters
-                        if(config.runtimefiltersArr == null){
+                        if(config.runtimefilterString == ""){
                             //check wether it has designtime filters
                             if(config.designFilterString == "")
                                 var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+tabulrSettings.defSortFeild+" "+tabulrSettings.AscOrDec;
@@ -406,12 +414,12 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                                 var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " WHERE "+ config.designFilterString +" ORDER BY "+tabulrSettings.defSortFeild+" "+tabulrSettings.AscOrDec;
                         }
                         else{
-                            var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,defSortFeild);
+                            var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " WHERE "+ config.runtimefilterString +" ORDER BY "+tabulrSettings.defSortFeild+" "+tabulrSettings.AscOrDec;
                         }
                     } else {
                            
-                    	   dataSourceID = sourceData.id
-                           if(config.runtimefiltersArr == null){
+                    	   dataSourceID = sourceData.datasource_id;
+                           if(config.runtimefilterString == ""){
                               var defSortFeild='['+tabulrSettings.defSortFeild+']';
                               if(config.designFilterString == ""){
                                  var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
@@ -420,28 +428,27 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                                  var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " WHERE " + config.designFilterString +" ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
                             }
                             else{
-                                var defSortFeild = widget.widgetData.widData.tabularConfig.defSortFeild;
-                                var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,defSortFeild);
+                                var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " +"["+ sourceData.datasource_name.split(".")[0]+ "].["+sourceData.datasource_name.split(".")[1] +"]"+ " WHERE " + config.runtimefilterString +" ORDER BY "+"[" +tabulrSettings.defSortFeild+"]"+" "+tabulrSettings.AscOrDec;
                             }
                     }
                 }
                 else{
                     if (db == "BigQuery" || db == "memsql") {
 
-                    	dataSourceID = sourceData.datasource_id
-                        if(config.runtimefiltersArr == null){
+                    	dataSourceID = sourceData.datasource_id;
+                        if(config.runtimefilterString == ""){
                             if(config.designFilterString == "")
                                 var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " ORDER BY "+config.oderByclumn+" "+config.OrderType;
                             else
                                 var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " WHERE "+ config.designFilterString +" ORDER BY "+config.oderByclumn+" "+config.OrderType;
                         }
                         else{
-                            var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
+                            var query = "SELECT " + fieldArray.toString() + " FROM " + $diginurls.getNamespace() + "." + sourceData.datasource_name + " WHERE "+ config.runtimefilterString +" ORDER BY "+config.oderByclumn+" "+config.OrderType;
                         }
                     } else {
                        
-                        dataSourceID = sourceData.id
-                        if(config.runtimefiltersArr == null){
+                        dataSourceID = sourceData.datasource_id;
+                        if(config.runtimefilterString == ""){
                              var orderByColumnName='['+config.oderByclumn+']';
                              if(config.designFilterString == "")
                                 var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.datasource_name.split(".")[0] +"].["+ sourceData.datasource_name.split(".")[1] + "]" +" ORDER BY "+orderByColumnName+" "+config.OrderType;
@@ -450,13 +457,21 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                             
                         }
                         else{
-                            var orderByColumnName = orderByColumnName;
-                            var query = thisService.getExecQueryFilterArr(widget,widget.widgetData.filterStr,orderByColumnName);
+                             var orderByColumnName='['+config.oderByclumn+']';
+                            var query = "SELECT " + fieldArrayMSSQL.toString() + " FROM " + "["+ sourceData.datasource_name.split(".")[0] +"].["+ sourceData.datasource_name.split(".")[1] + "]" +" WHERE " + config.runtimefilterString +" ORDER BY "+orderByColumnName+" "+config.OrderType;   
                         }
                     }
                 }
 
-                config.query = query;
+
+                var filterParam = config.designFilterString;
+
+                if(config.runtimefilterString != "")
+                   filterParam = config.runtimefilterString;
+
+
+
+
                 var cl = $diginengine.getClient(db);
                 cl.getExecQuery(query, dataSourceID, function(data, status) {
                     //#to get aggregations
@@ -510,23 +525,35 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                                           
                                           }
 
-                                        config.aggQuerry  =Aggquery;
-                                        config.query  =query;
+                                        if (config.runtimefilterString == ""){
+                                            config.aggQuerry  =Aggquery;
+                                            config.query  =query;
+                                        }
+                                        else
+                                             config.runtimeQuery = query;
                                         thisService.setPagination(data,config,tabulrSettings,cb);
 
                                        }
-                                },undefined,config.designFilterString);
+
+                                },undefined,filterParam);
                             }
                             else{
-                                config.query  =query;
+
+                                if (config.runtimefilterString == "")
+                                    config.query  = query;
+                                else
+                                    config.runtimeQuery = query;
+
                                 thisService.setPagination(data,config,tabulrSettings,cb);
                                 
                             }
                         }
                     }
                     else{
-                                    
-                        config.query  =query;
+                        if (config.runtimefilterString == "")           
+                            config.query  =query;
+                        else
+                            config.runtimeQuery = query;
                         thisService.setPagination(data,config,tabulrSettings,cb);
                                     
                     } 

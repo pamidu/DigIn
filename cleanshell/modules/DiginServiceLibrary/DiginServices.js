@@ -179,7 +179,21 @@ DiginServiceLibraryModule.factory('DiginServices', ['$rootScope','$http', 'notif
 							count++;
 							if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
 						}, is_sync);
-					} else {
+					} 
+					else if(widget.widgetData.chartType.chartType == "tabular"){
+						widget.widgetData.widgetConfig.runtimeQuery = "";
+						widget.widgetData.widgetConfig.runtimefilterString = "";
+
+						dashboard.pages[pageIndex].isSeen = true;
+						widget.widgetData.syncOn = true;
+						// send is_sync parameter as true
+						chartSyncServices.sync(widget.widgetData,function(widgetData){
+							widgetData.syncOn = false;
+							count++;
+							if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
+						}, is_sync);
+					}
+					else {
 						count++;
 						if (count == dashboard.pages[pageIndex].widgets.length) { cb(dashboard); }
 					}

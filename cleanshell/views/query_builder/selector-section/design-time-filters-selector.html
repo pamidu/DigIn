@@ -8,7 +8,7 @@
 
 			<v-accordion class="vAccordion--default"  onexpand="loadFilterParams(index)">
 
-			  <v-pane ng-repeat="(key, value) in $parent.designtimeFilters | orderBy:'name'">
+			  <v-pane ng-repeat="(key, value) in $parent.designtimeFilters">
 				<v-pane-header>
 				  {{ value.name }}
 				</v-pane-header>

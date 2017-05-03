@@ -1,4 +1,4 @@
-DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtilitiesFactory', function($diginengine,chartUtilitiesFactory) {
+DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtilitiesFactory','tabularService', function($diginengine,chartUtilitiesFactory,tabularService) {
     this.sync = function(widgetObject, callback, is_sync) {
         var chartType = widgetObject.chartType.chartType;
         var widgetType = eval('new ' + chartType.toUpperCase() + '();');
@@ -46,8 +46,20 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
     }
 
     var TABULAR = function(){
-        this.sync = function(query,client,widget,is_sync,callback){
-            tabularService.executeQuery(widget.selectedDB,widget.widgetConfig.dataSource,widget.settingConfig,widget.widgetConfig.filters,widget.widgetConfig,callback);
+        this.sync = function(query,client,widgetData,is_sync,callback){
+
+            tabularService.executeQuery(widgetData.selectedDB,widgetData.selectedFile,widgetData.settingConfig,widgetData.widgetConfig,function(tabulConfig){
+                widgetData.widgetConfig = tabulConfig;
+                callback(widgetData);
+            });
+
+
+
+
+            // generateTabular.generate(widgetData.selectedDB,widgetData.selectedFile,widgetData.settingConfig,widgetData.widgetConfig.designFilterString,widgetData.widgetConfig.runtimefilterString, function(config){
+            //     widgetData.widgetConfig = config;
+            //     callback(widgetData);
+            // });
         }
 
     }    

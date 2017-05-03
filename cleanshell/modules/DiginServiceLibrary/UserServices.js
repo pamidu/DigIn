@@ -1,4 +1,4 @@
-DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path','Upload', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path,Upload) {
 	var cache = {};
 	return {
         getTenants: function(callback) {
@@ -144,7 +144,7 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 				});	
         }, changePassword: function(oldPassword, newPassword) {
 			 //return the promise directly.
-			 return $http.get(auth_Path +'/ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
+			 return $http.get(auth_Path +'ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
 			   .then(function(result) {
 					//return result.data;
 					
@@ -169,6 +169,22 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					},function errorCallback(response) {
 						notifications.toast(0, "Falied to retrieve Usage Summary");
 					});	
+        }, uploadPicture: function(file) {
+				return Upload.upload({
+						url: Digin_Engine_API + 'file_upload',
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+						data: {
+							db: 'BigQuery',
+							SecurityToken: $rootScope.authObject.SecurityToken,
+							Domain: Digin_Domain,
+							other_data: 'dp',
+							file: file
+						}
+					}).success(function(data) {
+						console.log(data);
+					})
         }
 		//$http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
 		

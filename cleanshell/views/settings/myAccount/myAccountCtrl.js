@@ -435,20 +435,22 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	
 }])
 
-DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','DiginServices','notifications' ,function ($scope,$mdDialog,$http,DiginServices,notifications) {
+DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','UserServices','notifications' ,function ($scope,$mdDialog,$http,UserServices,notifications) {
 
   $scope.submit = function()
   {
 	   
         if ($scope.newPassword === $scope.confirmNewPassword) {
 
-			DiginServices.changePassword($scope.oldPassword ,$scope.newPassword).then(function(result) {
-				if(result.Error == false)
+			UserServices.changePassword($scope.oldPassword ,$scope.newPassword).then(function(result) {
+				console.log(result);
+				if(result.Error == true)
 				{
+					notifications.toast(0, result.Message);
+
+				}else if(result == "true"){
 					notifications.toast(1, "Passoword Changed");
 					$mdDialog.hide(result);
-				}else{
-					notifications.toast(0, result.Message);
 				}
 			})
 
@@ -459,7 +461,7 @@ DiginApp.controller('changePasswordCtrl',['$scope','$mdDialog','$http','DiginSer
   }
 }])
 
-DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','notifications','UserServices' ,function ($scope,$mdDialog,$http,notifications,UserServices) {
 	
 	$scope.fileChanged = function(e)
 	{
@@ -478,9 +480,36 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 	$scope.submit = function()
 	{
 		var profileImg = document.getElementById('profileImg');
-		var profileImgSrc = someimage.src;
-		console.log(profileImgSrc);
+		var profileImgSrc = profileImg.src;
+		var file = base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
+		console.log(file);
+		UserServices.uploadPicture(file);
 	}
+	
+	//#conver dataURL into base64
+    function base64ToBlob(base64Data, contentType) {
+        contentType = contentType || '';
+        var sliceSize = 1024;
+        var byteCharacters = atob(base64Data);
+        var bytesLength = byteCharacters.length;
+        var slicesCount = Math.ceil(bytesLength / sliceSize);
+        var byteArrays = new Array(slicesCount);
+
+        for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+            var begin = sliceIndex * sliceSize;
+            var end = Math.min(begin + sliceSize, bytesLength);
+
+            var bytes = new Array(end - begin);
+            for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+                bytes[i] = byteCharacters[offset].charCodeAt(0);
+            }
+            byteArrays[sliceIndex] = new Uint8Array(bytes);
+        }
+        return new Blob(byteArrays, {
+            type: contentType
+        });
+    };
+	
 }])
 
 DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {

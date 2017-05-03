@@ -23,7 +23,7 @@
 					<span>{{lastPath.dataSource}}</span>
 					<span ng-show="lastPath.connection"><i class="ti-angle-right" style="margin: 10px;"></i>{{lastPath.connection.connection_name}} </span>
 					<span ng-show="lastPath.table"><i class="ti-angle-right" style="margin: 10px;"></i>{{lastPath.table.datasource_name}} </span>
-					<span ng-show="lastPath.connectionTable"><i class="ti-angle-right" style="margin: 10px;"></i>{{lastPath.connectionTable}} </span>
+					<span ng-show="lastPath.connectionTable && lastPath.connection"><i class="ti-angle-right" style="margin: 10px;"></i>{{lastPath.connectionTable}} </span>
 				</div>
 				<md-divider></md-divider>
 				<div layout="row" style="overflow-x:auto">
@@ -71,7 +71,7 @@
 							<div class="md-subheader-inner">
 								<span class="md-subheader-content">Tables</span>
 							</div>
-							<md-button ng-click="updateTables(ev, selectedDB, lastPath.connection, true)" class="md-icon-button"  ng-show="showTableReloadBtn">
+							<md-button ng-click="updateTables(ev, lastPath.dataSource, lastPath.connection, true)" class="md-icon-button"  ng-show="showTableReloadBtn">
 								<i class="ti-reload" style="font-size:16px;line-height: 24px;"></i>
 								<md-tooltip md-direction="left">
 									Reload Tables
@@ -102,36 +102,19 @@
 					</md-list>
 					<md-list flex style="padding-top: 0">
 						<md-subheader class="md-no-sticky list-item-small">Widgets</md-subheader>
-						<md-list id="widgetsTypesContainer" ng-show="lastPath.table.datasource_name || lastPath.connectionTable">
+						<md-list id="widgetsTypesContainer" ng-show="showCharts">
 							<md-list-item class="list-item-small" ng-repeat="chart in chartTypes"  ng-click="selectChartType($index)">
 								<small-chart-icons></small-chart-icons>
 								<span style="margin-left:20px;line-height: 16px;font-size:14px">{{chart.name}}</span>
 							 </md-list-item>
 						 </md-list>
 						 <div layout="row"  layout-align="center center">
-						 	<span ng-hide="lastPath.table.datasource_name ||  lastPath.connectionTable || loadingConnectionTable" style="font-size: 14px;text-align: center;margin-top: 65px;">Please select a Table</span>
+						 	<span ng-hide="showCharts || loadingConnectionTable" style="font-size: 14px;text-align: center;margin-top: 65px;">Please select a Table</span>
 							<div ng-show="loadingConnectionTable" layout="row" layout-align="center center" style="font-size: 14px;width: 230px;text-align: center;margin-top: 65px;">
 								<md-progress-circular class="md-hue-2" md-diameter="20px"></md-progress-circular>
 								<span style="margin-left: 12px;">Retrieving feilds for your widget</span>
 							</div>
 						 </div>
-						<!--v-accordion class="vAccordion--default" style="padding: 0px 10px 0px 10px;:">
-
-						  <v-pane id="{{ ::key}}" ng-repeat="(key, value) in ['Charts']" expanded="pane.isExpanded">
-							<v-pane-header>
-							  {{ value }}
-							</v-pane-header>
-
-							<v-pane-content>
-								<md-list id="widgetsTypesContainer">
-									<md-list-item ng-repeat="chart in chartTypes"  ng-click="selectChartType($index)" ng-if="key == 0">
-										<small-chart-icons></small-chart-icons>
-										<span style="margin-left:20px">{{chart.name}}</span>
-									 </md-list-item>
-								 </md-list>
-							</v-pane-content>
-							</v-pane>
-						</v-accordion-->
 					</md-list>
 				</div>
 			</div>

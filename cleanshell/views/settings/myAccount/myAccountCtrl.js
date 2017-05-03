@@ -482,7 +482,7 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 		var profileImg = document.getElementById('profileImg');
 		var profileImgSrc = profileImg.src;
 		var file = base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
-		console.log(file);
+		file.name = "profile.jpg";
 		UserServices.uploadPicture(file);
 	}
 	

@@ -247,7 +247,7 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 		console.log("nothing to retrive");
 	}
 	
-	if($scope.lastPath.connectionTable){
+	if($scope.lastPath.connectionTable && $scope.lastPath.connection){
 		$scope.getConnectionTable(null,$scope.lastPath.connectionTable);
 		console.log("retrive");
 	}else{

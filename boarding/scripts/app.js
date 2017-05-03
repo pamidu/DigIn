@@ -326,7 +326,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
          
     //#Add package to digin engine#//
     vm.addPackage = function(plan,SecurityToken) { 
-        displayProgress("Creating package...");                       
+        //displayProgress("Creating package...");                       
         if(onsite){
             $scope.detail=[{
                         "package_id":"1005",
@@ -357,7 +357,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                         "is_new": true
                         }];
         }
-        
+        //$mdDialog.hide(); 
         $http({
             method: 'POST',
             url: Digin_Engine_API + 'activate_packages/',
@@ -367,8 +367,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $q, $timeout, paymentGa
                 'SecurityToken': SecurityToken
             }
         })
-        .success(function(response) {
-            $mdDialog.hide();    
+        .success(function(response) {               
             console.log(response);
             if(plan.id=="Free"){                
                 $rootScope.trial=true;

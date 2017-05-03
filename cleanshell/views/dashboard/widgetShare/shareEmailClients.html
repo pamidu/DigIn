@@ -11,7 +11,7 @@
 
   <div layout="row" layout-align="center center" layout-wrap>
     <div class="select-card-btn asset" ng-repeat="item in shareOptions">
-      <img alt="" src="{{item.icon}}" ng-click="openeMailClent(item.provider)" >
+      <img alt="" src="{{item.icon}}" ng-click="openeMailClent($event, item.provider)" >
       <span class="size graph-h2">
         {{item.provider}}
       </span>

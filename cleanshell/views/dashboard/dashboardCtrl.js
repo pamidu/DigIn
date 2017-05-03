@@ -313,15 +313,15 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				});
 			},
 			share: function (ev, widget,provider) {
-	            if(typeof $rootScope.selectedDashboard.compName != "undefined"){
+	            if(typeof $rootScope.currentDashboard.compName != "undefined"){
 			        if (provider == "email") {
 			            $mdDialog.show({
 			                controller: 'shareEmailClients',
 			                templateUrl: 'views/dashboard/widgetShare/shareEmailClients.html',
-			                resolve: {},
+			                targetEvent: ev,
 			                locals: {
 			                    widget: widget,
-			                    DashboardName: $rootScope.selectedDashboard.compName
+			                    DashboardName: $rootScope.currentDashboard.compName
 			                }
 			            })
 			        } else {

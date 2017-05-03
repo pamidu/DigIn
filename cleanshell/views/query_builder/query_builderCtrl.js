@@ -440,12 +440,23 @@ DiginApp.controller('query_builderCtrl',[
 				//$scope.currentChartType = "highCharts";
 			}else if($scope.chartType.chartType == 'forecast')
 			{
+
+				//#Check whether design time filters exist or not
+				//#if exist apply designtime filters
+				var connection_string = "";
+			    if ($scope.selectedDesignTimeFilters.length > 0)
+			    {
+			     var groupFilters = filterServices.groupFilterConnectionString($scope.selectedDesignTimeFilters);
+			     connection_string = filterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
+			    }	
+
 				if(generateForecast.isRequestValidated($scope.selectedSeries, $scope.selectedCategory)){
-					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data,status){
+					generateForecast.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, $scope.selectedSeries,$scope.selectedCategory,connection_string, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,function (data,status){
 						if(status){
 							$scope.widgetConfig = data;
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
+							$scope.chartQuery = "";
 							newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
 							$element.find('.currentChart').append(newElement);
 						}

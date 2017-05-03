@@ -1,10 +1,10 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'PouchServices','$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
-	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','Socialshare','widgetShareService', 
+	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','generateTabular','Socialshare','widgetShareService',
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, PouchServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
-		filterServices,generateHighchart,chartUtilitiesFactory,Socialshare,widgetShareService) {
-
+		filterServices,generateHighchart,chartUtilitiesFactory,generateTabular,Socialshare,widgetShareService) {
+		
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
 	colorManager.reinforceTheme();
@@ -29,6 +29,8 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 	}
 
    $scope.$parent.currentView = $rootScope.currentDashboard.compName;
+   
+   $scope.lastPath = $scope.$parent.lastPath;
 	
 	//configuring gridster
 	$scope.gridsterOpts = {
@@ -198,9 +200,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				  parent: angular.element(document.body),
 				  clickOutsideToClose:true,
 				  targetEvent: ev,
+				  locals: {lastPath: $scope.lastPath},
 				  fullscreen: useFullScreen
 				}).then(function(answer) {
-
+					if(answer){
+						console.log(answer);
+						$scope.lastPath = answer;
+					}
 				}); 
 				$scope.$watch(function() {
 				  return $mdMedia('xs') || $mdMedia('sm');
@@ -510,6 +516,13 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				})
 			}
 		});
+
+		if(widget.widgetData.chartType.chartType == "tabular"){
+			widget.widgetData.widgetConfig.runtimeQuery = "";
+			widget.widgetData.widgetConfig.runtimefilterString = "";
+
+		};
+
 		$scope.widgetControls.syncWidget(widget,'False')
 	}
 
@@ -519,17 +532,37 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 		var widgetIndex = $rootScope.currentDashboard.pages[pageIndex].widgets.indexOf(widget);
 		var widgetFilterFields = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData.RuntimeFilter;
 		var widgetData = $rootScope.currentDashboard.pages[pageIndex].widgets[widgetIndex].widgetData;
-		var connectionString = "";
+		var run_connectionString = "";
+		var des_connection_string 
 		var isCreate = false;
 		var selectedFilterFiedsCopy = filterServices.compareDesignTimeFilter(widgetFilterFields,widgetData.DesignTimeFilter);
-		connectionString = filterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
-		if (connectionString != "")
+		run_connectionString = filterServices.generateFilterConnectionString(selectedFilterFiedsCopy,widgetData.selectedDB);
+		var groupFilters = filterServices.groupFilterConnectionString(widget.widgetData.DesignTimeFilter);
+		des_connection_string = filterServices.generateFilterConnectionString(groupFilters,widget.widgetData.selectedDB);
+		
+	
+
+		if (run_connectionString != "")
 		{
-			widget.isWidgetFiltered = true;
-			widgetData.syncOn = true;
-			generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
-				widgetData.syncOn = false;
-			},connectionString,[],[],isCreate);
+			if(widget.widgetData.chartType.chartType == "highCharts"){
+				widget.isWidgetFiltered = true;
+				widgetData.syncOn = true;
+				generateHighchart.generate(widgetData.widgetConfig, widgetData.chartType.chart, widgetData.selectedFile, widgetData.Measures,widgetData.XAxis, 1000, widgetData.selectedDB,false,widgetData.groupBySortArray ,function (data,query){
+					widgetData.syncOn = false;
+				},run_connectionString,[],[],isCreate);
+			}
+			if(widget.widgetData.chartType.chartType == "tabular"){
+
+				if(des_connection_string != ""){
+					run_connectionString = run_connectionString + " AND " + des_connection_string;
+				}
+				widget.isWidgetFiltered = true;
+				widgetData.syncOn = true;
+				generateTabular.applyRunTimeFilters(widget,des_connection_string,run_connectionString, function (data){
+					widgetData.syncOn = false;
+				});
+			}
+			
 		} else {
 			// pop up notification
 		}
@@ -606,7 +639,41 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
                     		widget = data;
                     	})
                 }
-            } else {                
+            }
+            else if(widget.widgetData.chartType.chartType == "tabular"){
+            	var filterString = "";
+            	var allFiltersArray = getFiltersArray(widget,dashboardFilterFields);
+            	if (allFiltersArray.length > 0) {
+            		filterString = allFiltersArray.join( ' And ');
+                    var isCreate = false;
+                    widget.widgetData.dashboardFilterOn = true;
+
+                    generateTabular.applyRunTimeFilters(widget,widget.widgetData.widgetConfigdesignFilterString,filterString, function (data){
+						// set widget sync parameter to false
+                        widget.widgetData.dashboardFilterOn = false;
+                        widget.isWidgetFiltered = false;
+                        count++;
+                        if (!is_default) 
+                        	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                        else
+                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
+					});
+
+            	}else{
+
+            		count++;
+                    if (!is_default)
+                    	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                    else
+                    	// set dashboard filtered status to true
+                    	filterServices.setDefaultFilter(dashboard,page_index,count,widget,function(data){
+                    		widget = data;
+                    	})
+
+            	}
+
+            }
+            else {                
                 count++;
                 if (!is_default) filterServices.setDashboardFilter(dashboard,page_index,count,true); else dashboard.pages[page_index].isSeen = true;
             }

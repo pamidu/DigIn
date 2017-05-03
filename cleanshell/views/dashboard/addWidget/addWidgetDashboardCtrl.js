@@ -1,10 +1,9 @@
-DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialog','DiginServices','datasourceServices','$diginengine','$state','notifications', function($scope,$rootScope, $mdDialog,DiginServices,datasourceServices,$diginengine,$state,notifications) {
+DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialog','DiginServices','datasourceServices','$state','notifications','lastPath', function($scope,$rootScope, $mdDialog,DiginServices,datasourceServices,$state,notifications,lastPath) {
 
 
 	$scope.selectedDB = "";
 	$scope.selectedConnection = "";
-	$scope.selectedFileOrFolder = "";
-	$scope.selectedTable = "";
+	//$scope.selectedTable = "";
 	
 
 	$scope.loadingTables = false;
@@ -13,6 +12,9 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.showConnections = false;
 	$scope.sourceType = [];
 	$scope.showTableReloadBtn = false;
+	
+	$scope.lastPath = lastPath;
+	console.log($scope.lastPath);
 	
 	$scope.files = [];
 	$scope.folders = [];
@@ -35,17 +37,14 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	
 	$scope.selectSource = function(ev,type, retriveAgain)
 	{
-		if($scope.selectedDB != type || retriveAgain)
-		{
-			
 			//reset arrays
 			$scope.files = [];
 			$scope.folders = [];
 			$scope.tables = "";
 			$scope.connections = [];
-			$scope.selectedTable = "";
+			//$scope.selectedTable = "";
 			$scope.selectedConnection = "";
-			$scope.selectedFileOrFolder = "";
+			$scope.lastPath.table = undefined;
 			
 			if(type == "BigQuery" || type == "memsql")
 			{	
@@ -53,14 +52,13 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 				$scope.loadingTables = true;
 				$scope.showTableReloadBtn = true;
 				
-				$scope.selectedDB = type;
-			
-				$diginengine.getClient(type).getTables(function(res, status) {
-					
-					if(status) {
-						
-						$scope.loadingTables = false;
-
+				datasourceServices.getTables($scope.lastPath.dataSource, type, retriveAgain, function(data) {
+					$scope.lastPath.dataSource = type;
+					$scope.selectedDB = type;
+					$scope.loadingTables = false;
+					var res = data.Result;
+					if(data.Is_Success)
+					{
 						if(res.length != 0)
 						{
 							for(var i = 0; i < res.length; i++){
@@ -73,27 +71,28 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 						}else{
 							notifications.toast(2, "No Tables");
 						}
-					} else {
-						$scope.loadingTables = false;
+					}else{
 						notifications.toast('0', 'Error occured. Please try again.');
 					}
-				});
+				})
+
 			}else if(type == "MSSQL" || type == "Oracle"){
+				
 				$scope.showConnections = true;
 				$scope.loadingConnections = true;
 				$scope.showTableReloadBtn = false;
 				
-				$scope.selectedDB = type;
-				
-				datasourceServices.getAllConnections($rootScope.authObject.SecurityToken,type).then(function(res){
-					//$scope.connectSource_selected = 1;
-					if(res.Is_Success){
+				datasourceServices.getAllConnectionsCb($scope.lastPath.dataSource, type, retriveAgain, function(data) {
+					$scope.lastPath.dataSource = type;
+					var res = data.Result;
+					
+					if(data.Is_Success){
 						$scope.loadingConnections = false;
-						if(res.Result.length != 0)
+						if(res.length != 0)
 						{
-							for(var i = 0; i < res.Result.length; i++){
+							for(var i = 0; i < res.length; i++){
 							
-								$scope.connections.push(res.Result[i]);
+								$scope.connections.push(res[i]);
 
 							}
 							console.log($scope.connections);
@@ -104,36 +103,34 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 						$scope.loadingConnections = false;
 						notifications.toast('0', 'Error occured. Please try again.');
 					}
-					
-				});
+				})
 			}
-		}else{
-			notifications.toast(2, "Already Selected");
-		}
 	}
+	
+	//(function (){
+
+	//})();
 	
 	$scope.getTables = function(ev,connection, retriveAgain){
 
-		if($scope.selectedConnection.ds_config_id != connection.ds_config_id || retriveAgain)
-		{
 			$scope.tables = [];
-			$scope.selectedTable = "";
-			$scope.selectedFileOrFolder = "";
+			//$scope.selectedTable = "";
+			//$scope.selectedFileOrFolder = "";
 			$scope.showTableReloadBtn = true;
 			$scope.selectedConnection = connection;
 
 			$scope.loadingTables = true;
-			$diginengine.getClient($scope.selectedDB).getConnectionTables(connection.ds_config_id,$scope.selectedDB,function(res){
+			
+			datasourceServices.getConnectionTables($scope.lastPath.dataSource, connection.ds_config_id, retriveAgain, function(data){
+				var res = data.Result;
+				$scope.lastPath.connection = connection;
+				console.log(connection);
 				$scope.loadingTables = false;
 				for(var i = 0; i < res.length; i++){
 					
 					$scope.tables.push(res[i]);
 				}
-			});
-		}else{
-			notifications.toast(2, "Already Selected");
-		}
-
+			})
 	};
 	
 	$scope.attributes = [];
@@ -142,9 +139,10 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	$scope.selectTable = function(ev,fileOrFolder)
 	{
 		$scope.selectedFileOrFolder = fileOrFolder;
+		$scope.lastPath.table =  fileOrFolder;
 		$scope.attributes = [];
 		$scope.measures = [];
-		console.log($scope.selectedFileOrFolder);
+		//console.log($scope.selectedFileOrFolder);
 		for(var i = 1; i < fileOrFolder.schema.length; i++){
 			if( fileOrFolder.schema[i].type == "INTEGER" ||  fileOrFolder.schema[i].type == "FLOAT" ){
 				$scope.measures.push(fileOrFolder.schema[i]);	
@@ -155,8 +153,8 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 				$scope.attributes.push(fileOrFolder.schema[i]);
 			}
 		}
+		console.log($scope.lastPath);
 	}
-	
 	
 	$scope.updateTables = function(ev, selectedDb, connection, retriveAgain)
 	{
@@ -170,25 +168,30 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	
 	$scope.getConnectionTable = function(ev,table)
 	{
-		if($scope.selectedFileOrFolder.datasource_name != table)
-		{
+		console.log("getConnectionTable");
+		/*if($scope.selectedFileOrFolder.datasource_name != table)
+		{*/
 			$scope.loadingConnectionTable = true;
-			$scope.selectedFileOrFolder = "";
-			$scope.selectedTable = "";
+			//$scope.selectedFileOrFolder = "";
+			//$scope.selectedTable = "";
 			$scope.attributes = [];
 			$scope.measures = [];
 			
-			//get all fields
-			$diginengine.getClient($scope.selectedDB).getMSSQLFields(table, $scope.selectedConnection.ds_config_id ,function(data, status) {
-				if(status){
+			datasourceServices.getConnectionTable($scope.lastPath.dataSource, table,$scope.lastPath.connection.ds_config_id, function(data){
+				
+				var res = data.Result;
+				console.log(data);
+				
+				if(data.Is_Success){
 					$scope.loadingConnectionTable = false;
-					$scope.selectedTable = table;
-					for(var i=0; i < data.length; i++){
+					//$scope.selectedTable = table;
+					$scope.lastPath.connectionTable = table;
+					for(var i=0; i < res.length; i++){
 						for(var j=0; j < dataBaseFiledTypes.length; j++){
-							if((data[i].FieldType).toUpperCase() == (dataBaseFiledTypes[j].type).toUpperCase()){
+							if((res[i].FieldType).toUpperCase() == (dataBaseFiledTypes[j].type).toUpperCase()){
 								var obj = {
-									"name": data[i].Fieldname,
-									"type": data[i].FieldType
+									"name": res[i].Fieldname,
+									"type": res[i].FieldType
 								}
 								$scope.attributes.push(obj);
 
@@ -198,13 +201,10 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 							}
 						}
 					}
-					
-					console.log($scope.measures);
-					console.log($scope.attributes);
 
 					$scope.selectedFileOrFolder = {
-						"datasource_id" : $scope.selectedConnection.ds_config_id,
-						"src": $scope.selectedDB,
+						"datasource_id" : $scope.lastPath.connection.ds_config_id,
+						"src": $scope.lastPath.dataSource,
 						"datasource_name": table
 
 					}
@@ -212,13 +212,42 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 				}else{
 					$scope.loadingConnectionTable = false;
 				}
-
 			});
-		}else{
+
+		/*}else{
 			notifications.toast(2, "Already Selected");
-		}
+		}*/
 		
 	}
+	
+	
+		if($scope.lastPath.dataSource){
+			$scope.selectSource(null,$scope.lastPath.dataSource, false);
+			console.log("retrive");
+		}else{
+			console.log("nothing to retrive");
+		}
+		
+		if($scope.lastPath.table){
+			$scope.selectTable(null,$scope.lastPath.table);
+			console.log("retrive");
+		}else{
+			console.log("nothing to retrive");
+		}
+		
+		if($scope.lastPath.connection){
+			$scope.getTables(null,$scope.lastPath.connection, false);
+			console.log("retrive");
+		}else{
+			console.log("nothing to retrive");
+		}
+		
+		if($scope.lastPath.connectionTable){
+			$scope.getConnectionTable(null,$scope.lastPath.connectionTable);
+			console.log("retrive");
+		}else{
+			console.log("nothing to retrive");
+		}
 	
 	$scope.selectChartType = function(chartIndex)
 	{
@@ -248,8 +277,9 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			'sizeX':null,
 			'sizeY':null
 		};
+		console.log($scope.lastPath.table);
+		console.log($scope.lastPath.connectionTable);
 		console.log($scope.selectedFileOrFolder);
-		console.log($scope.dataconfig);
 		$state.go('query_builder', 
 		{ 
 		  'allAttributes': $scope.attributes, 
@@ -257,19 +287,23 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 		  'selectedFile':$scope.selectedFileOrFolder, 
 		  'DesignTimeFilter': [],
 		  'RuntimeFilter': [],
-		  'selectedDB': $scope.selectedDB,
+		  'selectedDB': $scope.lastPath.dataSource,
 		  'selectedAttributes': [],
 		  'selectedMeasures': [],
 		  'widget':widget,
 		  'chartType':chartIndex
 		});
 		
-		$mdDialog.hide();
+		$mdDialog.hide($scope.lastPath);
 	}
 
 	DiginServices.getChartTypes().then(function(data) {
 		$scope.chartTypes = data;
 	});
 
+	$scope.close = function()
+	{
+		$mdDialog.hide($scope.lastPath);
+	}	
 	
 }]);// END OF 'addWidgetDashboardCtrl'

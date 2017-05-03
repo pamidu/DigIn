@@ -109,7 +109,8 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
                     "@@URL@@": URL,
                 }
             };
-
+           
+            
             var token =getCookie("securityToken");
             //console.log(JSON.stringify($scope.mailData));
             $http({

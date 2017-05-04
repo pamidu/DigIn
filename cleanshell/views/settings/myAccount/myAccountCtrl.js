@@ -183,18 +183,8 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 				})
 				.then(function(answer) {
 					if(answer){
-						$scope.$parent.userSettings.dp_path = answer;
-						
-						var userSettingsSaveObj = {dp_path: answer};
-						
-						DiginServices.updateUserSettings(userSettingsSaveObj).then(function(data) {
-							if(data.Is_Success === true){
-								notifications.toast(1,"Settings Saved");
-								PouchServices.storeAndUpdateUserSettings($scope.$parent.userSettings);
-							}else{
-								notifications.toast(1,"Falied to update Theme");
-							}
-						});
+						$scope.$parent.userSettings.dp_path = answer;				
+						PouchServices.storeAndUpdateUserSettings($scope.$parent.userSettings);
 						
 					}else{
 						$scope.$parent.userSettings.dp_path = oldProfileImage;
@@ -231,14 +221,24 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	
 	$scope.uploadCompanyLogo = function(ev)
 	{
+		var oldCompanyLogo = angular.copy($scope.$parent.userSettings.logo_path);
+		$scope.$parent.userSettings.logo_path = "views/settings/myAccount/login_logo.png";
+		
 		$mdDialog.show({
 		  controller: "uploadCompanyLogoCtrl",
 		  templateUrl: 'views/settings/myAccount/uploadCompanyLogo.html',
 		  parent: angular.element(document.body),
 		  targetEvent: ev,
-		  clickOutsideToClose:true
+		  clickOutsideToClose:false
 		})
 		.then(function(answer) {
+			if(answer){
+				$scope.$parent.userSettings.logo_path = answer;				
+				PouchServices.storeAndUpdateUserSettings($scope.$parent.userSettings);
+					
+			}else{
+				$scope.$parent.userSettings.logo_path = oldCompanyLogo;
+			}
 		})
 	}
 	
@@ -501,10 +501,10 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 	{
 		var profileImg = document.getElementById('profileImg');
 		var profileImgSrc = profileImg.src;
-		var file = base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
+		var file = UserServices.base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
 		file.name = "profile.jpg";
 		console.log(file);
-		UserServices.uploadPicture(file).success(function(data) {
+		UserServices.uploadPicture(file, "dp").success(function(data) {
 			if(data.Is_Success === true)
 			{
 				notifications.toast(1, "Profile picture uploaded successfully");
@@ -516,30 +516,6 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 		})
 	}
 	
-	//#conver dataURL into base64
-    function base64ToBlob(base64Data, contentType) {
-        contentType = contentType || '';
-        var sliceSize = 1024;
-        var byteCharacters = atob(base64Data);
-        var bytesLength = byteCharacters.length;
-        var slicesCount = Math.ceil(bytesLength / sliceSize);
-        var byteArrays = new Array(slicesCount);
-
-        for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-            var begin = sliceIndex * sliceSize;
-            var end = Math.min(begin + sliceSize, bytesLength);
-
-            var bytes = new Array(end - begin);
-            for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
-                bytes[i] = byteCharacters[offset].charCodeAt(0);
-            }
-            byteArrays[sliceIndex] = new Uint8Array(bytes);
-        }
-        return new Blob(byteArrays, {
-            type: contentType
-        });
-    };
-	
 	$scope.close = function()
 	{
 		$mdDialog.hide();
@@ -547,7 +523,7 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 	
 }])
 
-DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notifications','UserServices' ,function ($scope,$mdDialog,$http,notifications,UserServices) {
 	
 	$scope.fileChanged = function(e)
 	{
@@ -565,8 +541,25 @@ DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notif
 	
 	$scope.submit = function()
 	{
-		var profileImg = document.getElementById('profileImg');
-		var profileImgSrc = profileImg.src;
-		console.log(profileImgSrc);
+		var companyImg = document.getElementById('companyImg');
+		var companyImgSrc = companyImg.src;
+		var file = UserServices.base64ToBlob(companyImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
+		file.name = "logo.jpg";
+		console.log(file);
+		UserServices.uploadPicture(file, "logo").success(function(data) {
+			if(data.Is_Success === true)
+			{
+				notifications.toast(1, "Company logo uploaded successfully");
+				$mdDialog.hide(data.Result);
+			}else{
+				notifications.toast(0, "Failed to upload company logo");
+			}
+			console.log(data);
+		})
+	}
+	
+	$scope.close = function()
+	{
+		$mdDialog.hide();
 	}
 }])

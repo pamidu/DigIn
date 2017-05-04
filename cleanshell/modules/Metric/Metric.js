@@ -590,5 +590,6 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
 		}
+
 	}
 }]);//END OF generateMetric

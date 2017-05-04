@@ -7,7 +7,7 @@
 			<h2>Upload Company Logo</h2>
 		  </div>
 		  <span flex></span>
-		  <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+		  <md-button class="md-icon-button icon-cancel" ng-click="close()" aria-label="Close">
 		  </md-button>
 		</div>
 	  </md-toolbar>
@@ -21,12 +21,12 @@
 
             <ng-croppie   ng-model='output'
                           update='onUpdate'
-                          boundry="{w: 400, h: 400}"
-                          viewport="{w: 300, h:300}"
+                          boundry="{w: 300, h: 300}"
+                          viewport="{w: 200, h:200}"
                           mousezoom="true" zoom="true" type="square"
                           src="theImage1">
             </ng-croppie>
-			<img id="profileImg" src='{{output}}' style="display:none;"/>
+			<img id="companyImg" src='{{output}}' style="display:none;"/>
 
 		</div>
   </div>
@@ -35,7 +35,7 @@
   
   	<md-dialog-actions layout="row">
 			<span flex></span>
-			<md-button class="btn-dialog b-r-0" aria-label="upload" type="submit">
+			<md-button class="" aria-label="upload" type="submit">
 				Upload
 			</md-button>
 	</md-dialog-actions>

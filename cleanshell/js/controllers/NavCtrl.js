@@ -19,7 +19,7 @@ function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  la
 	$rootScope.h1color = '';
 
 	//UI version
-	$scope.cleanshell_version = version;
+	$scope.version = version;
 
 	colorManager.changeTheme($rootScope.theme);
 	

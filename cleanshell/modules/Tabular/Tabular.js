@@ -172,7 +172,6 @@ TabularModule.factory('generateTabular', ['$rootScope','notifications','tabularS
             widget.widgetData.widgetConfig.designFilterString = designFilterString;
 
             tabularService.executeQuery(widget.widgetData.selectedDB , widget.widgetData.selectedFile ,  widget.widgetData.settingConfig , widget.widgetData.widgetConfig , function(tabulConfig){
-                
                 cb(tabulConfig);
             });
 

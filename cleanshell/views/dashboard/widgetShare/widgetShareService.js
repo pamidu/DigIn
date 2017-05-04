@@ -1,5 +1,5 @@
 DiginApp.service('widgetShareService',function(Upload,$rootScope,$http,Digin_Engine_API,Digin_Domain,notifications){ 
-      this.getShareWidgetURL=function(widget,callback,provider){
+      this.getShareWidgetURL=function(ev,widget,callback,provider){
             var svgTag = "";
             var date = new Date().getTime();
             var widType =  widget.widgetData.chartType.chartType;
@@ -103,7 +103,7 @@ DiginApp.service('widgetShareService',function(Upload,$rootScope,$http,Digin_Eng
                     var tenent = window.location.hostname;
                     //var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + userInfo.Username + "/shared_files/" +fileName;
                     var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileNamepng;
-                    callback(url,provider);
+                    callback(ev,url,provider);
                 }else{
                   notifications.toast(0, data.Custom_Message);
                 }

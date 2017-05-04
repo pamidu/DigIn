@@ -69,7 +69,7 @@
 								<div class="setting-card-header">
 									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">User Profile</h2>
 									<div class="setting-img-wrap" layout="row" layout-align="center center">
-										<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
+										<img ng-src="{{$parent.userSettings.dp_path}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
 											<md-tooltip md-direction="bottom">
 												Upload Profile Picture
 											</md-tooltip>

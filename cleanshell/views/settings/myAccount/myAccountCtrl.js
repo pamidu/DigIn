@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'PackageServices', 'notifications','paymentGateway','$http','colorManager','onsite','version', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices, PackageServices,notifications,paymentGateway,$http,colorManager,onsite,version){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices','UserServices', 'PackageServices','PouchServices', 'notifications','paymentGateway','$http','colorManager','onsite','version', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,UserServices, PackageServices,PouchServices,notifications,paymentGateway,$http,colorManager,onsite,version){
 	
 	var vm = this;
 	
@@ -171,14 +171,34 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 			},
 			uploadProfilePicture: function(ev)
 			{
+				var oldProfileImage = angular.copy($scope.$parent.userSettings.dp_path);
+				$scope.$parent.userSettings.dp_path = "images/settings/new_user.png";
+				
 				$mdDialog.show({
 				  controller: "uploadProfilePictureCtrl",
 				  templateUrl: 'views/settings/myAccount/uploadProfilePicture.html',
 				  parent: angular.element(document.body),
 				  targetEvent: ev,
-				  clickOutsideToClose:true
+				  clickOutsideToClose:false
 				})
 				.then(function(answer) {
+					if(answer){
+						$scope.$parent.userSettings.dp_path = answer;
+						
+						var userSettingsSaveObj = {dp_path: answer};
+						
+						DiginServices.updateUserSettings(userSettingsSaveObj).then(function(data) {
+							if(data.Is_Success === true){
+								notifications.toast(1,"Settings Saved");
+								PouchServices.storeAndUpdateUserSettings($scope.$parent.userSettings);
+							}else{
+								notifications.toast(1,"Falied to update Theme");
+							}
+						});
+						
+					}else{
+						$scope.$parent.userSettings.dp_path = oldProfileImage;
+					}
 				})
 			},
 			closeSetting: function () {
@@ -483,7 +503,17 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 		var profileImgSrc = profileImg.src;
 		var file = base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
 		file.name = "profile.jpg";
-		UserServices.uploadPicture(file);
+		console.log(file);
+		UserServices.uploadPicture(file).success(function(data) {
+			if(data.Is_Success === true)
+			{
+				notifications.toast(1, "Profile picture uploaded successfully");
+				$mdDialog.hide(data.Result);
+			}else{
+				notifications.toast(0, "Failed to upload profile picture");
+			}
+			console.log(data);
+		})
 	}
 	
 	//#conver dataURL into base64
@@ -509,6 +539,11 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
             type: contentType
         });
     };
+	
+	$scope.close = function()
+	{
+		$mdDialog.hide();
+	}
 	
 }])
 

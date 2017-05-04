@@ -282,11 +282,25 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 			addDashboardFilter: function(ev)
 			{
 				$scope.$parent.route('dashboardFilterSettings');
+			},
+			shareDashboard: function(ev){
+				$mdDialog.show({
+				  controller: 'sharedashboardgroupsCtrl',
+				  templateUrl: 'views/settings/dashboardShare/sharedashboard.html',
+				  parent: angular.element(document.body),
+				  clickOutsideToClose:true,
+				  targetEvent: ev,
+				  locals: {lastPath: $scope.lastPath},
+				  fullscreen: useFullScreen
+				}).then(function(answer) {
+					if(answer){
+						console.log(answer);
+						$scope.lastPath = answer;
+					}
+				}); 
+		
 			}
-
 		}
-
-
 	})();
 	
 	//Widget toolbar controls

@@ -522,11 +522,12 @@ DiginApp.controller('query_builderCtrl',[
 					databaseType: $scope.selectedDB, 
 					dataTable: $scope.selectedFile.datasource_name, 
 					datasourceId: $scope.selectedFile.datasource_id
-				}, $scope.settingConfig.eqconfig, function(variables, eq) {
+				}, $scope.settingConfig.eqconfig, function(variables, eq, rsquare) {
 					$scope.showChartLoading = false;
 					$scope.showPlaceholderIcon = false;
 					$scope.widgetConfig.variables = variables;
 					$scope.widgetConfig.equation = eq;
+					$scope.widgetConfig.rsquare = (rsquare*100).toFixed(2)+'%';
 					newElement = $compile('<what-if id-selector="'+widgetID+'" config="widgetConfig"></what-if>')($scope);
 					$element.find('.currentChart').append(newElement);
 				});

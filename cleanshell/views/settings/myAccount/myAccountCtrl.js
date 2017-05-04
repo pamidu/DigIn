@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices','UserServices', 'PackageServices','PouchServices', 'notifications','paymentGateway','$http','colorManager','onsite','version', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,UserServices, PackageServices,PouchServices,notifications,paymentGateway,$http,colorManager,onsite,version){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices','UserServices', 'PackageServices','PouchServices', 'notifications','paymentGateway','$http','colorManager','onsite', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,UserServices, PackageServices,PouchServices,notifications,paymentGateway,$http,colorManager,onsite){
 	
 	var vm = this;
 	
@@ -6,7 +6,6 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	colorManager.reinforceTheme();
 	
 	$scope.onsite = onsite;
-	$scope.version = version;
 	
 	vm.selectedPage = $stateParams.pageNo;
 	
@@ -32,10 +31,17 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 		}
 	})
 	
+	$scope.onsiteUsers = 0;
 	PackageServices.getPackageDetails().then(function(data) {
 		notifications.log(data, new Error());
 		if(data.Is_Success == true)
 		{
+			for (var i = 0, len = data.Result.length; i<len; ++i){
+				if(data.Result[i].package_attribute == "users")
+				{
+					$scope.onsiteUsers = data.Result[i].package_value_sum;
+				}
+			}
 		}else{
 			
 		}

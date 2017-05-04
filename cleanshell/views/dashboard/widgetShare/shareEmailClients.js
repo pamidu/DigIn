@@ -32,12 +32,13 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
         $mdDialog.hide();
     };
 
-    $scope.openeMailClent = function(provider) {
+    $scope.openeMailClent = function(ev, provider) {
         var widget =$scope.widget;
-        var URL = widgetShareService.getShareWidgetURL(widget,$scope.getreturnEmail,provider);
+        var URL = widgetShareService.getShareWidgetURL(ev, widget,$scope.getreturnEmail,provider);
     };
 
-   $scope.getreturnEmail = function(URL,provider){
+   $scope.getreturnEmail = function(ev, URL,provider){
+    
 
     var emailSubject = 'DigIn - '+$scope.DashboardName+' : '+$scope.widgetName+'';
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
@@ -50,7 +51,7 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
             $mdDialog.show({
                 controller: 'localEmailClient',
                 templateUrl: 'views/dashboard/widgetShare/loginEmail.html',
-                resolve: {},
+                targetEvent: ev,
                 locals: {
                     URL: URL,
                     DashboardName:$scope.DashboardName,
@@ -109,7 +110,8 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
                     "@@URL@@": URL,
                 }
             };
-
+           
+            
             var token =getCookie("securityToken");
             //console.log(JSON.stringify($scope.mailData));
             $http({

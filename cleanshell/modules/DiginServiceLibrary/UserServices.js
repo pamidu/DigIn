@@ -1,4 +1,4 @@
-DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path','Upload', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path,Upload) {
 	var cache = {};
 	return {
         getTenants: function(callback) {
@@ -144,7 +144,7 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 				});	
         }, changePassword: function(oldPassword, newPassword) {
 			 //return the promise directly.
-			 return $http.get(auth_Path +'/ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
+			 return $http.get(auth_Path +'ChangePassword/'+ encodeURIComponent(oldPassword) + '/' + encodeURIComponent(newPassword))
 			   .then(function(result) {
 					//return result.data;
 					
@@ -169,6 +169,45 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					},function errorCallback(response) {
 						notifications.toast(0, "Falied to retrieve Usage Summary");
 					});	
+        }, base64ToBlob : function(base64Data, contentType){
+			
+			contentType = contentType || '';
+			var sliceSize = 1024;
+			var byteCharacters = atob(base64Data);
+			var bytesLength = byteCharacters.length;
+			var slicesCount = Math.ceil(bytesLength / sliceSize);
+			var byteArrays = new Array(slicesCount);
+
+			for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+				var begin = sliceIndex * sliceSize;
+				var end = Math.min(begin + sliceSize, bytesLength);
+
+				var bytes = new Array(end - begin);
+				for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+					bytes[i] = byteCharacters[offset].charCodeAt(0);
+				}
+				byteArrays[sliceIndex] = new Uint8Array(bytes);
+			}
+			return new Blob(byteArrays, {
+				type: contentType
+			});
+			
+		}, uploadPicture: function(file, type) {
+				return Upload.upload({
+						url: Digin_Engine_API + 'file_upload',
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+						data: {
+							db: 'BigQuery',
+							SecurityToken: $rootScope.authObject.SecurityToken,
+							Domain: Digin_Domain,
+							other_data: type,
+							file: file
+						}
+					}).success(function(data) {
+						return data;
+					})
         }
 		//$http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))
 		

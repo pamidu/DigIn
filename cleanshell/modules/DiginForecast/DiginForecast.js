@@ -61,7 +61,12 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     isVisual : false,
                     visualstart : intDate,
                     visualend : intDate,
-                    widgetName : scope.forecastObj.widgetName
+                    widgetName : scope.forecastObj.widgetName,
+                    runtimefilterString :runtimefilterString,
+                    runtimeQuery:"",
+                    designFilterString:designFilterString,
+                    designtimeQuery:""
+                
                 //}
                 }; 
             }
@@ -165,7 +170,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             }
             return isRequestValidated;
         },
-        generate: function(highChartType, tableName, selectedSeries, selectedCategory,limit, datasourceId, selectedDB,forecastObj, callback){
+        generate: function(highChartType, tableName, selectedSeries, selectedCategory, filters,limit, datasourceId, selectedDB,forecastObj, callback){
 
             //#Change chart background colours according to theme
             var chartBackgroundColor = "";
@@ -219,7 +224,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             //#Call funtion
             //$diginengine.getClient.getForcast(fObj,$scope.widget.widgetData,"",$scope.sourceData.id, function(data, status, fObj) {
             var fObj = forecastObj;
-            $diginengine.getClient(selectedDB).getForcast(fObj,widgetData,"",datasourceId, function(data, status, fObj) {
+            $diginengine.getClient(selectedDB).getForcast(fObj,widgetData,filters,datasourceId, function(data, status, fObj) {
                 if (status) {
                     var forcastArr = [];
                     var serArr = [];
@@ -639,6 +644,15 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             forecastWidgetConfig.options.chart.type = highChartType;
             callback(forecastWidgetConfig);
             
+        },
+        applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, cb){
+            /*widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
+            widget.widgetData.widgetConfig.designFilterString = designFilterString;
+
+            tabularService.executeQuery(widget.widgetData.selectedDB , widget.widgetData.selectedFile ,  widget.widgetData.settingConfig , widget.widgetData.widgetConfig , function(tabulConfig){
+                cb(tabulConfig);
+            });*/
+
         }
         
    }

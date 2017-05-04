@@ -42,8 +42,8 @@ DiginServiceLibraryModule.factory('datasourceServices',['$http', '$rootScope', '
 						 });
 				}
 			},
-			getConnectionTables: function(dbType, configId, retriveAgain, callback){
-				if(cache.connectionTables && !retriveAgain)
+			getConnectionTables: function(dbType, configId, oldConfigId,retriveAgain, callback){
+				if(configId == oldConfigId && cache.connectionTables && !retriveAgain)
 				{
 					callback(cache.connectionTables);
 				}else{
@@ -57,8 +57,8 @@ DiginServiceLibraryModule.factory('datasourceServices',['$http', '$rootScope', '
 						 });
 				}
 			},
-			getConnectionTable: function(dbType, tableName, MSSQLid,callback){
-				if(cache.connectionTable)
+			getConnectionTable: function(dbType, tableName, lastTableName, MSSQLid,callback){
+				if(tableName == lastTableName && cache.connectionTable)
 				{
 					callback(cache.connectionTable);
 				}else{

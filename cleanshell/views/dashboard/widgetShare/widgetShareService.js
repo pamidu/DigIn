@@ -1,5 +1,5 @@
 DiginApp.service('widgetShareService',function(Upload,$rootScope,$http,Digin_Engine_API,Digin_Domain,notifications){ 
-      this.getShareWidgetURL=function(widget,callback,provider){
+      this.getShareWidgetURL=function(ev,widget,callback,provider){
             var svgTag = "";
             var date = new Date().getTime();
             var widType =  widget.widgetData.chartType.chartType;
@@ -12,7 +12,7 @@ DiginApp.service('widgetShareService',function(Upload,$rootScope,$http,Digin_Eng
                 widgetName = widget.widgetName;
             }
 
-            if(widType=="highCharts" || widType=="histogram"  || widType=="forecast" || widType=="boxplot" || widType=="metric"){
+            if(widType=="highCharts" || widType=="histogram"  || widType=="forecast" || widType=="boxplot" ){
 
               var highchartsObj = angular.copy(widget.widgetData.widgetConfig);
               if ( highchartsObj.title !== undefined) {
@@ -53,7 +53,31 @@ DiginApp.service('widgetShareService',function(Upload,$rootScope,$http,Digin_Eng
               var file = new File([svgTag], fileName, {type: "image/svg+xml"});
                
 
-            }*/else if(widType=="bubble"){
+            }*/
+            else if(widType=="metric" || widType=="map"){
+              var id = "#" + widget.widgetData.widgetID;
+              var element = $("" + id + "");
+              var svgTag = element[0].children[0];
+
+              //--------------------------------------------------------------------------------------
+               if(widgetName != ""){
+                  var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+                  newElement.setAttribute('x',200);
+                  newElement.setAttribute('y',550);
+                  newElement.setAttribute('fill','#000000');
+                  newElement.setAttribute('font-size',17);
+                  newElement.setAttribute('font-family','Verdana');
+
+                  newElement.innerHTML = widgetName;
+                  svgTag.appendChild(newElement);
+                }
+              //--------------------------------------------------------------------------------------
+
+              var svgTag =element[0].children[0].innerHTML;
+              svgTag ='<svg viewBox="0 0 500 600" width="100%" height="100%">'+svgTag+ '</svg>';
+              var file = new File([svgTag], fileName, {type: "image/svg+xml"}); 
+            }
+            else if(widType=="bubble"){
                var highchartsObj = angular.copy(widget.widgetData.widgetConfig);
                highchartsObj.title.text = widgetName;
                var chart = angular.copy(highchartsObj.getHighcharts());
@@ -79,7 +103,7 @@ DiginApp.service('widgetShareService',function(Upload,$rootScope,$http,Digin_Eng
                     var tenent = window.location.hostname;
                     //var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + userInfo.Username + "/shared_files/" +fileName;
                     var url = "http://" + Digin_Domain + data.Result + "/digin_user_data/" + userInfo.UserID + "/" + tenent + "/shared_files/" +fileNamepng;
-                    callback(url,provider);
+                    callback(ev,url,provider);
                 }else{
                   notifications.toast(0, data.Custom_Message);
                 }

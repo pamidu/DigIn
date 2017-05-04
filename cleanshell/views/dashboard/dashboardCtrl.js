@@ -1,9 +1,9 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'PouchServices','$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
-	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','generateTabular','Socialshare','widgetShareService',
+	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','generateTabular','Socialshare','widgetShareService','generateForecast',
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, PouchServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
-		filterServices,generateHighchart,chartUtilitiesFactory,generateTabular,Socialshare,widgetShareService) {
+		filterServices,generateHighchart,chartUtilitiesFactory,generateTabular,Socialshare,widgetShareService,generateForecast) {
 		
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -327,15 +327,15 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				});
 			},
 			share: function (ev, widget,provider) {
-	            if(typeof $rootScope.selectedDashboard.compName != "undefined"){
+	            if(typeof $rootScope.currentDashboard.compName != "undefined"){
 			        if (provider == "email") {
 			            $mdDialog.show({
 			                controller: 'shareEmailClients',
 			                templateUrl: 'views/dashboard/widgetShare/shareEmailClients.html',
-			                resolve: {},
+			                targetEvent: ev,
 			                locals: {
 			                    widget: widget,
-			                    DashboardName: $rootScope.selectedDashboard.compName
+			                    DashboardName: $rootScope.currentDashboard.compName
 			                }
 			            })
 			        } else {
@@ -573,6 +573,17 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				widget.isWidgetFiltered = true;
 				widgetData.syncOn = true;
 				generateTabular.applyRunTimeFilters(widget,des_connection_string,run_connectionString, function (data){
+					widgetData.syncOn = false;
+				});
+			}
+			if(widget.widgetData.chartType.chartType == "forecast"){
+
+				if(des_connection_string != ""){
+					run_connectionString = run_connectionString + " AND " + des_connection_string;
+				}
+				widget.isWidgetFiltered = true;
+				widgetData.syncOn = true;
+				generateForecast.applyRunTimeFilters(widget,des_connection_string,run_connectionString, function (data){
 					widgetData.syncOn = false;
 				});
 			}

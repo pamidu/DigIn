@@ -69,7 +69,7 @@
 								<div class="setting-card-header">
 									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">User Profile</h2>
 									<div class="setting-img-wrap" layout="row" layout-align="center center">
-										<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
+										<img ng-src="{{$parent.userSettings.dp_path}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
 											<md-tooltip md-direction="bottom">
 												Upload Profile Picture
 											</md-tooltip>
@@ -186,8 +186,8 @@
 			<md-tab-body>
 				<div layout="row" layout-align="center start" layout-wrap class="card-container" ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}">
 					<div layout="column">
-						<md-card class="product_card" style="width:460px;height:205px;background:#2795d8" layout="row" layout-align="center center" ng-click="uploadCompanyLogo($event)">
-							<img src="views/settings/myAccount/login_logo.png" style="width:190px;height:190px;background:white;border-radius:4px"/>
+						<md-card class="product_card" style="width:460px;height:205px;" layout="row" md-colors="{background:'primary'}" layout-align="center center" ng-click="uploadCompanyLogo($event)">
+							<img ng-src="{{$parent.userSettings.logo_path}}" err-src="views/settings/myAccount/login_logo.png" style="width:190px;height:190px;background:white;border-radius:4px"/>
 							<md-tooltip md-direction="bottom">Upload Company Image</md-tooltip>
 						</md-card>
 						<md-card class="product_card" style="width:460px;">

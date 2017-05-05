@@ -260,7 +260,7 @@
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
-							<v-pane id="Cards" expanded="$first"> 
+							<v-pane id="Cards" expanded="true"> 
 								<v-pane-header id="Store-header" aria-controls="Store-content">
 									<h1 class="search-header" style="margin:0px;" md-colors="{color:'{{$root.h1color}}-A700'}">Subscription Details</h1>
 								</v-pane-header>
@@ -268,19 +268,19 @@
 								<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
 									<div layout="row" layout-align="center center" layout-wrap>
 										<md-card class="product_card" flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" md-colors="{background:'primary-500'}" style="max-width:460px;min-height:205px;padding:0px;" layout="column">
-											<center md-colors="{background:'primary-700'}" style="color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;">Current Plan - Personal Space</center>
+											<center md-colors="{background:'primary-700'}" style="color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;">Current Plan - {{vm.packageStatus.packageName}}</center>
 										
 											<center style="padding:10px;" layout-gt-sm="row">
 												<div flex-xs="100" flex-sm="100" flex-gt-sm="40" flex-gt-lg="40" layout="row" layout-align="center center">
 													<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;margin: 30px;" layout="column" layout-align="center center">
-														<span style="color:white;font-size:25px;">$10</span>
-														<span style="color:white;font-size:12px;">/User</span>
+														<span style="color:white;font-size:25px;">{{vm.companyPricePlans[vm.currentPlan].price | currency}}</span>
+														<span style="color:white;font-size:12px;">{{vm.companyPricePlans[vm.currentPlan].per}}</span>
 													</div>
 												</div>
 												<div flex layout="column">
-													<span class="align-left"> 1 User</span>
-													<span class="align-left"> 10 GB Storage</span>
-													<span class="align-left"> 100 GB of Bandwidth</span>
+													<span class="align-left"> {{vm.companyPricePlans[vm.currentPlan].numberOfUsers}} User</span>
+													<span class="align-left"> {{vm.companyPricePlans[vm.currentPlan].storage}} Storage</span>
+													<span class="align-left"> {{vm.companyPricePlans[vm.currentPlan].bandwidth}} of Bandwidth</span>
 													<div layout-gt-sm="row" style="margin-top: 10px;">
 														<md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)"><span style="text-transform:none">Deactivate Account</span></md-button>
 														<md-button class="md-raised smallMdButton" ng-click="vm.updatePackage($event)"><span style="text-transform:none">Customize</span></md-button>

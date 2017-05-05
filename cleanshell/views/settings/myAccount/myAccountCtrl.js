@@ -48,6 +48,39 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 		
 	})
 	
+	vm.packageStatus = {};
+	PackageServices.checkSubscription().then(function(data) {
+		console.log(data);
+		vm.packageStatus = data;
+		
+		if(data.status == false)
+		{
+			vm.packageStatus.packageName = "Free";
+			vm.currentPlan = 0;
+		}else{
+			for(i=0; i<response.data.response[0].otherInfo.length; i++)
+			{
+				if(vm.packageStatus[0].otherInfo[i].tag=="Package")
+				{
+					if(vm.packageStatus[0].otherInfo[i].feature=="personal_space"){
+						vm.currentPlan = 0;
+					}
+					else if(vm.packageStatus[0].otherInfo[i].feature=="mini_team"){
+						vm.currentPlan = 1;
+					   
+					}
+					else if(vm.packageStatus[0].otherInfo[i].feature=="world"){                                
+						vm.currentPlan = 2;						
+					}
+					else{
+						vm.packageStatus.packageName='Free'; 
+						vm.currentPlan = 0;
+					}                               
+				}  
+			}
+		}
+	})
+	
 	var monthlyData = {}; //This will hold the result from the service call
 	var fromDate = "";
 	var toDate = "";
@@ -102,12 +135,25 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
         "data": []
     }];
 	
+	
+	//#Change chart background colours according to theme
+	var chartBackgroundColor = "";
+	var chartFontColor = "";
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		chartBackgroundColor = "rgb(65,65,65)";
+		chartFontColor = '#fff';
+	}else{
+		chartBackgroundColor = "rgb(250,250,250)";
+	}
+	
 	function generateMonthlyUsageChart()
 	{
 		$scope.chartConfig = {
 			options: {
 					chart: {
-						type: 'line'
+						type: 'line',
+						backgroundColor: chartBackgroundColor
 					},
 					plotOptions: {
 
@@ -122,11 +168,29 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 					title: {
 						text: 'Date'
 					},
-					categories: chartXLabels
+					categories: chartXLabels,
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+								style: {
+									color: chartFontColor
+								}
+							}
 				},
+				yAxis: {
+                            lineWidth: 1,
+                            style: {
+                                color: chartFontColor
+                             },
+                             labels:{
+                                        style: {
+                                            color: chartFontColor
+                                        }
+                                    }
+                },
 				size: {
 					width: 600,
-					height: 439
+					height: 432
 				},
 				series: chartSeries,
 				title: {
@@ -255,40 +319,51 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	
 	vm.warning = false;
 	
-	vm.companyPricePlans = [
-		{
-			id : "personal_space",
-			name:"Personal Space",
-			numberOfUsers:"1",
-			storage: "10 GB",
-			bandwidth: "100 GB",
-			perMonth: "$10",
-			perYear: "$10",
-			per: "/ User",
-			Description: "desc"
-		},
-		{
-			id : "mini_team",
-			name:"We Are A Mini Team",
-			numberOfUsers:"5",
-			storage: "10 GB",
-			bandwidth: "100 GB",
-			perMonth: "$8",
-			perYear: "$6.99 ",
-			per: "/ User",
-			Description: "desc"
-		},
-		{
-			id : "world",
-			name:"We Are the World",
-			numberOfUsers:"10",
-			storage: "10 GB",
-			bandwidth: "100 GB",
-			perMonth: "$6",
-			perYear: "$4.99",
-			per: "/ User",
-			Description: "desc"
-		}];
+	vm.currentPlan = 0;
+	
+	vm.companyPricePlans = [{
+        package_id:1002,
+        id: "personal_space",
+        name: "Personal Space",
+        numberOfUsers: 1,
+        storage: "10 GB",
+        bandwidth: "100 GB",
+        perMonth: 10,
+        perYear: 10,
+        per: "/ User",
+        Description: "desc",
+        price:10,
+        valStorage:10,
+        valData:100
+    }, {
+        package_id:1003,
+        id: "mini_team",
+        name: "We Are A Mini Team",
+        numberOfUsers: 5,
+        storage: "10 GB",
+        bandwidth: "100 GB",
+        perMonth: 8,
+        perYear: 6.99,
+        per: "/ User",
+        Description: "desc",
+        price:40,
+        valStorage:10,
+        valData:100
+    }, {
+        package_id:1004,
+        id: "world",
+        name: "We Are the World",
+        numberOfUsers: 10,
+        storage: "10 GB",
+        bandwidth: "100 GB",
+        perMonth: 6,
+        perYear: 4.99,
+        per: "/ User",
+        Description: "desc",
+        price:60,
+        valStorage:10,
+        valData:100
+    }];
 	
 	vm.paymentCards = [
 		{

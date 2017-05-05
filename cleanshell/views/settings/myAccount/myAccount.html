@@ -27,6 +27,7 @@
 	 
 	p.paragraph{
 		margin: 0px;
+		padding: 4px;
 	}
 	 
 	.redExpiryContainer
@@ -256,7 +257,7 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container"  ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container" ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;max-width: 1335px;"> 
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
@@ -316,7 +317,7 @@
 												<center md-colors="{background:'primary-700'}" style="color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
 												<center md-colors="{background:'primary-500'}" style="padding:10px;">
 													<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
-														<span style="color:white;font-size:25px;">{{plan.perMonth}}</span>
+														<span style="color:white;font-size:25px;">{{plan.perMonth | currency}}</span>
 														<span style="color:white;font-size:12px;">{{plan.per}}</span>
 													</div>
 													<md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" md-colors="{background:'accent-500'}" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-click="vm.loadStripe($event,plan)">
@@ -329,15 +330,15 @@
 												  <p class="paragraph">{{plan.bandwidth}} of Bandwidth</p>
 												</md-card-content>
 												<md-content layout-padding layout="column" layout-align="center center">
-												  <p class="paragraph">{{plan.perMonth}} / Per User (Monthly)</p>
-												  <p class="paragraph">{{plan.perYear}} / Per User (Yearly)  </p>
+												  <p class="paragraph">{{plan.perMonth | currency}} / Per User (Monthly)</p>
+												  <p class="paragraph">{{plan.perYear | currency}} / Per User (Yearly)  </p>
 												</md-content>
 												<md-card-content layout-padding layout="column" layout-align="start start">
 												  <b style="margin-bottom:10px;">Advanced Options:</b>
 												  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
 												</md-card-content>
 												<md-content layout-padding layout="column" layout-align="end end" style="padding:0">
-												  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;"> $10</b></span>
+												  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;"> {{plan.price | currency}}</b></span>
 												</md-content>
 										  </md-card>
 										</div>
@@ -412,7 +413,7 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container"  ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container" ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;max-width: 1335px;"> 
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">

@@ -97,66 +97,76 @@ tr .wrap{
 }
 
 </style>
-  <md-content id="{{idSelector}}" ng-hide="config.isloading" style="height:calc(100% - 50px);">
-  <table id="tabular-table" class="table-data" style="width: 100%;height:calc(100% - 54px);margin: 0 auto" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
-    cell-cursor-paste="cc.setSelectedCellValues($data)"
-    ng-keydown="keydown($event)"
-    ng-class="{dragable:dragable()}">
-  <thead>
-    <tr>
-      <!-- changeSort is change $scope.sort -->
-      <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
-      <td ng-click="tabularService.changeSort(x,config,tabularSettings)" ng-repeat="x in tabularSettings.AllingArr" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
-        <div class="cell-cursor-col-resize"></div>
-        <span style="font-size: 16px;">
-          <b>{{x.DislayName}}</b>
-        </span>
-        <!-- sort key indicator example -->
-        <span ng-show="config.sort=='{{x.Attribute}}'"><i class="ti-angle-up align-sort-icon"></i></span>
-        <span ng-show="config.sort=='-{{x.Attribute}}'"><i class="ti-angle-down align-sort-icon"></i></span>
-      </td>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- angular.js default directive `ng-repeat` and default filters -->
-    <tr ng-repeat="user in config.userList| limitTo:tabularSettings.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
-     
-      <td ng-repeat="y in tabularSettings.AllingArr" style="text-align:{{y.Alignment}}" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
-            {{tabularService.numberWithCommas(user[y.Attribute])}}
-      </td>
+	<md-content id="{{idSelector}}" style="height:calc(100% - 50px);">
+	
+	<md-progress-linear md-mode="indeterminate" ng-show="config.isloading"></md-progress-linear>
+	<table id="tabular-table" class="table-data" style="width: 100%;height:calc(100% - 54px);margin: 0 auto"
+		cell-cursor="cc" 
+		cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
+		cell-cursor-paste="cc.setSelectedCellValues($data)"
+		ng-keydown="keydown($event)"
+		ng-class="{dragable:dragable()}">
+		<thead>
+			<tr>
+			  <!-- changeSort is change $scope.sort -->
+			  <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
+			  <td ng-click="tabularService.changeSort(x,config,tabularSettings)" ng-repeat="x in tabularSettings.AllingArr" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
+				<div class="cell-cursor-col-resize"></div>
+				<span style="font-size: 16px;">
+				  <b>{{x.DislayName}}</b>
+				</span>
+				<!-- sort key indicator example -->
+				<span ng-show="config.sort=='{{x.Attribute}}'"><i class="ti-angle-up align-sort-icon"></i></span>
+				<span ng-show="config.sort=='-{{x.Attribute}}'"><i class="ti-angle-down align-sort-icon"></i></span>
+			  </td>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- angular.js default directive `ng-repeat` and default filters -->
+			<tr ng-repeat="user in config.userList| limitTo:tabularSettings.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
+			 
+			  <td ng-repeat="y in tabularSettings.AllingArr" style="text-align:{{y.Alignment}}" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
+					{{tabularService.numberWithCommas(user[y.Attribute])}}
+			  </td>
 
-       <!--td>{{user.profit}}</td>
-       <td>{{user.order_priority}}</td>
-       <td>{{user.sales}}</td-->
-    </tr>
-    <tr>
+			   <!--td>{{user.profit}}</td>
+			   <td>{{user.order_priority}}</td>
+			   <td>{{user.sales}}</td-->
+			</tr>
+			<tr>
    
-      <td ng-repeat="agg in tabularSettings.AllingArr" style=" text-align:{{agg.Alignment}}" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
-          <span ng-hide="agg.isString || tabularSettings.totForNumeric == 'false'">
-              {{agg.Aggregation}} = {{tabularService.numberWithCommas(agg.Aggregation_value)}}
-          </span>
-      </td>
-    </tr>
-  </tbody>
+				<td ng-repeat="agg in tabularSettings.AllingArr" style=" text-align:{{agg.Alignment}}" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
+				  <span ng-hide="agg.isString || tabularSettings.totForNumeric == 'false'">
+					  {{agg.Aggregation}} = {{tabularService.numberWithCommas(agg.Aggregation_value)}}
+				  </span>
+				</td>
+			</tr>
+		</tbody>
 </table>
 
-  <div style="width: 400px;margin-left: auto;margin-right: auto;margin-top: 5px;" layout="row"  layout-align="center center">
+	<div layout="row"  layout-align="end center">
 
-      <span>{{config.selectedPage}}</span>
+		<span style="font-size:12px;margin-right:20px">{{config.selectedPage}}</span>
 
-      <md-button class="md-primary"  ng-disabled="config.currentPage <= 0" 
-      ng-click="tabularService.tabularNavigate('Prev',config,false,tabularSettings)">Prev</md-button>
+		<md-button class="md-primary md-icon-button ti-angle-left"  ng-disabled="config.currentPage <= 0" ng-click="tabularService.tabularNavigate('Prev',config,false,tabularSettings)">
+			<md-tooltip md-direction="bottom">
+			  Previous
+			</md-tooltip>
+		</md-button>
 
-      <md-button class="md-primary" ng-disabled="config.isNext"
-      ng-click="tabularService.tabularNavigate('Next',config,false,tabularSettings)">Next</md-button>
+		<md-button class="md-primary md-icon-button ti-angle-right" ng-disabled="config.isNext" ng-click="tabularService.tabularNavigate('Next',config,false,tabularSettings)">
+			<md-tooltip md-direction="bottom">
+			  Next
+			</md-tooltip>
+		</md-button>
 
-  </div>
+	</div>
 
   </div>
 </md-content>
 
-<div layout="row"  layout-align="center center">
+<!--div layout="row"  layout-align="center center">
     <md-progress-circular ng-hide="!config.isloading" class="md-accent" md-diameter="40"></md-progress-circular>
-</div>
+</div-->
 
 

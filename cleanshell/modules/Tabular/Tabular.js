@@ -225,7 +225,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                 var obj = {
                     "pageNum" : i,
                     "pageEle" : pageEle,
-                    "pageLable" : lowerBound+1 +"-"+uperBound
+                    "pageLable" : lowerBound+1 +" - "+uperBound
                 }
 
                 config.pageingArr.push(obj);
@@ -313,7 +313,7 @@ TabularModule.service('tabularService',['$rootScope','$http','Digin_Engine_API',
                     var obj = {
                         "pageNum" : i,
                         "pageEle" : pageEle,
-                        "pageLable" : down +"-"+ up
+                        "pageLable" : down +" - "+ up
                     }
 
                     config.pageingArr.push(obj);

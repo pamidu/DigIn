@@ -54,6 +54,10 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 						var height = item.getElementSizeY() - 50;
 						var whatIfId = item.$element[0].children[2].children[0].getAttribute('id-selector');
 						angular.element('#'+whatIfId).css('height',height+'px');
+					}else if(scope.chartType == 'tabular'){
+						var height = item.getElementSizeY() - 50;
+						var tabularId = item.$element[0].children[2].children[0].getAttribute('id-selector');
+						angular.element('#'+tabularId).css('height',height+'px');
 					}
 				}, 100);
 				
@@ -70,7 +74,11 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 						var height = item.getElementSizeY() - 50;
 						var whatIfId = item.$element[0].children[2].children[0].getAttribute('id-selector');
 						angular.element('#'+whatIfId).css('height',height+'px');
-					 }
+					 }else if(scope.chartType == 'tabular'){
+						var height = item.getElementSizeY() - 50;
+						var tabularId = item.$element[0].children[2].children[0].getAttribute('id-selector');
+						angular.element('#'+tabularId).css('height',height+'px');
+					}
 				}, 1500);
 
             });

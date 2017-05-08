@@ -36,7 +36,7 @@ tr .wrap{
 }
 
 .row.vdivide [class*='col-']:not(:last-child):after {
-  background: #e0e0e0;
+  /*background: #e0e0e0;*/
   width: 1px;
   content: "";
   display:block;
@@ -51,23 +51,54 @@ tr .wrap{
   background-color: #677130;
   font-style: normal;
 }
-#tabular-table{
+/*#tabular-table{
   color: #34495e;
-}
+}*/
 
 #tabular-table tbody{
   font-size: 13px;
 }
+/*
 #tabular-table tr:nth-child(odd) {
   background-color: #ecf0f1;
 }
 #tabular-table tr:nth-child(even) {
   background-color: #d2edff;
+}*/
+
+#tabular-table tr td:first-child{
+	border-left: 0px solid #ececec;
+}
+#tabular-table tr td:last-child {
+    border-right: 0px solid #ececec;
+}
+
+.md-table-row-light{
+	border: 1px solid #ececec;
+	transition: background-color .2s;
+}
+
+.md-table-row-dark{
+	border: 1px solid #565656;
+	transition: background-color .2s;
+}
+
+.md-table-row-light:hover{
+	background-color: rgba(158,158,158,0.2);
+}
+
+.md-table-row-dark:hover{
+	background-color: rgba(158,158,158,0.2);
+}
+.align-sort-icon
+{
+    font-size: 12px;
+    margin-left: 10px;
 }
 
 </style>
-  <md-content id="{{sCollCtrl.idSelector}}" ng-hide="config.isloading" style="width:100%;height:100%">
-  <table id="tabular-table" class="table-data" style="width: 99.8%;height:100%;margin: 0 auto" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
+  <md-content id="{{idSelector}}" ng-hide="config.isloading" style="height:calc(100% - 50px);">
+  <table id="tabular-table" class="table-data" style="width: 100%;height:calc(100% - 54px);margin: 0 auto" cell-cursor="cc"cell-cursor-copy="cc.getSelectedCellValues()|cellCursorToTsv"
     cell-cursor-paste="cc.setSelectedCellValues($data)"
     ng-keydown="keydown($event)"
     ng-class="{dragable:dragable()}">
@@ -75,14 +106,14 @@ tr .wrap{
     <tr>
       <!-- changeSort is change $scope.sort -->
       <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
-      <td ng-click="tabularService.changeSort(x,config,tabularSettings)" ng-repeat="x in tabularSettings.AllingArr">
+      <td ng-click="tabularService.changeSort(x,config,tabularSettings)" ng-repeat="x in tabularSettings.AllingArr" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
         <div class="cell-cursor-col-resize"></div>
         <span style="font-size: 16px;">
           <b>{{x.DislayName}}</b>
         </span>
         <!-- sort key indicator example -->
-        <span ng-show="config.sort=='{{x.Attribute}}'">▲</span>
-        <span ng-show="config.sort=='-{{x.Attribute}}'">▼</span>
+        <span ng-show="config.sort=='{{x.Attribute}}'"><i class="ti-angle-up align-sort-icon"></i></span>
+        <span ng-show="config.sort=='-{{x.Attribute}}'"><i class="ti-angle-down align-sort-icon"></i></span>
       </td>
     </tr>
   </thead>
@@ -90,7 +121,7 @@ tr .wrap{
     <!-- angular.js default directive `ng-repeat` and default filters -->
     <tr ng-repeat="user in config.userList| limitTo:tabularSettings.numOfRows:start as result  track by $index" ng-class="{error:isError(user)}">
      
-      <td ng-repeat="y in tabularSettings.AllingArr" style=" text-align:{{y.Alignment}}">
+      <td ng-repeat="y in tabularSettings.AllingArr" style="text-align:{{y.Alignment}}" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
             {{tabularService.numberWithCommas(user[y.Attribute])}}
       </td>
 
@@ -100,7 +131,7 @@ tr .wrap{
     </tr>
     <tr>
    
-      <td ng-repeat="agg in tabularSettings.AllingArr" style=" text-align:{{agg.Alignment}}">
+      <td ng-repeat="agg in tabularSettings.AllingArr" style=" text-align:{{agg.Alignment}}" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
           <span ng-hide="agg.isString || tabularSettings.totForNumeric == 'false'">
               {{agg.Aggregation}} = {{tabularService.numberWithCommas(agg.Aggregation_value)}}
           </span>

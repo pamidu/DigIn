@@ -128,9 +128,12 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
             // });  
 
             scope.$on('widget-resized', function(element, widget) {
-                var height = widget.element[0].clientHeight - 50;
-                var width = widget.element[0].clientWidth;
-                $('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
+				if(scope.idSelector == widget.widget.widgetData.widgetID)
+				{
+					var height = widget.element[0].clientHeight - 50;
+					var width = widget.element[0].clientWidth;
+					$('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
+				}
                
             });
 

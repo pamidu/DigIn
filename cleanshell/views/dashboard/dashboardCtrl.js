@@ -781,6 +781,9 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 		}else if($scope.widget.widgetData.chartType.chartType == 'metric')
 		{
 			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth / 1.8, document.documentElement.offsetHeight - 45, true);
+		}else if($scope.widget.widgetData.chartType.chartType == 'whatif' || $scope.widget.widgetData.chartType.chartType == 'tabular')
+		{
+			$('#'+$scope.widget.widgetData.widgetID).css('height','100%');
 		}
 	},100)
 	

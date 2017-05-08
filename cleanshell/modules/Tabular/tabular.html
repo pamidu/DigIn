@@ -110,14 +110,15 @@ tr .wrap{
 			<tr>
 			  <!-- changeSort is change $scope.sort -->
 			  <!--td ng-click="changeSort(x)" ng-repeat="x in widget.widgetData.widData.tabularConfig.AllingArr"-->
-			  <td ng-click="tabularService.changeSort(x,config,tabularSettings)" ng-repeat="x in tabularSettings.AllingArr" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
+			  <td ng-repeat="x in tabularSettings.AllingArr" ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
 				<div class="cell-cursor-col-resize"></div>
-				<span style="font-size: 16px;">
-				  <b>{{x.DislayName}}</b>
+				<span style="font-size: 16px;cursor:pointer;outline:none" ng-click="tabularService.changeSort(x,config,tabularSettings)">
+					<b>{{x.DislayName}}</b>
+					<span ng-show="config.sort=='{{x.Attribute}}'"><i class="ti-angle-up align-sort-icon"></i></span>
+					<span ng-show="config.sort=='-{{x.Attribute}}'"><i class="ti-angle-down align-sort-icon"></i></span>
 				</span>
 				<!-- sort key indicator example -->
-				<span ng-show="config.sort=='{{x.Attribute}}'"><i class="ti-angle-up align-sort-icon"></i></span>
-				<span ng-show="config.sort=='-{{x.Attribute}}'"><i class="ti-angle-down align-sort-icon"></i></span>
+
 			  </td>
 			</tr>
 		</thead>

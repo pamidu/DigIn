@@ -397,3 +397,7 @@ ng-color-picker li.selected {
 	margin-bottom: 0px;
 	padding: 8px 0;
 }
+
+.vAccordion--default v-pane-content>div{
+	padding-bottom: 0px;
+}

@@ -10,7 +10,7 @@ DiginApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootSc
     $scope.$parent.currentView = "Dashboard Share";
     
 
-    $http.get(apis_Path+'usercommon/getSharableObjects')
+    $http.get(Digin_Engine_API+'usercommon/getSharableObjects')
        .then(function(result) {
 
             $scope.isVisble= true;
@@ -98,6 +98,8 @@ DiginApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootSc
             
         },function errorCallback(response) {
             notifications.toast(0, "Falied to get users");
+
+            
      });    
 
        $scope.closeReort = function(){
@@ -108,7 +110,7 @@ DiginApp.controller('sharedashboardgroupsCtrl', [ '$scope', '$mdDialog','$rootSc
          
             if($scope.selected.length > 0 || $scope.selectedgroups.length > 0){
 
-              var dashboardId = $rootScope.dashboard.compID;
+              var dashboardId = $rootScope.currentDashboard.compID;
               var idArr =[];
 
               //to get users

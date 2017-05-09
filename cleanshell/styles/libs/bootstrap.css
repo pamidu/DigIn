@@ -22,9 +22,9 @@ input[type=text]:focus, md-select:focus {
 	border: 1px solid rgba(81, 203, 238, 1) !important;
 }
 
-input[type=search] {
+/*input[type=search] {
 	border: none !important;
-}
+}*/
 
 input:disabled, md-select[disabled] {
 	background: #ececec;
@@ -76,7 +76,16 @@ md-select-value
 }
 
 md-chips.md-orangeThemeDark-theme .md-chips.md-focused{
-		box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+md-chips .md-chip-input-container{
+	margin: 0;
+}
+
+md-chips input{
+    padding: 0px 10px !important;
+	margin: 0 !important;
 }
 
 md-datepicker{
@@ -100,7 +109,15 @@ md-datepicker{
 }
 
 .md-datepicker-input-container, .md-datepicker-input-container.md-datepicker-focused{
-	border-bottom: none: !important;
+	border-bottom: none !important;
 	border: none !important;
 }
 
+
+.croppie-container{
+	padding: 0px !important;
+}
+ 
+.cr-slider{
+	background: transparent !important;
+}

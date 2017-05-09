@@ -1,4 +1,4 @@
-DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','UserServices', 'PackageServices', 'notifications','paymentGateway','$http','colorManager','onsite','version', function ($scope, $rootScope,$stateParams,$mdDialog,UserServices, PackageServices,notifications,paymentGateway,$http,colorManager,onsite,version){
+DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$mdDialog','DiginServices','UserServices', 'PackageServices','PouchServices', 'notifications','paymentGateway','$http','colorManager','onsite', function ($scope, $rootScope,$stateParams,$mdDialog,DiginServices,UserServices, PackageServices,PouchServices,notifications,paymentGateway,$http,colorManager,onsite){
 	
 	var vm = this;
 	
@@ -6,7 +6,6 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	colorManager.reinforceTheme();
 	
 	$scope.onsite = onsite;
-	$scope.version = version;
 	
 	vm.selectedPage = $stateParams.pageNo;
 	
@@ -32,14 +31,54 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 		}
 	})
 	
+	$scope.onsiteUsers = 0;
 	PackageServices.getPackageDetails().then(function(data) {
 		notifications.log(data, new Error());
 		if(data.Is_Success == true)
 		{
+			for (var i = 0, len = data.Result.length; i<len; ++i){
+				if(data.Result[i].package_attribute == "users")
+				{
+					$scope.onsiteUsers = data.Result[i].package_value_sum;
+				}
+			}
 		}else{
 			
 		}
 		
+	})
+	
+	vm.packageStatus = {};
+	PackageServices.checkSubscription().then(function(data) {
+		console.log(data);
+		vm.packageStatus = data;
+		
+		if(data.status == false)
+		{
+			vm.packageStatus.packageName = "Free";
+			vm.currentPlan = 0;
+		}else{
+			for(i=0; i<response.data.response[0].otherInfo.length; i++)
+			{
+				if(vm.packageStatus[0].otherInfo[i].tag=="Package")
+				{
+					if(vm.packageStatus[0].otherInfo[i].feature=="personal_space"){
+						vm.currentPlan = 0;
+					}
+					else if(vm.packageStatus[0].otherInfo[i].feature=="mini_team"){
+						vm.currentPlan = 1;
+					   
+					}
+					else if(vm.packageStatus[0].otherInfo[i].feature=="world"){                                
+						vm.currentPlan = 2;						
+					}
+					else{
+						vm.packageStatus.packageName='Free'; 
+						vm.currentPlan = 0;
+					}                               
+				}  
+			}
+		}
 	})
 	
 	var monthlyData = {}; //This will hold the result from the service call
@@ -96,12 +135,25 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
         "data": []
     }];
 	
+	
+	//#Change chart background colours according to theme
+	var chartBackgroundColor = "";
+	var chartFontColor = "";
+	if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+	{
+		chartBackgroundColor = "rgb(65,65,65)";
+		chartFontColor = '#fff';
+	}else{
+		chartBackgroundColor = "rgb(250,250,250)";
+	}
+	
 	function generateMonthlyUsageChart()
 	{
 		$scope.chartConfig = {
 			options: {
 					chart: {
-						type: 'line'
+						type: 'line',
+						backgroundColor: chartBackgroundColor
 					},
 					plotOptions: {
 
@@ -116,11 +168,29 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 					title: {
 						text: 'Date'
 					},
-					categories: chartXLabels
+					categories: chartXLabels,
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+								style: {
+									color: chartFontColor
+								}
+							}
 				},
+				yAxis: {
+                            lineWidth: 1,
+                            style: {
+                                color: chartFontColor
+                             },
+                             labels:{
+                                        style: {
+                                            color: chartFontColor
+                                        }
+                                    }
+                },
 				size: {
 					width: 600,
-					height: 439
+					height: 432
 				},
 				series: chartSeries,
 				title: {
@@ -171,14 +241,24 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 			},
 			uploadProfilePicture: function(ev)
 			{
+				var oldProfileImage = angular.copy($scope.$parent.userSettings.dp_path);
+				$scope.$parent.userSettings.dp_path = "images/settings/new_user.png";
+				
 				$mdDialog.show({
 				  controller: "uploadProfilePictureCtrl",
 				  templateUrl: 'views/settings/myAccount/uploadProfilePicture.html',
 				  parent: angular.element(document.body),
 				  targetEvent: ev,
-				  clickOutsideToClose:true
+				  clickOutsideToClose:false
 				})
 				.then(function(answer) {
+					if(answer){
+						$scope.$parent.userSettings.dp_path = answer;				
+						PouchServices.storeAndUpdateUserSettings($scope.$parent.userSettings);
+						
+					}else{
+						$scope.$parent.userSettings.dp_path = oldProfileImage;
+					}
 				})
 			},
 			closeSetting: function () {
@@ -211,14 +291,24 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	
 	$scope.uploadCompanyLogo = function(ev)
 	{
+		var oldCompanyLogo = angular.copy($scope.$parent.userSettings.logo_path);
+		$scope.$parent.userSettings.logo_path = "views/settings/myAccount/login_logo.png";
+		
 		$mdDialog.show({
 		  controller: "uploadCompanyLogoCtrl",
 		  templateUrl: 'views/settings/myAccount/uploadCompanyLogo.html',
 		  parent: angular.element(document.body),
 		  targetEvent: ev,
-		  clickOutsideToClose:true
+		  clickOutsideToClose:false
 		})
 		.then(function(answer) {
+			if(answer){
+				$scope.$parent.userSettings.logo_path = answer;				
+				PouchServices.storeAndUpdateUserSettings($scope.$parent.userSettings);
+					
+			}else{
+				$scope.$parent.userSettings.logo_path = oldCompanyLogo;
+			}
 		})
 	}
 	
@@ -229,40 +319,51 @@ DiginApp.controller('myAccountCtrl',[ '$scope','$rootScope', '$stateParams', '$m
 	
 	vm.warning = false;
 	
-	vm.companyPricePlans = [
-		{
-			id : "personal_space",
-			name:"Personal Space",
-			numberOfUsers:"1",
-			storage: "10 GB",
-			bandwidth: "100 GB",
-			perMonth: "$10",
-			perYear: "$10",
-			per: "/ User",
-			Description: "desc"
-		},
-		{
-			id : "mini_team",
-			name:"We Are A Mini Team",
-			numberOfUsers:"5",
-			storage: "10 GB",
-			bandwidth: "100 GB",
-			perMonth: "$8",
-			perYear: "$6.99 ",
-			per: "/ User",
-			Description: "desc"
-		},
-		{
-			id : "world",
-			name:"We Are the World",
-			numberOfUsers:"10",
-			storage: "10 GB",
-			bandwidth: "100 GB",
-			perMonth: "$6",
-			perYear: "$4.99",
-			per: "/ User",
-			Description: "desc"
-		}];
+	vm.currentPlan = 0;
+	
+	vm.companyPricePlans = [{
+        package_id:1002,
+        id: "personal_space",
+        name: "Personal Space",
+        numberOfUsers: 1,
+        storage: "10 GB",
+        bandwidth: "100 GB",
+        perMonth: 10,
+        perYear: 10,
+        per: "/ User",
+        Description: "desc",
+        price:10,
+        valStorage:10,
+        valData:100
+    }, {
+        package_id:1003,
+        id: "mini_team",
+        name: "We Are A Mini Team",
+        numberOfUsers: 5,
+        storage: "10 GB",
+        bandwidth: "100 GB",
+        perMonth: 8,
+        perYear: 6.99,
+        per: "/ User",
+        Description: "desc",
+        price:40,
+        valStorage:10,
+        valData:100
+    }, {
+        package_id:1004,
+        id: "world",
+        name: "We Are the World",
+        numberOfUsers: 10,
+        storage: "10 GB",
+        bandwidth: "100 GB",
+        perMonth: 6,
+        perYear: 4.99,
+        per: "/ User",
+        Description: "desc",
+        price:60,
+        valStorage:10,
+        valData:100
+    }];
 	
 	vm.paymentCards = [
 		{
@@ -481,38 +582,29 @@ DiginApp.controller('uploadProfilePictureCtrl',['$scope','$mdDialog','$http','no
 	{
 		var profileImg = document.getElementById('profileImg');
 		var profileImgSrc = profileImg.src;
-		var file = base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
+		var file = UserServices.base64ToBlob(profileImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
 		file.name = "profile.jpg";
-		UserServices.uploadPicture(file);
+		console.log(file);
+		UserServices.uploadPicture(file, "dp").success(function(data) {
+			if(data.Is_Success === true)
+			{
+				notifications.toast(1, "Profile picture uploaded successfully");
+				$mdDialog.hide(data.Result);
+			}else{
+				notifications.toast(0, "Failed to upload profile picture");
+			}
+			console.log(data);
+		})
 	}
 	
-	//#conver dataURL into base64
-    function base64ToBlob(base64Data, contentType) {
-        contentType = contentType || '';
-        var sliceSize = 1024;
-        var byteCharacters = atob(base64Data);
-        var bytesLength = byteCharacters.length;
-        var slicesCount = Math.ceil(bytesLength / sliceSize);
-        var byteArrays = new Array(slicesCount);
-
-        for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-            var begin = sliceIndex * sliceSize;
-            var end = Math.min(begin + sliceSize, bytesLength);
-
-            var bytes = new Array(end - begin);
-            for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
-                bytes[i] = byteCharacters[offset].charCodeAt(0);
-            }
-            byteArrays[sliceIndex] = new Uint8Array(bytes);
-        }
-        return new Blob(byteArrays, {
-            type: contentType
-        });
-    };
+	$scope.close = function()
+	{
+		$mdDialog.hide();
+	}
 	
 }])
 
-DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notifications' ,function ($scope,$mdDialog,$http,notifications) {
+DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notifications','UserServices' ,function ($scope,$mdDialog,$http,notifications,UserServices) {
 	
 	$scope.fileChanged = function(e)
 	{
@@ -530,8 +622,25 @@ DiginApp.controller('uploadCompanyLogoCtrl',['$scope','$mdDialog','$http','notif
 	
 	$scope.submit = function()
 	{
-		var profileImg = document.getElementById('profileImg');
-		var profileImgSrc = profileImg.src;
-		console.log(profileImgSrc);
+		var companyImg = document.getElementById('companyImg');
+		var companyImgSrc = companyImg.src;
+		var file = UserServices.base64ToBlob(companyImgSrc.replace('data:image/png;base64,', ''), 'image/jpeg');
+		file.name = "logo.jpg";
+		console.log(file);
+		UserServices.uploadPicture(file, "logo").success(function(data) {
+			if(data.Is_Success === true)
+			{
+				notifications.toast(1, "Company logo uploaded successfully");
+				$mdDialog.hide(data.Result);
+			}else{
+				notifications.toast(0, "Failed to upload company logo");
+			}
+			console.log(data);
+		})
+	}
+	
+	$scope.close = function()
+	{
+		$mdDialog.hide();
 	}
 }])

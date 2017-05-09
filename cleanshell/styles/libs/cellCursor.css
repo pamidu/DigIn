@@ -1,16 +1,16 @@
 /*This is used for the tabular widget*/
 
 table.table-data{
-	background: white;
+	/*background: white;*/
 	border-collapse:collapse;
 }
 
 table.table-data tbody{
-  background-color: white;
+  /*background-color: white;*/
 }
-table.table-data tbody td{
-	border:1px dotted lightgray;
-}
+/*table.table-data tbody td{
+	border:1px solid #8b8b8b;
+}*/
 table.table-data tr.area-t > td.area{
   border-top: 1px solid #9ABAF1;
 }
@@ -26,19 +26,22 @@ table.table-data td.area.area-r{
 table.table-data td.area.cursor,
 table.table-data td.cursor{
   border: 1px solid #9ABAF1;
-	background: #FAFAFF;
+	/*background: #FAFAFF;*/
 }
 table.table-data.focus td.area.cursor,
 table.table-data.focus td.cursor{
-	background: #FAFAFF;
+	background: rgba(158,158,158,0.2);
   border: 1px solid #4285F4;
 }
 table.table-data td.area{
-	background: #ECF3FF;
+	background: rgba(158,158,158,0.2);
 }
 table.table-data thead td{
-	background: #F3F3F3;
-	border-left:1px solid #CCCCCC;
-	border-bottom:1px solid #CCCCCC;
+	background: rgba(158,158,158,0.1);
+	/*
+	border:1px solid #8b8b8b;*/
+	border-top:0px solid #CCCCCC;
+	/*position:inherit !important;
+	border-collapse: collapse;*/
 	text-align: center;
 }

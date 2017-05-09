@@ -240,7 +240,7 @@
 			<div class="left-toggle-wrapper md-primary" md-colors="{background:'primary'}">
 				<img ng-src="{{userSettings.logo_path}}" err-src="images/digin43x43.png"/>
 				 <md-tooltip md-direction="right">
-				  {{cleanshell_version}}
+				  {{version}}
 				</md-tooltip>
 			</div>
 		</div>

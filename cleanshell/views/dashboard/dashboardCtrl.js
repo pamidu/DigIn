@@ -282,11 +282,25 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 			addDashboardFilter: function(ev)
 			{
 				$scope.$parent.route('dashboardFilterSettings');
+			},
+			shareDashboard: function(ev){
+				$mdDialog.show({
+				  controller: 'sharedashboardgroupsCtrl',
+				  templateUrl: 'views/settings/dashboardShare/sharedashboard.html',
+				  parent: angular.element(document.body),
+				  clickOutsideToClose:true,
+				  targetEvent: ev,
+				  locals: {lastPath: $scope.lastPath},
+				  fullscreen: useFullScreen
+				}).then(function(answer) {
+					if(answer){
+						console.log(answer);
+						$scope.lastPath = answer;
+					}
+				}); 
+		
 			}
-
 		}
-
-
 	})();
 	
 	//Widget toolbar controls
@@ -767,6 +781,9 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 		}else if($scope.widget.widgetData.chartType.chartType == 'metric')
 		{
 			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth / 1.8, document.documentElement.offsetHeight - 45, true);
+		}else if($scope.widget.widgetData.chartType.chartType == 'whatif' || $scope.widget.widgetData.chartType.chartType == 'tabular')
+		{
+			$('#'+$scope.widget.widgetData.widgetID).css('height','100%');
 		}
 	},100)
 	

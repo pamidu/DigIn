@@ -267,7 +267,7 @@ WhatIfModule.factory('generateWhatIf', ['$rootScope', '$http', 'notifications', 
 
         var generate = function(dbconfig, eqconfig, callback) {
             resolveFormula(buildFormulaParams(dbconfig, eqconfig), function(fdata) {
-                callback(buildSlidersData(fdata.Result), fdata.Result.equation);
+                callback(buildSlidersData(fdata.Result), fdata.Result.equation, fdata.Result.rsquare);
             });
         }
 

@@ -176,12 +176,6 @@ DiginApp.config(['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','$
 		controllerAs: 'vm'
 	})
 	
-	.state('sharedashboard', {
-        url: '/sharedashboard',
-        controller: 'sharedashboardgroupsCtrl',
-        templateUrl: "views/settings/dashboardShare/sharedashboard.html"
-    })
-	
 	.state('shareDataset', {
         url: '/shareDataset',
         controller: 'datasetShareCtrl',

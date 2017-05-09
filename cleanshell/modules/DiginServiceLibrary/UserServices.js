@@ -16,8 +16,8 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 							notifications.toast(0, "Falied to load tenants");
 				 });	
 			}
-        }, inviteUser: function(userEmail) {
-			 notifications.startLoading("Inviting user, Please wait..");
+        }, inviteUser: function(ev, userEmail) {
+			 notifications.startLoading(ev, "Inviting user, Please wait..");
              //return the promise directly.
              return $http.get(auth_Path + '/tenant/AddUser/' + userEmail + '/user', {
 					headers: {'Securitytoken': $rootScope.authObject.SecurityToken}
@@ -40,18 +40,24 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					 return $http.get('/apis/usercommon/getSharableObjects')
 					   .then(function(result) {
 							//return result.data;
-							 for (var i = 0, len = result.data.length; i<len; ++i) {
+							/* for (var i = 0, len = result.data.length; i<len; ++i) {
 								if (result.data[i].Type == "User") {
 									$rootScope.sharableUsers.push(result.data[i]);
 								}else if (result.data[i].Type == "Group") {
 									$rootScope.sharableGroups.push(result.data[i]);
 								}
+							}*/
+							if(result.statusText == "OK")
+							{
+								cache.invitedUsers = result.data;
+								callback(cache.invitedUsers)
+							}else{
+								notifications.toast(0, "Falied to get users");
 							}
-							cache.invitedUsers = result;
-							callback(cache.invitedUsers)
+
 							
 						},function errorCallback(response) {
-							notifications.toast(0, "Falied to invite user");
+							notifications.toast(0, "Falied to get users");
 					 });	
 				}
 		
@@ -169,7 +175,30 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					},function errorCallback(response) {
 						notifications.toast(0, "Falied to retrieve Usage Summary");
 					});	
-        }, uploadPicture: function(file) {
+        }, base64ToBlob : function(base64Data, contentType){
+			
+			contentType = contentType || '';
+			var sliceSize = 1024;
+			var byteCharacters = atob(base64Data);
+			var bytesLength = byteCharacters.length;
+			var slicesCount = Math.ceil(bytesLength / sliceSize);
+			var byteArrays = new Array(slicesCount);
+
+			for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+				var begin = sliceIndex * sliceSize;
+				var end = Math.min(begin + sliceSize, bytesLength);
+
+				var bytes = new Array(end - begin);
+				for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+					bytes[i] = byteCharacters[offset].charCodeAt(0);
+				}
+				byteArrays[sliceIndex] = new Uint8Array(bytes);
+			}
+			return new Blob(byteArrays, {
+				type: contentType
+			});
+			
+		}, uploadPicture: function(file, type) {
 				return Upload.upload({
 						url: Digin_Engine_API + 'file_upload',
 						headers: {
@@ -179,11 +208,11 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 							db: 'BigQuery',
 							SecurityToken: $rootScope.authObject.SecurityToken,
 							Domain: Digin_Domain,
-							other_data: 'dp',
+							other_data: type,
 							file: file
 						}
 					}).success(function(data) {
-						console.log(data);
+						return data;
 					})
         }
 		//$http.get(Digin_Engine_API + "get_usage_summary?SecurityToken=" + getCookie('securityToken'))

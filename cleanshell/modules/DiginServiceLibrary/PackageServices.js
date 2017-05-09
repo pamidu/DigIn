@@ -1,4 +1,4 @@
-DiginServiceLibraryModule.factory('PackageServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path) {
+DiginServiceLibraryModule.factory('PackageServices', ['$rootScope','$http', 'notifications', 'Digin_Engine_API', 'Digin_Domain','auth_Path','include_Path', function($rootScope,$http,notifications, Digin_Engine_API, Digin_Domain,auth_Path,include_Path) {
 	var cache = {};
 	return {
 		
@@ -19,6 +19,22 @@ DiginServiceLibraryModule.factory('PackageServices', ['$rootScope','$http', 'not
 							console.log(response);
 							notifications.toast(0, "Falied to get User Settings");
 					 });
+        },
+		checkSubscription: function() {
+
+			var req = {
+				method: 'POST',
+				url: include_Path + 'duoapi/paymentgateway/checkSubscription',
+				headers: {
+                    'Content-Type': 'application/json',
+					'Securitytoken' : $rootScope.authObject.SecurityToken
+				}
+			}
+			return $http(req).then(function(result){
+				return result.data;
+			}, function(error){
+				notifications.toast(0, "Failed to get subscription details");
+			});
         }
 		
    }

@@ -79,7 +79,7 @@
 							notifications.toast(1,"Changes Successfully Saved");
 							newDashboardDetails.compID = result.data.Result.comp_id;
 							console.log(newDashboardDetails);
-							//PouchServices.saveAndUpdateDashboard(newDashboardDetails);
+							PouchServices.saveAndUpdateDashboard($rootScope.currentDashboard);
 							return newDashboardDetails;
 						}
 					},function(err){
@@ -192,7 +192,8 @@
 			},
 			getDashboard: function(ev, dashboardId){
 				return $rootScope.localDb.get(dashboardId.toString()).then(function (doc) {
-						return DiginServices.getComponent(ev, dashboardId).then(function(data) {
+					console.log(doc.dashboard);
+						/*return DiginServices.getComponent(ev, dashboardId).then(function(data) {
 							data.deletions = {
 												"componentIDs":[],
 												"pageIDs":[],
@@ -200,8 +201,8 @@
 											 };
 							persistData(data);
 							return data;
-						});
-						//return doc.dashboard;
+						});*/
+						return doc.dashboard;
 					}).catch(function (err) {//if the dashboard is not saved locally
 					
 						return DiginServices.getComponent(ev, dashboardId).then(function(data) {
@@ -215,18 +216,18 @@
 						});
 					});
 			},
-			saveAndUpdateDashboard: function(newDashboardDetails) {
-				console.log(newDashboardDetails.compID.toString());
-				$rootScope.localDb.get( newDashboardDetails.compID.toString() , function(err, doc){
+			saveAndUpdateDashboard: function(selectedDB) {
+				console.log(selectedDB.compID.toString());
+				$rootScope.localDb.get( selectedDB.compID.toString() , function(err, doc){
 					console.log(err);
-					console.log(doc);
+					console.log(doc.dashboard);
 					if(err)
 					{
 						if(err.status === 404)
 						{
 							var dashboardDoc = {
-								_id : newDashboardDetails.compID.toString(),
-								dashboard : $rootScope.currentDashboard
+								_id : selectedDB.compID.toString(),
+								dashboard : angular.copy($rootScope.currentDashboard)
 							}
 							
 							$rootScope.localDb.put(dashboardDoc, function(err, response) {
@@ -240,9 +241,17 @@
 						}
 								
 					}else{
+						
+						var updatedDashboard = JSON.parse(JSON.stringify(angular.copy($rootScope.currentDashboard)));
+
+						for (var i = 0, len = updatedDashboard.pages.length; i<len; ++i){
+							delete updatedDashboard.pages[i].isFiltered;
+							delete updatedDashboard.pages[i].isSeen;	
+						}
+
 						var dashboardDoc = {
-							_id : newDashboardDetails.compID.toString(),
-							dashboard : $rootScope.currentDashboard,
+							_id : selectedDB.compID.toString(),
+							dashboard : updatedDashboard,
 							_rev : doc._rev
 						}
 						$rootScope.localDb.put(dashboardDoc, function(err, response) {

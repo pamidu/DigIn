@@ -27,6 +27,7 @@
 	 
 	p.paragraph{
 		margin: 0px;
+		padding: 4px;
 	}
 	 
 	.redExpiryContainer
@@ -69,7 +70,7 @@
 								<div class="setting-card-header">
 									<h2 md-colors="{color:'{{$root.h1color}}-A700'}">User Profile</h2>
 									<div class="setting-img-wrap" layout="row" layout-align="center center">
-										<img ng-src="{{profile_pic}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
+										<img ng-src="{{$parent.userSettings.dp_path}}" err-src="images/settings/new_user.png" class="img-circle" ng-click="profile.uploadProfilePicture($event)">
 											<md-tooltip md-direction="bottom">
 												Upload Profile Picture
 											</md-tooltip>
@@ -186,8 +187,8 @@
 			<md-tab-body>
 				<div layout="row" layout-align="center start" layout-wrap class="card-container" ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}">
 					<div layout="column">
-						<md-card class="product_card" style="width:460px;height:205px;background:#2795d8" layout="row" layout-align="center center" ng-click="uploadCompanyLogo($event)">
-							<img src="views/settings/myAccount/login_logo.png" style="width:190px;height:190px;background:white;border-radius:4px"/>
+						<md-card class="product_card" style="width:460px;height:205px;" layout="row" md-colors="{background:'primary'}" layout-align="center center" ng-click="uploadCompanyLogo($event)">
+							<img ng-src="{{$parent.userSettings.logo_path}}" err-src="views/settings/myAccount/login_logo.png" style="width:190px;height:190px;background:white;border-radius:4px; box-shadow: 0 1px 5px 0 rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,"/>
 							<md-tooltip md-direction="bottom">Upload Company Image</md-tooltip>
 						</md-card>
 						<md-card class="product_card" style="width:460px;">
@@ -256,11 +257,11 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container"  ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container" ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;max-width: 1335px;"> 
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
-							<v-pane id="Cards" expanded="$first"> 
+							<v-pane id="Cards" expanded="true"> 
 								<v-pane-header id="Store-header" aria-controls="Store-content">
 									<h1 class="search-header" style="margin:0px;" md-colors="{color:'{{$root.h1color}}-A700'}">Subscription Details</h1>
 								</v-pane-header>
@@ -268,19 +269,19 @@
 								<v-pane-content id="Store-content" aria-labelledby="Store-header" style="border-radius: 4px;">
 									<div layout="row" layout-align="center center" layout-wrap>
 										<md-card class="product_card" flex-xs="100" flex-sm="20" flex-gt-sm="20" flex-gt-lg="15" md-colors="{background:'primary-500'}" style="max-width:460px;min-height:205px;padding:0px;" layout="column">
-											<center md-colors="{background:'primary-700'}" style="color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;">Current Plan - Personal Space</center>
+											<center md-colors="{background:'primary-700'}" style="color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;">Current Plan - {{vm.packageStatus.packageName}}</center>
 										
 											<center style="padding:10px;" layout-gt-sm="row">
 												<div flex-xs="100" flex-sm="100" flex-gt-sm="40" flex-gt-lg="40" layout="row" layout-align="center center">
 													<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;margin: 30px;" layout="column" layout-align="center center">
-														<span style="color:white;font-size:25px;">$10</span>
-														<span style="color:white;font-size:12px;">/User</span>
+														<span style="color:white;font-size:25px;">{{vm.companyPricePlans[vm.currentPlan].price | currency}}</span>
+														<span style="color:white;font-size:12px;">{{vm.companyPricePlans[vm.currentPlan].per}}</span>
 													</div>
 												</div>
 												<div flex layout="column">
-													<span class="align-left"> 1 User</span>
-													<span class="align-left"> 10 GB Storage</span>
-													<span class="align-left"> 100 GB of Bandwidth</span>
+													<span class="align-left"> {{vm.companyPricePlans[vm.currentPlan].numberOfUsers}} User</span>
+													<span class="align-left"> {{vm.companyPricePlans[vm.currentPlan].storage}} Storage</span>
+													<span class="align-left"> {{vm.companyPricePlans[vm.currentPlan].bandwidth}} of Bandwidth</span>
 													<div layout-gt-sm="row" style="margin-top: 10px;">
 														<md-button class="md-raised smallMdButton" ng-click="vm.deactivateAccount($event)"><span style="text-transform:none">Deactivate Account</span></md-button>
 														<md-button class="md-raised smallMdButton" ng-click="vm.updatePackage($event)"><span style="text-transform:none">Customize</span></md-button>
@@ -316,7 +317,7 @@
 												<center md-colors="{background:'primary-700'}" style="color:white;font-size:16px;font-weight:700;padding:10px;border-radius: 2px 2px 0px 0px;">{{plan.name}}</center>
 												<center md-colors="{background:'primary-500'}" style="padding:10px;">
 													<div style="width:100px;height:100px;border-radius:100px;border: 5px solid white;" layout="column" layout-align="center center">
-														<span style="color:white;font-size:25px;">{{plan.perMonth}}</span>
+														<span style="color:white;font-size:25px;">{{plan.perMonth | currency}}</span>
 														<span style="color:white;font-size:12px;">{{plan.per}}</span>
 													</div>
 													<md-button class="md-fab md-mini ti-check" ng-disabled="false" aria-label="Comment" md-colors="{background:'accent-500'}" style="background:#f9a525;position:absolute;margin-top: -10px;margin-left: 50px;" ng-click="vm.loadStripe($event,plan)">
@@ -329,15 +330,15 @@
 												  <p class="paragraph">{{plan.bandwidth}} of Bandwidth</p>
 												</md-card-content>
 												<md-content layout-padding layout="column" layout-align="center center">
-												  <p class="paragraph">{{plan.perMonth}} / Per User (Monthly)</p>
-												  <p class="paragraph">{{plan.perYear}} / Per User (Yearly)  </p>
+												  <p class="paragraph">{{plan.perMonth | currency}} / Per User (Monthly)</p>
+												  <p class="paragraph">{{plan.perYear | currency}} / Per User (Yearly)  </p>
 												</md-content>
 												<md-card-content layout-padding layout="column" layout-align="start start">
 												  <b style="margin-bottom:10px;">Advanced Options:</b>
 												  <div layout="row" layout-align="space-between center" style="width:100%"> <span flex>Option 1</span><md-checkbox class="checkbox" ng-model="data.cb1" aria-label="Checkbox 1"></md-checkbox></div>
 												</md-card-content>
 												<md-content layout-padding layout="column" layout-align="end end" style="padding:0">
-												  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;"> $10</b></span>
+												  <span style="padding: 5px;border-radius: 4px;margin: 6px;border: 1px solid #b7b7b7;color: grey;font-weight: 700;">Total Amount:<b style="font-size:20px;"> {{plan.price | currency}}</b></span>
 												</md-content>
 										  </md-card>
 										</div>
@@ -412,11 +413,11 @@
 				</span>
 			</md-tab-label>
 			<md-tab-body>
-				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container"  ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;"> 
+				<md-whiteframe class="md-whiteframe-2dp layout-whiteframe card-container" ng-class="{'main-toolbar-closed': $root.showHeader==false, 'main-sidemenu-closed': $root.showSideMenu==false}"  flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center" style="box-shadow:none;background:transparent;max-width: 1335px;"> 
 
 					<md-content style="background:transparent">
 						<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)">
-							<v-pane id="Cards" expanded="$first"> 
+							<v-pane id="Cards" expanded="true">
 								<v-pane-header id="Store-header" aria-controls="Store-content">
 									<h1 class="search-header" style="margin:0px;" md-colors="{color:'{{$root.h1color}}-A700'}">Licence Details</h1>
 								</v-pane-header>
@@ -424,7 +425,7 @@
 									<div layout="row" layout-align="center start" layout-wrap>
 											
 									   <md-card class="product_card" style="width:460px;height:205px;background:#499300;padding:0px;" layout="column">
-											<center style="background:#3c7a00;color:white;font-size:16px;font-weight:700;padding:10px 0px;border-radius: 2px 2px 0px 0px;width:460px">DigIn Version - {{version}}</center>
+											<center style="background:#3c7a00;color:white;font-size:16px; letter-spacing: 1px;;padding:10px 0px;border-radius: 2px 2px 0px 0px;width:460px">DigIn Version - {{$parent.$parent.version}}</center>
 											<center style="padding:10px;" layout="row">
 												<div flex="40" layout="row" layout-align="space-between end">
 													<div layout="column" layout-align="center center">
@@ -433,9 +434,9 @@
 													</div>
 												</div>
 												<div flex layout="column">
-														<span class="align-left" style="font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Purchase Date : </span>
-														<span class="align-left"> {{onsiteDate | date:'medium'}}</span>
-														<span class="align-left" style="font-size:14px;line-height:20px;font-weight: 700;letter-spacing: 1px;">Number of Licenced Users : </span>
+														<span class="align-left" style="font-size:14px;line-height:20px;letter-spacing: 1px;">Purchase Date : </span>
+														<span class="align-left"> {{$parent.$parent.userSettings.created_date_time | date:'medium'}}</span>
+														<span class="align-left" style="font-size:14px;line-height:20px;letter-spacing: 1px;">Number of Licenced Users : </span>
 														<span class="align-left"> {{onsiteUsers}} user</span>
 												</div>
 											</center>

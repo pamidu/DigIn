@@ -563,7 +563,6 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				});
 			}
 			if(widget.widgetData.chartType.chartType == "forecast"){
-
 				if(des_connection_string != ""){
 					run_connectionString = run_connectionString + " AND " + des_connection_string;
 				}
@@ -571,6 +570,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				widgetData.syncOn = true;
 				generateForecast.applyRunTimeFilters(widget,des_connection_string,run_connectionString, function (data){
 					widgetData.syncOn = false;
+					widgetData.widgetConfig=data;
 				});
 			}
 			

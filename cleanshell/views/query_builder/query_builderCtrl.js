@@ -553,7 +553,6 @@ DiginApp.controller('query_builderCtrl',[
 			     connection_string = filterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
 			    }
 
-
 				if(isChartConditionsOk){
 					generateTabular.generate($scope.selectedDB,$scope.selectedFile, $scope.settingConfig,connection_string,"", function (data){
 

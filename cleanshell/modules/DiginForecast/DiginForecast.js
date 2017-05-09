@@ -62,9 +62,9 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     visualstart : intDate,
                     visualend : intDate,
                     widgetName : scope.forecastObj.widgetName,
-                    runtimefilterString :runtimefilterString,
+                    runtimefilterString :"",
                     runtimeQuery:"",
-                    designFilterString:designFilterString,
+                    designFilterString:"",
                     designtimeQuery:""
                 
                 //}
@@ -530,86 +530,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                 }
             }); 
 
-           
-           /*
-            function createForecastObject(highChartType,widgetData,serArr, catArr){
-                forecastWidgetConfig = {
-                    options: {
-                        chart: {
-                            zoomType: 'x',
-                            events: {
-                                beforePrint: function() {
-                                    this.setTitle({
-                                        text: this.options.exporting.chartOptions.title.text
-                                    })
-                                    this.heightPrev = this.chartHeight;
-                                    this.widthPrev = this.chartWidth;
-                                    this.setSize(800, 600, false);
-                                },
-                                afterPrint: function() {
-                                    this.setTitle({
-                                        text: null
-                                    })
-                                    this.setSize(this.widthPrev, this.heightPrev, true);
-                                }
-                            },
-                            backgroundColor: chartBackgroundColor
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        exporting: {
-                            sourceWidth: 600,
-                            sourceHeight: 400,
-                            chartOptions: {
-                                title: {
-                                    text: widgetData.widName
-                                }
-                            }
-                        },
-                        title: {
-                            text: ''
-                        },
-                        tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  </span> {series.name}: {point.y:,.0f} </b>',
-                            useHTML: true
-                        }
-                    },
-                    xAxis: {
-                        type: 'datetime',
-                        categories: catArr,
-                        lineColor: chartFontColor,
-                        tickColor: chartFontColor,
-                        labels: {
-                                    style: {
-                                        color: chartFontColor
-                                    }
-                                }
-                    },
-                    yAxis: {
-                        lineWidth: 1,
-                        style: {
-                            color: chartFontColor
-                         },
-                         labels:{
-                                    style: {
-                                        color: chartFontColor
-                                    }
-                                }
-                    },
-                    title: {
-                        text: '',
-                        style:{
-                                color: chartFontColor
-                            }
-                    },
-                    series: serArr
-                };
-
-               return forecastWidgetConfig; 
-            } */
-
-
+    
             function formattedDate(date, format) {
                 var date;
                 if (format == "Monthly") {

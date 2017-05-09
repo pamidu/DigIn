@@ -26,12 +26,35 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					//return result.data;
 					notifications.toast(1, "User Invited");
 					notifications.finishLoading();
+					return result.data;
 				},function errorCallback(response) {
 					console.log(response);
 					notifications.toast(0, "Falied to load tenants");
 					notifications.finishLoading();
 			 });	
-        }, getInvitedUsers: function(callback) {
+        }, removeInvitedUser: function(ev, userEmail){
+			notifications.startLoading(ev, "Removing user, Please wait..");
+			console.log(userEmail);
+			return $http.get(auth_Path+'tenant/RemoveUser/'+userEmail)
+			   .then(function(result) {
+				   notifications.finishLoading();
+					//resolve the promise as the data
+					if(result.data == "true"){
+						notifications.toast(1, "User Removed");
+						return result.data;
+					}
+					else
+					{
+						console.log(result.data);
+					}
+
+				},function errorCallback(response) {
+						console.log(response);
+						notifications.finishLoading();
+						notifications.toast(0, "Falied to remove user");
+				});
+			
+		}, getInvitedUsers: function(callback) {
 				if(cache.invitedUsers)
 				{
 					callback(cache.invitedUsers);

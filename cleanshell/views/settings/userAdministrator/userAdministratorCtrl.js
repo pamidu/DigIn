@@ -1,5 +1,7 @@
-DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager','dialogService', function ($scope,$rootScope,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager,dialogService){
+DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager','dialogService','onsite', function ($scope,$rootScope,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager,dialogService,onsite){
 	var vm = this;
+	
+	vm.onsite = onsite;
 	
 	$scope.$parent.currentView = "User Administrator";
     colorManager.reinforceTheme();
@@ -59,12 +61,17 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		return exist;
 	}
 	
-	$scope.removeUser = function(ev, user)
+	$scope.removeUser = function(ev, index, user)
 	{
 		dialogService.confirmDialog(ev,"Remove User","Are you sure you want to remove this user?", "yes","no","cancel").then(function(answer) {
 			if(answer == "yes")
 			{
-				notifications.toast(1,"you said yes");
+				UserServices.removeInvitedUser(ev,user.Id).then(function(data){
+					if(data == "true")
+					{
+						$scope.$parent.sharableUsers.splice(index, 1); 
+					}
+				})
 			}
 			else if(answer == "no")
 			{
@@ -89,7 +96,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		if(!group)
 		{
 			var group = {};
-			var index = "";
+			var index = undefined;
 		}
 		
 		$mdDialog.show({
@@ -103,7 +110,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		.then(function(answer) {
 			if(answer)
 			{
-				if(index)
+				if(index || index == 0)
 				{
 					$scope.groups[index] = answer.group;
 				}else{
@@ -167,7 +174,7 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
 	if(Object.keys(group).length != 0)
 	{
 		vm.addOrEdit = "Edit";
-		vm.group = group;
+		vm.group = angular.copy(group);
 		//vm.contacts = group.users;
 		for (var i = 0; i<group.users.length; i++) {
 			var arrlen = vm.allContacts.length;

@@ -6,6 +6,36 @@
 .border-dark{
 	border: 1px solid #565656;
 }
+
+.active-box{
+    background-color: rgba(181, 255, 185, 0.2);
+    border: 1px solid #a7ffa5;
+    color: #31b136 !important;
+	width: 80px;
+    height: 16px;
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	margin: 12px;
+	font-size: 14px;
+}
+
+.inactive-box{
+    background-color: rgba(255, 156, 156, 0.2);
+    border: 1px solid #ff7272;
+    color: #ff6969 !important;
+	width: 80px;
+    height: 16px;
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	margin: 12px;
+	font-size: 14px;
+}
 </style>
 
 <footer class="footerTabContainer">
@@ -31,19 +61,25 @@
 
 					<form name="editForm" layout-padding>
 
-						<md-list ng-cloak>
+						<md-list>
 							<md-list-item ng-repeat="user in $parent.sharableUsers | filter:searchText">
 								<img ng-src="{{user.imgUrl}}" err-src="{{getCatLetter(user.Name)}}" class="md-avatar" alt="{{user.Name}}" />
+								<img ng-if="user.Id == $root.authObject.Email" style="height: 22px;width: 22px;position: absolute;bottom: 3px;left: 40px;" src="views/settings/userAdministrator/shield.png" />
 								<div layout="row" flex>
-									<p style="font-weight:700"  flex="40"> {{ user.Name }} </p>
+									<div flex="35" layout="column"  ng-if="user.Id == $root.authObject.Email">
+										<p style="font-weight:700; margin: 8px 0px 4px 0px;"> {{ user.Name }} </p>
+										<p style="margin:0;font-size:14px;color:#8b8b8b"> Administrator </p>
+									</div>
+									<p flex="35" layout="column"  ng-if="user.Id != $root.authObject.Email" style="font-weight:700;"> {{ user.Name }} </p>
 									<p style="color:#717171" flex> {{ user.Id}} </p>
+									<span ng-show="vm.onsite" class="inactive-box">Inactive</span>
 								</div>
-								<md-menu md-position-mode="target-right target" >
-									<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdOpenMenu($event)">
+								<md-menu class="md-secondary" md-position-mode="target-right target" ng-if="user.Id != $root.authObject.Email">
+									<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdMenu.open($event)">
 									</md-button>
 									<md-menu-content width="4" >
 										<md-menu-item>
-										  <md-button ng-click="removeUser($event, user)">
+										  <md-button ng-click="removeUser($event, $index, user)">
 											  <div layout="row" flex>
 												<p flex>Remove User</p>
 												<div class="ti-trash" style="font-size: 20px;padding-top: 8px;"></div>
@@ -112,7 +148,7 @@
 							
 							<div style="padding:20px">
 								<v-accordion id="accordion-list" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index,id)" oncollapse="collapseCallback(index, id)"><!--multiple-->
-									<v-pane id="Cards" expanded="$first" ng-repeat="group in groups" style="padding: 10px;border-radius: 3px; margin-bottom: 12px;" ng-class="{'border-light': $root.applyDark == false, 'border-dark': $root.applyDark == true}"> 
+									<v-pane id="Cards"  ng-repeat="group in groups" style="padding: 10px;border-radius: 3px; margin-bottom: 12px;" ng-class="{'border-light': $root.applyDark == false, 'border-dark': $root.applyDark == true}">  <!--expanded="$first"-->
 										<v-pane-header id="Store-header" aria-controls="Store-content">
 											<p style="margin:0">{{group.groupname}}</p> 
 										</v-pane-header>

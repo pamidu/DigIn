@@ -3,8 +3,8 @@ DiginApp.controller('NavCtrl', [
 function ( $scope,  $rootScope , $state,  $mdDialog,  $mdMedia,  $mdSidenav,  layoutManager,  notifications,  DiginServices,  colorManager,  $timeout,  $mdSelect,  $mdMenu,  $window,  pouchDB,  PouchServices,  IsLocal,  dialogService,  $log,  filterServices,  DiginDashboardSavingServices,  version) {
 
 	
-	$rootScope.sharableUsers = [];
-	$rootScope.sharableGroups = [];
+	$scope.sharableUsers = [];
+	$scope.sharableGroups = [];
 	
 	$scope.lastPath = {dataSource:undefined, connection: undefined, table: undefined, connectionTable: undefined};
 	$log.debug('please user $log.debug("sample log") or notifications.log("sample log",new Error()) instead of console.log()');

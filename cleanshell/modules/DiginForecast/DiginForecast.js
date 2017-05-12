@@ -62,9 +62,9 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
                     visualstart : intDate,
                     visualend : intDate,
                     widgetName : scope.forecastObj.widgetName,
-                    runtimefilterString :runtimefilterString,
+                    runtimefilterString :"",
                     runtimeQuery:"",
-                    designFilterString:designFilterString,
+                    designFilterString:"",
                     designtimeQuery:""
                 
                 //}
@@ -530,86 +530,7 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                 }
             }); 
 
-           
-           /*
-            function createForecastObject(highChartType,widgetData,serArr, catArr){
-                forecastWidgetConfig = {
-                    options: {
-                        chart: {
-                            zoomType: 'x',
-                            events: {
-                                beforePrint: function() {
-                                    this.setTitle({
-                                        text: this.options.exporting.chartOptions.title.text
-                                    })
-                                    this.heightPrev = this.chartHeight;
-                                    this.widthPrev = this.chartWidth;
-                                    this.setSize(800, 600, false);
-                                },
-                                afterPrint: function() {
-                                    this.setTitle({
-                                        text: null
-                                    })
-                                    this.setSize(this.widthPrev, this.heightPrev, true);
-                                }
-                            },
-                            backgroundColor: chartBackgroundColor
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        exporting: {
-                            sourceWidth: 600,
-                            sourceHeight: 400,
-                            chartOptions: {
-                                title: {
-                                    text: widgetData.widName
-                                }
-                            }
-                        },
-                        title: {
-                            text: ''
-                        },
-                        tooltip: {
-                            pointFormat: '<b> <span style = "color : {series.color}" >  </span> {series.name}: {point.y:,.0f} </b>',
-                            useHTML: true
-                        }
-                    },
-                    xAxis: {
-                        type: 'datetime',
-                        categories: catArr,
-                        lineColor: chartFontColor,
-                        tickColor: chartFontColor,
-                        labels: {
-                                    style: {
-                                        color: chartFontColor
-                                    }
-                                }
-                    },
-                    yAxis: {
-                        lineWidth: 1,
-                        style: {
-                            color: chartFontColor
-                         },
-                         labels:{
-                                    style: {
-                                        color: chartFontColor
-                                    }
-                                }
-                    },
-                    title: {
-                        text: '',
-                        style:{
-                                color: chartFontColor
-                            }
-                    },
-                    series: serArr
-                };
-
-               return forecastWidgetConfig; 
-            } */
-
-
+    
             function formattedDate(date, format) {
                 var date;
                 if (format == "Monthly") {
@@ -648,15 +569,229 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             callback(forecastWidgetConfig);
             
         },
-        applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, cb){
-            /*widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
+        applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, callback){
+            widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
             widget.widgetData.widgetConfig.designFilterString = designFilterString;
 
-            tabularService.executeQuery(widget.widgetData.selectedDB , widget.widgetData.selectedFile ,  widget.widgetData.settingConfig , widget.widgetData.widgetConfig , function(tabulConfig){
-                cb(tabulConfig);
-            });*/
+            var fObj = widget.widgetData.settingConfig;
+            var widgetData = widget.widgetData;
+            if(typeof widgetData.namespace == "undefined"){ 
+                var namespace = $rootScope.authObject.Email.replace('@', '_'); 
+                namespace=$rootScope.authObject.Email.replace(/[@.]/g, '_'); 
+                widgetData.namespace = namespace;
+            }
 
+            function formattedDate(date, format) {
+                var date;
+                if (format == "Monthly") {
+                    var d = new Date(date || Date.now()),
+                        month = '' + (d.getMonth() + 1),
+                        day = '01',
+                        year = d.getFullYear();
+
+                    if (month.length < 2) month = month;
+                    if (day.length < 2) day = day;
+                    date = [year, month, day].join('-');
+                } else if (format == "Yearly") {
+                    var d = new Date(date || Date.now()),
+                        month = '01',
+                        day = '01',
+                        year = d.getFullYear();
+
+                    date = [year, month, day].join('-');
+                } else if (format == "Daily") {
+                    var d = new Date(date || Date.now()),
+                        month = '' + (d.getMonth() + 1),
+                        day = d.getDate(),
+                        year = d.getFullYear();
+
+                    if (month.length < 2) month = "0" + month;
+                    if (day.length < 2) day = "0" + day;
+
+                    date = [year, month, day].join('-');
+                }
+                return date;
+            }
+
+            $diginengine.getClient(widget.widgetData.selectedDB).getForcast(fObj,widgetData, runtimefilterString,widget.widgetData.selectedFile.datasource_id, function(data,status) {          
+                if (status) {
+                    var forcastArr = [];
+                    var serArr = [];
+                    var catArr = [];
+                    var maxDate = "";
+                    var minDate = "";            
+
+                    if (fObj.forecastAtt == "") {
+                        if (fObj.showActual == false) {
+                            var a = data.data.forecast.length - fObj.fcast_days;
+                            for (var i = a; i < data.data.forecast.length; i++) {
+                                forcastArr.push(data.data.forecast[i]);
+                            }
+                            data.data.forecast = forcastArr;
+                            serArr.push({
+                                data: data.data.actual.concat(data.data.forecast),
+                                zoneAxis: 'x',
+                                zones: [{
+                                    value: data.data.actual.length - 1
+                                }, {
+                                    dashStyle: 'dash'
+                                }]
+                            })
+                        } else {
+                            serArr.push({
+                                name: 'Actual',
+                                data: data.data.actual,
+                            })
+
+                            serArr.push({
+                                name: 'Forcasted',
+                                data: data.data.forecast,
+                                dashStyle: 'dash',
+                            })
+                        }
+                        catArr = data.data.time;
+                    } else {
+                        if (fObj.showActual == false) {
+                            Object.keys(data.data).forEach(function(key) {
+
+                                forcastArr = [];
+
+                                var obj = data.data[key];
+                                var a = obj.forecast.length - fObj.fcast_days;
+
+                                for (var i = a; i < obj.forecast.length; i++) {
+                                    forcastArr.push(obj.forecast[i]);
+                                }
+                                obj.forecast = forcastArr;
+                                serArr.push({
+                                    name: key,
+                                    data: obj.actual.concat(obj.forecast),
+                                    zoneAxis: 'x',
+                                    zones: [{
+                                        value: obj.actual.length - 1
+                                    }, {
+                                        dashStyle: 'dash'
+                                    }]
+                                })
+
+                                catArr = obj.time;
+                            });
+
+                        } else {
+                            Object.keys(data.data).forEach(function(key) {
+
+                                var obj = data.data[key];
+
+                                serArr.push({
+                                    name: 'Actual  ' + key,
+                                    data: obj.actual,
+                                })
+
+                                serArr.push({
+                                    name: 'Forcasted  ' + key,
+                                    data: obj.forecast,
+                                    dashStyle: 'dash'
+                                })
+
+                                catArr = obj.time;
+                            });
+                        }
+                    }
+
+                    var forecastWidgetConfig={};
+                    forecastWidgetConfig=widgetData.widgetConfig;
+                    forecastWidgetConfig.series=serArr;
+
+
+                    //#--------------------- 
+                    if (typeof forecastWidgetConfig.series != "undefined") {
+                        forecastWidgetConfig.series.forEach(function(key) {
+                            if (key.data.length > 1000) key['turboThreshold'] = key.data.length;
+                        });
+                    }
+
+                    var temptArr = forecastWidgetConfig;
+
+                    var startdate = formattedDate(fObj.visualstart, fObj.interval);
+                    var enddate = formattedDate(fObj.visualend, fObj.interval);
+                    var xAxisLen = temptArr.xAxis.categories.length;
+
+                    var startInd = -1;
+                    var endInd = -1;
+                    var cat = [];
+                    var tempdata = [];
+                    for (var i = 0; i < xAxisLen; i++) {
+                        var date;
+                        if (fObj.interval == "Yearly") {
+                            date = temptArr.xAxis.categories[i] + "-01-01";
+                        } else if (fObj.interval == "Monthly") {
+                            date = temptArr.xAxis.categories[i] + "-01";
+                        } else if (fObj.interval == "Daily") {
+                            date = temptArr.xAxis.categories[i];
+                        }
+
+                        var x = new Date(startdate);
+                        var y = new Date(date);
+                        var z = new Date(enddate);
+
+                        if (x <= y && y <= z) {
+                            if (startInd == -1) {
+                                startInd = i;
+                            }
+
+                            cat.push(temptArr.xAxis.categories[i]);
+
+                            if (i == xAxisLen - 1)
+                                endInd = i;
+
+                        } else if (startInd > -1) {
+                            if (endInd == -1) {
+                                endInd = i;
+                            }
+                        }
+                    }
+
+                    var seriesLen = temptArr.series.length;
+                    for (var i = 0; i < seriesLen; i++) {
+                        tempdata = [];
+                        var endIndex = startInd + cat.length;
+                        for (var j = startInd; j < endIndex; j++) {
+                            tempdata.push(temptArr.series[i].data[j]);
+                        }
+
+                        if (tempdata.length > 0) {
+                            forecastWidgetConfig.series[i].data = tempdata;
+                            if (fObj.showActual != true) {
+                                forecastWidgetConfig.series[i].zones[0].value = cat.length - fObj.fcast_days - 1;
+                            } else {
+                                if (i % 2 == 0) {
+                                    var tempArr = [];
+                                    for (var indtemp = 0; indtemp <= cat.length - fObj.fcast_days; indtemp++) {
+                                        tempArr.push(forecastWidgetConfig.series[i].data[indtemp]);
+                                    }
+                                    forecastWidgetConfig.series[i].data = tempArr;
+                                }
+                            }
+                        }
+                    }
+
+                    if (cat.length > 0) {
+                        forecastWidgetConfig.xAxis.categories = cat;
+                    }
+                    //----------------------    
+
+                    callback(forecastWidgetConfig,status);
+
+                }
+                else{
+                    notifications.toast(2,data);
+                    callback(forecastWidgetConfig,status);  
+                }
+
+            }); 
         }
+        
+
         
    }
 }]);//END OF DiginServices

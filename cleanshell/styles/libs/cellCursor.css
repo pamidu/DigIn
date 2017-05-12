@@ -41,7 +41,7 @@ table.table-data thead td{
 	/*
 	border:1px solid #8b8b8b;*/
 	border-top:0px solid #CCCCCC;
-	position:inherit !important;
-	border-collapse: collapse;
+	/*position:inherit !important;
+	border-collapse: collapse;*/
 	text-align: center;
 }

@@ -16,8 +16,8 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 							notifications.toast(0, "Falied to load tenants");
 				 });	
 			}
-        }, inviteUser: function(userEmail) {
-			 notifications.startLoading("Inviting user, Please wait..");
+        }, inviteUser: function(ev, userEmail) {
+			 notifications.startLoading(ev, "Inviting user, Please wait..");
              //return the promise directly.
              return $http.get(auth_Path + '/tenant/AddUser/' + userEmail + '/user', {
 					headers: {'Securitytoken': $rootScope.authObject.SecurityToken}
@@ -26,12 +26,35 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					//return result.data;
 					notifications.toast(1, "User Invited");
 					notifications.finishLoading();
+					return result.data;
 				},function errorCallback(response) {
 					console.log(response);
 					notifications.toast(0, "Falied to load tenants");
 					notifications.finishLoading();
 			 });	
-        }, getInvitedUsers: function(callback) {
+        }, removeInvitedUser: function(ev, userEmail){
+			notifications.startLoading(ev, "Removing user, Please wait..");
+			console.log(userEmail);
+			return $http.get(auth_Path+'tenant/RemoveUser/'+userEmail)
+			   .then(function(result) {
+				   notifications.finishLoading();
+					//resolve the promise as the data
+					if(result.data == "true"){
+						notifications.toast(1, "User Removed");
+						return result.data;
+					}
+					else
+					{
+						console.log(result.data);
+					}
+
+				},function errorCallback(response) {
+						console.log(response);
+						notifications.finishLoading();
+						notifications.toast(0, "Falied to remove user");
+				});
+			
+		}, getInvitedUsers: function(callback) {
 				if(cache.invitedUsers)
 				{
 					callback(cache.invitedUsers);
@@ -40,18 +63,24 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					 return $http.get('/apis/usercommon/getSharableObjects')
 					   .then(function(result) {
 							//return result.data;
-							 for (var i = 0, len = result.data.length; i<len; ++i) {
+							/* for (var i = 0, len = result.data.length; i<len; ++i) {
 								if (result.data[i].Type == "User") {
 									$rootScope.sharableUsers.push(result.data[i]);
 								}else if (result.data[i].Type == "Group") {
 									$rootScope.sharableGroups.push(result.data[i]);
 								}
+							}*/
+							if(result.statusText == "OK")
+							{
+								cache.invitedUsers = result.data;
+								callback(cache.invitedUsers)
+							}else{
+								notifications.toast(0, "Falied to get users");
 							}
-							cache.invitedUsers = result;
-							callback(cache.invitedUsers)
+
 							
 						},function errorCallback(response) {
-							notifications.toast(0, "Falied to invite user");
+							notifications.toast(0, "Falied to get users");
 					 });	
 				}
 		

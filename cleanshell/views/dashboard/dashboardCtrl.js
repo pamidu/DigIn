@@ -577,7 +577,6 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				});
 			}
 			if(widget.widgetData.chartType.chartType == "forecast"){
-
 				if(des_connection_string != ""){
 					run_connectionString = run_connectionString + " AND " + des_connection_string;
 				}
@@ -585,6 +584,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				widgetData.syncOn = true;
 				generateForecast.applyRunTimeFilters(widget,des_connection_string,run_connectionString, function (data){
 					widgetData.syncOn = false;
+					widgetData.widgetConfig=data;
 				});
 			}
 			
@@ -781,6 +781,9 @@ DiginApp.controller('fullscreenCtrl', ['$scope', '$mdDialog','event' ,'widget','
 		}else if($scope.widget.widgetData.chartType.chartType == 'metric')
 		{
 			$('#'+$scope.widget.widgetData.widgetID).highcharts().setSize(document.documentElement.offsetWidth / 1.8, document.documentElement.offsetHeight - 45, true);
+		}else if($scope.widget.widgetData.chartType.chartType == 'whatif' || $scope.widget.widgetData.chartType.chartType == 'tabular')
+		{
+			$('#'+$scope.widget.widgetData.widgetID).css('height','100%');
 		}
 	},100)
 	

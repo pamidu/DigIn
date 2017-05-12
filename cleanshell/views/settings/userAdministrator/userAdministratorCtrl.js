@@ -1,10 +1,25 @@
-DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager', function ($scope,$rootScope,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager){
+DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog','UserServices', 'notifications','paymentGateway','$http','colorManager','dialogService','onsite', function ($scope,$rootScope,$mdDialog,UserServices,notifications,paymentGateway,$http,colorManager,dialogService,onsite){
 	var vm = this;
+	
+	vm.onsite = onsite;
 	
 	$scope.$parent.currentView = "User Administrator";
     colorManager.reinforceTheme();
 	
-	UserServices.getInvitedUsers(function(data) {});
+	$scope.fetchingUsers = true;
+	UserServices.getInvitedUsers(function(result) {
+		$scope.fetchingUsers = false;
+		$scope.$parent.sharableUsers = [];
+		$scope.$parent.sharableGroups = [];
+		for (var i = 0, len = result.length; i<len; ++i) {
+			if (result[i].Type == "User") {
+				$scope.$parent.sharableUsers.push(result[i]);
+			}else if (result[i].Type == "Group") {
+				$scope.$parent.sharableGroups.push(result[i]);
+			}
+		}
+		
+	});
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		
 	$scope.enterInviteUser = function(ev,searchText)
@@ -17,7 +32,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 			console.log(exist);
 			if(exist == false)
 			{
-				UserServices.inviteUser(searchText).then(function(response) {
+				UserServices.inviteUser(ev, searchText).then(function(response) {
 					console.log(response);
 					$scope.searchText = "";
 				});
@@ -30,12 +45,12 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	
 	function checkIfExist(email){
 		var exist = false;
-		if($rootScope.sharableUsers.length == 0)
+		if($scope.$parent.sharableUsers.length == 0)
 		{
 			exist = false;
 		}else{
-			for (i = 0, len = $rootScope.sharableUsers.length; i<len; ++i){
-				if($rootScope.sharableUsers[i].Id == email)
+			for (i = 0, len = $scope.$parent.sharableUsers.length; i<len; ++i){
+				if($scope.$parent.sharableUsers[i].Id == email)
 				{
 					exist = true;
 					notifications.toast(0, 'This user is already invited');
@@ -46,24 +61,22 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		return exist;
 	}
 	
-	$scope.removeUser = function(ev, user)
+	$scope.removeUser = function(ev, index, user)
 	{
-		 var confirm = $mdDialog.confirm()
-          .title('Remove User')
-          .textContent('Are you sure you want to remove this user?')
-          .ariaLabel('remove user')
-          .targetEvent(ev)
-          .ok('Please do it!')
-          .cancel('Cancel');
-		$mdDialog.show(confirm).then(function() {
-			//send HTTP request and add the below call only if it succeeds
-			
-			/*for (i = 0, len = $scope.users.length; i<len; ++i){
-				if($scope.users[i].name == user.name)
-				{
-					$scope.users.splice(i, 1);
-				}
-			}*/
+		dialogService.confirmDialog(ev,"Remove User","Are you sure you want to remove this user?", "yes","no","cancel").then(function(answer) {
+			if(answer == "yes")
+			{
+				UserServices.removeInvitedUser(ev,user.Id).then(function(data){
+					if(data == "true")
+					{
+						$scope.$parent.sharableUsers.splice(index, 1); 
+					}
+				})
+			}
+			else if(answer == "no")
+			{
+				notifications.toast(0,"you said no");
+			}
 		});
 	}
 	
@@ -75,7 +88,6 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	}; 
 	
 	UserServices.getAllGroups(function(data) {
-		console.log(data);
 		$scope.groups = data;
 	});
 	
@@ -84,7 +96,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		if(!group)
 		{
 			var group = {};
-			var index = "";
+			var index = undefined;
 		}
 		
 		$mdDialog.show({
@@ -93,12 +105,12 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 			  parent: angular.element(document.body),
 			  targetEvent: ev,
 			  clickOutsideToClose:true,
-			  locals: {group: group, index: index}
+			  locals: {users: $scope.$parent.sharableUsers, group: group, index: index}
 		})
 		.then(function(answer) {
 			if(answer)
 			{
-				if(index)
+				if(index || index == 0)
 				{
 					$scope.groups[index] = answer.group;
 				}else{
@@ -114,20 +126,20 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	}
 	vm.deleteGroup = function(ev,index,group)
 	{
-		 var confirm = $mdDialog.confirm()
-          .title('Delete Group')
-          .textContent('Are you sure you want to delete this group?')
-          .ariaLabel('Delete Group')
-          .targetEvent(ev)
-          .ok('Please do it!')
-          .cancel('Cancel');
-
-		$mdDialog.show(confirm).then(function() {
-		  notifications.toast(1, "'"+group.groupname +"' Deleted");
-		  UserServices.removeUserGroup(group.groupId).then(function(data) {
-				$scope.groups.splice(index, 1); 
-			});
+		dialogService.confirmDialog(ev,"Delete Group","Are you sure you want to delete this group?", "yes","no","cancel").then(function(answer) {
+			if(answer == "yes")
+			{
+				notifications.toast(1, "'"+group.groupname +"' Deleted");
+				UserServices.removeUserGroup(group.groupId).then(function(data) {
+					$scope.groups.splice(index, 1); 
+				});
+			}
 		});
+	}
+	
+	vm.getFirstLetter = function(name)
+	{
+		return "images/material_alperbert/avatar_tile_"+name.charAt(0).toLowerCase()+"_28.png";
 	}
 
 }])
@@ -141,7 +153,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 	
 }])*/
 
-DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','UserServices', 'group','index' ,function ($scope,$rootScope,$mdDialog,notifications,UserServices,group,index){
+DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notifications','UserServices', 'group','users','index' ,function ($scope,$rootScope,$mdDialog,notifications,UserServices,group,users,index){
 	
 	var vm = this;
 	var index = index;
@@ -162,7 +174,7 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
 	if(Object.keys(group).length != 0)
 	{
 		vm.addOrEdit = "Edit";
-		vm.group = group;
+		vm.group = angular.copy(group);
 		//vm.contacts = group.users;
 		for (var i = 0; i<group.users.length; i++) {
 			var arrlen = vm.allContacts.length;
@@ -206,7 +218,7 @@ DiginApp.controller('addGroupCtrl',[ '$scope', '$rootScope','$mdDialog','notific
 		/*var contacts = [{email: "m.augustine@example.com", name:"Marina Augustine"},
 						{email: "o.sarno@example.com", name:"Oddr Sarno"},
 						{email: "n.giannopoulos@example.com", name:"Nick Giannopoulos"}];*/
-		var contacts = angular.copy($rootScope.sharableUsers);
+		var contacts = angular.copy(users);
 						
 		for (i = 0, len = contacts.length; i<len; ++i){
 			contacts[i].image = getCatLetter(contacts[i].Name);

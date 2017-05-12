@@ -199,7 +199,7 @@
       "name":"What If",
       "chart":"whatif",
       "chartType":"whatif",
-	  "enableFilters": false,
+	  "enableFilters": true,
       "tooltip":"What If Widget"
    }
 ]

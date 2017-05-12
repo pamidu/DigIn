@@ -1,9 +1,9 @@
 DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdColors', '$window', '$mdMedia', '$stateParams', 'layoutManager',
 	'notifications', 'DiginServices' ,'PouchServices','$diginengine', 'colorManager','$timeout','$state','dialogService', 'chartSyncServices', 
-	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','generateTabular','Socialshare','widgetShareService','generateForecast',
+	'DiginDashboardSavingServices', 'filterServices', 'generateHighchart', 'chartUtilitiesFactory','generateTabular','Socialshare','widgetShareService','generateForecast','generateMetric',
 	function ($scope, $rootScope,$mdDialog, $mdColors, $window, $mdMedia,$stateParams,layoutManager,notifications, 
 		DiginServices, PouchServices, $diginengine,colorManager,$timeout,$state,dialogService,chartSyncServices,DiginDashboardSavingServices,
-		filterServices,generateHighchart,chartUtilitiesFactory,generateTabular,Socialshare,widgetShareService,generateForecast) {
+		filterServices,generateHighchart,chartUtilitiesFactory,generateTabular,Socialshare,widgetShareService,generateForecast,generateMetric) {
 		
 	/* reinforceTheme method is called twise because initially the theme needs to be applied to .footerTabContainer and later after the UI is initialized it needs to be 
 	 called again to apply the theme to hover colors of the widget controlls (buttons)*/
@@ -587,7 +587,20 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 					widgetData.widgetConfig=data;
 				});
 			}
-			
+			if(widget.widgetData.chartType.chartType == "metric"){
+				if(des_connection_string != ""){
+					run_connectionString = run_connectionString + " AND " + des_connection_string;
+				}
+				widget.isWidgetFiltered = true;
+				widgetData.syncOn = true;
+			    //highChartType, tableName,filters, limit, datasourceId, selectedDB,settings,notification_data, callback
+
+				generateMetric.generate(true,widget.widgetData.widgetConfig, widget.widgetData.chartType.chartType,widget.widgetData.selectedFile.datasource_name,run_connectionString,100,widget.widgetData.selectedFile.datasource_id,widget.widgetData.selectedDB,widget.widgetData.settingConfig,widget.notification_data, function (status,metricObj,settings,notification){
+					widgetData.syncOn = false;
+					widgetData.widgetConfig=metricObj;
+
+				});
+			}	
 		} else {
 			// pop up notification
 		}
@@ -697,6 +710,66 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 
             	}
 
+            }
+            else if(widget.widgetData.chartType.chartType == "forecast"){
+            	var filterString = "";
+            	var allFiltersArray = getFiltersArray(widget,dashboardFilterFields);
+            	if (allFiltersArray.length > 0) {
+            		filterString = allFiltersArray.join( ' And ');
+                    var isCreate = false;
+                    widget.widgetData.dashboardFilterOn = true;
+
+                    generateForecast.applyRunTimeFilters(widget,widget.widgetData.widgetConfigdesignFilterString,filterString, function (data){
+						// set widget sync parameter to false
+                        widget.widgetData.dashboardFilterOn = false;
+                        widget.isWidgetFiltered = false;
+                        count++;
+                        if (!is_default) 
+                        	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                        else
+                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
+					});
+
+            	}else{
+
+            		count++;
+                    if (!is_default)
+                    	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                    else
+                    	// set dashboard filtered status to true
+                    	filterServices.setDefaultFilter(dashboard,page_index,count,widget,function(data){
+                    		widget = data;
+                    	})
+            	}
+            }
+            else if(widget.widgetData.chartType.chartType == "metric"){
+            	var filterString = "";
+            	var allFiltersArray = getFiltersArray(widget,dashboardFilterFields);
+            	if (allFiltersArray.length > 0) {
+            		filterString = allFiltersArray.join( ' And ');
+                    var isCreate = false;
+                    widget.widgetData.dashboardFilterOn = true;
+
+                    generateMetric.applyRunTimeFilters(widget,widget.widgetData.widgetConfigdesignFilterString,filterString, function (data){
+						// set widget sync parameter to false
+                        widget.widgetData.dashboardFilterOn = false;
+                        widget.isWidgetFiltered = false;
+                        count++;
+                        if (!is_default) 
+                        	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                        else
+                        	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
+					});
+            	}else{
+            		count++;
+                    if (!is_default)
+                    	filterServices.setDashboardFilter(dashboard,page_index,count,true);
+                    else
+                    	// set dashboard filtered status to true
+                    	filterServices.setDefaultFilter(dashboard,page_index,count,widget,function(data){
+                    		widget = data;
+                    	})
+            	}
             }
             else {                
                 count++;

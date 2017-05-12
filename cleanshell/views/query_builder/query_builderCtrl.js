@@ -489,10 +489,20 @@ DiginApp.controller('query_builderCtrl',[
 				}
 			}else if($scope.chartType.chartType == 'metric')
 			{
+
+				//#Check whether design time filters exist or not
+				//#if exist apply designtime filters
+				var connection_string = "";
+			    if ($scope.selectedDesignTimeFilters.length > 0)
+			    {
+			     var groupFilters = filterServices.groupFilterConnectionString($scope.selectedDesignTimeFilters);
+			     connection_string = filterServices.generateFilterConnectionString(groupFilters,$scope.selectedDB);
+			    }	
+
 				var isChartConditionsOk = generateMetric.metricValidations($scope.settingConfig);
 				if(isChartConditionsOk){	
 
-					generateMetric.generate($scope.chartType.chart, $scope.selectedFile.datasource_name, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
+					generateMetric.generate(false,"", $scope.chartType.chart, $scope.selectedFile.datasource_name,connection_string, 100, $scope.selectedFile.datasource_id,$scope.selectedDB,$scope.settingConfig,$scope.notification_data,function (status,metricObj,settings,notification){
 						if(status){
 							$scope.widgetConfig = metricObj;
 							notification.page_id= $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].pageID;

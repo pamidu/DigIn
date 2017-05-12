@@ -91,7 +91,7 @@
       "trendQuery":"",
       "notificationConstant":"",
       "notificationValue":"",
-	  "enableFilters": false,
+	   "enableFilters": true,
       "tooltip":""
    },
    {
@@ -101,7 +101,7 @@
       "chart":"forecast",
       "selected":false,
       "chartType":"forecast",
-	  "enableFilters": true,
+	   "enableFilters": true,
       "tooltip":""
    },
    {

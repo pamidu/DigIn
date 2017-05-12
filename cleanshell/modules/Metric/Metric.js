@@ -109,9 +109,14 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 						            }
 	                    		 }
 
-	                }
+	                },
+	                runtimefilterString :"",
+                    runtimeQuery:"",
+                    designFilterString:"",
+                    designtimeQuery:""
                	}
            	}
+
 
 			scope.submit = function()
 			{
@@ -262,7 +267,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 			return isChartConditionsOk;		
 		},
-		generate: function(highChartType, tableName, limit, datasourceId, selectedDB,settings,notification_data, callback){
+		generate: function(applyRunTimeFilter,configOnlyFiltering, highChartType, tableName,filters, limit, datasourceId, selectedDB,settings,notification_data, callback){
 
 
 			//#Change chart background colours according to theme
@@ -276,6 +281,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
             }else{
                 chartBackgroundColor = "rgb(250,250,250)";
             }	
+ 
 
         	//#initialize chart object
         	var metricObj= {
@@ -361,6 +367,11 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
             };
 
 
+			//When applying runtime and dashboard filters get existing widget config object
+            if(applyRunTimeFilter==true){
+            	metricObj=configOnlyFiltering;
+            }			
+
 
             //# Select target value - START --------------------------------------------------------------------------------------
             var queryTarget;
@@ -374,13 +385,6 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 	            }]
 	       
 
-	            // apply design mode filters to metric
-	            var filterArray = [];
-	            //filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
-	            //if (filterArray.length > 0) {
-	            //   filterStr = filterArray.join( ' And ');
-	            //}
-
 	            $diginengine.getClient(selectedDB).getAggData(tableName, targetFieldArr,limit, datasourceId, function(res, status, query) {
 	                if (status) {
 	                    metricObj.targetQuery = query;
@@ -392,7 +396,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 	                } else {
 	                    
 	                }
-	            },undefined,undefined,filterStr);
+	            },undefined,filters);
         	}
         	else
         	{
@@ -410,23 +414,15 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
         		var actual= getActual();	
         	}
 
-        
-            function getActual(){
-            	// Select actucal value - END --------------------------------------------------------------------------------------
+        	//#Select actucal value - Start --------------------------------------------------------------------------------------
+            function getActual(){  	
 	            var queryActual;
 	            var filterStr = "";
 	            var actualFieldArr = [{
 	                field: settings.actual[0].name,
 	                agg: settings.actual[0].aggType,
 	            }]
-	            
-	            // apply design mode filters to metric
-	            var filterArray = [];
-	            /*
-	            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
-	            if (filterArray.length > 0) {
-	                filterStr = filterArray.join( ' And ');
-	            }*/
+  
 	            $diginengine.getClient(selectedDB).getAggData(tableName, actualFieldArr,limit, datasourceId, function(res, status, query) {
 	                if (status) {
 	                    metricObj.queryActual = query;
@@ -436,33 +432,20 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 	                    getTrendValues(actualFieldArr);
 	                } else {
 	                }
-	            },undefined,undefined,filterStr);
-	            
-
-            // Select target value - END --------------------------------------------------------------------------------------
-            }
-
+	            },undefined,filters);
+	        }      
+            //#Select actual value - END --------------------------------------------------------------------------------------
+            
 
             function getTrendValues(actualFieldArr){
-		         // apply design mode filters to metric
-		        /*var filterArray = [];
-	            var filterStr = "";
-	            filterArray = filterService.generateDesginFilterParams($scope.sourceData.filterFields,$scope.sourceData.src);
-	            if (filterArray.length > 0) {
-	                filterStr = filterArray.join( ' And ');
-	            }*/
-
 		        $diginengine.getClient(selectedDB).getAggData(tableName, actualFieldArr,limit, datasourceId, function(res, status, query) {
 		                if (status) {
 		                    metricObj.trendQuery = query;
-		                    //metricChartServices.applyMetricSettings($scope.selectedChart);
-		                    //metricChartServices.mapMetricTrendChart($scope.selectedChart,nameSpace,res);
 		                    createMetricConfig(status, query,res);
 		                } else {
 		                }
-		        },settings.timeAttribute,filterStr);
+		        },settings.timeAttribute,filters);
             }
-
             
             function createMetricConfig(status, query,trendValue){
             	//---------------------------------
@@ -586,6 +569,15 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 		                settings.targetDisplayValue=settings.targetValue;
 		        }
 			}
+
+
+
+		},
+		applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, callback){
+			widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
+            widget.widgetData.widgetConfig.designFilterString = designFilterString;
+            var metricObj=widget //get chart object
+
 
 
 

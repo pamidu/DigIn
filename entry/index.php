@@ -1,4 +1,13 @@
 <?php
+  /*
+  $headers = function_exists('getallheaders') ? getallheaders() : apache_request_headers ();
+
+  if(!empty($headers))
+  // send curl
+  */
+
+
+
     if (isset($_GET["r"]))
     {
         $_SESSION['r']=$_GET["r"];

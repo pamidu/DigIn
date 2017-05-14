@@ -131,5 +131,15 @@
       "chartType":"whatif",
 	  "enableFilters": false,
       "tooltip":"What If Widget"
+   },
+   {
+      "id":"ct16",
+      "icon":"histogram",
+      "name":"Histogram",
+      "chart":"histogram",
+      "selected":false,
+      "chartType":"histogram",
+      "enableFilters": false,
+      "tooltip":"A visualization consisting of rectangles whose area is proportional to the frequency of a variable and whose width is equal to the class interval"
    }
 ]

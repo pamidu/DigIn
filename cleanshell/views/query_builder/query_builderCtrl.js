@@ -595,10 +595,26 @@ DiginApp.controller('query_builderCtrl',[
 				$element.find('.currentChart').append(newElement);
 			}else if($scope.chartType.chartType == 'histogram')
 			{
-				$scope.showChartLoading = false;
-				$scope.showPlaceholderIcon = false;
-				newElement = $compile('<histogram id-selector="'+widgetID+'" config="widgetConfig" histogram-settings="settingConfig"></histogram>')($scope);
-				$element.find('.currentChart').append(newElement);
+				var isValid = generateHistogram.histogramValidations($scope.selectedSeries);
+				if (!isValid){
+					$scope.showChartLoading = false;
+					$scope.showPlaceholderIcon = false;
+				}
+				else{
+					generateHistogram.generate(
+						$scope.selectedDB, 
+						$scope.selectedFile.datasource_name, 
+						$scope.selectedFile.datasource_id,
+						$scope.selectedSeries[0]['name']
+					    ,function(data) {
+						    console.log(data);
+							$scope.showChartLoading = false;
+							$scope.showPlaceholderIcon = false;
+						});
+
+					newElement = $compile('<histogram id-selector="'+widgetID+'" config="widgetConfig" histogram-settings="settingConfig"></histogram>')($scope);
+					$element.find('.currentChart').append(newElement);
+				}
 			}
 		
 		

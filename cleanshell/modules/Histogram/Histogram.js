@@ -5,10 +5,10 @@
 
 'use strict';
 
-var WhatIfModule = angular.module('Histogram',['DiginServiceLibrary']);
+var HistogramModule = angular.module('Histogram',['DiginServiceLibrary']);
 
 
-WhatIfModule.directive('histogram',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
+HistogramModule.directive('histogram',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
 	return {
          restrict: 'E',
          templateUrl: 'modules/Histogram/histogram.html',
@@ -21,7 +21,7 @@ WhatIfModule.directive('histogram',['$rootScope','notifications','generateHistog
     };
 }]);
 
-WhatIfModule.directive('histogramSettings',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
+HistogramModule.directive('histogramSettings',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
 	return {
          restrict: 'E',
          templateUrl: 'modules/Histogram/histogramSettings.html',
@@ -51,26 +51,43 @@ WhatIfModule.directive('histogramSettings',['$rootScope','notifications','genera
     };
 }]);
 
-WhatIfModule.factory('generateHistogram', ['$rootScope','notifications', function($rootScope,notifications) {
+HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digin_Engine_API','$http', function($rootScope,notifications,Digin_Engine_API,$http) {
     
 
     return {
-		generate : function(param) {
-			return true;
-        },histogramValidations: function(){
+    	generate: function(selectedDB, datasource_name, datasource_id, selectedMeasure, callback) {
 			
-			var isChartConditionsOk = false;
+			console.log(selectedMeasure);
+			if (selectedDB == "MSSQL") {
+                    selectedMeasure = "'[" + selectedMeasure + "]'";
+            } else {
+                    selectedMeasure = "'" + selectedMeasure + "'";
+            }
 
-			/*switch (highChartType) {
-                case "pie":
-						if(selectedSeries.length == 1 && selectedCategory.length > 0 )
-							isChartConditionsOk = true;
-						else
-							notifications.toast(2,"Please check the requirements for generate a pie chart");
-                  break;
-	        }*/
+            //start of forming url
+			var histogramURL = "";
+            histogramURL = Digin_Engine_API+"generatehist?q=[{'"+datasource_name+"':["+selectedMeasure+"]}]&dbtype="+selectedDB+"&bins=&datasource_config_id="+datasource_id+"&datasource_id="+datasource_id+"&SecurityToken="+$rootScope.authObject.SecurityToken;
+            console.log(histogramURL);
 
-			return isChartConditionsOk;
+			//end of forming url
+			
+			$http.get(histogramURL)
+			   .then(function(result) {
+					callback(result.data);
+				},function errorCallback(response) {
+					console.log(response);
+				});//end of $http
+			
+		
+        },histogramValidations: function(selectedMeasures){
+			
+			var isValid = true;
+            if(selectedMeasures.length == 0 || selectedMeasures.length > 1) {
+                notifications.toast(2, "Please select one measure in order to generate Histogram widget.");
+                isValid = false;
+            }
+
+			return isValid;
 		}//end of highchartValidations
 	}
 }]);//END OF generateWhatIf

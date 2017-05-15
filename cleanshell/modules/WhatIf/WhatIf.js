@@ -134,7 +134,7 @@ WhatIfModule.directive('sliderContainer', function() {
     }
 });
 
-WhatIfModule.directive('slider', function() {
+WhatIfModule.directive('slider', ['$rootScope', function($rootScope) {
     return {
         restrict: 'E',
         require: ['^whatIf','^sliderContainer'],
@@ -199,7 +199,7 @@ WhatIfModule.directive('slider', function() {
             });
         }
     }
-});
+}]);
 
 WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'generateWhatIf',
     function($rootScope, notifications, generateWhatIf) {

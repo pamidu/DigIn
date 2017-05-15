@@ -20,7 +20,8 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 			 notifications.startLoading(ev, "Inviting user, Please wait..");
              //return the promise directly.
              return $http.get(auth_Path + '/tenant/AddUser/' + userEmail + '/user', {
-					headers: {'Securitytoken': $rootScope.authObject.SecurityToken}
+					headers: {	'Securitytoken': $rootScope.authObject.SecurityToken,
+								'AddUserType' :  "invite"}
 				})
 			   .then(function(result) {
 					//return result.data;
@@ -84,7 +85,16 @@ DiginServiceLibraryModule.factory('UserServices', ['$rootScope','$http', 'notifi
 					 });	
 				}
 		
-		   }, getAllGroups: function(callback) {
+		   },getPendingUsers: function(){
+			  return $http.get(auth_Path+'tenant/GetAllPendingTenantRequests')
+					   .then(function(result) {
+							console.log(result);
+							return result.data;
+													
+						},function errorCallback(response) {
+							notifications.toast(0, "Falied to get users");
+					 });	
+		   },getAllGroups: function(callback) {
 				if(cache.allGroups)
 				{
 					callback(cache.allGroups);

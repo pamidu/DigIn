@@ -1,12 +1,22 @@
 <?php
-  /*
-  $headers = function_exists('getallheaders') ? getallheaders() : apache_request_headers ();
 
-  if(!empty($headers))
-  // send curl
-  */
+	require_once ($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
+	require_once(ROOT_PATH . "/dwcommon.php");
 
+	if (array_key_exists('HTTP_ORIGIN', $_SERVER)) {
+    	$origin = $_SERVER['HTTP_ORIGIN'];
+	} else if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+    	$origin = $_SERVER['HTTP_REFERER'];
+	} else {
+    	$origin = $_SERVER['REMOTE_ADDR'];
+	}
 
+	$obj = new stdClass();
+	$obj->host = $origin;
+	$obj->user_agent = $_SERVER ['HTTP_USER_AGENT'];
+
+	$invoker = new WsInvoker(Digin_Engine_API);
+	$response = $invoker->post('save_redirected_url_data', $obj);
 
     if (isset($_GET["r"]))
     {

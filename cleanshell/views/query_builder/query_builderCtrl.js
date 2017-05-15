@@ -610,10 +610,8 @@ DiginApp.controller('query_builderCtrl',[
 						    console.log(data);
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
+							$scope.widgetConfig = data;
 						});
-
-					newElement = $compile('<histogram id-selector="'+widgetID+'" config="widgetConfig" histogram-settings="settingConfig"></histogram>')($scope);
-					$element.find('.currentChart').append(newElement);
 				}
 			}
 		

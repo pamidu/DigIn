@@ -32,6 +32,12 @@ HistogramModule.directive('histogramSettings',['$rootScope','notifications','gen
          link: function(scope,element){
 			 
 			console.log(scope.histogramSettings);
+
+			if (angular.equals(scope.widgetConfig, {})) {
+				scope.widgetConfig = generateHistogram.initializeChartObject(scope.chartType);
+				var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
+				element.find('.currentChart').append(newElement);
+         	}
 			scope.submit = function()
 			{
 				if(scope.histogramSettingsForm.$valid)
@@ -47,6 +53,9 @@ HistogramModule.directive('histogramSettings',['$rootScope','notifications','gen
 			{
 				scope.submitForm();
 			}
+
+
+
          } //end of link
     };
 }]);
@@ -55,6 +64,120 @@ HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digi
     
 
     return {
+
+    	initializeChartObject: function(highChartType) {
+
+			//Change chart background colours according to theme
+			var chartBackgroundColor = "";
+			var chartFontColor = "";
+			
+			if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+			{
+				chartBackgroundColor = "rgb(48,48,48)";
+				chartFontColor = '#fff';
+			}else{
+				chartBackgroundColor = "rgb(250,250,250)";
+			}
+
+			//Create the chart object
+			var highchartObject = {};
+			highchartObject = {
+				options: {
+					chart: {
+						type: 'column',
+						backgroundColor: chartBackgroundColor
+					},
+                    tooltip: {
+                        pointFormat: '{point.y:,.0f}'
+                    },
+                    exporting: {
+                        sourceWidth: 600,
+                        sourceHeight: 400
+                    },
+                    xAxis: {
+                        showEmpty: false
+                    },
+                    yAxis: {
+                        showEmpty: false
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                color: chartFontColor,
+                                format: '<b> {point.name}</b>',
+				                style: {
+				                    textShadow: false,
+				                    textOutline: false
+				                }
+                            },
+                            series: {
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b> ( {point.y:,.0f} )',
+                                    color: chartFontColor,
+                                    softConnector: true
+                                }
+                            },
+                            showInLegend: false,
+                            tooltip: {
+                                pointFormat: '{series.name}: {point.percentage:,.2f}%'
+                            }
+                        }
+                    },
+					legend: {
+			        itemStyle: {
+			            color: chartFontColor
+			        	}
+			    	}
+				},
+				xAxis: {
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+						style: {
+							color: chartFontColor
+						}
+					},
+					type: 'category',
+					title: {
+						style: {
+							color: chartFontColor
+						},
+						text: ''
+					}
+				},
+				title: {
+					text: '',
+					style: {
+						color: chartFontColor
+					}
+				},
+                yAxis: {
+					lineColor: chartFontColor,
+					tickColor: chartFontColor,
+					labels: {
+						style: {
+							color: chartFontColor
+						}
+					},
+                    lineWidth: 1,
+					title: {
+						style: {
+							color: chartFontColor
+						},
+						text: ''
+					}
+                },
+                credits: {
+                    enabled: false
+                },
+				series: []
+			};
+			return highchartObject;
+		},
     	generate: function(selectedDB, datasource_name, datasource_id, selectedMeasure, callback) {
 			
 			console.log(selectedMeasure);

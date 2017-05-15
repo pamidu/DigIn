@@ -1,69 +1,67 @@
-
-<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="initialize()">
-
-    <md-toolbar class="modal-header">
-        <div class="md-toolbar-tools">
-            <div layout="row" layout-align="center center">
-                <h2>Widget - Email Share</h2>
-            </div>
-            <span flex></span>
-            <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
-            </md-button>
-        </div>
-    </md-toolbar>
-
-  <form name="frmMail" autocomplete="off">
-            <div class="md-padding" layout="row" layout-align="center center">
-                <div layout="column" class="setup-info-container" flex="100">
-                  <div class="txt-box">
-                    <label for="email">To : </label>
-                      <div>
-                        <input type="text" class="form-control"
-                        ng-model="emailTo"
-                        placeholder="jane.doe@example.com"/>
-                      </div>
-                  </div>
-                  </br>
-
-                  <div class="txt-box">
-                    <label for="email">Cc : </label>
-                      <div>
-                        <input type="text" class="form-control"
-                        ng-model="emailCc"
-                        placeholder="jane.doe@example.com"/>
-                      </div>
-                  </div>
-                  </br> 
-                  <div class="txt-box" ng-class="">
-                    <label for="text">Subject : </label>
-                      <div>
-                        <input type="text" class="form-control"
-                        ng-model="emailSubject"
-                        placeholder="shared a link with u ....">
-                      </div>
-                  </div>
-                  </br> 
-                   <div class="txt-box" ng-class="">
-                    <label for="text">Body : </label>
-                      <div>
-                        <textarea rows="4" cols="50" type="text" class="form-control" 
-                        ng-model="emailBody"
-                        placeholder="shared a link with u ...."/>
-                      </div>
-                    
-                  </div>
-                    <div class="md-actions" layout="row">
-                        <span flex></span>
-                        <md-button class="btn-dialog b-r-0" ng-click="sendEmail()">
-                           Send
-                        </md-button>
-                        <md-button class="btn-dialog b-r-0" ng-click="close()">
-                            Cancel
-                        </md-button>
-                    </div>
-                </div> 
-            </div> 
-    </form>
+<md-dialog aria-label="Email Share"  plumb-item md-theme="{{$root.theme}}" style="width: 50%;">
+	<form name="emailForm" ng-submit="sendEmail()">
+		<md-toolbar class="modal-header">
+			<div class="md-toolbar-tools">
+				<div layout="row" layout-align="center center">
+					<h2>Widget Share (Email)</h2>
+				</div>
+				<span flex></span>
+				<md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content style="max-width:800px;max-height:810px;">
+			<div class="md-dialog-content">
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>To :</span>
+				<input required type="text" name="to" ng-model="email.emailTo"  ng-disabled="false"  is-disabled-dark aria-label="to" minlength="10" maxlength="100" ng-pattern="/^.+@.+..+$/"/>
+				<div ng-messages="emailForm.to.$error" role="alert">
+					<div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+						Please enter a valid Email
+					</div>
+				</div>
+			</md-input-container>
+			
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>CC :</span>
+				<input type="text" name="cc" ng-model="email.emailCc"  ng-disabled="false"  is-disabled-dark aria-label="cc" minlength="10" maxlength="100" ng-pattern="/^.+@.+..+$/"/>
+				<div ng-messages="emailForm.cc.$error" role="alert">
+					<div ng-message-exp="['minlength', 'maxlength', 'pattern']">
+						Please enter a valid Email
+					</div>
+				</div>
+			</md-input-container>
+			
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Subject :</span>
+				<input required type="text" name="emailSubject" ng-model="email.emailSubject"  ng-disabled="false"  is-disabled-dark aria-label="emailSubject"/>
+				<div ng-messages="emailForm.emailSubject.$error" role="alert">
+					<div ng-message-exp="['required']">
+						Please enter a Subject Title
+					</div>
+				</div>
+			</md-input-container>
+			
+			<md-input-container class="md-block" flex-gt-sm>
+				<span>Body :</span>
+				<textarea required type="text" name="emailBody" ng-model="email.emailBody"  ng-disabled="false"  is-disabled-dark aria-label="emailBody"></textarea>
+				<div ng-messages="emailForm.emailBody.$error" role="alert">
+					<div ng-message-exp="['minlength', 'maxlength', 'pattern']">
+						Please enter a Subject Title
+					</div>
+				</div>
+			</md-input-container>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions layout="row">
+		  <md-button ng-click="$root.cancel()">
+			Cancel
+		  </md-button>
+		  <md-button type="submit">
+			Send
+		  </md-button>
+		</md-dialog-actions>
+	</form>
 </md-dialog>
 
 

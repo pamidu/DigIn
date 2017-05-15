@@ -19,15 +19,15 @@
 								</md-button>
 								
 								<md-menu md-position-mode="target-right target hover-color">
-									<md-button class="md-icon-button ti-share hover-color" md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();">
+									<md-button class="md-icon-button ti-share hover-color" md-colors="{color:'primary'}" ng-click="$mdMenu.open($event);$event.stopPropagation();">
 										<md-tooltip>share</md-tooltip>
 									</md-button>
 									<md-menu-content ng-class="{'applyDarkBackground': $root.applyDark == true}">
-										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'facebook')">Facebook</md-button>
-										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'google')">Google</md-button>
-										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'twitter')">Twitter</md-button>
-										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'linkedin')">Linkedin</md-button>
-										<md-button class="margin-0" style="font-size: 12px;" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'email')">Email</md-button>
+										<md-button class="margin-0 share-btn" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'facebook')"><i class="ti-facebook" style="padding:0px 10px;"/>Facebook</md-button>
+										<md-button class="margin-0 share-btn" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'google')"><i class="ti-google" style="padding:0px 10px;"/>Google</md-button>
+										<md-button class="margin-0 share-btn" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'twitter')"><i class="ti-twitter" style="padding:0px 10px;"/>Twitter</md-button>
+										<md-button class="margin-0 share-btn" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'linkedin')"><i class="ti-linkedin" style="padding:0px 10px;"/>Linkedin</md-button>
+										<md-button class="margin-0 share-btn" aria-label="cancel settings" ng-click="widgetControls.share($event,widget,'email')"><i class="ti-email" style="padding:0px 10px;"/>Email</md-button>
 									</md-menu-content>
 								</md-menu>
 
@@ -40,7 +40,7 @@
 									<md-tooltip >settings</md-tooltip>
 								</md-button>
 								<md-menu md-position-mode="target-right target hover-color">
-									<md-button class="md-icon-button ti-filter" ng-class="{'shake': widget.widgetData.dashboardFilterOn == true}" md-colors="{color:'primary'}" ng-click="$mdOpenMenu($event);$event.stopPropagation();" >
+									<md-button class="md-icon-button ti-filter" ng-class="{'shake': widget.widgetData.dashboardFilterOn == true}" md-colors="{color:'primary'}" ng-click="$mdMenu.open($event);$event.stopPropagation();" >
 										<md-tooltip >filter</md-tooltip>
 									</md-button>
 									<md-menu-content width="4" style="padding:10px" ng-class="{'applyDarkBackground': $root.applyDark == true}">

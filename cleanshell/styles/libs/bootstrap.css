@@ -17,7 +17,7 @@ md-select, input, textarea
 	margin-top: 5px !important;
 
 }
-input[type=text]:focus, md-select:focus {
+input[type=text]:focus, md-select:focus, textarea:focus {
 	box-shadow: 0 0 4px rgba(81, 203, 238, 1) !important;
 	border: 1px solid rgba(81, 203, 238, 1) !important;
 }

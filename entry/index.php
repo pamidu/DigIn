@@ -1,7 +1,12 @@
 <?php
-
-	require_once ($_SERVER['DOCUMENT_ROOT'] . "/include/config.php");
-	require_once(ROOT_PATH . "/dwcommon.php");
+	 
+	if ($_SERVER['DOCUMENT_ROOT'] != "/var/www/html") {
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/include/config.php");
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/Digin/dwcommon.php");
+	}else {
+		require_once ($_SERVER['DOCUMENT_ROOT'] . "/include/config.php"); 
+		require_once($_SERVER['DOCUMENT_ROOT'] . "/dwcommon.php");
+	}
 
 	if (array_key_exists('HTTP_ORIGIN', $_SERVER)) {
     	$origin = $_SERVER['HTTP_ORIGIN'];

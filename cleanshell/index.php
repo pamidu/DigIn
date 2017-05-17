@@ -618,6 +618,7 @@
 		<script src="views/social/facebook/facebookCtrl.js"></script>
 		<script src="views/settings/dashboardShare/sharedashboardgroupsCtrl.js"></script>
 		<script src="views/settings/datasetShare/datasetShareCtrl.js"></script>
+		<script src="views/settings/datasetShare/showFileShareDetailsCtrl.js"></script>
 		<script src="views/data_source/data_source_settings/datasourceSettingsCtrl.js"></script>
 		<script src="views/settings/dashboardFilterSettings/dashboardFilterSettingsCtrl.js"></script>
 		<script src="views/developer/developerCtrl.js"></script><!--Developer view is only for developers, Please remove this on production-->

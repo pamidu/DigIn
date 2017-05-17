@@ -582,7 +582,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				}
 				widget.isWidgetFiltered = true;
 				widgetData.syncOn = true;
-				generateForecast.applyRunTimeFilters(widget,des_connection_string,run_connectionString, function (data){
+				generateForecast.applyRunTimeFilters(widget.widgetData,des_connection_string,run_connectionString, function (data){
 					widgetData.syncOn = false;
 					widgetData.widgetConfig=data;
 				});
@@ -595,12 +595,12 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				widgetData.syncOn = true;
 			    //highChartType, tableName,filters, limit, datasourceId, selectedDB,settings,notification_data, callback
 
-				generateMetric.generate(true,widget.widgetData.widgetConfig, widget.widgetData.chartType.chartType,widget.widgetData.selectedFile.datasource_name,run_connectionString,100,widget.widgetData.selectedFile.datasource_id,widget.widgetData.selectedDB,widget.widgetData.settingConfig,widget.notification_data, function (status,metricObj,settings,notification){
+				generateMetric.generate(true,widget, widget.widgetData.chartType.chartType,widget.widgetData.selectedFile.datasource_name,run_connectionString,100,widget.widgetData.selectedFile.datasource_id,widget.widgetData.selectedDB,widget.widgetData.settingConfig,widget.notification_data, function (status,metricObj,settings,notification){
 					widgetData.syncOn = false;
 					widgetData.widgetConfig=metricObj;
 
 				});
-			}	
+			}		
 		} else {
 			// pop up notification
 		}
@@ -750,7 +750,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
                     var isCreate = false;
                     widget.widgetData.dashboardFilterOn = true;
 
-                    generateMetric.applyRunTimeFilters(widget,widget.widgetData.widgetConfigdesignFilterString,filterString, function (data){
+                    generateMetric.generate(true,widget.widgetData.widgetConfig, widget.widgetData.chartType.chartType,widget.widgetData.selectedFile.datasource_name,run_connectionString,100,widget.widgetData.selectedFile.datasource_id,widget.widgetData.selectedDB,widget.widgetData.settingConfig,widget.notification_data, function (status,metricObj,settings,notification){
 						// set widget sync parameter to false
                         widget.widgetData.dashboardFilterOn = false;
                         widget.isWidgetFiltered = false;
@@ -759,7 +759,9 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
                         	filterServices.setDashboardFilter(dashboard,page_index,count,true);
                         else
                         	if (count == dashboard.pages[page_index].widgets.length) dashboard.pages[page_index].isSeen = true;
+
 					});
+
             	}else{
             		count++;
                     if (!is_default)

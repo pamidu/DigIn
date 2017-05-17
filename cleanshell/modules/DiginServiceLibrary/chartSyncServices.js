@@ -1,4 +1,4 @@
-DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtilitiesFactory','tabularService', function($diginengine,chartUtilitiesFactory,tabularService) {
+DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtilitiesFactory','tabularService','generateMetric','generateForecast', function($diginengine,chartUtilitiesFactory,tabularService,generateMetric,generateForecast) {
     this.sync = function(widgetObject, callback, is_sync) {
         var chartType = widgetObject.chartType.chartType;
         var widgetType = eval('new ' + chartType.toUpperCase() + '();');
@@ -63,5 +63,39 @@ DiginServiceLibraryModule.service('chartSyncServices',['$diginengine','chartUtil
         }
 
     }    
+
+    var FORECAST = function(){
+        this.sync = function(query,client,widgetData,is_sync,callback){
+
+            /*tabularService.executeQuery(widgetData.selectedDB,widgetData.selectedFile,widgetData.settingConfig,widgetData.widgetConfig,function(tabulConfig){
+                widgetData.widgetConfig = tabulConfig;
+                callback(widgetData);
+            });*/
+
+            generateForecast.applyRunTimeFilters(widgetData,widgetData.settingConfig.designFilterString,widgetData.settingConfig.runtimefilterString, function (data){
+                widgetData.widgetConfig=data;
+                callback(widgetData);
+            });
+
+        }
+    }   
+
+    var METRIC = function(){
+        this.sync = function(query,client,widgetData,is_sync,callback){
+            /*tabularService.executeQuery(widgetData.selectedDB,widgetData.selectedFile,widgetData.settingConfig,widgetData.widgetConfig,function(tabulConfig){
+                widgetData.widgetConfig = tabulConfig;
+                callback(widgetData);
+            });*/
+
+            generateMetric.generate(true,widgetData.widgetConfig, widgetData.chartType.chartType,widgetData.selectedFile.datasource_name,widgetData.settingConfig.run_connectionString,100,widgetData.selectedFile.datasource_id,widgetData.selectedDB,widgetData.settingConfig,widgetData.settingConfig.notification_data, function (status,metricObj,settings,notification){
+                    widgetData.syncOn = false;
+                    widgetData.widgetConfig=metricObj;
+                    callback(widgetData);
+
+            });
+
+        }
+    }  
+    
 
 }]);

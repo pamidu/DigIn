@@ -267,7 +267,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 			return isChartConditionsOk;		
 		},
-		generate: function(applyRunTimeFilter,configOnlyFiltering, highChartType, tableName,filters, limit, datasourceId, selectedDB,settings,notification_data, callback){
+		generate: function(applyRunTimeFilter,widgetObj, highChartType, tableName,filters, limit, datasourceId, selectedDB,settings,notification_data, callback){
 
 
 			//#Change chart background colours according to theme
@@ -368,10 +368,25 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
 
 
 			//When applying runtime and dashboard filters get existing widget config object
-            if(applyRunTimeFilter==true){
-            	metricObj=configOnlyFiltering;
-            }			
 
+
+            
+
+            if(applyRunTimeFilter==true){
+            	metricObj=widgetObj.widgetData.widgetConfig;		
+            	//metricObj.runtimefilterString =filters;
+            	//metricObj.runtimeQuery="";
+				//metricObj.designFilterString
+
+            	/*if(widgetObj.widgetData.settingConfig != ""){
+                    if(widgetObj.widgetData.runtimefilterString==""){
+                        filters =  widgetObj.widgetData.designFilterString;
+                    }
+                    else{
+                        filters =  widgetObj.widgetData.runtimefilterString+" AND "+widgetObj.widgetData.designFilterString;
+                    } 
+                }*/
+            }	
 
             //# Select target value - START --------------------------------------------------------------------------------------
             var queryTarget;

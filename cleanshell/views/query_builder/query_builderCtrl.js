@@ -465,7 +465,8 @@ DiginApp.controller('query_builderCtrl',[
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
 							$scope.chartQuery = "";
-							
+							newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
+							$element.find('.currentChart').append(newElement);
 						}
 						else{
 							$scope.showChartLoading = false;

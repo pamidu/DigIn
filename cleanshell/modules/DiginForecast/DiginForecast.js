@@ -13,10 +13,10 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
          restrict: 'E',
          templateUrl: 'modules/DiginForecast/forecastSettings.html',
          scope: {
-			forecastObj: '=',
-			attr:'=',
-			measure:'=',
-			submitForm: '&'
+            forecastObj: '=',
+            attr:'=',
+            measure:'=',
+            submitForm: '&'
           },
          link: function(scope,element){
 
@@ -72,20 +72,20 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
             }
             
            scope.submit = function()
-			{
-				if(scope.forecastSettingsForm.$valid)
-				{
-					scope.submitForm();
-				}else{
-					//console.log("invalid");
+            {
+                if(scope.forecastSettingsForm.$valid)
+                {
+                    scope.submitForm();
+                }else{
+                    //console.log("invalid");
                     notifications.toast(2,'Please fill out the required fields before applying');
-				}
-			}
-			
-			scope.restoreSettings = function()
-			{
-				scope.submitForm();
-			}
+                }
+            }
+            
+            scope.restoreSettings = function()
+            {
+                scope.submitForm();
+            }
           
             scope.setAlpahaBetaGamma=function(){
                 if(!scope.forecastObj.smoothing){
@@ -128,12 +128,12 @@ DiginForecastsModule.directive('diginForecast',['$rootScope', function($rootScop
             // });  
 
             scope.$on('widget-resized', function(element, widget) {
-				if(scope.idSelector == widget.widget.widgetData.widgetID)
-				{
-					var height = widget.element[0].clientHeight - 50;
-					var width = widget.element[0].clientWidth;
-					$('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
-				}
+                if(scope.idSelector == widget.widget.widgetData.widgetID)
+                {
+                    var height = widget.element[0].clientHeight - 50;
+                    var width = widget.element[0].clientWidth;
+                    $('#'+widget.element[0].children[2].children[0].getAttribute('id-selector')).highcharts().setSize(width, height, true);
+                }
                
             });
 
@@ -196,6 +196,10 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             forecastObj.f_field=selectedSeries[0].name;
 
 
+            forecastObj.designFilterString=filters;
+            //forecastObj.designtimeQuery=""
+
+        
             //notifications.log(forecastObj,new Error());
             
             //#Create initial object
@@ -570,11 +574,25 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
             
         },
         applyRunTimeFilters: function(widget,designFilterString, runtimefilterString, callback){
-            widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
-            widget.widgetData.widgetConfig.designFilterString = designFilterString;
+            //widget.widgetData.widgetConfig.runtimefilterString= runtimefilterString;
+            //widget.widgetData.widgetConfig.designFilterString = designFilterString;
 
-            var fObj = widget.widgetData.settingConfig;
-            var widgetData = widget.widgetData;
+
+                var filterString="";
+
+                if(designFilterString != ""){
+                    if(runtimefilterString==""){
+                        filterString =  designFilterString;
+                    }
+                    else{
+                        filterString =  runtimefilterString+" AND "+designFilterString;
+                    }
+                    
+                }
+
+
+            var fObj = widget.settingConfig;
+            var widgetData = widget;
             if(typeof widgetData.namespace == "undefined"){ 
                 var namespace = $rootScope.authObject.Email.replace('@', '_'); 
                 namespace=$rootScope.authObject.Email.replace(/[@.]/g, '_'); 
@@ -613,13 +631,15 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                 return date;
             }
 
-            $diginengine.getClient(widget.widgetData.selectedDB).getForcast(fObj,widgetData, runtimefilterString,widget.widgetData.selectedFile.datasource_id, function(data,status) {          
+            $diginengine.getClient(widget.selectedDB).getForcast(fObj,widget, filterString,widget.selectedFile.datasource_id, function(data,status) {          
                 if (status) {
                     var forcastArr = [];
                     var serArr = [];
                     var catArr = [];
                     var maxDate = "";
-                    var minDate = "";            
+                    var minDate = "";    
+
+                    fObj.runtimefilterString=runtimefilterString;        
 
                     if (fObj.forecastAtt == "") {
                         if (fObj.showActual == false) {
@@ -699,8 +719,10 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                     }
 
                     var forecastWidgetConfig={};
-                    forecastWidgetConfig=widgetData.widgetConfig;
+                    forecastWidgetConfig=widget.widgetConfig;
                     forecastWidgetConfig.series=serArr;
+
+
 
 
                     //#--------------------- 
@@ -780,12 +802,12 @@ DiginForecastsModule.factory('generateForecast', ['$rootScope','$diginengine','n
                     }
                     //----------------------    
 
-                    callback(forecastWidgetConfig,status);
+                    callback(forecastWidgetConfig);
 
                 }
                 else{
                     notifications.toast(2,data);
-                    callback(forecastWidgetConfig,status);  
+                    callback(forecastWidgetConfig);  
                 }
 
             }); 

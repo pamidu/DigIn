@@ -84,7 +84,47 @@ DiginForecastsModule.directive('diginForecastSettings',['$rootScope','notificati
             
             scope.restoreSettings = function()
             {
-                scope.submitForm();
+
+                   scope.forecastObj.widgetName = "forecast";
+                   var forecastObj={};
+                   scope.forecastObj = {
+                    //paramObj: {
+                        method: "Additive",
+                        //model: "triple exponential smoothing",
+                        mod: "triple_exp",
+                        smoothing:false,
+                        alpha: 0,
+                        beta: 0,
+                        gamma: 0,
+                        a: 0,
+                        b: 0,
+                        g: 0,
+                        fcast_days: 12,
+                        tbl: "",
+                        date_field: "",
+                        f_field: "",
+                        len_season: 12,
+                        interval: "Monthly",
+                        startdate: intDate,
+                        enddate: intDate,
+                        mindate: intDate,
+                        maxdate: intDate,
+                        selectedSeries:scope.measure,
+                        selectedCategory:scope.attr ,
+                        groupby:false,
+                        forecastAtt: "",
+                        showActual: false,
+                        isVisual : false,
+                        visualstart : intDate,
+                        visualend : intDate,
+                        widgetName : scope.forecastObj.widgetName,
+                        runtimefilterString :"",
+                        runtimeQuery:"",
+                        designFilterString:"",
+                        designtimeQuery:""
+                    
+                    //}
+                    };
             }
           
             scope.setAlpahaBetaGamma=function(){

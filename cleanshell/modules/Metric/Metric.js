@@ -131,7 +131,45 @@ MetricModule.directive('metricSettings',['$rootScope','notifications','generateM
 			
 			scope.restoreSettings = function()
 			{
-				scope.submitForm();
+			   var metricSettings={};
+               scope.metricSettings = {
+               		widgetName : scope.metricSettings.widgetName,
+               		scale:'',
+               		scalePosition:'Back',
+               		decimal:2,
+               		format:'General',
+               		actualValue:0,
+               		targetValue:0,
+               		actualDisplayValue:0,
+               		targetDisplayValue:0,
+               		groupBy:'month',
+               		timeAttribute:'',
+               		notificataionValue:0,
+               		colorType:'high',
+               		colorTheme:'rog',
+               		dateAttrs:scope.attr,
+               		color:"#F9A937",
+               		rangeSliderOptions: {
+	                    minValue: 10,
+	                    maxValue: 300,
+	                    options: {
+			                        floor: 0,
+			                        ceil: 300,
+			                        step: 1,
+			                        translate: function(value) {
+			                          return value + '%';
+		                        	},
+		                        	onEnd: function() {
+						                 scope.applyColorSettings();
+						            }
+	                    		 }
+
+	                },
+	                runtimefilterString :"",
+                    runtimeQuery:"",
+                    designFilterString:"",
+                    designtimeQuery:""
+               	}
 			}
 
 

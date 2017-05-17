@@ -767,53 +767,61 @@ DiginApp.controller('query_builderCtrl',[
 
 	$scope.saveWidget =  function() {
 		
-		var widgetData = {
-			'chartType' : $scope.chartType,
-			'selectedFile' : $scope.selectedFile,
-			'Measures' : $scope.selectedSeries,
-			'XAxis': $scope.selectedCategory,
-			'allMeasures' : $scope.selectedMeasures,
-			'allXAxis' : $scope.selectedAttributes,
-			'DesignTimeFilter': $scope.selectedDesignTimeFilters,
-			'RuntimeFilter' : $scope.selectedRunTimeFilters,
-			'widgetConfig' : $scope.widgetConfig,
-			'settingConfig': $scope.settingConfig,
-			'selectedDB' : $scope.selectedDB,
-			'widgetID' :  widgetID,
-			'query' : $scope.chartQuery,
-			'groupBySortArray': $scope.groupBySortArray,
-			'drilledConf' : $scope.drilledConfig 
+
+		if(!$scope.showChartLoading){
+
+				var widgetData = {
+				'chartType' : $scope.chartType,
+				'selectedFile' : $scope.selectedFile,
+				'Measures' : $scope.selectedSeries,
+				'XAxis': $scope.selectedCategory,
+				'allMeasures' : $scope.selectedMeasures,
+				'allXAxis' : $scope.selectedAttributes,
+				'DesignTimeFilter': $scope.selectedDesignTimeFilters,
+				'RuntimeFilter' : $scope.selectedRunTimeFilters,
+				'widgetConfig' : $scope.widgetConfig,
+				'settingConfig': $scope.settingConfig,
+				'selectedDB' : $scope.selectedDB,
+				'widgetID' :  widgetID,
+				'query' : $scope.chartQuery,
+				'groupBySortArray': $scope.groupBySortArray,
+				'drilledConf' : $scope.drilledConfig 
 
 
-			
-		};
+				
+			};
 
-		var widget = {
-			'widgetID' : widgetID ,
-			'widgetName' : $scope.settingConfig.widgetName,
-			'widgetData' : widgetData,
-			'col': $scope.widgetCol,
-			'row': $scope.widgetRow,
-			'sizeX': $scope.widgetSizeX,
-			'sizeY': $scope.widgetSizeY,
-			'notification_data':$scope.notification_data
+			var widget = {
+				'widgetID' : widgetID ,
+				'widgetName' : $scope.settingConfig.widgetName,
+				'widgetData' : widgetData,
+				'col': $scope.widgetCol,
+				'row': $scope.widgetRow,
+				'sizeX': $scope.widgetSizeX,
+				'sizeY': $scope.widgetSizeY,
+				'notification_data':$scope.notification_data
 
-			
-		};
+				
+			};
 
-		//if its a new widget add it as a new widget else replce 
-			var widgets = $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets;
-			var objIndex = getRootObjectById(widgetID, widgets);
-           
+			//if its a new widget add it as a new widget else replce 
+				var widgets = $rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets;
+				var objIndex = getRootObjectById(widgetID, widgets);
+	           
 
-        if(typeof objIndex != 'undefined'){
-        	 widgets[objIndex] = widget;
-        }    
-		else{
-			$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);
+	        if(typeof objIndex != 'undefined'){
+	        	 widgets[objIndex] = widget;
+	        }    
+			else{
+				$rootScope.currentDashboard.pages[$rootScope.selectedPageIndex].widgets.push(widget);
+			}
+			$scope.$parent.changed = true;
+			$scope.$parent.route('dashboard');
+
+		}else{
+			notifications.toast(2,'Chart generation in progress ..');
 		}
-		$scope.$parent.changed = true;
-		$scope.$parent.route('dashboard');
+		
 	}
 	
 		

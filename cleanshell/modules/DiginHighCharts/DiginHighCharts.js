@@ -98,6 +98,7 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
 			widgetConfig: '=',
 			chartType: '=',
 			submitForm: '&',
+			selectedSerie: '='
           },
          link: function(scope,element){
 
@@ -119,10 +120,24 @@ DiginHighChartsModule.directive('diginHighchartsSettings',['$rootScope','$compil
 					notifications.toast(2,"Invalid form");
 				}
 			}
-			
+			scope.groupBySortarray;
 			scope.restoreSettings = function()
 			{
-				scope.submitForm();
+				scope.highchartSetting.widgetName = "Default";
+				scope.switch = false;
+
+				angular.forEach(scope.highchartSetting.seriescolourArr, function(series, key){
+				 	series.color = "#7cb5ec";
+				 	series.name = scope.selectedSerie[key].name;
+				});
+
+				scope.widgetConfig.xAxis.title.text ="";
+				scope.widgetConfig.yAxis.title.text ="";
+
+				angular.forEach(scope.groupBySortarray, function(arr, key){
+				 	arr.sortName = arr.displayName;
+				});
+
 			}
 
          } //end of link

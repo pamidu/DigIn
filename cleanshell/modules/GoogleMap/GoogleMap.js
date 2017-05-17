@@ -99,7 +99,8 @@ DiginHighChartsModule.directive('googleMapSettings',['$rootScope','notifications
 			
 			scope.restoreSettings = function()
 			{
-				scope.submitForm();
+				scope.mapSettings.locatorType = "geo_code";
+				scope.mapSettings.widgetName = "Geographical Map";
 			}
 			
 			scope.cancelSettings = function(ev)

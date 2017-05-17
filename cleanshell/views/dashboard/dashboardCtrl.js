@@ -128,9 +128,9 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				// if no default filters have been applied
 				DiginServices.syncPages($rootScope.currentDashboard,index,function(dashboard){
 					// returns the synced page
-					$scope.$apply(function() {
+					//$scope.$apply(function() {
 						$rootScope.currentDashboard = dashboard;
-					})
+					//})
 				},'False');
 			}
 		}
@@ -408,10 +408,10 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				} else {
 					// send is_sync parameter as true
 					chartSyncServices.sync(widget.widgetData,function(widgetData){
-						$scope.$apply(function(){
+						//$scope.$apply(function(){
 							widgetData.syncOn = false;
 							widget.widgetData = widgetData;
-						})
+						//})
 					}, is_sync);
 				}
 			},

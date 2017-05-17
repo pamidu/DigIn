@@ -43,7 +43,7 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 				
 				$timeout(function(){ //wait 100 milliseconds until the dom element is added
 					var widgetID="";
-					if(scope.chartType == "highCharts" || scope.chartType == 'forecast')
+					if(scope.chartType == "highCharts" || scope.chartType == 'forecast' || scope.chartType == "histogram" )
 					{
 						widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
 						$('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY() - 50, true);
@@ -63,7 +63,7 @@ DiginHighChartsModule.directive('gridsterItemInitalizeWatcher',['$timeout', func
 				
 				$timeout(function(){ //wait 100 milliseconds until the dom element is added
 				     var widgetID="";
-				     if(scope.chartType == "highCharts" || scope.chartType == 'forecast')
+				     if(scope.chartType == "highCharts" || scope.chartType == 'forecast' || scope.chartType == "histogram")
 				     {
 				      widgetID = item.$element[0].children[2].children[0].children[0].getAttribute('id');
 				      $('#'+widgetID).highcharts().setSize(item.getElementSizeX(), item.getElementSizeY() - 50, true);
@@ -244,6 +244,12 @@ DiginHighChartsModule.factory('generateHighchart', ['$rootScope','$diginengine',
 				series: []
 			};
 			return highchartObject;
+		},
+		generateCustomQuery: function(query,chartObj, highChartType, tableName, limit, selectedDB, callback){
+
+			if (typeof query != "undefined") {
+
+			}
 		},
 		// build the highchart with data
 		generate: function(chartObj, highChartType, tableName, selectedSeries, selectedCategory,limit, selectedDB, isDrilled,groupBySortArray, callback, connection, allFields,reArangeArr,isCreate) {

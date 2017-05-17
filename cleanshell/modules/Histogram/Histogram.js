@@ -11,22 +11,35 @@ var HistogramModule = angular.module('Histogram',['DiginServiceLibrary']);
 HistogramModule.directive('histogram',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
 	return {
          restrict: 'E',
-         templateUrl: 'modules/Histogram/histogram.html',
+         template: '<highchart id="{{idSelector}}" config="config"></highchart>',
          scope: {
-           widgetTemplateObj: '='
+            config: '=',
+            idSelector: '@'
+
           },
          link: function(scope,element){
 
+            console.log(scope.idSelector);
+         	scope.$on('widget-resized', function(element, widget) {
+                if(scope.idSelector == widget.widget.widgetData.widgetID)
+                {
+                    var height = widget.element[0].clientHeight - 50;
+                    var width = widget.element[0].clientWidth;
+                    $('#'+widget.widget.widgetData.widgetID).highcharts().setSize(width, height, true);
+                }
+                
+            });
          } //end of link
     };
 }]);
 
-HistogramModule.directive('histogramSettings',['$rootScope','notifications','generateHistogram', function($rootScope,notifications,generateHistogram) {
+HistogramModule.directive('histogramSettings',['$rootScope','notifications','generateHistogram','$compile', function($rootScope,notifications,generateHistogram,$compile) {
 	return {
          restrict: 'E',
          templateUrl: 'modules/Histogram/histogramSettings.html',
          scope: {
 			histogramSettings: '=',
+			widgetConfig: '=',
 			submitForm: '&'
           },
          link: function(scope,element){
@@ -35,7 +48,7 @@ HistogramModule.directive('histogramSettings',['$rootScope','notifications','gen
 
 			if (angular.equals(scope.widgetConfig, {})) {
 				scope.widgetConfig = generateHistogram.initializeChartObject(scope.chartType);
-				var newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')(scope);
+				var newElement = $compile('<histogram config="widgetConfig"></histogram>')(scope);
 				element.find('.currentChart').append(newElement);
          	}
 			scope.submit = function()
@@ -100,33 +113,6 @@ HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digi
                     yAxis: {
                         showEmpty: false
                     },
-                    plotOptions: {
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                color: chartFontColor,
-                                format: '<b> {point.name}</b>',
-				                style: {
-				                    textShadow: false,
-				                    textOutline: false
-				                }
-                            },
-                            series: {
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b> ( {point.y:,.0f} )',
-                                    color: chartFontColor,
-                                    softConnector: true
-                                }
-                            },
-                            showInLegend: false,
-                            tooltip: {
-                                pointFormat: '{series.name}: {point.percentage:,.2f}%'
-                            }
-                        }
-                    },
 					legend: {
 			        itemStyle: {
 			            color: chartFontColor
@@ -136,6 +122,7 @@ HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digi
 				xAxis: {
 					lineColor: chartFontColor,
 					tickColor: chartFontColor,
+					categories:[],
 					labels: {
 						style: {
 							color: chartFontColor
@@ -174,12 +161,28 @@ HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digi
                 credits: {
                     enabled: false
                 },
-				series: []
+				series: [
+					{
+				        data: [],  
+				    }
+				]
 			};
 			return highchartObject;
 		},
-    	generate: function(selectedDB, datasource_name, datasource_id, selectedMeasure, callback) {
+    	generate: function(selectedDB, datasource_name, datasource_id, selectedMeasure,widgetConfig, callback) {
 			
+			//Change chart background colours according to theme
+			var chartBackgroundColor = "";
+			var chartFontColor = "";
+			
+			if($rootScope.theme.substr($rootScope.theme.length - 4) == "Dark")
+			{
+				chartBackgroundColor = "rgb(48,48,48)";
+				chartFontColor = '#fff';
+			}else{
+				chartBackgroundColor = "rgb(250,250,250)";
+			}
+
 			console.log(selectedMeasure);
 			if (selectedDB == "MSSQL") {
                     selectedMeasure = "'[" + selectedMeasure + "]'";
@@ -196,7 +199,16 @@ HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digi
 			
 			$http.get(histogramURL)
 			   .then(function(result) {
-					callback(result.data);
+
+			   		var data = result.data.Result;
+					for (var key in data) {
+                        widgetConfig.series[0].data.push(parseFloat(data[key][0]));
+                        //var category = data[key][].splice(1, 1);
+                        var category = data[key][1];
+                        widgetConfig.xAxis.categories.push(category);
+                    }
+
+					callback(widgetConfig);
 				},function errorCallback(response) {
 					console.log(response);
 				});//end of $http
@@ -214,3 +226,5 @@ HistogramModule.factory('generateHistogram', ['$rootScope','notifications','Digi
 		}//end of highchartValidations
 	}
 }]);//END OF generateWhatIf
+
+

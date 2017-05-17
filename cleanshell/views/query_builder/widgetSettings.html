@@ -14,4 +14,4 @@
 
 <bubble-settings ng-if="$parent.chartType.chartType == 'bubble'" bubble-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></bubble-settings>
 
-<histogram-settings ng-if="$parent.chartType.chartType == 'histogram'" histogram-settings="$parent.$parent.settingConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></histogram-settings>
+<histogram-settings ng-if="$parent.chartType.chartType == 'histogram'" histogram-settings="$parent.$parent.settingConfig" widget-config="$parent.$parent.widgetConfig" attr="$parent.$parent.selectedAttributes" select="$parent.$parent.selectedCategory" submit-form="toggleSettings()"></histogram-settings>

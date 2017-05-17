@@ -58,18 +58,15 @@ th{
 				</div>
 				<table style="width:100%;border-collapse: collapse;table-layout: fixed;">
 					<tr ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}">
-						<th style="font-size:15px;font-weight: 700;opacity: .5;">id</th>
-						<th style="font-size:15px;font-weight: 700;opacity: .5;">order_priority</th> 
-						<th style="font-size:15px;font-weight: 700;opacity: .5;">avg_sales</th>
+						<th ng-repeat ="heading in headings" style="font-size:15px;font-weight: 700;opacity: .5;">{{heading}}</th>
 					</tr>
 				</table>
 			</md-card>
 		<md-card md-virtual-repeat-container style="margin:0 auto;max-width:960px;height:calc(100vh - 160px);border-radius: 0px;">
 			<table style="width:100%;border-collapse: collapse;table-layout: fixed;">
-				<tr ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}" md-virtual-repeat="elements in data | filter:searchTable">
-					<th flex>{{elements.id}}</th>
-					<th flex>{{elements.order_priority}}</th> 
-					<th flex>{{elements.avg_sales}}</th>
+				<tr ng-class="{'md-table-row-light': $root.applyDark == false, 'md-table-row-dark': $root.applyDark == true}" ng-repeat="val in data | filter:searchTable">
+
+					<td ng-repeat ="heading in headings"> {{val[heading]}} </td> 
 				</tr>
 			</table>
 		</md-card>

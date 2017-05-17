@@ -365,6 +365,12 @@ DiginApp.controller('query_builderCtrl',[
 				//newElement = $compile('<metric config="widgetConfig" settings="settingConfig" notification="notification_data"></metric>')($scope);
 				$element.find('.currentChart').append(newElement);
 			}
+			else if($scope.chartType.chartType == "histogram")
+			{
+				$scope.showPlaceholderIcon = false;
+				var newElement = $compile('<histogram config="widgetConfig"></histogram>')($scope);
+				$element.find('.currentChart').append(newElement);
+			}
 			else{
 				$scope.showPlaceholderIcon = true;
 			}
@@ -378,9 +384,11 @@ DiginApp.controller('query_builderCtrl',[
 			console.log($scope.settingConfig.widgetName );
 
 			// initialize if the object is empty
-			$scope.widgetConfig = generateHighchart.initializeChartObject($scope.chartType.chart);
-			newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
-			$element.find('.currentChart').append(newElement);
+			if($scope.chartType.chartType == "highCharts"){
+				$scope.widgetConfig = generateHighchart.initializeChartObject($scope.chartType.chart);
+				newElement = $compile('<digin-high-chart config="widgetConfig" ></digin-high-chart>')($scope);
+				$element.find('.currentChart').append(newElement);
+			}
 			
 		}
 	}
@@ -457,8 +465,7 @@ DiginApp.controller('query_builderCtrl',[
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
 							$scope.chartQuery = "";
-							newElement = $compile('<digin-forecast config="widgetConfig" ></digin-forecast>')($scope);
-							$element.find('.currentChart').append(newElement);
+							
 						}
 						else{
 							$scope.showChartLoading = false;
@@ -605,13 +612,18 @@ DiginApp.controller('query_builderCtrl',[
 						$scope.selectedDB, 
 						$scope.selectedFile.datasource_name, 
 						$scope.selectedFile.datasource_id,
-						$scope.selectedSeries[0]['name']
+						$scope.selectedSeries[0]['name'],
+						$scope.widgetConfig
 					    ,function(data) {
 						    console.log(data);
 							$scope.showChartLoading = false;
 							$scope.showPlaceholderIcon = false;
 							$scope.widgetConfig = data;
+
+							newElement = $compile('<histogram id-selector="'+widgetID+'" config="widgetConfig"></histogram>')($scope);
+							$element.find('.currentChart').append(newElement);
 						});
+					
 				}
 			}
 		

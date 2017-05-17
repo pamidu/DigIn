@@ -2,30 +2,111 @@ DiginApp.controller('dataViewCtrl', ['$scope', '$mdDialog','event' ,'widget','$t
 
 	
 	$scope.widget = widget;
+
+    var chart = $scope.widget.widgetData.widgetConfig.getHighcharts();
+    console.log(chart);
 	console.log(widget);
 	console.log(widget.widgetData.widgetConfig.series);
+
+    $scope.headings =[];
+
+    //take mesures 
+    $scope.attrObj = angular.copy($scope.widget.widgetData.XAxis);
+
+    //take selected series
+    $scope.serObj = angular.copy($scope.widget.widgetData.widgetConfig.series);
+
+    angular.forEach($scope.attrObj, function(attr) {
+            $scope.headings.push(attr.name);
+    });
+    
+    angular.forEach($scope.serObj, function(series) {
+        $scope.headings.push(series.name);
+        var dataArr = series.data;
+        angular.forEach(dataArr, function(data) {
+            data[series.name] = data.y;
+            delete data.y;
+            angular.forEach($scope.attrObj, function(att) {
+                 data[att.name] = data.name;
+            });
+        });
+    });
+
+    $scope.data = [];
+
+     for (var i = 0; i < $scope.serObj.length - 1; i++) {
+        angular.merge($scope.serObj[i + 1].data, $scope.serObj[i].data, $scope.serObj[i + 1].data);
+    }
+    $scope.data = $scope.serObj[$scope.serObj.length - 1].data;
+
+
+    //take values from the object
+        // angular.forEach($scope.serObj, function(series) {
+        //     var dataArr = series.data;
+
+        //     var obj = {};
+
+        //     obj. 
+        // });   
+
+
 	
-	$scope.data = [
-					{id: "0", order_priority:"Critical", avg_sales: 1694.53},
-					{id: "1", order_priority:"High", avg_sales: 	1848.05},
-					{id: "2", order_priority:"Low", avg_sales: 	1908.51},
-					{id: "3", order_priority:"Medium", avg_sales: 	1755.03},
-					{id: "4", order_priority:"Not Specified", avg_sales: 	1661.7},
-					{id: "5", order_priority:"Critical", avg_sales: 1694.53},
-					{id: "6", order_priority:"High", avg_sales: 	1848.05},
-					{id: "7", order_priority:"Low", avg_sales: 	1908.51},
-					{id: "8", order_priority:"Medium", avg_sales: 	1755.03},
-					{id: "9", order_priority:"Not Specified", avg_sales: 	1661.7},
-					{id: "10", order_priority:"Low", avg_sales: 	1908.51},
-					{id: "11", order_priority:"Medium", avg_sales: 	1755.03},
-					{id: "12", order_priority:"Not Specified", avg_sales: 	1661.7},
-					{id: "13", order_priority:"Low", avg_sales: 	1908.51},
-					{id: "14", order_priority:"Medium", avg_sales: 	1755.03},
-					{id: "15", order_priority:"Not Specified", avg_sales: 	1661.7},
-					{id: "16", order_priority:"Low", avg_sales: 	1908.51},
-					{id: "17", order_priority:"Medium", avg_sales: 	1755.03},
-					{id: "18", order_priority:"Not Specified", avg_sales: 	1661.7}
-	];
+
+
+
+
+ //                     case "Dynamic Visuals":
+ //                        $scope.fieldData = [];
+ //                        if ($rootScope.widget.widgetData.highchartsNG.xAxis !== undefined) {
+ //                            if ($rootScope.widget.widgetData.highchartsNG.xAxis.title !== undefined) {
+ //                                $scope.fieldData[0] = $rootScope.widget.widgetData.highchartsNG.xAxis.title.text;
+ //                            }
+ //                        } else {
+ //                            $scope.fieldData[0] = "label"
+ //                        }
+ //                        $scope.serObj = angular.copy($rootScope.widget.widgetData.highchartsNG.series);
+ //                        angular.forEach($scope.serObj, function(series) {
+ //                            $scope.fieldData.push(series.name);
+ //                            angular.forEach(series.data, function(data) {
+ //                                var tempY = data.y;
+ //                                var tempName = data.name;
+ //                                delete data.y;
+ //                                delete data.name;
+ //                                delete series.color;
+ //                                delete series.id;
+ //                                delete series.origName;
+ //                                data[series.name] = tempY;
+ //                                data[$scope.fieldData[0]] = tempName;
+ //                            });
+ //                            delete series.name;
+ //                        });
+ //                        var temp = {};
+ //                        for (var i = 0; i < $scope.serObj.length - 1; i++) {
+ //                            angular.merge($scope.serObj[i + 1].data, $scope.serObj[i].data, $scope.serObj[i + 1].data);
+ //                        }
+ //                        var data = $scope.serObj[$scope.serObj.length - 1].data;
+
+ //                        var newTableData = [];
+ //                        for (var i = 0; i < data.length; i++) {
+ //                            var newObject = {};
+ //                            newObject["id"] = i;
+ //                            for (var j = 0; j < $scope.fieldData.length; j++) {
+ //                                if (typeof data[i][$scope.fieldData[j]] == 'number') {
+ //                                    newObject[$scope.fieldData[j]] = (Math.round(data[i][$scope.fieldData[j]] * 100) / 100);
+ //                                } else {
+ //                                    newObject[$scope.fieldData[j]] = data[i][$scope.fieldData[j]];
+ //                                }
+ //                            }
+ //                            newTableData.push(newObject);
+ //                        }
+ //                        $scope.tableData = newTableData;
+ //                        $scope.originalList = newTableData;
+
+ //                        break;
+
+
+
+
 	
 }]);// END OF dataViewCtrl
 /*

@@ -105,6 +105,27 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 			})
 		}			
 	}
+	$scope.multiSearch = "";
+	$scope.currentArrayName = "";
+	
+	$scope.search = function(ev, searchProperty, searchType)
+	{
+		if(searchProperty == 'table')
+		{
+	
+			if($scope.lastPath.dataSource == "BigQuery" || $scope.lastPath.dataSource == "memsql")
+			{
+				searchProperty = 'datasource_name';
+			}else if($scope.lastPath.dataSource == "MSSQL" || $scope.lastPath.dataSource == "Oracle"){
+				searchProperty = 'table'
+			}
+		}
+		
+		$scope.searchField = searchProperty;
+		$scope.currentArrayName = searchType;
+		alert("search "+$scope.searchField)
+		angular.element('#searchFields').trigger('focus');
+	}
 	
 	$scope.updateTables = function(ev, selectedDb, connection, retriveAgain)
 	{
@@ -312,3 +333,26 @@ DiginApp.controller('addWidgetDashboardCtrl', ['$scope', '$rootScope', '$mdDialo
 	}	
 	
 }]);// END OF 'addWidgetDashboardCtrl'
+
+
+DiginApp.filter('ordinal', function() {
+
+  return function(items, searchProperty, searchKeyword, currentArrayName, filterArrayName) {
+	  console.log(items, searchProperty, searchKeyword, currentArrayName, filterArrayName);
+	  if(!searchKeyword)
+		  return items
+	  
+	  if(currentArrayName != filterArrayName)
+		  return items;
+	  
+	  var filteredItems = items.filter(function(item){
+		  if(typeof(item) == 'object')
+			  return item[searchProperty].indexOf(searchKeyword) != -1
+		  else
+			return item.indexOf(searchKeyword) != -1
+	  }); 
+	  
+	  return filteredItems;
+  }
+  
+})

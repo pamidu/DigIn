@@ -373,7 +373,7 @@ MetricModule.factory('generateMetric', ['$rootScope','$diginengine','notificatio
             
 
             if(applyRunTimeFilter==true){
-            	metricObj=widgetObj.widgetData.widgetConfig;		
+            	metricObj=widgetObj;		
             	//metricObj.runtimefilterString =filters;
             	//metricObj.runtimeQuery="";
 				//metricObj.designFilterString

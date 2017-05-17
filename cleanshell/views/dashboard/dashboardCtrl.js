@@ -339,10 +339,10 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 			                }
 			            })
 			        } else {
-			            widgetShareService.getShareWidgetURL(widget, $scope.getreturnSocial, provider);
+			            widgetShareService.getShareWidgetURL(ev, widget, $scope.getreturnSocial, provider);
 			        }
 			
-				    $scope.getreturnSocial = function(url, provider) {
+				    $scope.getreturnSocial = function(ev, url, provider) {
 				        //var url = 'http://prod.digin.io/digin//data/digin_user_data/1fe2dfa9c6c56c8492b9c78107eb5ae3/nordirisrhytacom.prod.digin.io/DPs/4.jpg';
 				        if (provider == "pinterest") {
 				            window.open('https://pinterest.com/pin/create/button/?url=' + url + '', '_blank');
@@ -595,7 +595,7 @@ DiginApp.controller('dashboardCtrl',['$scope', '$rootScope','$mdDialog', '$mdCol
 				widgetData.syncOn = true;
 			    //highChartType, tableName,filters, limit, datasourceId, selectedDB,settings,notification_data, callback
 
-				generateMetric.generate(true,widget, widget.widgetData.chartType.chartType,widget.widgetData.selectedFile.datasource_name,run_connectionString,100,widget.widgetData.selectedFile.datasource_id,widget.widgetData.selectedDB,widget.widgetData.settingConfig,widget.notification_data, function (status,metricObj,settings,notification){
+				generateMetric.generate(true,widget.widgetData.widgetConfig, widget.widgetData.chartType.chartType,widget.widgetData.selectedFile.datasource_name,run_connectionString,100,widget.widgetData.selectedFile.datasource_id,widget.widgetData.selectedDB,widget.widgetData.settingConfig,widget.notification_data, function (status,metricObj,settings,notification){
 					widgetData.syncOn = false;
 					widgetData.widgetConfig=metricObj;
 

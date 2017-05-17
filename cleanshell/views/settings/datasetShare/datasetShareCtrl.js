@@ -343,7 +343,7 @@ DiginApp.controller('datasetShareCtrl', ['$scope','$rootScope','$mdDialog','noti
                   if(!$scope.isExist(readArray[j].UserID,selectedArray[i].shared_users) && !$scope.isShared(selectedArray[i].shared_by) && !$scope.isCurrntUser(selectedArray[i].created_tenant,readArray[j].UserID))
                   {
                     var obj = {
-                        "comp_id":selectedArray[i].datasource_id,
+                        "comp_id":(selectedArray[i].datasource_id).toString(),
                         "is_user":isUser,
                         "id":readArray[j].UserID,
                         "security_level":$scope.getPermition(readArray[j].Id,writeArr)
@@ -453,7 +453,7 @@ DiginApp.controller('datasetShareCtrl', ['$scope','$rootScope','$mdDialog','noti
                                         
                                         var obj = {
                                             "file_type":"single",
-                                            "datasource_id":$scope.selectedFiles[i].datasource_id,
+                                            "datasource_id":($scope.selectedFiles[i].datasource_id.toString(),
                                             "shared_user_Id":$scope.selectedFiles[i].shared_by,
                                             "deletion_type":"permanent"
                                         };

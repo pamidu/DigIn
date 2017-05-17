@@ -112,7 +112,28 @@ TabularModule.directive('tabularSettings',['$rootScope','notifications','generat
 			
 			scope.restoreSettings = function()
 			{
-				scope.submitForm();
+				scope.tabularSettings.widgetName = "Tabular Widget";
+                scope.tabularSettings.totForNumeric = "true";
+                scope.tabularSettings.defSortFeild = "";
+                scope.tabularSettings.AscOrDec = "ASC";
+                scope.tabularSettings.numOfRows = 10;
+
+                angular.forEach(scope.tabularSettings.AllingArr, function(val, key){
+                    val.DislayName = val.Attribute;
+                    if(val.isString){
+                       val.Alignment = "left";    
+                    }
+                    else{
+                        val.Alignment = "right"; 
+                    }
+
+                    val.Aggregation = "sum",
+                    val.Aggregation_value = 0;
+
+                });
+
+
+
 			}
          } //end of link
     };

@@ -230,7 +230,9 @@ WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'genera
                 }
        
                 scope.restoreSettings = function() {
-                     scope.submitForm();
+                     scope.whatifSettings.eqconfig['targets'] = [];
+                    scope.whatifSettings.eqconfig['mode'] = 'auto';
+                    scope.whatifSettings.widgetName = "What If";
                 }
 
                 scope.changeFormulaGenerationMode = function(mode) {

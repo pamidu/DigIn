@@ -51,6 +51,7 @@ DiginApp.controller('shareEmailClients', ['$scope','$mdDialog','widget','Dashboa
             $mdDialog.show({
                 controller: 'localEmailClient',
                 templateUrl: 'views/dashboard/widgetShare/loginEmail.html',
+				parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: {
                     URL: URL,
@@ -78,24 +79,25 @@ DiginApp.controller('localEmailClient', ['$scope','$mdDialog','URL','DashboardNa
     
     var userInfo = JSON.parse(decodeURIComponent(getCookie('authData')));
     var sender = userInfo.Email;
-    $scope.emailBody='Check Out '+DashboardName+' : '+widgetName+' shared by '+sender+'.<br><br>powered by DigIn.io(link to '+URL+')<br><br>Regards,<br><br>DigIn Team.';
-    $scope.emailSubject='DigIn - '+DashboardName+' : '+widgetName+'';
-    $scope.emailTo;
-    $scope.emailCc;
+	$scope.email  = {};
+    $scope.email.emailBody='Check Out '+DashboardName+' : '+widgetName+' shared by '+sender+'.<br><br>powered by DigIn.io(link to '+URL+')<br><br>Regards,<br><br>DigIn Team.';
+    $scope.email.emailSubject='DigIn - '+DashboardName+' : '+widgetName+'';
+    $scope.email.emailTo;
+    $scope.email.emailCc;
     var isCClistOk = true;
     
     $scope.sendEmail=function () {
 
-        if(typeof $scope.emailCc != "undefined")
-            isCClistOk = $scope.checkCCList($scope.emailCc);
+        if(typeof $scope.email.emailCc != "undefined")
+            isCClistOk = $scope.checkCCList($scope.email.emailCc);
 
-        if($scope.validateEmail($scope.emailTo) && isCClistOk){
+        if($scope.validateEmail($scope.email.emailTo) && isCClistOk){
                       
             $scope.mailData =   {
                 "type": "email",
-                "to": $scope.emailTo,
-                "cc" : $scope.emailCc,
-                "subject": $scope.emailSubject,
+                "to": $scope.email.emailTo,
+                "cc" : $scope.email.emailCc,
+                "subject": $scope.email.emailSubject,
                 "from": "Digin <noreply-digin@duoworld.com>",
                 "Namespace": "com.duosoftware.com",
                 "TemplateID": "T_Email_GENERAL",

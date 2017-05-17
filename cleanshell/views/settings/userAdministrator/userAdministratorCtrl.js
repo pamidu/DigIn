@@ -20,8 +20,29 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		}
 		
 	});
+	
+	$scope.pendingUsers = [];
+	
+	function getPendingUsers(){
+		UserServices.getPendingUsers().then(function(response){
+			$scope.pendingUsers = [];
+			console.log(response);
+			for (i = 0, len = response.AddUserRequests.length; i<len; ++i){
+				
+				if(!response.AddUserRequests[i].UserID){
+					
+					response.AddUserRequests[i].Name = response.AddUserRequests[i].Email.split(".")[0];
+				}
+				$scope.pendingUsers.push(response.AddUserRequests[i]);
+			}
+		})
+	}
+	
+	getPendingUsers();
+	
+	
 	var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		
+	
 	$scope.enterInviteUser = function(ev,searchText)
 	{
 		
@@ -35,6 +56,7 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 				UserServices.inviteUser(ev, searchText).then(function(response) {
 					console.log(response);
 					$scope.searchText = "";
+					getPendingUsers();
 				});
 			}
 		}else{
@@ -51,6 +73,19 @@ DiginApp.controller('userAdministratorCtrl',[ '$scope','$rootScope','$mdDialog',
 		}else{
 			for (i = 0, len = $scope.$parent.sharableUsers.length; i<len; ++i){
 				if($scope.$parent.sharableUsers[i].Id == email)
+				{
+					exist = true;
+					notifications.toast(0, 'This user is already invited');
+				}
+			}
+		}
+		
+		if($scope.pendingUsers.length == 0)
+		{
+			exist = false;
+		}else{
+			for (i = 0, len = $scope.pendingUsers.length; i<len; ++i){
+				if($scope.pendingUsers[i].Email == email)
 				{
 					exist = true;
 					notifications.toast(0, 'This user is already invited');

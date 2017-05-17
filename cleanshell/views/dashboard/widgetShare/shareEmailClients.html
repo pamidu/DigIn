@@ -1,20 +1,23 @@
-<md-dialog plumb-item class="dialog-1 b-r-0" ng-init="">
-
-  <md-toolbar class="modal-header">
+<md-dialog aria-label="Select Email Client">
+  <form>
+  <md-toolbar class="modal-header md-primary">
     <div class="md-toolbar-tools">
-      <div layout="row" layout-align="center center"><h2>Select Your Email Client</h2></div>
-      <span flex></span>
-      <md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close"></md-button>
+		<h2>Select Email Client</h2>
+		<span flex></span>
+		<md-button class="md-icon-button icon-cancel" ng-click="$root.cancel()" aria-label="Close">
+		</md-button>
     </div>
   </md-toolbar>
+  <md-content style="max-width:800px;max-height:810px; ">
 
+	<md-divider></md-divider>
+		<md-list ng-cloak>
+		  <md-list-item ng-repeat="item in shareOptions" ng-click="openeMailClent($event, item.provider)" >
+			<p>  {{item.provider}} </p>
+		  </md-list-item>
+		</md-list>
+  
 
-  <div layout="row" layout-align="center center" layout-wrap>
-    <div class="select-card-btn asset" ng-repeat="item in shareOptions">
-      <img alt="" src="{{item.icon}}" ng-click="openeMailClent($event, item.provider)" >
-      <span class="size graph-h2">
-        {{item.provider}}
-      </span>
-    </div>
-  </div>
+  </md-content>
+  </form>
 </md-dialog>

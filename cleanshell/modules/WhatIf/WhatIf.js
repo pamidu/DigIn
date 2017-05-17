@@ -18,7 +18,7 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
             this.setTargetSlider = function(slider) {
                 if(typeof(slider) !== undefined) {
                     _targetSlider = slider
-                    _threshold = parseFloat(_targetSlider.slider.noUiSlider.get());
+                    _threshold = _targetSlider.slider.noUiSlider.get();
                 }
             }.bind(this);
 
@@ -27,10 +27,23 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
                     _sliderCollection.push(slider);
             }.bind(this);
 
-            this.updateTarget = function(val) {
-                var currentTarget = _resolveFormula(this.config.equation);
-                _targetSlider.slider.noUiSlider.set(currentTarget[_targetSlider.name]);
-                angular.element('#'+_targetSlider.slider.id+' .noUi-connect').css('background', _getColor());
+            this.updateTarget = function(val, isDirectTargetSet) {
+                // var currentTarget = _resolveFormula(this.config.equation);
+                // _targetSlider.slider.noUiSlider.set(currentTarget[_targetSlider.name]);
+                // angular.element('#'+_targetSlider.slider.id+' .noUi-connect').css('background', _getColor());
+
+                if(isDirectTargetSet)
+                     _targetSlider.slider.noUiSlider.set(val);
+                else {
+                    var currentTarget = _resolveFormula(this.config.equation);
+                    _targetSlider.slider.noUiSlider.set(currentTarget[_targetSlider.name]);
+                    angular.element('#'+_targetSlider.slider.id+' .noUi-connect').css('background', _getColor());
+                }
+
+            }.bind(this);
+
+            this.setThreshhold = function() {
+                _threshold = _targetSlider.slider.noUiSlider.get();
             }.bind(this);
 
             var _resolveFormula = function(formula) {
@@ -68,11 +81,13 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
             config: '=',
             idSelector: '@'
         },
-        link: function (scope, elem, attr) {
+        link: function (scope, elem, attr, ctrl) {
 			// $timeout(function(){
 			// 	angular.element('.noUi-connect').css('background',$mdColors.getThemeColor($rootScope.theme+"-primary-300"));
 			// 	angular.element('.noUi-handle').css('background',$mdColors.getThemeColor($rootScope.theme+"-accent-A700"));
 			// }, 100);
+
+            scope.editable = false;
 			
 			scope.$on('widget-resized', function(element, widget) {
 				var height = widget.element[0].clientHeight - 50;
@@ -80,6 +95,21 @@ WhatIfModule.directive('whatIf', ['$rootScope','$mdColors', '$timeout', function
 				angular.element('#'+whatIfId).css('height',height+'px');
 				//.noUi-connect
 			});
+
+            scope.$on('target-threshold-changed', function() {
+                scope.$apply(function() {
+                    scope.editable = true;
+                });
+            });
+
+            scope.close = function() {
+                scope.editable = false;
+            }
+
+            scope.checked = function() {
+                scope.editable = false;
+                ctrl.setThreshhold();
+            }
 
 		}
 			
@@ -94,7 +124,7 @@ WhatIfModule.directive('sliderContainer', function() {
         transclude: true,
         controller: function() {
             this.func = function() {
-               // console.log('slider container func hits')
+               console.log('slider container func hits')
             }.bind(this);
         },
         controllerAs: 'sContCtrl',
@@ -104,7 +134,7 @@ WhatIfModule.directive('sliderContainer', function() {
     }
 });
 
-WhatIfModule.directive('slider', function() {
+WhatIfModule.directive('slider', ['$rootScope', function($rootScope) {
     return {
         restrict: 'E',
         require: ['^whatIf','^sliderContainer'],
@@ -151,6 +181,12 @@ WhatIfModule.directive('slider', function() {
                 if(scope.target) {
                     var origins = slider.getElementsByClassName('noUi-origin');
                     origins[0].setAttribute('disabled', true);
+
+                    slider.addEventListener('dblclick', function() {
+                        $rootScope.$broadcast('target-threshold-changed');
+                        origins[0].removeAttribute('disabled', true);
+                    });
+
                     sCollCtrl.setTargetSlider({name: scope.name, slider: slider});
                 }
 
@@ -159,11 +195,11 @@ WhatIfModule.directive('slider', function() {
             })(slider);
 
             slider.noUiSlider.on('slide', function ( values, handle ) {
-                sCollCtrl.updateTarget(values[handle]);
+                sCollCtrl.updateTarget(values[handle], scope.target);
             });
         }
     }
-});
+}]);
 
 WhatIfModule.directive('whatIfSettings', ['$rootScope', 'notifications', 'generateWhatIf',
     function($rootScope, notifications, generateWhatIf) {

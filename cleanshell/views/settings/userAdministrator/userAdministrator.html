@@ -88,11 +88,41 @@
 										</md-menu-item>
 									</md-menu-content>
 							   </md-menu>
+							   <md-divider></md-divider>
+							</md-list-item>
+							
+							
+							<md-list-item ng-repeat="user in pendingUsers | filter:searchText">
+								<img ng-src="{{user.imgUrl}}" err-src="{{getCatLetter(user.Name)}}" class="md-avatar" alt="{{user.Name}}" />
+								<div layout="row" flex>
+									<div flex="35" layout="column"  ng-if="!user.UserID">
+										<p style="font-weight:700; margin: 8px 0px 4px 0px;"> {{ user.Name }} </p>
+										<p style="margin:0;font-size:14px;color:#8b8b8b"> (not a DigIn user) </p>
+									</div>
+									<p flex="35" layout="column"  ng-if="user.UserID" style="font-weight:700;"> {{ user.Name }} </p>
+									<p style="color:#717171" flex> {{ user.Email}} </p>
+									<span class="inactive-box">Pending</span>
+								</div>
+								<md-menu class="md-secondary" md-position-mode="target-right target" ng-if="user.Id != $root.authObject.Email">
+									<md-button aria-label="Open demo menu" class="md-icon-button ti-more" style="font-size:20px" ng-click="$mdMenu.open($event)">
+									</md-button>
+									<md-menu-content width="4" >
+										<md-menu-item>
+										  <md-button ng-click="cancelInvitation($event, $index, user)">
+											  <div layout="row" flex>
+												<p flex>Cancel Invitation</p>
+												<div class="ti-back-left" style="font-size: 20px;padding-top: 8px;"></div>
+											  </div>
+										  </md-button>
+										</md-menu-item>
+									</md-menu-content>
+							   </md-menu>
 							   <md-divider ng-show="!$last"></md-divider>
 							</md-list-item>
+							
 						
 						</md-list>
-						<div ng-show="($parent.sharableUsers|filter:searchText).length == 0 && fetchingUsers == false" layout="row" layout-align="center center">
+						<div ng-show="($parent.sharableUsers|filter:searchText).length == 0 && (pendingUsers|filter:searchText).length == 0 && fetchingUsers == false" layout="row" layout-align="center center">
 							<img src="views/settings/userAdministrator/desert.png" />
 							<span style="padding-left:20px;font-weight:700">There are currently no users with access to your account with this keyword/ email, try adding 'em.</span>
 						</div>

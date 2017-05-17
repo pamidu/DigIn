@@ -5,6 +5,11 @@
 			Accuracy: {{::sCollCtrl.config.rsquare}}
 		</div>
 	</div>
+
+	<div layout="row" layout-align="end start" ng-show="editable">
+		<button ng-click="checked()">&#10003;</button>
+		<button ng-click="close()">&#10005;</button>
+	</div>
 	
 	<div >
 		<slider-container ng-repeat="variable in sCollCtrl.config.variables">
@@ -21,4 +26,5 @@
 			</div>
 		</slider-container>
 	</div>
+	
 </md-content>

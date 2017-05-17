@@ -453,7 +453,7 @@ DiginApp.controller('datasetShareCtrl', ['$scope','$rootScope','$mdDialog','noti
                                         
                                         var obj = {
                                             "file_type":"single",
-                                            "datasource_id":($scope.selectedFiles[i].datasource_id.toString(),
+                                            "datasource_id":($scope.selectedFiles[i].datasource_id).toString(),
                                             "shared_user_Id":$scope.selectedFiles[i].shared_by,
                                             "deletion_type":"permanent"
                                         };
